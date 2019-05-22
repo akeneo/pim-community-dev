@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7463: Fix display of the number of assets in the category tree
+
 # 2.3.44 (2019-05-20)
 
 # 2.3.43 (2019-05-14)
