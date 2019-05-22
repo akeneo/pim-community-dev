@@ -64,7 +64,7 @@ class ReferenceEntityAxisLabelNormalizerSpec extends ObjectBehavior
             [],
             true
         );
-        $findRecordDetails->__invoke(ReferenceEntityIdentifier::fromString('designer'), 'starck')->willReturn($recordDetails);
+        $findRecordDetails->find(ReferenceEntityIdentifier::fromString('designer'), 'starck')->willReturn($recordDetails);
 
         $this->normalize($value, 'en_US')->shouldReturn('Philippe Starck');
     }
@@ -90,7 +90,7 @@ class ReferenceEntityAxisLabelNormalizerSpec extends ObjectBehavior
             [],
             true
         );
-        $findRecordDetails->__invoke(ReferenceEntityIdentifier::fromString('designer'), 'starck')->willReturn($recordDetails);
+        $findRecordDetails->find(ReferenceEntityIdentifier::fromString('designer'), 'starck')->willReturn($recordDetails);
 
         $this->normalize($value, 'en_US')->shouldReturn('[starck]');
     }

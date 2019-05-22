@@ -89,7 +89,7 @@ class IsReferenceEntityConfiguredValidatorSpec extends ObjectBehavior
     ) {
         $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getReferenceDataName()->willReturn('designer');
-        $findReferenceEntityDetails->__invoke('designer')->willReturn(null);
+        $findReferenceEntityDetails->find('designer')->willReturn(null);
 
         $context->buildViolation($constraint->unknownMessage)->willReturn($violationBuilder);
         $violationBuilder->setParameter('%reference_entity_identifier%', 'designer')->shouldBeCalled()->willReturn($violationBuilder);
@@ -108,7 +108,7 @@ class IsReferenceEntityConfiguredValidatorSpec extends ObjectBehavior
     ) {
         $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getReferenceDataName()->willReturn('designer');
-        $findReferenceEntityDetails->__invoke('designer')->willReturn($designer);
+        $findReferenceEntityDetails->find('designer')->willReturn($designer);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 

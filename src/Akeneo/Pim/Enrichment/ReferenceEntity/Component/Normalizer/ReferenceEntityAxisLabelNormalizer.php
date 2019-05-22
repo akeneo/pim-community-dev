@@ -42,7 +42,7 @@ class ReferenceEntityAxisLabelNormalizer implements AxisValueLabelsNormalizer
     public function normalize(ValueInterface $value, string $locale): string
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-        $recordDetails = ($this->findRecordDetails)(ReferenceEntityIdentifier::fromString($attribute->getReferenceDataName()), $value->getData());
+        $recordDetails = $this->findRecordDetails->find(ReferenceEntityIdentifier::fromString($attribute->getReferenceDataName()), $value->getData());
 
         return $recordDetails->labels->getLabel($locale) ?? '[' . (string) $recordDetails->code . ']';
     }
