@@ -17,8 +17,7 @@ class CountUsersIntegration extends QueryTestCase
 
         $volume = $query->fetch();
 
-        // one user exist in the minimal catalog
-        Assert::assertEquals(9, $volume->getVolume());
+        Assert::assertEquals(8, $volume->getVolume());
         Assert::assertEquals('count_users', $volume->getVolumeName());
         Assert::assertEquals(false, $volume->hasWarning());
     }

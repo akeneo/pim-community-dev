@@ -7,6 +7,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -289,5 +291,33 @@ abstract class ApiTestCase extends WebTestCase
         ];
 
         return $response;
+    }
+
+    protected function createAdminUser(): UserInterface
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername(self::USERNAME);
+        $user->setPlainPassword(self::PASSWORD);
+        $user->setEmail('admin@example.com');
+        $user->setSalt('E1F53135E559C253');
+        $user->setFirstName('John');
+        $user->setLastName('Doe');
+
+        $this->get('pim_user.manager')->updatePassword($user);
+
+        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        if (null !== $adminRole) {
+            $user->addRole($adminRole);
+        }
+
+        $userRole = $this->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
+        if (null !== $userRole) {
+            $user->removeRole($userRole);
+        }
+
+        $this->get('validator')->validate($user);
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
     }
 }

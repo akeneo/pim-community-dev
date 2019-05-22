@@ -17,6 +17,7 @@ class ListChildrenCategoriesWithCountIncludingSubCategoriesIntegration extends T
     protected function setUp(): void
     {
         parent::setUp();
+        $this->createAdminUser();
 
         $fixturesLoader = new CategoryTreeFixturesLoader($this->testKernel->getContainer());
         $fixturesLoader->givenTheCategoryTrees([
