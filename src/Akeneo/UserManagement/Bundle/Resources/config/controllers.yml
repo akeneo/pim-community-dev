@@ -19,6 +19,7 @@ services:
             - '@event_dispatcher'
             - '@session'
             - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.localization.factory.number'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'
