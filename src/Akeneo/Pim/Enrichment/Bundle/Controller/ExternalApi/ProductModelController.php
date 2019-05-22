@@ -9,10 +9,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -28,6 +29,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +44,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Willy MESNAGE <willy.mesnage@akeneo.com>
@@ -110,6 +113,9 @@ class ProductModelController
     /** @var ConnectorProductModelNormalizer */
     private $connectorProductModelNormalizer;
 
+    /** @var GetConnectorProductModels */
+    private $getConnectorProductModels;
+
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
@@ -132,6 +138,7 @@ class ProductModelController
         ListProductModelsQueryValidator $listProductModelsQueryValidator,
         ListProductModelsQueryHandler $listProductModelsQueryHandler,
         ConnectorProductModelNormalizer $connectorProductModelNormalizer,
+        GetConnectorProductModels $getConnectorProductModels,
         TokenStorageInterface $tokenStorage,
         array $apiConfiguration
     ) {
@@ -153,6 +160,7 @@ class ProductModelController
         $this->listProductModelsQueryValidator = $listProductModelsQueryValidator;
         $this->listProductModelsQueryHandler = $listProductModelsQueryHandler;
         $this->connectorProductModelNormalizer = $connectorProductModelNormalizer;
+        $this->getConnectorProductModels = $getConnectorProductModels;
         $this->tokenStorage = $tokenStorage;
         $this->apiConfiguration = $apiConfiguration;
     }
@@ -164,19 +172,20 @@ class ProductModelController
      *
      * @return JsonResponse
      */
-    public function getAction($code): JsonResponse
+    public function getAction(string $code): JsonResponse
     {
-        $pqb = $this->pqbFactory->create();
-        $pqb->addFilter('identifier', Operators::EQUALS, $code);
-        $productModels = $pqb->execute();
+        try {
+            $user = $this->tokenStorage->getToken()->getUser();
+            Assert::isInstanceOf($user, UserInterface::class);
 
-        if (0 === $productModels->count()) {
+            $productModel = $this->getConnectorProductModels->fromProductModelCode($code, $user->getId());
+        } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product model "%s" does not exist.', $code));
         }
 
-        $productModelApi = $this->normalizer->normalize($productModels->current(), 'external_api');
-
-        return new JsonResponse($productModelApi);
+        return new JsonResponse(
+            $this->connectorProductModelNormalizer->normalizeConnectorProductModel($productModel)
+        );
     }
 
     /**
@@ -241,6 +250,9 @@ class ProductModelController
      */
     public function listAction(Request $request): JsonResponse
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+        Assert::isInstanceOf($user, UserInterface::class);
+
         $query = new ListProductModelsQuery();
 
         if ($request->query->has('attributes')) {
@@ -263,7 +275,7 @@ class ProductModelController
         $query->page = $request->query->get('page', 1);
         $query->searchChannelCode = $request->query->get('search_scope', null);
         $query->searchAfter = $request->query->get('search_after', null);
-        $query->userId = $this->tokenStorage->getToken()->getUser()->getId();
+        $query->userId = $user->getId();
 
         try {
             $this->listProductModelsQueryValidator->validate($query);

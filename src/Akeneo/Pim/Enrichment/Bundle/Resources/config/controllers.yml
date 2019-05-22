@@ -79,6 +79,7 @@ services:
             - '@pim_enrich.connector.use_cases.validator.list_product_models'
             - '@pim_enrich.connector.use_cases.handler.list_product_models'
             - '@pim_api.normalizer.connector_product_models'
+            - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@security.token_storage'
             - '%pim_api.configuration%'
 

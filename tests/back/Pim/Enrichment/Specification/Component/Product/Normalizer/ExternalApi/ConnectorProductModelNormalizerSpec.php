@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Routing\RouterInterface;
@@ -24,7 +25,10 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
 {
     function let(ProductValueNormalizer $productValuesNormalizer, RouterInterface $router)
     {
-        $this->beConstructedWith(new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()), new DateTimeNormalizer());
+        $this->beConstructedWith(
+            new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
+            new DateTimeNormalizer()
+        );
         $productValuesNormalizer->normalize(Argument::type(ValueCollection::class), 'standard')->willReturn([]);
     }
 
@@ -47,13 +51,13 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                 'X_SELL' => [
                     'products' => ['product_code_1'],
                     'product_models' => [],
-                    'groups' => ['group_code_2']
+                    'groups' => ['group_code_2'],
                 ],
                 'UPSELL' => [
                     'products' => ['product_code_4'],
                     'product_models' => ['product_model_5'],
-                    'groups' => ['group_code_3']
-                ]
+                    'groups' => ['group_code_3'],
+                ],
             ],
             ['category_code_1', 'category_code_2'],
             new ValueCollection()
@@ -72,39 +76,100 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
             new ValueCollection()
         );
 
-        $this->normalizeConnectorProductModelList(new ConnectorProductModelList(1, [$connector1, $connector2]))->shouldBeLike([
+        $this->normalizeConnectorProductModelList(new ConnectorProductModelList(1, [$connector1, $connector2]))
+             ->shouldBeLike(
+                 [
+                     [
+                         'code' => 'code_1',
+                         'family_variant' => 'family_variant',
+                         'parent' => null,
+                         'categories' => ['category_code_1', 'category_code_2'],
+                         'values' => (object)[],
+                         'created' => '2019-04-23T15:55:50+00:00',
+                         'updated' => '2019-04-25T15:55:50+00:00',
+                         'associations' => [
+                             'X_SELL' => [
+                                 'products' => ['product_code_1'],
+                                 'product_models' => [],
+                                 'groups' => ['group_code_2'],
+                             ],
+                             'UPSELL' => [
+                                 'products' => ['product_code_4'],
+                                 'product_models' => ['product_model_5'],
+                                 'groups' => ['group_code_3'],
+                             ],
+                         ],
+                         'metadata' => ['a_metadata_key' => 'a_metadata_value'],
+                     ],
+                     [
+                         'code' => 'code_2',
+                         'family_variant' => 'family_variant',
+                         'parent' => null,
+                         'categories' => [],
+                         'values' => (object)[],
+                         'created' => '2019-04-23T15:55:50+00:00',
+                         'updated' => '2019-04-25T15:55:50+00:00',
+                         'associations' => (object)[],
+                     ],
+                 ]
+             );
+    }
+
+    function it_normalizes_a_single_connector_product_model(ProductValueNormalizer $productValuesNormalizer)
+    {
+        $scalarValue = ScalarValue::value('some_text', 'some data');
+        $productValuesNormalizer->normalize($scalarValue, 'standard')->willReturn(
             [
-                'code' => 'code_1',
-                'family_variant' => 'family_variant',
-                'parent' => null,
-                'categories' => ['category_code_1', 'category_code_2'],
-                'values' => (object) [],
-                'created' => '2019-04-23T15:55:50+00:00',
-                'updated' => '2019-04-25T15:55:50+00:00',
-                'associations' => [
-                    'X_SELL' => [
-                        'products' => ['product_code_1'],
-                        'product_models' => [],
-                        'groups' => ['group_code_2']
-                    ],
-                    'UPSELL' => [
-                        'products' => ['product_code_4'],
-                        'product_models' => ['product_model_5'],
-                        'groups' => ['group_code_3']
-                    ]
+                'scope' => null,
+                'locale' => null,
+                'data' => 'some data',
+            ]
+        );
+
+        $connectorProductModel = new ConnectorProductModel(
+            44,
+            'product_model_code',
+            new \DateTimeImmutable('2018-05-16 12:10:15', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2018-05-17 14:20:44', new \DateTimeZone('UTC')),
+            null,
+            'clothing_by_size',
+            [],
+            [
+                'UPSELL' => [
+                    'groups' => [],
+                    'products' => ['product_1'],
+                    'product_models' => ['other_product_model'],
                 ],
-                'metadata' => ['a_metadata_key' => 'a_metadata_value'],
             ],
+            ['sportswear', 'men'],
+            new ValueCollection([$scalarValue])
+        );
+
+        $this->normalizeConnectorProductModel($connectorProductModel)->shouldReturn(
             [
-                'code' => 'code_2',
-                'family_variant' => 'family_variant',
-                'parent' => [],
-                'categories' => [],
-                'values' => (object) [],
-                'created' => '2019-04-23T15:55:50+00:00',
-                'updated' => '2019-04-25T15:55:50+00:00',
-                'associations' => (object) [],
-            ],
-        ]);
+                'code' => 'product_model_code',
+                'family_variant' => 'clothing_by_size',
+                'parent' => null,
+                'categories' => ['sportswear', 'men'],
+                'values' => [
+                    'some_text' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => 'some data',
+                        ],
+                    ],
+                ],
+                'created' => '2018-05-16T12:10:15+00:00',
+                'updated' => '2018-05-17T14:20:44+00:00',
+                'associations' => [
+                    'UPSELL' => [
+                        'groups' => [],
+                        'products' => ['product_1'],
+                        'product_models' => ['other_product_model'],
+                    ],
+                ],
+            ]
+        );
     }
 }
