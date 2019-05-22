@@ -28,7 +28,7 @@ class GetAction
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $referenceEntityPermissionDetails = ($this->findReferenceEntityPermissionsDetails)($referenceEntityIdentifier);
+        $referenceEntityPermissionDetails = $this->findReferenceEntityPermissionsDetails->find($referenceEntityIdentifier);
         $result = $this->normalizePermissionDetails($referenceEntityPermissionDetails);
 
         return new JsonResponse($result);

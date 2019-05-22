@@ -54,7 +54,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
         $this->attributeRepository->create($nonScopableLocalizable);
         $this->attributeRepository->create($scopableLocalizable);
 
-        $indexedAttributes = ($this->query)(ReferenceEntityIdentifier::fromString('designer'));
+        $indexedAttributes = $this->query->find(ReferenceEntityIdentifier::fromString('designer'));
         Assert::assertSame([
             'name_designer_fingerprint' => $nonScopableNonLocalizable,
             'description_designer_fingerprint' => $nonScopableLocalizable,
@@ -67,7 +67,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
      */
     public function it_returns_an_empty_list()
     {
-        $indexedAttributes = ($this->query)(ReferenceEntityIdentifier::fromString('designer'));
+        $indexedAttributes = $this->query->find(ReferenceEntityIdentifier::fromString('designer'));
         Assert::assertSame([], $indexedAttributes);
     }
 

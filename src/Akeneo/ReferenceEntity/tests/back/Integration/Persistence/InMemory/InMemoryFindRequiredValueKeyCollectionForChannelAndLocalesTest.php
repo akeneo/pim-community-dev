@@ -97,7 +97,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
         );
 
         /** @var ValueKeyCollection $valueKeyCollection */
-        $valueKeyCollection = ($this->query)(
+        $valueKeyCollection = $this->query->find(
             ReferenceEntityIdentifier::fromString('designer'),
             ChannelIdentifier::fromCode('ecommerce'),
             LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR', 'de_DE'])

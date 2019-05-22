@@ -45,7 +45,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
 
     private function generateSearchMatrixWithValueKeys(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $matrixLocalesPerChannels = ($this->findActivatedLocalesPerChannels)();
+        $matrixLocalesPerChannels = $this->findActivatedLocalesPerChannels->findAll();
         $matrix = [];
         foreach ($matrixLocalesPerChannels as $channelCode => $locales) {
             foreach ($locales as $localeCode) {

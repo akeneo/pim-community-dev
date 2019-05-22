@@ -53,7 +53,7 @@ class SqlFindConnectorReferenceEntityByReferenceEntityIdentifierTest extends Sql
             Image::createEmpty()
         );
 
-        $referenceEntityFound = ($this->findConnectorReferenceEntityQuery)(ReferenceEntityIdentifier::fromString('designer'));
+        $referenceEntityFound = $this->findConnectorReferenceEntityQuery->find(ReferenceEntityIdentifier::fromString('designer'));
 
         $expectedReferenceEntity = $expectedReferenceEntity->normalize();
         $foundReferenceEntity = $referenceEntityFound->normalize();
@@ -67,7 +67,7 @@ class SqlFindConnectorReferenceEntityByReferenceEntityIdentifierTest extends Sql
     public function it_returns_null_if_no_reference_entity_found()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('whatever');
-        $referenceEntityFound = ($this->findConnectorReferenceEntityQuery)($referenceEntityIdentifier);
+        $referenceEntityFound = $this->findConnectorReferenceEntityQuery->find($referenceEntityIdentifier);
 
         $this->assertNull($referenceEntityFound);
     }

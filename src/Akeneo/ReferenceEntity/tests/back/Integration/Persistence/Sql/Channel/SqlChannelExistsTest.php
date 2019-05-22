@@ -35,7 +35,7 @@ class SqlChannelExistsTest extends SqlIntegrationTestCase
      */
     public function it_returns_true_if_the_channel_exists()
     {
-        $this->assertTrue(($this->channelExist)(ChannelIdentifier::fromCode('ecommerce')));
+        $this->assertTrue($this->channelExist->exists(ChannelIdentifier::fromCode('ecommerce')));
     }
 
     /**
@@ -43,6 +43,6 @@ class SqlChannelExistsTest extends SqlIntegrationTestCase
      */
     public function it_returns_false_if_the_channel_does_not_exist()
     {
-        $this->assertFalse(($this->channelExist)(ChannelIdentifier::fromCode('wrong_channel')));
+        $this->assertFalse($this->channelExist->exists(ChannelIdentifier::fromCode('wrong_channel')));
     }
 }

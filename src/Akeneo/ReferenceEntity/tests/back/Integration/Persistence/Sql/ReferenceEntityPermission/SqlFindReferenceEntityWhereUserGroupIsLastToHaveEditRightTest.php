@@ -33,16 +33,16 @@ class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRightTest extends SqlI
      */
     public function it_finds_the_reference_entities_the_user_group_is_the_last_to_have_edit_permission_on()
     {
-        $referenceEntityIdentifiers = ($this->query)(10);
+        $referenceEntityIdentifiers = $this->query->find(10);
         $this->assertEquals(['color'], $referenceEntityIdentifiers);
 
-        $referenceEntityIdentifiers = ($this->query)(11);
+        $referenceEntityIdentifiers = $this->query->find(11);
         $this->assertEquals([], $referenceEntityIdentifiers);
 
-        $referenceEntityIdentifiers = ($this->query)(12);
+        $referenceEntityIdentifiers = $this->query->find(12);
         $this->assertEquals(['city'], $referenceEntityIdentifiers);
 
-        $referenceEntityIdentifiers = ($this->query)(13);
+        $referenceEntityIdentifiers = $this->query->find(13);
         $this->assertEquals([], $referenceEntityIdentifiers);
     }
 

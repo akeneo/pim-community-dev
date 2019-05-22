@@ -67,7 +67,7 @@ class GetAction
 
     private function findReferenceEntityDetailsOr404(ReferenceEntityIdentifier $identifier): ReferenceEntityDetails
     {
-        $result = ($this->findOneReferenceEntityQuery)($identifier);
+        $result = $this->findOneReferenceEntityQuery->find($identifier);
         if (null === $result) {
             throw new NotFoundHttpException();
         }

@@ -56,7 +56,7 @@ class SqlFileExistsTest extends SqlIntegrationTestCase
      */
     public function it_returns_true_if_the_file_exists()
     {
-        $fileExists = ($this->fileExists)('files/starck.jpg');
+        $fileExists = $this->fileExists->exists('files/starck.jpg');
 
         $this->assertTrue($fileExists);
     }
@@ -66,7 +66,7 @@ class SqlFileExistsTest extends SqlIntegrationTestCase
      */
     public function it_returns_false_if_no_file_was_found()
     {
-        $fileExists = ($this->fileExists)('files/no_file.jpg');
+        $fileExists = $this->fileExists->exists('files/no_file.jpg');
 
         $this->assertFalse($fileExists);
     }

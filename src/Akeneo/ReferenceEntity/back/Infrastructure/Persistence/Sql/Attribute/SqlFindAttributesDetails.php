@@ -81,7 +81,7 @@ SQL;
      */
     private function hydrateAttributesDetails(array $results): array
     {
-        $activatedLocales = ($this->findActivatedLocales)();
+        $activatedLocales = $this->findActivatedLocales->findAll();
         $allAttributeDetails = [];
         foreach ($results as $result) {
             $attributeDetails = new AttributeDetails();

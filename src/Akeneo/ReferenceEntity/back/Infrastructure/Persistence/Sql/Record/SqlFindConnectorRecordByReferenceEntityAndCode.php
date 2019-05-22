@@ -85,8 +85,8 @@ SQL;
     private function hydrateRecord(array $result): ConnectorRecord
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
-        $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
-        $indexedAttributes = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
+        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
 
         return $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
     }

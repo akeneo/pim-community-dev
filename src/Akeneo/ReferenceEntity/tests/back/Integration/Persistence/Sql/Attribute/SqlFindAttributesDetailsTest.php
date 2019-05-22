@@ -54,7 +54,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
      */
     public function it_returns_the_attributes_details_for_a_reference_entity()
     {
-        $attributeDetails = ($this->findAttributesDetails)(ReferenceEntityIdentifier::fromString('designer'));
+        $attributeDetails = $this->findAttributesDetails->find(ReferenceEntityIdentifier::fromString('designer'));
 
         $this->assertCount(7, $attributeDetails);
         $this->assertNameAttribute($attributeDetails);

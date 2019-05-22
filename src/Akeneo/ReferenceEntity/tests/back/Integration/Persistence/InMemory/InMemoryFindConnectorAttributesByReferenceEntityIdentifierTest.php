@@ -50,7 +50,7 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends Tes
             []
         );
 
-        $result = ($this->query)(
+        $result = $this->query->find(
             ReferenceEntityIdentifier::fromString('non_existent_reference_entity_identifier'),
             $connectorAttribute
         );
@@ -78,7 +78,7 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends Tes
             $connectorAttribute
         );
 
-        $results = ($this->query)(
+        $results = $this->query->find(
             ReferenceEntityIdentifier::fromString('existent_reference_entity_identifier'),
             $connectorAttribute
         );

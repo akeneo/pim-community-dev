@@ -234,7 +234,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         ChannelIdentifier $channel,
         LocaleIdentifierCollection $locales
     ): ValueKeyCollection {
-        return ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
+        return $this->findRequiredValueKeyCollectionForChannelAndLocale->find(
             ReferenceEntityIdentifier::fromString($referenceEntityCode),
             $channel,
             $locales

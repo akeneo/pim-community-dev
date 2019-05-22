@@ -65,7 +65,7 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
             return null;
         }
 
-        $attributesDetails = ($this->findAttributesDetails)($identifier);
+        $attributesDetails = $this->findAttributesDetails->find($identifier);
 
         return $this->hydrateReferenceEntityDetails(
             $result['identifier'],
@@ -121,7 +121,7 @@ SQL;
         ?string $attributeAsImage
     ): ReferenceEntityDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $activatedLocales = ($this->findActivatedLocales)();
+        $activatedLocales = $this->findActivatedLocales->findAll();
 
         $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
