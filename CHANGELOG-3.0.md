@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Improvements
+
+- PIM-8360: Ref Entities / Onboarder - Add a query in public API to fetch all records with their localized labels
+
 ## Bug fixes
 
 - PIM-6869: Fix bad label on the asset grid category tree
