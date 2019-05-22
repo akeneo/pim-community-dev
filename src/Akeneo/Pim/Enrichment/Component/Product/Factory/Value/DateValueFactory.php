@@ -22,28 +22,28 @@ class DateValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        if (null === $data) {
-            return null;
-        }
+//        if (null === $data) {
+//            return null;
+//        }
+//
+//        if (!is_string($data)) {
+//            throw InvalidPropertyTypeException::stringExpected(
+//                $attribute->getCode(),
+//                static::class,
+//                $data
+//            );
+//        }
 
-        if (!is_string($data)) {
-            throw InvalidPropertyTypeException::stringExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
 
-
-        try {
+//        try {
             $date = new \DateTime($data);
 
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-                $this->throwsInvalidDateException($attribute, $data);
-            }
-        } catch (\Exception $e) {
-            $this->throwsInvalidDateException($attribute, $data);
-        }
+//            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+//                $this->throwsInvalidDateException($attribute, $data);
+//            }
+//        } catch (\Exception $e) {
+//            $this->throwsInvalidDateException($attribute, $data);
+//        }
 
         return $date;
     }

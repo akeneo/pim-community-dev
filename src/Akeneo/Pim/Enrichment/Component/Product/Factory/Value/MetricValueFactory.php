@@ -35,38 +35,38 @@ class MetricValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        if (null === $data) {
-            $data = [
-                'amount' => null,
-                'unit'   => $attribute->getDefaultMetricUnit(),
-            ];
-        }
-
-        if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
-
-        if (!array_key_exists('amount', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected(
-                $attribute->getCode(),
-                'amount',
-                static::class,
-                $data
-            );
-        }
-
-        if (!array_key_exists('unit', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected(
-                $attribute->getCode(),
-                'unit',
-                static::class,
-                $data
-            );
-        }
+//        if (null === $data) {
+//            $data = [
+//                'amount' => null,
+//                'unit'   => $attribute->getDefaultMetricUnit(),
+//            ];
+//        }
+//
+//        if (!is_array($data)) {
+//            throw InvalidPropertyTypeException::arrayExpected(
+//                $attribute->getCode(),
+//                static::class,
+//                $data
+//            );
+//        }
+//
+//        if (!array_key_exists('amount', $data)) {
+//            throw InvalidPropertyTypeException::arrayKeyExpected(
+//                $attribute->getCode(),
+//                'amount',
+//                static::class,
+//                $data
+//            );
+//        }
+//
+//        if (!array_key_exists('unit', $data)) {
+//            throw InvalidPropertyTypeException::arrayKeyExpected(
+//                $attribute->getCode(),
+//                'unit',
+//                static::class,
+//                $data
+//            );
+//        }
 
         return $this->metricFactory->createMetric($attribute->getMetricFamily(), $data['unit'], $data['amount']);
     }

@@ -36,52 +36,53 @@ class ReferenceDataCollectionValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData = false)
     {
-        if (null === $data) {
-            $data = [];
-        }
-
-        if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
-
-        foreach ($data as $key => $value) {
-            if (!is_string($value)) {
-                throw InvalidPropertyTypeException::validArrayStructureExpected(
-                    $attribute->getCode(),
-                    sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
-                    static::class,
-                    $data
-                );
-            }
-        }
+//        if (null === $data) {
+//            $data = [];
+//        }
+//
+//        if (!is_array($data)) {
+//            throw InvalidPropertyTypeException::arrayExpected(
+//                $attribute->getCode(),
+//                static::class,
+//                $data
+//            );
+//        }
+//
+//        foreach ($data as $key => $value) {
+//            if (!is_string($value)) {
+//                throw InvalidPropertyTypeException::validArrayStructureExpected(
+//                    $attribute->getCode(),
+//                    sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
+//                    static::class,
+//                    $data
+//                );
+//            }
+//        }
 
         $referenceDataCodes = [];
 
-        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+//        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
         foreach ($data as $referenceDataCode) {
-            $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
-
-            if (null === $referenceData) {
-                if (!$ignoreUnknownData) {
-                    throw InvalidPropertyException::validEntityCodeExpected(
-                        $attribute->getCode(),
-                        'reference data code',
-                        sprintf('The code of the reference data "%s" does not exist', $attribute->getReferenceDataName()),
-                        static::class,
-                        $referenceDataCode
-                    );
-                }
-            } else {
-                $referenceDataCodes[] = $referenceData->getCode();
-            }
+//            $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
+//
+//            if (null === $referenceData) {
+//                if (!$ignoreUnknownData) {
+//                    throw InvalidPropertyException::validEntityCodeExpected(
+//                        $attribute->getCode(),
+//                        'reference data code',
+//                        sprintf('The code of the reference data "%s" does not exist', $attribute->getReferenceDataName()),
+//                        static::class,
+//                        $referenceDataCode
+//                    );
+//                }
+//            } else {
+//                $referenceDataCodes[] = $referenceData->getCode();
+//            }
+            $referenceDataCodes[] = $referenceDataCode;
         }
 
-        $referenceDataCodes = array_unique($referenceDataCodes);
+//        $referenceDataCodes = array_unique($referenceDataCodes);
 
         sort($referenceDataCodes);
 

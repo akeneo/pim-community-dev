@@ -22,21 +22,21 @@ class ScalarValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        if (null === $data) {
-            return;
-        }
-
-        if (!is_scalar($data)) {
-            throw InvalidPropertyTypeException::scalarExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
-
-        if (is_string($data) && '' === trim($data)) {
-            $data = null;
-        }
+//        if (null === $data) {
+//            return;
+//        }
+//
+//        if (!is_scalar($data)) {
+//            throw InvalidPropertyTypeException::scalarExpected(
+//                $attribute->getCode(),
+//                static::class,
+//                $data
+//            );
+//        }
+//
+//        if (is_string($data) && '' === trim($data)) {
+//            $data = null;
+//        }
 
         if (AttributeTypes::BOOLEAN === $attribute->getType() &&
             (1 === $data || '1' === $data || 0 === $data || '0' === $data)

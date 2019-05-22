@@ -61,6 +61,7 @@ class ReferenceDataValueFactory extends AbstractValueFactory
             );
         }
 
+        return $data;
         return $referenceData->getCode();
     }
 }

@@ -36,29 +36,29 @@ class MediaValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        if (null === $data) {
-            return;
-        }
-
-        if (!is_string($data)) {
-            throw InvalidPropertyTypeException::stringExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
+//        if (null === $data) {
+//            return;
+//        }
+//
+//        if (!is_string($data)) {
+//            throw InvalidPropertyTypeException::stringExpected(
+//                $attribute->getCode(),
+//                static::class,
+//                $data
+//            );
+//        }
 
         $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
 
-        if (null === $fileInfo) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                $attribute->getCode(),
-                'fileinfo key',
-                'The media does not exist',
-                static::class,
-                $data
-            );
-        }
+//        if (null === $fileInfo) {
+//            throw InvalidPropertyException::validEntityCodeExpected(
+//                $attribute->getCode(),
+//                'fileinfo key',
+//                'The media does not exist',
+//                static::class,
+//                $data
+//            );
+//        }
 
         return $fileInfo;
     }

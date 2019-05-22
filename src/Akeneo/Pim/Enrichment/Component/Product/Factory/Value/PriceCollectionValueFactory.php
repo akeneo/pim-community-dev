@@ -102,41 +102,41 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
      */
     protected function prepareData(AttributeInterface $attribute, $data, ?string $channelCode)
     {
-        if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
-
-        foreach ($data as $price) {
-            if (!is_array($price)) {
-                throw InvalidPropertyTypeException::arrayOfArraysExpected(
-                    $attribute->getCode(),
-                    static::class,
-                    $data
-                );
-            }
-
-            if (!array_key_exists('amount', $price)) {
-                throw InvalidPropertyTypeException::arrayKeyExpected(
-                    $attribute->getCode(),
-                    'amount',
-                    static::class,
-                    $data
-                );
-            }
-
-            if (!array_key_exists('currency', $price)) {
-                throw InvalidPropertyTypeException::arrayKeyExpected(
-                    $attribute->getCode(),
-                    'currency',
-                    static::class,
-                    $data
-                );
-            }
-        }
+//        if (!is_array($data)) {
+//            throw InvalidPropertyTypeException::arrayExpected(
+//                $attribute->getCode(),
+//                static::class,
+//                $data
+//            );
+//        }
+//
+//        foreach ($data as $price) {
+//            if (!is_array($price)) {
+//                throw InvalidPropertyTypeException::arrayOfArraysExpected(
+//                    $attribute->getCode(),
+//                    static::class,
+//                    $data
+//                );
+//            }
+//
+//            if (!array_key_exists('amount', $price)) {
+//                throw InvalidPropertyTypeException::arrayKeyExpected(
+//                    $attribute->getCode(),
+//                    'amount',
+//                    static::class,
+//                    $data
+//                );
+//            }
+//
+//            if (!array_key_exists('currency', $price)) {
+//                throw InvalidPropertyTypeException::arrayKeyExpected(
+//                    $attribute->getCode(),
+//                    'currency',
+//                    static::class,
+//                    $data
+//                );
+//            }
+//        }
 
 
         return $this->getPrices($attribute, $data, $channelCode);
@@ -236,18 +236,19 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
      */
     protected function filterByCurrency(array $data)
     {
-        $uniqueData = [];
-        $filteredData = [];
-
-        foreach ($data as $price) {
-            $uniqueData[$price['currency']] = $price['amount'];
-        }
-
-        foreach ($uniqueData as $currency => $price) {
-            $filteredData[] = ['currency' => $currency, 'amount' => $price];
-        }
-
-        return $filteredData;
+        return $data;
+//        $uniqueData = [];
+//        $filteredData = [];
+//
+//        foreach ($data as $price) {
+//            $uniqueData[$price['currency']] = $price['amount'];
+//        }
+//
+//        foreach ($uniqueData as $currency => $price) {
+//            $filteredData[] = ['currency' => $currency, 'amount' => $price];
+//        }
+//
+//        return $filteredData;
     }
 
     /**
@@ -260,16 +261,17 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
      */
     private function filterByActivatedCurrencies(?string $channelCode, array $data): array
     {
-        $activatedCurrencies = $this->getActivatedCurrencies($channelCode);
-
-        return array_values(
-            array_filter(
-                $data,
-                function (array $price) use ($activatedCurrencies) {
-                    return in_array($price['currency'], $activatedCurrencies);
-                }
-            )
-        );
+        return $data;
+//        $activatedCurrencies = $this->getActivatedCurrencies($channelCode);
+//
+//        return array_values(
+//            array_filter(
+//                $data,
+//                function (array $price) use ($activatedCurrencies) {
+//                    return in_array($price['currency'], $activatedCurrencies);
+//                }
+//            )
+//        );
     }
 
     /**

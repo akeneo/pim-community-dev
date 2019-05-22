@@ -155,18 +155,12 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
         $attributeCodes = array_unique($attributeCodes);
         $attributes = $this->attributeRepository->findByCodes($attributeCodes);
-        $attributesIndexedByCode = [];
-
-        /** @var AttributeInterface $attribute */
-        foreach ($attributes as $attribute) {
-            $attributesIndexedByCode[$attribute->getCode()] = $attribute;
-        }
 
         foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
             $values = [];
 
             foreach ($valueCollection as $attributeCode => $channelRawValue) {
-                $attribute = $attributesIndexedByCode[$attributeCode];
+                $attribute = $attributes[$attributeCode];
 
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {
                     if ('<all_channels>' === $channelCode) {

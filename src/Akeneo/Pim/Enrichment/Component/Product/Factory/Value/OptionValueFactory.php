@@ -28,17 +28,17 @@ class OptionValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        if (null === $data) {
-            return null;
-        }
-
-        if (!is_string($data) && !is_numeric($data)) {
-            throw InvalidPropertyTypeException::stringExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
+//        if (null === $data) {
+//            return null;
+//        }
+//
+//        if (!is_string($data) && !is_numeric($data)) {
+//            throw InvalidPropertyTypeException::stringExpected(
+//                $attribute->getCode(),
+//                static::class,
+//                $data
+//            );
+//        }
 
         return $data;
     }

@@ -30,28 +30,28 @@ class OptionsValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        if (null === $data) {
-            return [];
-        }
-
-        if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
-
-        foreach ($data as $value) {
-            if (!is_string($value)) {
-                throw InvalidPropertyTypeException::validArrayStructureExpected(
-                    $attribute->getCode(),
-                    sprintf('one of the options is not a string, "%s" given', gettype($value)),
-                    static::class,
-                    $data
-                );
-            }
-        }
+//        if (null === $data) {
+//            return [];
+//        }
+//
+//        if (!is_array($data)) {
+//            throw InvalidPropertyTypeException::arrayExpected(
+//                $attribute->getCode(),
+//                static::class,
+//                $data
+//            );
+//        }
+//
+//        foreach ($data as $value) {
+//            if (!is_string($value)) {
+//                throw InvalidPropertyTypeException::validArrayStructureExpected(
+//                    $attribute->getCode(),
+//                    sprintf('one of the options is not a string, "%s" given', gettype($value)),
+//                    static::class,
+//                    $data
+//                );
+//            }
+//        }
 
         sort($data);
 
