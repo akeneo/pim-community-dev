@@ -18,5 +18,7 @@ class WriteStreamZipArchiveAdapter extends ZipArchiveAdapter
         $uri = $metadata['uri'];
 
         return $this->archive->addFile($uri, $location);
+
+        // Send the archive to google ?
     }
 }

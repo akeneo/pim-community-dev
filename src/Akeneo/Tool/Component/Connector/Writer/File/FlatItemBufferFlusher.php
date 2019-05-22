@@ -62,6 +62,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $writtenFiles = $this->writeIntoSingleFile($buffer, $writerOptions, $basePathname);
         }
 
+        // Prout ?
         return $writtenFiles;
     }
 

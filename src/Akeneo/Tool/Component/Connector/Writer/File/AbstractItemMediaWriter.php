@@ -90,6 +90,7 @@ abstract class AbstractItemMediaWriter implements
         $this->fileExporterPath = $fileExporterPath;
         $this->jobParamFilePath = $jobParamFilePath;
 
+        // Todo
         $this->localFs = new Filesystem();
     }
 
@@ -141,6 +142,8 @@ abstract class AbstractItemMediaWriter implements
         $this->flusher->setStepExecution($this->stepExecution);
 
         $parameters = $this->stepExecution->getJobParameters();
+
+
 
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,

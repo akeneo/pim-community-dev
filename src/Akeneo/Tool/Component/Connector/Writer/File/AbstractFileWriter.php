@@ -28,6 +28,7 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
 
     public function __construct()
     {
+        // Todo
         $this->localFs = new Filesystem();
     }
 

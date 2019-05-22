@@ -22,6 +22,8 @@ class ZipFilesystemFactory
      */
     public function createZip($absolutePath)
     {
+        // Do we need this factory ?
+        // https://github.com/1up-lab/OneupFlysystemBundle/blob/master/Resources/doc/adapter_ziparchive.md
         if (!is_dir(dirname($absolutePath))) {
             throw new \InvalidArgumentException(sprintf('The provided path "%s" is not a valid directory', $absolutePath));
         }

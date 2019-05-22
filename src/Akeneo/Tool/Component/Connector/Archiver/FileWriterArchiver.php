@@ -121,6 +121,8 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                     '%filename%' => $fileName,
                 ]
             );
+
+            // prout ?
             $this->filesystem->put($archivedFilePath, file_get_contents($filePath));
         }
     }
