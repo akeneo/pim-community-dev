@@ -1,26 +1,15 @@
 <?php
-
 declare(strict_types=1);
-
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class FindRecordLabelsByIdentifiers
+class FindAllRecordLabels
 {
     /** @var Connection */
     private $sqlConnection;
@@ -30,10 +19,7 @@ class FindRecordLabelsByIdentifiers
         $this->sqlConnection = $sqlConnection;
     }
 
-    /**
-     * Find records by their $recordIdentifiers then returns their labels by their record identifier
-     */
-    public function find(array $recordIdentifiers): array
+    public function find(): \Iterator
     {
         $fetch = <<<SQL
             SELECT 
@@ -63,31 +49,20 @@ class FindRecordLabelsByIdentifiers
                         ON r.reference_entity_identifier = re.identifier
                     CROSS JOIN pim_catalog_locale as locales
                     WHERE locales.is_activated = true
-                    AND r.identifier IN (:recordIdentifiers)
                 ) as labels_result
             ) as result
             GROUP BY identifier;
 SQL;
 
-        $statement = $this->sqlConnection->executeQuery(
-            $fetch,
-            [
-                'recordIdentifiers' => $recordIdentifiers,
-            ],
-            [
-                'recordIdentifiers' => Connection::PARAM_STR_ARRAY
-            ]
-        );
+        $statement = $this->sqlConnection->executeQuery($fetch);
 
-        $recordsLabels = array_map(function ($record) {
-            return new RecordLabels(
+        foreach ($statement->fetchAll() as $record) {
+            yield new RecordLabels(
                 $record['identifier'],
                 json_decode($record['labels'], true),
                 $record['code'],
                 $record['reference_entity_identifier']
             );
-        }, $statement->fetchAll());
-
-        return $recordsLabels;
+        }
     }
 }
