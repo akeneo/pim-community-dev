@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -21,9 +20,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-/**
- * @group ce
- */
 class SqlGetConnectorProductsIntegration extends TestCase
 {
     protected function setUp(): void
@@ -107,6 +103,9 @@ class SqlGetConnectorProductsIntegration extends TestCase
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
+    /**
+     * @group ce
+     */
     public function test_get_product_from_the_PQB()
     {
         $query = $this->getQuery();
@@ -214,6 +213,9 @@ class SqlGetConnectorProductsIntegration extends TestCase
         Assert::assertEquals($expectedProducts, $product);
     }
 
+    /**
+     * @group ce
+     */
     public function test_get_product_from_the_PQB_by_filtering_on_values()
     {
         $query = $this->getQuery();
@@ -319,6 +321,9 @@ class SqlGetConnectorProductsIntegration extends TestCase
         Assert::assertEquals($expectedProducts, $product);
     }
 
+    /**
+     * @group ce
+     */
     public function test_get_product_from_an_identifier()
     {
         $userId = $this
@@ -386,6 +391,21 @@ class SqlGetConnectorProductsIntegration extends TestCase
 
         $query = $this->getQuery();
         $query->fromProductIdentifier('foo', (int) $userId);
+    }
+
+    public function test_it_returns_empty_associations_if_there_is_no_association_type()
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type_translation');
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type');
+
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+
+        $query = $this->getQuery();
+        $product = $query->fromProductIdentifier('apollon_B_false', (int)$userId);
+
+        Assert::assertSame([], $product->associations());
     }
 
     /**

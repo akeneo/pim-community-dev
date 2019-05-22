@@ -137,7 +137,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['category_codes'],
                 $row['group_codes'],
                 $row['product_model_code'],
-                $row['associations'],
+                $row['associations'] ?? [],
                 [],
                 $this->valueCollectionFactory->createFromStorageFormat($rawValues)
             );
