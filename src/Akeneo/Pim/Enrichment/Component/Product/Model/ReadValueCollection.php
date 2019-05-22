@@ -129,7 +129,7 @@ class ReadValueCollection implements ValueCollectionInterface
      */
     public function containsKey($key)
     {
-        return array_key_exists($key, $this->values);
+        throw new \RuntimeException("NOT IMPLEMENTED");
     }
 
     /**
@@ -170,7 +170,7 @@ class ReadValueCollection implements ValueCollectionInterface
      */
     public function getKeys()
     {
-        return array_keys($this->values);
+        throw new \RuntimeException("NOT IMPLEMENTED");
     }
 
     /**
