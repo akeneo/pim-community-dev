@@ -34,7 +34,7 @@ final class ValuesNormalizer
         $normalizedValues = [];
         foreach ($values as $value) {
             $normalizedValue = $this->valueNormalizer->normalize($value, 'standard');
-            if ($value instanceof MediaValue) {
+            if ($value instanceof MediaValue && $value->getData() !== null) {
                 $normalizedValue = $this->addHalLink($value, $normalizedValue);
             }
 
