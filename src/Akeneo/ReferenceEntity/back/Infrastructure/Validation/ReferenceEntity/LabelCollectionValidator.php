@@ -115,7 +115,7 @@ class LabelCollectionValidator extends ConstraintValidator
             return;
         }
 
-        $activatedLocales = ($this->findActivatedLocales)(LocaleIdentifierCollection::fromNormalized($locales));
+        $activatedLocales = $this->findActivatedLocales->find(LocaleIdentifierCollection::fromNormalized($locales));
         $notActivatedLocales = array_diff($locales, $activatedLocales->normalize());
 
         foreach ($notActivatedLocales as $notActivatedLocale) {

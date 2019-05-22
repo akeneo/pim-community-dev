@@ -71,7 +71,7 @@ class ReferenceEntityShouldNotBeLinkedToAnyProductAttributeValidator extends Con
     private function validateCommand(DeleteReferenceEntityCommand $command): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->identifier);
-        $isLinkedToAtLeastOneProductAttribute = ($this->referenceEntityIsLinkedToProductAttributes)($referenceEntityIdentifier);
+        $isLinkedToAtLeastOneProductAttribute = $this->referenceEntityIsLinkedToProductAttributes->isLinked($referenceEntityIdentifier);
 
         if ($isLinkedToAtLeastOneProductAttribute) {
             $this->context->buildViolation(ReferenceEntityShouldNotBeLinkedToAnyProductAttribute::ERROR_MESSAGE)
