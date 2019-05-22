@@ -21,7 +21,7 @@ use Symfony\Component\Console\Question\Question;
 class CreateUserCommand extends ContainerAwareCommand
 {
     public const COMMAND_NAME = 'pim:user:create';
-    
+
     /** @var string */
     private $password;
 
@@ -56,7 +56,13 @@ class CreateUserCommand extends ContainerAwareCommand
     {
         $this
             ->setName(static::COMMAND_NAME)
-            ->setDescription('Creates a PIM user.');
+            ->setDescription('Creates a PIM user. This command can be launched interactively or non interactively (with the "-n" option). When launched non interactively you have to provide arguments to the command. When launched interactively, command arguments will be ignored.')
+            ->addArgument('username')
+            ->addArgument('password')
+            ->addArgument('email')
+            ->addArgument('firstName')
+            ->addArgument('lastName')
+        ;
     }
 
     /**
@@ -64,6 +70,10 @@ class CreateUserCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
+        if (!$input->isInteractive()) {
+            $this->gatherArgumentsForNonInteractiveMode($input);
+        }
+
         $user = $this->getContainer()->get('pim_user.factory.user')->create();
         $this->getContainer()->get('pim_user.updater.user')->update(
             $user,
@@ -292,8 +302,22 @@ class CreateUserCommand extends ContainerAwareCommand
         $user->addRole($role);
     }
 
-    private function isInteractive(): bool
+    private function gatherArgumentsForNonInteractiveMode(InputInterface $input): void
     {
-        return true;
+        if (null !== $input->getArgument('username')) {
+            $this->username = $input->getArgument('username');
+        }
+        if (null !== $input->getArgument('password')) {
+            $this->password = $input->getArgument('password');
+        }
+        if (null !== $input->getArgument('email')) {
+            $this->email = $input->getArgument('email');
+        }
+        if (null !== $input->getArgument('firstName')) {
+            $this->firstName = $input->getArgument('firstName');
+        }
+        if (null !== $input->getArgument('lastName')) {
+            $this->lastName = $input->getArgument('lastName');
+        }
     }
 }
