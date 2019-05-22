@@ -36,9 +36,7 @@ class MediaValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        if (null === $data) {
-            return;
-        }
+        return null;
 //
 //        if (!is_string($data)) {
 //            throw InvalidPropertyTypeException::stringExpected(
