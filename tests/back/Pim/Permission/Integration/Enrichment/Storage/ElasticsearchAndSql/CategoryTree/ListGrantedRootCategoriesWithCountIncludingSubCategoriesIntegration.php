@@ -18,6 +18,8 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategoriesIntegration extend
     {
         parent::setUp();
 
+        $this->createAdminUser();
+
         $fixturesLoader = new CategoryTreeFixturesLoaderWithPermission($this->testKernel->getContainer());
         $fixturesLoader->adminUserAsRedactorAndITSupport();
 
