@@ -54,12 +54,12 @@ class ValueFactory
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, $ignoreUnknownData = false)
     {
-        try {
-            $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
-            $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
-        } catch (\LogicException $e) {
-            throw InvalidAttributeException::expectedFromPreviousException('attribute', self::class, $e);
-        }
+//        try {
+//            $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
+//            $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
+//        } catch (\LogicException $e) {
+//            throw InvalidAttributeException::expectedFromPreviousException('attribute', self::class, $e);
+//        }
 
         $factory = $this->getFactory($attribute->getType());
         $value = $factory->create($attribute, $channelCode, $localeCode, $data, $ignoreUnknownData);
