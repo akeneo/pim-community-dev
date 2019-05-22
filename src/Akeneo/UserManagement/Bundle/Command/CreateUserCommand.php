@@ -8,6 +8,7 @@ use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
@@ -49,6 +50,9 @@ class CreateUserCommand extends ContainerAwareCommand
     /** @var string */
     private $defaultTreeCode;
 
+    /** @var bool */
+    private $isAdmin = false;
+
     /**
      * {@inheritdoc}
      */
@@ -63,6 +67,7 @@ class CreateUserCommand extends ContainerAwareCommand
             ->addArgument('firstName')
             ->addArgument('lastName')
             ->addArgument('locale', null, 'A locale in the form "en_US"')
+            ->addOption('admin', null, InputOption::VALUE_NONE, 'Is this user an administrator of the PIM?')
         ;
     }
 
@@ -103,6 +108,10 @@ class CreateUserCommand extends ContainerAwareCommand
 
         $this->addDefaultGroupTo($user);
         $this->addDefaultRoleTo($user);
+
+        if ($this->isAdmin) {
+            $this->addAdminRoleTo($user);
+        }
 
         $this->getContainer()->get('pim_user.saver.user')->save($user);
 
@@ -303,6 +312,18 @@ class CreateUserCommand extends ContainerAwareCommand
         $user->addRole($role);
     }
 
+    /**
+     * Adds the role "ROLE_ADMINISTRATOR" if it exists to the new user.
+     */
+    private function addAdminRoleTo(UserInterface $user): void
+    {
+        $role = $this->getContainer()->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+
+        if (null !== $role) {
+            $user->addRole($role);
+        }
+    }
+
     private function gatherArgumentsForNonInteractiveMode(InputInterface $input): void
     {
         if (null === $input->getArgument('username')) {
@@ -332,5 +353,7 @@ class CreateUserCommand extends ContainerAwareCommand
         $this->userDefaultLocaleCode = $input->getArgument('locale');
         // we can't use $input->getArgument('locale') for catalog locale as maybe it's not activated
         $this->catalogDefaultLocaleCode = 'en_US';
+
+        $this->isAdmin = $input->getOption('admin');
     }
 }
