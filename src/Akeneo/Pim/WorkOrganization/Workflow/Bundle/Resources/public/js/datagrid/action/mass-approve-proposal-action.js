@@ -40,7 +40,7 @@ define(
             execute: function () {
                 var modalParameters = {
                     title: __('pimee_enrich.entity.product_draft.module.proposal.accept_selected'),
-                    okText: __('pimee_enrich.entity.product.module.approval.send'),
+                    okText: __('pimee_enrich.entity.product_draft.module.proposal.confirm'),
                     cancelText: __('pim_common.cancel')
                 };
 

@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6869: Fix bad label on the asset grid category tree
+- PIM-8362: Fix wording on the proposals action buttons
 
 # 3.0.19 (2019-05-21)
 
