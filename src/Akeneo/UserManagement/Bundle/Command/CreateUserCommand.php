@@ -21,6 +21,33 @@ use Symfony\Component\Console\Question\Question;
 class CreateUserCommand extends ContainerAwareCommand
 {
     public const COMMAND_NAME = 'pim:user:create';
+    
+    /** @var string */
+    private $password;
+
+    /** @var string */
+    private $username;
+
+    /** @var string */
+    private $firstName;
+
+    /** @var string */
+    private $lastName;
+
+    /** @var string */
+    private $email;
+
+    /** @var string */
+    private $userDefaultLocaleCode;
+
+    /** @var string */
+    private $catalogDefaultLocaleCode;
+
+    /** @var string */
+    private $catalogDefaultScopeCode;
+
+    /** @var string */
+    private $defaultTreeCode;
 
     /**
      * {@inheritdoc}
@@ -37,32 +64,19 @@ class CreateUserCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $output->writeln("Please enter the user's information below.");
-
-        $username = $this->askForUsername($input, $output);
-        $password = $this->askForPassword($input, $output);
-        $this->confirmPassword($input, $output, $password);
-        $firstName = $this->askForFirstName($input, $output);
-        $lastName = $this->askForLastName($input, $output);
-        $email = $this->askForEmail($input, $output);
-        $userDefaultLocaleCode = $this->askForUserDefaultLocaleCode($input, $output);
-        $catalogDefaultLocaleCode = $this->askForCatalogDefaultLocaleCode($input, $output);
-        $catalogDefaultScopeCode = $this->askForCatalogDefaultScopeCode($input, $output);
-        $defaultTreeCode = $this->askForDefaultTreeCode($input, $output);
-
         $user = $this->getContainer()->get('pim_user.factory.user')->create();
         $this->getContainer()->get('pim_user.updater.user')->update(
             $user,
             [
-                'username' => $username,
-                'password' => $password,
-                'first_name' => $firstName,
-                'last_name' => $lastName,
-                'email' => $email,
-                'user_default_locale' => $userDefaultLocaleCode,
-                'catalog_default_locale' => $catalogDefaultLocaleCode,
-                'catalog_default_scope' => $catalogDefaultScopeCode,
-                'default_category_tree' => $defaultTreeCode,
+                'username' => $this->username,
+                'password' => $this->password,
+                'first_name' => $this->firstName,
+                'last_name' => $this->lastName,
+                'email' => $this->email,
+                'user_default_locale' => $this->userDefaultLocaleCode,
+                'catalog_default_locale' => $this->catalogDefaultLocaleCode,
+                'catalog_default_scope' => $this->catalogDefaultScopeCode,
+                'default_category_tree' => $this->defaultTreeCode,
             ]
         );
 
@@ -81,7 +95,23 @@ class CreateUserCommand extends ContainerAwareCommand
 
         $this->getContainer()->get('pim_user.saver.user')->save($user);
 
-        $output->writeln(sprintf("<info>User %s has been created.</info>", $username));
+        $output->writeln(sprintf("<info>User %s has been created.</info>", $this->username));
+    }
+
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln("Please enter the user's information below.");
+
+        $this->username = $this->askForUsername($input, $output);
+        $this->password = $this->askForPassword($input, $output);
+        $this->confirmPassword($input, $output, $this->password);
+        $this->firstName = $this->askForFirstName($input, $output);
+        $this->lastName = $this->askForLastName($input, $output);
+        $this->email = $this->askForEmail($input, $output);
+        $this->userDefaultLocaleCode = $this->askForUserDefaultLocaleCode($input, $output);
+        $this->catalogDefaultLocaleCode = $this->askForCatalogDefaultLocaleCode($input, $output);
+        $this->catalogDefaultScopeCode = $this->askForCatalogDefaultScopeCode($input, $output);
+        $this->defaultTreeCode = $this->askForDefaultTreeCode($input, $output);
     }
 
     private function askForUsername(InputInterface $input, OutputInterface $output): string
@@ -260,5 +290,10 @@ class CreateUserCommand extends ContainerAwareCommand
         }
 
         $user->addRole($role);
+    }
+
+    private function isInteractive(): bool
+    {
+        return true;
     }
 }
