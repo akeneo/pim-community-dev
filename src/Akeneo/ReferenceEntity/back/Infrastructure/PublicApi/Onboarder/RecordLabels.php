@@ -28,4 +28,24 @@ final class RecordLabels
         $this->code = $code;
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
     }
+
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
+    public function getLabels(): array
+    {
+        return $this->labels;
+    }
+
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+    
+    public function getReferenceEntityIdentifier(): string
+    {
+        return $this->referenceEntityIdentifier;
+    }
 }
