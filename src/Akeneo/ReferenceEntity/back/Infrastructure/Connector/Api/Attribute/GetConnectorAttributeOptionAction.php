@@ -61,7 +61,7 @@ class GetConnectorAttributeOptionAction
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $attributeOption = ($this->findConnectorAttributeOptionQuery)($referenceEntityIdentifier, $attributeCode, $optionCode);
+        $attributeOption = $this->findConnectorAttributeOptionQuery->find($referenceEntityIdentifier, $attributeCode, $optionCode);
 
         if (null === $attributeOption) {
             throw new NotFoundHttpException(sprintf('Attribute option "%s" does not exist for the attribute "%s".', $optionCode, $attributeCode));
