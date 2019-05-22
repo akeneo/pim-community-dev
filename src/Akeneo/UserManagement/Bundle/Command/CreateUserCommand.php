@@ -62,6 +62,7 @@ class CreateUserCommand extends ContainerAwareCommand
             ->addArgument('email')
             ->addArgument('firstName')
             ->addArgument('lastName')
+            ->addArgument('locale', null, 'A locale in the form "en_US"')
         ;
     }
 
@@ -304,20 +305,32 @@ class CreateUserCommand extends ContainerAwareCommand
 
     private function gatherArgumentsForNonInteractiveMode(InputInterface $input): void
     {
-        if (null !== $input->getArgument('username')) {
-            $this->username = $input->getArgument('username');
+        if (null === $input->getArgument('username')) {
+            throw new \InvalidArgumentException("The username is mandatory.");
         }
-        if (null !== $input->getArgument('password')) {
-            $this->password = $input->getArgument('password');
+        if (null === $input->getArgument('password')) {
+            throw new \InvalidArgumentException("The password is mandatory.");
         }
-        if (null !== $input->getArgument('email')) {
-            $this->email = $input->getArgument('email');
+        if (null === $input->getArgument('email')) {
+            throw new \InvalidArgumentException("The email is mandatory.");
         }
-        if (null !== $input->getArgument('firstName')) {
-            $this->firstName = $input->getArgument('firstName');
+        if (null === $input->getArgument('firstName')) {
+            throw new \InvalidArgumentException("The first name is mandatory.");
         }
-        if (null !== $input->getArgument('lastName')) {
-            $this->lastName = $input->getArgument('lastName');
+        if (null === $input->getArgument('lastName')) {
+            throw new \InvalidArgumentException("The last name is mandatory.");
         }
+        if (null === $input->getArgument('locale')) {
+            throw new \InvalidArgumentException("The locale is mandatory.");
+        }
+
+        $this->username = $input->getArgument('username');
+        $this->password = $input->getArgument('password');
+        $this->email = $input->getArgument('email');
+        $this->firstName = $input->getArgument('firstName');
+        $this->lastName = $input->getArgument('lastName');
+        $this->userDefaultLocaleCode = $input->getArgument('locale');
+        // we can't use $input->getArgument('locale') for catalog locale as maybe it's not activated
+        $this->catalogDefaultLocaleCode = 'en_US';
     }
 }
