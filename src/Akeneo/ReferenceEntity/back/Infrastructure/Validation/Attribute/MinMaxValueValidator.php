@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -32,17 +28,21 @@ class MinMaxValueValidator extends ConstraintValidator
 {
     public function validate($updateMinMaxValueCommand, Constraint $constraint)
     {
-        $this->checkLimit($updateMinMaxValueCommand->minValue);
-        $this->checkLimit($updateMinMaxValueCommand->maxValue);
-        $this->checkMinAndMaxAreCompatible($updateMinMaxValueCommand->minValue, $updateMinMaxValueCommand->maxValue);
+        $this->checkLimit($updateMinMaxValueCommand->minValue, 'min_value');
+        $this->checkLimit($updateMinMaxValueCommand->maxValue, 'max_value');
+
+        if (0 === $this->context->getViolations()->count()) {
+            $this->checkMinAndMaxAreCompatible($updateMinMaxValueCommand->minValue, $updateMinMaxValueCommand->maxValue);
+        }
     }
 
-    private function checkLimit(?string $minValue): void
+    private function checkLimit(?string $value, string $propertyPath): void
     {
-        if ($this->isLimitBeingRemoved($minValue)) {
+        if ($this->isLimitBeingRemoved($value)) {
             return;
         }
-        $this->checkMinValue($minValue);
+
+        $this->checkValueType($value, $propertyPath);
     }
 
     private function checkMinAndMaxAreCompatible(?string $minValue, ?string $maxValue): void
@@ -58,15 +58,15 @@ class MinMaxValueValidator extends ConstraintValidator
         }
     }
 
-    private function checkMinValue(?string $updateMinValueCommand): void
+    private function checkValueType(?string $limitValue, string $propertyPath): void
     {
         $validator = Validation::createValidator();
         $violations = $validator->validate(
-            $updateMinValueCommand,
+            $limitValue,
             [
                 new Constraints\Callback(
-                    function ($minValue, ExecutionContextInterface $context, $payload) {
-                        if (null !== $minValue && !is_numeric($minValue)) {
+                    function ($value, ExecutionContextInterface $context) {
+                        if (null !== $value && !is_numeric($value)) {
                             $context->buildViolation(MinMaxValue::MESSAGE_SHOULD_BE_A_NUMBER)->addViolation();
                         }
                     }
@@ -76,10 +76,10 @@ class MinMaxValueValidator extends ConstraintValidator
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
-                $this->context->addViolation(
+                $this->context->buildViolation(
                     $violation->getMessage(),
                     $violation->getParameters()
-                );
+                )->atPath($propertyPath)->addViolation();
             }
         }
     }

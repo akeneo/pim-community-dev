@@ -148,6 +148,13 @@ Feature: Create an attribute linked to a reference entity
       | code | labels                                   | is_required | order | value_per_channel | value_per_locale | type   | is_decimal | min_value | max_value |
       | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | number | false      | 10        | 11        |
 
+  @acceptance-back
+  Scenario: Create an invalid number attribute on a reference entity
+    When the user creates a number attribute "area" to the reference entity "city" with:
+      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | is_decimal | min_value | max_value |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | false      | 10        | hello     |
+    Then there should be a validation error with message 'This value should be a number.'
+
   @acceptance-front
   Scenario: Create a simple valid text attribute
     Given the user has the following rights:

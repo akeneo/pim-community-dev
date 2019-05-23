@@ -301,6 +301,7 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNumberAttribu
         isDecimal:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsDecimal: ~
     constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MinMaxValue: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
