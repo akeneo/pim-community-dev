@@ -140,7 +140,7 @@ class ExportProfilesContext extends ImportExportContext
     public function exportedYamlFileOfShouldContain($code, PyStringNode $yaml)
     {
         $this->spin(function () use ($code, $yaml) {
-            $archivePath = $this->getExportedArchiedFile($code);
+            $archivePath = $this->getExportedArchivedFile($code);
 
             $archivistFilesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
 
