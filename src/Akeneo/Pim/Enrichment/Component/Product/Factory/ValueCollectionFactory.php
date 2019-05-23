@@ -110,7 +110,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
             }
         }
 
-        $attributes = $this->getAttributeByCodes->forCodes(array_unique($attributeCodes));
+        $attributes = $this->getAttributeByCodes->forCodes(array_values(array_unique($attributeCodes)));
 
         if (empty($attributes)) {
             return [];

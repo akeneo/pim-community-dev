@@ -603,4 +603,158 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->getIterator()->shouldHaveKey('text-<all_channels>-<all_locales>');
         $actualValues->getIterator()->shouldHaveKey('yes_no-<all_channels>-<all_locales>');
     }
+
+    function it_does_not_ask_for_the_attribute_codes_multiple_time_for_performance(
+        ValueFactory $valueFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AttributeInterface $numberAttribute,
+        AttributeInterface $number2Attribute,
+        AttributeInterface $number3Attribute,
+        ValueInterface $numberProductA,
+        ValueInterface $numberProductB,
+        ValueInterface $number2ProductA,
+        ValueInterface $number3ProductB,
+        GetAttributes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
+    )
+    {
+        $rawValues = [
+            'productA' => [
+                'number' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 5
+                    ]
+                ],
+                'number2' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 6
+                    ]
+                ]
+            ],
+            'productB' => [
+                'number' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 7
+                    ]
+                ],
+                'number3' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 8
+                    ]
+                ],
+            ]
+        ];
+
+        $getAttributeByCodes->forCodes(['number', 'number2', 'number3'])->willReturn(
+            [
+                new Attribute('number', AttributeTypes::NUMBER, []),
+                new Attribute('number2', AttributeTypes::NUMBER, []),
+                new Attribute('number3', AttributeTypes::NUMBER, []),
+            ]
+        );
+
+        $typesToCode = [
+            AttributeTypes::NUMBER => [
+                'number' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 5
+                            ]
+                        ],
+                        'properties' => [],
+                    ],
+                    [
+                        'identifier' => 'productB',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 7
+                            ]
+                        ],
+                        'properties' => [],
+                    ]
+                ],
+                'number2' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 6
+                            ]
+                        ],
+                        'properties' => [],
+                    ]
+                ],
+                'number3' => [
+                    [
+                        'identifier' => 'productB',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 8
+                            ]
+                        ],
+                        'properties' => [],
+                    ]
+                ]
+            ]
+        ];
+
+        $ongoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
+        $ongoingFilteredRawValues =new OnGoingFilteredRawValues($typesToCode, []);
+        $chainedObsoleteValueFilter->filterAll($ongoingNonFilteredRawValues)->willReturn($ongoingFilteredRawValues);
+
+        $numberAttribute->getCode()->willReturn('number');
+        $numberAttribute->isUnique()->willReturn(false);
+        $numberAttribute->isScopable()->willReturn(false);
+        $numberAttribute->isLocalizable()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('number')->willReturn($numberAttribute);
+
+        $number2Attribute->getCode()->willReturn('number2');
+        $number2Attribute->isUnique()->willReturn(false);
+        $number2Attribute->isScopable()->willReturn(false);
+        $number2Attribute->isLocalizable()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('number2')->willReturn($number2Attribute);
+
+        $number3Attribute->getCode()->willReturn('number3');
+        $number3Attribute->isUnique()->willReturn(false);
+        $number3Attribute->isScopable()->willReturn(false);
+        $number3Attribute->isLocalizable()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('number3')->willReturn($number3Attribute);
+
+        $numberProductA->getData()->willReturn(5);
+        $numberProductA->getAttributeCode()->willReturn('number');
+        $numberProductA->getScopeCode()->willReturn(null);
+        $numberProductA->getLocaleCode()->willReturn(null);
+        $valueFactory
+            ->create($numberAttribute, null, null, 5, true)
+            ->willReturn($numberProductA);
+
+        $numberProductB->getData()->willReturn(7);
+        $numberProductB->getAttributeCode()->willReturn('number');
+        $numberProductB->getScopeCode()->willReturn(null);
+        $numberProductB->getLocaleCode()->willReturn(null);
+        $valueFactory
+            ->create($numberAttribute, null, null, 7, true)
+            ->willReturn($numberProductB);
+
+        $number2ProductA->getData()->willReturn(6);
+        $number2ProductA->getAttributeCode()->willReturn('number2');
+        $number2ProductA->getScopeCode()->willReturn(null);
+        $number2ProductA->getLocaleCode()->willReturn(null);
+        $valueFactory
+            ->create($number2Attribute, null, null, 6, true)
+            ->willReturn($number2ProductA);
+
+        $number3ProductB->getData()->willReturn(8);
+        $number3ProductB->getAttributeCode()->willReturn('number3');
+        $number3ProductB->getScopeCode()->willReturn(null);
+        $number3ProductB->getLocaleCode()->willReturn(null);
+        $valueFactory
+            ->create($number3Attribute, null, null, 8, true)
+            ->willReturn($number3ProductB);
+
+        $valueCollections = $this->createMultipleFromStorageFormat($rawValues);
+        $valueCollections->shouldHaveCount(2);
+    }
 }
