@@ -4,6 +4,7 @@
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
@@ -22,6 +23,9 @@ class CreateAttributeInFamilyCommand
      * @var string
      */
     private $franklinAttributeType;
+
+    /** @var AttributeCode */
+    private $createdAttributeCode;
 
     /**
      * CreateAttributeInFamilyCommand constructor.
@@ -51,7 +55,6 @@ class CreateAttributeInFamilyCommand
     {
         return $this->franklinAttributeLabel;
     }
-
     /**
      * @return string
      */
@@ -60,4 +63,19 @@ class CreateAttributeInFamilyCommand
         return $this->franklinAttributeType;
     }
 
+    /**
+     * @return AttributeCode
+     */
+    public function getCreatedAttributeCode(): AttributeCode
+    {
+        return $this->createdAttributeCode;
+    }
+
+    /**
+     * @param AttributeCode $createdAttributeCode
+     */
+    public function setCreatedAttributeCode(AttributeCode $createdAttributeCode): void
+    {
+        $this->createdAttributeCode = $createdAttributeCode;
+    }
 }

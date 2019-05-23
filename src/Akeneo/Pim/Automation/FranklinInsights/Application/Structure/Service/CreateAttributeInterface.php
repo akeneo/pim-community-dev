@@ -9,5 +9,5 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLa
 
 interface CreateAttributeInterface
 {
-    public function create(AttributeCode $attributeCode, AttributeLabel $attributeLabel, string $attributeType, string $attributeGroupCode);
+    public function create(AttributeCode $attributeCode, AttributeLabel $attributeLabel, string $attributeType, string $attributeGroupCode): void;
 }
