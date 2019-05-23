@@ -7,6 +7,7 @@
 ## Technical improvement
 
 - DAPI-242: Improve queue to consume specific jobs
+- TIP-1117: For security reasons, "admin" user is no longer part of the minimal catalog
 
 ## BC breaks
 

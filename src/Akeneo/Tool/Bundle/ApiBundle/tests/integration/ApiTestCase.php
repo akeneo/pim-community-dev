@@ -315,6 +315,11 @@ abstract class ApiTestCase extends WebTestCase
             $user->removeRole($userRole);
         }
 
+        $group = $this->get('pim_user.repository.group')->findOneByIdentifier('IT support');
+        if (null !== $group) {
+            $user->addGroup($group);
+        }
+
         $this->get('validator')->validate($user);
         $this->get('pim_user.saver.user')->save($user);
 
