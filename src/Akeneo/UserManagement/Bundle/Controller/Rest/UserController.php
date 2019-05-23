@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -72,6 +73,9 @@ class UserController
     /** @var ObjectManager */
     private $objectManager;
 
+    /** @var NumberFactory */
+    private $numberFactory;
+
     /**
      * @param TokenStorageInterface $tokenStorage
      * @param NormalizerInterface $normalizer
@@ -98,7 +102,8 @@ class UserController
         UserPasswordEncoderInterface $encoder,
         EventDispatcherInterface $eventDispatcher,
         Session $session,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        NumberFactory $numberFactory
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -112,6 +117,7 @@ class UserController
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
         $this->objectManager = $objectManager;
+        $this->numberFactory = $numberFactory;
     }
 
     /**
@@ -126,7 +132,11 @@ class UserController
             throw new NotFoundHttpException('No logged in user found');
         }
 
-        return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+        $user = $this->normalizer->normalize($user, 'internal_api');
+        $decimalSeparator = $this->additionalProperties($user);
+        $result = array_merge($decimalSeparator, $user);
+
+        return new JsonResponse($result);
     }
 
     /**
@@ -383,5 +393,14 @@ class UserController
             '' !== $data['current_password'] &&
             '' !== $data['new_password'] &&
             '' !== $data['new_password_repeat'];
+    }
+
+    private function additionalProperties($user): array
+    {
+        $decimalSeparator['ui-locale-decimal-separator'] = $this->numberFactory
+            ->create(['locale' => $user['user_default_locale']])
+            ->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
+
+        return $decimalSeparator;
     }
 }
