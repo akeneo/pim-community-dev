@@ -52,12 +52,16 @@ class UpdateFamily implements UpdateFamilyInterface
     private function getFamily(FamilyCode $familyCode): ?Family
     {
         return $this->repository->findOneByIdentifier((string) $familyCode);
-
     }
 
     public function addAttributeToFamily(AttributeCode $attributeCode, FamilyCode $familyCode)
     {
         $family = $this->getFamily($familyCode);
+
+        if ($family === null) {
+            throw new \UnexpectedValueException(sprintf('Family with code "%s" does not exist', (string) $familyCode));
+        }
+
         $familyAttributeCodes = $family->getAttributeCodes();
 
         array_push($familyAttributeCodes, (string) $attributeCode);

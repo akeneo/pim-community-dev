@@ -32,49 +32,41 @@ class UpdateFamilyIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalSqlCatalog();
-    }
-
-    private function prepare_adds_attribute_to_family()
-    {
-        /*
-        $query = <<<SQL
-SELECT family_id, attribute_id FROM akeneo_pim.pim_catalog_family
-WHERE family_id = :FAMILY_CODE AND attribute_id = :ATTRIBUTE_CODE
-SQL;
-
-        $statement = $this->dbal->executeQuery($query, [
-            'FAMILY_CODE' => (string) $familyCode,
-            'ATTRIBUTE_CODE' => (string) $attributeCode,
-        ]);
-        */
-
+        return $this->catalog->useTechnicalCatalog();
     }
 
     public function test_it_adds_attribute_to_family()
     {
-        //$this->prepare_adds_attribute_to_family();
-
         $familyCode = new FamilyCode('familyA');
-        $attributeCode = new AttributeCode('123');
+        $attributeCode = new AttributeCode('a_simple_select_size');
+
+        $beforeStatement = $this->executeGetFamilyAttributeQuery($familyCode, $attributeCode);
 
         $this->updateFamilyService->addAttributeToFamily($attributeCode, $familyCode);
 
+        $afterStatement = $this->executeGetFamilyAttributeQuery($familyCode, $attributeCode);
+
+        Assert::assertSame(0, $beforeStatement->rowCount());
+        Assert::assertSame(1, $afterStatement->rowCount());
+
+        $result = $afterStatement->fetch();
+        Assert::assertSame('a_simple_select_size', $result['attribute_code']);
+        Assert::assertSame('familyA', $result['family_code']);
+    }
+
+    private function executeGetFamilyAttributeQuery(FamilyCode $familyCode, AttributeCode $attributeCode)
+    {
         $query = <<<SQL
-SELECT family_id, attribute_id FROM akeneo_pim.pim_catalog_family_attribute
-WHERE family_id = :FAMILY_CODE AND attribute_id = :ATTRIBUTE_CODE
+SELECT family_id, attribute_id, pcf.code AS family_code, pca.code AS attribute_code 
+FROM pim_catalog_family_attribute pcfa
+JOIN pim_catalog_family pcf ON pcfa.family_id = pcf.id
+JOIN pim_catalog_attribute pca on pcfa.attribute_id = pca.id
+WHERE pcf.code = :FAMILY_CODE AND pca.code = :ATTRIBUTE_CODE
 SQL;
 
-        $statement = $this->dbal->executeQuery($query, [
+        return $this->dbal->executeQuery($query, [
             'FAMILY_CODE' => (string) $familyCode,
             'ATTRIBUTE_CODE' => (string) $attributeCode,
         ]);
-
-        $result = $statement->fetch();
-        $resultCount = $statement->rowCount();
-
-        Assert::assertSame(1, $resultCount);
-        Assert::assertSame('123', $result['attribute_id']);
-        Assert::assertSame('familyA', $result['family_id']);
     }
 }
