@@ -164,8 +164,6 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
             if (is_resource($localStream)) {
                 fclose($localStream);
             }
-        } else {
-            $this->filesystem->put($fileKey, '');
         }
     }
 
