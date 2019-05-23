@@ -76,12 +76,13 @@ define(
                             localeCode: UserContext.get('uiLocale')
                         }
                     );
+                    this.variantGrid.render();
                 }
 
                 this.$el.html(this.template());
 
                 this.renderExtensions();
-                this.getZone('grid').appendChild(this.variantGrid.render().el);
+                this.getZone('grid').appendChild(this.variantGrid.el);
             }
         });
     }

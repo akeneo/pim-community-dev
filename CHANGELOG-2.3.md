@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8351: Fix entity overriding priority
+- PIM-8236: Fix search issue after navigation between tabs 
 
 # 2.3.44 (2019-05-20)
 

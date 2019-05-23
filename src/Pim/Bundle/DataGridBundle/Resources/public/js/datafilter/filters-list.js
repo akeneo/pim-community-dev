@@ -119,6 +119,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
                             this.$el.append(filter.$el.get(0));
                         }
                     }
+                    filter.delegateEvents();
                 }, this);
 
                 BaseForm.prototype.render.apply(this, arguments);

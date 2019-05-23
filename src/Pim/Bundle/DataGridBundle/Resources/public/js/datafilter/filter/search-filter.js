@@ -45,6 +45,8 @@ define(
                         label: __('Search', {label: this.label})
                     })
                 );
+
+                this._writeDOMValue(this.value);
             },
 
             /**
