@@ -58,6 +58,8 @@ class Reader implements FileReaderInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
+        // Get File if distant and put it locally
+        // before giving it to the fileiterator
         if (null === $this->fileIterator) {
             $delimiter = $jobParameters->get('delimiter');
             $enclosure = $jobParameters->get('enclosure');
@@ -123,6 +125,7 @@ class Reader implements FileReaderInterface
      */
     public function flush()
     {
+        // Remove local temporary file
         $this->fileIterator = null;
     }
 

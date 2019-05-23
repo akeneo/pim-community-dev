@@ -51,6 +51,7 @@ class ProductReader extends Reader implements FileReaderInterface
             return $data;
         }
 
+        // May have to check this mediaPathTransformer thing
         $data['values'] = $this->mediaPathTransformer
             ->transform($data['values'], $this->fileIterator->getDirectoryPath());
 

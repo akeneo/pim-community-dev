@@ -33,6 +33,7 @@ class MediaStorer
                         continue;
                     }
                     try {
+                        // Uses flysystem to get the file
                         $file = $this->fileStorer->store(
                             new \SplFileInfo($value['data']),
                             FileStorage::CATALOG_STORAGE_ALIAS

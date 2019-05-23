@@ -183,6 +183,7 @@ class FlatFileIterator implements FileIteratorInterface
 
         $path = $this->fileInfo->getPath();
         $filename = $this->fileInfo->getBasename('.' . $this->fileInfo->getExtension());
+        // Should be done inside the job workding directory
         $targetDir = sprintf('%s/%s', $path, $filename);
         if (!$archive->extractTo($targetDir)) {
             throw new \RuntimeException('Error occurred while extracting the zip archive.');
