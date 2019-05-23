@@ -74,7 +74,7 @@ SQL;
             return [];
         }
 
-        $attributeAsLabelReference = ($this->findReferenceEntityAttributeAsLabel)($referenceEntityIdentifier);
+        $attributeAsLabelReference = $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier);
         if ($attributeAsLabelReference->isEmpty()) {
             throw new \Exception(
                 sprintf('No attribute as label has been defined for reference entity "%s"', $referenceEntityIdentifier)

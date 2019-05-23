@@ -39,7 +39,7 @@ class CanEditReferenceEntityQueryHandler
         $referenceEntityPermission = $this->referenceEntityPermissionRepository->getByReferenceEntityIdentifier(
             ReferenceEntityIdentifier::fromString($query->referenceEntityIdentifier)
         );
-        $userGroupIdentifiers = ($this->findUserGroupsForSecurityIdentifier)(
+        $userGroupIdentifiers = $this->findUserGroupsForSecurityIdentifier->find(
             SecurityIdentifier::fromString($query->securityIdentifier)
         );
 

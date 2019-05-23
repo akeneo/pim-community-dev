@@ -58,7 +58,7 @@ class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
         }
 
         $findReferenceEntitiesQuery = ReferenceEntityQuery::createPaginatedQuery(3, null);
-        $foundReferenceEntities = ($this->findConnectorReferenceEntityItems)($findReferenceEntitiesQuery);
+        $foundReferenceEntities = $this->findConnectorReferenceEntityItems->find($findReferenceEntitiesQuery);
 
         $normalizedReferenceEntities = [];
         foreach ($referenceEntities as $referenceEntity) {
@@ -91,7 +91,7 @@ class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
 
         $searchAfterIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_3');
         $findReferenceEntitiesQuery = ReferenceEntityQuery::createPaginatedQuery(3, $searchAfterIdentifier);
-        $foundReferenceEntities = ($this->findConnectorReferenceEntityItems)($findReferenceEntitiesQuery);
+        $foundReferenceEntities = $this->findConnectorReferenceEntityItems->find($findReferenceEntitiesQuery);
 
         $normalizedReferenceEntities = [];
         foreach ($referenceEntities as $referenceEntity) {
@@ -112,7 +112,7 @@ class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
     public function it_returns_an_empty_array_if_no_reference_entities_found()
     {
         $findReferenceEntitiesQuery = ReferenceEntityQuery::createPaginatedQuery(3, null);
-        $foundReferenceEntities = ($this->findConnectorReferenceEntityItems)($findReferenceEntitiesQuery);
+        $foundReferenceEntities = $this->findConnectorReferenceEntityItems->find($findReferenceEntitiesQuery);
 
         $this->assertSame([], $foundReferenceEntities);
     }

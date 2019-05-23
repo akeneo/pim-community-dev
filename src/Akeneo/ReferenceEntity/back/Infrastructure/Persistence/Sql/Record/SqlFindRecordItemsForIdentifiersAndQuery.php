@@ -42,7 +42,7 @@ class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIden
         $this->bulkRecordItemHydrator = $bulkRecordItemHydrator;
     }
 
-    public function __invoke(array $identifiers, RecordQuery $query): array
+    public function find(array $identifiers, RecordQuery $query): array
     {
         $normalizedRecordItems = $this->fetchAll($identifiers);
         $recordItems = $this->bulkRecordItemHydrator->hydrateAll($normalizedRecordItems, $query);

@@ -33,7 +33,7 @@ class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute implements Ref
         $this->inMemoryAttributeRepository = $inMemoryAttributeRepository;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $identifier): bool
+    public function isLinked(ReferenceEntityIdentifier $identifier): bool
     {
         $attributes = $this->inMemoryAttributeRepository->findBy([
             'attributeType' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,

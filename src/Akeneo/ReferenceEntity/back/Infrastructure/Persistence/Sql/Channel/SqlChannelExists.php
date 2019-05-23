@@ -32,7 +32,7 @@ class SqlChannelExists implements ChannelExistsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ChannelIdentifier $channelIdentifier): bool
+    public function exists(ChannelIdentifier $channelIdentifier): bool
     {
         $query = <<<SQL
           SELECT EXISTS(

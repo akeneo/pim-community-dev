@@ -43,7 +43,7 @@ class AddHalDownloadLinkToRecordImages
 
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecords): array
     {
-        $imageAttributeCodes = ($this->findImageAttributeCodes)($referenceEntityIdentifier);
+        $imageAttributeCodes = $this->findImageAttributeCodes->find($referenceEntityIdentifier);
 
         return array_map(function ($normalizedRecord) use ($imageAttributeCodes) {
             return $this->addDownloadLinkToNormalizedRecord($normalizedRecord, $imageAttributeCodes);

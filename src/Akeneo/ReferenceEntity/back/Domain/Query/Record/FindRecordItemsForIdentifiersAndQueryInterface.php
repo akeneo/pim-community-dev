@@ -24,5 +24,5 @@ interface FindRecordItemsForIdentifiersAndQueryInterface
     /**
      * @return RecordItem[]
      */
-    public function __invoke(array $identifiers, RecordQuery $query): array;
+    public function find(array $identifiers, RecordQuery $query): array;
 }

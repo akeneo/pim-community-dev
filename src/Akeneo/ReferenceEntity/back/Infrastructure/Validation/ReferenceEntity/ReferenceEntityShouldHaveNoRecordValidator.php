@@ -70,7 +70,7 @@ class ReferenceEntityShouldHaveNoRecordValidator extends ConstraintValidator
     private function validateCommand(DeleteReferenceEntityCommand $command): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->identifier);
-        $hasRecords = ($this->referenceEntityHasRecords)($referenceEntityIdentifier);
+        $hasRecords = $this->referenceEntityHasRecords->hasRecords($referenceEntityIdentifier);
 
         if ($hasRecords) {
             $this->context->buildViolation(ReferenceEntityShouldHaveNoRecord::ERROR_MESSAGE)

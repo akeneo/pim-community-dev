@@ -32,7 +32,7 @@ class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implements 
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $identifier): bool
+    public function isLinked(ReferenceEntityIdentifier $identifier): bool
     {
         return $this->isReferenceEntityLinkedToAtLeastOneReferenceEntityAttribute($identifier);
     }

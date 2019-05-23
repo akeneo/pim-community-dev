@@ -125,6 +125,6 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
         $attribute = $this->getAttribute();
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($attribute->getReferenceDataName());
 
-        return ($this->existingRecordCodesQuery)($referenceEntityIdentifier, $optionCodes);
+        return $this->existingRecordCodesQuery->find($referenceEntityIdentifier, $optionCodes);
     }
 }

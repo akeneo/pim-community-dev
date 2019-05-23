@@ -37,8 +37,8 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
     }
 
     function it_adds_hal_download_links_to_images(
-        $router,
-        $findImageAttributeCodes
+        Router $router,
+        FindImageAttributeCodesInterface $findImageAttributeCodes
     ) {
         $normalizedRecord = [
             'code'       => 'starck',
@@ -83,7 +83,7 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $findImageAttributeCodes->__invoke($referenceEntityIdentifier)->willReturn([
+        $findImageAttributeCodes->find($referenceEntityIdentifier)->willReturn([
             AttributeCode::fromString('coverphoto')
         ]);
 
@@ -130,8 +130,8 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
     }
 
     function it_does_not_add_hal_download_links_if_there_are_no_images(
-        $router,
-        $findImageAttributeCodes
+        Router $router,
+        FindImageAttributeCodesInterface $findImageAttributeCodes
     ) {
         $normalizedRecord = [
             'code'       => 'starck',
@@ -155,7 +155,7 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $findImageAttributeCodes->__invoke($referenceEntityIdentifier)->willReturn([
+        $findImageAttributeCodes->find($referenceEntityIdentifier)->willReturn([
             AttributeCode::fromString('coverphoto')
         ]);
 
@@ -164,7 +164,9 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
         $this->__invoke($referenceEntityIdentifier, [$normalizedRecord])->shouldReturn([$normalizedRecord]);
     }
 
-    function it_does_not_add_hal_links_if_values_is_an_empty_object($findImageAttributeCodes) {
+    function it_does_not_add_hal_links_if_values_is_an_empty_object(
+        FindImageAttributeCodesInterface $findImageAttributeCodes
+    ) {
         $normalizedRecord = [
             'code'       => 'starck',
             'values'     => (object) [],
@@ -172,7 +174,7 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $findImageAttributeCodes->__invoke($referenceEntityIdentifier)->willReturn([
+        $findImageAttributeCodes->find($referenceEntityIdentifier)->willReturn([
             AttributeCode::fromString('coverphoto')
         ]);
 

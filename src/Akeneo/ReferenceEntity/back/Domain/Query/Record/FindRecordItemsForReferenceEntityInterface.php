@@ -26,5 +26,5 @@ interface FindRecordItemsForReferenceEntityInterface
     /**
      * @return RecordItem[]
      */
-    public function __invoke(ReferenceEntityIdentifier $identifier): array;
+    public function find(ReferenceEntityIdentifier $identifier): array;
 }

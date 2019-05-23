@@ -59,7 +59,7 @@ class InMemoryFindReferenceEntityAttributeAsImageTest extends TestCase
         );
         $this->referenceEntityRepository->create($referenceEntity);
 
-        $attributeAsImage = ($this->findReferenceEntityAttributeAsImage)($referenceEntityIdentifier);
+        $attributeAsImage = $this->findReferenceEntityAttributeAsImage->find($referenceEntityIdentifier);
 
         $this->assertSame($expectedAttributeAsImage, $attributeAsImage);
     }
@@ -70,7 +70,7 @@ class InMemoryFindReferenceEntityAttributeAsImageTest extends TestCase
     public function it_returns_an_empty_attribute_as_image_if_the_reference_entity_was_not_found()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown');
-        $attributeAsImage = ($this->findReferenceEntityAttributeAsImage)($referenceEntityIdentifier);
+        $attributeAsImage = $this->findReferenceEntityAttributeAsImage->find($referenceEntityIdentifier);
 
         $this->assertTrue($attributeAsImage->isEmpty());
     }

@@ -43,7 +43,7 @@ class InMemoryFindConnectorRecordByReferenceEntityAndCode implements FindConnect
     /**
      * {@inheritdoc}
      */
-    public function __invoke(
+    public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $recordCode
     ): ?ConnectorRecord {

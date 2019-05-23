@@ -18,5 +18,5 @@ namespace Akeneo\ReferenceEntity\Domain\Query\File;
  */
 interface FileExistsInterface
 {
-    public function __invoke(string $fileKey): bool;
+    public function exists(string $fileKey): bool;
 }

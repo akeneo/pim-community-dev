@@ -39,7 +39,7 @@ class SqlFindActivatedLocales implements FindActivatedLocalesInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): array
+    public function findAll(): array
     {
         $query = <<<SQL
 SELECT l.code AS locales_codes

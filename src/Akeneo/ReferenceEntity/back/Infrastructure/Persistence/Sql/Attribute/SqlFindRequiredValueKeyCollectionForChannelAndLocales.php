@@ -38,7 +38,7 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequi
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(
+    public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ChannelIdentifier $channelIdentifier,
         LocaleIdentifierCollection $localeIdentifierCollectionCollection

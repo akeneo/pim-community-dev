@@ -17,5 +17,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 
 interface FindConnectorReferenceEntityByReferenceEntityIdentifierInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): ?ConnectorReferenceEntity;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): ?ConnectorReferenceEntity;
 }

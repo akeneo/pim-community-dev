@@ -45,7 +45,7 @@ class IndexAction
     public function __invoke(string $referenceEntityIdentifier): JsonResponse
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $attributesDetails = ($this->findAttributesDetails)($referenceEntityIdentifier);
+        $attributesDetails = $this->findAttributesDetails->find($referenceEntityIdentifier);
         $normalizedAttributesDetails = $this->normalizeAttributesDetails($attributesDetails);
 
         return new JsonResponse($normalizedAttributesDetails);

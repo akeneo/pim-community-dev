@@ -35,14 +35,14 @@ class CacheChannelExistsSpec extends ObjectBehavior
         $this->shouldHaveType(CacheChannelExists::class);
     }
 
-    function it_keeps_in_cache_if_a_channel_exists($channelExists)
+    function it_keeps_in_cache_if_a_channel_exists(CacheChannelExists $channelExists)
     {
         $channelIdentifier = ChannelIdentifier::fromCode('mobile');
-        $channelExists->__invoke($channelIdentifier)
+        $channelExists->exists($channelIdentifier)
             ->shouldBeCalledOnce()
             ->willReturn(true);
 
-        $this->__invoke($channelIdentifier)->shouldReturn(true);
-        $this->__invoke($channelIdentifier)->shouldReturn(true);
+        $this->exists($channelIdentifier)->shouldReturn(true);
+        $this->exists($channelIdentifier)->shouldReturn(true);
     }
 }

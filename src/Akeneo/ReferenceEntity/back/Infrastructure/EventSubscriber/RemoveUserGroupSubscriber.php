@@ -50,7 +50,7 @@ class RemoveUserGroupSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $referenceEntityIdentifiers = ($this->findReferenceEntityWhereUserGroupIsLastToHaveEditRight)($userGroup->getId());
+        $referenceEntityIdentifiers = $this->findReferenceEntityWhereUserGroupIsLastToHaveEditRight->find($userGroup->getId());
 
         if (count($referenceEntityIdentifiers) > 0) {
             throw new ResourceDeletionDeniedException(

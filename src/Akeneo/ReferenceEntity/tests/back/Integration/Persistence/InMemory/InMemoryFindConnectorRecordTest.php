@@ -35,7 +35,7 @@ class InMemoryFindConnectorRecordTest extends TestCase
      */
     public function it_returns_null_when_finding_a_non_existent_record()
     {
-        $result = ($this->query)(
+        $result = $this->query->find(
             ReferenceEntityIdentifier::fromString('reference_entity'),
             RecordCode::fromString('non_existent_record_code')
         );
@@ -58,7 +58,7 @@ class InMemoryFindConnectorRecordTest extends TestCase
             $record
         );
 
-        $result = ($this->query)(
+        $result = $this->query->find(
             ReferenceEntityIdentifier::fromString('reference_entity'),
             RecordCode::fromString('record_code')
         );

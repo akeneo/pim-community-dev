@@ -63,7 +63,7 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
         $this->createReferenceEntity($referenceEntityIdentifier);
         $connectorAttribute = $this->createConnectorAttribute($referenceEntityIdentifier);
 
-        $foundAttribute = ($this->findConnectorReferenceEntityAttribute)(
+        $foundAttribute = $this->findConnectorReferenceEntityAttribute->find(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('main_image')
         );
@@ -76,7 +76,7 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
      */
     public function it_returns_null_if_no_attribute_found()
     {
-        $foundAttribute = ($this->findConnectorReferenceEntityAttribute)(
+        $foundAttribute = $this->findConnectorReferenceEntityAttribute->find(
             ReferenceEntityIdentifier::fromString('reference_entity'),
             AttributeCode::fromString('none')
         );

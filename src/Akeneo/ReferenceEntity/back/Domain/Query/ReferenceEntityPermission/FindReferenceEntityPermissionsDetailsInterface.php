@@ -15,5 +15,5 @@ interface FindReferenceEntityPermissionsDetailsInterface
     /**
      * @return PermissionDetails[]
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 }

@@ -63,7 +63,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $referenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $this->platform);
 
-        $indexedAttributes = ($this->findAttributesIndexedByIdentifier)(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
+        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
         $valueCollection = ValuesDecoder::decode($row['value_collection']);
         $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes, $context);
 
@@ -108,7 +108,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
         /** @var ValueKeyCollection $result */
-        $result = ($this->findRequiredValueKeyCollectionForChannelAndLocales)(
+        $result = $this->findRequiredValueKeyCollectionForChannelAndLocales->find(
             $referenceEntityIdentifier,
             $channelIdentifier,
             $localeIdentifiers

@@ -44,7 +44,7 @@ class SqlFindReferenceEntityItems implements FindReferenceEntityItemsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): array
+    public function find(): array
     {
         $results = $this->fetchResults();
         $referenceEntityItems = [];

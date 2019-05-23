@@ -41,7 +41,7 @@ class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
      */
     public function it_returns_null_when_there_is_no_result_for_the_given_identifier()
     {
-        $result = ($this->findReferenceEntityDetails)(ReferenceEntityIdentifier::fromString('unknown_reference_entity'));
+        $result = $this->findReferenceEntityDetails->find(ReferenceEntityIdentifier::fromString('unknown_reference_entity'));
         Assert::assertNull($result);
     }
 
@@ -50,7 +50,7 @@ class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
      */
     public function it_finds_one_reference_entity_by_its_identifier()
     {
-        $entity = ($this->findReferenceEntityDetails)(ReferenceEntityIdentifier::fromString('designer'));
+        $entity = $this->findReferenceEntityDetails->find(ReferenceEntityIdentifier::fromString('designer'));
 
         $designer = new ReferenceEntityDetails();
         $designer->identifier = ReferenceEntityIdentifier::fromString('designer');

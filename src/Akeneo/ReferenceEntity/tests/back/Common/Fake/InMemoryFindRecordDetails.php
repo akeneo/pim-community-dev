@@ -44,7 +44,7 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(
+    public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $recordCode
     ): ?RecordDetails {

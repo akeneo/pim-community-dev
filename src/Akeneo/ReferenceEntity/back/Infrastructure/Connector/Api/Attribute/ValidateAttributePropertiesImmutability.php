@@ -49,7 +49,7 @@ class ValidateAttributePropertiesImmutability
         AttributeCode $attributeCode,
         array $editedProperties
     ): array {
-        $attribute = ($this->findConnectorAttribute)($referenceEntityIdentifier, $attributeCode);
+        $attribute = $this->findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode);
         if (null === $attribute) {
             throw new \RuntimeException(sprintf('Attribute %s was not found.', $editedProperties['code']));
         }

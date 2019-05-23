@@ -65,7 +65,7 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
     {
         $this->loadAttributesWithImageType();
 
-        $imageAttributeCodes = ($this->findImageAttributeCodes)(ReferenceEntityIdentifier::fromString('designer'));
+        $imageAttributeCodes = $this->findImageAttributeCodes->find(ReferenceEntityIdentifier::fromString('designer'));
         $expectedCodes = [
             AttributeCode::fromString('image'),
             AttributeCode::fromString('main_image'),
@@ -82,7 +82,7 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
     {
         $this->loadAttributesWithoutImageType();
 
-        $imageAttributeCodes = ($this->findImageAttributeCodes)(ReferenceEntityIdentifier::fromString('designer'));
+        $imageAttributeCodes = $this->findImageAttributeCodes->find(ReferenceEntityIdentifier::fromString('designer'));
 
         $this->assertSame([], $imageAttributeCodes);
     }

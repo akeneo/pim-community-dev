@@ -25,7 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface FindRequiredValueKeyCollectionForChannelAndLocalesInterface
 {
-    public function __invoke(
+    public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ChannelIdentifier $channelIdentifier,
         LocaleIdentifierCollection $localeIdentifierCollectionCollection

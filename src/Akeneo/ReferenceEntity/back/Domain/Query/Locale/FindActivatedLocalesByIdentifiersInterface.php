@@ -23,5 +23,5 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
  */
 interface FindActivatedLocalesByIdentifiersInterface
 {
-    public function __invoke(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection;
+    public function find(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection;
 }

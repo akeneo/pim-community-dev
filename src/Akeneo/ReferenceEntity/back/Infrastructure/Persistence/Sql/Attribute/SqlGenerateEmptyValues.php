@@ -52,7 +52,7 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
      *
      *
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function generate(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $query = <<<SQL
             SELECT

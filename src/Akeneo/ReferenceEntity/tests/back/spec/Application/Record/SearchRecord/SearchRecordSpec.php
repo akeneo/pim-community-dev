@@ -50,8 +50,8 @@ class SearchRecordSpec extends ObjectBehavior
             []
         );
         $identifiersResult = new IdentifiersForQueryResult(['stark', 'dyson'], 2);
-        $findIdentifiersForQuery->__invoke($recordQuery)->willReturn($identifiersResult);
-        $findRecordItemsForIdentifiersAndQuery->__invoke(['stark', 'dyson'], $recordQuery)
+        $findIdentifiersForQuery->find($recordQuery)->willReturn($identifiersResult);
+        $findRecordItemsForIdentifiersAndQuery->find(['stark', 'dyson'], $recordQuery)
             ->willReturn([$stark, $dyson]);
         $countRecords->forReferenceEntity(
             Argument::that(

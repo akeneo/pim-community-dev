@@ -34,7 +34,7 @@ class InMemoryFindRecordLabelsByCodes implements FindRecordLabelsByCodesInterfac
      */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
     {
-        $attributeAsLabel = ($this->findReferenceEntityAttributeAsLabel)($referenceEntityIdentifier)->normalize();
+        $attributeAsLabel = $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier)->normalize();
         $records = $this->recordRepository->getByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
 
         $labelCollectionPerRecord = [];

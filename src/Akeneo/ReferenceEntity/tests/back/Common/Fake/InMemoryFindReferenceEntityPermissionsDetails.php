@@ -36,7 +36,7 @@ class InMemoryFindReferenceEntityPermissionsDetails implements FindReferenceEnti
     /**
      * @return PermissionDetails[]
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         return $this->results;
     }

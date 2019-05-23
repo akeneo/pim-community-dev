@@ -30,7 +30,7 @@ class GetRecordInformationQuerySpec extends ObjectBehavior
 
     function it_gets_a_record_information_for_a_given_reference_entity_identifier_and_record_code($findRecordDetails)
     {
-        $findRecordDetails->__invoke(
+        $findRecordDetails->find(
             Argument::that(function (ReferenceEntityIdentifier $referenceEntityIdentifier) {
                 return $referenceEntityIdentifier->equals(ReferenceEntityIdentifier::fromString('designer'));
             }),
@@ -61,7 +61,7 @@ class GetRecordInformationQuerySpec extends ObjectBehavior
 
     function it_throws_if_the_record_does_not_exist($findRecordDetails)
     {
-        $findRecordDetails->__invoke(Argument::any(), Argument::any())->willReturn(null);
+        $findRecordDetails->find(Argument::any(), Argument::any())->willReturn(null);
         $this->shouldThrow(\LogicException::class)->during('fetch', ['designer', 'stark']);
     }
 }

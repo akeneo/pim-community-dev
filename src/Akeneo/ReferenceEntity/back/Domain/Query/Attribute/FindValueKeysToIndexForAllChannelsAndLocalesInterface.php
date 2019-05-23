@@ -23,5 +23,5 @@ interface FindValueKeysToIndexForAllChannelsAndLocalesInterface
      *
      * @return array
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 }

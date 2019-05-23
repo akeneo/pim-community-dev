@@ -50,8 +50,8 @@ class RecordValuesValidatorSpec extends ObjectBehavior
     }
 
     function it_validates_record_values_grouped_by_attribute_type(
-        $recordValueValidatorRegistry,
-        $findAttributesIndexedByIdentifier,
+        RecordValueValidatorRegistry $recordValueValidatorRegistry,
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         RecordValueValidatorInterface $textTypeValidator,
         RecordValueValidatorInterface $recordTypeValidator
     ) {
@@ -86,7 +86,7 @@ class RecordValuesValidatorSpec extends ObjectBehavior
         $descriptionAttribute = $this->getDescriptionAttribute();
         $countryAttribute = $this->getCountryAttribute();
 
-        $findAttributesIndexedByIdentifier->__invoke($referenceEntityIdentifier)->willReturn([
+        $findAttributesIndexedByIdentifier->find($referenceEntityIdentifier)->willReturn([
             $nameAttribute,
             $descriptionAttribute,
             $countryAttribute,
@@ -142,8 +142,8 @@ class RecordValuesValidatorSpec extends ObjectBehavior
     }
 
     function it_returns_an_empty_array_if_there_are_no_errors(
-        $recordValueValidatorRegistry,
-        $findAttributesIndexedByIdentifier,
+        RecordValueValidatorRegistry $recordValueValidatorRegistry,
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         RecordValueValidatorInterface $textTypeValidator,
         RecordValueValidatorInterface $recordTypeValidator
     ) {
@@ -175,7 +175,7 @@ class RecordValuesValidatorSpec extends ObjectBehavior
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
 
-        $findAttributesIndexedByIdentifier->__invoke($referenceEntityIdentifier)->willReturn([
+        $findAttributesIndexedByIdentifier->find($referenceEntityIdentifier)->willReturn([
             $this->getNameAttribute(),
             $this->getDescriptionAttribute(),
             $this->getCountryAttribute(),

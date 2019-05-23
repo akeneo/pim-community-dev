@@ -34,7 +34,7 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttribute implements Referenc
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $identifier): bool
+    public function isLinked(ReferenceEntityIdentifier $identifier): bool
     {
         return $this->isReferenceEntityLinkedToAtLeastOneProductAttribute($identifier);
     }

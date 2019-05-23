@@ -50,8 +50,8 @@ class SearchRecord
     public function __invoke(RecordQuery $query): SearchRecordResult
     {
         /** @var IdentifiersForQueryResult $result */
-        $result = ($this->findIdentifiersForQuery)($query);
-        $records = ($this->findRecordItemsForIdentifiersAndQuery)($result->identifiers, $query);
+        $result = $this->findIdentifiersForQuery->find($query);
+        $records = $this->findRecordItemsForIdentifiersAndQuery->find($result->identifiers, $query);
         $totalCount = $this->countTotalRecords($query);
 
         return new SearchRecordResult($records, $result->matchesCount, $totalCount);

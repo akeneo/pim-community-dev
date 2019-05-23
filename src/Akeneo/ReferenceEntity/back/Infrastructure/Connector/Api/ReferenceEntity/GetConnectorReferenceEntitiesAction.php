@@ -69,7 +69,7 @@ class GetConnectorReferenceEntitiesAction
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        $referenceEntities = ($this->findConnectorReferenceEntityItems)($referenceEntityQuery);
+        $referenceEntities = $this->findConnectorReferenceEntityItems->find($referenceEntityQuery);
         $referenceEntities = array_map(function (ConnectorReferenceEntity $referenceEntity) {
             $normalizedReferenceEntity = $referenceEntity->normalize();
             return ($this->addHalDownloadLinkToImage)($normalizedReferenceEntity);

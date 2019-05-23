@@ -46,8 +46,8 @@ class InMemoryFindAttributesDetailsTest extends TestCase
 
         $manufacturerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
         $designerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
-        $this->assertCount(2, ($this->query)($manufacturerIdentifier));
-        $this->assertCount(2, ($this->query)($designerIdentifier));
+        $this->assertCount(2, $this->query->find($manufacturerIdentifier));
+        $this->assertCount(2, $this->query->find($designerIdentifier));
     }
 
     /**
@@ -56,7 +56,7 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     public function it_returns_an_empty_array_if_there_are_no_attributes_for_the_given_reference_entity_identifier()
     {
         $manufacturerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
-        $this->assertEmpty(($this->query)($manufacturerIdentifier));
+        $this->assertEmpty($this->query->find($manufacturerIdentifier));
     }
 
     private function createReferenceEntityDetails(string $referenceEntityIdentifier, string $attributeCode): AttributeDetails

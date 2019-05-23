@@ -41,8 +41,8 @@ class SearchConnectorRecord
 
     public function __invoke(RecordQuery $query): array
     {
-        $result = ($this->findIdentifiersForQuery)($query);
-        $records = empty($result) ? [] : ($this->findConnectorRecordsByIdentifiers)($result->identifiers, $query);
+        $result = $this->findIdentifiersForQuery->find($query);
+        $records = empty($result) ? [] : $this->findConnectorRecordsByIdentifiers->find($result->identifiers, $query);
 
         return $records;
     }

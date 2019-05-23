@@ -65,7 +65,7 @@ class RecordNormalizerSpec extends ObjectBehavior
             ->byRecordIdentifier($recordIdentifier)
             ->willReturn($stark);
 
-        $findValueKeysToIndexForAllChannelsAndLocales->__invoke(Argument::type(ReferenceEntityIdentifier::class))
+        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(ReferenceEntityIdentifier::class))
             ->willReturn(
                 [
                     'ecommerce' => [
@@ -143,7 +143,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $searchableRecordItemIterator->valid()->willReturn(true, true, false);
         $searchableRecordItemIterator->current()->willReturn($stark, $coco);
 
-        $findValueKeysToIndexForAllChannelsAndLocales->__invoke(Argument::type(ReferenceEntityIdentifier::class))
+        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(ReferenceEntityIdentifier::class))
             ->willReturn(
                 [
                     'ecommerce' => [

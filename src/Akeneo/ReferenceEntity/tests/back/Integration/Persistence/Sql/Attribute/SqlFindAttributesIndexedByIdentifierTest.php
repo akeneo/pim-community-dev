@@ -75,7 +75,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
      */
     public function it_returns_the_attributes_indexed_by_identifier_for_a_reference_entity()
     {
-        $actualAttributes = ($this->findAttributesIndexedByIdentifier)(ReferenceEntityIdentifier::fromString('designer'));
+        $actualAttributes = $this->findAttributesIndexedByIdentifier->find(ReferenceEntityIdentifier::fromString('designer'));
 
         $expectedAttributes = [
             'name_designer_test'             => $this->name,
@@ -99,7 +99,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
     public function it_returns_an_empty_array_if_the_reference_entity_does_not_have_any_attributes()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $attributeDetails = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $attributeDetails = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
         $this->assertCount(0, $attributeDetails);
     }
 

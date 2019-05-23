@@ -33,7 +33,7 @@ class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(int $userGroupId): array
+    public function find(int $userGroupId): array
     {
         $sql = "SELECT perm1.reference_entity_identifier, COUNT(*) as cartesian_product
                 FROM akeneo_reference_entity_reference_entity_permissions perm1

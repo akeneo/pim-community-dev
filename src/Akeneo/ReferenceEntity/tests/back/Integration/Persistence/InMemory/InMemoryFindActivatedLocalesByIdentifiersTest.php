@@ -37,7 +37,7 @@ class InMemoryFindActivatedLocalesByIdentifiersTest extends TestCase
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
 
         $expectedActivatedLocales = LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR']);
-        $activatedLocales = ($this->findActivatedLocalesByIdentifiers)(
+        $activatedLocales = $this->findActivatedLocalesByIdentifiers->find(
             LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR', 'en_UK'])
         );
 
@@ -52,7 +52,7 @@ class InMemoryFindActivatedLocalesByIdentifiersTest extends TestCase
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $activatedLocales = ($this->findActivatedLocalesByIdentifiers)(
+        $activatedLocales = $this->findActivatedLocalesByIdentifiers->find(
             LocaleIdentifierCollection::fromNormalized(['de_DE', 'en_UK'])
         );
 
