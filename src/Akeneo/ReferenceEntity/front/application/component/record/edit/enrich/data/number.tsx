@@ -3,8 +3,7 @@ import Value from 'akeneoreferenceentity/domain/model/record/value';
 import NumberData, {create} from 'akeneoreferenceentity/domain/model/record/data/number';
 import {ConcreteNumberAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/number';
 import Key from 'akeneoreferenceentity/tools/key';
-
-const UserContext = require('pim/user-context');
+import {unformatNumber, formatNumberForUILocale} from 'akeneoreferenceentity/tools/format-number';
 
 const View = ({
   value,
@@ -50,16 +49,9 @@ const View = ({
         }}
         disabled={!canEditData}
         readOnly={!canEditData}
-        data-raw-number={value.data.stringValue()}
       />
     </React.Fragment>
   );
 };
-
-const unformatNumber = (numberToUnformat: string): string =>
-  numberToUnformat.replace(' ', '').replace(decimalSeparator(), '.');
-
-const formatNumberForUILocale = (number: any): string => number.replace(/\./g, decimalSeparator());
-const decimalSeparator = (): string => UserContext.get('ui-locale-decimal-separator');
 
 export const view = View;

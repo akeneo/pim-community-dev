@@ -44,8 +44,9 @@ Feature: Edit a number attribute of a reference entity
     Then there should be a validation error with message '<message>'
 
     Examples:
-      | invalid_min_value | message                        |
-      | "not an integer"  | This value should be a number. |
+      | invalid_min_value | message                                                         |
+      | "not an integer"  | This value should be a number with the right decimal separator. |
+      | "99,12"           | This value should be a number with the right decimal separator. |
 
   @acceptance-back
   Scenario: Updating the max value property
@@ -66,8 +67,9 @@ Feature: Edit a number attribute of a reference entity
     Then there should be a validation error with message '<message>'
 
     Examples:
-      | invalid_max_value | message                        |
-      | "not an integer"  | This value should be a number. |
+      | invalid_max_value | message                                                         |
+      | "not an integer"  | This value should be a number with the right decimal separator. |
+      | "99,12"           | This value should be a number with the right decimal separator. |
 
   @acceptance-back
   Scenario: Min value should not be greater than the max value

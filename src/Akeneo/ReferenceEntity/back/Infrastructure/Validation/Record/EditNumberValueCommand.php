@@ -22,7 +22,8 @@ use Symfony\Component\Validator\Constraint;
 class EditNumberValueCommand extends Constraint
 {
     public const NUMBER_SHOULD_BE_STRING = 'pim_reference_entity.record.validation.number.should_be_string';
-    public const NUMBER_SHOULD_NOT_BE_DECIMAL = 'pim_reference_entity.record.validation.number.should_not_be_decimal';
+    public const NUMBER_SHOULD_BE_INTEGER = 'pim_reference_entity.record.validation.number.should_be_integer';
+    public const INTEGER_TOO_LONG = 'pim_reference_entity.record.validation.number.integer_too_long';
     public const NUMBER_SHOULD_BE_NUMERIC = 'pim_reference_entity.record.validation.number.should_be_numeric';
 
     public function getTargets()

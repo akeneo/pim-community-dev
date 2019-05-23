@@ -8,6 +8,7 @@ import {DecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type
 import {MinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
 import {MaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
 import Key from 'akeneoreferenceentity/tools/key';
+import {unformatNumber, formatNumberForUILocale} from 'akeneoreferenceentity/tools/format-number';
 
 const NumberView = ({
   attribute,
@@ -77,18 +78,13 @@ const NumberView = ({
             className={inputTextClassName}
             id="pim_reference_entity.attribute.edit.input.min_value"
             name="min_value"
-            value={attribute.minValue.stringValue()}
+            value={formatNumberForUILocale(attribute.minValue.stringValue())}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!MinValue.isValid(event.currentTarget.value)) {
-                event.currentTarget.value = attribute.minValue.stringValue();
-                event.preventDefault();
-                return;
-              }
-
-              onAdditionalPropertyUpdated('min_value', MinValue.createFromString(event.currentTarget.value));
+              const cleanedNumber = unformatNumber(event.currentTarget.value);
+              onAdditionalPropertyUpdated('min_value', MinValue.createFromString(cleanedNumber));
             }}
             readOnly={!rights.attribute.edit}
           />
@@ -108,18 +104,13 @@ const NumberView = ({
             className={inputTextClassName}
             id="pim_reference_entity.attribute.edit.input.max_value"
             name="max_value"
-            value={attribute.maxValue.stringValue()}
+            value={formatNumberForUILocale(attribute.maxValue.stringValue())}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!MaxValue.isValid(event.currentTarget.value)) {
-                event.currentTarget.value = attribute.maxValue.stringValue();
-                event.preventDefault();
-                return;
-              }
-
-              onAdditionalPropertyUpdated('max_value', MaxValue.createFromString(event.currentTarget.value));
+              const cleanedNumber = unformatNumber(event.currentTarget.value);
+              onAdditionalPropertyUpdated('max_value', MaxValue.createFromString(cleanedNumber));
             }}
             readOnly={!rights.attribute.edit}
           />
