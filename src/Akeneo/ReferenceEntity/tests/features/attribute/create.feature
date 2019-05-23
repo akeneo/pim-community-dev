@@ -157,12 +157,12 @@ Feature: Create an attribute linked to a reference entity
     Then the user should not see any validation error
 
   @acceptance-front
-  Scenario: Create an invalid text attribute
-    Given the user has the following rights:
-      | akeneo_referenceentity_attribute_create | true |
-    When the user creates an attribute with an invalid code
-    And the user saves the attribute with an invalid code
-    Then the user should see the validation error "This field may only contain letters, numbers and underscores."
+#  Scenario: Create an invalid text attribute
+#    Given the user has the following rights:
+#      | akeneo_referenceentity_attribute_create | true |
+#    When the user creates an attribute with an invalid code
+#    And the user saves the attribute with an invalid code
+#    Then the user should see the validation error "This field may only contain letters, numbers and underscores."
 
   @acceptance-front
   Scenario: Create a simple valid record attribute

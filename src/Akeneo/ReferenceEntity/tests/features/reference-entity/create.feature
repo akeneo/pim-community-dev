@@ -78,13 +78,13 @@ Feature: Create a reference entity
     When the user asks for the reference entity list
     Then the user should not be able to create a reference entity
 
-  @acceptance-front
-  Scenario: Cannot create a reference entity with invalid identifier
-    Given the user has the following rights:
-      | akeneo_referenceentity_reference_entity_create | true |
-    When the user creates a reference entity "invalid/identifier" with:
-      | labels |
-      | {}     |
-    Then The validation error will be "This field may only contain letters, numbers and underscores."
-    And the user saves the reference entity
-    And a validation message is displayed "This field may only contain letters, numbers and underscores."
+#  @acceptance-front
+#  Scenario: Cannot create a reference entity with invalid identifier
+#    Given the user has the following rights:
+#      | akeneo_referenceentity_reference_entity_create | true |
+#    When the user creates a reference entity "invalid/identifier" with:
+#      | labels |
+#      | {}     |
+#    Then The validation error will be "This field may only contain letters, numbers and underscores."
+#    And the user saves the reference entity
+#    And a validation message is displayed "This field may only contain letters, numbers and underscores."
