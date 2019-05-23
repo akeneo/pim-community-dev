@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8257: Fix user grid filter set when creating a new user
+- PIM-8366: Translate the placeholder in the quick search input
 
 # 3.0.19 (2019-05-21)
 
