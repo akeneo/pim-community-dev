@@ -173,6 +173,15 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @Given the attribute group :attrGroupCode
+     */
+    public function theAttributeGroup($attrGroupCode)
+    {
+        $attrGroup = $this->attributeGroupBuilder->build(['code' => $attrGroupCode]);
+        $this->attributeGroupRepository->save($attrGroup);
+    }
+
+    /**
      * @param string $familyCode
      *
      * @Given the family ":familyCode"

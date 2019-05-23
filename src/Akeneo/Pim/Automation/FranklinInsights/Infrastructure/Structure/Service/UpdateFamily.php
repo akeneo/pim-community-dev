@@ -9,14 +9,14 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
-use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UpdateFamily implements UpdateFamilyInterface
 {
-
     /**
      * @var FamilyUpdater
      */
@@ -30,7 +30,7 @@ class UpdateFamily implements UpdateFamilyInterface
      */
     private $validator;
     /**
-     * @var FamilyRepository
+     * @var FamilyRepositoryInterface
      */
     private $repository;
 
@@ -49,7 +49,7 @@ class UpdateFamily implements UpdateFamilyInterface
         $this->validator = $validator;
     }
 
-    private function getFamily(FamilyCode $familyCode): ?Family
+    private function getFamily(FamilyCode $familyCode): ?FamilyInterface
     {
         return $this->repository->findOneByIdentifier((string) $familyCode);
     }

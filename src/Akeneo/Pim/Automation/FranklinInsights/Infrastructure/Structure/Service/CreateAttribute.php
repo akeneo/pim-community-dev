@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -64,7 +64,7 @@ class CreateAttribute implements CreateAttributeInterface
             'scopable' => false,
         ];
 
-        /** @var Attribute $attribute */
+        /** @var AttributeInterface $attribute */
         $attribute = $this->factory->create();
         $this->updater->update($attribute, $data);
 

@@ -33,6 +33,11 @@ final class AttributeCode
         $this->code = $code;
     }
 
+    public static function fromString(string $label)
+    {
+        return new self(preg_replace("/[^a-zA-Z0-9]/", "_", $label));
+    }
+
     /**
      * @return string
      */
