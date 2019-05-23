@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -18,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\Attribute as StructureAttribute;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
@@ -607,17 +609,21 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     function it_does_not_ask_for_the_attribute_codes_multiple_time_for_performance(
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        AttributeInterface $numberAttribute,
-        AttributeInterface $number2Attribute,
-        AttributeInterface $number3Attribute,
-        ValueInterface $numberProductA,
-        ValueInterface $numberProductB,
-        ValueInterface $number2ProductA,
-        ValueInterface $number3ProductB,
         GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     )
     {
+        $numberAttribute = new StructureAttribute();
+        $numberAttribute->setCode('number');
+        $number2Attribute = new StructureAttribute();
+        $number2Attribute->setCode('number2');
+        $number3Attribute = new StructureAttribute();
+        $number3Attribute->setCode('number3');
+        $numberProductA = ScalarValue::value('number', 5);
+        $numberProductB = ScalarValue::value('number', 7);
+        $number2ProductA = ScalarValue::value('number2', 6);
+        $number3ProductB = ScalarValue::value('number3', 8);
+
         $rawValues = [
             'productA' => [
                 'number' => [
@@ -704,52 +710,22 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $ongoingFilteredRawValues =new OnGoingFilteredRawValues($typesToCode, []);
         $chainedObsoleteValueFilter->filterAll($ongoingNonFilteredRawValues)->willReturn($ongoingFilteredRawValues);
 
-        $numberAttribute->getCode()->willReturn('number');
-        $numberAttribute->isUnique()->willReturn(false);
-        $numberAttribute->isScopable()->willReturn(false);
-        $numberAttribute->isLocalizable()->willReturn(false);
         $attributeRepository->findOneByIdentifier('number')->willReturn($numberAttribute);
-
-        $number2Attribute->getCode()->willReturn('number2');
-        $number2Attribute->isUnique()->willReturn(false);
-        $number2Attribute->isScopable()->willReturn(false);
-        $number2Attribute->isLocalizable()->willReturn(false);
         $attributeRepository->findOneByIdentifier('number2')->willReturn($number2Attribute);
-
-        $number3Attribute->getCode()->willReturn('number3');
-        $number3Attribute->isUnique()->willReturn(false);
-        $number3Attribute->isScopable()->willReturn(false);
-        $number3Attribute->isLocalizable()->willReturn(false);
         $attributeRepository->findOneByIdentifier('number3')->willReturn($number3Attribute);
 
-        $numberProductA->getData()->willReturn(5);
-        $numberProductA->getAttributeCode()->willReturn('number');
-        $numberProductA->getScopeCode()->willReturn(null);
-        $numberProductA->getLocaleCode()->willReturn(null);
         $valueFactory
             ->create($numberAttribute, null, null, 5, true)
             ->willReturn($numberProductA);
 
-        $numberProductB->getData()->willReturn(7);
-        $numberProductB->getAttributeCode()->willReturn('number');
-        $numberProductB->getScopeCode()->willReturn(null);
-        $numberProductB->getLocaleCode()->willReturn(null);
         $valueFactory
             ->create($numberAttribute, null, null, 7, true)
             ->willReturn($numberProductB);
 
-        $number2ProductA->getData()->willReturn(6);
-        $number2ProductA->getAttributeCode()->willReturn('number2');
-        $number2ProductA->getScopeCode()->willReturn(null);
-        $number2ProductA->getLocaleCode()->willReturn(null);
         $valueFactory
             ->create($number2Attribute, null, null, 6, true)
             ->willReturn($number2ProductA);
 
-        $number3ProductB->getData()->willReturn(8);
-        $number3ProductB->getAttributeCode()->willReturn('number3');
-        $number3ProductB->getScopeCode()->willReturn(null);
-        $number3ProductB->getLocaleCode()->willReturn(null);
         $valueFactory
             ->create($number3Attribute, null, null, 8, true)
             ->willReturn($number3ProductB);
