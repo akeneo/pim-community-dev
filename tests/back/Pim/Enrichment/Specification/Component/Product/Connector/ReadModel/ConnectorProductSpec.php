@@ -152,7 +152,6 @@ class ConnectorProductSpec extends ObjectBehavior
     function it_gets_associated_product_identifiers()
     {
         $this->associatedProductModelCodes()->shouldReturn(['product_model_5', 'product_model_6']);
-
     }
 
     function it_adds_a_metadata()
@@ -160,5 +159,26 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct = $this->addMetadata('key', 'value');
 
         $connectorProduct->metadata()->shouldReturn(['key' => 'value']);
+    }
+
+    function it_returns_empty_array_if_no_association_type_exists()
+    {
+        $this->beConstructedWith(
+            42,
+            'identifier',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'clothes',
+            [],
+            [],
+            null,
+            [],
+            [],
+            new ValueCollection()
+        );
+
+        $this->associatedProductIdentifiers()->shouldReturn([]);
+        $this->associatedProductModelCodes()->shouldReturn([]);
     }
 }

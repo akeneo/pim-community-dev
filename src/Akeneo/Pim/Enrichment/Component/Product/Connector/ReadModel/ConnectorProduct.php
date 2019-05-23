@@ -204,7 +204,7 @@ final class ConnectorProduct
             $associatedProducts[] = $associations['products'];
         }
 
-        return array_unique(array_merge(...$associatedProducts));
+        return !empty($associatedProducts) ? array_unique(array_merge(...$associatedProducts)) : [];
     }
 
     public function associatedProductModelCodes(): array
@@ -214,7 +214,7 @@ final class ConnectorProduct
             $associatedProductModels[] = $associations['product_models'];
         }
 
-        return array_unique(array_merge(...$associatedProductModels));
+        return !empty($associatedProductModels) ? array_unique(array_merge(...$associatedProductModels)) : [];
     }
 
     public function filterAssociatedProductModelsByProductModelCodes(array $productModelCodesToFilter): ConnectorProduct
