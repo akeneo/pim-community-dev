@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8308: Fix broken translation keys for import and export profiles
+
 # 2.3.45 (2019-05-23)
 
 ## Bug fixes
