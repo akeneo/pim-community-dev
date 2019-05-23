@@ -128,6 +128,26 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
 
         $this->writer->flush();
 
+        $this->putToArchivistFilesystem($jobExecution);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(JobExecution $jobExecution)
+    {
+        if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
+            return $this->invalidItemFileFormat === $jobExecution->getJobParameters()->get('invalid_items_file_format');
+        }
+
+        return false;
+    }
+
+    /**
+     * Put the generated invalid items file to the archivist filesystem
+     */
+    protected function putToArchivistFilesystem(JobExecution $jobExecution): void
+    {
         $fileKey = strtr(
             $this->getRelativeArchivePath($jobExecution),
             ['%filename%' => $this->getFilename()]
@@ -147,18 +167,6 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
         } else {
             $this->filesystem->put($fileKey, '');
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(JobExecution $jobExecution)
-    {
-        if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
-            return $this->invalidItemFileFormat === $jobExecution->getJobParameters()->get('invalid_items_file_format');
-        }
-
-        return false;
     }
 
     /**
