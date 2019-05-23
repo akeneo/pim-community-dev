@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8257: Fix user grid filter set when creating a new user
+- PIM-8308: Fix missing translation for import and export profiles
 
 # 3.0.19 (2019-05-21)
 

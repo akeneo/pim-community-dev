@@ -148,10 +148,16 @@ pim_enrich:
             module:
                 delete:
                     confirm: Are you sure you want to delete this import profile?
+            flash:
+                delete:
+                    success: Import profile successfully removed
         export_profile:
             module:
                 delete:
                     confirm: Are you sure you want to delete this export profile?
+            flash:
+                delete:
+                    success: Export profile successfully removed
 
 pim_title:
     pim_importexport_export_profile_index:   Export profiles management
