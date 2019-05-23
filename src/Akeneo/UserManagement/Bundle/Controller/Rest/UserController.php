@@ -133,7 +133,7 @@ class UserController
         }
 
         $user = $this->normalizer->normalize($user, 'internal_api');
-        $decimalSeparator = $this->getDecimalSeparatorForCurrentUILocale($user);
+        $decimalSeparator = $this->additionalProperties($user);
         $result = array_merge($decimalSeparator, $user);
 
         return new JsonResponse($result);
@@ -395,7 +395,7 @@ class UserController
             '' !== $data['new_password_repeat'];
     }
 
-    private function getDecimalSeparatorForCurrentUILocale($user): array
+    private function additionalProperties($user): array
     {
         $decimalSeparator['ui-locale-decimal-separator'] = $this->numberFactory
             ->create(['locale' => $user['user_default_locale']])
