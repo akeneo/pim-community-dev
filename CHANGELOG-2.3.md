@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-8351: Fix entity overriding priority
+- PIM-7321: Fix blinking grid elements in gallery mode
 
 # 2.3.44 (2019-05-20)
 
