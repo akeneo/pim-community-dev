@@ -284,7 +284,7 @@ class JobContext extends PimContext
     }
 
     /**
-     * Load the archive in memory and return its in-memory path
+     * Copy the archive locally and return its local path
      */
     public function copyArchiveLocally(string $archivePath): string
     {
