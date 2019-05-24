@@ -4,6 +4,7 @@
 
 - PIM-8257: Fix user grid filter set when creating a new user
 - PIM-8366: Translate the placeholder in the quick search input
+- PIM-8374: Fix timeout when launching the completeness purge command
 
 # 3.0.19 (2019-05-21)
 
