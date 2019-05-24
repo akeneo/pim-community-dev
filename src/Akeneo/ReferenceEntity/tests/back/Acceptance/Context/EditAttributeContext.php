@@ -1651,11 +1651,11 @@ class EditAttributeContext implements Context
     public function theUserSetsTheAttributeTo(string $attributeCode, $invalidValue)
     {
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
-        $updateIsDecimal = [
+        $updateDecimalsAllowed = [
             'identifier'  => (string)$identifier,
             'decimals_allowed' => json_decode($invalidValue),
         ];
-        $this->updateAttribute($updateIsDecimal);
+        $this->updateAttribute($updateDecimalsAllowed);
     }
 
     /**

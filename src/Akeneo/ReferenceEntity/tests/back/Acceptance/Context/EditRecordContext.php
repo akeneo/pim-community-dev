@@ -2667,7 +2667,7 @@ final class EditRecordContext implements Context
     /**
      * @Then /^there should be a validation error on the property decimals allowed attribute with message "([^\']*)"$/
      */
-    public function thereShouldBeAValidationErrorOnThePropertyIsDecimalAttributeWithMessage($expectedMessage)
+    public function thereShouldBeAValidationErrorOnThePropertyDecimalsAllowedAttributeWithMessage($expectedMessage)
     {
         $this->violationsContext->assertThereShouldBeViolations(1);
         $this->violationsContext->assertViolationOnPropertyWithMesssage(

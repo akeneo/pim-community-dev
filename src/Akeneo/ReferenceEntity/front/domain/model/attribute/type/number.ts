@@ -9,22 +9,22 @@ import {
   Attribute,
   ConcreteAttribute,
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {IsDecimal, NormalizedIsDecimal} from 'akeneoreferenceentity/domain/model/attribute/type/number/is-decimal';
+import {DecimalsAllowed, NormalizedDecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
 import {MinValue, NormalizedMinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
 import {MaxValue, NormalizedMaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
 
-export type NumberAdditionalProperty = IsDecimal | MinValue | MaxValue;
-export type NormalizedNumberAdditionalProperty = NormalizedIsDecimal | NormalizedMinValue | NormalizedMaxValue;
+export type NumberAdditionalProperty = DecimalsAllowed | MinValue | MaxValue;
+export type NormalizedNumberAdditionalProperty = NormalizedDecimalsAllowed | NormalizedMinValue | NormalizedMaxValue;
 
 export interface NormalizedNumberAttribute extends NormalizedAttribute {
   type: 'number';
-  is_decimal: NormalizedIsDecimal;
+  decimals_allowed: NormalizedDecimalsAllowed;
   min_value: NormalizedMinValue;
   max_value: NormalizedMaxValue;
 }
 
 export interface NumberAttribute extends Attribute {
-  isDecimal: IsDecimal;
+  decimalsAllowed: DecimalsAllowed;
   minValue: MinValue;
   maxValue: MaxValue;
   normalize(): NormalizedNumberAttribute;
@@ -42,7 +42,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
-    readonly isDecimal: IsDecimal,
+    readonly decimalsAllowed: DecimalsAllowed,
     readonly minValue: MinValue,
     readonly maxValue: MaxValue
   ) {
@@ -58,8 +58,8 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       is_required
     );
 
-    if (!(isDecimal instanceof IsDecimal)) {
-      throw new Error('Attribute expects a IsDecimal as isDecimal');
+    if (!(decimalsAllowed instanceof DecimalsAllowed)) {
+      throw new Error('Attribute expects a DecimalsAllowed as decimalsAllowed');
     }
 
     if (!(minValue instanceof MinValue)) {
@@ -83,7 +83,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       normalizedNumberAttribute.value_per_channel,
       normalizedNumberAttribute.order,
       normalizedNumberAttribute.is_required,
-      new IsDecimal(normalizedNumberAttribute.is_decimal),
+      new DecimalsAllowed(normalizedNumberAttribute.decimals_allowed),
       new MinValue(normalizedNumberAttribute.min_value),
       new MaxValue(normalizedNumberAttribute.max_value)
     );
@@ -93,7 +93,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     return {
       ...super.normalize(),
       type: 'number',
-      is_decimal: this.isDecimal.normalize(),
+      decimals_allowed: this.decimalsAllowed.normalize(),
       min_value: this.minValue.normalize(),
       max_value: this.maxValue.normalize(),
     };

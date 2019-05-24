@@ -206,14 +206,14 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
 		return true;
 	};
 
-	const setIsDecimal = async value => {
-		const isDecimal = await nodeElement.$(
-			'.AknFieldContainer[data-code="isDecimal"] .AknCheckbox'
+	const setDecimalsAllowed = async value => {
+		const decimalsAllowed = await nodeElement.$(
+			'.AknFieldContainer[data-code="decimalsAllowed"] .AknCheckbox'
 		);
-		const currentValue = await isDecimal.getProperty("data-checked");
+		const currentValue = await decimalsAllowed.getProperty("data-checked");
 
 		if (value != currentValue._remoteObject.value) {
-			await isDecimal.click();
+			await decimalsAllowed.click();
 		}
 	};
 
@@ -243,10 +243,10 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
 		await maxValue.type(value);
 	};
 
-	const disabledIsDecimal = async () => {
+	const disabledDecimalsAllowed = async () => {
 		try {
 			await page.waitForSelector(
-				'.AknFieldContainer[data-code="isDecimal"] .AknCheckbox--disabled'
+				'.AknFieldContainer[data-code="decimalsAllowed"] .AknCheckbox--disabled'
 			);
 		} catch (error) {
 			return false;
@@ -307,10 +307,10 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
 		isLoaded,
 		showManageOptionModal,
 		hasSuccessNotification,
-		setIsDecimal,
+		setDecimalsAllowed,
 		setMinValue,
 		setMaxValue,
-		disabledIsDecimal
+		disabledDecimalsAllowed
 	};
 };
 

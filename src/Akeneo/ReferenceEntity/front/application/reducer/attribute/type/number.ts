@@ -1,6 +1,6 @@
 import {NormalizedNumberAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/number';
 import {NormalizedNumberAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/type/number';
-import {NormalizedIsDecimal} from 'akeneoreferenceentity/domain/model/attribute/type/number/is-decimal';
+import {NormalizedDecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
 import {NormalizedMinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
 import {NormalizedMaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
 
@@ -10,9 +10,9 @@ const numberAttributeReducer = (
   propertyValue: NormalizedNumberAdditionalProperty
 ): NormalizedNumberAttribute => {
   switch (propertyCode) {
-    case 'is_decimal':
-      const is_decimal = propertyValue as NormalizedIsDecimal;
-      return {...normalizedAttribute, is_decimal};
+    case 'decimals_allowed':
+      const decimals_allowed = propertyValue as NormalizedDecimalsAllowed;
+      return {...normalizedAttribute, decimals_allowed};
     case 'min_value':
       const min_value = propertyValue as NormalizedMinValue;
       return {...normalizedAttribute, min_value};

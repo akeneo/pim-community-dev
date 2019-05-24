@@ -320,7 +320,7 @@ Feature: Lists all attributes related to a reference entity
     And the user edit the attribute "year_of_birth"
     Then the user edits the attribute property "Label" with value "Year of Birth"
     And the user edits the attribute property "IsRequired" with value "true"
-    And the user edits the attribute property "IsDecimal" with value "true"
+    And the user edits the attribute property "DecimalsAllowed" with value "true"
     And the user edits the attribute property "MinValue" with value "-10.12"
     And the user edits the attribute property "MaxValue" with value "50"
 
@@ -332,4 +332,4 @@ Feature: Lists all attributes related to a reference entity
     When the user asks for the reference entity "designer"
     And the user looks at the attribute "year_of_birth"
     Then the user can't edit the attribute property "Label"
-    And the user can't edit the attribute property "IsDecimal"
+    And the user can't edit the attribute property "DecimalsAllowed"
