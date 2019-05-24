@@ -233,7 +233,7 @@ final class AttributesMappingContext implements Context
     /**
      * @Then the attribute :attrCode should belongs to the :attrGroupCode attribute group
      */
-    public function theAttributeShouldBelongsToTheAttributeGroup($attrCode, $attrGroupCode)
+    public function theAttributeShouldBelongsToTheAttributeGroup($attrCode, $attrGroupCode): void
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attrCode);
         Assert::isInstanceOf($attribute, AttributeInterface::class);

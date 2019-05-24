@@ -17,6 +17,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttr
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 
+/**
+ * @author Romain Monceau <romain@akeneo.com>
+ */
 class CreateAttributeInFamilyHandler
 {
     /** @var CreateAttributeInterface */
@@ -37,7 +40,7 @@ class CreateAttributeInFamilyHandler
         $this->updateFamily = $updateFamily;
     }
 
-    public function handle(CreateAttributeInFamilyCommand $command)
+    public function handle(CreateAttributeInFamilyCommand $command): void
     {
         $pimAttributeGroupCode = 'franklin';
 

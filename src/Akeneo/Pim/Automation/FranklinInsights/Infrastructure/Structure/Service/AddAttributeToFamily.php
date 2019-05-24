@@ -24,6 +24,9 @@ use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @author Romain Monceau <romain@akeneo.com>
+ */
 class AddAttributeToFamily implements AddAttributeToFamilyInterface
 {
     /**
@@ -63,7 +66,7 @@ class AddAttributeToFamily implements AddAttributeToFamilyInterface
         return $this->repository->findOneByIdentifier((string) $familyCode);
     }
 
-    public function addAttributeToFamily(AttributeCode $attributeCode, FamilyCode $familyCode)
+    public function addAttributeToFamily(AttributeCode $attributeCode, FamilyCode $familyCode): void
     {
         $family = $this->getFamily($familyCode);
         if ($family === null) {

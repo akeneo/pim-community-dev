@@ -44,8 +44,12 @@ class FakeCreateAttribute implements CreateAttributeInterface
         $this->attributeGroupRepository = $attributeGroupRepository;
     }
 
-    public function create(AttributeCode $attributeCode, AttributeLabel $attributeLabel, string $attributeType, string $attributeGroupCode): void
-    {
+    public function create(
+        AttributeCode $attributeCode,
+        AttributeLabel $attributeLabel,
+        string $attributeType,
+        string $attributeGroupCode
+    ): void {
         $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupCode);
 
         $attribute = $this->attributeFactory->create();

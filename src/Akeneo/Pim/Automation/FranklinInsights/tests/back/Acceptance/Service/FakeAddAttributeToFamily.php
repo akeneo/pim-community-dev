@@ -36,7 +36,7 @@ class FakeAddAttributeToFamily implements AddAttributeToFamilyInterface
         $this->familyRepository = $familyRepository;
     }
 
-    public function addAttributeToFamily(AttributeCode $attributeCode, FamilyCode $familyCode)
+    public function addAttributeToFamily(AttributeCode $attributeCode, FamilyCode $familyCode): void
     {
         $attribute = $this->attributeRepository->findOneByIdentifier((string) $attributeCode);
         $family = $this->familyRepository->findOneByIdentifier((string) $familyCode);

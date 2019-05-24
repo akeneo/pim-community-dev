@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 
+/**
+ * @author Romain Monceau <romain@akeneo.com>
+ */
 class AttributeType
 {
     /** @var string */

@@ -26,6 +26,9 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @author Romain Monceau <romain@akeneo.com>
+ */
 class CreateAttribute implements CreateAttributeInterface
 {
     private $factory;
