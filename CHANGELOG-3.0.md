@@ -10,6 +10,7 @@
 
 - PIM-6869: Fix bad label on the asset grid category tree
 - PIM-8362: Fix wording on the proposals action buttons
+- PIM-8308: Fix translation file name for the ReferenceEntity validation messages
 - PIM-8364: Fix proposals modals display
 
 # 3.0.19 (2019-05-21)
