@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.20 (2019-05-24)
+
 ## Bug fixes
 
 - PIM-8257: Fix user grid filter set when creating a new user
