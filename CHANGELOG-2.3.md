@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8374: Fix timeout when launching the completeness purge command
+
 # 2.3.45 (2019-05-23)
 
 ## Bug fixes
