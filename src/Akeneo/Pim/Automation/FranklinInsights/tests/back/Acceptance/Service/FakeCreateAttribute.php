@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLa
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
+use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 
@@ -31,6 +32,9 @@ class FakeCreateAttribute implements CreateAttributeInterface
     /** @var AttributeFactory */
     private $attributeFactory;
 
+    /** @var AttributeUpdater */
+    private $attributeUpdater;
+
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
 
@@ -41,11 +45,13 @@ class FakeCreateAttribute implements CreateAttributeInterface
 
     public function __construct(
         AttributeFactory $attributeFactory,
+        AttributeUpdater $attributeUpdater,
         InMemoryAttributeRepository $attributeRepository,
         InMemoryAttributeGroupRepository $attributeGroupRepository,
         FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup
     ) {
         $this->attributeFactory = $attributeFactory;
+        $this->attributeUpdater = $attributeUpdater;
         $this->attributeRepository = $attributeRepository;
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->findOrCreateFranklinAttributeGroup = $findOrCreateFranklinAttributeGroup;
@@ -61,7 +67,7 @@ class FakeCreateAttribute implements CreateAttributeInterface
         $attribute = $this->attributeFactory->create();
         $attribute->setCode((string) $attributeCode);
         $attribute->setType((string) $attributeType);
-        $attribute->setGroup((string) $attributeGroupCode);
+        $this->attributeUpdater->update($attribute, ['group' => (string) $attributeGroupCode]);
 
         $this->attributeRepository->save($attribute);
     }

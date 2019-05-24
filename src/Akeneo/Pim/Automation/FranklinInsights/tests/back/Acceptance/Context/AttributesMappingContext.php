@@ -257,7 +257,7 @@ final class AttributesMappingContext implements Context
             if ($familyAttribute->getCode() === $attrCode) {
                 Assert::eq(
                     array_search($franklinAttrType, AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS),
-                    $familyAttribute->getAttributeType()
+                    $familyAttribute->getType()
                 );
             }
         }
