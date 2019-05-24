@@ -39,6 +39,7 @@ final class ConnectorProductModelNormalizer
         $values = $this->valuesNormalizer->normalize($connectorProductModel->values(), 'standard');
         $normalizedProductModel = [
             'code' => $connectorProductModel->code(),
+            'family' => $connectorProductModel->familyCode(),
             'family_variant' => $connectorProductModel->familyVariantCode(),
             'parent' => $connectorProductModel->parentCode(),
             'categories' => $connectorProductModel->categoryCodes(),

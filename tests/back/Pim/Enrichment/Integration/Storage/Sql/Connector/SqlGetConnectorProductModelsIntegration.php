@@ -49,6 +49,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 new \DateTimeImmutable($dataSimplePm['created']),
                 new \DateTimeImmutable($dataSimplePm['updated']),
                 null,
+                'familyA',
                 'familyVariantA2',
                 [],
                 [
@@ -83,6 +84,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 new \DateTimeImmutable($dataRootPm['created']),
                 new \DateTimeImmutable($dataRootPm['updated']),
                 null,
+                'familyA',
                 'familyVariantA1',
                 [],
                 [
@@ -133,6 +135,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 new \DateTimeImmutable($dataSubPm['created']),
                 new \DateTimeImmutable($dataSubPm['updated']),
                 'root_pm',
+                'familyA',
                 'familyVariantA1',
                 [],
                 [
@@ -212,6 +215,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 new \DateTimeImmutable($dataSimplePm['created']),
                 new \DateTimeImmutable($dataSimplePm['updated']),
                 null,
+                'familyA',
                 'familyVariantA2',
                 [],
                 [
@@ -245,6 +249,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 new \DateTimeImmutable($dataRootPm['created']),
                 new \DateTimeImmutable($dataRootPm['updated']),
                 null,
+                'familyA',
                 'familyVariantA1',
                 [],
                 [
@@ -288,6 +293,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 new \DateTimeImmutable($dataSubPm['created']),
                 new \DateTimeImmutable($dataSubPm['updated']),
                 'root_pm',
+                'familyA',
                 'familyVariantA1',
                 [],
                 [
@@ -346,6 +352,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
             new \DateTimeImmutable($data['created']),
             new \DateTimeImmutable($data['updated']),
             'root_pm',
+            'familyA',
             'familyVariantA1',
             [],
             [

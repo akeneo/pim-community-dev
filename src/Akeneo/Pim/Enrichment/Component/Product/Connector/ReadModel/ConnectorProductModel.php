@@ -31,6 +31,9 @@ final class ConnectorProductModel
     private $parentCode;
 
     /** @var string */
+    private $familyCode;
+
+    /** @var string */
     private $familyVariantCode;
 
     /** @var array */
@@ -51,6 +54,7 @@ final class ConnectorProductModel
         \DateTimeInterface $createdDate,
         \DateTimeInterface $updatedDate,
         ?string $parentCode,
+        string $familyCode,
         string $familyVariantCode,
         array $metadata,
         array $associations,
@@ -62,6 +66,7 @@ final class ConnectorProductModel
         $this->createdDate = $createdDate;
         $this->updatedDate = $updatedDate;
         $this->parentCode = $parentCode;
+        $this->familyCode = $familyCode;
         $this->familyVariantCode = $familyVariantCode;
         $this->metadata = $metadata;
         $this->associations = $associations;
@@ -92,6 +97,11 @@ final class ConnectorProductModel
     public function parentCode(): ?string
     {
         return $this->parentCode;
+    }
+
+    public function familyCode(): string
+    {
+        return $this->familyCode;
     }
 
     public function familyVariantCode(): string
@@ -152,6 +162,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             $this->metadata,
             $this->associations,
@@ -179,6 +190,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             $this->metadata,
             $this->associations,
@@ -207,6 +219,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             $this->metadata,
             $filteredAssociations,
@@ -236,6 +249,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             $this->metadata,
             $filteredAssociations,
@@ -252,6 +266,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             array_merge($this->metadata, [$key => $value]),
             $this->associations,

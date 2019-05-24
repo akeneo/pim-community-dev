@@ -23,6 +23,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             null,
+            'family',
             'family_variant',
             ['workflow_status' => 'in_progress'],
             [

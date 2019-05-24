@@ -21,6 +21,7 @@ class GetProductModelEndToEnd extends ApiTestCase
 
         $standardProductModel = [
             'code' => 'model-biker-jacket-leather',
+            'family' => 'clothing',
             'family_variant' => 'clothing_material_size',
             'parent' => 'model-biker-jacket',
             'categories' => ['master_men_blazers'],
