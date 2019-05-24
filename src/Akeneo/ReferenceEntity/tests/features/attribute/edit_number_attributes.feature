@@ -18,12 +18,12 @@ Feature: Edit a number attribute of a reference entity
   @acceptance-back
   Scenario Outline: Invalid is decimal edit
     Given a reference entity with a number attribute 'area' non decimal
-    When the user sets the is decimal property of the 'area' attribute to '<invalid_is_decimal>'
-    Then there should be a validation error on the property 'isDecimal' with message '<message>'
+    When the user sets the is decimal property of the 'area' attribute to '<invalid_decimals_allowed>'
+    Then there should be a validation error on the property 'decimalsAllowed' with message '<message>'
 
     Examples:
-      | invalid_is_decimal | message                            |
-      | null               | This value should not be null.     |
+      | invalid_decimals_allowed | message                        |
+      | null                   | This value should not be null. |
 
   @acceptance-back
   Scenario: Updating the min value property

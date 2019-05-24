@@ -548,7 +548,7 @@ class CreateAttributeContext implements Context
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
-        $attributeData['is_decimal'] = json_decode($attributeData['is_decimal']);
+        $attributeData['decimals_allowed'] = json_decode($attributeData['decimals_allowed']);
         $attributeData['min_value'] = $attributeData['min_value'];
         $attributeData['max_value'] = $attributeData['max_value'];
 
@@ -581,7 +581,7 @@ class CreateAttributeContext implements Context
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['labels'] = json_decode($expected['labels'], true);
-        $expected['is_decimal'] = json_decode($expected['is_decimal']);
+        $expected['decimals_allowed'] = json_decode($expected['decimals_allowed']);
         $expected['min_value'] = $expected['min_value'];
         $expected['max_value'] = $expected['max_value'];
 

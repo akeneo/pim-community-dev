@@ -142,17 +142,17 @@ Feature: Create an attribute linked to a reference entity
   @acceptance-back
   Scenario: Create a non decimal number attribute to a reference entity
     When the user creates a number attribute "area" to the reference entity "city" with:
-      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | is_decimal | min_value | max_value |
-      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | false      | 10        | 11        |
+      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | decimals_allowed | min_value | max_value |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | false          | 10        | 11        |
     Then there is a number attribute "area" in the reference entity "city" with:
-      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | type   | is_decimal | min_value | max_value |
-      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | number | false      | 10        | 11        |
+      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | type   | decimals_allowed | min_value | max_value |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | number | false          | 10        | 11        |
 
   @acceptance-back
   Scenario: Create an invalid number attribute on a reference entity
     When the user creates a number attribute "area" to the reference entity "city" with:
-      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | is_decimal | min_value | max_value |
-      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | false      | 10        | hello     |
+      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | decimals_allowed | min_value | max_value |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | false          | 10        | hello     |
     Then there should be a validation error with message 'This value should be a number.'
 
   @acceptance-front

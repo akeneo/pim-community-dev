@@ -298,8 +298,8 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNumberAttribu
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
-        isDecimal:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsDecimal: ~
+        decimalsAllowed:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\DecimalsAllowed: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MinMaxValue: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
@@ -361,10 +361,10 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIs
         isRichTextEditor:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsDecimalCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommand:
     properties:
-        isDecimal:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsDecimal: ~
+        decimalsAllowed:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\DecimalsAllowed: ~
 
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand:
     constraints:

@@ -18,7 +18,7 @@ const normalizedArea = {
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
-  is_decimal: false,
+  decimals_allowed: false,
   min_value: null,
   max_value: null,
 };

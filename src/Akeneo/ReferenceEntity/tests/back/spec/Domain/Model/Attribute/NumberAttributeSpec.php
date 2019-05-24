@@ -5,7 +5,7 @@ namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -36,7 +36,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::fromString('10'),
                 AttributeLimit::fromString('20')
             ]
@@ -67,13 +67,13 @@ class NumberAttributeSpec extends ObjectBehavior
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                AttributeIsDecimal::fromBoolean(true),
+                AttributeDecimalsAllowed::fromBoolean(true),
                 AttributeLimit::fromString('10'),
                 AttributeLimit::fromString('20')
             ]
         );
 
-        $this->normalize()['is_decimal']->shouldReturn(true);
+        $this->normalize()['decimals_allowed']->shouldReturn(true);
     }
 
     function it_creates_a_non_decimal_number()
@@ -89,7 +89,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::fromString('10'),
                 AttributeLimit::fromString('20')
             ]
@@ -109,7 +109,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
                 'type'                        => 'number',
-                'is_decimal'                  => false,
+                'decimals_allowed'                  => false,
                 'min_value'                   => '10',
                 'max_value'                   => '20'
             ]
@@ -129,7 +129,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::fromString('2'),
                 AttributeLimit::fromString('1')
             ]
@@ -137,11 +137,11 @@ class NumberAttributeSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_can_have_its_is_decimal_flag_updated()
+    function it_can_have_its_decimals_allowed_flag_updated()
     {
-        $this->setIsDecimal(AttributeIsDecimal::fromBoolean(true));
+        $this->setDecimalsAllowed(AttributeDecimalsAllowed::fromBoolean(true));
 
-        $this->normalize()['is_decimal']->shouldBe(true);
+        $this->normalize()['decimals_allowed']->shouldBe(true);
     }
 
     function it_can_have_its_min_and_max_value_updated_with_a_limit()

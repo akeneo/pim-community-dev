@@ -83,7 +83,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'number',
-                'is_decimal'                  => false,
+                'decimals_allowed'            => false,
                 'min_value'                   => '150',
                 'max_value'                   => '200',
             ]
@@ -119,7 +119,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'number',
-                'is_decimal'                  => false,
+                'decimals_allowed'            => false,
                 'min_value'                   => null,
                 'max_value'                   => null,
             ]

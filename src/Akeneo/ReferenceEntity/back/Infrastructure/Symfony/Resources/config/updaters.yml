@@ -53,8 +53,8 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
 
-    akeneo_referenceentity.application.edit_attribute.attribute_updater.is_decimal:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsDecimalUpdater
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.decimals_allowed:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\DecimalsAllowedUpdater
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
 

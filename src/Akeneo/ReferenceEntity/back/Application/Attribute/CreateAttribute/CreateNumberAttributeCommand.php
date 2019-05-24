@@ -20,7 +20,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
 class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
 {
     /** @var bool */
-    public $isDecimal;
+    public $decimalsAllowed;
 
     /** @var string|null */
     public $minValue;
@@ -35,7 +35,7 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
         bool $isRequired,
         bool $valuePerChannel,
         bool $valuePerLocale,
-        bool $isDecimal,
+        bool $decimalsAllowed,
         ?string $minValue,
         ?string $maxValue
     ) {
@@ -48,7 +48,7 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
             $valuePerLocale
         );
 
-        $this->isDecimal = $isDecimal;
+        $this->decimalsAllowed = $decimalsAllowed;
         $this->minValue = $minValue;
         $this->maxValue = $maxValue;
     }

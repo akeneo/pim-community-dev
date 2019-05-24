@@ -158,7 +158,7 @@
                     "order": 6,
                     "value_per_locale": false,
                     "value_per_channel": false,
-                    "is_decimal": false,
+                    "decimals_allowed": false,
                     "min_value": "10",
                     "max_value": "50"
                 }

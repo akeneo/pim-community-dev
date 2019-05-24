@@ -263,7 +263,7 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Regular expression
             url: URL
-        is_decimal: Decimal values allowed
+        decimals_allowed: Decimal values allowed
     delete:
       message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
       title: Attribute

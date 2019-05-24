@@ -17,15 +17,15 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class EditIsDecimalCommand extends AbstractEditAttributeCommand
+class EditDecimalsAllowedCommand extends AbstractEditAttributeCommand
 {
     /** @var bool|null */
-    public $isDecimal;
+    public $decimalsAllowed;
 
-    public function __construct(string $identifier, ?bool $isDecimal)
+    public function __construct(string $identifier, ?bool $decimalsAllowed)
     {
         parent::__construct($identifier);
 
-        $this->isDecimal = $isDecimal;
+        $this->decimalsAllowed = $decimalsAllowed;
     }
 }

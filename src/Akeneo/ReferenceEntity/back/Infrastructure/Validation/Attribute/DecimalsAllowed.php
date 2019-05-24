@@ -10,6 +10,6 @@ use Symfony\Component\Validator\Constraint;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class IsDecimal extends Constraint
+class DecimalsAllowed extends Constraint
 {
 }

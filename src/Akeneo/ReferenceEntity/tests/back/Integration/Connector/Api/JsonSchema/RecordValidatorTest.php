@@ -15,8 +15,8 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Api\JsonSchema;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
@@ -458,7 +458,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeIsDecimal::fromBoolean(false),
+            AttributeDecimalsAllowed::fromBoolean(false),
             AttributeLimit::fromString('0'),
             AttributeLimit::limitless()
         );
