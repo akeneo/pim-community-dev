@@ -14,7 +14,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Structur
 
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -56,8 +56,8 @@ SQL;
 
         $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->findOrCreate();
 
-        Assert::assertInstanceOf(AttributeGroup::class, $attributeGroup);
-        Assert::assertSame('franklin', $attributeGroup->getCode());
+        Assert::assertInstanceOf(FranklinAttributeGroupCode::class, $attributeGroup);
+        Assert::assertSame('franklin', (string) $attributeGroup);
     }
 
     public function test_it_creates_new_attribute_group()
@@ -71,8 +71,8 @@ SQL;
         $statement = $this->dbal->executeQuery($query);
         $result = $statement->fetch();
 
-        Assert::assertInstanceOf(AttributeGroup::class, $attributeGroup);
-        Assert::assertSame('franklin', $attributeGroup->getCode());
+        Assert::assertInstanceOf(FranklinAttributeGroupCode::class, $attributeGroup);
+        Assert::assertSame('franklin', (string) $attributeGroup);
         Assert::assertEquals(1, $statement->rowCount());
         Assert::assertEquals('franklin', $result['code']);
     }
