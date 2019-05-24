@@ -42,13 +42,10 @@ class CreateAttributeInFamilyHandler
 
     public function handle(CreateAttributeInFamilyCommand $command): void
     {
-        $pimAttributeGroupCode = 'franklin';
-
         $this->createAttribute->create(
             $command->getPimAttributeCode(),
             new AttributeLabel((string) $command->getFranklinAttributeLabel()),
-            $command->getFranklinAttributeType()->convertToPimAttributeType(),
-            $pimAttributeGroupCode
+            $command->getFranklinAttributeType()->convertToPimAttributeType()
         );
 
         $this->updateFamily->addAttributeToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode());

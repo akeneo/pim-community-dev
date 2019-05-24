@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -35,28 +37,32 @@ class CreateAttribute implements CreateAttributeInterface
     private $updater;
     private $saver;
     private $validator;
+    private $findOrCreateFranklinAttributeGroup;
 
     public function __construct(
         AttributeFactory $factory,
         AttributeUpdater $updater,
         AttributeSaver $saver,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup
     ) {
         $this->factory = $factory;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->validator = $validator;
+        $this->findOrCreateFranklinAttributeGroup = $findOrCreateFranklinAttributeGroup;
     }
 
     public function create(
         AttributeCode $attributeCode,
         AttributeLabel $attributeLabel,
-        string $attributeType,
-        string $attributeGroupCode
+        string $attributeType
     ): void {
+        $attributeGroup = $this->findOrCreateFranklinAttributeGroup->findOrCreate();
+
         $data = [
             'code' => (string) $attributeCode,
-            'group' => (string) $attributeGroupCode,
+            'group' => $attributeGroup->getCode(),
             'labels' => [
                 'en_US' => (string) $attributeLabel
             ],

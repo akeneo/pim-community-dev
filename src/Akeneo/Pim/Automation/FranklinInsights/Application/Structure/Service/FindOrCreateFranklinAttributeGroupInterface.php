@@ -13,17 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface CreateAttributeInterface
+interface FindOrCreateFranklinAttributeGroupInterface
 {
-    public function create(
-        AttributeCode $attributeCode,
-        AttributeLabel $attributeLabel,
-        string $attributeType
-    ): void;
+    public function findOrCreate(): AttributeGroupInterface;
 }

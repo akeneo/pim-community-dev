@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
@@ -34,28 +36,31 @@ class FakeCreateAttribute implements CreateAttributeInterface
     /** @var InMemoryAttributeGroupRepository */
     private $attributeGroupRepository;
 
+    private $findOrCreateFranklinAttributeGroup;
+
     public function __construct(
         AttributeFactory $attributeFactory,
         InMemoryAttributeRepository $attributeRepository,
-        InMemoryAttributeGroupRepository $attributeGroupRepository
+        InMemoryAttributeGroupRepository $attributeGroupRepository,
+        FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup
     ) {
         $this->attributeFactory = $attributeFactory;
         $this->attributeRepository = $attributeRepository;
         $this->attributeGroupRepository = $attributeGroupRepository;
+        $this->findOrCreateFranklinAttributeGroup = $findOrCreateFranklinAttributeGroup;
     }
 
     public function create(
         AttributeCode $attributeCode,
         AttributeLabel $attributeLabel,
-        string $attributeType,
-        string $attributeGroupCode
+        string $attributeType
     ): void {
-        $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupCode);
+        $attributeGroup = $this->findOrCreateFranklinAttributeGroup->findOrCreate();
 
         $attribute = $this->attributeFactory->create();
         $attribute->setCode((string) $attributeCode);
         $attribute->setType($attributeType);
-        $attribute->setGroup($attributeGroup);
+        $attribute->setGroup((string) $attributeGroup);
 
         $this->attributeRepository->save($attribute);
     }

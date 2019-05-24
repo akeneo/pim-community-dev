@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\Proposal
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert;
@@ -75,7 +76,7 @@ class CreateAttributeSpec extends ObjectBehavior
     ): void {
         $attributeData = [
             'code' => 'Foo_bar',
-            'group' => 'franklin',
+            'group' => (string) new FranklinAttributeGroupCode(),
             'labels' => [
                 'en_US' => 'Foo bar'
             ],
@@ -92,8 +93,7 @@ class CreateAttributeSpec extends ObjectBehavior
         $this->create(
             AttributeCode::fromString('Foo bar'),
             new AttributeLabel('Foo bar'),
-            'text',
-            'franklin'
+            'text'
         )->shouldReturn(null);
     }
 
@@ -107,7 +107,7 @@ class CreateAttributeSpec extends ObjectBehavior
     ): void {
         $attributeData = [
             'code' => 'Foo_bar',
-            'group' => 'franklin',
+            'group' => (string) new FranklinAttributeGroupCode(),
             'labels' => [
                 'en_US' => 'Foo bar'
             ],
@@ -128,8 +128,7 @@ class CreateAttributeSpec extends ObjectBehavior
                 [
                     AttributeCode::fromString('Foo bar'),
                     new AttributeLabel('Foo bar'),
-                    'text',
-                    'franklin'
+                    'text'
                 ]
             );
     }
