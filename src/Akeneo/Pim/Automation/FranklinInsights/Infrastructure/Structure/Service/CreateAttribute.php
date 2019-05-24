@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateA
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
@@ -56,7 +57,7 @@ class CreateAttribute implements CreateAttributeInterface
     public function create(
         AttributeCode $attributeCode,
         AttributeLabel $attributeLabel,
-        string $attributeType
+        AttributeType $attributeType
     ): void {
         $attributeGroup = $this->findOrCreateFranklinAttributeGroup->findOrCreate();
 
@@ -71,7 +72,7 @@ class CreateAttribute implements CreateAttributeInterface
         ];
 
         /** @var AttributeInterface $attribute */
-        $attribute = $this->factory->createAttribute($attributeType);
+        $attribute = $this->factory->createAttribute((string) $attributeType);
         $this->updater->update($attribute, $data);
 
         $violations = $this->validator->validate($attribute);

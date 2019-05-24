@@ -15,8 +15,10 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\St
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
@@ -26,6 +28,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
@@ -51,9 +54,10 @@ class CreateAttributeSpec extends ObjectBehavior
         AttributeFactory $factory,
         AttributeUpdater $updater,
         AttributeSaver $saver,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup
     ): void {
-        $this->beConstructedWith($factory, $updater, $saver, $validator);
+        $this->beConstructedWith($factory, $updater, $saver, $validator, $findOrCreateFranklinAttributeGroup);
     }
 
     public function it_is_initializable(): void
@@ -71,7 +75,9 @@ class CreateAttributeSpec extends ObjectBehavior
         $updater,
         $validator,
         $saver,
+        $findOrCreateFranklinAttributeGroup,
         AttributeInterface $attribute,
+        AttributeGroupInterface $attributeGroup,
         ConstraintViolationListInterface $violations
     ): void {
         $attributeData = [
@@ -84,7 +90,10 @@ class CreateAttributeSpec extends ObjectBehavior
             'scopable' => false
         ];
 
-        $factory->createAttribute('text')->willReturn($attribute);
+        $findOrCreateFranklinAttributeGroup->findOrCreate()->willReturn($attributeGroup);
+        $attributeGroup->getCode()->willReturn((string) new FranklinAttributeGroupCode());
+
+        $factory->createAttribute('pim_catalog_text')->willReturn($attribute);
         $updater->update($attribute, $attributeData)->shouldBeCalled();
         $validator->validate($attribute)->willReturn($violations->getWrappedObject());
         $violations->count()->willReturn(0);
@@ -93,7 +102,7 @@ class CreateAttributeSpec extends ObjectBehavior
         $this->create(
             AttributeCode::fromString('Foo bar'),
             new AttributeLabel('Foo bar'),
-            'text'
+            new AttributeType('pim_catalog_text')
         )->shouldReturn(null);
     }
 
@@ -102,7 +111,9 @@ class CreateAttributeSpec extends ObjectBehavior
         $updater,
         $validator,
         $saver,
+        $findOrCreateFranklinAttributeGroup,
         AttributeInterface $attribute,
+        AttributeGroupInterface $attributeGroup,
         ConstraintViolationListInterface $violations
     ): void {
         $attributeData = [
@@ -115,7 +126,10 @@ class CreateAttributeSpec extends ObjectBehavior
             'scopable' => false
         ];
 
-        $factory->createAttribute('text')->willReturn($attribute);
+        $findOrCreateFranklinAttributeGroup->findOrCreate()->willReturn($attributeGroup);
+        $attributeGroup->getCode()->willReturn((string) new FranklinAttributeGroupCode());
+
+        $factory->createAttribute('pim_catalog_text')->willReturn($attribute);
         $updater->update($attribute, $attributeData)->shouldBeCalled();
         $validator->validate($attribute)->willReturn($violations->getWrappedObject());
         $violations->count()->willReturn(1);
@@ -128,7 +142,7 @@ class CreateAttributeSpec extends ObjectBehavior
                 [
                     AttributeCode::fromString('Foo bar'),
                     new AttributeLabel('Foo bar'),
-                    'text'
+                    new AttributeType('pim_catalog_text')
                 ]
             );
     }

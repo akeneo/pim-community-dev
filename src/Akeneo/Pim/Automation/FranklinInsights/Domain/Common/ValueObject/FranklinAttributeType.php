@@ -52,9 +52,11 @@ class FranklinAttributeType
         $this->type = $type;
     }
 
-    public function convertToPimAttributeType(): string
+    public function convertToPimAttributeType(): AttributeType
     {
-        return array_search($this->type, AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS);
+        return new AttributeType(
+            array_search($this->type, AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS)
+        );
     }
 
     /**

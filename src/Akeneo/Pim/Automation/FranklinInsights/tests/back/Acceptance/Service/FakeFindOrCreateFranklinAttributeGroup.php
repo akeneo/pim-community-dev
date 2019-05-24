@@ -36,7 +36,8 @@ class FakeFindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttr
         $this->repository = $repository;
     }
 
-    public function findOrCreate(): AttributeGroupInterface {
+    public function findOrCreate(): AttributeGroupInterface
+    {
         $attributeGroupCode = new FranklinAttributeGroupCode();
         $attributeGroup = $this->repository->findOneByIdentifier((string) $attributeGroupCode);
         if ($attributeGroup instanceof AttributeGroupInterface) {

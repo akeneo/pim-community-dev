@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttr
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
@@ -51,8 +52,7 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
         $createAttribute->create(
             $pimAttrCode,
             new AttributeLabel('Franklin attr label'),
-            AttributeTypes::TEXT,
-            'franklin'
+            new AttributeType(AttributeTypes::TEXT)
         )->shouldBeCalled();
 
         $addAttributeToFamily->addAttributeToFamily($pimAttrCode, $pimFamilyCode)->shouldBeCalled();
