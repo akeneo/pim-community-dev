@@ -53,7 +53,6 @@ class CreateAttribute implements CreateAttributeInterface
     ): void {
         $data = [
             'code' => (string) $attributeCode,
-            'type' => (string) $attributeType,
             'group' => (string) $attributeGroupCode,
             'labels' => [
                 'en_US' => (string) $attributeLabel
@@ -63,7 +62,7 @@ class CreateAttribute implements CreateAttributeInterface
         ];
 
         /** @var AttributeInterface $attribute */
-        $attribute = $this->factory->create();
+        $attribute = $this->factory->createAttribute($attributeType);
         $this->updater->update($attribute, $data);
 
         $violations = $this->validator->validate($attribute);

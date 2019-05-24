@@ -14,20 +14,26 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\AddAttributeToFamily;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\CreateAttribute;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
+use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -44,93 +50,45 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class CreateAttributeSpec extends ObjectBehavior
+class AddAttributeToFamilySpec extends ObjectBehavior
 {
     public function let(
-        AttributeFactory $factory,
-        AttributeUpdater $updater,
-        AttributeSaver $saver,
+        FamilyUpdater $updater,
+        FamilySaver $saver,
+        FamilyRepository $repository,
         ValidatorInterface $validator
     ): void {
-        $this->beConstructedWith($factory, $updater, $saver, $validator);
+        $this->beConstructedWith($updater, $saver, $repository, $validator);
     }
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(CreateAttribute::class);
+        $this->shouldHaveType(AddAttributeToFamily::class);
     }
 
-    public function it_is_a_create_attribute(): void
+    public function it_is_an_implementation_of_add_attribute_to_family(): void
     {
-        $this->shouldImplement(CreateAttributeInterface::class);
+        $this->shouldImplement(AddAttributeToFamilyInterface::class);
     }
 
-    public function it_creates_an_attribute(
-        $factory,
+    public function it_adds_attribute_to_a_family(
         $updater,
-        $validator,
         $saver,
-        AttributeInterface $attribute,
+        $repository,
+        $validator,
+        FamilyInterface $family,
         ConstraintViolationListInterface $violations
     ): void {
         $attributeData = [
-            'code' => 'Foo_bar',
-            'group' => 'franklin',
-            'labels' => [
-                'en_US' => 'Foo bar'
-            ],
-            'localizable' => false,
-            'scopable' => false
+            'attributes' => 'Foo_bar',
         ];
 
-        $factory->createAttribute('text')->willReturn($attribute);
-        $updater->update($attribute, $attributeData)->shouldBeCalled();
-        $validator->validate($attribute)->willReturn($violations->getWrappedObject());
-        $violations->count()->willReturn(0);
-        $saver->save($attribute)->shouldBeCalled();
+        $repository->findOneByIdentifier('bar')->willReturn($family);
+        //$family->getAttributeCodes()->willReturn()
 
-        $this->create(
-            AttributeCode::fromString('Foo bar'),
-            new AttributeLabel('Foo bar'),
-            'text',
-            'franklin'
+        $this->addAttributeToFamily(
+            AttributeCode::fromString('Foo'),
+            new FamilyCode('bar')
         )->shouldReturn(null);
-    }
-
-    public function it_throws_an_exception_when_there_are_some_violations(
-        $factory,
-        $updater,
-        $validator,
-        $saver,
-        AttributeInterface $attribute,
-        ConstraintViolationListInterface $violations
-    ): void {
-        $attributeData = [
-            'code' => 'Foo_bar',
-            'group' => 'franklin',
-            'labels' => [
-                'en_US' => 'Foo bar'
-            ],
-            'localizable' => false,
-            'scopable' => false
-        ];
-
-        $factory->createAttribute('text')->willReturn($attribute);
-        $updater->update($attribute, $attributeData)->shouldBeCalled();
-        $validator->validate($attribute)->willReturn($violations->getWrappedObject());
-        $violations->count()->willReturn(1);
-        $saver->save($attribute)->shouldNotBeCalled();
-
-        $this
-            ->shouldThrow(new ViolationHttpException($violations->getWrappedObject()))
-            ->during(
-                'create',
-                [
-                    AttributeCode::fromString('Foo bar'),
-                    new AttributeLabel('Foo bar'),
-                    'text',
-                    'franklin'
-                ]
-            );
     }
 }
