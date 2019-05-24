@@ -66,15 +66,14 @@ class AddAttributeToFamily implements AddAttributeToFamilyInterface
     public function addAttributeToFamily(AttributeCode $attributeCode, FamilyCode $familyCode)
     {
         $family = $this->getFamily($familyCode);
-
         if ($family === null) {
-            throw new \UnexpectedValueException(sprintf('Family with code "%s" does not exist', (string) $familyCode));
+            throw new \InvalidArgumentException(
+                sprintf('Family with code "%s" does not exist', (string) $familyCode)
+            );
         }
 
         $familyAttributeCodes = $family->getAttributeCodes();
-
         array_push($familyAttributeCodes, (string) $attributeCode);
-
         $data = [
             'attributes' => $familyAttributeCodes,
         ];

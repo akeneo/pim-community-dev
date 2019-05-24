@@ -13,37 +13,16 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\AddAttributeToFamily;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\CreateAttribute;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
-use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -71,7 +50,7 @@ class AddAttributeToFamilySpec extends ObjectBehavior
         $this->shouldImplement(AddAttributeToFamilyInterface::class);
     }
 
-    public function it_adds_attribute_to_a_family(
+    public function it_adds_attribute_to_a_family_without_attributes(
         $updater,
         $saver,
         $repository,
@@ -79,16 +58,84 @@ class AddAttributeToFamilySpec extends ObjectBehavior
         FamilyInterface $family,
         ConstraintViolationListInterface $violations
     ): void {
-        $attributeData = [
-            'attributes' => 'Foo_bar',
-        ];
-
         $repository->findOneByIdentifier('bar')->willReturn($family);
-        //$family->getAttributeCodes()->willReturn()
+        $family->getAttributeCodes()->willReturn([]);
+
+        $updater->update($family, ['attributes' => ['Foo']])->shouldBeCalled();
+        $validator->validate($family)->willReturn($violations->getWrappedObject());
+        $violations->count()->willReturn(0);
+
+        $saver->save($family)->shouldBeCalled();
 
         $this->addAttributeToFamily(
             AttributeCode::fromString('Foo'),
             new FamilyCode('bar')
         )->shouldReturn(null);
+    }
+
+    public function it_adds_attribute_to_a_family_with_attributes(
+        $updater,
+        $saver,
+        $repository,
+        $validator,
+        FamilyInterface $family,
+        ConstraintViolationListInterface $violations
+    ): void {
+        $repository->findOneByIdentifier('bar')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['baz']);
+
+        $updater->update($family, ['attributes' => ['baz', 'Foo']])->shouldBeCalled();
+        $validator->validate($family)->willReturn($violations->getWrappedObject());
+        $violations->count()->willReturn(0);
+
+        $saver->save($family)->shouldBeCalled();
+
+        $this->addAttributeToFamily(
+            AttributeCode::fromString('Foo'),
+            new FamilyCode('bar')
+        )->shouldReturn(null);
+    }
+
+    public function it_throws_an_exception_when_family_does_not_exist($repository): void
+    {
+        $repository->findOneByIdentifier('bar')->willReturn(null);
+
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
+            ->during(
+                'addAttributeToFamily',
+                [
+                    AttributeCode::fromString('Foo'),
+                    new FamilyCode('bar')
+                ]
+            );
+    }
+
+    public function it_throws_an_exception_when_there_are_some_violations(
+        $updater,
+        $saver,
+        $repository,
+        $validator,
+        FamilyInterface $family,
+        ConstraintViolationListInterface $violations
+    ): void {
+        $repository->findOneByIdentifier('bar')->willReturn($family);
+        $family->getAttributeCodes()->willReturn([]);
+
+        $updater->update($family, ['attributes' => ['Foo']])->shouldBeCalled();
+        $validator->validate($family)->willReturn($violations->getWrappedObject());
+        $violations->count()->willReturn(1);
+
+        $saver->save($family)->shouldNotBeCalled();
+
+        $this
+            ->shouldThrow(new ViolationHttpException($violations->getWrappedObject()))
+            ->during(
+                'addAttributeToFamily',
+                [
+                    AttributeCode::fromString('Foo'),
+                    new FamilyCode('bar')
+                ]
+            );
     }
 }
