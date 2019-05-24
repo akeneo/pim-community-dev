@@ -15,8 +15,8 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Struc
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -48,13 +48,14 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
         $franklinAttrLabel = new FranklinAttributeLabel('Franklin attr label');
         $franklinAttrType = new FranklinAttributeType('text');
 
-        $createAttribute->create($pimAttrCode,
+        $createAttribute->create(
+            $pimAttrCode,
             new AttributeLabel('Franklin attr label'),
             AttributeTypes::TEXT,
             'franklin'
         )->shouldBeCalled();
 
-        $addAttributeToFamily->addAttributeToFamily($pimAttrCode, new FamilyCode('my_family_code'))->shouldBeCalled();
+        $addAttributeToFamily->addAttributeToFamily($pimAttrCode, $pimFamilyCode)->shouldBeCalled();
 
         $command= new CreateAttributeInFamilyCommand(
             $pimFamilyCode,
