@@ -17,7 +17,7 @@ Feature: Apply ACL permissions on mass edit actions
     Given I edit the "Catalog manager" Role
     And I visit the "Permissions" tab
     And I grant rights to group Products
-    And I revoke rights to resource Change product family and Change state of product
+    And I revoke rights to resource Change product family and Change the status of a product
     And I save the Role
     Then I should not see the text "There are unsaved changes."
     When I am on the products grid
