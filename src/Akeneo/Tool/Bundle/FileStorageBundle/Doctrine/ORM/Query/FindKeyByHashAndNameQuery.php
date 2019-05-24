@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\FileStorage\Query\FindKeyByHashAndNameQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
- * Find a FileInfo model by its hash value
+ * Find a FileInfo model by its hash and filename
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
