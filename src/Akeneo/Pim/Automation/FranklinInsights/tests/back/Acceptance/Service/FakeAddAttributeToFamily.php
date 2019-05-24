@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\UpdateFamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -22,7 +22,7 @@ use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class FakeUpdateFamily implements UpdateFamilyInterface
+class FakeAddAttributeToFamily implements AddAttributeToFamilyInterface
 {
     private $attributeRepository;
 

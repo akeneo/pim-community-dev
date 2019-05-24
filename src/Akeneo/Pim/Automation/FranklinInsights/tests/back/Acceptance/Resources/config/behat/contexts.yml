@@ -80,6 +80,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.handler.get_attribute_mapping_with_suggestions'
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes'
             - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: 'fob.context_service' }
 

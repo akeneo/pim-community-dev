@@ -11,8 +11,8 @@ services:
     akeneo.pim.automation.franklin_insights.subscriber.subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subscription\NullSubscriptionSubscriber'
 
-    akeneo.pim.automation.franklin_insights.application.structure.service.update_family:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeUpdateFamily'
+    akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeAddAttributeToFamily'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'

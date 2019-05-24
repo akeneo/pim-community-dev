@@ -31,7 +31,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query\InMemorySelectExactMatchAttributeCodeQuery;
 use Behat\Behat\Context\Context;
@@ -76,6 +79,9 @@ final class AttributesMappingContext implements Context
     /** @var InMemoryFamilyRepository */
     private $familyRepository;
 
+    /** @var InMemoryAttributeRepository */
+    private $attributeRepository;
+
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
@@ -84,7 +90,8 @@ final class AttributesMappingContext implements Context
         FakeClient $fakeClient,
         GetAttributesMappingWithSuggestionsHandler $getAttributesMappingWithSuggestionsHandler,
         InMemorySelectExactMatchAttributeCodeQuery $inMemorySelectExactMatchAttributeCodeQuery,
-        InMemoryFamilyRepository $familyRepository
+        InMemoryFamilyRepository $familyRepository,
+        InMemoryAttributeRepository $attributeRepository
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
@@ -94,6 +101,7 @@ final class AttributesMappingContext implements Context
         $this->getAttributesMappingWithSuggestionsHandler = $getAttributesMappingWithSuggestionsHandler;
         $this->inMemorySelectExactMatchAttributeCodeQuery = $inMemorySelectExactMatchAttributeCodeQuery;
         $this->familyRepository = $familyRepository;
+        $this->attributeRepository = $attributeRepository;
 
         $this->originalAttributesMapping = null;
         $this->retrievedFamilies = [];
@@ -195,9 +203,9 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @When I create the attribute :franklinAttrType :franklinAttrLabel in the family :familyCode
+     * @When I create the :franklinAttrType attribute :franklinAttrLabel in the family :familyCode
      */
-    public function iCreateTheAttributeTextInTheFamily($franklinAttrType, $franklinAttrLabel, $familyCode)
+    public function iCreateTheAttributeInTheFamily($franklinAttrType, $franklinAttrLabel, $familyCode): void
     {
         try {
             $command = new CreateAttributeInFamilyCommand(
@@ -212,9 +220,28 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @Then the family :familyCode contains the attribute :franklinAttrType :attrCode
+     * @Then the attribute :attrcode should not be created
      */
-    public function theFamilyContainsTheAttribute($familyCode, $franklinAttrType, $attrCode)
+    public function theAttributeShouldNotBeCreated($attrCode): void
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attrCode);
+        Assert::null($attribute);
+    }
+
+    /**
+     * @Then the attribute :attrCode should belongs to the :attrGroupCode attribute group
+     */
+    public function theAttributeShouldBelongsToTheAttributeGroup($attrCode, $attrGroupCode)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attrCode);
+        Assert::isInstanceOf($attribute, AttributeInterface::class);
+        Assert::isInstanceOf($attribute->getGroup(), AttributeGroupInterface::class);
+    }
+
+    /**
+     * @Then the family :familyCode should have the :franklinAttrType attribute :attrCode
+     */
+    public function theFamilyShouldHaveTheAttribute($familyCode, $franklinAttrType, $attrCode): void
     {
         $e = ExceptionContext::getThrownException();
         Assert::null($e);
@@ -233,7 +260,6 @@ final class AttributesMappingContext implements Context
             }
         }
     }
-
 
     /**
      * @Then the retrieved attributes mapping for the family :familyCode should be:

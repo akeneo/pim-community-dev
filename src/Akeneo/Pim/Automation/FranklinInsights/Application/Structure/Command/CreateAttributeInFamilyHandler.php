@@ -3,12 +3,11 @@
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
-
 use Akeneo\Pim\Automation\FranklinInsights\Application\Converter\FranklinAttributeLabelToAttributeLabelInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Converter\FranklinAttributeTypeToAttributeTypeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\PimAttributeGroupFactoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\UpdateFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
@@ -19,16 +18,16 @@ class CreateAttributeInFamilyHandler
     /** @var CreateAttributeInterface */
     private $createAttribute;
 
-    /** @var UpdateFamilyInterface */
+    /** @var AddAttributeToFamilyInterface */
     private $updateFamily;
 
     /**
      * @param CreateAttributeInterface $createAttribute
-     * @param UpdateFamilyInterface $updateFamily
+     * @param AddAttributeToFamilyInterface $updateFamily
      */
     public function __construct(
         CreateAttributeInterface $createAttribute,
-        UpdateFamilyInterface $updateFamily
+        AddAttributeToFamilyInterface $updateFamily
     ) {
         $this->createAttribute = $createAttribute;
         $this->updateFamily = $updateFamily;
@@ -37,6 +36,7 @@ class CreateAttributeInFamilyHandler
     public function handle(CreateAttributeInFamilyCommand $command)
     {
         $pimFamilyCode = $command->getPimFamilyCode();
+        $pimAttributeCode = $command->getPimAttributeCode();
         $franklinAttributeLabel = $command->getFranklinAttributeLabel();
         $franklinAttributeType = $command->getFranklinAttributeType();
 
@@ -52,13 +52,11 @@ class CreateAttributeInFamilyHandler
         }
 
         $pimAttributeGroupCode = 'franklin';
-        $pimAttributeCode = AttributeCode::fromString($franklinAttributeLabel);
+
         $pimAttributeLabel = new AttributeLabel((string) $franklinAttributeLabel);
         $pimAttributeType = AttributeTypes::TEXT;
 
         $this->createAttribute->create($pimAttributeCode, $pimAttributeLabel, $pimAttributeType, $pimAttributeGroupCode);
         $this->updateFamily->addAttributeToFamily($pimAttributeCode, $pimFamilyCode);
-
-        $command->setCreatedAttributeCode($pimAttributeCode);
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\UpdateFamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository;
@@ -24,7 +24,7 @@ use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UpdateFamily implements UpdateFamilyInterface
+class AddAttributeToFamily implements AddAttributeToFamilyInterface
 {
     /**
      * @var FamilyUpdater

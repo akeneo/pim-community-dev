@@ -13,11 +13,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 
 class FranklinAttributeType
 {
     /** @var string */
     private $type;
+
+    const AVAILABLE_TYPES = [
+        'boolean',
+        'metric',
+        'multiselect',
+        'number',
+        'select',
+        'text',
+    ];
 
     /**
      * @param string $type
@@ -27,8 +37,22 @@ class FranklinAttributeType
         if (empty($type)) {
             throw new \InvalidArgumentException('Franklin attribute type cannot be an empty string');
         }
+        if (!in_array($type, self::AVAILABLE_TYPES)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Franklin attribute type is not valid "%s". Allowed values [%s]',
+                    $type,
+                    implode(', ', self::AVAILABLE_TYPES)
+                )
+            );
+        }
 
         $this->type = $type;
+    }
+
+    public function convertToPimType(): string
+    {
+        return array_search($this->type, AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS);
     }
 
     /**

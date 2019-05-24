@@ -122,4 +122,4 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.structure.service.create_attribute'
-            - '@akeneo.pim.automation.franklin_insights.application.structure.service.update_family'
+            - '@akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family'

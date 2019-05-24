@@ -4,7 +4,7 @@
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Structure\Service;
 
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\UpdateFamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Test\Integration\Configuration;
@@ -12,19 +12,19 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
-class UpdateFamilyIntegration extends TestCase
+class AddAttributeToFamilyIntegration extends TestCase
 {
     /** @var Connection */
     private $dbal;
 
-    /** @var UpdateFamilyInterface */
+    /** @var AddAttributeToFamilyInterface */
     private $updateFamilyService;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->dbal = $this->get('database_connection');
-        $this->updateFamilyService = $this->get('akeneo.pim.automation.franklin_insights.application.structure.service.update_family');
+        $this->updateFamilyService = $this->get('akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family');
     }
 
     /**

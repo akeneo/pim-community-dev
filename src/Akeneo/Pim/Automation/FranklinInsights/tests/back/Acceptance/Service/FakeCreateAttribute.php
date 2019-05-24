@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateA
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 
@@ -45,7 +44,7 @@ class FakeCreateAttribute implements CreateAttributeInterface
         $this->attributeGroupRepository = $attributeGroupRepository;
     }
 
-    public function create(AttributeCode $attributeCode, AttributeLabel $attributeLabel, string $attributeType, string $attributeGroupCode)
+    public function create(AttributeCode $attributeCode, AttributeLabel $attributeLabel, string $attributeType, string $attributeGroupCode): void
     {
         $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupCode);
 

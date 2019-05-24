@@ -56,8 +56,8 @@ services:
             - '@pim_catalog.saver.attribute'
             - '@validator'
 
-    akeneo.pim.automation.franklin_insights.application.structure.service.update_family:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\UpdateFamily'
+    akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\AddAttributeToFamily'
         arguments:
             - '@pim_catalog.updater.family'
             - '@pim_catalog.saver.family'

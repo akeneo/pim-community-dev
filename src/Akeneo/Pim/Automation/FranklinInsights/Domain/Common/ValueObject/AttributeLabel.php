@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 
-
 class AttributeLabel
 {
     /** @var string */
