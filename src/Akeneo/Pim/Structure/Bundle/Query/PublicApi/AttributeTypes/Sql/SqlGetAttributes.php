@@ -28,7 +28,7 @@ final class SqlGetAttributes implements GetAttributes
         }
 
         $query = <<<SQL
-        SELECT code, attribute_type, properties
+        SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family
         FROM pim_catalog_attribute
         WHERE code IN (:attributeCodes)
 SQL;
@@ -42,7 +42,14 @@ SQL;
         return array_map(function (array $attribute): Attribute {
             $properties = unserialize($attribute['properties']);
 
-            return new Attribute($attribute['code'], $attribute['attribute_type'], $properties);
+            return new Attribute(
+                $attribute['code'],
+                $attribute['attribute_type'],
+                $properties,
+                boolval($attribute['is_localizable']),
+                boolval($attribute['is_scopable']),
+                $attribute['metric_family']
+            );
         }, $rawResults);
     }
 }
