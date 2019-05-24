@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8374: Fix timeout when launching the completeness purge command
+- PIM-7596: Fix margins on datagrids under tabs
 
 # 2.3.45 (2019-05-23)
 
