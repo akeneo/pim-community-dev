@@ -359,8 +359,17 @@ DESC
         $this->firstName = $input->getArgument('firstName');
         $this->lastName = $input->getArgument('lastName');
         $this->userDefaultLocaleCode = $input->getArgument('locale');
-        // we can't use $input->getArgument('locale') for catalog locale as maybe it's not activated
-        $this->catalogDefaultLocaleCode = 'en_US';
+
+        $activatedLocaleCodes = $this->getContainer()->get('pim_catalog.repository.locale')->getActivatedLocaleCodes();
+        if (empty($activatedLocaleCodes)) {
+            throw new \InvalidArgumentException("There is no activated locale. The catalog default locale of the user must be an activated locale.");
+        }
+
+        if (in_array($input->getArgument('locale'), $activatedLocaleCodes)) {
+            $this->catalogDefaultLocaleCode = $input->getArgument('locale');
+        } else {
+            $this->catalogDefaultLocaleCode = $activatedLocaleCodes[0];
+        }
 
         $this->isAdmin = $input->getOption('admin');
     }
