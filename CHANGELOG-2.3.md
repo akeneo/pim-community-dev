@@ -5,6 +5,7 @@
 - PIM-8308: Fix broken translation keys for import and export profiles
 - PIM-8374: Fix timeout when launching the completeness purge command
 - PIM-7596: Fix margins on datagrids under tabs
+- PIM-6829: Fix mass edit enabled steps
 
 # 2.3.45 (2019-05-23)
 
