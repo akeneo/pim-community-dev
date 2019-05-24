@@ -3,12 +3,14 @@
 ## Bug fixes
 
 - PIM-8308: Fix broken translation keys for import and export profiles
+- PIM-8374: Fix timeout when launching the completeness purge command
 
 # 2.3.45 (2019-05-23)
 
 ## Bug fixes
 
 - PIM-8351: Fix entity overriding priority
+- PIM-7321: Fix blinking grid elements in gallery mode
 
 # 2.3.44 (2019-05-20)
 
