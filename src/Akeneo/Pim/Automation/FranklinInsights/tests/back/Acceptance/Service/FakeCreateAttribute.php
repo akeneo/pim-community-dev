@@ -56,12 +56,12 @@ class FakeCreateAttribute implements CreateAttributeInterface
         AttributeLabel $attributeLabel,
         AttributeType $attributeType
     ): void {
-        $attributeGroup = $this->findOrCreateFranklinAttributeGroup->findOrCreate();
+        $attributeGroupCode = $this->findOrCreateFranklinAttributeGroup->findOrCreate();
 
         $attribute = $this->attributeFactory->create();
         $attribute->setCode((string) $attributeCode);
         $attribute->setType((string) $attributeType);
-        $attribute->setGroup((string) $attributeGroup);
+        $attribute->setGroup((string) $attributeGroupCode);
 
         $this->attributeRepository->save($attribute);
     }

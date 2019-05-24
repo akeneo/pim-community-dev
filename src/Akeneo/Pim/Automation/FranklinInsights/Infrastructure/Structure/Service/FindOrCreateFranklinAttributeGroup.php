@@ -44,12 +44,12 @@ class FindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttribut
         $this->validator = $validator;
     }
 
-    public function findOrCreate(): AttributeGroupInterface
+    public function findOrCreate(): FranklinAttributeGroupCode
     {
         $attributeGroupCode = new FranklinAttributeGroupCode();
         $attributeGroup = $this->repository->findOneByIdentifier((string) $attributeGroupCode);
         if ($attributeGroup instanceof AttributeGroupInterface) {
-            return $attributeGroup;
+            return $attributeGroupCode;
         }
 
         $attributeGroup = $this->factory->create();
@@ -62,6 +62,6 @@ class FindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttribut
 
         $this->saver->save($attributeGroup);
 
-        return $attributeGroup;
+        return $attributeGroupCode;
     }
 }

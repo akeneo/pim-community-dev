@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
 interface FindOrCreateFranklinAttributeGroupInterface
 {
-    public function findOrCreate(): AttributeGroupInterface;
+    public function findOrCreate(): FranklinAttributeGroupCode;
 }

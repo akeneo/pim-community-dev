@@ -59,11 +59,11 @@ class CreateAttribute implements CreateAttributeInterface
         AttributeLabel $attributeLabel,
         AttributeType $attributeType
     ): void {
-        $attributeGroup = $this->findOrCreateFranklinAttributeGroup->findOrCreate();
+        $attributeGroupCode = $this->findOrCreateFranklinAttributeGroup->findOrCreate();
 
         $data = [
             'code' => (string) $attributeCode,
-            'group' => $attributeGroup->getCode(),
+            'group' => (string) $attributeGroupCode,
             'labels' => [
                 'en_US' => (string) $attributeLabel
             ],
