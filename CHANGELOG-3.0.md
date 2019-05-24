@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7772: Fix translation in roles ACL
 - PIM-8308: Fix missing translation for import and export profiles
 
 # 3.0.20 (2019-05-24)
