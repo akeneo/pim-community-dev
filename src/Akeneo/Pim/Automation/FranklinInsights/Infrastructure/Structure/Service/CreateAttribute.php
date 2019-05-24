@@ -28,40 +28,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateAttribute implements CreateAttributeInterface
 {
-    /**
-     * @var SimpleFactoryInterface
-     */
     private $factory;
-    /**
-     * @var ObjectUpdaterInterface
-     */
     private $updater;
-    /**
-     * @var SaverInterface
-     */
     private $saver;
-    /**
-     * @var ValidatorInterface
-     */
     private $validator;
 
-    /**
-     * CreateAttribute constructor.
-     * @param AttributeFactory $factory
-     * @param AttributeUpdater $updater
-     * @param AttributeSaver $saver
-     * @param ValidatorInterface $validator
-     */
-    public function __construct(AttributeFactory $factory, AttributeUpdater $updater, AttributeSaver $saver, ValidatorInterface $validator)
-    {
+    public function __construct(
+        AttributeFactory $factory,
+        AttributeUpdater $updater,
+        AttributeSaver $saver,
+        ValidatorInterface $validator
+    ) {
         $this->factory = $factory;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->validator = $validator;
     }
 
-    public function create(AttributeCode $attributeCode, AttributeLabel $attributeLabel, string $attributeType, string $attributeGroupCode)
-    {
+    public function create(
+        AttributeCode $attributeCode,
+        AttributeLabel $attributeLabel,
+        string $attributeType,
+        string $attributeGroupCode
+    ): void {
         $data = [
             'code' => (string) $attributeCode,
             'type' => (string) $attributeType,

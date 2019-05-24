@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Val
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
+use function InvalidPhpDoc\voidThrows;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -77,4 +78,45 @@ class FranklinAttributeTypeSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(FranklinAttributeType::class);
     }
 
+    public function it_converts_text_to_pim_attribute_type()
+    {
+        $this->beConstructedWith('text');
+        $this->convertToPimAttributeType()->shouldReturn('pim_catalog_text');
+    }
+
+    public function it_converts_number_to_pim_attribute_type()
+    {
+        $this->beConstructedWith('number');
+        $this->convertToPimAttributeType()->shouldReturn('pim_catalog_number');
+    }
+
+    public function it_converts_metric_to_pim_attribute_type()
+    {
+        $this->beConstructedWith('metric');
+        $this->convertToPimAttributeType()->shouldReturn('pim_catalog_metric');
+    }
+
+    public function it_converts_select_to_pim_attribute_type()
+    {
+        $this->beConstructedWith('select');
+        $this->convertToPimAttributeType()->shouldReturn('pim_catalog_simpleselect');
+    }
+
+    public function it_converts_multiselect_to_pim_attribute_type()
+    {
+        $this->beConstructedWith('multiselect');
+        $this->convertToPimAttributeType()->shouldReturn('pim_catalog_multiselect');
+    }
+
+    public function it_converts_boolean_to_pim_attribute_type()
+    {
+        $this->beConstructedWith('boolean');
+        $this->convertToPimAttributeType()->shouldReturn('pim_catalog_boolean');
+    }
+
+    public function it_returns_the_type(): void
+    {
+        $this->beConstructedWith('boolean');
+        $this->__toString()->shouldReturn('boolean');
+    }
 }

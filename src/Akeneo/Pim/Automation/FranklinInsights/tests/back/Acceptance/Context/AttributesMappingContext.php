@@ -27,6 +27,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\Att
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
@@ -210,6 +211,7 @@ final class AttributesMappingContext implements Context
         try {
             $command = new CreateAttributeInFamilyCommand(
                 new FamilyCode($familyCode),
+                AttributeCode::fromString($franklinAttrLabel),
                 new FranklinAttributeLabel($franklinAttrLabel),
                 new FranklinAttributeType($franklinAttrType)
             );
