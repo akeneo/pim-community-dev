@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.20 (2019-05-24)
+
 ## Improvements
 
 - PIM-8360: Ref Entities / Onboarder - Add a query in public API to fetch all records with their localized labels
