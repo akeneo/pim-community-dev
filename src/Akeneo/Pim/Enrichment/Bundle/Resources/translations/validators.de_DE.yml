@@ -1,7 +1,7 @@
 An identifier attribute already exists.: Ein identifizierendes Attribut existiert bereits.
 Attribute code may contain only letters, numbers and underscore: Ein Attributcode darf sich nur aus Buchstaben, Nummern und Unterstrichen zusammensetzen
 Attribute code may contain only letters (at least one), numbers and underscores: Der Attributcode kann nur Buchstaben (mind. 1), Zahlen und Unterstriche enthalten.
-This attribute type can't be used as a grid filter: Dieser Attributtyp kann nicht als Tabellenfilter verwendet werden
+This attribute type can't be used as a grid filter: Dieser Attributtyp kann nicht als Filter in der Listenansicht verwendet werden
 This code is not available: Dieser Code ist nicht verfügbar
 This attribute type must be required: Dieser Attributtyp muss ein Pflichtfeld sein
 This attribute type can't be required: Dieser Attributtyp kann kein Pflichtfeld sein
@@ -51,8 +51,12 @@ pim_catalog:
     family_variant_axes_attribute_type: Variantenachsen "%axis%" müssen boolesche, einfache Auswahl, einfache Referenzdaten oder metrische Werte sein
     family_variant_axes_wrong_type: Variantenachsen "%axis%" können nicht lokalisierbar, nicht skalierbar und nicht ortsspezifisch sein
     family_variant_axes_number_of_axes: 'Ein Variantenattribut-Set darf nicht mehr als %max_axes_number% Achsen haben'
+    family_variant_no_axis: Es sollte mindestens ein Attribut als Achse für das Attribut-Set der Ebene "%level%" definiert sein
     family_variant_axis_level: Attribut "%axis%" muss als Attribut im selben Variantattribut gesetzt sein, in dem es als Achse gesetzt wurde
     family_variant_has_family_attribute: 'Attribut "%attribute%" kann nicht der Variantenfamilie "%family_variant%" hinzugefügt werden, da es kein Attribut der Familie "%family%" ist'
+    family_variant_level_do_not_exist: Für die Ebene "%level%" ist kein Variantenattribut gesetzt
+    family_variant_no_level: Es sollte mindestens eine Ebene in der Variantenfamilie definiert sein
+    family_variant_maximum_number_of_level: Die Variantenfamilie kann nicht mehr als "%level%" Ebene haben
     family_variant_unique_attributes_in_last_level: Eindeutiges Attribut "%attribute%" muss auf Produktebene gesetzt sein
     product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
     0: Es ist ein unerwarteter Fehler aufgetreten.

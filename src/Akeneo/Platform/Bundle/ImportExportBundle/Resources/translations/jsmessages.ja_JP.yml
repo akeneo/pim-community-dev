@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: カテゴリ選択
+        label: "{0}すべての製品 |{1}1つの選択されたカテゴリ|]1,Inf[{{ count }} 選択されたカテゴリ"
         title: カテゴリ選択
     locales:
       validation:
@@ -27,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: インポートプロファイルを作成しました
+      page_title:
+        index: "]-Inf, 1] {{ count }} インポートプロファイル|]1, Inf [{{ count }} インポートプロファイル"
       module:
         create:
           button: インポート プロファイルを作成
@@ -35,6 +38,8 @@ pim_import_export:
       flash:
         create:
           success: エクスポートプロファイルを作成しました
+      page_title:
+        index: "]-Inf, 1] {{ count }} エクスポートプロファイル|]1, Inf [{{ count }} エクスポートプロファイル"
       module:
         create:
           button: エクスポート プロファイルを作成
@@ -137,6 +142,9 @@ pim_import_export:
         mass_edit: 一括編集
         quick_export: クイック エクスポート
         compute_product_models_descendants: 製品モデルの子孫を計算します。
+        compute_family_variant_structure_changes: バリアントのファミリー構造の変化を計算
+        compute_completeness_of_products_family: 製品ファミリの完全性を計算
+        mass_delete: 製品を一括削除
       header.view_all: 全て表示
   batch_status:
     1: 完了

@@ -46,14 +46,14 @@ pim_enrich.entity.channel:
       success: Canal créé avec succès.
       fail: Le canal ne peut pas être créé.
     delete:
-      success: Canal supprimé avec succès
+      success: Le canal a bien été supprimé
       fail: Impossible de supprimer ce canal
   page_title:
     index: "]-Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canaux"
   property:
     category_tree: Arborescence
     do_not_convert: Ne pas convertir
-    label_conversion_units: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit
+    label_conversion_units: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'exportation du produit
   module:
     create:
       button: Créer un canal

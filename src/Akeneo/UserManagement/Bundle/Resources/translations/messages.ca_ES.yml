@@ -7,7 +7,7 @@ pim_user:
       username: Nom d’usuari
       first_name: Nom
       middle_name: Primer cognom
-      last_name: Segon cognom
+      last_name: Cognoms
       name_suffix: Sufix del nom
       phone: Telèfon
       date_of_birth: Data de naixement
@@ -80,7 +80,7 @@ pim_user:
   controller:
     group:
       message:
-        saved: "Grup desat"
+        saved: "Grup guardat"
     role:
       message:
         saved: "Rol desat"

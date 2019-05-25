@@ -1,0 +1,66 @@
+pim_title:
+  pim_user_index: 用户
+  pim_user_role_index: 角色
+  pim_user_group_index: 用户组
+  oro_config_configuration_system: 配置
+  pim_user_security_login: 登陆
+  pim_user_reset_request: 忘记密码
+confirmation:
+  remove:
+    user: 确定要删除这个用户吗？
+    group: 确定要删除这个组吗？
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: 确定要删除这个用户吗？
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: 用户名
+        name_prefix: 名称前缀
+        first_name: 名
+        middle_name: 中间名
+        last_name: 姓
+        name_suffix: 名称后缀
+        avatar: 头像
+        email: 电子邮件
+        catalog_locale: 区域设置
+        catalog_scope: 范围
+        default_tree: 默认大类
+        default_asset_tree: 默认资源树
+        product_grid_filters: 商品过滤器
+        current_password: 当前密码
+        new_password: 新密码
+        new_password_repeat: 新密码 (重复)
+        password: 密码
+        ui_locale: 界面语言
+        timezone: 时区
+        default_product_grid_view: 默认产品网格视图
+        default_published_product_grid_view: 默认的已发布产品网格视图
+        proposals_to_review_notification: 当有新的提案待审查
+        proposals_state_notifications: 当提案被接受或拒绝
+      module:
+        create:
+          button: 创建用户
+        delete:
+          confirm: 确定要删除这个用户吗？
+        update:
+          additional: 附加
+          password: 密码
+          interfaces: 接口
+          notifications: 通知
+    role:
+      plural_label: 角色
+      module:
+        create:
+          button: 创建角色
+        delete:
+          confirm: 确定要删除这个角色吗？
+    group:
+      plural_label: 用户组
+      module:
+        create:
+          button: 创建组

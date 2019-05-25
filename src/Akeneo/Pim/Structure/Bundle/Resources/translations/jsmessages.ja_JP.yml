@@ -9,6 +9,7 @@ pim_enrich.entity.family:
       cant_remove_attribute_as_label: ラベルとして使用される属性は削除できません
       cant_remove_attribute_as_image: メイン画像として使用される属性を削除できません。
       cant_remove_attribute_used_as_axis: ファミリーバリアントで使われるバリアント軸である属性は削除できません
+      fields_not_ready: "ファミリーをすぐに保存できません。 次のフィールドが準備ができていません：{{ fields }}"
     create:
       success: ファミリーを作成しました
     delete:
@@ -18,6 +19,8 @@ pim_enrich.entity.family:
     attribute_as_label: ラベルとして使用する属性
     attribute_as_image: メイン画像として使用される属性
     empty_attribute_as_image: 選択されていません
+  page_title:
+    index: "]-Inf, 1] {{ count }} ファミリー |]1, Inf [{{ count }} ファミリー"
   module:
     attributes:
       not_required_label: 任意
@@ -27,28 +30,36 @@ pim_enrich.entity.family:
     delete:
       confirm: このファミリーを削除してもよろしいですか。
 pim_enrich.entity.family_variant:
+  label: ファミリーバリアント
   short_plural_label: 種類
   short_label: バリアント
   flash:
     update:
-      success: 家族のバリアントが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます。
+      success: ファミリーバリアントが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます。
+      fail: ファミリーバリアントは更新できませんでした。
     create:
       success: ファミリーバリアントを作成しました
   module:
     edit:
       common_attributes: 共通の属性
-      no_common_attributes: 共通の属性はありません。
+      no_common_attributes: 共通の属性はありません
       variant_axis_label: バリアントの軸
+      variant_attributes: バリアント属性
       level_1: バリアント属性レベル 1
       level_2: バリアント属性レベル 2
-      description: '。バリアントレベルでこれらの属性を管理できるよう、選択したバリアントレベルで属性をドラッグ＆ドロップする。'
-      confirm_attribute_removal_title: 属性の削除を確認します。
-      confirm_attribute_removal_message: これらの属性を削除することで、ファミリーバリ円との共通属性に戻すことになり、バリアント製品から削除することになる
+      description: バリアントレベルでこれらの属性を管理できるよう、選択したバリアントレベルで属性をドラッグ＆ドロップする。
+      attribute_remove: 属性を削除
+      attribute_group_remove: 属性グループを削除
+      confirm_attribute_removal_title: 属性の削除を確認します
+      confirm_attribute_removal_message: これらの属性を削除することで、ファミリーバリアントとの共通属性に戻すことになり、バリアント製品から削除することになる
     create:
       label: バリエーションを追加
       title: 新しいファミリーバリアントを作成
       description: ファミリーバリアントでは、バリエーションを含む製品の構造を定義できます。管理するバリアントのレベル、各レベルのバリアントの軸として使用される属性の数を選択し、属性を分散する方法を定義します。
       variant_levels: 様々 なレベル
+      axis_level: "バリアントの軸レベル {{ level }}"
+    update_translations:
+      title: 翻訳を更新
 pim_enrich.entity.attribute_option:
   short_uppercase_label: オプション
   flash:
@@ -62,6 +73,7 @@ pim_enrich.entity.attribute_option:
   module:
     edit:
       cancel_title: 変更をキャンセル
+      cancel_description: 警告：未保存のデータは失われます。この新しいオプションの変更を取り消しますか？
 pim_enrich.entity.association_type:
   label: 関連タイプ
   flash:
@@ -74,6 +86,8 @@ pim_enrich.entity.association_type:
     delete:
       success: 関連タイプを削除しました
       fail: この関連付けタイプを削除することはできません
+  page_title:
+    index: "]-Inf, 1]{{ count }} 関連タイプ|]1, Inf[{{ count }} 関連タイプ"
   module:
     create:
       button: 関連タイプ作成
@@ -91,6 +105,8 @@ pim_enrich.entity.group_type:
     delete:
       success: グループタイプを削除しました
       fail: このグループタイプは削除できません
+  page_title:
+    index: "]-Inf, 1]{{ count }} グループタイプ|]1, Inf[{{ count }} グループタイプ"
   module:
     create:
       button: グループタイプ作成
@@ -103,9 +119,12 @@ pim_enrich.entity.attribute:
     update:
       success: 属性を更新しました
       fail: 属性を更新できませんでした。
+      fields_not_ready: "属性はただいま保存できません。以下のフィールドが準備できていません: {{ fields }}"
     delete:
       success: 属性を削除しました
       fail: この属性は削除できません
+  page_title:
+    index: "]-Inf, 1]{{ count }} 属性|]1, Inf[{{ count }} 属性"
   property:
     allowed_extensions: 利用できる拡張子
     auto_option_sorting: アルファベット順のオプションを自動的に並べ替える
@@ -172,6 +191,7 @@ pim_enrich.entity.attribute:
       validation: パラメータによる値チェック
     delete:
       confirm: この属性を削除してもよろしいですか。
+      confirm_from_family: ファミリーからこの属性を削除してもよろしいですか？
       confirm_from_group: 属性 {{ attribute }} をこの属性グループから削除してもよろしいですか。
       confirm_from_product: 商品からこの属性を削除してもよろしいですか？
 pim_enrich.entity.attribute_group:
@@ -182,21 +202,26 @@ pim_enrich.entity.attribute_group:
     update:
       success: 属性グループを作成しました
       fail: 属性グループを更新できませんでした。
+      fields_not_ready: "属性グループはすぐに保存できません。以下のフィールドが準備できていません: {{ fields }}"
     delete:
       success: 属性グループを削除しました
+      fail: この属性グループは削除できません
   module:
     add_attribute_group:
       label: グループによる追加
+      no_attribute_groups_available: 使用可能な属性グループはありません
       attributes_groups_selected: '{{ itemsCount }} グループの選択'
     delete:
       confirm: この属性グループを削除してもよろしいですか？
 pim_enrich.mass_edit.family:
   title: ファミリー一括操作
+  confirm: "{1}更新しようとしている以下のファミリーの内容について、ご確認ください。|] 1, Inf [更新しようとしている以下の {{ itemsCount }} 件のファミリーの内容について、ご確認ください。"
   step:
     select:
       label: ファミリーを選択
     choose:
       title: ファミリー一括操作
+      label_count: "]0, Inf[ あなたのアクションを選択"
     configure:
       label: 構成
     confirm:
@@ -207,3 +232,4 @@ pim_enrich.mass_edit.family:
     set_requirements:
       label: 属性の要件を設定
       description: 以下の属性要件が選択したファミリーに適用されます
+      label_count: "{1}必須属性をセット<span class=\"AknFullPage-title--highlight\"> 1 ファミリー</span> |]1, Inf [必須属性をセット<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ファミリー</span>"

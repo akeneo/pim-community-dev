@@ -6,7 +6,7 @@ pim_import_export:
   status:
     0: 就绪
   batch_status:
-    1: Completed
+    1: 已完成
     2: Starting
     3: Started
     4: Stopping
@@ -80,7 +80,7 @@ pim_importexport:
       dl_log: 下载导入报告日志
       dl_files: 下载导入的文件
   acl_group:
-    export: 导出配置文件
+    export: 导出方案
     import: 导入方案
 btn:
   create:
@@ -134,7 +134,10 @@ job_execution.summary:
     skipped: 跳过，在白名单中扩展
 Step: 步
 Status: 状态
+Warnings: 警告
 Summary: 总结
 Start: 开始
 End: 结束
+set_attribute_requirements: 设置属性要求
+COMPLETED: 已完成
 warning.label: 警告

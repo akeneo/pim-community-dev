@@ -22,9 +22,9 @@ pim_enrich.entity.product:
       fail: Produktet kunne ikke opdateres.
       fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
-      file_upload: Der opstod en fejl under fil upload
+      file_upload: Der opstod en fejl under fil indlæsningen
     delete:
-      success: Produkt slettet.
+      success: Produktet blev slettet.
       fail: Produktet kunne ikke slettes.
     create:
       success: Produktet blev oprettet
@@ -48,7 +48,7 @@ pim_enrich.entity.product:
       label: Sammenlign / oversætte
       select: Vælg
       all_visible: Alle synlige
-      copy: Kopi
+      copy: Kopier
     history:
       version: Version
       author: Forfatter
@@ -67,7 +67,7 @@ pim_enrich.entity.product:
     attribute:
       remove_optional: Fjern denne attribut
       locale_specific_unavailable: Dette landestandard specifikke felt er ikke tilgængeligt i denne landestandard
-      locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for locale '{{ locale }}' og '{{ channel }}'-kanal
+      locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for landestandard'{{ locale }}' og '{{ channel }}'-kanal
       to_fill_count: "{1}1 mangler kræved attribut |] 1, Inf [{{ count }} manglende krævede attributter"
       add_attribute_option: Tilføj attribut tilvalg
       add_option: Tilføje en mulighed
@@ -75,7 +75,7 @@ pim_enrich.entity.product:
       title: Fuldstændighed
       complete: Fuldført
       no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
-      no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
+      no_completeness: Du har lige ændret familie på produktet. Gem det først for at beregne fuldstændigheden for den nye familie.
       missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
     sequential_edit:
       item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
@@ -100,7 +100,7 @@ pim_enrich.entity.product:
       at_this_level: Alle niveau specifikke attributter
     change_family:
       title: Ændre produktfamilien
-      merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
+      merge_attributes: Aktuelle attributter flettes sammen med dem i den nye familie.
       keep_attributes: Ingen attributter vil blive fjernet.
       change_family_to: Ændre familien til
       empty_selection: Vælg familie
@@ -184,20 +184,20 @@ pim_enrich.export.product:
       help: "Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk."
     attributes:
       label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-      help: "Vælg produktinformation til eksport. Ex: kun de tekniske egenskaber."
+      help: "Vælg produktinformation til eksport. Eks: kun de tekniske attributter."
       empty: Alle attributter vil blive eksporteret
       modal:
-        title: Valg af batchattributter
+        title: Valg af attributter
     attributes_selector:
       attributes: "Søg i {{ itemsCount }} attributter"
       selected: "Valgte attributter"
-      clear: Nustil
+      clear: Ryd
       all_group: Alle grupper
       empty_selection: Alle attributter vil blive eksporteret
       description: Vælg fabrikat oplysningerne eksportere
     family:
       title: Familie
-      help: "Vælg produkterne, der eksporteres af deres familie. Ex: Eksport kun de sko og kjoler."
+      help: "Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler."
       operators:
         IN: I listen
         "NOT IN": Ikke på listen
@@ -213,19 +213,19 @@ pim_enrich.export.product:
         "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
     enabled:
       title: Status
-      help: "Vælg produkterne, der eksporteres af deres status. Ex: Eksportere produkter overhovedet deres status."
+      help: "Vælg produkterne, der eksporteres efter deres status. Eks: Eksportere produkter uanset deres status."
       value:
         enabled: Aktiveret
         disabled: Deaktiveret
     completeness:
       title: Fuldstændighed
-      help: Vælg produkterne, der eksporteres af deres fuldstændighed.
+      help: Vælg produkterne, der eksporteres efter deres fuldstændighed.
       operators:
         ALL: Ingen betingelse på fuldstændighed
         ">=": Komplet på mindst én valgte landestandard
         "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
         "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Komplet på mindst én valgte landestandard
-        LOWER THAN ON ALL LOCALES: Ikke komplet på alle valgte landestandarder
+        LOWER THAN ON ALL LOCALES: Ikke komplet på nogle af de valgte landestandarder
         AT LEAST COMPLETE: Mindst ét underordnet produkt komplet på én valgte landestandard
         ALL COMPLETE: Alle underliggende produkter komplet på alle valgte landestandarder
       empty_selection: Vælg en familie
@@ -233,7 +233,7 @@ pim_enrich.export.product:
       title: Kategori
       help: Brug produktkategorierne i træet (defineret af kanalen ovenfor) til at vælge produkter til eksport
     identifier:
-      title: Id
+      title: Identifikator
       help: Brug produkt-id'erne til at eksportere adskilt af kommaer, mellemrum eller linjeskift
     string:
       operators:

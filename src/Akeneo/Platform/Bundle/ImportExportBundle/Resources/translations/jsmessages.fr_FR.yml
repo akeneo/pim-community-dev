@@ -1,7 +1,7 @@
 job_execution:
   summary:
     display_item: Afficher l'élément
-    hide_item: Masquer l'élément
+    hide_item: Voir moins
 pim_connector:
   export:
     categories:
@@ -24,7 +24,7 @@ pim_import_export:
         delete:
           success: La tâche a bien été supprimée
     import_profile:
-      uppercase_label: Profil d'import
+      uppercase_label: Profil d'importation
       flash:
         create:
           success: Le profil d'import a bien été créé
@@ -34,7 +34,7 @@ pim_import_export:
         create:
           button: Créer un profil d'import
     export_profile:
-      uppercase_label: Profil d'export
+      uppercase_label: Profil d'exportation
       flash:
         create:
           success: Le profil d'exportation a bien été créé
@@ -49,7 +49,7 @@ pim_import_export:
       refreshBtn.title: Mettre à jour
       button:
         show_profile.title: Afficher le profil
-        download_log.title: Télécharger l'historique
+        download_log.title: Télécharger les logs
         download_file.title: Télécharger le fichier généré
         download_archive.title: Télécharger l'archive générée
       summary:
@@ -79,8 +79,8 @@ pim_import_export:
           title: Contenu
         properties:
           decimal_separator:
-            title: Séparateur de décimales
-            help: Détermine le séparateur de décimale
+            title: Séparateur de décimale
+            help: Détermine le séparateur de décimales
           date_format:
             title: Format de date
             help: Déterminer le format des champs de type date
@@ -139,7 +139,7 @@ pim_import_export:
       job_type:
         import: Import
         export: Export
-        mass_edit: Edition en masse
+        mass_edit: Edition de masse
         quick_export: Export rapide
         compute_product_models_descendants: Mise à jour des descendants des modèles de produit
         compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
@@ -157,19 +157,19 @@ pim_import_export:
     8: Inconnu
 confirmation:
   remove:
-    import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
-    export_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
+    import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'importation ?
+    export_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'exportation ?
     job_instance: Êtes-vous sûr(e) de vouloir supprimer cette opération ?
 pim_enrich:
   entity:
     import_profile:
       module:
         delete:
-          confirm: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
+          confirm: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'importation ?
     export_profile:
       module:
         delete:
-          confirm: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
+          confirm: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'exportation ?
 pim_title:
   pim_importexport_export_profile_index: Gestion des profils d'export
   pim_importexport_export_profile_edit: Profil d'export {{ job.label }} | Édition

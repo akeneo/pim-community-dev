@@ -21,8 +21,10 @@ pim_enrich:
         fourth: Bekräfta
 pim_enrich_attribute_form:
   code: Kod
-  type: Attribut typ
+  type: Attributtyp
   reference_data_name: Data Referensnamn
+  scopable: Värde per kanal
+  localizable: Värde per språk
   unique: Unikt värde
   availableLocales: Tillgängliga språk
   locale_specific: Specifik språk

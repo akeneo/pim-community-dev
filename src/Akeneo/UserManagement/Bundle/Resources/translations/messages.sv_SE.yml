@@ -24,15 +24,15 @@ pim_user:
       new_password: Nytt Lösenord
       new_password_again: Nytt lösenord (upprepa)
       default_grid_view:
-        none: Ingen
+        none: Inga
       default_product_grid_view:
         label: Standard produktlistningsvy
       ui_locale: Gränssnittspråk
       last_logged_in: Senast inloggad
       login_count: Loginräknare
       user_salt: Användarsalt
-      created: Skapat
-      updated: Ändrad
+      created: Skapad
+      updated: Uppdaterad
       status: Status
       capabilities: Funktioner
       has_role: Har roll
@@ -66,7 +66,7 @@ pim_user:
       general.title: Allmänna
       users.title: Användare
   roles:
-    title: Roll
+    title: roll
     tab:
       general: Allmänna
       action: Behörigheter
@@ -123,7 +123,7 @@ oro_security:
 (default): Standardbehörighet på entiteter
 VIEW: Visa
 CREATE: Skapa
-EDIT: Redigera
-DELETE: Ta bort
+EDIT: Ändra
+DELETE: Radera
 ASSIGN: Tilldela
 SHARE: Dela

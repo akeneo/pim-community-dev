@@ -58,6 +58,8 @@ pim_common:
   create: Create
   permissions: Permissions
   properties: Properties
+  name: Name
+  remove: Remove
 pim_enrich:
   acl:
     locale:

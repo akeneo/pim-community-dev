@@ -1,7 +1,7 @@
 "Yes, I Agree": "Ja, jag godkänner"
 "Yes, do it": "Ja, gör det"
 "Ok, got it.": "Ok, jag förstår."
-"Edit": "Redigera"
+"Edit": "Ändra"
 "Unexpected error occured. Please contact system administrator.": "Oväntat fel uppstod. Vänligen kontakta systemadministratören."
 Prev: Föregående
 Today: Idag
@@ -58,8 +58,8 @@ datetimepicker:
     Fr: Fr
     Sa: Lö
   months:
-    January: January
-    February: Februrari
+    January: Januari
+    February: Februari
     March: Mars
     April: April
     May: Maj
@@ -119,11 +119,11 @@ pim_common:
   confirm: Bekräfta
   confirm_deletion: Bekräfta radering
   create: Skapa
-  created: Skapat
-  delete: Ta bort
+  created: Skapad
+  delete: Radera
   done: Slutförd
-  edit: Redigera
-  entity_updated: Det finns ändringar som inte sparats.
+  edit: Ändra
+  entity_updated: Det finns osparade ändringar.
   from: Från
   general_properties: Allmänna egenskaper
   history: Historik
@@ -135,8 +135,8 @@ pim_common:
   more_than: Mer än
   next: Nästa
   "no": "Nej"
-  none: Ingen
-  not_available: '-'
+  none: Inga
+  not_available: N/A
   now: Nu
   ok: OK
   permissions: Behörigheter
@@ -162,7 +162,7 @@ pim_common:
     ">": Större än
     "<=": Lägre än eller lika
     "<": Lägre än
-    EMPTY: Är tomt
+    EMPTY: Är tom
     NOT EMPTY: Är inte tom
     CONTAINS: Innehåller
     DOES NOT CONTAIN: Innehåller inte
@@ -200,8 +200,8 @@ pim_enrich.entity.job_execution:
   module:
     download:
       archive: Ladda ner genererat arkiv
-      output: Ladda ner genererade filer
-      input: Laddar ner lästa filer
+      output: Ladda ner genererad fil
+      input: Laddar ner läs filer
       invalid_xlsx: Hämta ogiltig data
       invalid_csv: Hämta ogiltig data
 pim_title:
@@ -211,16 +211,16 @@ pim_title:
   pim_enrich_categorytree_index: Kategoriträd
   pim_enrich_categorytree_create: Kategori träd | Skapa
   pim_enrich_categorytree_create_tree: Kategori träd | Skapa
-  pim_enrich_attribute_index: Attribut
+  pim_enrich_attribute_index: Attributer
   pim_enrich_attribute_create: Attribut | Skapa
-  pim_enrich_product_index: Products
+  pim_enrich_product_index: Produkter
   pim_enrich_family_index: Familjer
   pim_enrich_channel_index: Kanaler
   pim_enrich_channel_create: Kanaler | Skapa
   pim_enrich_currency_index: Valutor
   pim_enrich_locale_index: Språk
   pim_enrich_group_index: Grupper
-  pim_enrich_associationtype_index: Associationstyp
+  pim_enrich_associationtype_index: Förbindelse typer
   pim_enrich_grouptype_index: Grupptyper
   pim_enrich_mass_edit_action_choose: Mass redigera | Välj
   pim_enrich_mass_edit_action_configure: Mass redigera | Konfigurera
@@ -240,7 +240,7 @@ pim_menu:
     help:
       title: Hjälp
   item:
-    association_type: Associationstyp
+    association_type: Associationstyper
     attribute_group: Attributgrupper
     channel: Kanaler
     currency: Valutor
@@ -258,10 +258,10 @@ pim_menu:
     user_group: Användargrupper
     user_role: Roller
     info: Systeminformation
-    job_tracker: Spåra process
+    job_tracker: Process spårare
     api_connection: API-anslutning
   navigation:
-    system: System navigering
+    system: Systemnavigering
     product: Produkt navigering
     product_infos: Produkt information
   user:

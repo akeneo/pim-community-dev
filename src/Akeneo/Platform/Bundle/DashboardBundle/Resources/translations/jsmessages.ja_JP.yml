@@ -3,4 +3,4 @@ pim_dashboard:
     completeness:
       load_more: 'さらに読み込む...'
 pim_title:
-  pim_dashboard_index: ダッシュ ボード
+  pim_dashboard_index: ダッシュボード

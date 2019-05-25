@@ -23,7 +23,7 @@ Microsecond: Mikrosekunti
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
 Datagrid Configuration: Datagrid-kokoonpano
-Action: Toimi
+Action: Toiminto
 Unit: Yksikkö
 Currency: Valuutta
 jstree:
@@ -64,7 +64,7 @@ datetimepicker:
     February: Helmikuu
     March: Maaliskuu
     April: Huhtikuu
-    May: Toukokuu
+    May: Touko
     June: Kesäkuu
     July: Heinäkuu
     August: Elokuu
@@ -77,7 +77,7 @@ datetimepicker:
     Feb: Helmi
     Mar: Maalis
     Apr: Huhti
-    May: Toukokuu
+    May: Touko
     Jun: Kesä
     Jul: Heinä
     Aug: Elo
@@ -88,7 +88,7 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Järjestelmän asetukset
+      title: Järjestelmäasetukset
       tab:
         system:
           title: Järjestelmä
@@ -118,10 +118,10 @@ pim_common:
   after: Jälkeen
   all: Kaikki
   and: ja
-  apply: Valitse
+  apply: Käytä
   before: Ennen
   by: tehnyt
-  cancel: Peruuta
+  cancel: Hylkää
   code: Koodi
   confirm: Vahvista
   confirm_deletion: Vahvista poisto
@@ -138,7 +138,7 @@ pim_common:
   label: Nimike
   label_translations: Nimikkeiden käännökset
   less_than: Vähemmän kuin
-  loading: Ladataan...
+  loading: Lataa...
   media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
   more_than: Enemmän kuin
   next: Seuraava
@@ -147,7 +147,7 @@ pim_common:
   not_available: Ei mitään
   now: Nyt
   ok: OK
-  permissions: Käyttöoikeudet
+  permissions: Käyttöoikeudert
   previous: Edellinen
   properties: Ominaisuudet
   remove: Poista
@@ -156,7 +156,7 @@ pim_common:
   search: Etsi
   select2:
     search: Hae...
-    no_match: Vastaavuuksia ei löydy
+    no_match: Ei hakutuloksia
     load_more: Ladataan lisää tuloksia...
   status: Status
   to: mihin
@@ -245,21 +245,21 @@ pim_title:
   pim_enrich_product_index: Tuotteet
   pim_enrich_product_edit: Tuote {{ product.label }} | Muokkaa
   pim_enrich_product_model_edit: Tuotemalli {{ product.label }} | Muokkaa
-  pim_enrich_family_index: Perheet
+  pim_enrich_family_index: Tuoteperheet
   pim_enrich_family_edit: Perhe {{ family.label }} | Muokkaa
   pim_enrich_channel_index: Kanavat
   pim_enrich_channel_create: Kanavat | Luo
   pim_enrich_channel_edit: Kanava {{ channel.label }} | Muokkaa
   pim_enrich_currency_index: Valuutat
-  pim_enrich_locale_index: Alueet
+  pim_enrich_locale_index: Lokaatiot
   pim_enrich_group_index: Ryhmät
   pim_enrich_group_edit: Ryhmä {{ group.label }} | Muokkaa
-  pim_enrich_associationtype_index: Assosiaatiotyypit
+  pim_enrich_associationtype_index: Määritetyypit
   pim_enrich_associationtype_edit: Assosiaatiotyyppi {{ association type.label }} | Muokkaa
   pim_enrich_grouptype_index: Ryhmätyypit
   pim_enrich_grouptype_edit: Ryhmätyyppi {{ group type.label }} | Muokkaa
-  pim_enrich_mass_edit_action_choose: Massamuokkaus | Valitse
-  pim_enrich_mass_edit_action_configure: Massamuokkaus | Määritä
+  pim_enrich_mass_edit_action_choose: Massaedit | Valitse
+  pim_enrich_mass_edit_action_configure: Massaedit | Määritä
   pim_enrich_mass_edit_action_perform: Massamuokkas | Suorita
   pim_enrich_job_tracker_index: Prosessiseurain
   pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
@@ -278,12 +278,12 @@ pim_menu:
       title: Ohjeet
       helper: Akeneo Help center
   item:
-    association_type: Assosiaatiotyypit
+    association_type: Määritetyypit
     attribute_group: Attribuuttiryhmät
     channel: Kanavat
     currency: Valuutat
     dashboard: Ohjauspaneeli
-    family: Perheet
+    family: Tuoteperheet
     group: Ryhmät
     group_type: Ryhmätyypit
     product_model: Tuotemallit

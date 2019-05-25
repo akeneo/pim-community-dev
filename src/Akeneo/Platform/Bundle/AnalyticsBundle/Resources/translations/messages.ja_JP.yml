@@ -19,13 +19,29 @@ pim_analytics:
     registered_bundles: 登録済みバンドル
     nb_channels: チャンネル数
     nb_products: 商品数
-    nb_attributes: 属性の数
+    nb_product_models: 製品モデルの数
+    nb_variant_products: バリエーション製品の数
+    nb_family_variants: ファミリーバリエーションの数
+    nb_attributes: 項目の数
     nb_scopable_attributes: Scopable 属性の数
     nb_localizable_attributes: Localizable 属性の数
     nb_scopable_localizable_attributes: Localizable 属性とScopable 属性の数
+    nb_useable_as_grid_filter_attributes: グリッドフィルターとして使用可能な項目の数
+    avg_percentage_scopable_attributes_per_family: ファミリーごとのスコープ可能な属性の平均パーセンテージ (%)
+    avg_percentage_localizable_attributes_per_family: ファミリーごとのローカライズ可能な属性の平均パーセンテージ (%)
+    avg_percentage_scopable_localizable_attributes_per_family: ファミリーごとのローカライズ、スコープ可能な属性の平均パーセンテージ (%)
+    avg_number_attributes_per_family: ファミリごとの平均属性数
     nb_locales: ロケールの数
-    nb_families: 家族の数
+    nb_families: ファミリーの数
     nb_users: ユーザ数
+    nb_categories: カテゴリ数
+    nb_category_trees: カテゴリーのツリー数
+    max_category_in_one_category: 1つのカテゴリの最大カテゴリ数
+    max_category_levels: 最大のカテゴリレベル数
+    nb_product_values: 製品の値の数
+    avg_product_values_by_product: 製品ごとの平均製品数
+    avg_product_values_by_family: ファミリーごとの潜在的製品価値の平均数
+    max_product_values_by_family: ファミリーごとの潜在的製品価値の最大値
     pim_storage_version: ストレージ バージョン
     os_version: OSバージョン
     php_version: PHPバージョン

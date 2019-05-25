@@ -19,10 +19,29 @@ pim_analytics:
     registered_bundles: Geregistreerde bundels
     nb_channels: Aantal kanalen
     nb_products: Aantal producten
+    nb_product_models: Aantal Productmodellen
+    nb_variant_products: Aantal product varianten
+    nb_family_variants: Aantal familie-varianten
     nb_attributes: Aantal attributen
+    nb_scopable_attributes: Aantal kanaalafhankelijke attributen
+    nb_localizable_attributes: Aantal locatie afhankelijke attributen
+    nb_scopable_localizable_attributes: Aantal locatie en kanaalafhankelijke attributen
+    nb_useable_as_grid_filter_attributes: Aantal attributen bruikbaar voor de grid filter
+    avg_percentage_scopable_attributes_per_family: Gemiddelde percentage van scopable attributen per familie (%)
+    avg_percentage_localizable_attributes_per_family: Gemiddelde percentage van locale-afhankelijke attributen per familie (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Gemiddelde percentage van kanaal- en locale-afhankelijke attributen per familie (%)
+    avg_number_attributes_per_family: Gemiddeld aantal kenmerken per familie
     nb_locales: Aantal lokaliseringen
     nb_families: Aantal families
     nb_users: Aantal gebruikers
+    nb_categories: Aantal categorieën
+    nb_category_trees: Aantal categoriebomen
+    max_category_in_one_category: Max aantal categorieën in één categorie
+    max_category_levels: Maximum aantal categorie-niveaus
+    nb_product_values: Aantal product waardes
+    avg_product_values_by_product: Gemiddeld aantal productwaarden per product
+    avg_product_values_by_family: Gemiddeld aantal potentiële productwaarden per familie
+    max_product_values_by_family: Maximaal aantal potentiële productwaarden per familie
     pim_storage_version: Opslag versie
     os_version: Besturingssysteem versie
     php_version: PHP versie

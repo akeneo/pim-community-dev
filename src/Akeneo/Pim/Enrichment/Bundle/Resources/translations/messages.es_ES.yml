@@ -5,23 +5,23 @@ pim_enrich:
   category:
     tab:
       property.title: Propiedades
-      history.title: Histórico
+      history.title: Historial
     suggest_selection: Por favor, seleccione una categoría de la izquierda
     or: o
     create_new: Crear una nueva categoría
   mass_edit_action:
-    limit_exceeded: Por favor, elige menos de %limit% de artículos para editar
+    limit_exceeded: Por favor seleccione menos de %limit% productos a editar
     product:
       page_title: Productos
       page_subtitle: Edición masiva (1 producto) |Edición masiva (%count% productos)
-      title: Elegir operación
-      subtitle: Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados
-      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
+      title: Seleccione una operación
+      subtitle: Seleccione la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados
+      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
       steps:
-        first: Elegir productos
-        second: Elegir operación
-        third: Configurar
-        fourth: Confirmar
+        first: Seleccione los productos
+        second: Seleccione una operación
+        third: Configuración
+        fourth: Confirmación
     change-status:
       label: Cambiar el estado
       description: Los productos seleccionados serán habilitados o inhabilitados.
@@ -29,12 +29,12 @@ pim_enrich:
       launched_flash: La acción en masa "cambiar estado" ha sido lanzada.  Será notificado una vez finalizada.
     edit-common-attributes:
       label: Editar atributos
-      description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
+      description: Los atributos de productos seleccionados serán editados con la siguiente información para el local elegido.
       empty: Por favor, seleccione atributo(s) que desea editar
       success_flash: El trabajo de actualización del estado de producto(s) está ejecutándose
       launched_flash: La acción en masa "editar atributos" ha sido emitida. Usted será notificado cuando este lista.
       message:
-        warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
+        warning: No existe ningún atributo en común para los productos seleccionados. Por favor modifique su selección.
         invalid_attribute: El atributo con el código "attribute_code" no es común para los productos seleccionados, atributo ignorado.
         no_valid_attribute: Ninguno de los atributos seleccionados puede ser aplicado a este producto.
     classify-add:
@@ -73,6 +73,6 @@ pim_enrich:
         launched_flash: El trabajo de exportación de productos está ejecutándose
 category:
   edit: Editar categoría
-  overview: Categorías
+  overview: Ctegorías
 tree:
   edit: Editar árbol

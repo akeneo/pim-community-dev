@@ -1,0 +1,35 @@
+pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Parameters
+      value.title: Values
+      history.title: History 
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
+  group_type:
+    tab:
+      property.title: Properties dem
+  mass_edit_action:
+    family:
+      page_title: Families dem
+      page_subtitle: Mass Edit (1 family)|Mass Edit (%count% families)
+      title: Select operation
+      subtitle: Chose d operation u wan to perform on d selected family|Chose d operation u wan to perform on d selected %count% familys
+      confirm: U go soon update family wey waka wit dis information, abeg confam.|U go soon update %count% families wey waka wit dis information, abeg confam.
+      steps:
+        first: Chose familys
+        second: Chose operation
+        third: Make u set am
+        fourth: Confam
+pim_enrich_attribute_form:
+  code: Code
+  type: Attribute type
+  reference_data_name: Name for reference data
+  scopable: Value wey dey for each channel
+  localizable: Value wey dey each locale
+  unique: Na unique value
+  availableLocales: Locales dem wey dey available
+  locale_specific: Locale specific
+  group: Group for attribute
+  useableAsGridFilter: E dey usable for grid

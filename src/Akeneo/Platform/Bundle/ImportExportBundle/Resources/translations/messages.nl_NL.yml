@@ -6,14 +6,14 @@ pim_import_export:
   status:
     0: Gereed
   batch_status:
-    1: Completed
-    2: Starting
-    3: Started
-    4: Stopping
-    5: Stopped
-    6: Failed
-    7: Abandoned
-    8: Unknown
+    1: Voltooid
+    2: Opstarten
+    3: Gestart
+    4: Aan het stoppen
+    5: Gestopt
+    6: Mislukt
+    7: Afgebroken
+    8: Onbekend
   download_archive:
     archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden
@@ -36,9 +36,13 @@ pim_import_export:
       history.title: Geschiedenis
       job_content.title: Inhoud
 pim_title.export_profile.index: Beheer van exportprofielen
+pim_title.export_profile.edit: Exportprofielen %job.label% | Bewerken
+pim_title.export_profile.show: Exportprofielen %job.label% | Tonen
 pim_title.export_execution.index: Exportverwerkingen geschiedenis
 pim_title.export_execution.show: Exportverwerkingen | Details
 pim_title.import_profile.index: Beheer van importprofielen
+pim_title.import_profile.edit: Importprofielen %job.label% | Bewerken
+pim_title.import_profile.show: Importprofielen %job.label% | Tonen
 pim_title.import_execution.index: Importverwerkingen geschiedenis
 pim_title.import_execution.show: Importverwerkingen | Details
 export profile:
@@ -84,8 +88,8 @@ pim_importexport:
     import: Importprofielen
 btn:
   create:
-    export profile: exportprofiel toevoegen
-    import profile: importprofiel toevoegen
+    export profile: Exportprofiel aanmaken
+    import profile: Importprofiel aanmaken
 Upload and import now: Uploaden en nu importeren
 import now: Nu importeren
 export now: Nu exporteren
@@ -121,7 +125,7 @@ Download log: Logbestand downloaden
 Show profile: Profiel weergeven
 execution details: verwerkingsdetails
 job_execution.summary:
-  read: lezen
+  read: lees
   write: geschreven
   skip: overgeslagen
   create: gecreëerd
@@ -138,4 +142,13 @@ Warnings: Waarschuwingen
 Summary: Samenvatting
 Start: Start
 End: Einde
+set_attribute_requirements: Instellen Attribuut vereisten
+COMPLETED: Voltooid
+STARTING: Opstarten
+STARTED: Gestart
+STOPPING: Stoppen
+STOPPED: Gestopt
+FAILED: Mislukt
+ABANDONED: Afgebroken
+UNKNOWN: Onbekend
 warning.label: Waarschuwing
