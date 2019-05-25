@@ -58,7 +58,7 @@ class GetLinkedProductAction
         $normalizedProducts = [];
         foreach ($products as $index => $product) {
             $normalizedProducts[] = $this->normalizer->normalize($product, 'internal_api', []);
-            if ($index > 16) {
+            if (15 === $index) {
                 break;
             }
         }

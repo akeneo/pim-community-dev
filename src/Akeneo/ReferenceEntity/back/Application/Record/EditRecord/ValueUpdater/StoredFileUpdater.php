@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
@@ -35,7 +36,7 @@ class StoredFileUpdater implements ValueUpdaterInterface
 {
     public function supports(AbstractEditValueCommand $command): bool
     {
-        return $command instanceof EditStoredFileValueCommand;
+        return $command instanceof EditStoredFileValueCommand || $command instanceof EditUploadedFileValueCommand;
     }
 
     public function __invoke(Record $record, AbstractEditValueCommand $command): void
@@ -59,7 +60,7 @@ class StoredFileUpdater implements ValueUpdaterInterface
 
     private function getFileData(
         Record $record,
-        EditStoredFileValueCommand $command,
+        $command,
         AbstractAttribute $attribute,
         ChannelReference $channelReference,
         LocaleReference $localeReference
