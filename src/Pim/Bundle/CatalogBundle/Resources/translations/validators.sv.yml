@@ -54,4 +54,5 @@ pim_catalog:
     302: Det här fältet förväntar sig ett giltigt tillämpningsområde.
     303: Det här fältet förväntar sig ett giltigt associationsformat.
     pim_immutable_product_validator: Samma identifierare är redan satt på en annan produkt
+    pim_immutable_product_model_validator: Samma kod är redan inställd på en annan produktmodell.
 

@@ -12,12 +12,12 @@ pim_connector:
     dummy_processor.title: Processeur factice
     product_processor.title: Création des produits
     category_processor.title: Création des catégories
-    association_processor.title: Création d'association
-    product_association_processor.title: Création d'association
+    association_processor.title: Création des associations
+    product_association_processor.title: Création des associations
     group_processor.title: Création des groupes
     attribute_processor.title: Création des attributs
     attribute_option_processor.title: Création des options d'attributs
-    heterogeneous_processor.title: Sérialiseur de produits en CSV
+    heterogeneous_processor.title: Sérialiseur de produit en CSV
     homogeneous_processor.title: Sérialiseur d'entités en CSV
     transformer_processor.title: Transformation
     dummy_writer.title: Ecriture factice
@@ -25,7 +25,7 @@ pim_connector:
     product_writer.title: Stockage des produits
     category_writer.title: Stockage des catégories
     writer.title: Stockage des entités
-    csv_writer.title: Ecriture CSV
+    csv_writer.title: Ecriture des fichiers en CSV
 job_execution.summary:
   read: lu(s)
   write: écrit(s)
@@ -37,7 +37,7 @@ job_execution.summary:
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
-    title: 'Encodage du fichier :'
+    title: 'Encodage du fichier:'
     skipped: ignoré(s), extension dans la liste blanche
   product_skipped_no_diff: produit(s) ignoré(s) (aucune différence)
   product_skipped_no_associations: produit(s) ignoré(s) (aucune association détectée)
@@ -67,7 +67,7 @@ batch_jobs:
     export.label: Export des types d'association
   csv_group_export:
     label: Export des groupes en CSV
-    export.label: Export de groupes
+    export.label: Export des groupes
   csv_family_export:
     label: Export des familles en CSV
     export.label: Export des familles
@@ -192,7 +192,7 @@ batch_jobs:
     import_associations.label: Import des associations de produits
   xlsx_group_export:
     label: Export des groupes en XLSX
-    export.label: Export de groupes
+    export.label: Export des groupes
   xlsx_group_import:
     label: Import des groupes en XLSX
     validation.label: Validation du fichier

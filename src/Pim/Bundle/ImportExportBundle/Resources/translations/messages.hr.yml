@@ -127,7 +127,7 @@ job_execution.summary:
   create: kreirano
   update: ažurirano
   update_products: ažurirani proizvodi
-  skip_products: preskočeni proizvodi
+  skip_products: preskočeni proizvodi9
   displayed: prikazana prva upozorenja
   charset_validator:
     title: 'Kod datoteke:'

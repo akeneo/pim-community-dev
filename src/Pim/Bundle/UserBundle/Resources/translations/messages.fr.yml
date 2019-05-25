@@ -2,7 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Général
-      additional.title: Supplémentaire
+      additional.title: Complémentaire
       group_and_role.title: Groupes et rôles
       password.title: Mot de passe
       business_unit.title: Entités commerciales
@@ -23,7 +23,7 @@ oro.user.grid.users:
     email: "Email"
     firstName: "Prénom"
     lastName: "Nom"
-    createdAt: "Crée le"
+    createdAt: "Créé le"
     updatedAt: "Mis à jour le"
     enabled: "État"
 oro.user.grid.roles:
@@ -43,7 +43,7 @@ Users Management: Gestion des utilisateurs
 Create user: Créer un utilisateur
 btn.create.user: Créer un utilisateur
 New user: Nouvel utilisateur
-Additional: Supplémentaire
+Additional: Complémentaire
 Groups and Roles: Groupes et rôles
 Username: Nom d'utilisateur
 Password: Mot de passe
@@ -75,8 +75,8 @@ Contact Information: Information de contact
 User name: Nom d'utilisateur
 Birthday: Date d’anniversaire
 API key: Clé API
-Ui locale: Langue de l'interface
-UI locale: Langue de l'interface
+Ui locale: Langage de l'interface
+UI locale: Langage de l'interface
 User salt: Sel de hachage
 Current password: Mot de passe actuel
 New password: Nouveau mot de passe
@@ -89,9 +89,9 @@ user:
   default_product_grid_view:
     label: Vue par défaut de la grille des produits
   default_grid_view:
-    none: Aucun
+    none: Aucune
   timezone: Fuseau horaire
-Role: Rôle
+Role: rôle
 Owner: Propriétaire
 General: Général
 Entity: Entité
@@ -105,7 +105,7 @@ role:
   create: Créer un rôle
 btn.create.role: Créer un rôle
 rights:
-  action: Permissions
+  action: Autorisations 
 oro_security:
   acl_group:
     user: Utilisateurs
@@ -128,9 +128,9 @@ oro_security:
       edit: Modifier les groupes d'utilisateurs
       delete: Supprimer un groupe d'utilisateurs
 (default): Autorisations par défaut sur les entités
-VIEW: Voir
+VIEW: Afficher
 CREATE: Créer
-EDIT: Modifier
+EDIT: Éditer
 DELETE: Supprimer
 ASSIGN: Assigner
 SHARE: Partager
@@ -142,7 +142,7 @@ oro:
       DEEP: Division
       GLOBAL: Organisation
       SYSTEM: Système
-      NONE: Aucun
+      NONE: Aucune
 Create group: Créer un groupe
 btn.create.user-group: Créer un groupe
 Has group: Appartient au groupe

@@ -88,9 +88,9 @@ user:
   default_product_grid_view:
     label: Standard produktlistningsvy
   default_grid_view:
-    none: Ingen
+    none: Inga
   timezone: Tidszon
-Role: Roll
+Role: roll
 Owner: Ägare
 General: Allmänna
 Entity: Enhet
@@ -129,8 +129,8 @@ oro_security:
 (default): Standardbehörighet på entiteter
 VIEW: Visa
 CREATE: Skapa
-EDIT: Redigera
-DELETE: Ta bort
+EDIT: Ändra
+DELETE: Radera
 ASSIGN: Tilldela
 SHARE: Dela
 oro:
@@ -141,7 +141,7 @@ oro:
       DEEP: Avdelning
       GLOBAL: Organisation
       SYSTEM: System
-      NONE: Ingen
+      NONE: Inga
 Create group: Skapa grupp
 btn.create.user-group: Skapa grupp
 Has group: Har gruppen

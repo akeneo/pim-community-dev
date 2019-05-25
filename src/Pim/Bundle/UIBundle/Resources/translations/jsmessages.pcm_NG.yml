@@ -1,0 +1,28 @@
+Close: Close am
+Selected Rows: Rows dem wey u don select
+"Yes": "Na so"
+"Yes, do it": "Na so, do am"
+"No": "No be so"
+"Cancel": "Cancel am"
+"Edit": "Make u edit am"
+Next: Next
+Done: Done
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Columns: Columns
+Apply: Apply am
+Action: Action
+Currency: Currency
+oro_config:
+  form:
+    config:
+      title: Setting for system
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Wen e localize
+          system_locale: Language

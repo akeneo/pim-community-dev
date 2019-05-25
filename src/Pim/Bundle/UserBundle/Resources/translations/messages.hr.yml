@@ -130,7 +130,7 @@ oro_security:
 VIEW: Prikaz
 CREATE: Kreiraj
 EDIT: Uredi
-DELETE: Obriši
+DELETE: Brisanje
 ASSIGN: Dodijeli
 SHARE: Podijeli
 oro:

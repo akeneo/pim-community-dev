@@ -27,7 +27,7 @@ pim_datagrid:
       label: 削除
       confirm_content: 選択された製品を削除してもよろしいですか？
       success: 選択した製品が正常に削除されました。
-      error: 商品の削除中にエラーが発生しました、やり直してください
+      error: 選択した製品の削除中にエラーが発生しました、やり直してください
   view_selector:
     view: ビュー
     create_view_modal:
@@ -596,7 +596,7 @@ pim_enrich:
         history:
           title: 履歴
         products:
-          title: 製品
+          title: 商品
     attribute_group:
       tab:
         properties:
@@ -777,7 +777,7 @@ pim_enrich:
         attributes:
           label_label: ラベル
           toolbox:
-            select_attributes_by_groups: グループによる追加
+            select_attributes_by_groups: グループによって追加
             select_attributes: 属性を追加
             add: 追加
             attributes_groups_selected: '{{ itemsCount }} グループの選択'
@@ -994,6 +994,8 @@ pim_enrich:
           label: ステータスの変更
           description: 選択した製品は有効または無効になります。
           field: 有効にするには
+        edit_common:
+          description: '{{ locale }} ロケールと{{ channel }} チャネルの次のデータで選択した製品ファミリに属する属性のみが編集されます。'
         change_family:
           label: ファミリーの変更
           description: 選択した製品のファミリーを選択したファミリーに変更します
@@ -1009,6 +1011,9 @@ pim_enrich:
         remove_from_category:
           label: カテゴリから削除
           description: 次のカテゴリから製品が削除されます。
+        add_to_existing_product_model:
+          label: 既存の製品モデルに追加
+          description: 選択された製品モデルは製品モデルを集め、共通プロパティの充実化を図る。
     family:
       title: ファミリー一括操作
       confirm: "{1}更新しようとしている以下のファミリーの内容について、ご確認ください。|] 1, Inf [更新しようとしている以下の {{ itemsCount }} 件のファミリーの内容について、ご確認ください。"
@@ -1029,11 +1034,11 @@ pim_enrich:
           label: 属性の要件を設定
           description: 以下の属性要件が選択したファミリーに適用されます
 pim_enrich.error:
-  exception.title: ああスナップ！ {{ status_code }} のエラーが発生しました。
+  exception.title: ' {{ status_code }} のエラーが発生しました。'
   http:
     403: このページにアクセスすることはできません
 page_title:
-  oro_default: ダッシュ ボード
+  oro_default: ダッシュボード
   pim_enrich_attributegroup_index: 属性グループ
   pim_enrich_attributegroup_create: 属性グループ |作成
   pim_enrich_attributegroup_edit: 属性グループ {{ group.label }} |編集
@@ -1044,7 +1049,7 @@ page_title:
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性 |作成
   pim_enrich_attribute_edit: 属性 {{ attribute.label }} |編集
-  pim_enrich_product_index: 製品
+  pim_enrich_product_index: 商品
   pim_enrich_product_edit: 製品 {{ product.label }} |編集
   pim_enrich_product_model_edit: 製品モデル {{ product.label }} |編集
   pim_enrich_family_index: ファミリー
@@ -1078,10 +1083,32 @@ batch_jobs:
     label: 製品の値を更新
     perform:
       label: 製品の値を更新
+  add_to_group:
+    perform:
+      label: グループに追加
   edit_common_attributes:
     label: 属性を編集
     perform:
       label: 属性を編集
+    cleaner:
+      label: 属性を持つファイルを削除
+  add_to_category:
+    perform:
+      label: カテゴリーに追加
+  move_to_category:
+    perform:
+      label: カテゴリへ移動
+  remove_from_category:
+    perform:
+      label: カテゴリから削除
+  add_association:
+    label: 関連付ける
+    perform:
+      label: 関連付ける
+  add_to_existing_product_model:
+    label: 既存の製品モデルに追加
+    perform:
+      label: 既存の製品モデルに追加
   set_attribute_requirements:
     label: 属性の要件を設定
     perform:
@@ -1160,6 +1187,10 @@ batch_jobs:
     label: ファミリーをCSV形式でインポート
     validation.label: ファイルの検証
     import.label: ファミリーインポート
+    compute_data_related_to_family_variants.label: 製品モデルデータを計算
+    compute_data_related_to_family_root_product_models.label: ルート製品モデルデータを計算
+    compute_data_related_to_family_sub_product_models.label: サブ製品モデルデータを計算
+    compute_data_related_to_family_products.label: 製品データを計算
   csv_family_variant_import:
     label: ファミリーバリアントをCSV形式でインポート
     validation.label: ファイルの検証
@@ -1223,6 +1254,10 @@ batch_jobs:
     label: ファミリーをXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: ファミリーインポート
+    compute_data_related_to_family_variants.label: 製品モデルデータを計算
+    compute_data_related_to_family_root_product_models.label: ルート製品モデルデータを計算
+    compute_data_related_to_family_sub_product_models.label: サブ製品モデルデータを計算
+    compute_data_related_to_family_products.label: 製品データを計算
   xlsx_family_variant_import:
     label: ファミリーバリアントをXLSX形式でインポート
     validation.label: ファイルの検証
@@ -1264,7 +1299,7 @@ batch_jobs:
     export.label: 属性オプションをXLSX形式でエクスポート
   xlsx_association_type_export:
     label: 関連タイプをXLSX形式でインポート
-    export.label: 関連タイプをXLSX形式でインポート
+    export.label: 関連タイプをXLSX形式でエクスポート
   xlsx_channel_export:
     label: チャネルをXLSX形式でエクスポート
     export.label: チャネルエクスポート
@@ -1311,7 +1346,7 @@ pim_menu:
   tab:
     activity: アクティビティ
     imports: インポート
-    products: 製品
+    products: 商品
     exports: エクスポート
     settings: 設定
     system: システム
@@ -1325,18 +1360,20 @@ pim_menu:
     category: カテゴリ
     channel: チャンネル
     currency: 通貨
-    dashboard: ダッシュ ボード
+    dashboard: ダッシュボード
     family: ファミリー
     group: グループ
     group_type: グループタイプ
     locale: ロケール
-    product: 製品
+    product: 商品
+    product_model: 製品モデル
     published_product: 公開済み製品
     export_history: エクスポート履歴
     export_profile: エクスポートプロファイル
     import_history: インポート履歴
     import_profile: インポートプロファイル
     configuration: 設定
+    catalog_volume: カタログのボリュームモニタリング
     user_management: ユーザー管理
     user: ユーザー
     user_group: グループ
@@ -1358,10 +1395,11 @@ pim_notification:
   loading: 読み込んでいます.
 catalog_volume:
   axis:
-    count_products: 製品
+    count_products: 商品
     count_channels: チャンネル
     count_families: ファミリー
     count_attributes: 属性
     count_categories: カテゴリ
     count_category_trees: カテゴリツリー
+    count_variant_products: バリアント製品
     count_product_models: 製品モデル

@@ -1,6 +1,6 @@
 pim_api:
   acl:
-    rights: Web-API Berechtigungen
+    rights: Berechtigungen Web-API
     attribute:
       edit: Erstellen und Aktualisieren von Attributen
       list: Attribute auflisten
@@ -39,4 +39,4 @@ pim_api:
     locale: Gebietsschemata
     currency: Währungen
     association_type: Verbindungstypen
-rights.api: Web-API Berechtigungen
+rights.api: Berechtigungen Web-API

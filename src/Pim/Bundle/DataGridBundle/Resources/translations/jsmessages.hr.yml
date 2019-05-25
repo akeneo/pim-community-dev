@@ -71,7 +71,7 @@ pim_datagrid:
     clear: Obriši
     displayed_columns: Odabrani stupci
     apply: Primijeni
-    cancel: Poništi
+    cancel: Odustani
     remove_column: Ukloni
     attribute_groups: Grupe atributa
   mass_action:

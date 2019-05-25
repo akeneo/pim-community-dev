@@ -8,10 +8,10 @@ pim_connector:
       selector:
         modal:
           title: Выбор категориий
-          cancel: Отмена
+          cancel: oтменить
           confirm: Подтверждение
         label: "{0} Все продукты |{1} Одна категория выбрана |] 1, Inf [ {{ count }} выбранные категории"
-        edit: Редактировать
+        edit: Изменить
         title: Выберите категории
     locales:
       validation:

@@ -38,5 +38,5 @@ pim_api:
     channel: Canaux
     locale: Locales
     currency: Devises
-    association_type: Types d'association
+    association_type: Types d'associations
 rights.api: Autorisations de l'API Web

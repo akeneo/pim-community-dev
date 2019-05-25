@@ -192,7 +192,7 @@ pim_enrich:
         field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
         already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
       error:
-        upload: Der opstod en fejl under fil upload
+        upload: Der opstod en fejl under fil indlæsningen
       meta:
         created: Oprettet
         created_by: Af
@@ -220,15 +220,15 @@ pim_enrich:
         all: Alle
         all_visible: Alle synlige
         none: Ingen
-        copy: Kopi
+        copy: Kopier
       optional_attribute:
         remove: Fjern denne attribut
       locale_specific_attribute:
         unavailable: Dette landestandard specifikke felt er ikke tilgængeligt i denne landestandard
       localizable:
-        channel_locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for locale '{{ locale }}' og '{{ channel }}'-kanal
+        channel_locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for landestandard'{{ locale }}' og '{{ channel }}'-kanal
       media:
-        upload: Træk og slip for at uploade eller klik her
+        upload: Træk og slip for at indlæse eller klik her
       create_popin:
         type: Produkt
         title: Opret
@@ -408,20 +408,20 @@ pim_enrich:
         field_not_ready: "Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       scopable: Omfangbar
       type:
-        pim_catalog_identifier: Id
+        pim_catalog_identifier: Identifikator
         pim_catalog_text: Tekst
         pim_catalog_textarea: Tekstområde
         pim_catalog_number: Tal
         pim_catalog_price_collection: Pris
         pim_catalog_multiselect: Multi Select
-        pim_catalog_simpleselect: Simpel valg
+        pim_catalog_simpleselect: Simple select
         pim_catalog_file: Fil
         pim_catalog_image: Billede
         pim_catalog_boolean: "Ja / Nej"
         pim_catalog_date: Dato
         pim_catalog_metric: Metrisk
-        pim_reference_data_simpleselect: Referencedata simpel Vælg
-        pim_reference_data_multiselect: Reference data multi Vælg
+        pim_reference_data_simpleselect: Referencedata simpel valg
+        pim_reference_data_multiselect: Reference data multi valg
       validation_rule:
         email: E-mail
         regexp: Regulære udtryk
@@ -438,7 +438,7 @@ pim_enrich:
         created: API forbindelse oprettet
   confirmation:
     leave: Er du sikker på du vil forlade denne side?
-    discard_changes: Du vil miste ændringer til %entity%, hvis du forlader siden.
+    discard_changes: Du vil miste ændringer til {{ entity }}, hvis du forlader siden.
     delete_item: Bekræft sletning
     remove_item: Bekræft fjernelse af
     remove: Fjern
@@ -451,7 +451,7 @@ pim_enrich:
     entity:
       updated: Der er ikke-gemte ændringer.
   error:
-    upload: Der opstod en fejl under upload af filen
+    upload: Der opstod en fejl under indlæsning af filen
   alert:
     not_allowed: Du har ikke adgang til denne side
     error_occured: Der opstod en fejl under indlæsning af siden
@@ -491,7 +491,7 @@ pim_enrich:
             no_available_attributes: Der er ikke flere attributter at tilføje
             attributes_selected: "{{ itemsCount }} attribut(ter) valgt"
             no_match: Ingen fundet
-            load_more: Indlæser flere resultater...
+            load_more: Indlæs flere resultater...
           attribute_group_selector: Attributgruppe
           attribute_group_all: Alle
           attribute_group.to_fill_count: "{1}1 tom kræved attribut |] 1, Inf [{{ count }} tomme krævede attributter"
@@ -636,7 +636,7 @@ pim_enrich:
             name: Navn
             type: Type
             scopable: Omfangbar
-            localizable: Oversættelige
+            localizable: Kan oversættes
         history.title: Historik
     common:
       tab:
@@ -795,7 +795,7 @@ pim_enrich:
         labels:
           title: Etiket oversættelser
         choices:
-          title: Muligheder
+          title: Valgmuligheder
         history:
           title: Historik
     mass_edit:
@@ -831,12 +831,12 @@ pim_enrich:
           title: Egenskaber
           edit: Redigér
           label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-          help: "Vælg produktinformation til eksport. Ex: kun de tekniske egenskaber."
+          help: "Vælg produktinformation til eksport. Eks: kun de tekniske egenskaber."
           empty: Alle attributter vil blive eksporteret
           modal:
             apply: Anvend
             cancel: Annuller
-            title: Valg af batchattributter
+            title: Valg af attributter
         attributes_selector:
           attribute_group: Attributgrupper
           attributes: "Søg i {{ itemsCount }} attributter"
@@ -848,7 +848,7 @@ pim_enrich:
           description: Vælg fabrikat oplysningerne eksportere
         family:
           title: Familie
-          help: "Vælg produkterne, der eksporteres af deres familie. Ex: Eksport kun de sko og kjoler."
+          help: "Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler."
           operators:
             IN: I listen
             "NOT IN": Ikke på listen
@@ -864,19 +864,19 @@ pim_enrich:
             "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
         enabled:
           title: Status
-          help: "Vælg produkterne, der eksporteres af deres status. Ex: Eksportere produkter overhovedet deres status."
+          help: "Vælg produkterne, der eksporteres efter deres status. Eks: Eksportere produkter uanset deres status."
           value:
             all: Alle
             enabled: Aktiveret
             disabled: Deaktiveret
         completeness:
           title: Fuldstændighed
-          help: Vælg produkterne, der eksporteres af deres fuldstændighed.
+          help: Vælg produkterne, der eksporteres efter deres fuldstændighed.
           operators:
             ALL: Ingen betingelse på fuldstændighed
             "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Komplet på mindst én valgte landestandard
             "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
-            LOWER THAN ON ALL LOCALES: Ikke komplet på alle valgte landestandarder
+            LOWER THAN ON ALL LOCALES: Ikke komplet på nogle af de valgte landestandarder
             AT LEAST COMPLETE: Mindst ét underordnet produkt komplet på én valgte landestandard
             ALL COMPLETE: Alle underliggende produkter komplet på alle valgte landestandarder
           empty_selection: Vælg en familie
@@ -884,7 +884,7 @@ pim_enrich:
           title: Kategori
           help: Brug produktkategorierne i træet (defineret af kanalen ovenfor) til at vælge produkter til eksport
         identifier:
-          title: Id
+          title: Identifikator
           help: Brug produkt-id'erne til at eksportere adskilt af kommaer, mellemrum eller linjeskift
         metric:
           operators:
@@ -893,7 +893,7 @@ pim_enrich:
             ">=": Større end eller lig med
             ">": større end
             "<=": Mindre end eller lig med
-            "<": Mindre end
+            "<": mindre end
             EMPTY: Er tom
             NOT EMPTY: er ikke tom
         string:
@@ -913,7 +913,7 @@ pim_enrich:
             ">=": Større end eller lig med
             ">": større end
             "<=": Mindre end eller lig med
-            "<": Mindre end
+            "<": mindre end
             EMPTY: Er tom
             NOT EMPTY: er ikke tom
         multi_select:
@@ -933,7 +933,7 @@ pim_enrich:
         date:
           operators:
             ">": større end
-            "<": Mindre end
+            "<": mindre end
             "=": er lig med
             "!=": Er ikke lig med
             BETWEEN: Mellem
@@ -947,7 +947,7 @@ pim_enrich:
             ">=": Større end eller lig med
             ">": større end
             "<=": Mindre end eller lig med
-            "<": Mindre end
+            "<": mindre end
             EMPTY: Er tom
             NOT EMPTY: er ikke tom
       properties:
@@ -1109,7 +1109,7 @@ pim_enrich:
           description: Følgende attribut krav vil blive anvendt til de valgte familier
           label_count: "Sæt attribut kravene for  <span class=\"AknFullPage-title--highlight\">1 familie</span>|] 1, Inf [Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"
 pim_enrich.error:
-  exception.title: Oh snap! Der opstod en {{ status_code }}...
+  exception.title: Beklager! Der opstod en {{ status_code }} fejl...
   http:
     403: Du har ikke adgang til denne side
 page_title:
@@ -1123,7 +1123,7 @@ page_title:
   pim_enrich_categorytree_edit: Kategori træ {{ category.label }} | Rediger
   pim_enrich_categorytree_create_tree: Kategori træer | Oprette
   pim_enrich_attribute_index: Egenskaber
-  pim_enrich_attribute_create: Attributter | Oprette
+  pim_enrich_attribute_create: Attributter | Opret
   pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Rediger
   pim_enrich_product_index: Produkter
   pim_enrich_product_edit: Produkt {{ product.label }} | Rediger
@@ -1131,7 +1131,7 @@ page_title:
   pim_enrich_family_index: Familier
   pim_enrich_family_edit: Familie {{ family.label }} | Rediger
   pim_enrich_channel_index: Kanaler
-  pim_enrich_channel_create: Kanaler | Oprette
+  pim_enrich_channel_create: Kanaler | Opret
   pim_enrich_channel_edit: Kanal {{ channel.label }} | Rediger
   pim_enrich_currency_index: Valutaer
   pim_enrich_locale_index: Landestandarder
@@ -1144,7 +1144,7 @@ page_title:
   pim_enrich_mass_edit_action_choose: Masse Rediger | Vælg
   pim_enrich_mass_edit_action_configure: Masse Rediger | Konfigurere
   pim_enrich_mass_edit_action_perform: Masse Rediger | Udføre
-  pim_enrich_job_tracker_index: Processen overvågning
+  pim_enrich_job_tracker_index: Process overvågning
   pim_enrich_job_tracker_show: Process overvågning | Vis job
   pim_enrich_api_connection_index: API-forbindelser
   pim_enrich_api_connection_create: API forbindelser | Oprette
@@ -1459,7 +1459,7 @@ pim_menu:
     user_group: Grupper
     user_role: Roller
     info: Systemoplysninger
-    job_tracker: Processen overvågning
+    job_tracker: Process overvågning
     api_connection: API-forbindelser
   navigation:
     activity: Aktivitet navigation

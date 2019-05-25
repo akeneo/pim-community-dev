@@ -153,7 +153,7 @@ pim_enrich:
       code: Code
       label: Libellé
       labels:
-        save: Enregistrer
+        save: Sauvegarder
         cancel: Annuler
     product:
       navigation: Navigation produit
@@ -174,7 +174,7 @@ pim_enrich:
         download_pdf: PDF
         compare_translate: Comparer / Traduire
         delete: Supprimer
-        save: Enregistrer
+        save: Sauvegarder
       history:
         version: Version
         author: Auteur
@@ -190,20 +190,20 @@ pim_enrich:
         update_successful: Le produit a bien été mis à jour.
         update_failed: Le produit n'a pas pu être mis à jour.
         field_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
+        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
       error:
         upload: Une erreur s'est produite lors du transfert du fichier.
       meta:
         created: Créé
         created_by: par
-        updated_by: par
+        updated_by: Par
         updated: Dernière mise à jour
         family:
           title: Famille
           none: Aucun
         family_variant:
           title: Variante
-          none: Aucun
+          none: Aucune
         groups:
           title: Groupes
           modal:
@@ -219,7 +219,7 @@ pim_enrich:
         select: Sélectionner
         all: Tous
         all_visible: Tous les éléments visibles
-        none: Aucun
+        none: Aucune
         copy: Copier
       optional_attribute:
         remove: Supprimer cet attribut
@@ -235,7 +235,7 @@ pim_enrich:
         labels:
           family: Choisir une famille
           family_variant: Sélectionnez une variante de famille
-          save: Enregistrer
+          save: Sauvegarder
           cancel: Annuler
       message:
         created: Produit créé avec succès
@@ -261,7 +261,7 @@ pim_enrich:
       add_child:
         create: Créer
         cancel: Annuler
-        confirm: Confirmer
+        confirm: Confirmation
         create_label: "Créer un nouvel axe avec {{ axes }}"
         fields:
           required_label: (axe de variante)
@@ -279,7 +279,7 @@ pim_enrich:
         updated: Mis à jour
         updated_by: Mis à jour par
       btn:
-        save: Enregistrer
+        save: Sauvegarder
       title: type d'association
       create_popin:
         title: Créer
@@ -298,7 +298,7 @@ pim_enrich:
         updated: Mis à jour
         updated_by: Mis à jour par
       btn:
-        save: Enregistrer
+        save: Sauvegarder
       title: type de groupe
       create_popin:
         title: Créer
@@ -320,7 +320,7 @@ pim_enrich:
         updated: Mis à jour
         updated_by: Mis à jour par
       btn:
-        save: Enregistrer
+        save: Sauvegarder
     family:
       title: famille
       selected: familles sélectionnées
@@ -338,7 +338,7 @@ pim_enrich:
         updated: Mis à jour
         updated_by: Mis à jour par
       btn:
-        save: Enregistrer
+        save: Sauvegarder
       create_popin:
         title: Créer
       message:
@@ -381,7 +381,7 @@ pim_enrich:
         update_failed: Le groupe n'a pas pu être mis à jour.
         field_not_ready: "Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       btn:
-        save: Enregistrer
+        save: Sauvegarder
       meta:
         product_count: Produits
         created: Créé
@@ -462,7 +462,7 @@ pim_enrich:
       choose_variant: Choisissez une variante
       complete_variant_product: produit variant
       complete_variant_products: produits variants
-      family_variant: Variante
+      family_variant: Groupe de variantes
       product_model: Modèle de produit
       flash:
         product_model_added: Le modèle de produit a été correctement ajouté au modèle de produit
@@ -493,7 +493,7 @@ pim_enrich:
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
           attribute_group_selector: Groupe d'attributs
-          attribute_group_all: Tous
+          attribute_group_all: Tous les éléments
           attribute_group.to_fill_count: "{1}1 attribut requis manquant |] 1, Inf [{{ count }} attributs requis manquants"
           attribute_filter:
             display: Affichage
@@ -675,7 +675,7 @@ pim_enrich:
         import: Profil d'import
         export: Profil d'export
       button:
-        edit.title: Modifier
+        edit.title: Éditer
         export.title: Exporter maintenant
         import.launch: Importer maintenant
         import.upload: Télécharger et importer maintenant
@@ -829,7 +829,7 @@ pim_enrich:
           help: "Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand."
         attributes:
           title: Attributs
-          edit: Modifier
+          edit: Éditer
           label: "{0}Tous les attributs|{1}1 attribut sélectionné|]1,Inf[{{ count }} attributs sélectionnés"
           help: "Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques."
           empty: Tous les attributs vont être exportés
@@ -866,7 +866,7 @@ pim_enrich:
           title: État
           help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."
           value:
-            all: Tous
+            all: Tous les éléments
             enabled: Activé
             disabled: Désactivé
         completeness:
@@ -898,7 +898,7 @@ pim_enrich:
             NOT EMPTY: N'est pas vide
         string:
           operators:
-            ALL: Tous
+            ALL: Tous les éléments
             CONTAINS: Contient
             DOES NOT CONTAIN: Ne contient pas
             "=": Est égal à
@@ -1021,7 +1021,7 @@ pim_enrich:
     next: Suivant
     previous: Retour
     cancel: Annuler
-    confirm: Confirmer
+    confirm: Confirmation
     product:
       title: Action de masse sur les produits
       confirm: "{1}Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les renseignements suivants, merci de confirmer."
@@ -1032,9 +1032,9 @@ pim_enrich:
           title: Actions de masse sur les produits
           label_count: "] 0, Inf [Sélectionnez votre action"
         configure:
-          label: Configurer
+          label: Configurez l'opération à effectuer
         confirm:
-          label: Confirmer
+          label: Confirmation
         launch_error:
           label: Une erreur s’est produite lors du lancement de l'édition de masse
         launched:
@@ -1098,9 +1098,9 @@ pim_enrich:
           title: Actions de masse sur les familles
           label_count: "] 0, Inf [Sélectionnez votre action"
         configure:
-          label: Configurer
+          label: Configurez l'opération à effectuer
         confirm:
-          label: Confirmer
+          label: Confirmation
         launched:
           label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       operation:
@@ -1137,12 +1137,12 @@ page_title:
   pim_enrich_locale_index: Locales
   pim_enrich_group_index: Groupes
   pim_enrich_group_edit: Groupe {{ group.label }} | Édition
-  pim_enrich_associationtype_index: Types d'association
+  pim_enrich_associationtype_index: Types d'associations
   pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Édition
-  pim_enrich_grouptype_index: Types de groupe
+  pim_enrich_grouptype_index: Types de groupes
   pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Édition
-  pim_enrich_mass_edit_action_choose: Édition en masse | Choisir
-  pim_enrich_mass_edit_action_configure: Édition en masse | Configurer
+  pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
+  pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
@@ -1152,9 +1152,9 @@ page_title:
   pim_analytics_system_info_index: Informations système
 batch_jobs:
   add_product_value:
-    label: Ajouter une valeur de produit
+    label: Ajouter une valeur au produit
     perform:
-      label: Ajouter une valeur de produit
+      label: Ajouter une valeur au produit
   update_product_value:
     label: Mise à jour de la valeur du produit
     perform:
@@ -1194,25 +1194,25 @@ batch_jobs:
     perform:
       label: Configurer les exigences d'attributs
   csv_product_quick_export:
-    quick_export.label: Export rapide de produits en CSV
+    quick_export.label: Exportation rapide de produits en CSV
     quick_export_product_model.label: Export rapide de modèles de produit en CSV
     perform:
-      label: Export rapide de produits en CSV
+      label: Exportation rapide de produits en CSV
   csv_product_grid_context_quick_export:
-    quick_export.label: Export rapide de la grille de produits en CSV
+    quick_export.label: Exportation rapide de la grille de produits en CSV
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en CSV
     perform:
-      label: Export rapide de la grille de produits en CSV
+      label: Exportation rapide de la grille de produits en CSV
   xlsx_product_quick_export:
-    quick_export.label: Export rapide de produits en XLSX
+    quick_export.label: Exportation rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX
     perform:
-      label: Export rapide de produits en XLSX
+      label: Exportation rapide de produits en XLSX
   xlsx_product_grid_context_quick_export:
-    quick_export.label: Export rapide de la grille de produits en XLSX
+    quick_export.label: Exportation rapide de la grille de produits en XLSX
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en XLSX
     perform:
-      label: Export rapide de la grille de produits en XLSX
+      label: Exportation rapide de la grille de produits en XLSX
   csv_product_export:
     label: Export des produits en CSV
     export.label: Export des produits
@@ -1233,7 +1233,7 @@ batch_jobs:
     export.label: Export des types d'association
   csv_group_export:
     label: Export des groupes en CSV
-    export.label: Export de groupes
+    export.label: Export des groupes
   csv_family_export:
     label: Export des familles en CSV
     export.label: Export des familles
@@ -1357,7 +1357,7 @@ batch_jobs:
     label: Import de modèles de produit en XLSX
   xlsx_group_export:
     label: Export des groupes en XLSX
-    export.label: Export de groupes
+    export.label: Export des groupes
   xlsx_group_import:
     label: Import des groupes en XLSX
     validation.label: Validation du fichier
@@ -1434,7 +1434,7 @@ pim_menu:
       title: Aide
       helper: Centre d'aide Akeneo
   item:
-    association_type: Types d'association
+    association_type: Types d'associations
     attribute: Attributs
     attribute_group: Groupes d'attributs
     category: Catégories
@@ -1443,15 +1443,15 @@ pim_menu:
     dashboard: Tableau de bord
     family: Familles
     group: Groupes
-    group_type: Types de groupe
+    group_type: Types de groupes
     locale: Locales
     product: Produits
     product_model: Modèles de produits
     published_product: Produits publiés
-    export_history: Historique des exports
-    export_profile: Profils d'export
-    import_history: Historique des imports
-    import_profile: Profils d'import
+    export_history: Historique des exportations
+    export_profile: Profils d'exports
+    import_history: Historique des importations
+    import_profile: Profils d'importation
     configuration: Configuration
     catalog_volume: Volumétrie du catalogue
     user_management: Gestion des utilisateurs

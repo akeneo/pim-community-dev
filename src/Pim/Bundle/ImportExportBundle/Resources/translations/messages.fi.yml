@@ -54,10 +54,10 @@ import profile:
 pim_importexport:
   acl:
     export_profile:
-      index: Tuontiprofiilin listaus
+      index: Vientiprofiilien listaus
       create: Vientiprofiilin luonti
       show: Näytä vientiprofiili
-      edit: Editoi vientiprofiilia
+      edit: Muokkaa vientiprofiilia
       remove: Poista vientiprofiili
       launch: Käynnistä vientiprofiili
       property_edit: Muokkaa vientiprofiilin yleisiä ominaisuuksia
@@ -68,7 +68,7 @@ pim_importexport:
     import_profile:
       index: Näytä tuontiprofiilien lista
       create: Tuontiprofiilin luonti
-      show: Näytä vientiprofiili
+      show: Näytä tuontiprofiili
       edit: Editoi tuontiprofiilia
       remove: Poista tuontiprofiili
       launch: Käynnistä tuontiprofiili
@@ -77,10 +77,10 @@ pim_importexport:
       index: Näytä vientiraporttien lista
       show: Näytä vientiraportin yksityiskohdat
       dl_log: Lataa vientiraporttilogi
-      dl_files: Lataa viedyt tiedosto
+      dl_files: Lataa viedyt tiedostot
     import_execution:
-      index: Näytä vientiraporttien lista
-      show: Näytä vientiraportin yksityiskohdat
+      index: Näytä tuontiraporttien lista
+      show: Näytä tuontiraportin yksityiskohdat
       dl_log: Lataa tuontiraporttilogi
       dl_files: Lataa tuodut tiedostot
   acl_group:
@@ -138,7 +138,7 @@ job_execution.summary:
     skipped: ohitetaan, laajennus valkolistattu
 Step: Vaihe
 Status: Status
-Warnings: Varoitus
+Warnings: Varoitukset
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu

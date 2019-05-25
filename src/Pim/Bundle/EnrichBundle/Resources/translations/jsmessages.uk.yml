@@ -44,8 +44,6 @@ flash:
     removed: Тип асоціації успішно видалено
   attribute:
     removed: Атрибут успішно видалено
-  attribute_group:
-    removed: Групу атрибутів успішно видалено
   family:
     removed: Сімейство успішно видалено
   family_variant:
@@ -160,7 +158,6 @@ pim_enrich:
       infos: Інформація про товар
       index_title: "] -Inf, 1] {{ count }} результат|] 1, Inf [{{ count }} результати"
       title: продукт
-      locale: Локаль
       category: Категорія
       create: Створити
       subTitle: Створити продукт
@@ -237,9 +234,6 @@ pim_enrich:
           family_variant: Виберіть різновид сімейства
           save: Зберегти
           cancel: Відмінити
-      message:
-        created: Продукт успішно створено
-      completeness: Завершено
       sequential_edit:
         item_limit: Тільки перша 1000 елементів з ({{ count }} вибраних відображується при послідовному редагуванні
         empty: Пошук не дав результатів, будь ласка, змініть умови пошуку
@@ -283,8 +277,6 @@ pim_enrich:
       title: тип асоціації
       create_popin:
         title: Створити
-      message:
-        created: Тип асоціації успішно створено
     group_type:
       info:
         deletion_successful: Тип групи успішно видалений.
@@ -302,8 +294,6 @@ pim_enrich:
       title: тип групи
       create_popin:
         title: Створити
-      message:
-        created: Тип групи успішно створено
     channel:
       title: канал
       info:
@@ -406,31 +396,17 @@ pim_enrich:
         create_successful: Атрибут успішно створено.
         create_failed: Не вдалося створити атрибут.
         field_not_ready: "Атрибут не можна зберегти прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
-      scopable: Сфера визначається
       type:
         pim_catalog_identifier: Ідентифікатор
         pim_catalog_text: Текст до 255 символів
-        pim_catalog_textarea: Область тексту
-        pim_catalog_number: Число
-        pim_catalog_price_collection: Ціна
-        pim_catalog_multiselect: Множинний вибір
-        pim_catalog_simpleselect: Простий вибір
-        pim_catalog_file: Файл
-        pim_catalog_image: Зображення
-        pim_catalog_boolean: "Так/Ні"
         pim_catalog_date: Дата
         pim_catalog_metric: Метричний
         pim_reference_data_simpleselect: Простий розкривний список довідкових даниx
         pim_reference_data_multiselect: Множинний розкривний список довідкових даниx
-      validation_rule:
-        email: E-mail
-        regexp: Регулярний вираз
-        url: URL
       title: атрибут
     attribute_group:
       info:
         update_failed: Не вдалося оновити групу атрибутів
-        update_successful: Групу атрибутів успішно оновлено
     api_connection:
       create_popin:
         title: Створити
@@ -573,9 +549,7 @@ pim_enrich:
           title: Властивості
           general: Загальне
           code: Код
-          attribute_as_label: Атрибут, який використовується як мітка
           attribute_as_image: Атрибут використовується як основне зображення
-          empty_attribute_as_image: Не вибрано
           label_translations: Переклади міток
         attributes:
           title: Атрибути
@@ -585,8 +559,6 @@ pim_enrich:
             select_attributes: Додати атрибути
             add: Додати
             attributes_groups_selected: 'вибрано груп: {{ itemsCount }}'
-          not_required_label: Не вимагається
-          required_label: Обов’язково
         variant:
           title: Варіанти
           flash:
@@ -761,34 +733,23 @@ pim_enrich:
             type_specific: Введіть конкретні параметри
             validation: Параметри перевірки
           label:
-            allowed_extensions: Дозволені розширення
             auto_option_sorting: Автоматично сортувати опції в алфавітному порядку
             available_locales: Доступні локалі
             code: Код
-            date_max: Максимальна дата
-            date_min: Мінімальна дата
             decimals_allowed: Допустимі десяткові значення
-            default_metric_unit: Одиниці виміру за промовчанням
             group: Група атрибутів
             is_locale_specific: Специфічно для локалі
             localizable: Значення в локалі
-            max_characters: Максимум символів
-            max_file_size: Максимальний розмір файлу (МБ)
-            metric_family: Сімейство вимірів
             minimum_input_length: Мінімальна довжина для автозаповнення
             negative_allowed: Допустимі негативні значення
-            number_max: Максимальне число
-            number_min: Мінімальне число
             reference_data_name: Посилальний тип даних
             scopable: Значення для каналу
             type: Тип
             unique: Унікальне значення
             useable_as_grid_filter: Використовується в представленні даних в таблиці
             validation_regexp: Регулярний вираз
-            validation_rule: Правило перевірки
             wysiwyg_enabled: Розширений текстовий редактор увімкнено
           default_label:
-            default_metric_unit: Виберіть одиниці виміру
             group: Оберіть групу атрибутів
             metric_family: Виберіть сімейство
             reference_data_name: Оберіть посилальний тип даних
@@ -870,7 +831,7 @@ pim_enrich:
             enabled: Ввімкнено
             disabled: Вимкнено
         completeness:
-          title: Повнота
+          title: Ступінь заповненості
           help: Виберіть продукти для їхнього експорту за повнотою заповненості.
           operators:
             ALL: Немає умови щодо повноти заповненості
@@ -1182,9 +1143,9 @@ batch_jobs:
     perform:
       label: Видалити з категорії
   add_association:
-    label: Пов'язані
+    label: Пов'язати
     perform:
-      label: Пов'язані
+      label: Пов'язати
   add_to_existing_product_model:
     label: Додати до існуючої моделі продукту
     perform:

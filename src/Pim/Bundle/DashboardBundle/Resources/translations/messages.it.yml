@@ -14,16 +14,16 @@ pim_dashboard:
       title: Percentuale di completamento per canale e localizzazione
     last_operations:
       title: Ultime operazioni
-      empty: Nessuna operazione trovata
+      empty: Nessun operazione trovata
       status: Stato
       date: Data
       type: Tipo
       "profile name": Nome profilo
-      details: Dettagli
+      details: Dettaglio
       job_type:
-        import: Importa
-        export: Esporta
-        mass_edit: Modifica di massa
+        import: '&Import'
+        export: Esportazioni
+        mass_edit: Azione di massa modificata
         quick_export: Esportazione rapida
         compute_product_models_descendants: Calcola modelli di prodotto discendenti
         mass_delete: Eliminazione in massa prodotti

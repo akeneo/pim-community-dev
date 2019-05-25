@@ -3,7 +3,7 @@ pim_enrich:
     tab:
       attribute.title: Atributi
       category.title: Kategorije
-      association.title: Povezanost
+      association.title: Povezanosti
       completeness.title: Potpunost
       history.title: Povijest
     no_comparison_locale_available: Nijedna druga lokalizacija nije dostupna za usporedbu
@@ -446,7 +446,7 @@ Other: Ostalo
 Variants behavior when edited: Ponašanje varijante prilikom uređivanja
 Edit: Uredi
 Remove: Ukloni
-Delete: Obriši
+Delete: Brisanje
 Parameters: Parametri
 System: Sustav
 Values: Vrijednosti
@@ -485,7 +485,7 @@ Active: Aktivno
 Inactive: Neaktivno
 Do not convert: Ne pretvaraj
 Create: Kreiraj
-Cancel: Poništi
+Cancel: Odustani
 Choose a family: Odaberi obitelj
 Choose a unit: Odaberi jedinicu
 No matches found: Nisu pronađeni rezultati

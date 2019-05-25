@@ -11,6 +11,7 @@ oro.grid.mass_action.error_content: 一括操作を実行できません
 oro.grid.mass_action.delete.label: 削除
 oro.grid.mass_action.delete.confirm_title: 一括削除の確認
 oro.grid.mass_action.delete.confirm_content: 選択した項目を削除してもよろしいですか?
+oro.grid.mass_action.delete.item_limit: '%limit%製品を超える製品を一括削除できません (%count% 選択中)'
 oro.grid.datagrid.page_size.all: すべて
 oro.grid.mass_action.delete.success_message: "{0} 削除されたエンティティはありませんでした| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました"
 datagrid_view:

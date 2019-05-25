@@ -16,10 +16,10 @@ pim_import_export:
     8: Неизвестно
   download_archive:
     archive: Скачать созданный архив|Скачать созданные архивы
-    output: Скачать созданный файл|скачать созданные файлы
+    output: скачать созданный файл|скачать созданные файлы
     input: Скачать прочитанный файл|Скачать прочитанные файлы
-    invalid_xlsx: Скачать недопустимые значения
-    invalid_csv: Скачать недопустимые значения
+    invalid_xlsx: скачать недопустимые значения
+    invalid_csv: скачать недопустимые значения
   notification:
     export:
       error: Экспорт <strong>%label%</strong> не удался
@@ -88,7 +88,7 @@ pim_importexport:
     import: Профили импорта
 btn:
   create:
-    export profile: Создать профиль экспорта
+    export profile: создать профиль экспорта
     import profile: Создать профиль импорта
 Upload and import now: Загрузить и импортировать сейчас
 import now: Импортировать сейчас
@@ -121,7 +121,7 @@ popin.create:
 'Hide item': Скрыть элемент
 'Collecting data about job execution...': Сбор данных о выполнении задания...
 'You must select a file to upload': Необходимо выбрать файл для загрузки
-Download log: Журнал загрузки
+Download log: Журнал загрузок
 Show profile: Показать профиль
 execution details: подробности выполнения
 job_execution.summary:
@@ -130,18 +130,18 @@ job_execution.summary:
   skip: пропущено
   create: создано
   update: обновлено
-  update_products: обновленных продуктов
+  update_products: продуктов обновлено
   skip_products: пропущенных продуктов
-  displayed: отображены первые предупреждения
+  displayed: первые предупреждения отображены
   charset_validator:
     title: 'Кодировка файла:'
-    skipped: пропущено, расширение из белого списка
+    skipped: пропущено, расширение в белом списке
 Step: Этап
 Status: Статус
 Warnings: Предупреждения
 Summary: Сводка
 Start: Начало
-End: Конец
+End: Окончание
 set_attribute_requirements: Установить обязательность/ необязательность атрибутов
 COMPLETED: Завершено
 STARTING: Запущено

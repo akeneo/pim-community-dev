@@ -27,12 +27,12 @@ Action performed.: Toiminto suoritettu.
 Action is not performed.: Toimintoa ei suoritettu.
 Please, select item to perform action.: Valitse kohde toiminnon suorittamiseen.
 View per page: Sivunäkymä
-Enabled: Käytössä
+Enabled: Otettu käyttöön
 Disabled: Poistettu käytöstä
 not_available: Ei mitään
 Yes: true
 No: false
-oro.datagrid.entityHint: Entiteetti
+oro.datagrid.entityHint: Yksikkö
 oro.datagrid.noentities: Tuloksia ei löytynyt
 oro.datagrid.noresults: "Valitettavasti tuloksia ei löytynyt."
 oro.datagrid.noresults_subTitle: "Yritä uudelleen uusilla hakuehdoilla."
@@ -74,8 +74,8 @@ pim_datagrid:
     search: Etsi
     clear: Tyhjennä
     displayed_columns: Valitut sarakkeet
-    apply: Valitse
-    cancel: Peruuta
+    apply: Käytä
+    cancel: Hylkää
     remove_column: Poista
     description: Valitse tiedot, jotka haluat näyttää sarakkeina
     attribute_groups: Attribuuttiryhmät
@@ -89,7 +89,7 @@ pim.grid.mass_action.quick_export.launched: Nopea vienti on käynnistetty
 pim.grid.action.launch.title: Käynnistä
 pim.grid.action.show.title: Näytä
 Please select view: Valitse näkymä
-Loading...: Ladataan...
+Loading...: Lataa...
 View: Näytä
 from: mistä
 to: mihin

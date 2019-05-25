@@ -2,7 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Загальне
-      additional.title: Додатково
+      additional.title: Додаткові
       group_and_role.title: Групи та ролі
       password.title: Пароль
       business_unit.title: Бізнес-підрозділи
@@ -43,7 +43,7 @@ Users Management: Керування користувачами
 Create user: Створити користувача
 btn.create.user: Створити користувача
 New user: Новий користувач
-Additional: Додатково
+Additional: Додаткові
 Groups and Roles: Групи та ролі
 Username: Ім'я користувача
 Password: Пароль

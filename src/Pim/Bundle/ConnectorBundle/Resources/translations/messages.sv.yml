@@ -27,7 +27,7 @@ pim_connector:
     writer.title: Entitetslagring
     csv_writer.title: Csv skrivare
 job_execution.summary:
-  read: läst
+  read: läs
   write: skrivet
   skip: hoppades över
   create: skapades
@@ -63,7 +63,7 @@ batch_jobs:
     export.label: Exportera grupper
   csv_family_export:
     label: Exportera familjer till CSV
-    export.label: Exportera familjer
+    export.label: Exportera familj
   csv_product_import:
     label: Importera produkter från CSV
     validation.label: Filvalidering
@@ -86,11 +86,11 @@ batch_jobs:
   csv_association_type_import:
     label: Importera associationstyp från CSV
     validation.label: Filvalidering
-    import.label: Importera associationstyp
+    import.label: Importera associationer
   csv_family_import:
     label: Importera familjer från CSV
     validation.label: Filvalidering
-    import.label: Importera familjer
+    import.label: Importera familj
   csv_family_variant_import:
     validation.label: Filvalidering
   csv_group_import:
@@ -139,7 +139,7 @@ batch_jobs:
   xlsx_association_type_import:
     label: Importera associationstyp från XLSX
     validation.label: Filvalidering
-    import.label: Importera associationstyp
+    import.label: Importera associationer
   xlsx_attribute_import:
     label: Importera attribut i XLSX
     validation.label: Filvalidering

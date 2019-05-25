@@ -47,6 +47,7 @@ Additional: 追加
 Groups and Roles: グループとロール
 Username: ユーザー名
 Password: パスワード
+Password (again): パスワード（再入力）
 Re-enter password: パスワード再入力
 Name prefix: 尊称
 First name: 名
@@ -90,7 +91,7 @@ user:
   default_grid_view:
     none: なし
   timezone: タイムゾーン
-Role: ロール
+Role: 権限
 Owner: オーナー
 General: 全般
 Entity: エンティティ
@@ -154,4 +155,5 @@ Username or Email: ユーザー名またはメールアドレス
 Forgot Password: パスワードを忘れた
 Request: リクエスト
 Check Email: メールをチェック
+password_reset_email_sent: メールがユーザーに送信されました。パスワードをリセットするためのリンクが含まれています。
 Go to homepage: ホームページに移動

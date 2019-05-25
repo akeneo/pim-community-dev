@@ -3,7 +3,7 @@ btn:
   reply: Répondre
 confirmation:
   remove:
-    comment: Voulez-vous vraiment supprimer ce commentaire ?
+    comment: Voulez-vous vraiment supprimer ce commentaire?
 flash:
   comment:
     create:

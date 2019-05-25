@@ -13,7 +13,7 @@ pim_user:
       general.title: General
       users.title: Usuaris
 oro.user.controller:
-  group.message.saved: "Grup desat"
+  group.message.saved: "Grup guardat"
   role.message.saved: "Rol desat"
   user.message.saved: "Usuari desat"
   status.message.saved: "Estat desat"
@@ -22,7 +22,7 @@ oro.user.grid.users:
     username: "Nom d’usuari"
     email: "Adreça electrònica"
     firstName: "Nom"
-    lastName: "Segon cognom"
+    lastName: "Cognoms"
     createdAt: "Creat el"
     updatedAt: "Actualitzat el"
     enabled: "Estat"
@@ -52,7 +52,7 @@ Re-enter password: Torneu a introduir la contrasenya
 Name prefix: Prefix del nom
 First name: Nom
 Middle name: Primer cognom
-Last name: Segon cognom
+Last name: Cognoms
 Name suffix: Sufix del nom
 Date of birth: Data de naixement
 Avatar: Avatar

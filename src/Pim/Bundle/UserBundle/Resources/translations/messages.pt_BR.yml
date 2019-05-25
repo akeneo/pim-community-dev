@@ -3,10 +3,10 @@ pim_user:
     tab:
       general.title: Geral
       additional.title: Adicional
-      group_and_role.title: Grupos e Funções
+      group_and_role.title: Grupos e Regras
       password.title: Senha
-      business_unit.title: Unidades de Negócios
-      email_synchronization.title: Configurações de sincronização de E-Mail
+      business_unit.title: Unidades de Negócio
+      email_synchronization.title: Configuração da Sincronização de emails
       interfaces.title: Interfaces
   group:
     tab:
@@ -34,17 +34,17 @@ oro.user.grid.groups:
     name: "Nome"
 pim_title:
   user.index: Usuários
-  user_role.index: Funções
+  user_role.index: Papeis
   user_group.index: Grupos
   system_configuration.index: Configuração
 user.title: Usuário
 user.overview: Usuário
 Users Management: Gerenciamento de usuários
-Create user: Criar usuário
-btn.create.user: Criar usuário
+Create user: Criar Usuário
+btn.create.user: Criar Usuário
 New user: Novo usuário
 Additional: Adicional
-Groups and Roles: Grupos e Funções
+Groups and Roles: Grupos e Regras
 Username: Nome de usuário
 Password: Senha
 Re-enter password: Redigite a senha
@@ -60,8 +60,8 @@ Add another email: Adicionar outro E-Mail
 Catalog locale: Catalogar localidade
 Catalog scope: Catalogar escopo
 Default tree: Árvore Padrão
-Business Units: Unidades de Negócios
-Email synchronization settings: Configurações de sincronização de E-Mail
+Business Units: Unidades de Negócio
+Email synchronization settings: Configuração da Sincronização de emails
 Host: Servidor
 Port: Porta
 Ssl: SSL
@@ -84,9 +84,9 @@ Generate key: Gerar chave
 Primary: primário
 Removed user: Usuário removido
 user:
-  product_grid_filters: Filtros da grelha de produtos
+  product_grid_filters: Filtro de Produtos
   default_product_grid_view:
-    label: Vista da grelha de produtos por defeito
+    label: Exibição padrão da grade de produtos
   default_grid_view:
     none: Nenhum
   timezone: Fuso horário
@@ -108,7 +108,7 @@ rights:
 oro_security:
   acl_group:
     user: Usuários
-    role: Funções
+    role: Papeis
     group: Grupo de usuários
   acl:
     user:
@@ -127,10 +127,10 @@ oro_security:
       edit: Editar Grupos de Usuários
       delete: Remover um grupo de usuário
 (default): Permissão padrão nas entidades
-VIEW: Visão
+VIEW: Visualizar
 CREATE: Criar
 EDIT: Editar
-DELETE: Excluir
+DELETE: Deletar
 ASSIGN: Atribuir
 SHARE: Compartilhar
 oro:
@@ -142,8 +142,8 @@ oro:
       GLOBAL: Organização
       SYSTEM: Sistema
       NONE: Nenhum
-Create group: Criar grupo
-btn.create.user-group: Criar grupo
+Create group: Criar Grupo
+btn.create.user-group: Criar Grupo
 Has group: Possui grupo
 Save and Close: Salvar e Fechar
 user-group.overview: Grupos
@@ -154,4 +154,5 @@ Username or Email: Usuário ou Email
 Forgot Password: Esqueci a senha
 Request: Requisição
 Check Email: Verificar Email
+password_reset_email_sent: Um e-mail foi enviado para o usuário. Contém um link para redefinir a senha.
 Go to homepage: Ir para Página Inícial

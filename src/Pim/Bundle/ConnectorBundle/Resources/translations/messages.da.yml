@@ -28,7 +28,7 @@ pim_connector:
     csv_writer.title: CSV-Writer
 job_execution.summary:
   read: læs
-  write: skrevet
+  write: gemt
   skip: sprunget over
   create: oprettet
   process: færdig

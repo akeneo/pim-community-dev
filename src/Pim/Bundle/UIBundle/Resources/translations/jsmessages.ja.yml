@@ -39,7 +39,7 @@ Action: アクション
 Unit: 単位
 Currency: 通貨
 jstree:
-  all: すべての製品
+  all: 全ての製品
   unclassified: 未分類の製品
   product:
     all: すべての製品

@@ -23,8 +23,8 @@ oro.user.grid.users:
     email: "Sähköpostiosoite"
     firstName: "Etunimi"
     lastName: "Sukunimi"
-    createdAt: "Luotu"
-    updatedAt: "Päivitetty"
+    createdAt: "Luontiaika"
+    updatedAt: "Päivitysaika"
     enabled: "Status"
 oro.user.grid.roles:
   columns:
@@ -48,7 +48,7 @@ Groups and Roles: Ryhmät ja roolit
 Username: Käyttäjänimi
 Password: Salasana
 Password (again): Salasana (varmennus)
-Re-enter password: Syötä salasana uudelleen
+Re-enter password: Toista uusi salasana
 Name prefix: Nimen etuliite
 First name: Etunimi
 Middle name: Toinen nimi
@@ -58,9 +58,9 @@ Date of birth: Syntymäaika
 Avatar: Avatar
 Additional emails: Lisää sähköposteja
 Add another email: Lisää toinen sähköpostiosoite
-Catalog locale: Katalogin lokaatio
-Catalog scope: Katalogin laajuus
-Default tree: Oletusarvoinen puu
+Catalog locale: Tuotekatalogin lokaatio
+Catalog scope: Tuotekatalogin kanava
+Default tree: Oletuskategoria
 Business Units: Liiketoimintayksiköt
 Email synchronization settings: Sähköpostin synkronoinnin asetukset
 Host: Isäntä
@@ -94,10 +94,10 @@ user:
 Role: Rooli
 Owner: Omistaja
 General: Yleinen
-Entity: Entiteetti
+Entity: Yksikkö
 Capabilities: Ominaisuudet
 Save and close: Tallenna ja sulje
-Has role: On rooli
+Has role: Roolissa
 role:
   title: rooli
   overview: rooli
@@ -105,7 +105,7 @@ role:
   create: Luo rooli
 btn.create.role: Luo rooli
 rights:
-  action: Käyttöoikeudet
+  action: Käyttöoikeudert
 oro_security:
   acl_group:
     user: Käyttäjät
@@ -145,7 +145,7 @@ oro:
       NONE: Ei yhtään
 Create group: Luo ryhmä
 btn.create.user-group: Luo ryhmä
-Has group: Ryhmä on olemassa
+Has group: Ryhmässä
 Save and Close: Tallenna ja sulje
 user-group.overview: Ryhmät
 Log in: Kirjaudu

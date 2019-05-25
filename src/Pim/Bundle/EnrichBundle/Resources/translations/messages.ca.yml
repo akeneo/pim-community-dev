@@ -133,7 +133,7 @@ pim_enrich:
   sequential_edit_action:
     product:
       previous: Tornar a "%product%" sense guardar.
-      next: Vés a "%product%" sense guardar.
+      next: Anar a "%product%" sense guardar.
   acl:
     locale:
       index: Llistar configuracions regionals
@@ -319,7 +319,7 @@ btn:
     group: crear grup
     association type: crear tipus d'associació
     group type: crear tipus de grup
-    drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+    drag_or_upload: Arrossegar i deixar per carrgar o feu clic aquí
   edit: editar
   save: guardar
   save and create: guardar i crear-ne de nous
@@ -363,7 +363,7 @@ flash:
   attribute:
     created: Atribut creat correctament
     updated: Atribut actualitzat correctament
-    removed: Atribut suprimit correctament
+    removed: L'atribut s'ha suprimit correctament
     identifier_not_removable: L'atribut identificador no es pot suprimir
   attribute group:
     created: Grup d'atributs creat correctament
@@ -415,7 +415,7 @@ flash:
   association type:
     created: Tipus d'associació creat correctament
     updated: Tipus d'associació actualitzat correctament
-    removed: Tipus d'associació suprimit correctament
+    removed: Tipus d'associació suprimid correctament
   user:
     removed: Usuari suprimit correctament
   error ocurred: Acció fallida. Si us plau, torneu-ho a provar.
@@ -624,7 +624,7 @@ Disable: Deshabilitar
 pim_enrich.sequential_edit_action:
   product:
     previous: Tornar a "%product%" sense guardar.
-    next: Vés a "%product%" sense guardar.
+    next: Anar a "%product%" sense guardar.
 pim_enrich.mass_edit_action:
   limit_exceeded: Trieu menys de %limit% elements per editar
   product:
@@ -700,7 +700,7 @@ pane.accordion:
   group_values: Valors de grup
 popin.create:
   association_type.title: Crear un nou tipus d'associació
-  group.title: Crea un grup nou
+  group.title: Crear un nou grup
   product.title: Crear un nou producte
   option.title: Crear una nova opció
 In group: En grup

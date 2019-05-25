@@ -7,7 +7,7 @@ oro.grid.mass_action.confirm_content: Da li ste sigurni da želite to napraviti?
 oro.grid.mass_action.confirm_ok: Da, uradi
 oro.grid.mass_action.error_title: Greška masovne akcije
 oro.grid.mass_action.error_content: Masovna akcija se ne može izvršiti
-oro.grid.mass_action.delete.label: Obriši
+oro.grid.mass_action.delete.label: Brisanje
 oro.grid.mass_action.delete.confirm_title: Potvrda masovne akcije
 oro.grid.mass_action.delete.confirm_content: Da li ste sigurni da želite ukloniti odabrane stavke?
 oro.grid.datagrid.page_size.all: Sve

@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Üzgünüz, sayfa doğru yüklenmedi"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Yerel değişiklikler kaybolacak. Sayfayı yenilemek istediğinizden emin misiniz?"
+"navigation.message.content.outdated": "{{ title }} sayfasının içeriği güncel değil, lütfen <a href='#' data-action='page-refresh'>sayfayı yenileyin</a>"
+"Content of pinned page is outdated": "Sabitlenmiş sayfanın içeriği güncel değil"

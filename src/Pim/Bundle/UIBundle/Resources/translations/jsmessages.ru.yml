@@ -7,15 +7,15 @@ Selected Rows: Выбранные строки
 "Yes, do it": "Да, сделать это"
 "No": "Нет"
 "Ok, got it.": "Ок, я понял."
-"Cancel": "Отмена"
+"Cancel": "oтменить"
 "Delete Confirmation": "Подтверждение удаления"
-"Edit": "Редактировать"
+"Edit": "Изменить"
 "Unexpected error occured. Please contact system administrator.": "Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором."
 "Yes, revoke": "Да, отозвать"
 "Revoke Confirmation": "Отозвать подтверждение"
 Now: Сейчас
 Prev: Предыдущий
-Next: Следующая
+Next: Следующий
 Today: Сегодня
 Wk: Нед
 Done: Готово
@@ -77,7 +77,7 @@ datetimepicker:
     February: Февраль
     March: Март
     April: Апрель
-    May: Май
+    May: Mай
     June: Июнь
     July: Июль
     August: Август
@@ -90,7 +90,7 @@ datetimepicker:
     Feb: Фев
     Mar: Мар
     Apr: Апр
-    May: Май
+    May: Mай
     Jun: Июн
     Jul: Июл
     Aug: Авг

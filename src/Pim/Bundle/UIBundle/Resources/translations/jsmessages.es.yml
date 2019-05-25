@@ -1,7 +1,7 @@
 Close: Cerrar
 Update: Actualizar
 Selected Rows: Filas seleccionadas
-"Yes": "SÍ"
+"Yes": "Sí"
 "Yes, Delete": "Sí, eliminar"
 "Yes, I Agree": "Sí, estoy de acuerdo"
 "Yes, do it": "Sí, hazlo"
@@ -46,7 +46,7 @@ jstree:
     unclassified: Productos sin clasificar
   no_tree: Ningún árbol disponible
   include_sub: Incluir subcategorías
-  loading: Cargando ...
+  loading: Cargando...
 datetimepicker:
   days:
     Sunday: Domingo
@@ -77,7 +77,7 @@ datetimepicker:
     February: Febrero
     March: Marzo
     April: Abril
-    May: Mayo
+    May: May
     June: Junio
     July: Julio
     August: Agosto
@@ -90,7 +90,7 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Abr
-    May: Mayo
+    May: May
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -101,14 +101,14 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuración del sistema
+      title: Configuración del sitema
       tab:
         system:
           title: Sistema
       group:
         localization:
           title: Localización
-          system_locale: idioma
+          system_locale: Idioma
         notification:
           title: Notificaciones
           system_notification: Notificaciones de nuevas versiones

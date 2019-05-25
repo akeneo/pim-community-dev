@@ -7,9 +7,9 @@ Selected Rows: Geselecteerde rijen
 "Yes, do it": "Ja, doen"
 "No": "Nee"
 "Ok, got it.": "Okee, begrepen."
-"Cancel": "Annuleren"
+"Cancel": "Annuleer"
 "Delete Confirmation": "Verwijderen bevestigen"
-"Edit": "Bewerken"
+"Edit": "Wijzig"
 "Unexpected error occured. Please contact system administrator.": "Onverwachte fout opgetreden. Neem contact op met de systeembeheerder."
 Now: Nu
 Prev: Vorige
@@ -32,7 +32,7 @@ Microsecond: Microseconde
 Localized value: Gelokaliseerde waarde
 Columns: Kolommen
 Datagrid Configuration: Datagrid configuratie
-Apply: Toepassen
+Apply: Pas toe
 Action: Actie
 Unit: Eenheid
 Currency: Valuta
@@ -110,3 +110,8 @@ oro_config:
         notification:
           title: Meldingen
           system_notification: Meldingen nieuwe versies
+        loading_message:
+          title: Laadberichten
+          label: Schakel laadberichten in
+        loading_messages:
+          label: Beschikbare laadberichten

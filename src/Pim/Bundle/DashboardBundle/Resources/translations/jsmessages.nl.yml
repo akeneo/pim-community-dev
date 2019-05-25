@@ -4,13 +4,13 @@ pim_dashboard:
       empty: Geen bewerkingen beschikbaar
       status: Status
       date: Datum
-      type: Type
+      type: Soort
       profile_name: Profielnaam
       details: Details
       warning_count: Waarschuwingen
       job_type:
-        import: Import
-        export: Export
+        import: Importeer
+        export: Exporteer
         mass_edit: Massabewerking
         quick_export: Snelle export
     completeness:

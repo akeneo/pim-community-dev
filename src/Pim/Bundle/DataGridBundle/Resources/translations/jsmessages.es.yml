@@ -11,25 +11,25 @@ Your local changes will be lost. Are you sure you want to refresh grid?: Se perd
 Reset Confirmation: Confirmación de reajuste
 Your local changes will be lost. Are you sure you want to reset grid?: Se perderán los cambios locales. ¿Está seguro que desea restablecer la cuadrícula?
 Confirmation: Confirmación
-edit: editar
+edit: Editar
 copy: copiar
-remove: eliminar
+remove: Quitar
 Status: Estado
-All: Todos
+All: Todo
 Per page: Por página
-Mass Action Confirmation: Confirmación de acción de masiva
+Mass Action Confirmation: Confirmación de acción en masa
 Mass action performed.: Acción en masa realizada.
 Mass action is not performed.: Acción en masa no realizada.
 Please, select items to perform mass action.: Por favor, seleccionar los elementos para realizar la acción en masa.
 Execution Confirmation: Confirmación de la ejecución
-Are you sure you want to do this?: '¿Está seguro de quere hacer esto?'
+Are you sure you want to do this?: '¿Estás seguro que desea hacer esto?'
 Action performed.: Acción realizada.
 Action is not performed.: Acción no realizada.
 Please, select item to perform action.: Por favor, seleccione elemento para realizar la acción.
 View per page: Vista por página
 Enabled: Habilitado
 Disabled: Inhabilitado
-not_available: N / A
+not_available: N/A
 Yes: true
 No: false
 oro.datagrid.entityHint: Entidad
@@ -43,10 +43,10 @@ oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registros"
 oro.datagrid.pagination.limit_warning: "La cuadrícula no puede mostrar más de {{ limit }} resultados, intente filtrar más criterios de búsqueda."
 oro.datagrid.action.reset: "Reiniciar"
 oro.datagrid.action.refresh: "Actualizar"
-oro_datagrid.select.all: "Todos"
+oro_datagrid.select.all: "Todo"
 oro_datagrid.select.visible: "Todo lo visible"
-oro_datagrid.select.none: "Ninguno"
-oro_datagrid.select.select: "Seleccione"
+oro_datagrid.select.none: "Ninguna"
+oro_datagrid.select.select: "Seleccionar"
 pim.grid.ajax_choice_filter.label_empty: está vacía
 pim.grid.ajax_choice_filter.label_not_empty: no está vacío
 pim:
@@ -77,7 +77,7 @@ pim_datagrid:
     displayed_columns: Columnas seleccionadas
     apply: Aplicar
     cancel: Cancelar
-    remove_column: Quitar
+    remove_column: Eliminar
     description: Seleccione la información que desea mostrar como columna
     attribute_groups: Grupos de atributos
   mass_action:
@@ -91,7 +91,7 @@ pim.grid.action.launch.title: Ejecutar
 pim.grid.action.show.title: Mostrar
 Please select view: Por favor, seleccione Vista
 Loading...: Cargando...
-View: Vista
+View: Visualizar
 from: desde
 to: hasta
 grid.view_selector:
@@ -107,7 +107,7 @@ grid.view_selector:
   confirmation:
     remove: '¿Está seguro que desea eliminar esta vista?'
     delete: Confirmar la eliminación
-grid.view_selector.flash.updated: Vista de cuadrícula de datos actualizada correctamente
+grid.view_selector.flash.updated: Vista de grilla de datos actualizada correctamente
 grid.display_selector:
   label: Mostrar
   gallery: Galería

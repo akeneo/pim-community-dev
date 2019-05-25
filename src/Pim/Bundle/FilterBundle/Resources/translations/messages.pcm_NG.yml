@@ -1,0 +1,11 @@
+oro.filter.form.label_type_contains: contains
+oro.filter.form.label_type_not_contains: e no contain
+oro.filter.form.label_type_start_with: begin am wit
+oro.filter.form.label_type_end_with: end am wit
+oro.filter.form.label_type_empty: e dey empty
+oro.filter.form.label_type_not_empty: e no dey empty
+oro.filter.form.label_type_in_list: e dey list
+oro.filter.form.label_date_type_between: between
+oro.filter.form.label_date_type_not_between: e no dey between
+oro.filter.form.label_date_type_less_than: e small pass
+oro.filter.form.label_not_selected: E neva select

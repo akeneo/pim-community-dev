@@ -28,8 +28,8 @@ Action is not performed.: Åtgärd har inte utförts.
 Please, select item to perform action.: Välj ett objekt för åtgärd.
 View per page: Visa per sida
 Enabled: Aktiverad
-Disabled: Avaktiverad
-not_available: '-'
+Disabled: Inaktiverad
+not_available: N/A
 Yes: true
 No: false
 oro.datagrid.entityHint: Enhet
@@ -42,7 +42,7 @@ oro.datagrid.action.reset: "Återställ"
 oro.datagrid.action.refresh: "Uppdatera"
 oro_datagrid.select.all: "Alla"
 oro_datagrid.select.visible: "Alla synliga"
-oro_datagrid.select.none: "Ingen"
+oro_datagrid.select.none: "Inga"
 oro_datagrid.select.select: "Välj"
 pim.grid.ajax_choice_filter.label_empty: är tom
 pim.grid.ajax_choice_filter.label_not_empty: är inte tom
@@ -101,4 +101,7 @@ grid.view_selector:
   confirmation:
     delete: Bekräfta radering
 grid.view_selector.flash.updated: Vy har uppdaterats
+grid.display_selector:
+  gallery: Galleri
+  list: Lista
 Client ID: Klient-ID

@@ -2,11 +2,12 @@ pim_user:
   user:
     tab:
       general.title: Algemeen
-      additional.title: Extra
+      additional.title: Aanvullend
       group_and_role.title: Groepen en rollen
       password.title: Wachtwoord
       business_unit.title: Bedrijfsdivisies
       email_synchronization.title: Synchronisatie-instellingen voor e-mail
+      interfaces.title: Interfaces
   group:
     tab:
       general.title: Algemeen
@@ -42,7 +43,7 @@ Users Management: Gebruikersbeheer
 Create user: Gebruiker aanmaken
 btn.create.user: Gebruiker aanmaken
 New user: Nieuwe gebruiker
-Additional: Extra
+Additional: Aanvullend
 Groups and Roles: Groepen en rollen
 Username: Gebruikersnaam
 Password: Wachtwoord
@@ -63,18 +64,28 @@ Business Units: Bedrijfsdivisies
 Email synchronization settings: Synchronisatie-instellingen voor e-mail
 Host: Host
 Port: Poort
+Ssl: SSL
 Last logged in: Laatst aangemeld
 Login count: Aantal logins
 Additional Information: Extra informatie
+Interfaces: Interfaces
 Basic Information: Algemene gegevens
 Contact Information: Contactinformatie
 User name: Gebruikersnaam
 Birthday: Verjaardag
 API key: API-sleutel
+Ui locale: Gebruikers Interface
+UI locale: Gebruikers Interface
+Current password: Huidig wachtwoord
+New password: Nieuw wachtwoord
+Repeat new password: Nieuw wachtwoord (herhalen)
 Generate key: Sleutel genereren
 Primary: primaire
 Removed user: Verwijderde gebruiker
 user:
+  product_grid_filters: Productfilter Raster
+  default_product_grid_view:
+    label: Standaard Productweergave raster
   default_grid_view:
     none: Geen
   timezone: Tijdzone
@@ -115,9 +126,9 @@ oro_security:
       edit: Bewerken van gebruikersgroepen
       delete: De gebruikersgroep van een verwijderen
 (default): Standaardmachtiging op entiteiten
-VIEW: Bekijken
+VIEW: Bekijk
 CREATE: Aanmaken
-EDIT: Bewerken
+EDIT: Wijzig
 DELETE: Verwijderen
 ASSIGN: Toewijzen
 SHARE: Delen

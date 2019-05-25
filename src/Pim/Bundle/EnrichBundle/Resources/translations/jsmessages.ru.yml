@@ -36,7 +36,7 @@ pim_datagrid:
     create_view_modal:
       create: Создать
       confirm: OK
-      cancel: Отмена
+      cancel: oтменить
 flash:
   item:
     removed: Элемент успешно удален
@@ -74,8 +74,6 @@ flash:
     removed: Соединение API успешно аннулировано
 error:
   common: Произошла ошибка
-  creating:
-    product: У продукта не указан атрибут в качестве идентификатора или у вас нет прав для его изменения.
   removing:
     item: Не удается удалить этот элемент
     association_type: Не удается удалить этот тип ассоциации
@@ -154,7 +152,7 @@ pim_enrich:
       label: Метка
       labels:
         save: Сохранить
-        cancel: Отмена
+        cancel: oтменить
     product:
       navigation: Навигацию по продуктам
       infos: Информация о продуктах
@@ -196,20 +194,20 @@ pim_enrich:
       meta:
         created: Создано
         created_by: Создано
-        updated_by: Создано
+        updated_by: Обновлен
         updated: Последнее обновление
         family:
           title: Семейство
           none: Нет
         family_variant:
           title: Вариант
-          none: Нет
+          none: (Пусто)
         groups:
           title: Группы
           modal:
             title: Группа {{ group }}
             view_group: Посмотреть группу
-            group_label: Метка
+            group_label: Ярлык
             more_products: '{{ count }} больше продуктов...'
             close: Закрыть
         status: Статус
@@ -219,7 +217,7 @@ pim_enrich:
         select: Выбрать
         all: Все
         all_visible: Все видимые
-        none: Нет
+        none: (Пусто)
         copy: Копия
       optional_attribute:
         remove: Удалить этот атрибут
@@ -236,7 +234,7 @@ pim_enrich:
           family: Выберите семейство
           family_variant: Выберите разновидность семейства
           save: Сохранить
-          cancel: Отмена
+          cancel: oтменить
       message:
         created: Продукт успешно создан
       completeness: Завершено
@@ -260,7 +258,7 @@ pim_enrich:
       title: модели продукта
       add_child:
         create: Добавить новый
-        cancel: Отмена
+        cancel: oтменить
         confirm: Подтверждение
         create_label: "Добавить новые {{ axes }}"
         fields:
@@ -274,7 +272,7 @@ pim_enrich:
         update_failed: Не удалось обновить тип связи.
         field_not_ready: "Тип ассоциации не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
       meta:
-        created: Создано
+        created: Создан
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
@@ -293,9 +291,9 @@ pim_enrich:
         update_failed: Не удалось обновить тип группы.
         field_not_ready: "Тип группы не может быть сохранён в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
       meta:
-        created: Создано
+        created: Создан
         created_by: Создана
-        updated: Обновлено
+        updated: обновлено
         updated_by: Обновлена
       btn:
         save: Сохранить
@@ -307,17 +305,11 @@ pim_enrich:
     channel:
       title: канал
       info:
-        deletion_successful: Канал успешно удалён.
-        deletion_failed: Не удалось удалить канал.
-        update_successful: Канал успешно обновлён.
-        update_failed: Не удалось обновить канал.
-        create_successful: Канал успешно создан.
-        create_failed: Не удалось создать канал.
         field_not_ready: "Канал не может быть сохранён в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
       meta:
-        created: Создано
+        created: Создан
         created_by: Создана
-        updated: Обновлено
+        updated: обновлено
         updated_by: Обновлена
       btn:
         save: Сохранить
@@ -333,9 +325,9 @@ pim_enrich:
         attribute_edit_permission_is_not_granted: У вас нет прав для редактирования семейства атрибутов
         cant_remove_attribute_used_as_axis: Невозможно удалить атрибут, используемый в качестве конфигурационного атрибута в разновидности семейства
       meta:
-        created: Создано
+        created: Создан
         created_by: Создана
-        updated: Обновлено
+        updated: обновлено
         updated_by: Обновлена
       btn:
         save: Сохранить
@@ -356,9 +348,9 @@ pim_enrich:
         update_description: Перетащите атрибуты на нужный уровень, чтобы управлять данными атрибутами с этого уровня.
         update_translation: Перевести метку разновидности семейства
         create: Создать
-        cancel: Отмена
+        cancel: oтменить
         code: Код
-        label: Метка
+        label: Ярлык
         levels: Разновидности уровней
         axis_level: Уровень варианта конфигурационного атрибута
         required: требуется
@@ -370,7 +362,7 @@ pim_enrich:
         update_successful: Разновидность семейства успешно обновлена. Продукты с разновидностями будут обновлены в соответствии с внесенными изменениями.
     attribute_option:
       code: Код
-      label: Метка
+      label: Ярлык
       actions: Действия
     group:
       title: Группа
@@ -384,9 +376,9 @@ pim_enrich:
         save: Сохранить
       meta:
         product_count: Продукты
-        created: Создано
+        created: Создан
         created_by: Создана
-        updated: Обновлено
+        updated: обновлено
         updated_by: Обновлена
       create_popin:
         title: Создать
@@ -533,7 +525,7 @@ pim_enrich:
         attribute_deletion_error: Произошла ошибка при удалении атрибута
       mass_edit:
         select_attributes: Выберите атрибуты
-        select: Выбрать
+        select: Выберите
     association_type:
       tab:
         properties:
@@ -579,7 +571,7 @@ pim_enrich:
           label_translations: Переводы меток
         attributes:
           title: Атрибуты
-          label_label: Метка
+          label_label: Ярлык
           toolbox:
             select_attributes_by_groups: Добавить по группам
             select_attributes: Добавить атрибуты
@@ -606,7 +598,7 @@ pim_enrich:
       add_option_modal:
         title: Добавить опцию атрибута
         confirm: Добавить
-        cancel: Отмена
+        cancel: oтменить
     entity:
       switch:
         "no": "Нет"
@@ -675,7 +667,7 @@ pim_enrich:
         import: Профиль импорта
         export: Профиль экспорта
       button:
-        edit.title: Редактировать
+        edit.title: Изменить
         export.title: Экспортировать сейчас
         import.launch: Импортировать сейчас
         import.upload: Загрузить и импортировать сейчас
@@ -693,7 +685,7 @@ pim_enrich:
           code:
             title: Код
           label:
-            title: Метка
+            title: Ярлык
           decimal_separator:
             title: Разделитель в десятичной дроби
             help: Определить разделитель в десятичной дроби
@@ -749,7 +741,7 @@ pim_enrich:
       file_path: Путь к файлу
     attribute:
       meta:
-        created: Создано
+        created: Создан
         created_by: по
         updated: Последнее обновление
         updated_by: по
@@ -801,7 +793,7 @@ pim_enrich:
     mass_edit:
       family:
         attributes:
-          label_label: Метка
+          label_label: Ярлык
           toolbox:
             select_attributes_by_groups: Добавить по группам
             select_attributes: Добавить атрибуты
@@ -829,13 +821,13 @@ pim_enrich:
           help: "Локали определяют значения локализованных данных для экспорта. На пример, только информация по продукции на французском языке."
         attributes:
           title: Атрибуты
-          edit: Редактировать
+          edit: Изменить
           label: "{0}все атрибуты|{1}один атрибут выбран|] 1, Inf [{{ count }} атрибутов выбрано"
           help: "Выберите сведения о продукте для экспорта. На пример, только технические атрибуты."
           empty: Все атрибуты будут экспортированы
           modal:
             apply: Применить
-            cancel: Отмена
+            cancel: oтменить
             title: Выбор атрибутов
         attributes_selector:
           attribute_group: Группы атрибутов
@@ -867,8 +859,8 @@ pim_enrich:
           help: "Выберите продукты для экспорта по их статусу. Например, экспорт товаров независимо от их статуса."
           value:
             all: Все
-            enabled: Включено
-            disabled: Отключено
+            enabled: Активирован
+            disabled: Дезактивирован
         completeness:
           title: Степень заполненности
           help: Выберите продукты для экспорта по степени заполненности.
@@ -1018,9 +1010,9 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} API подключение|] 1, Inf [{{ count }} к API подключениям"
       create_btn: Создать
   mass_edit:
-    next: Следующая
+    next: Следующий
     previous: Назад
-    cancel: Отмена
+    cancel: oтменить
     confirm: Подтверждение
     product:
       title: Массовые действия по продуктам
@@ -1032,7 +1024,7 @@ pim_enrich:
           title: Массовые действия по продуктам
           label_count: "] 0, Inf [Выберите действие"
         configure:
-          label: Настройка
+          label: Настроить
         confirm:
           label: Подтверждение
         launch_error:
@@ -1043,7 +1035,7 @@ pim_enrich:
         change_status:
           label: Изменить статус
           label_count: "{1}Изменить статус <span class=\"AknFullPage-title--highlight\">1 продукта</span>|] 1, Inf [Изменить статус <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктов</span>"
-          description: Выбранные продукты будут активированы или деактивированы.
+          description: Выбранные продукты будут активированы или дезактивированы.
           field: Включить
         edit_common:
           label: Изменить значения атрибутов
@@ -1098,7 +1090,7 @@ pim_enrich:
           title: Массовые действия с семействами
           label_count: "] 0, Inf [Выберите действие"
         configure:
-          label: Настройка
+          label: Настроить
         confirm:
           label: Подтверждение
         launched:
@@ -1164,9 +1156,9 @@ batch_jobs:
     perform:
       label: Добавить в группу
   edit_common_attributes:
-    label: Редактировать атрибуты
+    label: Изменить атрибуты
     perform:
-      label: Редактировать атрибуты
+      label: Изменить атрибуты
     cleaner:
       label: Очистка файлов для атрибутов
   add_to_category:
@@ -1242,30 +1234,30 @@ batch_jobs:
     export.label: Экспорт разновидности семейства
   csv_product_import:
     label: Импорт продуктов из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
   csv_product_model_import:
     label: Импорт модели продукта в CSV
   csv_category_import:
     label: Импорт категорий из CSV
-    validation.label: Проверка файла
-    import.label: Импорт категории
+    validation.label: Подтверждение файла
+    import.label: Импорт категорий
   csv_attribute_import:
     label: Импорт атрибутов из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт атрибутов
   csv_attribute_option_import:
     label: Импорт опций атрибутов из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт опций атрибутов
   csv_association_type_import:
     label: Импорт типов ассоциаций из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт типов ассоциаций
   csv_family_import:
     label: Импорт семейств из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт семейств
     compute_data_related_to_family_variants.label: Расчет данных модели продукта
     compute_data_related_to_family_root_product_models.label: Расчет моделей корневых продуктов
@@ -1273,12 +1265,12 @@ batch_jobs:
     compute_data_related_to_family_products.label: Расчет данных продуктов
   csv_family_variant_import:
     label: Импорт разновидности семейства в CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт разновидности семейства
   csv_group_import:
-    label: Импорт группы из CSV
-    validation.label: Проверка файла
-    import.label: Импорт группы
+    label: Импорт групп из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт групп
   csv_channel_export:
     label: Экспорт каналов в CSV
     export.label: Экспорт каналов
@@ -1296,43 +1288,43 @@ batch_jobs:
     export.label: Экспорт типов групп
   csv_channel_import:
     label: Импорт каналов из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт каналов
   csv_locale_import:
     label: Импорт локалей из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт локалей
   csv_attribute_group_import:
     label: Импорт групп атрибутов из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт групп атрибутов
   csv_currency_import:
     label: Импорт валют из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт валют
   csv_group_type_import:
     label: Импорт типов групп из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт типов групп
   xlsx_category_import:
     label: Импорт категорий из XLSX
-    validation.label: Проверка файла
-    import.label: Импорт категории
+    validation.label: Подтверждение файла
+    import.label: Импорт категорий
   xlsx_association_type_import:
     label: Импорт типов ассоциаций из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт типов ассоциаций
   xlsx_attribute_import:
     label: Импорт атрибутов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт атрибутов
   xlsx_attribute_option_import:
     label: Импорт опций атрибутов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт опций атрибутов
   xlsx_family_import:
     label: Импорт семейств из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт семейств
     compute_data_related_to_family_variants.label: Расчет данных моделей продуктов
     compute_data_related_to_family_root_product_models.label: Расчет моделей корневых продуктов
@@ -1340,7 +1332,7 @@ batch_jobs:
     compute_data_related_to_family_products.label: Расчет данных продуктов
   xlsx_family_variant_import:
     label: Импорт разновидности семейства в XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт разновидности семейства
   xlsx_product_export:
     label: Экспорт продуктов в XLSX
@@ -1350,7 +1342,7 @@ batch_jobs:
     export.label: Экспорт модели продукта
   xlsx_product_import:
     label: Импорт продуктов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
   xlsx_product_model_import:
@@ -1360,8 +1352,8 @@ batch_jobs:
     export.label: Экспорт групп
   xlsx_group_import:
     label: Импорт групп из XLSX
-    validation.label: Проверка файла
-    import.label: Импорт группы
+    validation.label: Подтверждение файла
+    import.label: Импорт групп
   xlsx_family_export:
     label: Экспорт семейств в XLSX
     export.label: Экспорт семейств
@@ -1393,27 +1385,27 @@ batch_jobs:
     label: Экспорт валют в XLSX
     export.label: Экспорт валют
   xlsx_group_type_export:
-    label: Экспорт типов групп в XLSX
+    label: Экспорт типов групп из XLSX
     export.label: Экспорт типов групп
   xlsx_channel_import:
     label: Импорт каналов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт каналов
   xlsx_locale_import:
     label: Импорт локали в XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт локалей
   xlsx_attribute_group_import:
     label: Импорт групп атрибутов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт групп атрибутов
   xlsx_currency_import:
     label: Импорт валют из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт валют
   xlsx_group_type_import:
     label: Импорт типов групп из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт типов групп
 job_tracker:
   download_archive:
@@ -1470,7 +1462,7 @@ pim_menu:
     logout: Выйти
     user_account: Мой аккаунт
 pim_notification:
-  mark_all_as_read: Пометить все как прочитанное
+  mark_all_as_read: Отметить все как прочитанное
   no_notifications: Нет уведомлений
   loading: Загрузка...
 catalog_volume:

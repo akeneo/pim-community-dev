@@ -44,9 +44,9 @@ oro.datagrid.action.reset: "Zurücksetzen"
 oro.datagrid.action.refresh: "Aktualisieren"
 oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle sichtbaren"
-oro_datagrid.select.none: "Keine"
+oro_datagrid.select.none: "keine"
 oro_datagrid.select.select: "Auswählen"
-pim.grid.ajax_choice_filter.label_empty: ist leer
+pim.grid.ajax_choice_filter.label_empty: Ist leer
 pim.grid.ajax_choice_filter.label_not_empty: ist nicht leer
 pim:
   grid:
@@ -55,7 +55,7 @@ pim:
       label_does_not_contain: enthält nicht
       label_equal: ist gleich
       label_start_with: beginnt mit
-      label_empty: ist leer
+      label_empty: Ist leer
       label_not_empty: ist nicht leer
       label_in_list: in Liste
       operator: Operator
@@ -84,15 +84,15 @@ pim_datagrid:
       confirm_title: Löschen bestätigen
       confirm_ok: OK
       empty_selection: Kein Produkt ausgewählt
-pim.grid.mass_action.quick_export.title: Schnell-Export
+pim.grid.mass_action.quick_export.title: Schnellexport
 pim.grid.mass_action.quick_export.launched: Der Schnellexport wurde gestartet
 pim.grid.action.launch.title: Starten
 pim.grid.action.show.title: Anzeigen
 Please select view: Bitte Ansicht auswählen
 Loading...: Lädt...
 View: Ansehen
-from: von
-to: bis
+from: Von
+to: An
 grid.view_selector:
   default_view: Standardansicht
   save_changes: Diese Ansicht speichern
@@ -106,7 +106,7 @@ grid.view_selector:
   confirmation:
     remove: Sind Sie sicher, dass Sie diese Ansicht löschen möchten?
     delete: Löschen bestätigen
-grid.view_selector.flash.updated: Tabellenansicht erfolgreich aktualisiert
+grid.view_selector.flash.updated: Listenansicht erfolgreich aktualisiert
 grid.display_selector:
   label: Anzeige
   gallery: Galerie

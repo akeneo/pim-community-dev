@@ -213,7 +213,7 @@ batch_jobs:
     export.label: 属性オプションをXLSX形式でエクスポート
   xlsx_association_type_export:
     label: 関連タイプをXLSX形式でインポート
-    export.label: 関連タイプをXLSX形式でインポート
+    export.label: 関連タイプをXLSX形式でエクスポート
   xlsx_channel_export:
     label: チャネルをXLSX形式でエクスポート
     export.label: チャネルエクスポート

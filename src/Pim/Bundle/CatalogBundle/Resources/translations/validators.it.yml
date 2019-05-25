@@ -58,7 +58,7 @@ pim_catalog:
     family_variant_no_level: Dovrebbe esserci almeno un livello definito nella famiglia variante
     family_variant_maximum_number_of_level: La famiglia variante non può avere più di "%level%" livelli
     family_variant_unique_attributes_in_last_level: L'attributo unico "%attribute%" deve essere impostato a livello di prodotto
-    product_identifier: Gli identificatori "%s" non esistono.
+    product_identifier: Questi identificatori "%s" non esistono.
     0: Si è verificato un errore imprevisto.
     100: Valore non previsto
     101: In questo campo è previsto un valore booleano.

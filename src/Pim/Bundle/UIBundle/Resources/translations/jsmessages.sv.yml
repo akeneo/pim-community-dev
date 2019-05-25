@@ -9,7 +9,7 @@ Selected Rows: Markerade rader
 "Ok, got it.": "Ok, jag förstår."
 "Cancel": "Avbryt"
 "Delete Confirmation": "Bekräfta borttagning"
-"Edit": "Redigera"
+"Edit": "Ändra"
 "Unexpected error occured. Please contact system administrator.": "Oväntat fel uppstod. Vänligen kontakta systemadministratören."
 Now: Nu
 Prev: Föregående
@@ -71,8 +71,8 @@ datetimepicker:
     Fr: Fr
     Sa: Lö
   months:
-    January: January
-    February: Februrari
+    January: Januari
+    February: Februari
     March: Mars
     April: April
     May: Maj

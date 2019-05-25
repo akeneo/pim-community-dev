@@ -15,7 +15,7 @@ edit: modifica
 copy: copia
 remove: rimuovi
 Status: Stato
-All: Tutti
+All: Tutto
 Per page: Per pagina
 Mass Action Confirmation: Conferma azione di massa
 Mass action performed.: Azione di massa eseguita.
@@ -28,11 +28,11 @@ Action is not performed.: Azione non eseguita.
 Please, select item to perform action.: Per favore, seleziona l'articolo per eseguire l'azione.
 View per page: Mostra per pagina
 Enabled: Attivato
-Disabled: Disabilitato
+Disabled: Disattivato
 not_available: N/A
 Yes: true
 No: false
-oro.datagrid.entityHint: Entità
+oro.datagrid.entityHint: Soggetto
 oro.datagrid.noentities: Nessun record trovato
 oro.datagrid.noresults: "Non ci sono risultati per la tua ricerca."
 oro.datagrid.noresults_subTitle: "Riprova con nuovi criteri di ricerca."
@@ -42,9 +42,9 @@ oro.datagrid.pagination.totalPages: "di {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} record"
 oro.datagrid.action.reset: "Azzera"
 oro.datagrid.action.refresh: "Aggiorna"
-oro_datagrid.select.all: "Tutti"
+oro_datagrid.select.all: "Tutto"
 oro_datagrid.select.visible: "Tutti visibili"
-oro_datagrid.select.none: "Nessun"
+oro_datagrid.select.none: "Nessuno"
 oro_datagrid.select.select: "Selezionare"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
 pim.grid.ajax_choice_filter.label_not_empty: non è vuoto
@@ -82,7 +82,7 @@ pim_datagrid:
   mass_action:
     delete:
       confirm_title: Conferma cancellazione
-      confirm_ok: Ok
+      confirm_ok: OK
       empty_selection: Nessun prodotto selezionato
 pim.grid.mass_action.quick_export.title: Esportazione rapida
 pim.grid.mass_action.quick_export.launched: E' stata lanciata l'esportazione rapida
@@ -98,7 +98,7 @@ grid.view_selector:
   save_changes: Salva questa visualizzazione
   remove: Eliminare questa visualizzazione
   create_view: Creare vista
-  create: Crea
+  create: Creare
   search: Ricerca
   views: Visualizzazione
   placeholder: Nome della nuova visualizzazione

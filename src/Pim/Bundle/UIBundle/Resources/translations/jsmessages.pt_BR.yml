@@ -11,6 +11,8 @@ Selected Rows: Linhas selecionadas
 "Delete Confirmation": "Confirmação de Exclusão"
 "Edit": "Editar"
 "Unexpected error occured. Please contact system administrator.": "Ocorreu um erro inesperado. Por favor, contate o administrador do sistema."
+"Yes, revoke": "Sim, Revogar"
+"Revoke Confirmation": "Confirmação de revogação"
 Now: Agora
 Prev: Anterior
 Next: Próximo
@@ -37,10 +39,10 @@ Action: Ação
 Unit: Unidade
 Currency: Moeda
 jstree:
-  all: Todos os produtos
+  all: Todos os Produtos
   unclassified: Produtos não classificados
   product:
-    all: Todos os produtos
+    all: Todos os Produtos
     unclassified: Produtos não classificados
   no_tree: Nenhuma árvore de classificação disponível
   include_sub: Incluir subcategorias
@@ -112,3 +114,6 @@ oro_config:
           system_notification: Notificação de nova versão
         loading_message:
           title: Carregando mensagens
+          label: Habilitar mensagens de carregamento
+        loading_messages:
+          label: Mensagens de carregamento disponíveis

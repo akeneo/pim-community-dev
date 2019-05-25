@@ -12,10 +12,10 @@ pim_connector:
     dummy_processor.title: Dummy-Prozessor
     product_processor.title: Produkterstellung
     category_processor.title: Kategorieerstellung
-    association_processor.title: Verbindungserstellung
-    product_association_processor.title: Verbindungserstellung
-    group_processor.title: Gruppenerstellung
-    attribute_processor.title: Attributerstellung
+    association_processor.title: Beziehungserstellung
+    product_association_processor.title: Beziehungserstellung
+    group_processor.title: Gruppen Erstellung
+    attribute_processor.title: Attribut Anlage
     attribute_option_processor.title: Attributoptionserstellung
     heterogeneous_processor.title: Produkt CSV-Serialisierer
     homogeneous_processor.title: CSV Entitäten-Serialisierer
@@ -27,17 +27,17 @@ pim_connector:
     writer.title: Entitäten-Speicher
     csv_writer.title: CSV-Schreiber
 job_execution.summary:
-  read: Lesen
+  read: gelesen
   write: geschrieben
   skip: übersprungen
   create: erstellt
   process: verarbeitet
-  update_products: Aktualisierte Produkte
+  update_products: aktualisierte Produkte
   process_products: verarbeitete Produkte
-  skip_products: Übersprungene Produkte
+  skip_products: übersprungene Produkte
   displayed: Die ersten Warnungen angezeigt
   charset_validator:
-    title: 'Datei Zeichenkodierung:'
+    title: 'Zeichenkodierung der Datei:'
     skipped: übersprungen, Erweiterung in der Whitelist
   product_skipped_no_diff: Übersprungenes Produkt (keine Unterschiede)
   product_skipped_no_associations: Produkt übersprungen (keine Verbindungen vorhanden)
@@ -48,24 +48,24 @@ job_execution.summary:
 batch_jobs:
   csv_product_export:
     label: Produkt-Export als CSV-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   csv_product_model_export:
     label: Produktmodell-Export als CSV-Datei
     export.label: Produktmodell-Export
   csv_category_export:
     label: Kategorie-Export als CSV-Datei
-    export.label: Kategorie export
+    export.label: Kategorie-Export
   csv_attribute_export:
     label: Attribut-Export als CSV-Datei
-    export.label: Attribut export
+    export.label: Attribut-Export
   csv_attribute_option_export:
-    label: Attribut-Option in CSV-Datei exportieren
-    export.label: Attribut-Option export
+    label: Attributoptionen-Export als CSV-Datei
+    export.label: Attributoptionen-Export
   csv_association_type_export:
-    label: Verbindungstyp-Export als CSV-Datei
-    export.label: Verbindungstyp-Export
+    label: Beziehungstyp-Export als CSV-Datei
+    export.label: Beziehungstyp-Export
   csv_group_export:
-    label: Gruppen-Export in CSV-Datei
+    label: Gruppen-Export als CSV-Datei
     export.label: Gruppen-Export
   csv_family_export:
     label: Produktfamilien-Export als CSV-Datei
@@ -74,10 +74,10 @@ batch_jobs:
     label: Export der Varianten der Produktfamilien aus CSV-Datei
     export.label: Export der Varianten der Produktfamilien
   csv_product_import:
-    label: Produkt-Export als CSV-Datei
+    label: Produkt-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
+    import.label: Produkt-Import
+    import_associations.label: Verbindungen-Import
   csv_product_model_import:
     label: Produktmodell-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -91,15 +91,15 @@ batch_jobs:
   csv_attribute_import:
     label: Attribut-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Import
+    import.label: Attribute-Import
   csv_attribute_option_import:
-    label: Attribut-Optionen aus CSV-Datei importieren
+    label: Attributoptionen-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Option import
+    import.label: Attributoption-Import
   csv_association_type_import:
-    label: Verbindungstyp-Import als CSV-Datei
+    label: Verbindungstyp-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Verbindungstyp-Import
+    import.label: Beziehungstyp-Import
   csv_family_import:
     label: Produktfamilien-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -154,15 +154,15 @@ batch_jobs:
   xlsx_association_type_import:
     label: Verbindungstyp-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Verbindungstyp-Import
+    import.label: Beziehungstyp-Import
   xlsx_attribute_import:
     label: Attribut-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Import
+    import.label: Attribute-Import
   xlsx_attribute_option_import:
     label: Attributoptionen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Option import
+    import.label: Attributoption-Import
   xlsx_family_import:
     label: Produktfamilien-Import aus XLSX-Datei
     validation.label: Dateivalidierung
@@ -173,22 +173,22 @@ batch_jobs:
     import.label: Import der Varianten der Produktfamilien
   xlsx_product_export:
     label: Produkt-Export als XLSX-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   xlsx_product_model_export:
     label: Produktmodell-Export als XLSX-Datei
     export.label: Produktmodell-Export
   xlsx_product_import:
     label: Produkt-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
+    import.label: Produkt-Import
+    import_associations.label: Verbindungen-Import
   xlsx_product_model_import:
     label: Produktmodell-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import_root_product_model.label: Produktmodell-Import Hauptebene
     import_sub_product_model.label: Produktmodell-Import Subebene
     import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
-    import_associations.label: Produktverbindungen-Import
+    import_associations.label: Verbindungen-Import
   xlsx_group_export:
     label: Gruppen-Export als XSLX-Datei
     export.label: Gruppen-Export
@@ -204,7 +204,7 @@ batch_jobs:
     export.label: Export der Varianten der Produktfamilien
   xlsx_category_export:
     label: Kategorie-Export als XLSX-Datei
-    export.label: Kategorie export
+    export.label: Kategorie-Export
   xlsx_attribute_export:
     label: Attribut-Export als XLSX-Datei
     export.label: Attribut-Export als XLSX-Datei

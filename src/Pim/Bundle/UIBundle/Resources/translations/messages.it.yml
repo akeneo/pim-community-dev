@@ -1,6 +1,6 @@
 User: Utente
 Run demo: Eseguire la demo
-Product: Prodotto
+Product: Articolo
 Attribute list: Elenco degli attributi
 Attribute Group list: Elenco attributi di gruppo
 Users: Utenti
@@ -18,7 +18,7 @@ Channel list: Elenco canali
 Select file: Seleziona il file
 Change file: Modifica file
 Remove file: Rimuovi file
-Delete: Eliminare
+Delete: Elimina
 Save: Salva
 Cancel: Annulla
 Get help: Chiedi aiuto
@@ -37,7 +37,7 @@ Most Viewed: Più visualizzati
 "Loading ...": "Caricamento in corso ..."
 "Yes": "Sì"
 "No": "No"
-required: (obbligatorio)
+required: (richiesto)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Abilita i messaggi di caricamento

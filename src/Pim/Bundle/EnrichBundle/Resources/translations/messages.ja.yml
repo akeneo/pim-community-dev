@@ -48,7 +48,7 @@ pim_enrich:
       ADDITIONAL: 追加
       RELATED: 関連
     tab:
-      product.title: 製品
+      product.title: 商品
       property.title: プロパティ
       history.title: 履歴
   completeness:
@@ -59,7 +59,7 @@ pim_enrich:
   mass_edit_action:
     limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
     product:
-      page_title: 製品
+      page_title: 商品
       page_subtitle: 一括編集(1件)|一括編集(%count% 件)
       title: 操作を選択
       subtitle: 選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください
@@ -90,6 +90,7 @@ pim_enrich:
       description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
       empty: 編集する属性を選択してください
       success_flash: 製品を更新する状態が現在実行されています。
+      launched_flash: 属性を編集する一括操作が開始されています。終了後に通知されます。
       message:
         warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
         invalid_attribute: 選択された製品とスキップされた属性に対し、コード"attribute_code"を持つ属性は共通ではない。
@@ -101,7 +102,7 @@ pim_enrich:
       launched_flash: '"カテゴリに追加"一括操作が開始されています。終了後に通知されます。'
     classify-move:
       label: カテゴリ間を移動
-      description: 製品は以下のカテゴリに配置されます、既存の表示順は削除されます。
+      description: 製品は以下のカテゴリに配置され、既存の表示順は削除されます。
       success_flash: 選択したカテゴリに製品が移動されました
       launched_flash: カテゴリに移動する一括操作が開始されています。終了後に通知されます。
     classify-remove:
@@ -158,6 +159,7 @@ pim_enrich:
       edit_attributes: 製品モデルの属性を編集
       categories_view: 製品モデルのカテゴリを参照
       history: 製品モデルの履歴を表示
+      remove: 製品モデルを削除
     category:
       list: カテゴリリスト
       create: カテゴリ作成
@@ -178,6 +180,7 @@ pim_enrich:
       create: ファミリーを作成
       edit_properties: ファミリーのプロパティを編集
       edit_attributes: ファミリーの属性を編集
+      edit_variants: ファミリーバリアントを編集
       remove: ファミリー削除
       history: ファミリーの履歴を表示
     attribute_group:
@@ -228,12 +231,17 @@ pim_enrich:
     group: グループ
     group_type: グループタイプ
     locale: ロケール
-    product: 製品
+    product: 商品
     product_model: 製品モデル
   reference_data:
     empty_value:
       reference_data_type:
         label: 参照データタイプを選ぶ
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: チャネルからロケールが削除されました。リンクされた内容を削除しています。
+        done: チャネルのロケール削除が終わりました。
 attribute:
   title: 属性
   edit: 属性を編集
@@ -285,7 +293,7 @@ group type:
   edit: グループタイプの編集
 association type:
   title: 関連タイプ
-  create: 関連タイプの作成
+  create: 関連タイプ作成
   edit: 関連タイプの編集
 products: 製品
 btn:
@@ -299,8 +307,8 @@ btn:
     locale: ロケールを作成
     product: 製品を作成
     group: グループを作成
-    association type: 関連タイプの作成
-    group type: グループタイプの作成
+    association type: 関連タイプ作成
+    group type: グループタイプ作成
     drag_or_upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
   edit: 編集
   save: 保存
@@ -478,6 +486,7 @@ Useable as grid column: グリッド列として使用可能
 Useable as grid filter: グリッドで使用可能
 Family: ファミリー
 Image: イメージ
+Variant products: バリアント製品
 Available locales: 使用可能なロケール
 Locale specific: ロケール固有
 default: デフォルト
@@ -553,7 +562,7 @@ pim_title.attribute:
   create: "属性 |作成"
   edit: "属性 %attribute.label% |編集"
 pim_title.product:
-  index: "製品"
+  index: "商品"
   edit: "製品 %product.label% |編集"
 pim_title.family:
   index: "ファミリー"
@@ -584,7 +593,7 @@ pim_title.mass_edit_family_action:
 pim_title.job_tracker:
   index: プロセストラッカー
   show: "プロセストラッカー |ジョブの表示"
-pim_title.dashboard: "ダッシュ ボード"
+pim_title.dashboard: "ダッシュボード"
 pim_catalog_identifier: 識別子
 pim_catalog_text: テキスト
 pim_catalog_textarea: テキスト エリア
@@ -608,7 +617,7 @@ pim_enrich.sequential_edit_action:
 pim_enrich.mass_edit_action:
   limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
   product:
-    page_title: 製品
+    page_title: 商品
     page_subtitle: 一括編集(1件)|一括編集(%count% 件)
     title: 操作を選択
     subtitle: 選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください
@@ -665,7 +674,7 @@ Copy: コピー
 Current tab: 現在のタブ
 Group: グループ
 View group: 表示グループ
-Products: 製品
+Products: 商品
 Properties: プロパティ
 History: 履歴
 pane.accordion:
@@ -759,6 +768,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: 属性を�
 update_product_value.steps.update_product_value_processor.title: 製品の値を更新
 remove_product_value.steps.update_product_value_processor.title: 製品の値を削除
 edit_common_attributes: 属性を編集
+edit_common_attributes_clean: 属性を持つファイルを削除
 perform.steps.duplicated.title: 重複した軸
 perform.steps.excluded.title: 除外製品
 batch_jobs:
@@ -770,10 +780,39 @@ batch_jobs:
     label: 製品の値を更新
     perform:
       label: 製品の値を更新
+  add_attribute_value:
+    perform:
+      label: 属性値を追加
   edit_common_attributes:
     label: 属性を編集
     perform:
       label: 属性を編集
+    clean:
+      label: 属性を持つファイルを削除
+    cleaner:
+      label: 属性を持つファイルを削除
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: 完全性を計算する
+  add_to_category:
+    label: カテゴリーに追加
+    perform:
+      label: カテゴリーに追加
+  move_to_category:
+    label: カテゴリへ移動
+    perform:
+      label: カテゴリへ移動
+  remove_from_category:
+    label: カテゴリから削除
+    perform:
+      label: カテゴリから削除
+  add_association:
+    label: 関連付ける
+    perform:
+      label: 関連付ける
+  add_to_existing_product_model:
+    label: 既存の製品モデルに追加
+    perform:
+      label: 既存の製品モデルに追加
   set_attribute_requirements:
     label: 属性の要件を設定
     perform:

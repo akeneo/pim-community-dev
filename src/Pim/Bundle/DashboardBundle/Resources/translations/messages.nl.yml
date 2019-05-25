@@ -17,11 +17,11 @@ pim_dashboard:
       empty: Geen bewerkingen beschikbaar
       status: Status
       date: Datum
-      type: Type
+      type: Soort
       "profile name": Profielnaam
       details: Details
       job_type:
-        import: Import
-        export: Export
+        import: Importeer
+        export: Exporteer
         mass_edit: Massabewerking
         quick_export: Snelle export

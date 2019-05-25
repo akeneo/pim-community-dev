@@ -2,11 +2,11 @@ pim_user:
   user:
     tab:
       general.title: Основные
-      additional.title: Дополнительно
+      additional.title: Дополнительные
       group_and_role.title: Группы и роли
       password.title: Пароль
-      business_unit.title: Бизнес-единицы
-      email_synchronization.title: Параметры синхронизации email
+      business_unit.title: Бизнес-подразделения
+      email_synchronization.title: Настройки синхронизации email
       interfaces.title: Интерфейсы
   group:
     tab:
@@ -20,15 +20,15 @@ oro.user.controller:
 oro.user.grid.users:
   columns:
     username: "Имя пользователя"
-    email: "Email"
+    email: "Эл. почта"
     firstName: "Имя"
     lastName: "Фамилия"
-    createdAt: "Создано"
-    updatedAt: "Обновлено"
+    createdAt: "Дата создания"
+    updatedAt: "Дата обновления"
     enabled: "Статус"
 oro.user.grid.roles:
   columns:
-    label: "Метка"
+    label: "Ярлык"
 oro.user.grid.groups:
   columns:
     name: "Имя"
@@ -43,7 +43,7 @@ Users Management: Управление пользователями
 Create user: Создать пользователя
 btn.create.user: Создать пользователя
 New user: Новый пользователь
-Additional: Дополнительно
+Additional: Дополнительные
 Groups and Roles: Группы и роли
 Username: Имя пользователя
 Password: Пароль
@@ -61,8 +61,8 @@ Add another email: Добавить другой email
 Catalog locale: Локаль каталога
 Catalog scope: Область видимости каталога
 Default tree: Дерево каталога по умолчанию
-Business Units: Бизнес-единицы
-Email synchronization settings: Параметры синхронизации email
+Business Units: Бизнес-подразделения
+Email synchronization settings: Настройки синхронизации email
 Host: Сервер
 Port: Порт
 Ssl: SSL
@@ -89,9 +89,9 @@ user:
   default_product_grid_view:
     label: Представление сетки продуктов по умолчанию
   default_grid_view:
-    none: Нет
+    none: (Пусто)
   timezone: Часовой пояс
-Role: Роль
+Role: роль
 Owner: Владелец
 General: Основные
 Entity: Объект
@@ -128,9 +128,9 @@ oro_security:
       edit: Изменение групп пользователя
       delete: Удаление группы пользователя
 (default): Разрешения по умолчанию на сущности
-VIEW: Просмотр
+VIEW: Представление
 CREATE: Создать
-EDIT: Редактировать
+EDIT: Изменить
 DELETE: Удалить
 ASSIGN: Назначить
 SHARE: Поделиться
@@ -142,7 +142,7 @@ oro:
       DEEP: Отдел
       GLOBAL: Организация
       SYSTEM: Система
-      NONE: Нет
+      NONE: (Пусто)
 Create group: Создать группу
 btn.create.user-group: Создать группу
 Has group: Имеет группу

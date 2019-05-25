@@ -7,7 +7,7 @@ Selected Rows: Valitut rivit
 "Yes, do it": "Kyllä, tee se"
 "No": "Ei"
 "Ok, got it.": "OK."
-"Cancel": "Peruuta"
+"Cancel": "Hylkää"
 "Delete Confirmation": "Poiston vahvistus"
 "Edit": "Muokkaa"
 "Unexpected error occured. Please contact system administrator.": "Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan."
@@ -34,8 +34,8 @@ Microsecond: Mikrosekunti
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
 Datagrid Configuration: Datagrid-kokoonpano
-Apply: Valitse
-Action: Toimi
+Apply: Käytä
+Action: Toiminto
 Unit: Yksikkö
 Currency: Valuutta
 jstree:
@@ -46,7 +46,7 @@ jstree:
     unclassified: Luokittelemattomat tuotteet
   no_tree: Ei puuta käytettävissä
   include_sub: Sisällytä alakategoriat
-  loading: Ladataan ...
+  loading: Lataa ...
 datetimepicker:
   days:
     Sunday: Sunnuntai
@@ -77,7 +77,7 @@ datetimepicker:
     February: Helmikuu
     March: Maaliskuu
     April: Huhtikuu
-    May: Toukokuu
+    May: Touko
     June: Kesäkuu
     July: Heinäkuu
     August: Elokuu
@@ -90,7 +90,7 @@ datetimepicker:
     Feb: Helmi
     Mar: Maalis
     Apr: Huhti
-    May: Toukokuu
+    May: Touko
     Jun: Kesä
     Jul: Heinä
     Aug: Elo
@@ -101,7 +101,7 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Järjestelmän asetukset
+      title: Järjestelmäasetukset
       tab:
         system:
           title: Järjestelmä

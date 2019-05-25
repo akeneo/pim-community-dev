@@ -46,7 +46,7 @@ oro_datagrid.select.all: "すべて"
 oro_datagrid.select.visible: "すべて表示"
 oro_datagrid.select.none: "なし"
 oro_datagrid.select.select: "選択"
-pim.grid.ajax_choice_filter.label_empty: 空
+pim.grid.ajax_choice_filter.label_empty: 空値
 pim.grid.ajax_choice_filter.label_not_empty: 空ではない
 pim:
   grid:
@@ -55,7 +55,7 @@ pim:
       label_does_not_contain: 含まない
       label_equal: 等しい
       label_start_with: で始まる
-      label_empty: 空
+      label_empty: 空値
       label_not_empty: 空ではない
       label_in_list: リストに存在する
       operator: オペレータ
@@ -83,7 +83,7 @@ pim_datagrid:
     delete:
       confirm_title: 削除を確認する
       confirm_ok: OK
-      empty_selection: 商品が選択されていません。
+      empty_selection: 商品が選択されていません
 pim.grid.mass_action.quick_export.title: クイック エクスポート
 pim.grid.mass_action.quick_export.launched: クイックエクスポート処理が開始されました。
 pim.grid.action.launch.title: 起動

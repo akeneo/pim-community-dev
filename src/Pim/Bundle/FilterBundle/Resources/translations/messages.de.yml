@@ -10,12 +10,12 @@ oro.filter.form.label_type_not_contains: enthält nicht
 oro.filter.form.label_type_equals: ist gleich
 oro.filter.form.label_type_start_with: beginnt mit
 oro.filter.form.label_type_end_with: endet mit
-oro.filter.form.label_type_empty: ist leer
+oro.filter.form.label_type_empty: Ist leer
 oro.filter.form.label_type_not_empty: ist nicht leer
 oro.filter.form.label_type_in_list: in Liste
 oro.filter.form.label_date_type_between: zwischen
 oro.filter.form.label_date_type_not_between: nicht zwischen
 oro.filter.form.label_date_type_more_than: mehr als
-oro.filter.form.label_date_type_less_than: weniger als
+oro.filter.form.label_date_type_less_than: kleiner als
 oro.filter.form.label_not_selected: Nicht ausgewählt
 oro.filter.form.label_selected: Ausgewählt

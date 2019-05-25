@@ -6,7 +6,7 @@ pim_user:
       group_and_role.title: Grupos y Roles
       password.title: Contraseña
       business_unit.title: Unidades de negocio
-      email_synchronization.title: Configuración de sincronización de correo electrónico
+      email_synchronization.title: Configuraciones de sincronización de e-mail
       interfaces.title: Interfaces
   group:
     tab:
@@ -62,7 +62,7 @@ Catalog locale: Local de catálogo
 Catalog scope: Ambito del Catálogo
 Default tree: Árbol por defecto
 Business Units: Unidades de negocio
-Email synchronization settings: Configuración de sincronización de correo electrónico
+Email synchronization settings: Configuraciones de sincronización de e-mail
 Host: Host
 Port: Puerto
 Ssl: SSL
@@ -89,9 +89,9 @@ user:
   default_product_grid_view:
     label: Vista de cuadrícula de producto automática
   default_grid_view:
-    none: Ninguno
+    none: Ninguna
   timezone: Zona horaria
-Role: Rol
+Role: rol
 Owner: Propietario
 General: General
 Entity: Entidad
@@ -105,7 +105,7 @@ role:
   create: Crear rol
 btn.create.role: Crear rol
 rights:
-  action: Permisos
+  action: Permisiones
 oro_security:
   acl_group:
     user: Usuarios
@@ -128,10 +128,10 @@ oro_security:
       edit: Editar grupos de usuarios
       delete: Eliminar un usuario del grupo
 (default): Permisos predeterminados en entidades
-VIEW: Vista
+VIEW: Visualizar
 CREATE: Crear
 EDIT: Editar
-DELETE: Eliminar
+DELETE: Borrar
 ASSIGN: Asignar
 SHARE: Compartir
 oro:
@@ -142,7 +142,7 @@ oro:
       DEEP: División
       GLOBAL: Organización
       SYSTEM: Sistema
-      NONE: Ninguno
+      NONE: Ninguna
 Create group: Crear grupo
 btn.create.user-group: Crear grupo
 Has group: Tiene grupo

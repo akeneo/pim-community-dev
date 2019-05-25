@@ -7,7 +7,7 @@ pim_user:
       password.title: 密码
       business_unit.title: 业务单元
       email_synchronization.title: 电子邮件同步设置
-      interfaces.title: 界面
+      interfaces.title: 接口
   group:
     tab:
       general.title: 一般信息
@@ -68,7 +68,7 @@ Ssl: SSL
 Last logged in: 上次登录
 Login count: 登录计数
 Additional Information: 更多信息
-Interfaces: 界面
+Interfaces: 接口
 Basic Information: 基本信息
 Contact Information: 联系方式
 User name: 用户名

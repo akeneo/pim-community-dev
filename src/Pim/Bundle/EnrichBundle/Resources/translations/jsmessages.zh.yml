@@ -215,7 +215,7 @@ pim_enrich:
           code: 代码
     association_type:
       meta:
-        created: 已创建
+        created: 创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
@@ -228,7 +228,7 @@ pim_enrich:
         created: 关联类型已创建
     group_type:
       meta:
-        created: 已创建
+        created: 创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
@@ -242,7 +242,7 @@ pim_enrich:
     channel:
       title: 频道
       meta:
-        created: 已创建
+        created: 创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
@@ -250,8 +250,10 @@ pim_enrich:
         save: 保存
     family:
       title: 分类
+      info:
+        create_successful: 渠道已成功创建。
       meta:
-        created: 已创建
+        created: 创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
@@ -269,14 +271,14 @@ pim_enrich:
     attribute_option:
       code: 代码
       label: 标签
-      actions: 操作
+      actions: 动作
     group:
       title: 分组
       btn:
         save: 保存
       meta:
         product_count: 商品
-        created: 已创建
+        created: 创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
@@ -332,6 +334,7 @@ pim_enrich:
     required: '（必填）'
     product_model:
       family_variant: 变量
+      product_model: 产品型号
     product:
       tab:
         associations:
@@ -429,12 +432,16 @@ pim_enrich:
           title: 属性
           label_label: 标签
           toolbox:
-            select_attributes: 添加属性
+            select_attributes: 增加属性
             add: 增加
           not_required_label: 不需要
           required_label: 必填
         history:
           title: 历史
+    family_variant:
+      tab:
+        labels:
+          title: 标签翻译
     attribute_option:
       flash:
         option_created: 属性选项成功创建
@@ -479,7 +486,7 @@ pim_enrich:
         attributes:
           btn:
             add: 增加
-            add_attributes: 添加属性
+            add_attributes: 增加属性
           info:
             search_attributes: 搜索...
             no_available_attributes: 没有需要添加的属性
@@ -570,7 +577,7 @@ pim_enrich:
       file_path: 文件路径
     attribute:
       meta:
-        created: 已创建
+        created: 创建
         updated: 上次更新
       tab:
         properties:
@@ -613,8 +620,10 @@ pim_enrich:
         attributes:
           label_label: 标签
           toolbox:
-            select_attributes: 添加属性
+            select_attributes_by_groups: 按分组添加
+            select_attributes: 增加属性
             add: 增加
+            attributes_groups_selected: '{{ itemsCount }}个分组已选定'
     basket:
       title: 购物篮
       empty_basket: 购物车是空的
@@ -676,7 +685,7 @@ pim_enrich:
           help: 根据它们的完成度来选择产品导出
           operators:
             ALL: 在完成度上没有条件
-            ">=": 完成至少一个选定的本地化语言
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 完成至少一个选定的本地化语言
             "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选择的本地化语言中是完整的
             LOWER THAN ON ALL LOCALES: 在所有选择的本地化语言中是不完整的
           empty_selection: 选择一个品类
@@ -759,6 +768,7 @@ pim_enrich:
       create_popin:
         title: 创建
     group:
+      title: "] -Inf, 1] {{ count }}个分组|] 1, Inf [{{ count }}个分组"
       create_btn: 创建组
     export_profiles:
       create_popin:
@@ -768,50 +778,76 @@ pim_enrich:
     user_role:
       create_btn: 创建角色
     user_group:
+      title: "] -Inf, 1] {{ count }}个分组|] 1, Inf [{{ count }}个分组"
       create_btn: 创建组
     attribute:
+      create_btn: 创建属性
       modal_title: 选择属性类型
     attribute_group:
       title: 属性组
       create_btn: 创建
     api_connection:
+      title: "] -Inf, 1] {{ count }}个API连接|] 1, Inf [{{ count }} 个API连接"
       create_btn: 创建
   mass_edit:
     next: 下一页
     cancel: 取消
     confirm: 确认
     product:
+      title: 产品批量操作
       step:
         select:
           label: 选择产品
+        choose:
+          title: 产品批量操作
+          label_count: "] 0, Inf [选择你的操作"
         configure:
           label: 配置
         confirm:
           label: 确认
+        launched:
+          label: 批量操作“{{ operation }}”已启动。完成后你会收到通知。
       operation:
         change_status:
           label: 更改状态
           description: 将启用或禁用选定的产品。
           field: 启用
         change_family:
+          label: 更改品类
           description: 选定产品的品类将更改为被选定的品类
           field: 产品族
         add_to_group:
           label: 加入到组
           description: 选择一个组，将所选定的产品加入其中
           field: 分组
+        add_to_category:
+          label: 添加到类别
+        move_to_category:
+          label: 更改类别
         remove_from_category:
+          label: 从类别里删除
           description: 产品将从以下目录中删除。
     family:
+      title: 品类批量操作
       step:
         select:
           label: 选择品类
+        choose:
+          title: 品类批量操作
+          label_count: "] 0, Inf [选择你的操作"
         configure:
           label: 配置
         confirm:
           label: 确认
+        launched:
+          label: 批量操作“{{ operation }}”已启动。完成后你会收到通知。
+      operation:
+        set_requirements:
+          label: 设置属性要求
 pim_enrich.error:
   exception.title: 我靠 ！{{ status_code }} 出错了...
+  http:
+    403: 您无权访问这个页面
 page_title:
   oro_default: 主界面
   pim_enrich_attributegroup_index: 属性组
@@ -834,6 +870,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: 批量编辑|配置
   pim_enrich_job_tracker_index: 过程跟踪器
   pim_enrich_job_tracker_show: 过程跟踪器 |显示作业
+  pim_enrich_api_connection_index: API连接
   pim_enrich_mass_edit_action: 批量编辑
   pim_analytics_system_info_index: 系统信息
 batch_jobs:
@@ -849,10 +886,15 @@ batch_jobs:
     label: 编辑属性
     perform:
       label: 编辑属性
+  set_attribute_requirements:
+    label: 设置属性要求
+    perform:
+      label: 设置属性要求
   csv_product_export:
     label: 产品导出到CSV
     export.label: 产品导出
   csv_product_model_export:
+    label: 将产品模型导出为CSV文件
     export.label: 产品导出
   csv_category_export:
     label: 分类导出到CSV
@@ -877,6 +919,8 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 产品导入
     import_associations.label: 相关导入
+  csv_product_model_import:
+    label: 从SCV文件导入产品模型
   csv_category_import:
     label: 从CSV导入分类
     validation.label: 文件验证
@@ -903,16 +947,41 @@ batch_jobs:
     label: 从CSV导入分组
     validation.label: 文件验证
     import.label: 分组导入
+  csv_channel_export:
+    label: 渠道导出为CSV文件
+    export.label: 渠道导出
+  csv_locale_export:
+    label: 区域设置导出为CSV文件
+    export.label: 区域设置导出
+  csv_attribute_group_export:
+    label: 属性组导出为CSV文件
+    export.label: 属性组导出
+  csv_currency_export:
+    label: 货币导出为CSV
+    export.label: 货币导出
+  csv_group_type_export:
+    label: 导出分组类型为CSV文件
+    export.label: 导出分组类型
   csv_channel_import:
+    label: 从CSV文件导入渠道
     validation.label: 文件验证
+    import.label: 渠道导入
   csv_locale_import:
+    label: 从CSV文件导入区域设置
     validation.label: 文件验证
+    import.label: 区域设置导入
   csv_attribute_group_import:
+    label: 从CSV文件导入属性组
     validation.label: 文件验证
+    import.label: 属性组导入
   csv_currency_import:
+    label: 从CSV文件导入货币
     validation.label: 文件验证
+    import.label: 货币导入
   csv_group_type_import:
+    label: 从CSV文件导入分组类型
     validation.label: 文件验证
+    import.label: 导入分组类型
   xlsx_category_import:
     label: 用XLSX导入分类
     validation.label: 文件验证
@@ -938,11 +1007,16 @@ batch_jobs:
   xlsx_product_export:
     label: 产品导出到 XLSX
     export.label: 产品导出
+  xlsx_product_model_export:
+    label: 将产品模型导出为XLSX文件
+    export.label: 产品模型导出
   xlsx_product_import:
     label: 从 XLSX导入产品
     validation.label: 文件验证
     import.label: 产品导入
     import_associations.label: 相关导入
+  xlsx_product_model_import:
+    label: 从XSLX文件导入产品模型
   xlsx_group_export:
     label: 分组导出到 XLSX
     export.label: 分组导出
@@ -965,21 +1039,59 @@ batch_jobs:
   xlsx_association_type_export:
     label: 关联类型导出到XLSX
     export.label: 关联类型导出到XLSX
+  xlsx_channel_export:
+    label: 渠道导出为XLSX文件
+    export.label: 导入渠道
+  xlsx_locale_export:
+    label: 区域设置导出为CSV文件
+    export.label: 导出区域设置
+  xlsx_attribute_group_export:
+    label: 属性组导出为XLSX文件
+    export.label: 导出属性组
+  xlsx_currency_export:
+    label: 货币导出为XLSX文件
+    export.label: 货币导出
+  xlsx_group_type_export:
+    label: 分组类型导出为XLSX文件
+    export.label: 导出分组类型
   xlsx_channel_import:
+    label: 从XLSX文件导入渠道
     validation.label: 文件验证
+    import.label: 渠道导入
   xlsx_locale_import:
+    label: 从XLSX文件导入区域设置
     validation.label: 文件验证
+    import.label: 区域设置导入
   xlsx_attribute_group_import:
+    label: 从XLSX文件导入属性组
     validation.label: 文件验证
+    import.label: 属性组导入
   xlsx_currency_import:
+    label: 从SLSX文件导入货币
     validation.label: 文件验证
+    import.label: 货币导入
   xlsx_group_type_import:
+    label: 从XLSX文件导入分组类型
     validation.label: 文件验证
+    import.label: 导入分组类型
+job_tracker:
+  download_archive:
+    archive: 下载已生成的存档文件
+    output: 下载已生成的文件
+    input: 下载已读文件
+    invalid_xlsx: 下载无效数据
+    invalid_csv: 下载无效数据
 pim_menu:
   tab:
+    activity: 活动
+    imports: 导入
     products: 商品
+    exports: 导出
     settings: 设置 
     system: 系统
+    help:
+      title: 帮助
+      helper: Akeneo帮助中心
   item:
     association_type: 关联类型
     attribute: 属性
@@ -993,9 +1105,10 @@ pim_menu:
     group_type: 分组类型
     locale: 本地化语言
     product: 商品
+    product_model: 产品模型
     published_product: 已发布的产品
     export_history: 导出历史
-    export_profile: 导出配置文件
+    export_profile: 导出方案
     import_history: 导入历史
     import_profile: 导入方案
     configuration: 配置
@@ -1005,9 +1118,25 @@ pim_menu:
     user_role: 角色
     info: 系统信息
     job_tracker: 过程跟踪器
+    api_connection: API连接
+  navigation:
+    activity: 活动导航
+    system: 系统导航
+    user: 用户管理导航
+    settings: 设置导航
   user:
     logout: 退出登录
     user_account: 我的帐户
 pim_notification:
   mark_all_as_read: 标记所有为已读
+  no_notifications: 没有通知
   loading: 正在加载...
+catalog_volume:
+  axis:
+    count_products: 商品
+    count_channels: 渠道
+    count_families: 品类
+    count_attributes: 属性
+    count_categories: 分类
+    count_category_trees: 目录树
+    count_product_models: 产品模型

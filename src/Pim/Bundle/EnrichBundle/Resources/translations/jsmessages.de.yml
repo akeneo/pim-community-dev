@@ -22,7 +22,7 @@ confirmation:
 pim_datagrid:
   mass_action_group:
     bulk_actions:
-      label: Stapelverarbeitung
+      label: Massenbearbeitung
     quick_export:
       label: Schnell-Export
   mass_action:
@@ -75,7 +75,7 @@ flash:
 error:
   common: Es ist ein Fehler aufgetreten
   creating:
-    product: Es ist kein Attribut ist als Produktidentifikator konfiguriert oder Sie haben keine Rechte diesen zu bearbeiten.
+    product: Es ist kein Attribut als Kennung konfiguriert oder Sie haben keine Rechte die Kennung zu bearbeiten.
   removing:
     item: Dieses Element kann nicht gelöscht werden
     association_type: Dieser Verbindungstyp kann nicht gelöscht werden
@@ -141,7 +141,7 @@ pim_enrich:
       confirm.title: '{{ itemName }} löschen'
   navigation:
     link:
-      back_to_grid: Zurück zur Tabellenansicht
+      back_to_grid: Zurück zur Listenansicht
     other_actions: Weitere Aktionen
   entity:
     save:
@@ -189,21 +189,21 @@ pim_enrich:
         deletion_failed: Das Produkt konnte nicht gelöscht werden.
         update_successful: Produkt erfolgreich aktualisiert.
         update_failed: Das Produkt konnte nicht aktualisiert werden.
-        field_not_ready: "Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}"
+        field_not_ready: "Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
       meta:
         created: Erstellt
         created_by: durch
-        updated_by: durch
+        updated_by: Von
         updated: Letzte Aktualisierung
         family:
           title: Produktfamilie
           none: Keine
         family_variant:
           title: Variante
-          none: Keine
+          none: keine
         groups:
           title: Gruppen
           modal:
@@ -219,7 +219,7 @@ pim_enrich:
         select: Auswählen
         all: Alle
         all_visible: Alle sichtbaren
-        none: Keine
+        none: keine
         copy: Kopieren
       optional_attribute:
         remove: Dieses Attribut löschen
@@ -406,7 +406,7 @@ pim_enrich:
         create_successful: Attribut erfolgreich erstellt.
         create_failed: Das Attribut konnte nicht erstellt werden.
         field_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch unvollständig {{ fields }}"
-      scopable: Wert je Ausgabekanal
+      scopable: Je Ausgabekanal individualisierbar
       type:
         pim_catalog_identifier: Kennung
         pim_catalog_text: Text
@@ -646,7 +646,7 @@ pim_enrich:
             add_attributes: Attribute hinzufügen
           info:
             search_attributes: Suche...
-            no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+            no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
     job_execution:
       loading: Lädt...
       title.details: Ausführungsdetails
@@ -768,7 +768,7 @@ pim_enrich:
             date_max: Max. Datum
             date_min: Min. Datum
             decimals_allowed: Dezimalwerte erlaubt
-            default_metric_unit: Standardmaßeinheit
+            default_metric_unit: Standard-Maßeinheit
             group: Attributgruppe
             is_locale_specific: Gebietsschemaspezifisch
             localizable: Wert je Gebietsschema
@@ -783,14 +783,14 @@ pim_enrich:
             scopable: Wert je Ausgabekanal
             type: Typ
             unique: Eindeutiger Wert
-            useable_as_grid_filter: Verwendbar in der Tabellenansicht
+            useable_as_grid_filter: Anwendbar in der Listenansicht
             validation_regexp: Regulärer Ausdruck
             validation_rule: Validierungsregel
             wysiwyg_enabled: Rich-Text-Editor aktiviert
           default_label:
             default_metric_unit: Wählen Sie eine Einheit
             group: Wählen Sie die Attributgruppe
-            metric_family: Wählen Sie eine Produktfamilie
+            metric_family: Wählen Sie eine metrische Gruppe
             reference_data_name: Wählen Sie den Referenz-Datentyp
         labels:
           title: Feldbezeichner-Übersetzungen
@@ -913,7 +913,7 @@ pim_enrich:
             ">=": Größer als oder gleich
             ">": Größer als
             "<=": Weniger als oder gleich
-            "<": Früher als
+            "<": Weniger als
             EMPTY: Ist leer
             NOT EMPTY: Ist nicht leer
         multi_select:
@@ -933,7 +933,7 @@ pim_enrich:
         date:
           operators:
             ">": Größer als
-            "<": Früher als
+            "<": Weniger als
             "=": Ist gleich
             "!=": Ist nicht gleich
             BETWEEN: Zwischen
@@ -947,7 +947,7 @@ pim_enrich:
             ">=": Größer als oder gleich
             ">": Größer als
             "<=": Weniger als oder gleich
-            "<": Früher als
+            "<": Weniger als
             EMPTY: Ist leer
             NOT EMPTY: Ist nicht leer
       properties:
@@ -1044,7 +1044,7 @@ pim_enrich:
           label: Status ändern
           label_count: "{1}Ändere den Status für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere den Status für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
           description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
-          field: Zu aktivieren
+          field: Aktivieren
         edit_common:
           label: Attributwerte bearbeiten
           label_count: "{1}Bearbeite die Werte von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Bearbeite die Werte von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
@@ -1215,24 +1215,24 @@ batch_jobs:
       label: XLSX Produkt-Schnellexport kontextabhängig
   csv_product_export:
     label: Produkt-Export als CSV-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   csv_product_model_export:
     label: Produktmodell-Export als CSV-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   csv_category_export:
     label: Kategorie-Export als CSV-Datei
-    export.label: Kategorie export
+    export.label: Kategorie-Export
   csv_attribute_export:
     label: Attribut-Export als CSV-Datei
-    export.label: Attribut export
+    export.label: Attribut-Export
   csv_attribute_option_export:
-    label: Attribut-Option in CSV-Datei exportieren
-    export.label: Attribut-Option export
+    label: Attributoptionen-Export als CSV-Datei
+    export.label: Attributoptionen-Export
   csv_association_type_export:
-    label: Verbindungstyp-Export als CSV-Datei
-    export.label: Verbindungstyp-Export
+    label: Beziehungstyp-Export als CSV-Datei
+    export.label: Beziehungstyp-Export
   csv_group_export:
-    label: Gruppen-Export in CSV-Datei
+    label: Gruppen-Export als CSV-Datei
     export.label: Gruppen-Export
   csv_family_export:
     label: Produktfamilien-Export als CSV-Datei
@@ -1242,8 +1242,8 @@ batch_jobs:
     export.label: Export der Varianten der Produktfamilien
   csv_product_import:
     validation.label: Dateivalidierung
-    import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
+    import.label: Produkt-Import
+    import_associations.label: Verbindungen-Import
   csv_product_model_import:
     label: Produktmodell-Import aus CSV-Datei
   csv_category_import:
@@ -1253,15 +1253,15 @@ batch_jobs:
   csv_attribute_import:
     label: Attribut-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Import
+    import.label: Attribute-Import
   csv_attribute_option_import:
-    label: Attribut-Optionen aus CSV-Datei importieren
+    label: Attributoptionen-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Option import
+    import.label: Attributoption-Import
   csv_association_type_import:
-    label: Verbindungstyp-Import als CSV-Datei
+    label: Verbindungstyp-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Verbindungstyp-Import
+    import.label: Beziehungstyp-Import
   csv_family_import:
     label: Produktfamilien-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -1320,15 +1320,15 @@ batch_jobs:
   xlsx_association_type_import:
     label: Verbindungstyp-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Verbindungstyp-Import
+    import.label: Beziehungstyp-Import
   xlsx_attribute_import:
     label: Attribut-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Import
+    import.label: Attribute-Import
   xlsx_attribute_option_import:
     label: Attributoptionen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Option import
+    import.label: Attributoption-Import
   xlsx_family_import:
     label: Produktfamilien-Import aus XLSX-Datei
     validation.label: Dateivalidierung
@@ -1343,15 +1343,15 @@ batch_jobs:
     import.label: Import der Varianten der Produktfamilien
   xlsx_product_export:
     label: Produkt-Export als XLSX-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   xlsx_product_model_export:
     label: Produktmodell-Export als XLSX-Datei
     export.label: Produktmodell-Export
   xlsx_product_import:
     label: Produkt-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
+    import.label: Produkt-Import
+    import_associations.label: Verbindungen-Import
   xlsx_product_model_import:
     label: Produktmodell-Import aus XLSX-Datei
   xlsx_group_export:
@@ -1369,7 +1369,7 @@ batch_jobs:
     export.label: Export der Varianten der Produktfamilien
   xlsx_category_export:
     label: Kategorie-Export als XLSX-Datei
-    export.label: Kategorie export
+    export.label: Kategorie-Export
   xlsx_attribute_export:
     label: Attribut-Export als XLSX-Datei
     export.label: Attribut-Export als XLSX-Datei

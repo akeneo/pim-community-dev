@@ -28,7 +28,7 @@ pim_datagrid:
     create_view_modal:
       create: Aanmaken
       confirm: OK
-      cancel: Annuleren
+      cancel: Annuleer
 flash:
   item:
     removed: Item succesvol verwijderd
@@ -131,7 +131,7 @@ pim_enrich:
       label: Label
       labels:
         save: Opslaan
-        cancel: Annuleren
+        cancel: Annuleer
     product:
       title: product
       locale: Lokalisatie
@@ -194,20 +194,19 @@ pim_enrich:
         unavailable: Dit specifiek veld van de landinstelling is niet beschikbaar in deze landinstelling
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
-      media:
-        upload: Klik en sleep om te uploaden of klik hier
       create_popin:
         title: Aanmaken
         labels:
           family: Kies een familie
           save: Opslaan
-          cancel: Annuleren
+          cancel: Annuleer
       message:
         created: Product succesvol aangemaakt
       completeness: Voltooien
     product_model:
       add_child:
-        cancel: Annuleren
+        cancel: Annuleer
+        confirm: Bevestig
         fields:
           code: Code
     association_type:
@@ -273,8 +272,9 @@ pim_enrich:
       message:
         created: Familie succesvol aangemaakt
       variant:
+        axis.label: Variant as
         create: Aanmaken
-        cancel: Annuleren
+        cancel: Annuleer
         code: Code
         label: Label
     attribute_option:
@@ -349,6 +349,7 @@ pim_enrich:
     required: (vereist)
     product_model:
       family_variant: Variant
+      product_model: Product model
     product:
       tab:
         associations:
@@ -462,7 +463,7 @@ pim_enrich:
       add_option_modal:
         title: Voeg attribuut optie toe
         confirm: Toevoegen
-        cancel: Annuleren
+        cancel: Annuleer
     entity:
       switch:
         "no": "Nee"
@@ -490,7 +491,7 @@ pim_enrich:
           title: Attributen
           table:
             name: Naam
-            type: Type
+            type: Soort
             scopable: Bereik instelbaar
             localizable: Lokaliseerbaar
         history.title: Geschiedenis
@@ -525,7 +526,7 @@ pim_enrich:
         import: Profiel importeren
         export: Profiel exporteren
       button:
-        edit.title: Bewerken
+        edit.title: Wijzig
         export.title: Nu exporteren
         import.launch: Nu importeren
         import.upload: Uploaden en nu importeren
@@ -545,7 +546,6 @@ pim_enrich:
             title: Decimaal scheidingsteken
             help: Bepaal het decimaal scheidingsteken
           date_format:
-            title: Datumnotatie
             help: Bepaal het formaat van de datumvelden
           file_path:
             title: Bestandspad
@@ -615,7 +615,7 @@ pim_enrich:
             metric_family: Meeteenhedenfamilie
             number_max: Max aantal
             number_min: Min aantal
-            type: Type
+            type: Soort
             unique: Unieke waarde
             validation_regexp: Reguliere expressie
             validation_rule: Validatieregel
@@ -634,6 +634,7 @@ pim_enrich:
         attributes:
           label_label: Label
           toolbox:
+            select_attributes_by_groups: Toevoegen via groepen
             select_attributes: Attributen toevoegen
             add: Toevoegen
     basket:
@@ -655,12 +656,12 @@ pim_enrich:
           title: Lokalisaties
         attributes:
           title: Attributen
-          edit: Bewerken
+          edit: Wijzig
           help: "Selecteer de product informatie om te exporteren. Bv. enkel technische attributen."
           empty: Alle attributen worden geëxporteerd
           modal:
             apply: Toepassen
-            cancel: Annuleren
+            cancel: Annuleer
             title: Attribuut selectie
         attributes_selector:
           attribute_group: Attribuutgroepen
@@ -799,8 +800,16 @@ pim_enrich:
       create_btn: Aanmaken
   mass_edit:
     next: Volgende
-    cancel: Annuleren
+    cancel: Annuleer
+    confirm: Bevestig
     product:
+      step:
+        select:
+          label: Kies producten
+        configure:
+          label: Configureer
+        confirm:
+          label: Bevestig
       operation:
         change_status:
           label: Status wijzigen
@@ -815,6 +824,17 @@ pim_enrich:
           field: Groepen
         remove_from_category:
           description: De producten zullen worden verwijderd uit de volgende categorieën.
+    family:
+      step:
+        select:
+          label: Kies families
+        configure:
+          label: Configureer
+        confirm:
+          label: Bevestig
+      operation:
+        set_requirements:
+          label: Instellen Attribuut vereisten
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
   http:
@@ -839,9 +859,15 @@ page_title:
   pim_enrich_grouptype_index: Groepstypen
   pim_enrich_mass_edit_action_choose: Massa bewerken | Kies
   pim_enrich_mass_edit_action_configure: Massa bewerken | Configureren
+  pim_enrich_job_tracker_index: Procesopvolger
+  pim_enrich_job_tracker_show: Procesopvolger | Toon taak
   pim_enrich_mass_edit_action: Massa bewerken
   pim_analytics_system_info_index: Systeeminformatie
 batch_jobs:
+  add_product_value:
+    label: Voeg productwaarde toe
+    perform:
+      label: Voeg productwaarde toe
   update_product_value:
     label: Update productwaarde
     perform:
@@ -850,10 +876,37 @@ batch_jobs:
     label: Bewerk attributen
     perform:
       label: Bewerk attributen
+    cleaner:
+      label: Opschonen bestanden voor attributen
+  add_to_category:
+    label: Voeg toe aan categorie
+    perform:
+      label: Voeg toe aan categorie
+  move_to_category:
+    label: Verplaats naar categorie
+    perform:
+      label: Verplaats naar categorie
+  remove_from_category:
+    label: Verwijder uit categorie
+    perform:
+      label: Verwijder uit categorie
+  add_association:
+    label: Associëren
+    perform:
+      label: Associëren
+  add_to_existing_product_model:
+    label: Toevoegen aan een bestaand productmodel
+    perform:
+      label: Toevoegen aan een bestaand productmodel
+  set_attribute_requirements:
+    label: Instellen Attribuut vereisten
+    perform:
+      label: Instellen Attribuut vereisten
   csv_product_export:
     label: Productexport in CSV
     export.label: Productexport
   csv_product_model_export:
+    label: Productmodel export in CSV
     export.label: Productexport
   csv_category_export:
     label: Categorie-export in CSV
@@ -873,11 +926,16 @@ batch_jobs:
   csv_family_export:
     label: Familie export in CSV
     export.label: Familie export
+  csv_family_variant_export:
+    label: Familie-variant export in CSV
+    export.label: Familie-variant export
   csv_product_import:
     label: Productimport in CSV
     validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
+  csv_product_model_import:
+    label: Productmodel import in CSV
   csv_category_import:
     label: Categorie-import in CSV
     validation.label: Bestandsvalidatie
@@ -899,14 +957,16 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Familie import
   csv_family_variant_import:
+    label: Familie-variant import in CSV
     validation.label: Bestandsvalidatie
+    import.label: Familie-variant import
   csv_group_import:
     label: Groep importeren in CSV
     validation.label: Bestandsvalidatie
     import.label: Groep importeren
   csv_channel_export:
     label: Kanaal export in CSV
-    export.label: Kanaal export
+    export.label: Kanaalexport
   csv_locale_export:
     label: Locale export in CSV
     export.label: Locale export
@@ -938,7 +998,7 @@ batch_jobs:
   csv_group_type_import:
     label: Groepstype-import in CSV
     validation.label: Bestandsvalidatie
-    import.label: Groepstype import
+    import.label: Groep type import
   xlsx_category_import:
     label: Categorie import in XLSX
     validation.label: Bestandsvalidatie
@@ -960,15 +1020,22 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Familie import
   xlsx_family_variant_import:
+    label: Familie-variant import in XLSX
     validation.label: Bestandsvalidatie
+    import.label: Familie-variant import
   xlsx_product_export:
     label: Product export in XLSX
     export.label: Productexport
+  xlsx_product_model_export:
+    label: Productmodel export in XLSX
+    export.label: Productmodel export
   xlsx_product_import:
     label: Product import in XLSX
     validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
+  xlsx_product_model_import:
+    label: Productmodel import in XLSX
   xlsx_group_export:
     label: Groep export in XLSX
     export.label: Groepexport
@@ -979,6 +1046,9 @@ batch_jobs:
   xlsx_family_export:
     label: Familie export in XLSX
     export.label: Familie export
+  xlsx_family_variant_export:
+    label: Familie-variant export in XLSX
+    export.label: Familie-variant import
   xlsx_category_export:
     label: Categorie export in XLSX
     export.label: Categorie-export
@@ -993,7 +1063,7 @@ batch_jobs:
     export.label: Associatie type export in XLSX
   xlsx_channel_export:
     label: Kanaal export in XLSX
-    export.label: Kanaal export
+    export.label: Kanaalexport
   xlsx_locale_export:
     label: Locale export in XLSX
     export.label: Locale export
@@ -1025,9 +1095,10 @@ batch_jobs:
   xlsx_group_type_import:
     label: Groepstype import in XLSX
     validation.label: Bestandsvalidatie
-    import.label: Groepstype import
+    import.label: Groep type import
 pim_menu:
   tab:
+    activity: Activiteit
     products: Producten
     settings: Instellingen
     system: Systeem
@@ -1050,11 +1121,13 @@ pim_menu:
     import_history: Importgeschiedenis
     import_profile: Importprofielen
     configuration: Configuratie
+    catalog_volume: Catalogus volume monitoring
     user_management: Gebruikersbeheer
     user: Gebruikers
     user_group: Groepen
     user_role: Rollen
     info: Systeeminformatie
+    job_tracker: Procesopvolger
   user:
     logout: Afmelden
     user_account: Mijn Account
@@ -1062,6 +1135,10 @@ pim_notification:
   mark_all_as_read: Markeer alles als gelezen
   loading: Laden...
 catalog_volume:
+  product_values_description: 'Hoe meer productwaarden je hebt, hoe waardevoller je PIM is, hoe hoger je ROI is! Meer details <a href="{{link}}" target="_blank">hier</a>'
+  section:
+    product_values:
+      hint: 'Wist u dat het totaalaantal productwaarden in uw PIM direct gekoppeld is aan de volgende assen?<br/>Om meer details te hebben, nodigen we u uit om <a href="{{link}}" target="_blank">dit artikel</a> te lezen.'
   axis:
     count_products: Producten
     count_channels: Kanalen
@@ -1069,3 +1146,5 @@ catalog_volume:
     count_attributes: Attributen
     count_categories: Categorieën
     count_category_trees: Categorie boomstructuren
+    count_variant_products: Variant products
+    count_product_models: Productmodels

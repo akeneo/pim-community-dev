@@ -8,7 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Kategoriavalinta
-          cancel: Peruuta
+          cancel: Hylkää
           confirm: Vahvista
         label: "{0} Kaikki tuotteet|{1} Yksi kategoria valittu|]1,Inf[ {{ count }} kategoriaa valittu"
         edit: Muokkaa

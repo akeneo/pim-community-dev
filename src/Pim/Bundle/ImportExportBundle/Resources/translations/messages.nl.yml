@@ -84,8 +84,8 @@ pim_importexport:
     import: Importprofielen
 btn:
   create:
-    export profile: exportprofiel toevoegen
-    import profile: importprofiel toevoegen
+    export profile: Exportprofiel aanmaken
+    import profile: Importprofiel aanmaken
 Upload and import now: Uploaden en nu importeren
 import now: Nu importeren
 export now: Nu exporteren
@@ -121,7 +121,7 @@ Download log: Logbestand downloaden
 Show profile: Profiel weergeven
 execution details: verwerkingsdetails
 job_execution.summary:
-  read: lezen
+  read: lees
   write: geschreven
   skip: overgeslagen
   create: gecreëerd

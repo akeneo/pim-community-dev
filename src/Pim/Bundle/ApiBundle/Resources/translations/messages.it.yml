@@ -1,6 +1,6 @@
 pim_api:
   acl:
-    rights: Permessi Web API
+    rights: Permessi delle API Web
     attribute:
       edit: Crea e aggiorna attributi
       list: Elenco attributi
@@ -12,7 +12,7 @@ pim_api:
       list: Elenco attributi di gruppo
     category:
       edit: Crea e aggiorna categorie
-      list: Lista Categorie
+      list: Elenco categorie
     family:
       edit: Crea e aggiorna famiglie
       list: Elenco famiglie
@@ -29,7 +29,7 @@ pim_api:
       list: Elenco tipi di associazione
   acl_group:
     overall_access: Accesso globale alle API Web
-    attribute: Attributi
+    attribute: Atributi
     attribute_option: Opzioni degli attributi
     attribute_group: Gruppi di attributi
     category: Categorie
@@ -39,4 +39,4 @@ pim_api:
     locale: Impostazioni locali
     currency: Valute
     association_type: Tipi di associazione
-rights.api: Permessi Web API
+rights.api: Permessi delle API Web

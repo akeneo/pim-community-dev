@@ -110,3 +110,8 @@ oro_config:
         notification:
           title: 通知
           system_notification: 新版本提醒
+        loading_message:
+          title: 正在加载消息
+          label: 启用加载消息
+        loading_messages:
+          label: 可用的加载消息

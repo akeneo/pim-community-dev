@@ -18,8 +18,12 @@ pim_connector:
         not_blank: Uma localidade deve ser selecionado, por favor, escolha um local para exportar.
 page_title:
   pim_importexport_export_profile_index: Gerenciamento dos perfis de exportação
+  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
+  pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
   pim_importexport_export_execution_index: Histórico de execuções de exportação
   pim_importexport_export_execution_show: Execuções de exportação | Detalhes
   pim_importexport_import_profile_index: Gerenciamento dos perfis de importação
+  pim_importexport_import_profile_edit: Importar perfil {{ job.label }} | Editar
+  pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
   pim_importexport_import_execution_index: Histórico de execuções de importação
   pim_importexport_import_execution_show: Execuções de importação | Detalhes

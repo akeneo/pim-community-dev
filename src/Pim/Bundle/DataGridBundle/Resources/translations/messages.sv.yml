@@ -7,7 +7,7 @@ oro.grid.mass_action.confirm_content: Är du säker på att du vill göra detta?
 oro.grid.mass_action.confirm_ok: Ja, gör det
 oro.grid.mass_action.error_title: Fel vid massåtgärd
 oro.grid.mass_action.error_content: Kan inte utföra massåtgärd
-oro.grid.mass_action.delete.label: Ta bort
+oro.grid.mass_action.delete.label: Radera
 oro.grid.mass_action.delete.confirm_title: Bekräfta massborttagning
 oro.grid.mass_action.delete.confirm_content: Är du säker du vill ta bort markerade objekt?
 oro.grid.datagrid.page_size.all: Alla
