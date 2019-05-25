@@ -1,0 +1,66 @@
+pim_title:
+  pim_user_index: Gebruikers
+  pim_user_role_index: Rollen
+  pim_user_group_index: Gebruikersgroepen
+  oro_config_configuration_system: Configuratie
+  pim_user_security_login: Aanmelden
+  pim_user_reset_request: Wachtwoord vergeten
+  pim_user_group_create: 'Groepen | Aanmaken'
+confirmation:
+  remove:
+    user: Weet u zeker dat u deze gebruiker wilt verwijderen?
+    group: Weet u zeker dat u deze groep wilt verwijderen?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Weet u zeker dat u deze gebruiker wilt verwijderen?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Gebruikersnaam
+        name_prefix: Voorvoegsel
+        first_name: Voornaam
+        middle_name: Tussenvoegsel
+        last_name: Achternaam
+        name_suffix: Achtervoegsel
+        avatar: Profielafbeelding
+        email: E-mail
+        catalog_locale: Catalogus lokalisatie
+        catalog_scope: Scope van catalogus
+        default_tree: Standaardstructuur
+        product_grid_filters: Filters productraster
+        current_password: Huidig wachtwoord
+        new_password: Nieuw wachtwoord
+        new_password_repeat: Nieuw wachtwoord (herhalen)
+        password: Wachtwoord
+        ui_locale: Gebruikers Interface
+        timezone: Tijdzone
+        default_product_grid_view: Standaard Productweergave raster
+        default_published_product_grid_view: Standaard gepubliceerde product rasterweergave
+        proposals_to_review_notification: Wanneer nieuw voorstel tot nakijken
+        proposals_state_notifications: Wanneer voorstel is goedgekeurd of geweigerd
+      module:
+        create:
+          button: Gebruiker aanmaken
+        delete:
+          confirm: Weet u zeker dat u deze gebruiker wilt verwijderen?
+        update:
+          additional: Aanvullend
+          password: Wachtwoord
+          interfaces: Interfaces
+          notifications: Meldingen
+    role:
+      plural_label: Rollen
+      module:
+        create:
+          button: Rol aanmaken
+        delete:
+          confirm: Weet u zeker dat u deze rol wilt verwijderen?
+    group:
+      plural_label: Gebruikersgroepen
+      module:
+        create:
+          button: Groep aanmaken

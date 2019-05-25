@@ -1,0 +1,85 @@
+An identifier attribute already exists.: Ідентифікатор атрибуту вже існує.
+Attribute code may contain only letters, numbers and underscore: Код атрибуту може містити лише літери, цифри та підкреслення
+Attribute code may contain only letters (at least one), numbers and underscores: Код атрибута може містити лише літери (хоча б одну), цифри та знак підкреслення
+This attribute type can't be used as a grid filter: Цей тип атрибута не можна використовувати як фільтр
+This code is not available: Цей код недоступний
+This attribute type must be required: Цей атрибут типу має бути обовязковим
+This attribute type can't be required: Цей тип атрибута не може бути обовязковим
+This attribute type can't have unique value: Цей тип атрибута не може мати унікальне значення
+No default value may be specified for this attribute type: Значення за замовчуванням не може бути вказано для цього типу атрибута
+This value should be Yes or No: Це значення має бути Так або Ні
+This value should not be blank: Це значення не може бути порожнім
+Option code may contain only letters, numbers and underscores: Параметр коду може містити лише літери, цифри та знак підкреслення
+Option code may contain only letters (at least one), numbers and underscores: Параметр коду може містити лише літери (хоча б одну), цифри та знак підкреслення
+This value should not be a decimal.: Це значення не повинно бути десятковим числом.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Розширення файлу є неприпустимим (допускається розширення: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Значення %value% уже встановлено для іншого продукту для унікального атрибуту %attribute%
+The same identifier is already set on another product: Цей ідентифікатор вже встановлений на іншому продукті
+regex.comma_or_semicolon.message: Це поле не повинно містити коми або крапки з комою.
+file.extensions.message: 'Розширення файлу є неприпустимим (допускається розширення: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Цей тип значення передбачає використання {{ decimal_separator }} для відокремлення десяткових знаків.
+"This type of value expects the use of dot (.) to separate decimals.": "Цей тип значення очікує використаннякрапки для відокремлення десяткових чисел.\n"
+"This type of value expects the use of comma (,) to separate decimals.": цей тип значення очікує на використання коми для відокремлення десяткових чисел.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Цей тип значення передбачає використання арабського десяткового роздільника (٫) для розділення десяткових знаків.
+"This type of value expects the use of the format {{ date_format }} for dates.": цей тип значення очікує використання {{ date_format }} для дат.
+"The category \"%category%\" has to be a root category.": Категорія "%category%" має бути кореневою категорією.
+"The attribute \"%attributeCode%\" does not exist.": Атрибут "%attributeCode%" не існує.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Атрибут "%attributeCode%" не є метричним атрибутом.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Одиниця "%unitCode%" не існує або не належить заданій метричній системі атрибуту "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Валюта "%currency%" має бути активована.
+product_model.code.not_blank.message: Код моделі продукту не має бути порожнім.
+product_model.code.unique.message: Цей ідентифікатор вже встановлений на іншому продукті.
+product_model.family_variant.not_blank.message: Варіант сімейства продукту не має бути порожнім.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Атрибут "%attribute%" не може бути порожнім, оскільки він є основою цього об''єкту'
+    product_model_with_same_axis_value_already_exists: 'Неможливо встановити значення "%values%" для основи атрибуту "%attributes%" в моделі продукту "%validated_entity%", оскільки це значення встановлено моделі продукту "%sibling_with_same_value%"'
+    variant_product_with_same_axis_value_already_exists: 'Неможливо встановити значення "%values%" для основи атрибуту "%attributes%" в варіанті продукту "%validated_entity%", оскільки це значення вже встановлено для варіанту продукту "%sibling_with_same_value%"'
+    can_have_family_variant_unexpected_attribute: 'Неможливо встановити властивість "%attribute%" об''єкту, оскільки вона відсутня в наборі атрибутів'
+    cannot_have_product_model_as_parent: 'Модель продукту "%product_model%" не може мати за батьківську модель продукту "%parent_product_model%"'
+    cannot_have_parent: 'Модель продукту "%product_model%" не може мати батьківську'
+    attribute_does_not_belong_to_family: 'Атрибут "%attribute%" не належить до сімейства «%family%»'
+    variant_product_invalid_family: 'Сімейство у варіанта продукту має бути однаковим з батьківським об''єктом'
+    not_null_family: Сімейство не може бути "нулевим", тому що ваш продукт з ідентифікатором "%sku%" є варіантом продукту.
+    variant_product_has_parent: 'Варіант продукту "%variant_product%" повинен мати батька'
+    invalid_variant_product_parent: 'Даний різновид продукту "%variant_product%" не може мати за батьківську модель продукту "%product_model%" (вона може мати інші моделі продуктів тільки в якості дочірніх)'
+    modified_variant_axis_value: 'Різновид основи "%variant_axis%" не можна змінити, задано "%provided_value%"'
+    family_variant_attributes_unique: Атрибути мають бути унікальними, "%attributes%" використовуються декілька разів в різних наборах атрибутів
+    family_variant_axes_unique: Варіант конфігураційного атрибуту має бути унікальним, а "%attributes%" можуть використовуватися декілька разів в різних наборах атрибутів
+    family_variant_axes_immutable: 'Варіант конфігураційного атрибуту не можна змінити на рівні "%level%"'
+    family_variant_axes_attribute_type_unique: Варіант конфігураційного атрибуту "%axis%" не може бути унікальним або ідентифікатором
+    family_variant_axes_attribute_type: Конфігураційний атрибут "%axis%" повинен мати або булев типа даних, або тип простиій вибір, або тип складних даних посилань або метричний тип
+    family_variant_axes_wrong_type: Конфігураційний атрибут "%axis%" не може бути таким, що локалізується, невидимим або не специфічним для локалі
+    family_variant_axes_number_of_axes: 'Варіант набору атрибутів не може мати більше ніж %max_axes_number% конфігураційних атрибутів'
+    family_variant_no_axis: Принаймні один атрибут має бути визначений як конфігураційний атрибут для набору атрибутів на рівні «%level%»
+    family_variant_axis_level: Атрибут "%axis%" має бути встановлений як конфігураційний атрибут у наборі атрибутів
+    family_variant_has_family_attribute: 'Атрибут "%attribute%" не можна додати до сімейства різновидів "%family_variant%", оскільки він не належить сімейству "%family%"'
+    family_variant_level_do_not_exist: Не існує іншого атрибуту варіанту для рівня «%level%»
+    family_variant_no_level: В сімействі різновидів має бути принаймні один рівень
+    family_variant_maximum_number_of_level: Сімейство різновидів не може мати більше "%level%" рівнів
+    family_variant_unique_attributes_in_last_level: На рівні продукту має бути встановлений унікальний атрибут "%attribute%"
+    product_identifier: Цих ідентифікаторів "%s", не існує.
+    0: Сталася неочікувана помилка.
+    100: Не очікувані значення
+    101: Це поле очікує логічне значення.
+    102: Це поле очікує значення з плаваючою комою.
+    103: Це поле очікує ціле значення.
+    104: Це поле очікує числове значення.
+    105: Це поле очікує значення у вигляді рядка.
+    106: Це поле очікує значення у вигляді масиву.
+    107: Це поле чекає цілий ряд масивів як значення.
+    200: Виникла внутрішня помилка
+    201: Виникла внутрішня помилка
+    202: Це поле очікує числове значення.
+    203: Це поле очікує значення у вигляді рядка.
+    204: Це поле очікує значення у вигляді рядка.
+    205: Виникла внутрішня помилка
+    300: Це поле очікує валідний код сутності.
+    301: Це поле очікує валідні сферу та локаль.
+    302: Це поле очікує валідну сферу.
+    303: Це поле очікує правильний асоціаційний формат.
+    pim_immutable_product_validator: Цей ідентифікатор вже встановлений на іншому продукті
+    pim_immutable_product_model_validator: Цей код вже встановлений на іншій моделі продукту.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: В формах атрибутів є помилки

@@ -1,0 +1,10 @@
+pim_catalog_volume:
+  axis:
+    count_products: Producten
+    count_channels: Kanalen
+    count_families: Families
+    count_attributes: Attributen
+    count_categories: Categorieën
+    count_category_trees: Categorie boomstructuren
+    count_variant_products: Variant products
+    count_product_models: Productmodels

@@ -1,0 +1,160 @@
+pim_measure:
+  families:
+    Area: Wilayah
+    Binary: Biner
+    Decibel: Desibel
+    Frequency: Frekuensi
+    Length: Panjang
+    Power: Kekuatan
+    Resistance: Daya tahan
+    Voltage: Tegangan
+    Intensity: Intensitas
+    ElectricCharge: Biaya listrik
+    Duration: Durasi
+    Speed: Cepat
+    Temperature: Suhu
+    Volume: Volume
+    Weight: Berat
+    Pressure: Tekanan
+    Energy: Energi
+    CaseBox: Pengemasan
+  units:
+    ACRE: Acre
+    ARE: Are
+    ARPENT: Arpent
+    CENTIARE: Sentiare
+    HECTARE: Hectar
+    SQUARE_CENTIMETER: Square centimeter
+    SQUARE_DECIMETER: Decimeter persegi
+    SQUARE_DEKAMETER: Dekameter persegi
+    SQUARE_FOOT: Kaki persegi
+    SQUARE_FURLONG: Square furlong
+    SQUARE_HECTOMETER: Hektometer persegi
+    SQUARE_INCH: Persegi inci
+    SQUARE_KILOMETER: Kilometer persegi
+    SQUARE_METER: Meter persegi
+    SQUARE_MIL: Square mil
+    SQUARE_MILE: Mil persegi
+    SQUARE_MILLIMETER: Mililiter persegi
+    SQUARE_YARD: Halaman persegi
+    BIT: Sedikit
+    BYTE: Bita
+    KILOBYTE: Kilo bita
+    MEGABYTE: Megabita
+    GIGABYTE: Gigabita
+    TERABYTE: Terabita
+    DECIBEL: Desibel
+    GIGAHERTZ: "Gigahertz\n \nContext | Request Context\n"
+    KILOHERTZ: "Kilohertz\n \nKonteks | Permintaan Konteks"
+    MEGAHERTZ: "Megahertz\n \nKonteks | Permintaan Konteks"
+    TERAHERTZ: Terahertz
+    HERTZ: Terahertz
+    CENTIMETER: "\nSentimeter\n \nKonteks | Permintaan Konteks\n "
+    CHAIN: Rantai
+    DECIMETER: Desimeter
+    DEKAMETER: Dekameter
+    FEET: Kaki
+    FURLONG: Furlong
+    INCH: Inch
+    HECTOMETER: Hektometer
+    KILOMETER: Kilometer
+    METER: Meter
+    MIL: Mil
+    MILE: Mil
+    MILLIMETER: Millimeter
+    YARD: Yard
+    GIGAWATT: Gigawat
+    KILOWATT: Kilowat
+    MEGAWATT: Megawat
+    TERAWATT: Terawat
+    WATT: Watt
+    MILLIOHM: Mili ohm
+    CENTIOHM: Senti ohm
+    DECIOHM: Desi ohm
+    OHM: Ohm
+    DEKAOHM: Deka ohm
+    HECTOHM: Hekt ohm
+    KILOHM: Kil ohm
+    MEGOHM: Megohm
+    MILLIVOLT: Mili volt
+    CENTIVOLT: Senti volt
+    DECIVOLT: Desi volt
+    VOLT: Volt
+    DEKAVOLT: Deka volt
+    HECTOVOLT: Hekto volt
+    KILOVOLT: Kilo volt
+    MILLIAMPERE: Miliamper
+    CENTIAMPERE: Sentiamper
+    DECIAMPERE: Desiamper
+    AMPERE: Amper
+    DEKAAMPERE: Deakamper
+    HECTOAMPERE: Hektoamper
+    KILOAMPERE: Kiloamper
+    MEGAAMPERE: Megaamper
+    MILLIAMPEREHOUR: Jam Milliampere
+    AMPEREHOUR: Jam ampere
+    MILLICOULOMB: Mili coulomb
+    CENTICOULOMB: Senti coulomb
+    DECICOULOMB: Desi coulomb
+    COULOMB: Coulomb
+    DEKACOULOMB: Deka coulomb
+    HECTOCOULOMB: Hekto coulomb
+    KILOCOULOMB: Kilo coulomb
+    MILLISECOND: Milidetik
+    SECOND: Detik
+    MINUTE: Menit
+    HOUR: Jam
+    DAY: Hari
+    WEEK: Pekan
+    MONTH: Bulan
+    YEAR: Tahun
+    FOOT_PER_SECOND: Kaki per detik
+    FOOT_PER_HOUR: Kaki oer jam
+    KILOMETER_PER_HOUR: Kilometer per jam
+    METER_PER_HOUR: Meter per jam
+    METER_PER_MINUTE: Meter per menit
+    METER_PER_SECOND: Meter per detik
+    MILE_PER_HOUR: Mil per jam
+    YARD_PER_HOUR: Yard per hour
+    CELSIUS: Selsius
+    FAHRENHEIT: Fahrenheit
+    KELVIN: Kelvin
+    RANKINE: Rankine
+    REAUMUR: Reaumur
+    BARREL: Barel
+    CENTILITER: Sentiliter
+    CUBIC_CENTIMETER: Kubik sentimeter
+    CUBIC_DECIMETER: Kubik desimeter
+    CUBIC_FOOT: Kubik kaki
+    CUBIC_INCH: Inci Kubik
+    CUBIC_METER: Meter kubik
+    CUBIC_MILLIMETER: Mililiter kubik
+    CUBIC_YARD: Yard kubik
+    DECILITER: Desiliter
+    GALLON: Galon
+    LITER: Liter
+    MILLILITER: Mililiter
+    OUNCE: Ons
+    PINT: Pint
+    DENIER: Denier
+    GRAIN: Gandum
+    GRAM: Gram
+    KILOGRAM: Kilogram
+    LIVRE: Livre
+    MARC: Marc
+    MILLIGRAM: Miligram
+    ONCE: Ons
+    POUND: Pound
+    TON: Ton
+    BAR: Batang
+    PASCAL: Paskal
+    HECTOPASCAL: hekto Paskal
+    MILLIBAR: milli Bar
+    ATM: Suasana
+    PSI: Pon per inci persegi
+    TORR: Torr
+    MMHG: millimeter dari Merkurius
+    KILOCALORIE: kilokalori
+    KILOJOULE: kilojoule
+    PIECE: Potongan
+    DOZEN: Lusin

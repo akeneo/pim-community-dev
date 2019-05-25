@@ -1,0 +1,63 @@
+batch_jobs:
+  csv_currency_export:
+    label: Valuta export in CSV
+    export.label: Valuta export
+  csv_currency_import:
+    label: Valuta import in CSV
+    import.label: Valuta import
+  xlsx_currency_export:
+    label: Valuta export in XLSX
+    export.label: Valuta export
+  xlsx_currency_import:
+    label: Valuta import in XLSX
+    import.label: Valuta import
+  csv_locale_export:
+    label: Locale export in CSV
+    export.label: Locale export
+  csv_locale_import:
+    label: Locale import in CSV
+    import.label: Locale import
+  xlsx_locale_export:
+    label: Locale export in XLSX
+    export.label: Locale export
+  xlsx_locale_import:
+    label: Locale import in XLSX
+    import.label: Locale import
+  csv_channel_export:
+    label: Kanaal export in CSV
+    export.label: Kanaalexport
+  csv_channel_import:
+    label: Kanaal import in CSV
+    import.label: Kanaal import
+  xlsx_channel_export:
+    label: Kanaal export in XLSX
+    export.label: Kanaalexport
+  xlsx_channel_import:
+    label: Kanaal import in XLSX
+    import.label: Kanaal import
+pim_enrich.entity.channel:
+  label: kanaal
+  uppercase_label: Kanaal
+  flash:
+    update:
+      success: Kanaal succesvol bijgewerkt.
+      fail: Het kanaal kon niet worden bijgewerkt.
+    create:
+      success: Kanaal succesvol aangemaakt.
+      fail: Het kanaal kon niet aangemaakt worden.
+    delete:
+      success: Kanaal succesvol verwijderd
+      fail: Kan dit kanaal niet verwijderen
+  property:
+    category_tree: Categoriestructuur
+    do_not_convert: Niet converteren
+    label_conversion_units: Kies een conversie-eenheid voor elke metrisch attribuut dat zal worden gebruikt tijdens de productexport
+  module:
+    delete:
+      confirm: Weet u zeker dat u dit kanaal wilt verwijderen?
+pim_enrich.entity.locale:
+  label: lokalisatie
+  uppercase_label: Lokalisatie
+  plural_label: Lokalisaties
+pim_enrich.entity.currency:
+  plural_label: Valuta

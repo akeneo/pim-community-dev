@@ -25,6 +25,7 @@ pim_user_management:
         middle_name: ミドルネーム
         last_name: 姓
         name_suffix: 尊称
+        phone: 電話
         avatar: アバター
         email: 電子メール
         catalog_locale: カタログのロケール

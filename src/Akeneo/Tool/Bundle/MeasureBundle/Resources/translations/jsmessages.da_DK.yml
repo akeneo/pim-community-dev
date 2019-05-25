@@ -1,11 +1,11 @@
 pim_measure:
   families:
-    Area: Område
+    Area: Areal
     Binary: Binær
     Decibel: Decibel
     Frequency: Frekvens
     Length: Længde
-    Power: Strøm
+    Power: Effekt
     Resistance: Modstand
     Voltage: Spænding
     Intensity: Intensitet
@@ -13,7 +13,7 @@ pim_measure:
     Duration: Varighed
     Speed: Hastighed
     Temperature: Temperatur
-    Volume: Lydstyrke
+    Volume: Volume
     Weight: Vægt
     Pressure: Tryk
     Energy: Energi

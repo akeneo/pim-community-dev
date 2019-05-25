@@ -59,14 +59,16 @@ pim_user:
       log_in: ログイン
       forgot_password: パスワードを忘れた
       request: リクエスト
+      password_reset: パスワードリセット
       reset: リセット
+      password_reset_email_sent: メールがユーザーに送信されました。パスワードをリセットするためのリンクが含まれています。
       homepage: ホームページに移動
   group:
     tab:
       general.title: 全般
       users.title: ユーザー
   roles:
-    title: ロール
+    title: 権限
     tab:
       general: 全般
       action: パーミッション

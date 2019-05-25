@@ -1,0 +1,25 @@
+pim_api:
+  acl:
+    attribute:
+      list: Make u drop de attributes dem
+    attribute_group:
+      list: Drop attribute groups
+    category:
+      list: Drop categories dem
+    family:
+      list: Drop families dem
+    channel:
+      list: Drop channels dem
+    locale.list: Drop de locales dem
+    currency.list: Drop de different money
+    association_type:
+      list: Make u drop association types dem
+  acl_group:
+    attribute: Attributes dem
+    attribute_group: Attribute groups
+    category: Categories
+    family: Families
+    channel: Channels
+    locale: Locales dem
+    currency: Currencies
+    association_type: Association types

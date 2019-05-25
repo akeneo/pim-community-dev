@@ -49,7 +49,7 @@ pim_user_management:
         delete:
           confirm: Möchten Sie diesen Benutzer wirklich löschen?
         update:
-          additional: Ergänzend
+          additional: Weitere Informationen
           password: Passwort
           interfaces: Benutzeroberfläche
           notifications: Benachrichtigungen

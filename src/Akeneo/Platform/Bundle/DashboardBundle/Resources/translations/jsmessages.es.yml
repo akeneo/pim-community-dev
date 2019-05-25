@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Cargar más...'
+pim_title:
+  pim_dashboard_index: Cartelera

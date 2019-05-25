@@ -31,19 +31,20 @@ pim_enrich.entity.family_variant:
   short_label: バリアント
   flash:
     update:
-      success: 家族のバリアントが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます。
+      success: ファミリーバリアントが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます。
     create:
       success: ファミリーバリアントを作成しました
   module:
     edit:
       common_attributes: 共通の属性
-      no_common_attributes: 共通の属性はありません。
+      no_common_attributes: 共通の属性はありません
       variant_axis_label: バリアントの軸
+      variant_attributes: バリアント属性
       level_1: バリアント属性レベル 1
       level_2: バリアント属性レベル 2
-      description: '。バリアントレベルでこれらの属性を管理できるよう、選択したバリアントレベルで属性をドラッグ＆ドロップする。'
-      confirm_attribute_removal_title: 属性の削除を確認します。
-      confirm_attribute_removal_message: これらの属性を削除することで、ファミリーバリ円との共通属性に戻すことになり、バリアント製品から削除することになる
+      description: バリアントレベルでこれらの属性を管理できるよう、選択したバリアントレベルで属性をドラッグ＆ドロップする。
+      confirm_attribute_removal_title: 属性の削除を確認します
+      confirm_attribute_removal_message: これらの属性を削除することで、ファミリーバリアントとの共通属性に戻すことになり、バリアント製品から削除することになる
     create:
       label: バリエーションを追加
       title: 新しいファミリーバリアントを作成
@@ -103,6 +104,7 @@ pim_enrich.entity.attribute:
     update:
       success: 属性を更新しました
       fail: 属性を更新できませんでした。
+      fields_not_ready: "属性はただいま保存できません。以下のフィールドが準備できていません: {{ fields }}"
     delete:
       success: 属性を削除しました
       fail: この属性は削除できません

@@ -1,0 +1,4 @@
+pim_notification:
+  report: Melaporkan
+  mark_all_as_read: Menandai semua yang telah dibaca
+  no_notifications: Tidak ada pemberitahuan
