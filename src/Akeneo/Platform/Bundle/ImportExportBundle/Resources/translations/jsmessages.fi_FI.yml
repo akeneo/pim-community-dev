@@ -110,7 +110,7 @@ pim_import_export:
             help: Kategoriasarakkeen nimi
           escape:
             title: Koodinvaihto
-            help: Ohjausmerkki
+            help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
           family_column:
             title: Perhesarake
             help: Perhesarakkeen nimi

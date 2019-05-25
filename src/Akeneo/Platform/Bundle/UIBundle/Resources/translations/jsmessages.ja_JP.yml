@@ -27,7 +27,7 @@ Action: アクション
 Unit: 単位
 Currency: 通貨
 jstree:
-  all: すべての製品
+  all: 全ての製品
   unclassified: 未分類の製品
   product:
     all: すべての製品
@@ -104,6 +104,9 @@ oro_config:
           label: 読み込みメッセージを有効にする
         loading_messages:
           label: 可能な読み込みメッセージ
+pim_ui:
+  flash:
+    unsaved_changes: '保存していない変更内容があります。このページから移動しますか?'
 "Sorry, page was not loaded correctly": "申し訳ありませんが、ページが正しく読み込まれませんでした。"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "ローカルの変更は失われます。ページを更新してもよろしいですか。"
 "navigation.message.content.outdated": "{{ title }}のコンテンツ ページは古くなっています。 <a href='#' data-action='page-refresh'>ページを更新</a> してください。"
@@ -112,9 +115,11 @@ pim_common:
   actions: アクション
   add: 追加
   add_attributes: 属性を追加
+  after: 後
   all: すべて
   and: と
   apply: 適用
+  before: 前
   by: by
   cancel: キャンセル
   code: コード
@@ -172,7 +177,7 @@ pim_common:
     STARTS WITH: で始まる
     ENDS WITH: で終わる
 error:
-  exception: ああスナップ！ {{ status_code }} のエラーが発生しました。
+  exception: ' {{ status_code }} のエラーが発生しました。'
   forbidden: このページにアクセスすることはできません
 alert:
   attribute_option:
@@ -194,16 +199,26 @@ pim_enrich.entity.fallback:
       title: '{{ itemName }} を削除する'
       alternative_title: 削除を確認
       item: このアイテムを削除してもよろしいですか?
+      item_placeholder: この {{ itemName }} を削除してもよろしいですか？このアクションは元に戻せません。
     edit:
       leave: このページから移動してもよろしいですか？
       discard_changes: このページから移動する場合は {{ entity }} に対する変更が失われます。
+      discard_changes_title: よろしいですか?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: APIコネクションを作成しました
     delete:
       success: APIコネクションを削除しました
+      fail: この API 接続を取り消すことができません
+  page_title:
+    index: "]-Inf, 1]{{ count }} API接続|]1, Inf[{{ count }} API接続"
+  module:
+    revoke:
+      confirm: このAPIトークンを取り消してもよろしいですか？
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} 操作|]1, Inf[{{ count }} 操作"
   module:
     create:
       upload: '{{ type }} ファイルをドロップするか、またはディスクを参照するをクリックしてください'
@@ -214,10 +229,11 @@ pim_enrich.entity.job_execution:
       invalid_xlsx: 無効なデータをダウンロード
       invalid_csv: 無効なデータをダウンロード
 pim_title:
-  oro_default: ダッシュ ボード
+  oro_default: ダッシュボード
   pim_enrich_attributegroup_index: 属性グループ
   pim_enrich_attributegroup_create: 属性グループ |作成
   pim_enrich_attributegroup_edit: 属性グループ {{ group.label }} |編集
+  pim_enrich_catalog_volume_index: カタログのボリュームモニタリング
   pim_enrich_categorytree_index: カテゴリツリー
   pim_enrich_categorytree_create: カテゴリ ツリー |作成
   pim_enrich_categorytree_edit: カテゴリツリー {{ category.label }} |編集
@@ -225,7 +241,7 @@ pim_title:
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性 |作成
   pim_enrich_attribute_edit: 属性 {{ attribute.label }} |編集
-  pim_enrich_product_index: 製品
+  pim_enrich_product_index: 商品
   pim_enrich_product_edit: 製品 {{ product.label }} |編集
   pim_enrich_product_model_edit: 製品モデル {{ product.label }} |編集
   pim_enrich_family_index: ファミリー
@@ -265,10 +281,11 @@ pim_menu:
     attribute_group: 属性グループ
     channel: チャンネル
     currency: 通貨
-    dashboard: ダッシュ ボード
+    dashboard: ダッシュボード
     family: ファミリー
     group: グループ
     group_type: グループタイプ
+    product_model: 製品モデル
     export_history: エクスポート履歴
     export_profile: エクスポートプロファイル
     import_history: インポート履歴
@@ -281,6 +298,7 @@ pim_menu:
     info: システム情報
     job_tracker: プロセストラッカー
     api_connection: API 接続
+    catalog_volume: カタログのボリュームモニタリング
   navigation:
     activity: アクティビティナビゲーション
     system: システムナビゲーション

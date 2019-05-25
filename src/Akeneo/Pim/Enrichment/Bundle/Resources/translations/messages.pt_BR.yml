@@ -4,8 +4,8 @@ No products to remove: Não existem produtos a serem removidos
 pim_enrich:
   category:
     tab:
-      property.title: Propriedades
-      history.title: Histórico
+      property.title: Propriedade
+      history.title: História
     suggest_selection: Por favor, selecione uma categoria à esquerda
     or: ou
     create_new: Cria uma nova categoria
@@ -13,13 +13,13 @@ pim_enrich:
     limit_exceeded: Por favor, selecione menos de %limit% items para editar
     product:
       page_title: Produtos
-      page_subtitle: Editar em massa (1 produto)|Editar em massa (%count% produtos)
-      title: Escolher Operação
-      subtitle: Selecione a operação que deseja realizar no produto escolhido|Selecione a operação que deseja realizar nos %count% produtos escolhidos
-      confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme.|Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
+      page_subtitle: Editar em massa (1 produto)|Editar em massa (%contagem%produtos)
+      title: Escolher operação
+      subtitle: Selecione a operação que deseja realizar no produto escolhido|Selecione a operação que deseja realizar nos %count% produtos
+      confirm: Você está prestes a atualizar um produto com as seguintes informações, por favor confirme.|que você está prestes a atualizar %count% produtos com as seguintes informações, por favor confirme.
       steps:
-        first: Escolha os produtos
-        second: Escolher Operação
+        first: Escolha produtos
+        second: Escolher operação
         third: Configurar
         fourth: Confirmar
     change-status:

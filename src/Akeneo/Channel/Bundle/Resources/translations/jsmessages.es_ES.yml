@@ -37,7 +37,7 @@ batch_jobs:
     import.label: Importar canales
 pim_enrich.entity.channel:
   label: canal
-  uppercase_label: Canal
+  uppercase_label: canal
   flash:
     update:
       success: Canal actualizado correctamente.

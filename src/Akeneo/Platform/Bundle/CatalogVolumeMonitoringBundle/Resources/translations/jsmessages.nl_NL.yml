@@ -1,0 +1,14 @@
+pim_catalog_volume:
+  product_values_description: 'Hoe meer productwaarden je hebt, hoe waardevoller je PIM is, hoe hoger je ROI is! Meer details <a href="{{link}}" target="_blank">hier</a>'
+  section:
+    product_values:
+      hint: 'Wist u dat het totaalaantal productwaarden in uw PIM direct gekoppeld is aan de volgende assen?<br/>Om meer details te hebben, nodigen we u uit om <a href="{{link}}" target="_blank">dit artikel</a> te lezen.'
+  axis:
+    count_products: Producten
+    count_channels: Kanalen
+    count_families: Families
+    count_attributes: Attributen
+    count_categories: Categorieën
+    count_category_trees: Categorie boomstructuren
+    count_variant_products: Variant products
+    count_product_models: Productmodels

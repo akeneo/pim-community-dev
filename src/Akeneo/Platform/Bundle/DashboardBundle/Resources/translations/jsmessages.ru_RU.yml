@@ -1,16 +1,19 @@
 pim_dashboard:
   widget:
     last_operations:
-      empty: Операции не найдены
+      empty: Действие не найдено
       date: Дата
       profile_name: Название профиля
-      details: Подробности
+      details: Подробнее
       warning_count: Предупреждения
       job_type:
         import: Импорт
         export: Экспорт
         mass_edit: Массовое редактирование
         quick_export: Быстрый экспорт
+        compute_product_models_descendants: Расчет дочерней модели продукта
+        compute_family_variant_structure_changes: Расчет структурных изменений разновидностей семейства
+        compute_completeness_of_products_family: Подсчитать полноту заполненности продуктов семейства
         mass_delete: Массовое удаление продуктов
     completeness:
       load_more: 'Загрузить больше...'

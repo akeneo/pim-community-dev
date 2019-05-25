@@ -14,6 +14,14 @@ pim_connector:
         not_blank: Одна локаль должена быть выбрана, пожалуйста, выберите локаль для экспорта.
 pim_import_export:
   entity:
+    job_instance:
+      label: профиль процесса
+      flash:
+        update:
+          success: Профиль процесса был успешно обновлен.
+          fail: Не удалось обновить профиль процесса.
+        delete:
+          success: Экземпляр процесса был успешно удален
     import_profile:
       uppercase_label: Профиль импорта
       flash:
@@ -36,7 +44,9 @@ pim_import_export:
       refreshBtn.title: Обновить
       button:
         show_profile.title: Показать профиль
-        download_log.title: Журнал загрузки
+        download_log.title: Журнал загрузок
+        download_file.title: Скачать сгенерированный файл
+        download_archive.title: Скачать сгенерированный архив
       summary:
         fetching: Сбор данных о выполнении задания...
         warning: Предупреждение
@@ -44,15 +54,19 @@ pim_import_export:
         header.warnings: Предупреждения
         header.summary: Сводка
         header.start: Начало
-        header.end: Конец
+        header.end: Окончание
     job_instance:
+      fail:
+        launch: Не удалось запустить профиль процесса. Убедитесь, что он валидный и что вы имеете право запустить его.
+        save: Не удалось сохранить профиль процесса. Убедитесь, что вы имеете право редактировать его.
       button:
         export.title: Экспортировать сейчас
         import.launch: Импортировать сейчас
         import.upload: Загрузить и импортировать сейчас
+        import.upload_file: Загрузить файл
       meta:
         job: Работа
-        connector: Соединитель
+        connector: Коннектор
       subsection:
         last_executions: Последние запуски
       tab:
@@ -107,11 +121,14 @@ pim_import_export:
           real_time_versioning:
             title: Обновление истории изменений в реальном времени
             help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
+          family_variant_column:
+            title: Столбец разновидности семейства
       file_path: Путь к файлу
 confirmation:
   remove:
     import_profile: Вы действительно хотите удалить этот профиль импорта?
     export_profile: Вы действительно хотите удалить этот профиль экспорта?
+    job_instance: Вы уверены, что хотите удалить этот экземпляр процесса?
 pim_enrich:
   entity:
     import_profile:
@@ -124,8 +141,12 @@ pim_enrich:
           confirm: Вы действительно хотите удалить этот профиль экспорта?
 pim_title:
   pim_importexport_export_profile_index: Управление профилями экспорта
+  pim_importexport_export_profile_edit: Экспорт профиля {{ job.label }} | Редактировать
+  pim_importexport_export_profile_show: Экспорт профиля {{ job.label }} | Показать
   pim_importexport_export_execution_index: История запусков экспорта
   pim_importexport_export_execution_show: Запуск экспорта | Детали
   pim_importexport_import_profile_index: Управление профилями импорта
+  pim_importexport_import_profile_edit: Импорт профиля {{ job.label }} | Редактировать
+  pim_importexport_import_profile_show: Импорт профиля {{ job.label }} | Показать
   pim_importexport_import_execution_index: История запусков импорта
   pim_importexport_import_execution_show: Запуск импорта | Детали

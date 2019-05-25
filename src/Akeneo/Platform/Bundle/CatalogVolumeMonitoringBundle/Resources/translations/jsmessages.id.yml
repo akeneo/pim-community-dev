@@ -1,0 +1,10 @@
+pim_catalog_volume:
+  axis:
+    count_products: Banyak produk
+    count_channels: Saluran
+    count_families: Keluarga
+    count_attributes: Atribut
+    count_categories: Kategori
+    count_category_trees: Pohon kategori
+    count_variant_products: Variasi Produk
+    count_product_models: Model produk

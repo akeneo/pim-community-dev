@@ -146,7 +146,7 @@ pim_enrich.entity.attribute:
     max_file_size: Tamanho máximo do arquivo (MB)
     metric_family:
       label: Unidades métricas
-      choose: Escolha uma família
+      choose: Escolher uma família
     minimum_input_length: Tamanho mínimo para preenchimento automático
     name: Nome
     negative_allowed: Valores negativos permitidos
@@ -173,7 +173,7 @@ pim_enrich.entity.attribute:
       pim_reference_data_simpleselect: Seleção simples de dados de referência
       pim_reference_data_multiselect: Seleção múltipla de dados de referência
     unique: Valor exclusivo
-    useable_as_grid_filter: Usar na grade
+    useable_as_grid_filter: Usável na grade
     validation_regexp: Expressão Regular
     validation_rule:
       label: Regra de validação
@@ -183,7 +183,7 @@ pim_enrich.entity.attribute:
     wysiwyg_enabled: Editor de texto rico ativado
   module:
     add_attribute:
-      no_available_attributes: Não há mais atributos para serem adicionados
+      no_available_attributes: Não existe mais atributos a serem adicionados
       attributes_selected: "{{ itemsCount }} atributo(s) selecionado(s)"
     create:
       button: Criar atributo
@@ -199,7 +199,7 @@ pim_enrich.entity.attribute:
 pim_enrich.entity.attribute_group:
   label: grupo de atributo
   uppercase_label: Grupo de atributos
-  plural_label: Grupo de atributos
+  plural_label: Grupos de Atributos
   flash:
     update:
       success: Grupo de atributos atualizado com sucesso
@@ -232,6 +232,6 @@ pim_enrich.mass_edit.family:
       label: A ação em massa "{{ operation }}" foi iniciada. Você será notificado quando for finalizada.
   operation:
     set_requirements:
-      label: Definir requisitos de atributos
+      label: Definir os requisitos de atributos
       description: Os seguintes requisitos de atributos serão aplicados às famílias selecionadas
       label_count: "{1}Definir requisitos de atributos de <span class=\"AknFullPage-title--highlight\">família</span>|]1, Inf[Definir requisitos de atributos de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílias</span>"

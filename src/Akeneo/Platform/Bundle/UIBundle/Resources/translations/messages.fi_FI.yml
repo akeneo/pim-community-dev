@@ -2,11 +2,11 @@ User: Käyttäjä
 Run demo: Suorita demo
 Product: Tuote
 Attribute list: Attribuuttilista
-Attribute Group list: Attribuuttiryhmälista
+Attribute Group list: Attribuuttiryhmien lista
 Users: Käyttäjät
 Roles: Roolit
 Groups: Ryhmät
-Configuration: Kokoonpano
+Configuration: Konfiguraatio
 Currency list: Valuuttalista
 Locale list: Lokaatiolista
 Logged in as: Kirjautunut nimellä
@@ -33,13 +33,13 @@ Favorites: Suosikit
 Most Viewed: Katsotuimmat
 "Add this page to favorites": "Lisää tämä sivu suosikkeihin"
 "Minimize the window to the pinbar": "Pienennä ikkuna pinbariin"
-"Loading ...": "Ladataan ..."
+"Loading ...": "Lataa ..."
 "Yes": "Kyllä"
 "No": "Ei"
 required: (vaadittu)
 pim_ui.system_config:
   form:
-    loading_message_enabled.label: Aktivoi latausviestit
+    loading_message_enabled.label: Salli latausviestit
     loading_message_enabled.tooltip: Näytä käyttäjäystävällisiä viestejä sivun latautuessa
     loading_messages.label: Käytettävät latausviestit
     loading_messages.tooltip: Kaikki käytettävät latausviestit rivinvaihdolla eroteltuna
@@ -47,7 +47,7 @@ pim_ui.system_config:
     loading_message.title: Latausviestit
 other_actions: Muut toiminnot
 pim_common:
-  cancel: Peruuta
+  cancel: Hylkää
   save: Tallenna
   delete: Poista
   update: Päivitä
@@ -56,39 +56,39 @@ pim_common:
   created: Luotu
   updated: Päivitetty
   create: Luo
-  permissions: Käyttöoikeudet
+  permissions: Käyttöoikeudert
   properties: Ominaisuudet
   name: Nimi
   remove: Poista
 pim_enrich:
   acl:
     locale:
-      index: Lista lokaatioista
+      index: Listaa lokaatiot
     currency:
       index: Lista valuutoista
       toggle: Vaihda valuuttaa
     product:
       index: Lista tuotteista
       create: Luo tuote
-      edit_attributes: Muokkaa tuotteen ominaisuuksia
+      edit_attributes: Muokkaa tuotteen attribuutteja
       remove: Poista tuote
       add_attribute: Lisää attribuutti tuotteelle
       remove_attribute: Poista attribuutti tuotteelta
       categories_view: Katso tuotteen kategorioita
       associations_view: Näytä tuotteen assosiaatiot
-      associations_edit: Lisää tuotteelle assosiaatioita
-      change_family: Vaihda tuoteryhmää
+      associations_edit: Lisää assosiaatiot tuotteelle
+      change_family: Vaihda perhettä
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
-      mass_edit: Tuotteen massamuokkaustoiminnot
+      mass_edit: Tuotteen massamuokkaus-toiminnot
       comment: Kommentoi tuotteita
       download: Lataa tuote PDF:nä
       history: Näytä tuotehistoria
     product_model:
       create: Luo tuotemalli
-      edit_attributes: Muokkaa tuotemallin ominaisuuksia
-      categories_view: Tarkastele tuotemallin ryhmiä
-      history: Näyte tuotemallin muutoshistoria
+      edit_attributes: Muokkaa tuotemallin attribuutteja
+      categories_view: Tarkastele tuotemallin kategorioita
+      history: Näytä tuotemallin muutoshistoria
       remove: Poista tuotemalli
     category:
       list: Listaa kategoriat
@@ -106,13 +106,13 @@ pim_enrich:
       remove: Poista kanava
       history: Näytä kanavan historia
     family:
-      index: Listaa tuoteperheet
-      create: Luo tuoteperhe
-      edit_properties: Muokkaa tuoteperheen ominaisuuksia
+      index: Listaa perheet
+      create: Luo perhe
+      edit_properties: Muokkaa perheen attribuutteja
       edit_attributes: Muokkaa perheen attribuutteja
       edit_variants: Muokkaa varianttiperhettä
-      remove: Poista tuoteperhe
-      history: Tarkastele tuoteperheen historiaa
+      remove: Poista perhe
+      history: Tarkastele perheen historiaa
     family_variant:
       remove: Poista varianttiperhe
     attribute_group:
@@ -129,7 +129,7 @@ pim_enrich:
       create: Luo attribuutti
       edit: Muokkaa attribuuttia
       remove: Poista attribuutti
-      sort: Lajittele attribuutit attribuuttiryhmän sisällä
+      sort: Järjestä attribuutit attribuuttiryhmän sisällä
       history: Näytä attribuuttien historia
     group:
       index: Listaa ryhmät
@@ -143,7 +143,7 @@ pim_enrich:
       edit: Editoi ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
-      index: Listaa assosiaatiotyypit
+      index: Listaa määritetyypit
       create: Luo assosiaatiotyyppi
       edit: Muokkaa assosiaatiotyyppiä
       remove: Poista assosiaatiotyyppi
@@ -155,16 +155,16 @@ pim_enrich:
     api_connection:
       manage: Hallinnoi API -yhteyksiä
   acl_group:
-    association_type: Assosiaatiotyypit
+    association_type: Määritetyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
     channel: Kanavat
     currency: Valuutat
-    family: Perheet
+    family: Tuoteperheet
     group: Ryhmät
     group_type: Ryhmätyypit
-    locale: Alueet
+    locale: Lokaatiot
     product: Tuotteet
     product_model: Tuotemallit
   notification:
@@ -176,14 +176,14 @@ pim_enrich:
     attribute: luo attribuutti
     attribute group: luo attribuuttiryhmä
     category: luo kategoria
-    tree: luo tuotepuu
+    tree: luo puu
     channel: luo kanava
     currency: luo valuutta
-    family: luo tuoteperhe
-    locale: luo lokaatio
+    family: luo perhe
+    locale: luo alue
     product: luo tuote
     group: luo ryhmä
-    association type: luo sidostyyppi
+    association type: luo assosiaatiotyyppi
     group type: luo ryhmätyyppi
     drag_or_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
 confirmation:
@@ -191,7 +191,7 @@ confirmation:
   leave: Oletko varma että haluat poistua sivulta?
   discard changes: Menetät muutokset kohteeseen %entity% jos poistut sivulta.
   remove:
-    category: Oletko varma että haluat poistaa kategoian %name%?
+    category: Oletko varma että haluat poistaa kategorian %name%?
     user: Oletko varma, että haluat poistaa käyttäjän %name%?
 flash:
   entity:
@@ -223,13 +223,13 @@ info:
   product:
     no available attributes: Ei ole enää attribuutteja lisättäväksi
     no family defined: Ei perhettä määritetty
-    change family: Vaihda tuoteperhettä
-    change family to: Vaihda perhe olemaan
+    change family: Vaihda perhettä
+    change family to: Vaihda perheeksi
     merge attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
     keep attributes: Mitään attribuutteja ei poisteta.
     number of associations: '%productCount% tuotetta ja %groupCount% ryhmää'
     enable: Ota käyttöön
-    enabled: Käytössä
+    enabled: Otettu käyttöön
     disable: Poista käytöstä
     disabled: Poistettu käytöstä
   group:
@@ -241,7 +241,7 @@ info:
   association type:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
-    remove from products: Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.
+    remove from products: Assosiaatiotyypin poistaminen poistaa sen myös %count% tuotteelta.
     none exist: Assosiaatiotyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
@@ -264,12 +264,11 @@ Unique: Ainutlaatuinen
 Not required: Ei vaadittu
 Translatable: Käännettävissä
 Scopable: Kanavakohtainen
-Localizable: Lokalisoitavissa
+Localizable: Kielikohtainen
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
 Other: Muu
-Variants behavior when edited: Tuotevariaatioiden käytös kun niitä muokataan
-Edit: Muokkaa
+Variants behavior when edited: Varianttien käytös kun niitä muokataan
 Remove: Poista
 Parameters: Parametrit
 System: Järjestelmä
@@ -282,7 +281,7 @@ Default value: Oletusarvo
 Attributetype: Attribuuttityyppi
 Attribute type: Attribuuttityyppi
 Defaultvalue: Oletusarvo
-Variant: Tuotevariaatio
+Variant: Variantti
 Smart: Älykäs
 Useable as grid column: Käytettävissä ruudukko-sarakkeena
 Useable as grid filter: Käytettävissä ruudukossa
@@ -290,11 +289,10 @@ Family: Perhe
 Image: Kuva
 Variant products: Varianttituotteet
 Available locales: Saatavilla olevat alueet
-Locale specific: Aluespesifi
+Locale specific: Aluekohtainen arvo
 default: Oletusarvo
-Axis: Akseli
+Axis: Muuttuvat attribuutit
 Add attributes: Lisää attribuutteja
-Translate from: Käännä kielestä
 switch_on: "Kyllä"
 switch_off: "Ei"
 Close: Sulje
@@ -312,7 +310,7 @@ Do not convert: Älä muunna
 Create: Luo
 Choose a family: Valitse perhe
 Choose a unit: Valitse yksikkö
-No matches found: Vastaavuuksia ei löydy
+No matches found: Ei hakutuloksia
 Category tree: Kategoriahierarkia
 Completeness: Valmistumisaste
 Attribute used as label: Otsikkona käytettävä attribuutti
@@ -345,7 +343,7 @@ Allowed extensions: Sallitut laajennukset
 None: Ei yhtään
 E-mail: Sähköposti
 URL: URL-osoite
-Regular expression: Tavallinen virke
+Regular expression: Säännöllinen lauseke
 Minimum input length: Syötteen vähimmäispituus
 Default: Oletusarvo
 Attributes: Attribuutit
@@ -365,12 +363,14 @@ pim_catalog_metric: Metriikka
 pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
 pim_reference_data_multiselect: Viitetiedot monivalinta
 Activated: Aktivoitu
+Edit: Muokkaa
 Disable: Poista käytöstä
 To enable: Ottaa käyttöön
 Select attributes: Valitse attribuutit
 Select: Valitse
 Remove this attribute: Poista tämä attribuutti
 Copy: Kopioi
+Translate from: Käännä kielestä
 Current tab: Nykyinen välilehti
 Group: Ryhmä
 View group: Näytä ryhmä
@@ -396,26 +396,26 @@ In group: Ryhmässä
 Attribute as label: Attribuutti otsikkona
 Is associated: Liittyy
 Complete: Valmis
-Created At: Luotu
-Updated At: Päivitetty
-Enabled: Käytössä
+Created At: Luontiaika
+Updated At: Päivitysaika
+Enabled: Otettu käyttöön
 Disabled: Poistettu käytöstä
 Status: Status
 Change History: Muutoshistoria
 Data Audit: Tietojen audit
 Data Audit - System: 'Tietojen audit - järjestelmä'
-Action: Toimi
+Action: Toiminto
 Version: Versio
 Entity type: Entiteettityyppi
 Entity name: Entiteetin nimi
 Entity id: Entiteetin ID
 Data: Tiedot
-Author: Tekijä
-Logged at: Kirjattu
+Author: Tekiäj
+Logged at: Kirjautunut
 Deleted: Poistettu
 Old values: Vanhat arvot
 New values: Uudet arvot
-System configuration: Järjestelmän asetukset
+System configuration: Järjestelmäasetukset
 General setup: Yleiset asetukset
 Localization: Lokalisointi
 Localization options: Lokalisoinnin asetukset
@@ -449,8 +449,8 @@ Selected products successfully deleted: Valitut tuotteet poistettiin
 pim_mass_edit:
   notification:
     mass_edit:
-      error: <strong>%label%</strong> massamuokkaus epäonnistui
-      warning: <strong>%label%</strong>n massamuokkaus päättyi varoituksilla
+      error: <strong>%label%</strong> massamuokkaus päättyi
+      warning: <strong>%label%</strong>n massamuokkaus päättyi, joitakin varoituksia
       success: <strong>%label%</strong> massamuokkaus päättyi
     quick_export:
       error: <strong>%label%</strong>n pikavienti epäonnistui
@@ -483,5 +483,3 @@ job_tracker:
     title: Prosessiseurain
   filter:
     started_at: Alkoi
-
-

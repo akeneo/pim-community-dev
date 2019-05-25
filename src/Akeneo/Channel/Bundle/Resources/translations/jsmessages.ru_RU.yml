@@ -18,8 +18,10 @@ batch_jobs:
     label: Импорт локалей из CSV
     import.label: Импорт локалей
   xlsx_locale_export:
+    label: Экспорт локали в XLSX
     export.label: Экспорт локалей
   xlsx_locale_import:
+    label: Импорт локали в XLSX
     import.label: Импорт локалей
   csv_channel_export:
     label: Экспорт каналов в CSV

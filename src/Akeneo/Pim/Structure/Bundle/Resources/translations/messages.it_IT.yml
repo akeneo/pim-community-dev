@@ -14,12 +14,12 @@ pim_enrich:
     family:
       page_title: Famiglie
       page_subtitle: Modifica di massa (1 famiglia) | Modifica di massa (%count% famiglie)
-      title: Scegli l'operazione
+      title: Scegli operazione
       subtitle: Scegliere l'operazione che si desidera eseguire sulla famiglia selezionata| Scegliere l'operazione che si desidera eseguire sulle %count% famiglie selezionate
-      confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
+      confirm: Stai per aggiornare una famiglia con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% famiglie con le seguenti informazioni, si prega di confermare.
       steps:
         first: Scegli le famiglie
-        second: Scegli l'operazione
+        second: Scegli operazione
         third: Configura
         fourth: Conferma
 pim_enrich_attribute_form:

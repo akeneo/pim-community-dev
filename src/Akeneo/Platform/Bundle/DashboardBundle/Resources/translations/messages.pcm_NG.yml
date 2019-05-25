@@ -1,0 +1,7 @@
+pim_dashboard:
+  title: Dashboard
+  version: Version
+  widget:
+    last_operations:
+      status: Which one e be
+      type: Type
