@@ -48,6 +48,8 @@ pim_enrich.entity.channel:
     delete:
       success: チャンネルを削除しました
       fail: このチャンネルを削除できません
+  page_title:
+    index: "]-Inf, 1]{{ count }} チャンネル|]1, Inf[{{ count }} チャンネル"
   property:
     category_tree: カテゴリ ツリー
     do_not_convert: 変換しない
@@ -61,5 +63,9 @@ pim_enrich.entity.locale:
   label: ロケール
   uppercase_label: ロケール
   plural_label: ロケール
+  page_title:
+    index: "]-Inf, 1]{{ count }} ロケール|]1, Inf[{{ count }} ロケール"
 pim_enrich.entity.currency:
   plural_label: 通貨
+  page_title:
+    index: "]-Inf, 1]{{ count }} 通貨|]1, Inf[{{ count }} 通貨"

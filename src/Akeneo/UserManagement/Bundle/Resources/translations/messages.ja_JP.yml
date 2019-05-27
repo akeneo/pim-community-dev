@@ -9,6 +9,7 @@ pim_user:
       middle_name: ミドルネーム
       last_name: 姓
       name_suffix: 尊称
+      phone: 電話
       date_of_birth: 生年月日
       avatar: アバター
       timezone: タイムゾーン
@@ -42,9 +43,12 @@ pim_user:
     tabs:
       general:
         title: 全般
+        basic_information: 基本情報
         contact_information: 連絡先情報
       additional:
         title: 追加
+      additional_data:
+        title: 追加データ
       interfaces:
         title: インタフェース
       group_and_role.title: グループとロール
@@ -59,14 +63,16 @@ pim_user:
       log_in: ログイン
       forgot_password: パスワードを忘れた
       request: リクエスト
+      password_reset: パスワードリセット
       reset: リセット
+      password_reset_email_sent: メールがユーザーに送信されました。パスワードをリセットするためのリンクが含まれています。
       homepage: ホームページに移動
   group:
     tab:
       general.title: 全般
       users.title: ユーザー
   roles:
-    title: ロール
+    title: 権限
     tab:
       general: 全般
       action: パーミッション

@@ -241,7 +241,7 @@ pim_enrich.export.product:
       help: Utilitzi els identificadors de producte per exportar separat per comes, espais o salts de línia
     string:
       operators:
-        ALL: Tots
+        ALL: Tot
     select:
       operators:
         IN: A la llista

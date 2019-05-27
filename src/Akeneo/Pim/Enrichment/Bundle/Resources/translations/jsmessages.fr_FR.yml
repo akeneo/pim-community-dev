@@ -21,7 +21,7 @@ pim_enrich.entity.product:
       success: Le produit a bien été mis à jour.
       fail: Le produit n'a pas pu être mis à jour.
       fields_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
+      already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
       file_upload: Une erreur s'est produite lors du transfert du fichier.
     delete:
       success: Les produits ont bien été supprimés.
@@ -47,7 +47,7 @@ pim_enrich.entity.product:
     copy:
       label: Comparer / Traduire
       select: Sélectionner
-      all_visible: Tous les éléments visibles
+      all_visible: Tous les visibles
       copy: Copier
     history:
       version: Version
@@ -116,7 +116,7 @@ pim_enrich.entity.product:
       empty: Aucun commentaire pour l'instant
       header_comment: '{{ user }} a commenté le produit'
       header_reply: '{{ user }} a répondu au commentaire'
-      delete_confirm: Voulez-vous vraiment supprimer ce commentaire ?
+      delete_confirm: Voulez-vous vraiment supprimer ce commentaire?
 pim_enrich.entity.product_model:
   label: modèle de produit
   uppercase_label: Modèle de produit
@@ -135,7 +135,7 @@ pim_enrich.entity.product_model:
       fail: Impossible de supprimer ce modèle de produit
   choose: Choisissez un modèle de produit
   property:
-    family_variant: Variante
+    family_variant: Groupe de variantes
   module:
     create:
       title: Créer un modèle de produit
@@ -146,7 +146,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'axe de variante'
       create: Créer
-      create_label: "Créer un nouvel axe avec {{ axes }}"
+      create_label: "Créer un nouveau variant sur l'/les axe(s) {{ axes }}"
       required_label: '(axe de variante)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} produit variant|]1, Inf[{{ complete }} / {{ total }} produits variants"
@@ -163,7 +163,7 @@ pim_enrich.entity.group:
     create:
       success: Groupe créé avec succès
     delete:
-      success: Groupe supprimé avec succès
+      success: Le groupe a bien été supprimé
       fail: Impossible de supprimer ce groupe
   page_title:
     index: "]-Inf, 1]{{ count }} groupe|]1, Inf[{{ count }} groupes"
@@ -188,7 +188,7 @@ pim_enrich.export.product:
       help: "Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand."
     attributes:
       label: "{0}Tous les attributs|{1}1 attribut sélectionné|]1,Inf[{{ count }} attributs sélectionnés"
-      help: "Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques."
+      help: "Sélectionner les informations du produit à exporter. Par ex. : seulement les attributs techniques."
       empty: Tous les attributs vont être exportés
       modal:
         title: Sélection d'attributs
@@ -214,7 +214,7 @@ pim_enrich.export.product:
         ALL: Pas de condition de date
         "SINCE LAST N DAYS": Produits mis à jour durant les n derniers jours (par ex. 6)
         ">": Produits mis à jours depuis cette date
-        "SINCE LAST JOB": Produits mis à jour depuis le dernier export
+        "SINCE LAST JOB": Produits mis à jour depuis la dernière exportation
     enabled:
       title: État
       help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."
@@ -241,7 +241,7 @@ pim_enrich.export.product:
       help: Les identifiants des produits que vous souhaitez exporter, séparés par une virgule, par un espace ou par un saut de ligne
     string:
       operators:
-        ALL: Tous
+        ALL: Tous les éléments
     select:
       operators:
         IN: Dans la liste
@@ -261,9 +261,9 @@ pim_enrich.mass_edit.product:
       title: Actions de masse sur les produits
       label_count: "]0, Inf[Sélectionnez votre action"
     configure:
-      label: Configurer
+      label: Configurez l'opération à effectuer
     confirm:
-      label: Confirmer
+      label: Confirmation
     launch_error:
       label: Une erreur s’est produite lors du lancement de l'édition de masse
     launched:
@@ -326,7 +326,7 @@ pim_datagrid:
     bulk_actions:
       label: Actions de masse
     quick_export:
-      label: Export rapide
+      label: Exportation rapide
   mass_action:
     delete:
       confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
@@ -367,8 +367,8 @@ batch_jobs:
     label: Ajouter une valeur d’attribut
     perform.label: Ajouter une valeur d’attribut
   add_product_value:
-    label: Ajouter une valeur de produit
-    perform.label: Ajouter une valeur de produit
+    label: Ajouter une valeur au produit
+    perform.label: Ajouter une valeur au produit
   add_to_category:
     label: Ajouter à une catégorie
     perform.label: Ajouter à une catégorie
@@ -412,7 +412,7 @@ batch_jobs:
   xlsx_product_grid_context_quick_export:
     quick_export.label: Exportation rapide de la grille de produits en XLSX
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en XLSX
-    perform.label: Exportation rapide de la grille de produits en XLSX
+    perform.label: Export rapide de la grille de produits en XLSX
   xlsx_product_quick_export:
     quick_export.label: Export rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX

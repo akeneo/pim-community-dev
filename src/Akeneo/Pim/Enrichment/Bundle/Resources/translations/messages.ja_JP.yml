@@ -12,7 +12,7 @@ pim_enrich:
   mass_edit_action:
     limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
     product:
-      page_title: 製品
+      page_title: 商品
       page_subtitle: 一括編集(1件)|一括編集(%count% 件)
       title: 操作を選択
       subtitle: 選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください
@@ -32,6 +32,7 @@ pim_enrich:
       description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
       empty: 編集する属性を選択してください
       success_flash: 製品を更新する状態が現在実行されています。
+      launched_flash: 属性を編集する一括操作が開始されています。終了後に通知されます。
       message:
         warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
         invalid_attribute: 選択された製品とスキップされた属性に対し、コード"attribute_code"を持つ属性は共通ではない。
@@ -43,7 +44,7 @@ pim_enrich:
       launched_flash: '"カテゴリに追加"一括操作が開始されています。終了後に通知されます。'
     classify-move:
       label: カテゴリ間を移動
-      description: 製品は以下のカテゴリに配置されます、既存の表示順は削除されます。
+      description: 製品は以下のカテゴリに配置され、既存の表示順は削除されます。
       success_flash: 選択したカテゴリに製品が移動されました
       launched_flash: カテゴリに移動する一括操作が開始されています。終了後に通知されます。
     classify-remove:
@@ -71,4 +72,7 @@ pim_enrich:
       quick_export:
         launched_flash: 製品をエクスポートするジョブが現在実行されています。
 category:
+  edit: カテゴリの編集
   overview: カテゴリ
+tree:
+  edit: ツリーを編集

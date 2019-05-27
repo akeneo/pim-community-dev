@@ -34,12 +34,12 @@ pim_enrich:
       success_flash: Kørslen der opdaterer produkt(er) status kører i øjeblikket
       launched_flash: Massehandling "Tilføj etiketter til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
       message:
-        warning: Der er ingen fælles egenskaber  de valgte produkter. Venligst ændre dit valg.
+        warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
         invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
         no_valid_attribute: Ingen af de valgte attributter kan anvendes på dette produkt.
     classify-add:
       label: Tilføje til kategorier
-      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
+      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
       success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet startet. Du får besked, når det er afsluttet.
     classify-move:
@@ -56,7 +56,7 @@ pim_enrich:
       label: Ændre familie
       description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
       success_flash: Familien af valgte produkt(er) er blevet ændret
-      launched_flash: Bulk-handlingen "Skift status" er blevet ignagsat. Du får besked, når den er afsluttet.
+      launched_flash: Bulk-handlingen "Skift status" er blevet igangsat. Du får besked, når den er afsluttet.
     add-to-groups:
       label: Tilføj til grupper
       description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til

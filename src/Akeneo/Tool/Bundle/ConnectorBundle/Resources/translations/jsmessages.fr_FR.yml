@@ -30,7 +30,7 @@ batch_jobs:
     export.label: Export des types d'association
   csv_group_export:
     label: Export des groupes en CSV
-    export.label: Export de groupes
+    export.label: Export des groupes
   csv_family_export:
     label: Export des familles en CSV
     export.label: Export des familles
@@ -109,7 +109,7 @@ batch_jobs:
     import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
   xlsx_group_export:
     label: Export des groupes en XLSX
-    export.label: Export de groupes
+    export.label: Export des groupes
   xlsx_group_import:
     label: Import des groupes en XLSX
     import.label: Import des groupes

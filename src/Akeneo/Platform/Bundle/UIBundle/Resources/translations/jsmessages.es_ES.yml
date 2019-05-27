@@ -64,7 +64,7 @@ datetimepicker:
     February: Febrero
     March: Marzo
     April: Abril
-    May: Mayo
+    May: May
     June: Junio
     July: Julio
     August: Agosto
@@ -77,7 +77,7 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Abr
-    May: Mayo
+    May: May
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -88,14 +88,14 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuración del sistema
+      title: Configuración del sitema
       tab:
         system:
           title: Sistema
       group:
         localization:
           title: Localización
-          system_locale: idioma
+          system_locale: Idioma
         notification:
           title: Notificaciones
           system_notification: Notificaciones de nuevas versiones
@@ -116,52 +116,53 @@ pim_common:
   add: Agregar
   add_attributes: Agregar atributos
   after: Después
-  all: Todos
+  all: Todo
   and: "y"
   apply: Aplicar
   before: Anterior
   by: por
   cancel: Cancelar
   code: Código
-  confirm: Confirmar
+  confirm: Confirmación
   confirm_deletion: Confirmar la eliminación
+  confirm_revocation: Confirmar revocación
   create: Crear
-  created: Creado
-  delete: Eliminar
+  created: creado
+  delete: Borrar
   done: Hecho
   edit: Editar
   entity_updated: Hay cambios sin guardar.
   from: De
   general_properties: Propiedades generales
-  history: Histórico
+  history: Historial
   label: Etiqueta
   label_translations: Traducciones de etiqueta
-  less_than: Menor que
+  less_than: menor que
   loading: Cargando...
-  media_upload: Arrastrar y soltar para cargar o haga clic aquí
-  more_than: Mayor que
+  media_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
+  more_than: mayor que
   next: Siguiente
   "no": "No"
-  none: Ninguno
-  not_available: N / A
+  none: Ninguna
+  not_available: N/A
   now: Ahora
   ok: OK
-  permissions: Permisos
+  permissions: Permisiones
   previous: Previo
   properties: Propiedades
-  remove: Quitar
+  remove: Eliminar
   required_label: (obligatorio)
   save: Guardar
   search: Buscar
   select2:
     search: Buscar...
-    no_match: No se encuentran coincidencias
+    no_match: No se encontraron coincidencias
     load_more: Cargando más resultados...
   status: Estado
   to: hasta
   type: Tipo
   update: Actualizar
-  "yes": "SÍ"
+  "yes": "Sí"
   operator: Operador
   operators:
     "=": Es igual que
@@ -201,7 +202,7 @@ pim_enrich.entity.fallback:
       item: '¿Está seguro de que desea borrar este elemento?'
       item_placeholder: '¿Está seguro que desea eliminar este {{ itemName }}? No es posible deshacer esta acción.'
     edit:
-      leave: '¿Está seguro que desea salir de esta página?'
+      leave: '¿Está usted seguro que desea abandonar esta página?'
       discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
       discard_changes_title: '¿Está seguro?'
 pim_enrich.entity.api_connection:
@@ -213,6 +214,9 @@ pim_enrich.entity.api_connection:
       fail: No puede revocar esta conexión API
   page_title:
     index: "]-Inf, 1]{{ count }} conexión API|]1, Inf[{{ count }} conexiones API"
+  module:
+    revoke:
+      confirm: '¿Está seguro de que desea revocar esta conexión API?'
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operación|]1, Inf[{{ count }} operaciones"
@@ -282,7 +286,7 @@ pim_menu:
     family: Familias
     group: Grupos
     group_type: Tipos de grupo
-    product_model: Modelo de productos
+    product_model: Modelos de Producto
     export_history: Histórico de exportaciones
     export_profile: Perfiles de exportación
     import_history: Histórico de importaciones
@@ -308,7 +312,7 @@ pim_menu:
     user_account: Mi cuenta
 pim_notification:
   types:
-    import: Importar
-    export: Exportar
+    import: Importación
+    export: Export
     quick_export: Exportación rápida
     mass_edit: Edición en masa

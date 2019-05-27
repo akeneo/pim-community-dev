@@ -45,7 +45,7 @@ export profile:
   title: exportprofil
   edit: redigera exportprofil
 import profile:
-  title: importprofile
+  title: importprofil
   edit: redigera importprofil
 pim_importexport:
   acl:
@@ -66,8 +66,8 @@ pim_importexport:
       create: Skapa en importprofil
       show: Visa en importprofil
       edit: Redigera en importprofil
-      remove: Ta bort en exportprofil
-      launch: Starta en exportprofil
+      remove: Ta bort importprofil
+      launch: Starta importprofil
       history: Visa historik för importprofiler
     export_execution:
       index: Visa lista med exportrapporter
@@ -121,7 +121,7 @@ Download log: Ladda ner logg
 Show profile: Visa profil
 execution details: utförandedetaljer
 job_execution.summary:
-  read: läst
+  read: läs
   write: skrivet
   skip: hoppades över
   create: skapades

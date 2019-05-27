@@ -30,6 +30,7 @@ pim_enrich:
 pim_user_management:
   entity:
     user:
+      label: utente
       flash:
         update:
           success: Utente aggiornato con successo.
@@ -61,7 +62,7 @@ pim_user_management:
         ui_locale: Impostazioni locali dell'interfaccia utente
         timezone: Fuso orario
         default_product_grid_view: Visualizzazione predefinita griglia prodotti
-        default_published_product_grid_view: Visualizzazione predefinita griglia dei prodotti pubblicati
+        default_published_product_grid_view: Griglia di visualizzazione predefinita dei prodotti pubblicati
         proposals_to_review_notification: Quando una nuova proposta è da revisionare
         proposals_state_notifications: Quando una proposta è accettata o rifiutata
       module:
