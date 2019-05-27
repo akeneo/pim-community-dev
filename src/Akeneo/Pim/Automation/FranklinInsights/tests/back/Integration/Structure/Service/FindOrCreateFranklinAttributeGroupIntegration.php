@@ -56,24 +56,32 @@ SQL;
 
         $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->findOrCreate();
 
+        $statement = $this->executeGetFranklinAttributeGroupQuery();
+
         Assert::assertInstanceOf(FranklinAttributeGroupCode::class, $attributeGroup);
         Assert::assertSame('franklin', (string) $attributeGroup);
+        Assert::assertEquals(1, $statement->rowCount());
     }
 
     public function test_it_creates_new_attribute_group()
     {
         $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->findOrCreate();
 
-        $query = <<<SQL
-SELECT * FROM pim_catalog_attribute_group
-WHERE code = 'franklin'
-SQL;
-        $statement = $this->dbal->executeQuery($query);
+        $statement = $this->executeGetFranklinAttributeGroupQuery();
         $result = $statement->fetch();
 
         Assert::assertInstanceOf(FranklinAttributeGroupCode::class, $attributeGroup);
         Assert::assertSame('franklin', (string) $attributeGroup);
         Assert::assertEquals(1, $statement->rowCount());
         Assert::assertEquals('franklin', $result['code']);
+    }
+
+    private function executeGetFranklinAttributeGroupQuery()
+    {
+        $query = <<<SQL
+SELECT * FROM pim_catalog_attribute_group
+WHERE code = 'franklin'
+SQL;
+        return $this->dbal->executeQuery($query);
     }
 }
