@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8378: dix DI for EntityWithFamilyVariantNormalizer injection
+
 # 2.3.46 (2019-05-27)
 
 ## Bug fixes
