@@ -1,4 +1,4 @@
-import {NormalizedRecordCode} from 'akeneoreferenceentity/domain/model/record/record';
+import {NormalizedCode as NormalizedRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
 
 export const redirectToRoute = (
