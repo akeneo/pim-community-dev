@@ -179,6 +179,7 @@ pim_common:
     history: History
     label: Label
     label_translations: Label translations
+    Label or identifier: label or identifier
     less_than: Less than
     loading: Loading...
     media_upload: Drag and drop to upload or click here
