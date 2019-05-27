@@ -1,6 +1,6 @@
 pim_measure:
   families:
-    Area: Område
+    Area: Yta
     Binary: Binär
     Decibel: Decibel
     Frequency: Frekvens

@@ -185,7 +185,7 @@ pim_enrich:
     group: crear grup
     association type: crear tipus d'associació
     group type: crear tipus de grup
-    drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+    drag_or_upload: Arrossegar i deixar per carrgar o feu clic aquí
 confirmation:
   delete: Confirmar l'eliminació
   leave: Esteu segur que voleu sortir d'aquesta pàgina?
@@ -269,7 +269,6 @@ Unique value: Valor únic
 Attribute group: Grup d'atributs
 Other: Altres
 Variants behavior when edited: Comportament de les variants quan s'editen
-Edit: Editar
 Remove: Eliminar
 Parameters: Paràmetres
 System: Sistema
@@ -294,7 +293,6 @@ Locale specific: Configuració regional específica
 default: Per defecte
 Axis: Eix
 Add attributes: Afegir atributs
-Translate from: Traduir de
 switch_on: "Sí"
 switch_off: "No"
 Close: Tancar
@@ -365,12 +363,14 @@ pim_catalog_metric: Mètrica
 pim_reference_data_simpleselect: Selecció simple de dades de referència
 pim_reference_data_multiselect: Selecció múltiple de dades de referència
 Activated: Activat
+Edit: Editar
 Disable: Deshabilitar
 To enable: Per activar
 Select attributes: Seleccionar atributs
 Select: Seleccionar
 Remove this attribute: Eliminar aquest atribut
 Copy: Copiar
+Translate from: Traduir de
 Current tab: Pestanya actual
 Group: Grup
 View group: Veure grup
@@ -389,7 +389,7 @@ pane.accordion:
   group_values: Valors de grup
 popin.create:
   association_type.title: Crear un nou tipus d'associació
-  group.title: Crea un grup nou
+  group.title: Crear un nou grup
   product.title: Crear un nou producte
   option.title: Crear una nova opció
 In group: En grup
@@ -483,5 +483,3 @@ job_tracker:
     title: Seguiment del procés
   filter:
     started_at: Va començar a
-
-

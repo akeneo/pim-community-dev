@@ -27,7 +27,7 @@ Action: アクション
 Unit: 単位
 Currency: 通貨
 jstree:
-  all: すべての製品
+  all: 全ての製品
   unclassified: 未分類の製品
   product:
     all: すべての製品
@@ -172,7 +172,7 @@ pim_common:
     STARTS WITH: で始まる
     ENDS WITH: で終わる
 error:
-  exception: ああスナップ！ {{ status_code }} のエラーが発生しました。
+  exception: ' {{ status_code }} のエラーが発生しました。'
   forbidden: このページにアクセスすることはできません
 alert:
   attribute_option:
@@ -214,10 +214,11 @@ pim_enrich.entity.job_execution:
       invalid_xlsx: 無効なデータをダウンロード
       invalid_csv: 無効なデータをダウンロード
 pim_title:
-  oro_default: ダッシュ ボード
+  oro_default: ダッシュボード
   pim_enrich_attributegroup_index: 属性グループ
   pim_enrich_attributegroup_create: 属性グループ |作成
   pim_enrich_attributegroup_edit: 属性グループ {{ group.label }} |編集
+  pim_enrich_catalog_volume_index: カタログのボリュームモニタリング
   pim_enrich_categorytree_index: カテゴリツリー
   pim_enrich_categorytree_create: カテゴリ ツリー |作成
   pim_enrich_categorytree_edit: カテゴリツリー {{ category.label }} |編集
@@ -225,7 +226,7 @@ pim_title:
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性 |作成
   pim_enrich_attribute_edit: 属性 {{ attribute.label }} |編集
-  pim_enrich_product_index: 製品
+  pim_enrich_product_index: 商品
   pim_enrich_product_edit: 製品 {{ product.label }} |編集
   pim_enrich_product_model_edit: 製品モデル {{ product.label }} |編集
   pim_enrich_family_index: ファミリー
@@ -265,10 +266,11 @@ pim_menu:
     attribute_group: 属性グループ
     channel: チャンネル
     currency: 通貨
-    dashboard: ダッシュ ボード
+    dashboard: ダッシュボード
     family: ファミリー
     group: グループ
     group_type: グループタイプ
+    product_model: 製品モデル
     export_history: エクスポート履歴
     export_profile: エクスポートプロファイル
     import_history: インポート履歴
@@ -281,6 +283,7 @@ pim_menu:
     info: システム情報
     job_tracker: プロセストラッカー
     api_connection: API 接続
+    catalog_volume: カタログのボリュームモニタリング
   navigation:
     activity: アクティビティナビゲーション
     system: システムナビゲーション

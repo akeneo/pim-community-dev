@@ -25,13 +25,13 @@ pim_user:
       new_password: Neues Passwort
       new_password_again: Neues Passwort (Wiederholung)
       default_grid_view:
-        none: Keine
+        none: keine
       default_product_grid_view:
         label: Standardansicht Produktliste
       ui_locale: UI-Gebietsschema
       last_logged_in: Zuletzt eingeloggt
       login_count: Anzahl der Anmeldungen
-      user_salt: Benutzer-Streuung
+      user_salt: Benutzer-Salt
       created: Erstellt
       updated: Aktualisiert
       status: Status
@@ -45,7 +45,7 @@ pim_user:
         title: Allgemein
         contact_information: Kontaktinformationen
       additional:
-        title: Ergänzend
+        title: Weitere Informationen
       interfaces:
         title: Benutzeroberfläche
       group_and_role.title: Gruppen und Rollen
@@ -60,8 +60,10 @@ pim_user:
       log_in: Anmelden
       forgot_password: Passwort vergessen
       request: Anfrage
+      password_reset: Passwort zurücksetzen
       reset: Zurücksetzen
-      homepage: Zurück zur Hauptseite
+      password_reset_email_sent: Eine eMail wurde an den Benutzer geschickt. Diese enthält einen Link zum Zurücksetzen des Passworts.
+      homepage: Zur Startseite
   group:
     tab:
       general.title: Allgemein
@@ -99,7 +101,7 @@ flash:
   role:
     removed: Rolle erfolgreich entfernt
   user:
-    removed: Benutzer erfolgreich gelöscht
+    removed: Benutzer erfolgreich entfernt
 oro_security:
   acl_group:
     user: Benutzer

@@ -8,6 +8,7 @@ pim_enrich.entity.family:
       fail: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
       cant_remove_attribute_as_label: Das Attribut kann nicht entfernt werden, da es als Label verwendet wird
       cant_remove_attribute_as_image: Attribute kann nicht entfernt werden, da es als Hauptbild verwendet wird
+      cant_remove_attribute_used_as_axis: Dieses Attribut, das als Variantenachse in einer Variante der Produktfamilie verwendet wird, kann nicht entfernt werden
     create:
       success: Produktfamilie erfolgreich angelegt
     delete:
@@ -28,12 +29,27 @@ pim_enrich.entity.family:
 pim_enrich.entity.family_variant:
   short_plural_label: Varianten
   short_label: Variante
+  flash:
+    update:
+      success: Die Variante der Produktfamilie wurde erfolgreich aktualisiert. Die Variantenprodukte werden entsprechend aktualisiert.
+    create:
+      success: Variante der Produktfamilie erfolgreich erstellt
   module:
     edit:
+      common_attributes: Gemeinsame Attribute
+      no_common_attributes: Es gibt keine gemeinsamen Attribute
       variant_axis_label: Variantenachse(n)
       variant_attributes: Variantenattribute
+      level_1: Varianten-Attribute erstes Level
+      level_2: Varianten-Attribute zweites Level
+      description: Verschieben Sie Attribute in die Variantenebenen, um sie dort zu pflegen.
+      confirm_attribute_removal_title: Bestätigen Sie das Entfernen der Attribute
+      confirm_attribute_removal_message: Mit dem Entfernen dieser Attribute werden diese zurück auf die erste Ebene der Variante der Produktfamilie gesetzt und die Werte der Produktvarianten werden entfernt
     create:
       label: Variante hinzufügen
+      title: Neue Variante der Produktfamilie erstellen
+      description: In der Variante einer Produktfamilie können Sie die Struktur für  Variantenprodukte definieren. Wählen Sie die Anzahl der zu verwaltenden Variantenebenen, die Attribute, die als Variantenachse für die jeweilige Ebene genutzt werden und definieren Sie dann die Aufteilung der Attribute auf die Variantenebenen.
+      variant_levels: Variantenebenen
 pim_enrich.entity.attribute_option:
   short_uppercase_label: Optionen
   flash:
@@ -57,7 +73,7 @@ pim_enrich.entity.association_type:
     create:
       success: Verbindungstyp erfolgreich erstellt
     delete:
-      success: Verbindungstyp erfolgreich gelöscht
+      success: Verbindungstyp erfolgreich entfernt
       fail: Dieser Verbindungstyp kann nicht gelöscht werden
   module:
     create:
@@ -74,7 +90,7 @@ pim_enrich.entity.group_type:
     create:
       success: Gruppentyp erfolgreich erstellt
     delete:
-      success: Gruppentyp erfolgreich gelöscht
+      success: Gruppentyp erfolgreich entfernt
       fail: Dieser Gruppentyp kann nicht gelöscht werden
   module:
     create:
@@ -88,6 +104,7 @@ pim_enrich.entity.attribute:
     update:
       success: Attribut erfolgreich aktualisiert.
       fail: Das Attribut konnte nicht aktualisiert werden.
+      fields_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch unvollständig {{ fields }}"
     delete:
       success: Attribut erfolgreich entfernt
       fail: Dieses Attribut kann nicht gelöscht werden
@@ -137,7 +154,7 @@ pim_enrich.entity.attribute:
       pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
       pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
     unique: Eindeutiger Wert
-    useable_as_grid_filter: Verwendbar in der Tabellenansicht
+    useable_as_grid_filter: Anwendbar in der Listenansicht
     validation_regexp: Regulärer Ausdruck
     validation_rule:
       label: Validierungsregel
@@ -147,7 +164,7 @@ pim_enrich.entity.attribute:
     wysiwyg_enabled: Rich-Text-Editor aktiviert
   module:
     add_attribute:
-      no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+      no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
       attributes_selected: "{{ itemsCount }} Attribut(e) ausgewählt"
     create:
       button: Attribut anlegen

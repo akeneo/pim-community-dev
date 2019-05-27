@@ -15,7 +15,7 @@ flash:
 pim_enrich.entity.product:
   label: 商品
   uppercase_label: 製品
-  plural_label: 製品
+  plural_label: 商品
   flash:
     update:
       success: 商品を更新しました。
@@ -34,6 +34,7 @@ pim_enrich.entity.product:
       subtitle: 製品を作成
       title: アクションを選択する
       choose_family: ファミリーを選択してください
+      choose_family_variant: ファミリーバリアントを選択
     variant_navigation:
       common: 一般
     status:
@@ -60,7 +61,7 @@ pim_enrich.entity.product:
     show_group:
       title: '{{ group }} グループ'
       view_group: 表示グループ
-      more_products: '{{ count }}  件以上の商品...'
+      more_products: '{{ count }} 件以上の商品...'
     attribute:
       remove_optional: 属性を削除
       locale_specific_unavailable: このロケールの特定のフィールドは、このロケールでは利用できません。
@@ -82,12 +83,17 @@ pim_enrich.entity.product:
       none_exist: 関連タイプがありません。
       show_products: ディスプレイ製品
       show_groups: ディスプレイグループ
+      number_of_associations: "{{ productCount }} 製品, {{ productModelCount }} 製品モデル {{ groupCount }} グループ"
       association_type_selector: 関連タイプ
       target: ターゲット
+      manage: '{{ associationType }} 関連性を追加'
+      manage_description: 現在の製品と関連性を持たせたい製品を選択してください
+      add_associations: 関連性を追加
     attribute_filter:
       display: 表示
       all: 全ての属性
       missing_required: すべての不足している必要属性
+      at_this_level: すべてのレベル特有の属性
     change_family:
       title: 製品ファミリーを変更
       merge_attributes: 現在の属性は新しいファミリーのものとマージされます。
@@ -107,6 +113,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} 製品をコメントします。'
       header_reply: '{{ user }} さんがコメントに返信'
       delete_confirm: コメントを削除しますか？
+      removed_author: 削除されたユーザ
 pim_enrich.entity.product_model:
   uppercase_label: 製品モデル
   plural_label: 製品モデル
@@ -119,16 +126,25 @@ pim_enrich.entity.product_model:
       success: 製品モデルが正常に更新されました。そのバリエーションの商品の完全性が再計算されます。
       fail: 製品モデルを更新できませんでした。
       fields_not_ready: "この製品モデルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    delete:
+      success: 製品モデルが削除されました。
+  choose: 製品モデルを選択
   property:
     family_variant: バリアント
   module:
     create:
       title: 製品モデルを作成
       content: 商品モデルは異なる商品を集め、共通プロパティの強化を用意にする
+    attribute:
+      read_only_parent_attribute_from_common: この属性は、共通の属性を更新できます。
+      read_only_parent_attribute_from_model: "この属性は、{{ axes }} によって属性で更新できます。"
     variant_axis:
       create: 新しく追加
       create_label: "新しい {{ axes }} を追加します。"
       required_label: 'バリアントの軸'
+    delete:
+      confirm: この製品モデルを削除しますか？全ての子商品、製品モデルとバリエーション商品も削除されます。
+      confirm_for_products_and_product_models: 選択した製品と製品モデルを削除してもよろしいですか？ すべての製品モデルの子供も削除されます。
 pim_enrich.entity.group:
   label: グループ
   flash:
@@ -161,7 +177,7 @@ pim_enrich.export.product:
     locales:
       help: "ロケールは、エクスポートするローカライズされた製品の値を定義します。例: フランス語で書かれた唯一の製品情報。"
     attributes:
-      label: "{0} すべての属性 |{1} 1つの属性の選択 |]1、Inf [{{ count }} 属性の選択"
+      label: "{0} すべての属性 |{1} 1つの属性の選択 |]1, Inf [{{ count }} 属性の選択"
       help: "エクスポートする製品情報を選択します。例: 技術的な属性のみ。"
       empty: 全ての属性がエクスポートされます
       modal:
@@ -204,6 +220,8 @@ pim_enrich.export.product:
         "GREATER OR EQUALS THAN ON ALL LOCALES": 全ての選択されたローケルで完了します
         "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 少なくとも1つの選択されたローケルで完了します
         LOWER THAN ON ALL LOCALES: 全ての選択されたローケルで完了しません
+        AT LEAST COMPLETE: 1つの選択されたロケールで、少なくとも1つの子製品が完了します
+        ALL COMPLETE: 全ての選択されたロケールで、全ての子製品が完了します
       empty_selection: ファミリーを選択
     category:
       title: カテゴリ
@@ -230,6 +248,7 @@ pim_enrich.mass_edit.product:
       label: 商品を選択してください
     choose:
       title: 製品一括操作
+      label_count: "]0, Inf[ あなたのアクションを選択"
     configure:
       label: 構成
     confirm:
@@ -245,6 +264,12 @@ pim_enrich.mass_edit.product:
       label: ステータスの変更
       description: 選択した製品は有効または無効になります。
       field: 有効にするには
+    edit_common:
+      label: 属性値を編集
+      description: '{{ locale }} ロケールと{{ channel }} チャネルの次のデータで選択した製品ファミリに属する属性のみが編集されます。'
+    add_attribute_value:
+      label: 属性値を追加
+      description: '{{ locale }} ロケールと {{ scope }} チャネルの次のデータを使用して、製品ファミリに属する複数値属性のみが編集されます。 属性値が追加され、以前の値は保持されます。'
     change_family:
       label: ファミリーの変更
       description: 選択した製品のファミリーを選択したファミリーに変更します
@@ -254,11 +279,23 @@ pim_enrich.mass_edit.product:
       field: グループ
     add_to_category:
       label: カテゴリーに追加
+      description: 製品は以下のカテゴリに分類され、既存の分類順が保持されます。
     move_to_category:
       label: カテゴリ間を移動
+      description: 製品は以下のカテゴリに分類され、既存の分類順が削除されます。
     remove_from_category:
       label: カテゴリから削除
       description: 次のカテゴリから製品が削除されます。
+    add_to_existing_product_model:
+      label: 既存の製品モデルに追加
+      description: 選択された製品モデルは製品モデルを集め、共通プロパティの充実化を図る。
+    associate_to_product_and_product_model:
+      label: 関連付ける
+      description: グリッドで選択された製品は、関連タイプによって選択された製品と製品モデルに関連付けされる。
+      validate: 次に進む前に、関連性を追加してください
+    change_parent_product_model:
+      label: 親製品モデルを変更する
+      description: グリッドで選択されたバリアント製品またはサブ製品モデルの親は、選択された製品モデルに変更されます。
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -277,6 +314,7 @@ pim_datagrid:
       xlsx_grid_context: エクセル (グリッド コンテキスト)
     mass_edit: 一括操作
     sequential_edit: 連続編集
+    mass_delete: 一括削除
     selected:
       family: 選択したファミリー
       product: 選択した結果
@@ -289,13 +327,29 @@ pim_datagrid:
     change_status: ステータスの変更
     toggle_status: ステータスを切り替える
     other: その他の操作
+  empty_results:
+    associated_product:
+      hint: 関連付け製品はありません
+      subHint: '製品にを関連させるには、関連性を追加ボタンをクリックしてください。'
   filters:
     label: フィルタ
     system: システム
 batch_jobs:
+  add_association:
+    label: 関連付ける
+    perform.label: 関連付ける
+  add_attribute_value:
+    label: 属性値を追加
+    perform.label: 属性値を追加
   add_product_value:
     label: 製品の値を追加
     perform.label: 製品の値を追加
+  add_to_category:
+    label: カテゴリーに追加
+    perform.label: カテゴリーに追加
+  add_to_existing_product_model:
+    label: 既存の製品モデルに追加
+    perform.label: 既存の製品モデルに追加
   csv_product_grid_context_quick_export:
     quick_export.label: Csv 製品のグリッドコンテキストのクイックエクスポート
     quick_export_product_model.label: CSV製品モデルのグリッドコンテキストのクイックエクスポート
@@ -304,12 +358,33 @@ batch_jobs:
     quick_export.label: Csv 製品のクイックエクスポート
     quick_export_product_model.label: CSV 製品モデルのクイックエクスポート
     perform.label: Csv 製品のクイックエクスポート
+  delete_products_and_product_models:
+    label: 製品を一括削除
+    perform.label: 製品を一括削除
+  change_parent_product:
+    label: 親製品モデルを変更する
+    perform.label: 親製品モデルを変更する
   edit_common_attributes:
     label: 属性を編集
     perform.label: 属性を編集
+    clean.label: 属性を持つファイルを削除
+    cleaner.label: 属性を持つファイルを削除
+  compute_completeness_of_products_family:
+    label: 完全性を計算する
+    perform.label: 完全性を計算する
+  move_to_category:
+    label: カテゴリへ移動
+    perform.label: カテゴリへ移動
   update_product_value:
     label: 製品の値を更新
     perform.label: 製品の値を更新
+  remove_from_category:
+    label: カテゴリから削除
+    perform.label: カテゴリから削除
   set_attribute_requirements:
     label: 属性の要件を設定
     perform.label: 属性の要件を設定
+  xlsx_product_grid_context_quick_export:
+    perform.label: XLSX製品のグリッドコンテキストのクイックエクスポート
+  xlsx_product_quick_export:
+    perform.label: XLSX製品のクイックエクスポート

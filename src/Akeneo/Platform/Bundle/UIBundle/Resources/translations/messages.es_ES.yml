@@ -18,7 +18,7 @@ Channel list: Lista de canales
 Select file: Seleccionar archivo
 Change file: Cambiar archivo
 Remove file: Eliminar archivo
-Delete: Eliminar
+Delete: Borrar
 Save: Guardar
 Get help: Obtener ayuda
 My User: Mi cuenta
@@ -33,8 +33,8 @@ Favorites: Favoritos
 Most Viewed: Más visto
 "Add this page to favorites": "Agregar esta página a favoritos"
 "Minimize the window to the pinbar": "Minimizar la ventana al pinbar"
-"Loading ...": "Cargando ..."
-"Yes": "SÍ"
+"Loading ...": "Cargando..."
+"Yes": "Sí"
 "No": "No"
 required: (obligatorio)
 pim_ui.system_config:
@@ -49,17 +49,17 @@ other_actions: Otras acciones
 pim_common:
   cancel: Cancelar
   save: Guardar
-  delete: Eliminar
+  delete: Borrar
   update: Actualizar
-  view: Vista
+  view: Visualizar
   edit: Editar
-  created: Creado
-  updated: Actualizado
+  created: creado
+  updated: actualizado
   create: Crear
-  permissions: Permisos
+  permissions: Permisiones
   properties: Propiedades
   name: Nombre
-  remove: Quitar
+  remove: Eliminar
 pim_enrich:
   acl:
     locale:
@@ -89,7 +89,7 @@ pim_enrich:
       edit_attributes: Editar atributos de un modelo del producto
       categories_view: Consultar las categorías de un modelo del producto
       history: Ver el historial del modelo del producto
-      remove: Eliminar un modelo del producto
+      remove: Remover un modelo del producto
     category:
       list: Lista de categorías
       create: Crear una categoría
@@ -110,7 +110,7 @@ pim_enrich:
       create: Crear una familia
       edit_properties: Editar propiedades de una familia
       edit_attributes: Editar atributos de una familia
-      edit_variants: Editar una variante de familia
+      edit_variants: Editar una variable de tipo
       remove: Eliminar una familia
       history: Ver historial de la familia
     family_variant:
@@ -158,7 +158,7 @@ pim_enrich:
     association_type: Tipos de asociaciones
     attribute: Atributos
     attribute_group: Grupos de atributos
-    category: Categorías
+    category: Ctegorías
     channel: Canales
     currency: Monedas
     family: Familias
@@ -173,7 +173,7 @@ pim_enrich:
         start: El local ha sido removido del canal. Actualmente estamos limpiando la completitud relacionado a ellos.
         done: Remoción de un local en un canal terminada.
   create:
-    attribute: Crear atributo
+    attribute: crear atributos
     attribute group: crear grupo de atributos
     category: crear categoría
     tree: crear árbol
@@ -182,13 +182,13 @@ pim_enrich:
     family: crear familia
     locale: crear local
     product: crear producto
-    group: crear grupo
-    association type: crear Asociación de tipo
+    group: Crear grupo
+    association type: crear asociación de tipo
     group type: crear tipo de grupo
-    drag_or_upload: Arrastrar y soltar para cargar o haga clic aquí
+    drag_or_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
 confirmation:
   delete: Confirmar la eliminación
-  leave: '¿Está seguro que desea salir de esta página?'
+  leave: '¿Está usted seguro que desea abandonar esta página?'
   discard changes: Perderá los cambios en %entity% si abandona esta página.
   remove:
     category: '¿Está seguro que desea eliminar la categoría %name%?'
@@ -221,12 +221,12 @@ info:
     keep products: No se eliminarán los productos en estas categorías.
     products limit exceeded: Esta categoría contiene más productos que lo permitido para esta operación (%limit% productos máximos)
   product:
-    no available attributes: No hay más atributos para agregar
+    no available attributes: No hay más atributos a agregar
     no family defined: Ninguna familia definida
-    change family: Cambiar familia del producto
-    change family to: Cambiar familia a
-    merge attributes: Atributos actuales se combinarán con los de la nueva familia.
-    keep attributes: No se eliminarán atributos.
+    change family: Cambiar la familia del producto
+    change family to: Cambiar la familia a
+    merge attributes: Los atributos actuales serán fusionados con los de la nueva familia.
+    keep attributes: Ningún atributo será suprimido.
     number of associations: '%productCount% productos y %groupCount% grupos'
     enable: Habilitar
     enabled: Habilitado
@@ -239,26 +239,26 @@ info:
     no group types: Ningún tipo de grupo existe, haga clic aquí para crear uno
     more products: '%count% más productos...'
   association type:
-    show products: Mostrar Productos
+    show products: Mostrar productos
     show groups: Mostrar grupos
     remove from products: Al eliminar el tipo de asociación lo eliminará  del %count% de productos.
-    none exist: No existe ningún tipo de asociación.
+    none exist: Ningún tipo de asociaciones existente.
     create one: Haga clic aquí para crear uno
   attribute:
     auto option sorting: Si está habilitado, las opciones se ordenarán automáticamente por sus etiquetas
   completeness:
     not calculated: Aún no calculados
-Created: Creado
-Updated: Actualizado
+Created: creado
+Updated: actualizado
 Last update: Última actualización
 by: Por
-N/A: N / A
+N/A: N/A
 Manage products: Gestionar productos
 Manage groups: Gestionar Grupos
 Code: Código
 Name: Nombre
 Type: Tipo
-Scope: Canal
+Scope: canal
 Required: Requerido
 Unique: Único
 Not required: No requerido
@@ -269,8 +269,7 @@ Unique value: Valor único
 Attribute group: Grupo de atributos
 Other: Otro
 Variants behavior when edited: Comportamiento de las variantes al editarlas
-Edit: Editar
-Remove: Quitar
+Remove: Eliminar
 Parameters: Parámetros
 System: Sistema
 Values: Valores
@@ -283,7 +282,7 @@ Attributetype: Tipo de atributo
 Attribute type: Tipo de atributo
 Defaultvalue: Valor predefinido
 Variant: Variante
-Smart: Inteligente
+Smart: Atributo inteligente
 Useable as grid column: Se puede usar como columna de cuadrícula
 Useable as grid filter: Se puede usar en la cuadrícula
 Family: Familia
@@ -294,8 +293,7 @@ Locale specific: Local específico
 default: Predefinido
 Axis: Eje
 Add attributes: Agregar atributos
-Translate from: Traducir desde
-switch_on: "SÍ"
+switch_on: "Sí"
 switch_off: "No"
 Close: Cerrar
 Search: Buscar
@@ -310,15 +308,15 @@ Active: Activo
 Inactive: Inactivo
 Do not convert: No convertir
 Create: Crear
-Choose a family: Elija una familia
+Choose a family: Seleccionar familia
 Choose a unit: Elegir una unidad
-No matches found: No se encuentran coincidencias
+No matches found: No se encontraron coincidencias
 Category tree: Árbol de categoría
 Completeness: Completitud
 Attribute used as label: Atributo utilizado como etiqueta
 Credentials: Credenciales
 Global: Global
-Channel: Canal
+Channel: canal
 Expand all channels: Expandir todos los canales
 Collapse all channels: Contraer todos los canales
 Always override: Siempre reemplace
@@ -342,8 +340,8 @@ Metric family: Familia métrica
 Default metric unit: Unidad métrica predeterminada
 Max file size: Tamaño máximo de archivo (MB)
 Allowed extensions: Extensiones permitidas
-None: Ninguno
-E-mail: Correo electrónico
+None: Ninguna
+E-mail: E-mail
 URL: URL
 Regular expression: Expresión regular
 Minimum input length: Longitud mínima de entrada
@@ -355,7 +353,7 @@ pim_catalog_text: Texto
 pim_catalog_textarea: Área de Texto
 pim_catalog_number: Número
 pim_catalog_price_collection: Precio
-pim_catalog_multiselect: Selección multiple
+pim_catalog_multiselect: Selección múltiple
 pim_catalog_simpleselect: Selección simple
 pim_catalog_file: Archivo
 pim_catalog_image: Imagen
@@ -365,18 +363,20 @@ pim_catalog_metric: Métrica
 pim_reference_data_simpleselect: Selección simple de datos de referencia
 pim_reference_data_multiselect: Selección múltiple de datos de referencia
 Activated: Habilitado
+Edit: Editar
 Disable: Inhabilitar
 To enable: Para habilitar
 Select attributes: Seleccionar atributos
-Select: Seleccione
-Remove this attribute: Quitar este atributo
+Select: Seleccionar
+Remove this attribute: Suprimir este atributo
 Copy: Copiar
+Translate from: Traducir desde
 Current tab: Pestaña actual
 Group: Grupo
 View group: Ver grupo
 Products: Productos
 Properties: Propiedades
-History: Histórico
+History: Historial
 pane.accordion:
   node_values: Valores de nodo
   general_properties: Propiedades generales
@@ -411,18 +411,18 @@ Entity name: Nombre de la entidad
 Entity id: Identificador de entidad
 Data: DATOS
 Author: Autor
-Logged at: Sesión iniciada el
+Logged at: Registrado el
 Deleted: Eliminados
 Old values: Valores anteriores
 New values: Nuevos valores
-System configuration: Configuración del sistema
+System configuration: Configuración del sitema
 General setup: Configuración general
 Localization: Localización
 Localization options: Opciones de localización
 Locale: Local
 Location: Ubicación
 Format address by address country: Formatear dirección por dirección del país
-Language: idioma
+Language: Idioma
 Timezone: Zona horaria
 Currency: Moneda
 oro.locale:
@@ -483,5 +483,3 @@ job_tracker:
     title: Seguimiento de procesos
   filter:
     started_at: Ejecutado el
-
-

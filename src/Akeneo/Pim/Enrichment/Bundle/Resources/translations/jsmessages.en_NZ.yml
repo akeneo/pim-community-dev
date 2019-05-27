@@ -109,6 +109,15 @@ pim_enrich.entity.product:
       empty_basket: Basket is empty
     delete:
       confirm: Are you sure you want to delete this product?
+    comment:
+      post: Add a new comment
+      reply: Reply
+      title: Comments
+      empty: No comment for now
+      header_comment: '{{ user }} comments the product'
+      header_reply: '{{ user }} replies to the comment'
+      delete_confirm: Are you sure you want to delete this comment?
+      removed_author: Removed user
 pim_enrich.entity.product_model:
   label: product model
   uppercase_label: Product model
@@ -220,6 +229,7 @@ pim_enrich.export.product:
         ALL: No condition on completeness
         ">=": Complete on at least one selected locale
         "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Complete on at least one selected locale
         LOWER THAN ON ALL LOCALES: Not complete on all selected locales
         AT LEAST COMPLETE: At least one child product complete on one selected locale
         ALL COMPLETE: All children products complete on all selected locales

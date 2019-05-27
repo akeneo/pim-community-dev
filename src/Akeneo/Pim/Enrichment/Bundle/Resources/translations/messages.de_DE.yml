@@ -16,7 +16,7 @@ pim_enrich:
       page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
       title: Aktion auswählen
       subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
-      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
+      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
       steps:
         first: Produkte auswählen
         second: Aktion auswählen
@@ -39,7 +39,7 @@ pim_enrich:
         no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
     classify-add:
       label: Zu Kategorien hinzufügen
-      description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
+      description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
       launched_flash: Die Massenbearbeitung "zu Kategorien hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     classify-move:
@@ -53,6 +53,7 @@ pim_enrich:
       success_flash: Produkt(e) wurden aus den ausgewählten Kategorien entfernt
       launched_flash: Die Massenbearbeitung "aus Kategorien entfernen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     change-family:
+      label: Produktfamilie ändern
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
       success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
       launched_flash: Die Massenbearbeitung "Produktfamilie ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -64,8 +65,8 @@ pim_enrich:
       no_group: Bis jetzt keine Gruppen vorhanden. Beginnen Sie mit dem Anlegen einer Gruppe.
     set-attribute-requirements:
       label: Benötigte Attribute auswählen
-      description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
-      success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
+      description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
+      success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
       launched_flash: Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     mass_action:
       quick_export:

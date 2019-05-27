@@ -21,7 +21,7 @@ pim_enrich.entity.product:
       success: Tuote päivitetty.
       fail: Tuotetta ei voitu päivittää.
       fields_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
-      already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
+      already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       file_upload: Virhe tiedoston lataamisessa
     delete:
       success: Tuote poistettiin.
@@ -40,7 +40,7 @@ pim_enrich.entity.product:
     variant_navigation:
       common: Yleinen
     status:
-      enabled: Käytössä
+      enabled: Otettu käyttöön
       disabled: Poistettu käytöstä
     download_pdf:
       label: PDF
@@ -51,8 +51,8 @@ pim_enrich.entity.product:
       copy: Kopioi
     history:
       version: Versio
-      author: Tekijä
-      logged_at: Kirjattu
+      author: Tekiäj
+      logged_at: Kirjautunut
       from: Lähettäjä
       modified: Muutettu
       old_value: Vanha arvo
@@ -67,15 +67,15 @@ pim_enrich.entity.product:
     attribute:
       remove_optional: Poista tämä attribuutti
       locale_specific_unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
-      locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
+      locale_unavailable: Kielikohtaista kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf[{{ count }} vaadittua attribuuttia puuttuu"
-      add_attribute_option: Lisää määritteen vaihtoehto
+      add_attribute_option: Lisää attribuutin vaihtoehto
       add_option: Lisää vaihtoehto
     completeness:
       title: Valmistumisaste
       complete: Valmis
-      no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
-      no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
+      no_family: Perhettä ei ole määritelty. Määritä perhe, jotta voit laskea tuotteen valmiusasteen.
+      no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden perheen valmiusasteen.
       missing_values: "{1}1 puuttuva arvo|]1, Inf[{{ count }} puuttuvaa arvoa"
     sequential_edit:
       item_limit: Vain 1000 ensimmäistä näytetään peräkkäisessä muokkauksessa ({{ count }} valittuna)
@@ -83,7 +83,7 @@ pim_enrich.entity.product:
       save_and_next: Tallenna ja seuraava
       save_and_finish: Tallenna ja lopeta
     associations:
-      title: Assosiaatiot
+      title: Määritteet
       none_exist: Assosiaatiotyyppiä ei ole olemassa.
       show_products: Näytä tuotteet
       show_groups: Näytä ryhmät
@@ -91,7 +91,7 @@ pim_enrich.entity.product:
       association_type_selector: Assosiaatiotyyppi
       target: Kohde
       manage: Lisää {{ associationType }} assosiaatiot
-      manage_description: Valitse tuotteet, jotka haluat liittää nykyiseen tuotteeseen
+      manage_description: Valitse tuotteet, jotka haluat assosioida tähän tuotteeseen
       add_associations: Lisää assosiaatiot
     attribute_filter:
       display: Näytä
@@ -99,10 +99,10 @@ pim_enrich.entity.product:
       missing_required: Kaikki puuttuvat vaaditut attribuutit
       at_this_level: Kaikki tämän tason attribuutit
     change_family:
-      title: Vaihda tuoteperhettä
+      title: Vaihda perhettä
       merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
       keep_attributes: Mitään attribuutteja ei poisteta.
-      change_family_to: Vaihda perhe olemaan
+      change_family_to: Vaihda perheeksi
       empty_selection: Valitse perhe
     basket:
       title: Kori
@@ -117,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} kommentoi tuotetta'
       header_reply: '{{ user }} vastaa kommenttiin'
       delete_confirm: Oletko varma että haluat poistaa tämän kommentin?
+      removed_author: Poistettu käyttäjä
 pim_enrich.entity.product_model:
   label: tuotemalli
   uppercase_label: Tuotemalli
@@ -127,7 +128,7 @@ pim_enrich.entity.product_model:
       product_model_added: Varianttituote lisätty onnistuneesti tuotemalliin
       variant_product_added: Varianttituote lisätty onnistuneesti tuotemalliin
     update:
-      success: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
+      success: Tuotemallin päivittäminen onnistui. Tuotevarianttien valmiusaste lasketaan uudelleen.
       fail: Tuotemallia ei voitu päivittää.
       fields_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     delete:
@@ -135,11 +136,11 @@ pim_enrich.entity.product_model:
       fail: Tuotemallia ei voi poistaa
   choose: Valitse tuotemalli
   property:
-    family_variant: Tuotevariaatio
+    family_variant: Variantti
   module:
     create:
       title: Luo tuotemalli
-      content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten ominaisuuksien rikastamista.
+      content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten attribuuttien rikastamista.
     attribute:
       read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
@@ -183,9 +184,9 @@ pim_enrich.export.product:
     title: Suodata arvot
   filter:
     channel:
-      help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
+      help: Kanava määrittää tuotetietojen julkaisukanavan, käytetyt lokaatiot ja tuotteiden valinnan kategoriapuusta.
     locales:
-      help: "Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
+      help: "Lokaatiot määrittävät minkä kieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
     attributes:
       label: "{0}Kaikki attribuutit|{1}Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
       help: "Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit."
@@ -219,7 +220,7 @@ pim_enrich.export.product:
       title: Status
       help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
       value:
-        enabled: Käytössä
+        enabled: Otettu käyttöön
         disabled: Poistettu käytöstä
     completeness:
       title: Valmistumisaste
@@ -261,7 +262,7 @@ pim_enrich.mass_edit.product:
       title: Tuotteiden massamuokkaus
       label_count: "]0, Inf[Valitse toiminto"
     configure:
-      label: Konfiguroi
+      label: Muuta asetuksia
     confirm:
       label: Vahvista
     launch_error:
@@ -333,7 +334,7 @@ pim_datagrid:
       success: Valitut tuotteet poistettiin.
       error: Virhe yritettäessä poistaa valitut tuotteet, yritä uudelleen.
     quick_export:
-      csv_all: CSV (kaikki määritteet)
+      csv_all: CSV (kaikki attribuutit)
       csv_grid_context: CSV (Ruudukon konteksti)
       xlsx_all: Excel (Kaikki attribuutit)
       xlsx_grid_context: Excel (Ruudukon konteksti)
@@ -346,7 +347,7 @@ pim_datagrid:
   view_selector:
     view: Näkymät
   actions:
-    edit_product_attributes: Muokkaa tuotteen ominaisuuksia
+    edit_product_attributes: Muokkaa tuotteen attribuutteja
     classify_product: Luokittele tuote
     delete_product: Poista tuote
     change_status: Muuta tuotteen tila
@@ -370,8 +371,8 @@ batch_jobs:
     label: Lisää tuotteen arvo
     perform.label: Lisää tuotteen arvo
   add_to_category:
-    label: Lisää kategorioihin
-    perform.label: Lisää kategorioihin
+    label: Lisää kategoriaan
+    perform.label: Lisää kategoriaan
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform.label: Lisää olemassaolevaan tuotemalliin
@@ -398,8 +399,8 @@ batch_jobs:
     label: Laske valmiusaste
     perform.label: Laske valmiusaste
   move_to_category:
-    label: Siirrä kategorioihin
-    perform.label: Siirrä kategorioihin
+    label: Siirrä kategoriaan
+    perform.label: Siirrä kategoriaan
   update_product_value:
     label: Päivitä tuotteen arvo
     perform.label: Päivitä tuotteen arvo

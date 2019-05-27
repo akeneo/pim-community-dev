@@ -137,6 +137,9 @@ pim_import_export:
         mass_edit: 一括編集
         quick_export: クイック エクスポート
         compute_product_models_descendants: 製品モデルの子孫を計算します。
+        compute_family_variant_structure_changes: バリアントのファミリー構造の変化を計算
+        compute_completeness_of_products_family: 製品ファミリの完全性を計算
+        mass_delete: 製品を一括削除
       header.view_all: 全て表示
   batch_status:
     1: 完了

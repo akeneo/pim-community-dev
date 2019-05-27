@@ -3,7 +3,7 @@ pim_user:
     title: Usuario
     fields:
       name_prefix: Prefijo del nombre
-      email: Correo electrónico
+      email: E-mail
       username: Nombre de usuario
       first_name: Primer nombre
       middle_name: Segundo nombre
@@ -17,7 +17,7 @@ pim_user:
       groups: Grupos
       password: Contraseña
       password_again: Re-ingresar contraseña
-      product_grid_filters: Filtros de cuadrícula de productos
+      product_grid_filters: Filtros de grilla de productos
       catalog_locale: Local de catálogo
       catalog_scope: Ambito del Catálogo
       default_tree: Árbol por defecto
@@ -25,15 +25,15 @@ pim_user:
       new_password: Nueva contraseña
       new_password_again: Nueva contraseña (repetir)
       default_grid_view:
-        none: Ninguno
+        none: Ninguna
       default_product_grid_view:
         label: Vista de cuadrícula de producto automática
       ui_locale: Idioma de la interfaz
       last_logged_in: Última visita
       login_count: Contador de inicios de sesión
       user_salt: Sal de usuario
-      created: Creado
-      updated: Actualizado
+      created: creado
+      updated: actualizado
       status: Estado
       capabilities: Capacidades
       has_role: Tiene rol
@@ -54,7 +54,7 @@ pim_user:
       group_and_role.title: Grupos y Roles
       password.title: Contraseña
       business_unit.title: Unidades de negocio
-      email_synchronization.title: Configuración de sincronización de correo electrónico
+      email_synchronization.title: Configuraciones de sincronización de e-mail
     removed_user: Usuario eliminado
     login:
       username_or_email: Nombre de usuario o Email
@@ -72,10 +72,10 @@ pim_user:
       general.title: General
       users.title: Usuarios
   roles:
-    title: Rol
+    title: rol
     tab:
       general: General
-      action: Permisos
+      action: Permisiones
       users: Usuarios
   controller:
     group:
@@ -127,9 +127,9 @@ oro_security:
       edit: Editar grupos de usuarios
       delete: Eliminar un usuario del grupo
 (default): Permisos predeterminados en entidades
-VIEW: Vista
+VIEW: Visualizar
 CREATE: Crear
 EDIT: Editar
-DELETE: Eliminar
+DELETE: Borrar
 ASSIGN: Asignar
 SHARE: Compartir
