@@ -49,29 +49,6 @@ SQL;
         Assert::assertSame('franklin_code', $result['code']);
     }
 
-    public function test_it_creates_an_attribute_when_attribute_type_does_not_exist(): void
-    {
-        $attributeTypeText = 'not_existing_attribute_type';
-
-        $query = <<<SQL
-SELECT count(1) AS row_count FROM pim_catalog_attribute
-WHERE attribute_type = :TYPE
-SQL;
-
-        $result = $this->dbal->executeQuery($query, [
-            'TYPE' => (string) $attributeTypeText
-        ])->fetch();
-
-        Assert::assertEquals(0, (int) $result['row_count']);
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->createAttributeService->create(
-            new AttributeCode('franklin_code'),
-            new AttributeLabel('franklin_label'),
-            new AttributeType($attributeTypeText)
-        );
-    }
-
     public function test_it_creates_an_attribute_when_attribute_code_already_exists(): void
     {
         $attributeCodeText = 'a_simple_select';
