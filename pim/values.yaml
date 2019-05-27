@@ -159,7 +159,7 @@ pim:
       schedule: "0 2 * * *"
     franklin-insights-fetch-products:
       enabled: true
-      pimCommand: "akeneo:batch:publish-job-to-queue franklin_insights_fetch_products"
+      pimCommand: "pimee:franklin-insights:fetch-products"
       schedule: "30 */1 * * *"
     reference-entity-refresh-records:
       enabled: true
