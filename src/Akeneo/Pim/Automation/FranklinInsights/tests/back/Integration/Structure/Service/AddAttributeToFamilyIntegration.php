@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -54,6 +55,28 @@ class AddAttributeToFamilyIntegration extends TestCase
         Assert::assertSame('familyA', $result['family_code']);
     }
 
+    public function test_it_adds_attribute_to_family_when_family_not_exists()
+    {
+        $familyCode = new FamilyCode('notExistingFamily');
+        $attributeCode = new AttributeCode('a_simple_select_size');
+
+        Assert::assertSame(0, $this->executeGetFamilyQuery($familyCode)->rowCount());
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->updateFamilyService->addAttributeToFamily($attributeCode, $familyCode);
+    }
+
+    public function test_it_adds_attribute_to_family_when_attribute_not_exists()
+    {
+        $familyCode = new FamilyCode('familyA');
+        $attributeCode = new AttributeCode('a_not_existing_attribute');
+
+        Assert::assertSame(0, $this->executeGetAttributeQuery($attributeCode)->rowCount());
+        $this->expectException(InvalidPropertyException::class);
+
+        $this->updateFamilyService->addAttributeToFamily($attributeCode, $familyCode);
+    }
+
     private function executeGetFamilyAttributeQuery(FamilyCode $familyCode, AttributeCode $attributeCode)
     {
         $query = <<<SQL
@@ -66,6 +89,30 @@ SQL;
 
         return $this->dbal->executeQuery($query, [
             'FAMILY_CODE' => (string) $familyCode,
+            'ATTRIBUTE_CODE' => (string) $attributeCode,
+        ]);
+    }
+
+    private function executeGetFamilyQuery(FamilyCode $familyCode)
+    {
+        $query = <<<SQL
+SELECT id FROM pim_catalog_family pcf
+WHERE pcf.code = :FAMILY_CODE
+SQL;
+
+        return $this->dbal->executeQuery($query, [
+            'FAMILY_CODE' => (string) $familyCode,
+        ]);
+    }
+
+    private function executeGetAttributeQuery(AttributeCode $attributeCode)
+    {
+        $query = <<<SQL
+SELECT id FROM pim_catalog_attribute pca
+WHERE pca.code = :ATTRIBUTE_CODE
+SQL;
+
+        return $this->dbal->executeQuery($query, [
             'ATTRIBUTE_CODE' => (string) $attributeCode,
         ]);
     }
