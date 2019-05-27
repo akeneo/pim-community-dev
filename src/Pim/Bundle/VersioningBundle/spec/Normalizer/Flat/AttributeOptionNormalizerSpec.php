@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -9,6 +10,11 @@ use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $localeRepository)
+    {
+        $this->beConstructedWith($localeRepository);
+    }
+
     function it_is_a_normalizer()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
