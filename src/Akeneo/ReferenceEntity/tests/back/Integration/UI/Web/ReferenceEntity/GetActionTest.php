@@ -211,7 +211,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $birthdate->type = 'number';
         $birthdate->labels = ['en_US' => 'Year of Birth'];
         $birthdate->additionalProperties = [
-            'is_decimal' => false,
+            'decimals_allowed' => false,
             'min_value'  => '10',
             'max_value'  => '50'
         ];

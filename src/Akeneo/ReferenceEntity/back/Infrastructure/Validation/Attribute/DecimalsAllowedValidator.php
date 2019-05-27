@@ -14,16 +14,16 @@ use Symfony\Component\Validator\Validation;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class IsDecimalValidator extends ConstraintValidator
+class DecimalsAllowedValidator extends ConstraintValidator
 {
-    public function validate($isDecimal, Constraint $constraint)
+    public function validate($decimalsAllowed, Constraint $constraint)
     {
-        if (!$constraint instanceof IsDecimal) {
+        if (!$constraint instanceof DecimalsAllowed) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($isDecimal, [
+        $violations = $validator->validate($decimalsAllowed, [
             new Assert\NotNull(),
             new Assert\Type('boolean'),
         ]);

@@ -46,7 +46,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
             'value_per_channel'          => '0',
             'value_per_locale'           => '1',
             'additional_properties'      => json_encode([
-                'is_decimal' => true,
+                'decimals_allowed' => true,
                 'min_value' => '0',
                 'max_value' => '10'
             ])
@@ -62,9 +62,9 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'value_per_channel'           => false,
                 'value_per_locale'            => true,
                 'type'                        => 'number',
-                'is_decimal'                  => true,
-                'min_value'                         => '0',
-                'max_value'                         => '10'
+                'decimals_allowed'             => true,
+                'min_value'                   => '0',
+                'max_value'                   => '10'
             ]
         );
     }
@@ -84,7 +84,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'value_per_locale'            => '1',
                 'additional_properties'       => json_encode(
                     [
-                        'is_decimal' => false,
+                        'decimals_allowed' => false,
                         'min_value'  => null,
                         'max_value'  => null,
                     ]
@@ -103,7 +103,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'value_per_channel'           => false,
                 'value_per_locale'            => true,
                 'type'                        => 'number',
-                'is_decimal'                  => false,
+                'decimals_allowed'             => false,
                 'min_value'                   => null,
                 'max_value'                   => null
             ]

@@ -9,8 +9,8 @@ use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHand
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
@@ -1440,7 +1440,7 @@ class EditAttributeContext implements Context
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::limitless(),
                 AttributeLimit::limitless()
             )
@@ -1467,7 +1467,7 @@ class EditAttributeContext implements Context
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::limitless(),
                 AttributeLimit::limitless()
             )
@@ -1481,11 +1481,11 @@ class EditAttributeContext implements Context
     {
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
-        $updateIsDecimal = [
+        $updateDecimalsAllowed = [
             'identifier' => (string)$identifier,
-            'is_decimal' => true,
+            'decimals_allowed' => true,
         ];
-        $this->updateAttribute($updateIsDecimal);
+        $this->updateAttribute($updateDecimalsAllowed);
     }
 
     /**
@@ -1497,7 +1497,7 @@ class EditAttributeContext implements Context
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
-        Assert::assertEquals(true, $attribute->normalize()['is_decimal']);
+        Assert::assertEquals(true, $attribute->normalize()['decimals_allowed']);
     }
 
     /**
@@ -1542,7 +1542,7 @@ class EditAttributeContext implements Context
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::fromString('150'),
                 AttributeLimit::limitless()
             )
@@ -1615,7 +1615,7 @@ class EditAttributeContext implements Context
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::limitless(),
                 AttributeLimit::fromString('200')
             )
@@ -1651,11 +1651,11 @@ class EditAttributeContext implements Context
     public function theUserSetsTheAttributeTo(string $attributeCode, $invalidValue)
     {
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
-        $updateIsDecimal = [
+        $updateDecimalsAllowed = [
             'identifier'  => (string)$identifier,
-            'is_decimal' => json_decode($invalidValue),
+            'decimals_allowed' => json_decode($invalidValue),
         ];
-        $this->updateAttribute($updateIsDecimal);
+        $this->updateAttribute($updateDecimalsAllowed);
     }
 
     /**

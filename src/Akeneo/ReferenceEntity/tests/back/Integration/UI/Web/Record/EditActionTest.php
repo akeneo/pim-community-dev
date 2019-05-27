@@ -17,8 +17,8 @@ use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
@@ -371,7 +371,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeIsDecimal::fromBoolean(false),
+            AttributeDecimalsAllowed::fromBoolean(false),
             AttributeLimit::fromString('-10'),
             AttributeLimit::fromString('10')
         );

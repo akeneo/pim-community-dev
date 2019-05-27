@@ -17,7 +17,7 @@ namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeIsDecimal
+class AttributeDecimalsAllowed
 {
     /** @var bool */
     private $value;
@@ -27,9 +27,9 @@ class AttributeIsDecimal
         $this->value = $value;
     }
 
-    public static function fromBoolean(bool $isDecimal): self
+    public static function fromBoolean(bool $decimalsAllowed): self
     {
-        return new self($isDecimal);
+        return new self($decimalsAllowed);
     }
 
     public function normalize(): bool

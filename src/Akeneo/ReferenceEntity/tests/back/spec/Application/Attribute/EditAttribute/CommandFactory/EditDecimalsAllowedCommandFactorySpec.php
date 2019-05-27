@@ -2,26 +2,26 @@
 
 namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsDecimalCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsDecimalCommandFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommandFactory;
 use PhpSpec\ObjectBehavior;
 
-class EditIsDecimalCommandFactorySpec extends ObjectBehavior
+class EditDecimalsAllowedCommandFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditIsDecimalCommandFactory::class);
+        $this->shouldHaveType(EditDecimalsAllowedCommandFactory::class);
     }
 
-    function it_only_supports_attribute_property_is_decimal_edits()
+    function it_only_supports_attribute_property_decimals_allowed_edits()
     {
         $this->supports([
             'identifier'   => 'name',
-            'is_decimal' => true,
+            'decimals_allowed' => true,
         ])->shouldReturn(true);
         $this->supports([
             'identifier'   => 'name',
-            'is_decimal' => null,
+            'decimals_allowed' => null,
         ])->shouldReturn(true);
         $this->supports([
             'identifier' => 'name',
@@ -30,15 +30,15 @@ class EditIsDecimalCommandFactorySpec extends ObjectBehavior
         $this->supports(['dummy' => 10])->shouldReturn(false);
     }
 
-    function it_creates_a_command_to_edit_the_is_decimal_flag()
+    function it_creates_a_command_to_edit_the_decimals_allowed_flag()
     {
         $command = $this->create([
             'identifier' => 'name',
-            'is_decimal'   => true,
+            'decimals_allowed' => true,
         ]);
-        $command->shouldBeAnInstanceOf(EditIsDecimalCommand::class);
+        $command->shouldBeAnInstanceOf(EditDecimalsAllowedCommand::class);
         $command->identifier->shouldBeEqualTo('name');
-        $command->isDecimal->shouldBeEqualTo(true);
+        $command->decimalsAllowed->shouldBeEqualTo(true);
     }
 
     function it_throws_if_it_cannot_create_the_command()

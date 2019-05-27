@@ -30,8 +30,8 @@ use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -2566,7 +2566,7 @@ final class EditRecordContext implements Context
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeIsDecimal::fromBoolean(true),
+                AttributeDecimalsAllowed::fromBoolean(true),
                 AttributeLimit::limitless(),
                 AttributeLimit::limitless()
             )
@@ -2657,7 +2657,7 @@ final class EditRecordContext implements Context
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::limitless(),
                 AttributeLimit::limitless()
             )
@@ -2665,9 +2665,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error on the property is decimal attribute with message "([^\']*)"$/
+     * @Then /^there should be a validation error on the property decimals allowed attribute with message "([^\']*)"$/
      */
-    public function thereShouldBeAValidationErrorOnThePropertyIsDecimalAttributeWithMessage($expectedMessage)
+    public function thereShouldBeAValidationErrorOnThePropertyDecimalsAllowedAttributeWithMessage($expectedMessage)
     {
         $this->violationsContext->assertThereShouldBeViolations(1);
         $this->violationsContext->assertViolationOnPropertyWithMesssage(
@@ -2696,7 +2696,7 @@ final class EditRecordContext implements Context
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeIsDecimal::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
                 AttributeLimit::fromString($minValue),
                 AttributeLimit::fromString($maxValue)
             )

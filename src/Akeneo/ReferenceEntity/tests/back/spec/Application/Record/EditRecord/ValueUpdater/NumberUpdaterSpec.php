@@ -9,7 +9,7 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUplo
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\NumberUpdater;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -71,7 +71,7 @@ class NumberUpdaterSpec extends ObjectBehavior
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeIsDecimal::fromBoolean(false),
+            AttributeDecimalsAllowed::fromBoolean(false),
             AttributeLimit::limitless(),
             AttributeLimit::limitless()
         );

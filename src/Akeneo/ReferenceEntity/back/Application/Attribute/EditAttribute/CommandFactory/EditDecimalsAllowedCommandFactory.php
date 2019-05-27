@@ -17,23 +17,23 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class EditIsDecimalCommandFactory implements EditAttributeCommandFactoryInterface
+class EditDecimalsAllowedCommandFactory implements EditAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool
     {
-        return array_key_exists('is_decimal', $normalizedCommand)
+        return array_key_exists('decimals_allowed', $normalizedCommand)
             && array_key_exists('identifier', $normalizedCommand);
     }
 
     public function create(array $normalizedCommand): AbstractEditAttributeCommand
     {
         if (!$this->supports($normalizedCommand)) {
-            throw new \RuntimeException('Impossible to create an edit "is decimal" property command.');
+            throw new \RuntimeException('Impossible to create an edit "decimals allowed" property command.');
         }
 
-        $command = new EditIsDecimalCommand(
+        $command = new EditDecimalsAllowedCommand(
             $normalizedCommand['identifier'],
-            $normalizedCommand['is_decimal']
+            $normalizedCommand['decimals_allowed']
         );
 
         return $command;

@@ -25,8 +25,8 @@ class NumberAttribute extends AbstractAttribute
 {
     private const ATTRIBUTE_TYPE = 'number';
 
-    /** @var AttributeIsDecimal */
-    private $isDecimal;
+    /** @var AttributeDecimalsAllowed */
+    private $decimalsAllowed;
 
     /** @var AttributeLimit */
     private $minValue;
@@ -43,7 +43,7 @@ class NumberAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeIsDecimal $isDecimal,
+        AttributeDecimalsAllowed $decimalsAllowed,
         AttributeLimit $minValue,
         AttributeLimit $maxValue
     ) {
@@ -59,7 +59,7 @@ class NumberAttribute extends AbstractAttribute
         );
 
         $this->checkMinIsLessThanMax($minValue, $maxValue);
-        $this->isDecimal = $isDecimal;
+        $this->decimalsAllowed = $decimalsAllowed;
         $this->minValue = $minValue;
         $this->maxValue = $maxValue;
     }
@@ -73,7 +73,7 @@ class NumberAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeIsDecimal $isDecimal,
+        AttributeDecimalsAllowed $decimalsAllowed,
         AttributeLimit $minValue,
         AttributeLimit $maxValue
     ) {
@@ -86,7 +86,7 @@ class NumberAttribute extends AbstractAttribute
             $isRequired,
             $valuePerChannel,
             $valuePerLocale,
-            $isDecimal,
+            $decimalsAllowed,
             $minValue,
             $maxValue
         );
@@ -97,7 +97,7 @@ class NumberAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'is_decimal' => $this->isDecimal->normalize(),
+                'decimals_allowed' => $this->decimalsAllowed->normalize(),
                 'min_value'  => $this->minValue->normalize(),
                 'max_value'  => $this->maxValue->normalize(),
             ]
@@ -109,14 +109,14 @@ class NumberAttribute extends AbstractAttribute
         return self::ATTRIBUTE_TYPE;
     }
 
-    public function setIsDecimal(AttributeIsDecimal $isDecimal): void
+    public function setDecimalsAllowed(AttributeDecimalsAllowed $decimalsAllowed): void
     {
-        $this->isDecimal = $isDecimal;
+        $this->decimalsAllowed = $decimalsAllowed;
     }
 
     public function allowsDecimalValues(): bool
     {
-        return $this->isDecimal->normalize();
+        return $this->decimalsAllowed->normalize();
     }
 
     public function isMinLimitless(): bool

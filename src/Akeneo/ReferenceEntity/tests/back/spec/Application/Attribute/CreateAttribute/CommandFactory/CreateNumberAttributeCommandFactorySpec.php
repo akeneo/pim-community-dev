@@ -28,7 +28,7 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
             'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
-            'is_decimal' => false,
+            'decimals_allowed' => false,
             'min_value' => '0',
             'max_value' => '200'
         ]);
@@ -40,7 +40,7 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
         $command->isRequired->shouldBe(false);
         $command->valuePerChannel->shouldBe(false);
         $command->valuePerLocale->shouldBe(false);
-        $command->isDecimal->shouldBe(false);
+        $command->decimalsAllowed->shouldBe(false);
         $command->minValue->shouldBe('0');
         $command->maxValue->shouldBe('200');
     }
@@ -65,7 +65,7 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
 
         $command->shouldBeAnInstanceOf(CreateNumberAttributeCommand::class);
         $command->isRequired->shouldBeEqualTo(false);
-        $command->isDecimal->shouldBeEqualTo(false);
+        $command->decimalsAllowed->shouldBeEqualTo(false);
         $command->minValue->shouldBe(null);
         $command->maxValue->shouldBe(null);
     }

@@ -140,7 +140,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
                 code: {code: 'age'},
                 referenceEntityIdentifier: {identifier: 'designer'},
                 identifier: {identifier: 'age_designer_fingerprint'},
-                isDecimal: {isDecimal: false},
+                decimalsAllowed: {decimalsAllowed: false},
                 isRequired: false,
                 labelCollection: {labels: {en_US: 'Age', fr_FR: 'Age'}},
                 maxValue: {maxValue: '20'},

@@ -6,8 +6,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrat
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -31,7 +31,7 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $row['is_decimal'] = $row['additional_properties']['is_decimal'];
+        $row['decimals_allowed'] = $row['additional_properties']['decimals_allowed'];
         $row['min_value'] = $row['additional_properties']['min_value'];
         $row['max_value'] = $row['additional_properties']['max_value'];
 
@@ -49,7 +49,7 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             AttributeIsRequired::fromBoolean($row['is_required']),
             AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
             AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
-            AttributeIsDecimal::fromBoolean($row['is_decimal']),
+            AttributeDecimalsAllowed::fromBoolean($row['decimals_allowed']),
             $this->minValue($row),
             $this->maxValue($row)
         );
@@ -67,7 +67,7 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             'value_per_locale',
             'value_per_channel',
             'attribute_type',
-            'is_decimal',
+            'decimals_allowed',
             'min_value',
             'max_value'
         ];

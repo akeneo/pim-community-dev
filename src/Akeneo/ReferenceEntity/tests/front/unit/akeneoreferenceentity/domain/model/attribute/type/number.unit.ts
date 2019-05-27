@@ -6,7 +6,7 @@ import ReferenceEntityIdentifier, {
 import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
 import {MinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
-import {IsDecimal} from 'akeneoreferenceentity/domain/model/attribute/type/number/is-decimal';
+import {DecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
 
 const normalizedArea = {
   identifier: 'area_city_fingerprint',
@@ -18,7 +18,7 @@ const normalizedArea = {
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
-  is_decimal: false,
+  decimals_allowed: false,
   min_value: null,
   max_value: null,
 };
@@ -28,7 +28,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
     expect(ConcreteNumberAttribute.createFromNormalized(normalizedArea).normalize()).toEqual(normalizedArea);
   });
 
-  test('I cannot create an invalid ConcreteNumberAttribute (wrong isDecimal)', () => {
+  test('I cannot create an invalid ConcreteNumberAttribute (wrong decimalsAllowed)', () => {
     expect(() => {
       new ConcreteNumberAttribute(
         createIdentifier('designer', 'age'),
@@ -43,7 +43,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
         12,
         13
       );
-    }).toThrow('Attribute expects a IsDecimal as isDecimal');
+    }).toThrow('Attribute expects a DecimalsAllowed as decimalsAllowed');
   });
   test('I cannot create an invalid ConcreteNumberAttribute (wrong MinValue)', () => {
     expect(() => {
@@ -56,7 +56,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
         false,
         0,
         true,
-        new IsDecimal(true),
+        new DecimalsAllowed(true),
         12.12,
         13
       );
@@ -74,7 +74,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
         false,
         0,
         true,
-        new IsDecimal(true),
+        new DecimalsAllowed(true),
         new MinValue('12.12'),
         13
       );

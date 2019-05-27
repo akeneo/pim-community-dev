@@ -4,7 +4,7 @@ import ValidationError from 'akeneoreferenceentity/domain/model/validation-error
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
 import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 import {NumberAdditionalProperty, NumberAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/number';
-import {IsDecimal} from 'akeneoreferenceentity/domain/model/attribute/type/number/is-decimal';
+import {DecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
 import {MinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
 import {MaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
 import Key from 'akeneoreferenceentity/tools/key';
@@ -34,35 +34,35 @@ const NumberView = ({
 
   return (
     <React.Fragment>
-      <div className="AknFieldContainer AknFieldContainer--packed" data-code="isDecimal">
+      <div className="AknFieldContainer AknFieldContainer--packed" data-code="decimalsAllowed">
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--inline"
-            htmlFor="pim_reference_entity.attribute.edit.input.is_decimal"
+            htmlFor="pim_reference_entity.attribute.edit.input.decimals_allowed"
           >
             <Checkbox
               readOnly={!rights.attribute.edit}
-              id="pim_reference_entity.attribute.edit.input.is_decimal"
-              value={attribute.isDecimal.booleanValue()}
-              onChange={(isDecimal: boolean) =>
-                onAdditionalPropertyUpdated('is_decimal', IsDecimal.createFromBoolean(isDecimal))
+              id="pim_reference_entity.attribute.edit.input.decimals_allowed"
+              value={attribute.decimalsAllowed.booleanValue()}
+              onChange={(decimalsAllowed: boolean) =>
+                onAdditionalPropertyUpdated('decimals_allowed', DecimalsAllowed.createFromBoolean(decimalsAllowed))
               }
             />
             <span
               onClick={() => {
                 if (rights.attribute.edit) {
                   onAdditionalPropertyUpdated(
-                    'is_decimal',
-                    IsDecimal.createFromBoolean(!attribute.isDecimal.booleanValue())
+                    'decimals_allowed',
+                    DecimalsAllowed.createFromBoolean(!attribute.decimalsAllowed.booleanValue())
                   );
                 }
               }}
             >
-              {__('pim_reference_entity.attribute.edit.input.is_decimal')}
+              {__('pim_reference_entity.attribute.edit.input.decimals_allowed')}
             </span>
           </label>
         </div>
-        {getErrorsView(errors, 'isDecimal')}
+        {getErrorsView(errors, 'decimalsAllowed')}
       </div>
       <div className="AknFieldContainer" data-code="minValue">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">

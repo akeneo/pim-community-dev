@@ -64,7 +64,7 @@ class NumberAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => [ 'boolean'],
                 ],
-                'is_decimal' => [
+                'decimals_allowed' => [
                     'type' => [ 'boolean'],
                 ],
                 'min_value' => [
