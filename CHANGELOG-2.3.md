@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.46 (2019-05-27)
+
 ## Bug fixes
 
 - PIM-7772: Fix translation in roles ACL
