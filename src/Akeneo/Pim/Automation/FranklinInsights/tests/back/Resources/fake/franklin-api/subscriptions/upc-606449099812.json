@@ -150,7 +150,7 @@
           }
         ],
         "extra": {
-          "tracker_id": "42",
+          "tracker_id": "__TRACKER_ID__",
           "family": {
             "code": "router",
             "label": {

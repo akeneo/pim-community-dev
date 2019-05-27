@@ -16,6 +16,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductInfosForSubscription;
@@ -106,5 +107,42 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         }))->shouldBeCalled();
 
         $this->handle(new SubscribeProductCommand($productId));
+    }
+
+    public function it_throws_an_exception_if_another_product_with_the_same_identifiers_has_already_been_subscribed(
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery,
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
+        SubscriptionProviderInterface $subscriptionProvider
+    ) {
+        $productId = new ProductId(42);
+        $productIdentifierValues = new ProductIdentifierValues($productId, ['upc' => 'an_ean']);
+        $family = new Family(new FamilyCode('a_family'), []);
+        $subscriptionId = new SubscriptionId(uniqid());
+        $suggestedValues = [[
+            'pimAttributeCode' => 'foo',
+            'value' => 'bar',
+        ]];
+
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId, $productIdentifierValues, $family, 'a_product', false, false
+        ));
+
+        $query = new GetProductSubscriptionStatusQuery($productId);
+        $getProductSubscriptionStatusHandler->handle($query)->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, true, true, 33),
+                false,
+                true,
+                true,
+                false
+            )
+        );
+
+        $response = new ProductSubscriptionResponse(new ProductId(666), $subscriptionId, $suggestedValues, false, false);
+        $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
+
+        $this->shouldThrow(ProductSubscriptionException::productSubscriptionWithSameIdentifierAlreadyExist())->during(
+            'handle', [new SubscribeProductCommand($productId)]
+        );
     }
 }

@@ -32,6 +32,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product_without_permission'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
             - '@pim_catalog.factory.value_collection'
             - '@pim_catalog.repository.family'
             - '@pim_catalog.factory.family'
