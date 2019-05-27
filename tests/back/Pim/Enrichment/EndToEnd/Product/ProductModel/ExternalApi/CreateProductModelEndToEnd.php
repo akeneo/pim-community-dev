@@ -866,6 +866,38 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testResponseWhenFamilyDoesNotMatchFamilyVariant()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "a_product_model",
+    "family": "non_matching_family",
+    "family_variant": "familyVariantA1"
+}
+JSON;
+
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "The family variant \"familyVariantA1\" is not a variant of the family \"non_matching_family\". Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
 
     public function testResponseWhenAssociatingToNonExistingProduct()
     {
