@@ -58,9 +58,10 @@ class FindOrCreateFranklinAttributeGroupSpec extends ObjectBehavior
         $repository,
         AttributeGroupInterface $attributeGroup
     ): void {
-        $repository->findOneByIdentifier((string) new FranklinAttributeGroupCode())->willReturn($attributeGroup);
+        $attrGroupCode = new FranklinAttributeGroupCode();
+        $repository->findOneByIdentifier((string) $attrGroupCode)->willReturn($attributeGroup);
 
-        $this->findOrCreate()->shouldReturn($attributeGroup);
+        $this->findOrCreate()->shouldBeLike($attrGroupCode);
     }
 
     public function it_creates_the_franklin_attribute_group(
@@ -81,6 +82,6 @@ class FindOrCreateFranklinAttributeGroupSpec extends ObjectBehavior
         $violations->count()->willReturn(0);
         $saver->save($attributeGroup)->shouldBeCalled();
 
-        $this->findOrCreate()->shouldReturn($attributeGroup);
+        $this->findOrCreate()->shouldBeLike($attrGroupCode);
     }
 }

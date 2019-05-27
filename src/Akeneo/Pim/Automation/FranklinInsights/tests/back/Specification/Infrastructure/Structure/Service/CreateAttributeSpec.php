@@ -77,12 +77,12 @@ class CreateAttributeSpec extends ObjectBehavior
         $saver,
         $findOrCreateFranklinAttributeGroup,
         AttributeInterface $attribute,
-        AttributeGroupInterface $attributeGroup,
         ConstraintViolationListInterface $violations
     ): void {
+        $attributeGroupCode = new FranklinAttributeGroupCode();
         $attributeData = [
             'code' => 'Foo_bar',
-            'group' => (string) new FranklinAttributeGroupCode(),
+            'group' => (string) $attributeGroupCode,
             'labels' => [
                 'en_US' => 'Foo bar'
             ],
@@ -90,8 +90,7 @@ class CreateAttributeSpec extends ObjectBehavior
             'scopable' => false
         ];
 
-        $findOrCreateFranklinAttributeGroup->findOrCreate()->willReturn($attributeGroup);
-        $attributeGroup->getCode()->willReturn((string) new FranklinAttributeGroupCode());
+        $findOrCreateFranklinAttributeGroup->findOrCreate()->willReturn($attributeGroupCode);
 
         $factory->createAttribute('pim_catalog_text')->willReturn($attribute);
         $updater->update($attribute, $attributeData)->shouldBeCalled();
@@ -113,12 +112,13 @@ class CreateAttributeSpec extends ObjectBehavior
         $saver,
         $findOrCreateFranklinAttributeGroup,
         AttributeInterface $attribute,
-        AttributeGroupInterface $attributeGroup,
         ConstraintViolationListInterface $violations
     ): void {
+        $attributeGroupCode = new FranklinAttributeGroupCode();
+
         $attributeData = [
             'code' => 'Foo_bar',
-            'group' => (string) new FranklinAttributeGroupCode(),
+            'group' => (string) $attributeGroupCode,
             'labels' => [
                 'en_US' => 'Foo bar'
             ],
@@ -126,8 +126,7 @@ class CreateAttributeSpec extends ObjectBehavior
             'scopable' => false
         ];
 
-        $findOrCreateFranklinAttributeGroup->findOrCreate()->willReturn($attributeGroup);
-        $attributeGroup->getCode()->willReturn((string) new FranklinAttributeGroupCode());
+        $findOrCreateFranklinAttributeGroup->findOrCreate()->willReturn($attributeGroupCode);
 
         $factory->createAttribute('pim_catalog_text')->willReturn($attribute);
         $updater->update($attribute, $attributeData)->shouldBeCalled();
