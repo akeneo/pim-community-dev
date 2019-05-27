@@ -2,7 +2,26 @@
 
 ## Bug fixes
 
+- PIM-7772: Fix translation in roles ACL
+- PIM-8308: Fix broken translation keys for import and export profiles
+- PIM-8374: Fix timeout when launching the completeness purge command
+- PIM-7596: Fix margins on datagrids under tabs
+- PIM-6829: Fix mass edit enabled steps
+
+# 2.3.45 (2019-05-23)
+
+## Bug fixes
+
+- PIM-8351: Fix entity overriding priority
+- PIM-7321: Fix blinking grid elements in gallery mode
+
+# 2.3.44 (2019-05-20)
+
+## Bug fixes
+
 - PIM-8341: Use user locale for job execution normalization
+- PIM-8347: Fix variant navigation display in case of long attribute labels
+- PIM-8346: Hide the currency selector on the product grid price filters 'empty' and 'not empty'
 
 ## Improvement
 
