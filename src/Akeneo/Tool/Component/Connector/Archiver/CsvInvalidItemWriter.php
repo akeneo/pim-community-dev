@@ -3,8 +3,6 @@
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
 
 /**
  * Writer for invalid items coming from a CSV import.
@@ -27,6 +25,15 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
     /**
      * {@inheritdoc}
      */
+    protected function getFilename(): string
+    {
+        return 'invalid_items.csv';
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getInputFileIterator(JobParameters $jobParameters)
     {
         $filePath = $jobParameters->get('filePath');
@@ -42,26 +49,5 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
         $fileIterator->next();
 
         return $fileIterator;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setupWriter(JobExecution $jobExecution)
-    {
-        $fileKey = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.csv']);
-        $this->filesystem->put($fileKey, '');
-
-        $writeParams = $this->defaultValuesProvider->getDefaultValues();
-        $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $fileKey;
-        $writeParams['withHeader'] = true;
-
-        $writeJobParameters = new JobParameters($writeParams);
-        $writeJobExecution = new JobExecution();
-        $writeJobExecution->setJobParameters($writeJobParameters);
-
-        $stepExecution = new StepExecution('processor', $writeJobExecution);
-        $this->writer->setStepExecution($stepExecution);
-        $this->writer->initialize();
     }
 }

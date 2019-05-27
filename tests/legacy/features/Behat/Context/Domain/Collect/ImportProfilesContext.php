@@ -148,10 +148,10 @@ class ImportProfilesContext extends ImportExportContext
         $jobExecution = $jobInstance->getJobExecutions()->first();
         $fileType = $jobInstance->getRawParameters()['invalid_items_file_format'];
 
-        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
-        $filePath = sprintf(
+        $archivePath = $this->getMainContext()->getSubcontext('job')->getJobInstanceArchivePath($code);
+        $archivePath = sprintf(
             '%simport/%s/%s/invalid_%s/invalid_items.%s',
-            $filePath,
+            $archivePath,
             $jobInstance->getJobName(),
             $jobExecution->getId(),
             $fileType,
@@ -167,8 +167,8 @@ class ImportProfilesContext extends ImportExportContext
         }
 
         $expectedLines = $this->getExpectedLines($behatData, $config);
-        $actualLines = $this->getActualLines($filePath, $fileType, $config);
+        $actualLines = $this->getActualLinesFromArchive($archivePath, $fileType, $config);
 
-        $this->compareFile($expectedLines, $actualLines, $filePath);
+        $this->compareFile($expectedLines, $actualLines, $archivePath);
     }
 }

@@ -73,12 +73,4 @@ final class JobFileLocation
 
         return $this->path;
     }
-
-    /**
-     * Provide a unique local temporary name in the provided directory
-     */
-    public function generateLocalTemporaryName(string $directory): string
-    {
-        return tempnam($directory, self::LOCAL_TEMP_PREFIX). basename($this->path);
-    }
 }
