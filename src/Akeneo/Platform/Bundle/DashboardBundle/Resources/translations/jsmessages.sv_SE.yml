@@ -11,6 +11,9 @@ pim_dashboard:
         export: Export
         mass_edit: Massredigera
         quick_export: Snabbexport
+        compute_product_models_descendants: Beräkna produktmodellers ättlingar
+        compute_family_variant_structure_changes: Beräkna variantfamiljers strukturförändringar
+        compute_completeness_of_products_family: Beräkna fullständighet av produktfamilj
     completeness:
       load_more: 'Ladda fler...'
     header:

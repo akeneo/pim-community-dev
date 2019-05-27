@@ -54,7 +54,7 @@ pim_user_management:
         catalog_scope: Ambito del Catálogo
         default_tree: Árbol por defecto
         default_asset_tree: Árbol por defecto de recursos
-        product_grid_filters: Filtros de cuadrícula de productos
+        product_grid_filters: Filtros de grilla de productos
         current_password: Contraseña actual
         new_password: Nueva contraseña
         new_password_repeat: Nueva contraseña (repetir)

@@ -114,7 +114,7 @@ pim_import_export:
             help: Namnet på gruppkolumnen
           enabled:
             title: Aktivera produkten
-            help: Om den importerade produkten ska vara aktiv
+            help: Om den importerade produkten ska vara aktiv eller inte
           enabled_comparison:
             title: Jämför värden
             help: Aktivera jämförelsen mellan ursprungliga och importerade värden. Kan påskynda import om importerade värden är mycket liknande ursprungliga värden

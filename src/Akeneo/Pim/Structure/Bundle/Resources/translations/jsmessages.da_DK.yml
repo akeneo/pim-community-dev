@@ -30,25 +30,32 @@ pim_enrich.entity.family_variant:
   short_plural_label: Varianter
   short_label: Variant
   flash:
+    update:
+      success: Familie variant opdateret. Produkter med varianter vil blive opdateret med ændringerne.
     create:
       success: Familie variant blev oprettet
   module:
     edit:
+      common_attributes: Fælles attributter
+      no_common_attributes: Der er ingen fælles attributter
       variant_axis_label: Variant akse
       variant_attributes: Variant attributter
       level_1: Variant attributter niveau 1
       level_2: Variant attributter niveau to
+      description: Træk & slip attributter til det valgte variant niveau for at få disse attributter håndteret på den variant niveau.
+      confirm_attribute_removal_title: Bekræfte Fjern attributter
+      confirm_attribute_removal_message: Ved at fjerne disse attributter vil du lægge dem tilbage i de fælles attributter på denne familie variant og fjerne værdier fra variant varerne
     create:
       label: Tilføje variant
       title: Opret en ny familie variant
       description: I en familie variant, kan du definere en struktur for produkter med varianter. Vælge antallet af administrerede variant niveauer, de attributter, der bruges som variant akser for hvert niveau, og derefter definere hvordan attributterne er fordelt.
       variant_levels: Variant niveauer
 pim_enrich.entity.attribute_option:
-  short_uppercase_label: Muligheder
+  short_uppercase_label: Valgmuligheder
   flash:
     create:
       success: Attribut tilvalg oprettet
-      fail: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
+      fail: Der opstod en fejl under oprettelsen af attribut egenskaben
     update:
       fail: Kan ikke gemme attribut indstilling
     delete:
@@ -132,7 +139,7 @@ pim_enrich.entity.attribute:
     scopable: Værdi pr. kanal
     type:
       choose: Vælg attributtype
-      pim_catalog_identifier: Id
+      pim_catalog_identifier: Identifikator
       pim_catalog_text: Tekst
       pim_catalog_textarea: Tekstområde
       pim_catalog_number: Tal
@@ -144,8 +151,8 @@ pim_enrich.entity.attribute:
       pim_catalog_boolean: "Ja / Nej"
       pim_catalog_date: Dato
       pim_catalog_metric: Metrisk
-      pim_reference_data_simpleselect: Referencedata simpel Vælg
-      pim_reference_data_multiselect: Reference data multi Vælg
+      pim_reference_data_simpleselect: Referencedata simpel valg
+      pim_reference_data_multiselect: Reference data multi valg
     unique: Unik værdi
     useable_as_grid_filter: Brugbare i gitter
     validation_regexp: Regulære udtryk

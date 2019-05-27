@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: カテゴリ選択
+        label: "{0}すべての製品 |{1}1つの選択されたカテゴリ|]1,Inf[{{ count }} 選択されたカテゴリ"
         title: カテゴリ選択
     locales:
       validation:
@@ -27,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: インポートプロファイルを作成しました
+      page_title:
+        index: "]-Inf, 1] {{ count }} インポートプロファイル|]1, Inf [{{ count }} インポートプロファイル"
       module:
         create:
           button: インポート プロファイルを作成
@@ -35,6 +38,8 @@ pim_import_export:
       flash:
         create:
           success: エクスポートプロファイルを作成しました
+      page_title:
+        index: "]-Inf, 1] {{ count }} エクスポートプロファイル|]1, Inf [{{ count }} エクスポートプロファイル"
       module:
         create:
           button: エクスポート プロファイルを作成

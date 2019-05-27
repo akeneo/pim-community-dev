@@ -1,7 +1,7 @@
 job_execution:
   summary:
     display_item: Mostrar elemento
-    hide_item: Ocultar item
+    hide_item: Ocultar elemento
 pim_connector:
   export:
     categories:
@@ -92,7 +92,7 @@ pim_import_export:
             help: Único caracter utilizado para delimitar el campo
           enclosure:
             title: Encuadre
-            help: Único caracter utilizado para encuadrar los campos
+            help: Único carácter usado para encuadrar el campo
           with_header:
             title: Con encabezado
             help: Imprimir o no el nombre de columnas
@@ -119,7 +119,7 @@ pim_import_export:
             help: Nombre de la columna de grupos
           enabled:
             title: Habilitar el producto
-            help: Habilitar o no los productos importados
+            help: Si el producto importado debe estar habilitado o no
           enabled_comparison:
             title: Comparar valores
             help: Permite comparar entre los valores originales y valores importados. Puede acelerar la importación si los valores importados son similares a los valores originales
@@ -146,7 +146,7 @@ pim_enrich:
           confirm: '¿Está seguro que desea eliminar este perfil de exportación?'
 pim_title:
   pim_importexport_export_profile_index: Gestión de perfiles de exportación
-  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
+  pim_importexport_export_profile_edit: Perfil de exportación {{ job.label }} | Editar
   pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
   pim_importexport_export_execution_index: Historial de ejecuciones de exportación
   pim_importexport_export_execution_show: Ejecuciones de importación | Detalles

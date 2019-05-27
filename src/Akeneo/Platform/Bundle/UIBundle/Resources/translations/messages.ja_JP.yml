@@ -40,6 +40,7 @@ required: (必須)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: 読み込みメッセージを有効にする
+    loading_message_enabled.tooltip: ページのロードを待っている間に使いやすいメッセージを表示する
     loading_messages.label: 可能な読み込みメッセージ
     loading_messages.tooltip: ロード可能な全てのメッセージは、改行で区切られています
   group:
@@ -74,6 +75,8 @@ pim_enrich:
       add_attribute: 製品に属性を追加
       remove_attribute: 製品から属性を削除
       categories_view: 製品のカテゴリを参照
+      associations_view: 製品の関連性を表示
+      associations_edit: 製品の関連性を追加
       change_family: 製品ファミリーを変更
       change_state: 製品状態を変更
       add_to_groups: 製品をグループに追加
@@ -86,6 +89,7 @@ pim_enrich:
       edit_attributes: 製品モデルの属性を編集
       categories_view: 製品モデルのカテゴリを参照
       history: 製品モデルの履歴を表示
+      remove: 製品モデルを削除
     category:
       list: カテゴリリスト
       create: カテゴリ作成
@@ -106,8 +110,11 @@ pim_enrich:
       create: ファミリーを作成
       edit_properties: ファミリーのプロパティを編集
       edit_attributes: ファミリーの属性を編集
+      edit_variants: ファミリーバリアントを編集
       remove: ファミリー削除
       history: ファミリーの履歴を表示
+    family_variant:
+      remove: ファミリーバリアントを削除
     attribute_group:
       index: 属性グループの一覧
       create: 属性グループを作成
@@ -141,6 +148,8 @@ pim_enrich:
       edit: 関連タイプ編集
       remove: 関連タイプ削除
       history: 関連タイプの履歴を表示
+    association:
+      remove: 製品の関連性を削除
     job_tracker:
       index: プロセストラッカーの表示
     api_connection:
@@ -156,8 +165,13 @@ pim_enrich:
     group: グループ
     group_type: グループタイプ
     locale: ロケール
-    product: 製品
+    product: 商品
     product_model: 製品モデル
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: チャネルからロケールが削除されました。リンクされた内容を削除しています。
+        done: チャネルのロケール削除が終わりました。
   create:
     attribute: 属性を作成
     attribute group: 属性グループを作成
@@ -169,8 +183,8 @@ pim_enrich:
     locale: ロケールを作成
     product: 製品を作成
     group: グループを作成
-    association type: 関連タイプの作成
-    group type: グループタイプの作成
+    association type: 関連タイプ作成
+    group type: グループタイプ作成
     drag_or_upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
 confirmation:
   delete: 削除を確認する
@@ -255,7 +269,6 @@ Unique value: ユニーク値
 Attribute group: 属性グループ
 Other: その他
 Variants behavior when edited: 編集時のバリアント動作
-Edit: 編集
 Remove: 削除
 Parameters: パラメータ
 System: システム
@@ -274,12 +287,12 @@ Useable as grid column: グリッド列として使用可能
 Useable as grid filter: グリッドで使用可能
 Family: ファミリー
 Image: イメージ
+Variant products: バリアント製品
 Available locales: 使用可能なロケール
 Locale specific: ロケール固有
 default: デフォルト
 Axis: 軸
 Add attributes: 属性を追加
-Translate from: 言語の選択
 switch_on: "はい"
 switch_off: "いいえ"
 Close: 閉じる
@@ -350,16 +363,18 @@ pim_catalog_metric: メトリック
 pim_reference_data_simpleselect: データの単純な選択を参照
 pim_reference_data_multiselect: データの複数の選択を参照
 Activated: アクティベート
+Edit: 編集
 Disable: 無効
 To enable: 有効にするには
 Select attributes: 属性の選択
 Select: 選択
 Remove this attribute: 属性を削除
 Copy: コピー
+Translate from: 言語の選択
 Current tab: 現在のタブ
 Group: グループ
 View group: 表示グループ
-Products: 製品
+Products: 商品
 Properties: プロパティ
 History: 履歴
 pane.accordion:
@@ -441,17 +456,24 @@ pim_mass_edit:
       error: クイックエクスポート<strong>%label%</strong> が失敗しました
       warning: クイックエクスポート <strong>%label%</strong> がいくつかのエラーで終了しました
       success: クイックエクスポート<strong>%label%</strong> が終了しました
+    mass_delete:
+      error: 一括削除 <strong>%label%</strong> が失敗しました
+      warning: 一括削除 <strong>%label%</strong> がいくつかのエラーで終了しました
+      success: 一括削除 <strong>%label%</strong> が終了しました
 job_execution.summary:
   mass_edited: 一括編集
   skip: スキップ
   skipped_products: スキップされた製品
   skipped_attributes: スキップされた属性
   skipped_families: スキップされたファミリー
+  deleted_products: 製品を削除
+  deleted_product_models: 製品モデルを削除
 pim_mass_edit_execution_show: 一括編集の実行 |詳細
 edit_common_attributes.steps.edit_common_attributes_processor.title: 属性を編集
 update_product_value.steps.update_product_value_processor.title: 製品の値を更新
 remove_product_value.steps.update_product_value_processor.title: 製品の値を削除
 edit_common_attributes: 属性を編集
+edit_common_attributes_clean: 属性を持つファイルを削除
 perform.steps.duplicated.title: 重複した軸
 perform.steps.excluded.title: 除外製品
 mass_edit report:
@@ -461,5 +483,3 @@ job_tracker:
     title: プロセストラッカー
   filter:
     started_at: 開始日時
-
-

@@ -13,7 +13,7 @@ job_execution.summary:
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
-    title: 'Encodage du fichier :'
+    title: 'Encodage du fichier:'
     skipped: ignoré(s), extension dans la liste blanche
   product_skipped_no_diff: produit(s) ignoré(s) (aucune différence)
   product_skipped_no_associations: produit(s) ignoré(s) (aucune association détectée)

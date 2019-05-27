@@ -4,13 +4,13 @@ pim_notification:
 flash:
   comment:
     create:
-      success: Ihr Kommentar wurde  erfolgreich erstellt.
-      error: Bei der Erstellung Ihres Kommentars ist ein Fehler aufgetreten.
+      success: Ihr Kommentar wurde erfolgreich erstellt.
+      error: Bei der Anlage Ihres Kommentars ist ein Fehler aufgetreten.
     delete:
       success: Ihr Kommentar wurde erfolgreich gelöscht.
       error: Beim Löschen Ihres Kommentars ist ein Fehler aufgetreten.
     reply:
-      success: Ihre Antwort wurde erfolgreich erstellt.
+      success: Ihre Antwort wurde erfolgreich angelegt.
       error: Bei der Erstellung Ihrer Antwort ist ein Fehler aufgetreten.
 pim_enrich.entity.product:
   label: Produkt
@@ -20,7 +20,7 @@ pim_enrich.entity.product:
     update:
       success: Produkt erfolgreich aktualisiert.
       fail: Das Produkt konnte nicht aktualisiert werden.
-      fields_not_ready: "Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}"
+      fields_not_ready: "Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       file_upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
     delete:
@@ -28,11 +28,15 @@ pim_enrich.entity.product:
       fail: Das Produkt konnte nicht gelöscht werden.
     create:
       success: Produkt erfolgreich erstellt
-      fail: Es ist kein Attribut ist als Produktidentifikator konfiguriert oder Sie haben keine Rechte diesen zu bearbeiten.
+      fail: Es ist kein Attribut als Kennung konfiguriert oder Sie haben keine Rechte die Kennung zu bearbeiten.
+  page_title:
+    index: "] -Inf, 1] {{ count }} Ergebnis|] 1, Inf[{{ count }} Ergebnisse"
   module:
     create:
       subtitle: Produkt anlegen
+      title: Wählen Sie eine Aktion aus
       choose_family: Wählen Sie eine Produktfamilie
+      choose_family_variant: Wählen Sie eine Variante der Produktfamilie
     variant_navigation:
       common: Allgemein
     status:
@@ -44,11 +48,11 @@ pim_enrich.entity.product:
       label: Vergleichen / Übersetzen
       select: Auswählen
       all_visible: Alle sichtbaren
-      copy: Kopieren
+      copy: Kopie
     history:
       version: Version
       author: Autor
-      logged_at: Angemeldet am
+      logged_at: Aufgezeichnet am
       from: Von
       modified: Bearbeitet
       old_value: Alter Wert
@@ -61,9 +65,10 @@ pim_enrich.entity.product:
       view_group: Gruppe ansehen
       more_products: '{{ count }} weitere Produkte...'
     attribute:
-      remove_optional: Dieses Attribut löschen
+      remove_optional: Dieses Attribut entfernen
       locale_specific_unavailable: Dieses vom Gebietsschema abhängige Feld ist in diesem Gebietsschema nicht verfügbar
       locale_unavailable: Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar
+      to_fill_count: "{1}1 fehlendes erforderliches Attribut|]1, Inf[{{ Anzahl }}} fehlende erforderliche Attribute"
       add_attribute_option: Attributoption hinzufügen
       add_option: Auswahlmöglichkeit hinzufügen
     completeness:
@@ -71,6 +76,7 @@ pim_enrich.entity.product:
       complete: Vollständig
       no_family: Keine Produktfamilie zugewiesen. Bitte wählen Sie eine Produktfamilie, um die Vollständigkeit dieses Produkts zu berechnen.
       no_completeness: Sie haben gerade die Produktfamilie geändert. Bitte speichern Sie zuerst, um die Vollständigkeit für die neue Produktfamilie zu berechnen.
+      missing_values: "{1}1 fehlender Wert|] 1, Inf [{{ count }} fehlende Werte"
     sequential_edit:
       item_limit: Nur die ersten 1000 Elemente dieser sequentiellen Bearbeitung werden angezeigt ({{ count }} ausgewählt)
       empty: Ihre Auswahl ist leer, bitte ändern Sie Ihre Suchparameter
@@ -111,20 +117,42 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} kommentiert das Produkt'
       header_reply: '{{ user }} antwortet auf den Kommentar'
       delete_confirm: Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?
+      removed_author: Benutzer gelöscht
 pim_enrich.entity.product_model:
+  label: Produktmodell
+  uppercase_label: Produktmodell
   plural_label: Produktmodelle
   flash:
+    create:
+      success: Produktmodell erfolgreich erstellt
+      product_model_added: Produktmodell erfolgreich zum Produktmodell hinzugefügt
+      variant_product_added: Produktvariante erfolgreich zum Produktmodell hinzugefügt
     update:
       success: Produktmodell erfolgreich aktualisiert. Die Vollständigkeit der Produktvarianten wird neu berechnet.
       fail: Das Produktmodell konnte nicht aktualisiert werden.
       fields_not_ready: "Das Produktmodel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+    delete:
+      success: Produktmodell erfolgreich entfernt.
+      fail: Dieses Produktmodell kann nicht gelöscht werden
+  choose: Produktmodell wählen
   property:
     family_variant: Variante
   module:
+    create:
+      title: Produktmodell erstellen
+      content: Ein Produktmodell sammelt Produktvarianten und erleichtert die Bereicherung ihrer gemeinsamen Eigenschaften.
     attribute:
       read_only_parent_attribute_from_common: Dieses Attribut kann in den gemeinsamen Attributen bearbeitet werden.
       read_only_parent_attribute_from_model: "Dieses Attribut muss als Attribut von {{ axes }} bearbeitet werden"
+    variant_axis:
+      label: 'Variantenachse'
+      create: Hinzufügen
+      create_label: "{{ axes }} hinzufügen"
+      required_label: '(variantenachse(n))'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} Produktvariante]1, Inf[{{ complete }} / {{ total }} Produktvariante"
     delete:
+      confirm: Sind Sie sicher, dass Sie dieses Produktmodell löschen möchten? Alle untergeordneten Produktmodelle und Produktvarianten werden ebenfalls gelöscht.
       confirm_for_products_and_product_models: Sind Sie sicher, dass Sie die ausgewählten Produkte und Produktmodelle löschen wollen? Alle untergeordneten Produktmodelle werden ebenfalls gelöscht.
 pim_enrich.entity.group:
   label: Gruppe
@@ -138,6 +166,8 @@ pim_enrich.entity.group:
     delete:
       success: Gruppe erfolgreich entfernt
       fail: Diese Gruppe kann nicht gelöscht werden
+  page_title:
+    index: "]-Inf, 1]{{ count }} Gruppe|]1, Inf[{{ count }} Gruppen"
   module:
     create:
       button: Gruppe anlegen
@@ -224,15 +254,19 @@ pim_enrich.export.product:
     title: Globale Einstellungen
 pim_enrich.mass_edit.product:
   title: Massenbearbeitung Produkte
+  confirm: "{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie.|]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie."
   step:
     select:
       label: Produkte auswählen
     choose:
       title: Massenbearbeitung Produkte
+      label_count: "]0, Inf[Wählen Sie Ihre Aktion aus"
     configure:
       label: Konfigurieren
     confirm:
       label: Bestätigen
+    launch_error:
+      label: Bei der Massenbearbeitung ist ein Fehler aufgetreten
     launched:
       label: Die Massenbearbeitung "{{ operation }}" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
   operation:
@@ -240,41 +274,60 @@ pim_enrich.mass_edit.product:
       select_attributes: Attribute auswählen
     change_status:
       label: Status ändern
+      label_count: "{1}Ändern Sie den Status von <span class=\"AknFullPage-Titel--Highlight\">1 Produkt</span>|]1, Inf[Ändern des Status von <span class=\"AknFullPage-Titel--Highlight\">{{ itemsCount }}} Produkte</span>"
       description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
-      field: Zu aktivieren
+      field: Aktivieren
     edit_common:
       label: Attributwerte bearbeiten
+      label_count: "{1}Bearbeite die Attribute von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Bearbeite die Attribute von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
+      description: Nur die Attribute, die zu den Produktfamilien der ausgewählten Produkte gehören, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und dem {{ scope }} Ausgabekanal bearbeitet.
+      no_update: Bitte wählen Sie mindestens ein Feld aus, das Sie aktualisieren möchten
     add_attribute_value:
       label: Attributwerte hinzufügen
+      label_count: "{1}Attributswerte hinzufügen für <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>\n"
       description: Nur die Mehrfachauswahl-Attribute, die zu den Produktfamilien des Produkts gehören, werden mit den folgenden Daten des {{ locale }} Gebietsschemas und dem {{ scope }} Ausgabekanal bearbeitet. Die Attributwerte werden hinzugefügt, die vorherigen Werte bleiben erhalten.
     change_family:
+      label: Familie wechseln
+      label_count: "{1}Ändere die Familie von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere die Familie von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
     add_to_group:
       label: Zu Gruppen hinzufügen
+      label_count: "{1}Hinzufügen <span class=\"AknFullPage-title--highlight\">1 Produkt </span> to groups|] 1, Inf [Hinzufügen<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu Gruppen"
       description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
       field: Gruppen
+      no_update: Bitte wählen Sie vorher eine Gruppe aus, um fortzufahren
     add_to_category:
       label: Zu Kategorien hinzufügen
+      label_count: "{1}Hinzufügen von <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu Kategorien|] 1, Inf [Hinzufügen von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span> zu Kategorien"
       description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
     move_to_category:
       label: Zwischen Kategorien verschieben
+      label_count: "{1}Verschiebe <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zwischen Kategorien|] 1, Inf [Verschiebe <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zwischen Kategorien"
       description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen gehen verloren.
     remove_from_category:
       label: Aus Kategorien entfernen
+      label_count: "{1}Entferne <span class=\"AknFullPage-title--highlight\">1 Produkt</span> aus Kategorien|] 1, Inf [Entferne <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> aus Kategorien"
       description: Die Produkte werden aus den folgenden Kategorien entfernt.
+    add_to_existing_product_model:
+      label: Bestehendem Produktmodell hinzufügen
+      label_count: "{1}Hinzufügen von <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu einem existierenden Produktmodell|] 1, Inf [Hinzufügen von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu einem existierenden Produktmodell"
+      description: Das ausgewählte Produktmodell wird die Produkte zusammenfassen und ermöglicht so das Anreichern der gemeinsamen Eigenschaften.
+      no_update: Bitte wählen Sie ein Produktmodell, bevor Sie fortfahren
     associate_to_product_and_product_model:
       label: Verbinden
+      label_count: "{1}Verbinde <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu Produkten oder Produktmodells|] 1, Inf [Verbinde <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu Produkten oder Produktmodells"
       description: Die im Raster ausgewählten Produkte werden den selektierten Produkten und Produktmodells für den ausgewählten Verbindungstyp zugeordnet
       validate: Fügen Sie eine Verbindung hinzu, bevor Sie mit dem nächsten Schritt fortfahren
     change_parent_product_model:
       label: Eltern Produktmodell ändern
+      label_count: "{1}Ändere Eltern des Produktmodells von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere Eltern des Produktmodells von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
       description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
-      label: Stapelverarbeitung
+      label: Massenbearbeitung
     quick_export:
-      label: Schnell-Export
+      label: Schnellexport
   mass_action:
     delete:
       confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
@@ -287,7 +340,10 @@ pim_datagrid:
       xlsx_grid_context: Excel (Kontextabhängig)
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
-    mass_delete: Mehrfachauswahl löschen
+    mass_delete: Mehrauswahl löschen
+    selected:
+      family: ausgewählte Produktfamilien
+      product: Ausgewählte Ergebnisse
   view_selector:
     view: Ansichten
   actions:
@@ -299,8 +355,8 @@ pim_datagrid:
     other: Weitere Aktionen
   empty_results:
     associated_product:
-      hint: Es gibt keine verbundenen Produkte
-      subHint: 'Klicken Sie auf den Button "Verbindung hinzufügen", um dieses Produkt zu verbinden'
+      hint: Es gibt keine zugehörigen Produkte
+      subHint: 'Klicken Sie auf den Button "Assoziationen hinzufügen", um dieses Produkt zu assoziieren'
   filters:
     label: Filter
     system: System
@@ -317,11 +373,16 @@ batch_jobs:
   add_to_category:
     label: Zu Kategorie hinzufügen
     perform.label: Zu Kategorie hinzufügen
+  add_to_existing_product_model:
+    label: Zu einem bestehenden Produktmodell hinzufügen
+    perform.label: Bestehendem Produktmodell hinzufügen
   csv_product_grid_context_quick_export:
     quick_export.label: CSV Produkt-Schnellexport kontextabhängig
+    quick_export_product_model.label: CSV Produktmodell Rasterkontext Schnell-Export
     perform.label: CSV Produkt-Schnellexport kontextabhängig
   csv_product_quick_export:
     quick_export.label: CSV Produkt-Schnellexport
+    quick_export_product_model.label: CSV Produktmodell-Schnellexport
     perform.label: CSV Produkt-Schnellexport
   delete_products_and_product_models:
     label: Massenlöschung von Produkten
@@ -332,6 +393,11 @@ batch_jobs:
   edit_common_attributes:
     label: Attribute bearbeiten
     perform.label: Attribute bearbeiten
+    clean.label: Dateien für Attribute bereinigen
+    cleaner.label: Dateien für Attribute bereinigen
+  compute_completeness_of_products_family:
+    label: Vollständigkeit berechnen
+    perform.label: Vollständigkeit berechnen
   move_to_category:
     label: In Kategorie verschieben
     perform.label: In Kategorie verschieben
@@ -344,3 +410,11 @@ batch_jobs:
   set_attribute_requirements:
     label: Benötigte Attribute auswählen
     perform.label: Benötigte Attribute auswählen
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX Produkt-Schnellexport kontextabhängig
+    quick_export_product_model.label: XLSX Produktmodell-Schnellexport kontextabhängig
+    perform.label: XLSX Produkt-Schnellexport kontextabhängig
+  xlsx_product_quick_export:
+    quick_export.label: XLSX Produkt-Schnellexport
+    quick_export_product_model.label: XSLX Produktmodell-Schnellexport
+    perform.label: XLSX Produkt-Schnellexport

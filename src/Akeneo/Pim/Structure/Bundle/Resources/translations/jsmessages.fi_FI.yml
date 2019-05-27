@@ -1,11 +1,11 @@
 pim_enrich.entity.family:
-  label: tuoteperhe
+  label: perhe
   uppercase_label: Perhe
-  plural_label: Perheet
+  plural_label: Tuoteperheet
   flash:
     update:
       success: Perheen päivittäminen onnistui.
-      fail: Tuoteperheen tallennuksessa tapahtui virhe.
+      fail: Perheen tallennuksessa tapahtui virhe.
       cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
       cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
       cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
@@ -13,7 +13,7 @@ pim_enrich.entity.family:
     create:
       success: Tuoteperhe luotu
     delete:
-      success: Tuoteperhe poistettu
+      success: Perhe poistettu
       fail: Ryhmää ei voi poistaa
   property:
     attribute_as_label: Otsikkona käytettävä attribuutti
@@ -28,11 +28,11 @@ pim_enrich.entity.family:
     create:
       button: Luo perhe
     delete:
-      confirm: Oletko varma, että haluat poistaa tämän ryhmän?
+      confirm: Oletko varma, että haluat poistaa tämän perheen?
 pim_enrich.entity.family_variant:
   label: varianttiperhe
   short_plural_label: Variantit
-  short_label: Tuotevariaatio
+  short_label: Variantti
   flash:
     update:
       success: Varianttiperhe päivitetty onnistuneesti. Tuotteet ja variantit päivitetään tekemilläsi muutoksilla.
@@ -74,22 +74,24 @@ pim_enrich.entity.attribute_option:
       cancel_title: Peruuta muokkaukset
       cancel_description: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta vaihtoehtoa?
 pim_enrich.entity.association_type:
-  label: sidoksen tyyppi
+  label: assosiaatiotyyppi
   flash:
     update:
-      success: Assosiaatiotyyppi päivitetty.
+      success: Assosiaatiotyypin päivittäminen onnistui.
       fail: Assosiaatiotyyppiä ei voitu päivittää.
       fields_not_ready: "Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     create:
-      success: Sidostyyppi luotu onnistuneesti
+      success: Assosiaatiotyyppi luotu onnistuneesti
     delete:
-      success: Sidostyyppi poistettu onnistuneesti
-      fail: Assosiaatiotyyppiä ei voi poistaa
+      success: Assosiaatiotyyppi poistettu onnistuneesti
+      fail: Liitostyyppiä ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} assosiaatiotyyppi|]1, Inf [{{ count }} assosiaatiotyyppiä"
   module:
     create:
       button: Luo assosiaatiotyyppi
     delete:
-      confirm: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
+      confirm: Oletko varma, että haluat poistaa tämän liitostyypin?
 pim_enrich.entity.group_type:
   label: ryhmän tyyppi
   flash:
@@ -102,6 +104,8 @@ pim_enrich.entity.group_type:
     delete:
       success: Ryhmätyyppi poistettu onnistuneesti
       fail: Ryhmätyyppiä ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} ryhmätyyppi|]1, Inf [{{ count }} ryhmätyyppiä"
   module:
     create:
       button: Luo ryhmätyyppi
@@ -118,6 +122,8 @@ pim_enrich.entity.attribute:
     delete:
       success: Attribuutin poistaminen onnistui
       fail: Attribuuttia ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} attribuutti|]1, Inf [{{ count }} attribuuttia"
   property:
     allowed_extensions: Sallitut laajennukset
     auto_option_sorting: Järjestä vaihtoehdot automaattisesti aakkosjärjestykseen
@@ -131,8 +137,8 @@ pim_enrich.entity.attribute:
     group:
       label: Attribuuttiryhmä
       choose: Valitse attribuuttiryhmä
-    is_locale_specific: Aluespesifi
-    localizable: Kielikohtainen arvo
+    is_locale_specific: Aluekohtainen arvo
+    localizable: Lokalisoitavissa
     max_characters: Maksimimerkkimäärä
     max_file_size: Suurin tiedostokoko (Mt)
     metric_family:
@@ -146,7 +152,7 @@ pim_enrich.entity.attribute:
     reference_data_name:
       label: Referenssidatan tyyppi
       choose: Valitse viite-datatyyppi
-    scopable: Kanavakohtainen arvo
+    scopable: Kanavakohtainen
     type:
       choose: Valitse attribuutin tyyppi
       pim_catalog_identifier: Tunniste
@@ -165,11 +171,11 @@ pim_enrich.entity.attribute:
       pim_reference_data_multiselect: Viitetiedot monivalinta
     unique: Yksilöllinen arvo
     useable_as_grid_filter: Käytettävissä ruudukossa
-    validation_regexp: Tavallinen virke
+    validation_regexp: Säännöllinen lauseke
     validation_rule:
       label: Kelpoisuussääntö
       email: Sähköposti
-      regexp: Tavallinen virke
+      regexp: Säännöllinen lauseke
       url: URL-osoite
     wysiwyg_enabled: Tekstin muotoilu käytössä
   module:
@@ -184,8 +190,9 @@ pim_enrich.entity.attribute:
       validation: Validaatioparametrit
     delete:
       confirm: Oletko varma, että haluat poistaa tämän attribuutin?
+      confirm_from_family: Oletko varma, että haluat poistaa tämän attribuutin attribuuttiperheeltä?
       confirm_from_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
-      confirm_from_product: Oletko varma, että haluat poistaa tämän attribuutin tuotteesta?
+      confirm_from_product: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
 pim_enrich.entity.attribute_group:
   label: attribuuttiryhmä
   uppercase_label: Attribuuttiryhmä
@@ -194,8 +201,10 @@ pim_enrich.entity.attribute_group:
     update:
       success: Attribuuttiryhmän päivittäminen onnistui
       fail: Attribuuttiyhmää ei voitu päivittää
+      fields_not_ready: "Attribuuttiryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     delete:
       success: Attribuuttiryhmän poisto onnistui
+      fail: Attribuuttiryhmää ei voi poistaa
   module:
     add_attribute_group:
       label: Lisää ryhmittäin
@@ -204,6 +213,7 @@ pim_enrich.entity.attribute_group:
       confirm: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
 pim_enrich.mass_edit.family:
   title: Perheiden massamuokkaus
+  confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|]1, Inf[Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuoteperheet
@@ -211,7 +221,7 @@ pim_enrich.mass_edit.family:
       title: Perheiden massamuokkaus
       label_count: "]0, Inf[Valitse toiminto"
     configure:
-      label: Konfiguroi
+      label: Muuta asetuksia
     confirm:
       label: Vahvista
     launched:
@@ -220,3 +230,4 @@ pim_enrich.mass_edit.family:
     set_requirements:
       label: Aseta vaaditut attribuutit
       description: Seuraavat vaaditut attribuutit lisätään valituille perheille
+      label_count: "{1}Aseta vaaditut attribuutit <span class=\"AknFullPage-title--highlight\">1 perheelle</span>|]1, Inf[Aseta vaaditut attribuutit <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} perheelle</span>"

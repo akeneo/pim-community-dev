@@ -4,7 +4,12 @@ batch_jobs:
     import_associations: 関連付けのインポート
     import_root_product_model: ルート製品モデルのインポート
     import_sub_product_model: サブ製品モデルのインポート
+    compute_data_related_to_family_root_product_models: ルート製品モデルデータを計算
+    compute_data_related_to_family_sub_product_models: サブ製品モデルデータを計算
+    compute_data_related_to_family_products: 製品データを計算
     compute_product_models_descendants: 製品モデルの子孫を計算します。
+    compute_family_variant_structure_changes: バリアントのファミリー構造の変化を計算
+    compute_completeness_of_products_family: 製品ファミリの完全性を計算
   csv_product_export:
     label: 商品をCSV形式でエクスポート
     export.label: 商品エクスポート
@@ -53,6 +58,7 @@ batch_jobs:
   csv_family_import:
     label: ファミリーをCSV形式でインポート
     import.label: ファミリーインポート
+    compute_data_related_to_family_variants.label: 製品モデルデータを計算
   csv_family_variant_import:
     label: ファミリーバリアントをCSV形式でインポート
     import.label: ファミリーバリアントをインポート
@@ -99,6 +105,7 @@ batch_jobs:
     label: 商品をXLSX形式でインポート
     import.label: 製品のインポート
   xlsx_product_model_import:
+    label: 製品モデルをXLSX形式でインポート
     import_product_model_descendants.label: 製品モデルの子孫を計算します。
   xlsx_group_export:
     label: グループをXLSX形式でインポート
@@ -123,7 +130,7 @@ batch_jobs:
     export.label: 属性オプションをXLSX形式でエクスポート
   xlsx_association_type_export:
     label: 関連タイプをXLSX形式でインポート
-    export.label: 関連タイプをXLSX形式でインポート
+    export.label: 関連タイプをXLSX形式でエクスポート
   xlsx_attribute_group_export:
     label: 属性グループをXLSX形式でエクスポート
     export.label: 属性グループエクスポート

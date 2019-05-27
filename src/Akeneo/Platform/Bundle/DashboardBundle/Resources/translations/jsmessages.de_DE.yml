@@ -9,11 +9,12 @@ pim_dashboard:
       job_type:
         import: Import
         export: Export
-        mass_edit: Massenbearbeitung
+        mass_edit: Mehrere bearbeiten
         quick_export: Schnellexport
         compute_product_models_descendants: Vererbungen der Produktmodelle berechnen
+        compute_family_variant_structure_changes: Änderungen in der Struktur von Varianten der Produktfamilie berechnen
         compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
-        mass_delete: Massenlöschung von Produkten
+        mass_delete: Mehrere Produkte löschen
     completeness:
       load_more: 'Mehr laden...'
     header:

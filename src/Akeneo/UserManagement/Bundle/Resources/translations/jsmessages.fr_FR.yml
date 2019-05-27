@@ -60,7 +60,7 @@ pim_user_management:
         new_password_repeat: Nouveau mot de passe (répéter)
         password: Mot de passe
         password_repeat: Mot de passe (confirmation)
-        ui_locale: Langue de l'interface
+        ui_locale: Langage de l'interface
         timezone: Fuseau horaire
         default_product_grid_view: Vue par défaut de la grille des produits
         default_published_product_grid_view: Vue par défaut de la grille des produits publiés
@@ -72,7 +72,7 @@ pim_user_management:
         delete:
           confirm: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
         update:
-          additional: Supplémentaire
+          additional: Complémentaire
           groups_and_roles: Groupes et rôles
           password: Mot de passe
           interfaces: Interfaces

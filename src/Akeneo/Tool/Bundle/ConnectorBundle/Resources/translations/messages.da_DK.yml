@@ -4,7 +4,7 @@ pim_connector:
       invalid_item_columns_count: 'Forventede at have %totalColumnsCount% kolonner, har %itemColumnsCount% i %filePath%:%lineno%'
 job_execution.summary:
   read: læs
-  write: skrevet
+  write: gemt
   skip: sprunget over
   create: oprettet
   process: færdig

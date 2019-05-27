@@ -19,12 +19,12 @@ pim_catalog_volume:
     count_scopable_attributes: Kanavakohtaisia attribuutteja
     count_localizable_and_scopable_attributes: Lokalisoituja ja kanavakohtaisia attribuutteja
     count_localizable_attributes: Lokalisoituja attribuutteja
-    count_families: Perheet
+    count_families: Tuoteperheet
     count_attributes: Attribuutit
     average_max_options_per_attribute: Attribuuttioptioita
     count_categories: Kategoriat
     count_category_trees: Kategoriahierarkia
-    count_variant_products: Varianttituotteita
+    count_variant_products: Varianttituotteet
     count_product_models: Tuotemallit
     warning: Wow! Teit tässä ennätyksen. Älä epäröi ottaa yhteyttä, mikäli tarvitset tässä mittakaavassa apua.
   mean: 'Keskiarvo:'

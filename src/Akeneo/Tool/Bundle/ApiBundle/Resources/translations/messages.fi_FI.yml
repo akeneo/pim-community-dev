@@ -15,7 +15,7 @@ pim_api:
       list: Listaa kategoriat
     family:
       edit: Luo ja päivitä perheitä
-      list: Listaa tuoteperheet
+      list: Listaa perheet
     family_variant:
       edit: Luo ja päivitä varianttiperheitä
       list: Listaa varianttiperheet
@@ -23,7 +23,7 @@ pim_api:
       edit: Luo ja päivitä kanavia
       list: Listaa kanavat
     locale.list: Lista lokaatioista
-    currency.list: Lista valuutoista
+    currency.list: Listaa valuutat
     association_type:
       edit: Luo ja päivitä assosiaatiotyyppejä
       list: Listaa assosiaatiotyypit
@@ -33,10 +33,10 @@ pim_api:
     attribute_option: Attribuuttien vaihtoehdot
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
-    family: Perheet
+    family: Tuoteperheet
     family_variant: Varianttiperheet
     channel: Kanavat
-    locale: Alueet
+    locale: Lokaatiot
     currency: Valuutat
     association_type: Assosiaatiotyypit
 pim_user:
