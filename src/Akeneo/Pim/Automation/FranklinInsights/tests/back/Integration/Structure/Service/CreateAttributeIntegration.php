@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeTy
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -71,11 +72,42 @@ SQL;
         );
     }
 
+    public function test_it_creates_an_attribute_when_attribute_code_already_exists(): void
+    {
+        $attributeCodeText = 'a_simple_select';
+
+        $beforeStatement = $this->executeGetAttributeQuery($attributeCodeText);
+
+        $this->expectException(ViolationHttpException::class);
+
+        $this->createAttributeService->create(
+            new AttributeCode($attributeCodeText),
+            new AttributeLabel('A simple select'),
+            new AttributeType(AttributeTypes::TEXT)
+        );
+
+        $afterStatement = $this->executeGetAttributeQuery($attributeCodeText);
+
+        Assert::assertEquals(1, $beforeStatement->rowCount());
+        Assert::assertEquals(1, $afterStatement->rowCount());
+    }
+
+    private function executeGetAttributeQuery(string $code)
+    {
+        $query = <<<SQL
+SELECT * FROM pim_catalog_attribute pca
+WHERE pca.code = :CODE
+SQL;
+        return $this->dbal->executeQuery($query, [
+            'CODE' => $code
+        ]);
+    }
+
     /**
      * @return Configuration
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 }
