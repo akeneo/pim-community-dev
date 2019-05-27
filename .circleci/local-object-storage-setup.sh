@@ -12,7 +12,7 @@ services:
         factory_method: factory
         arguments:
             -
-                endpoint: 'http://object-storage:9000/asset/'
+                endpoint: 'http://object-storage:9000/'
                 version: 'latest'
                 region: 'us-west-1'
                 use_path_style_endpoint: true
@@ -34,6 +34,10 @@ oneup_flysystem:
             awss3v3:
                 client: acme.s3_client
                 bucket: jobs
+        archivist_adapter:
+            awss3v3:
+                client: acme.s3_client
+                bucket: archive
 
 OBJECT_STORAGE_CONF
 
