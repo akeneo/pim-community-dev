@@ -19,6 +19,7 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
 
     public function testDeleteAProduct()
     {
+        $this->createAdminUser();
         $client = $this->createAuthenticatedClient();
 
         $this->assertCount(7, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
@@ -36,6 +37,7 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
 
     public function testNotFoundAProduct()
     {
+        $this->createAdminUser();
         $client = $this->createAuthenticatedClient();
 
         $client->request('DELETE', 'api/rest/v1/products/not_found');
