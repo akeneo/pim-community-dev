@@ -400,6 +400,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.connector_value_transformer }
 
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.number_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\NumberConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
     akeneo_referenceentity.infrastructure.persistence.record.transformer.image_connector_value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ImageConnectorValueTransformer
         tags:
