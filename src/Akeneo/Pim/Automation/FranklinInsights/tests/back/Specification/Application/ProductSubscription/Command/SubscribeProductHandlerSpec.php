@@ -107,4 +107,55 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $this->handle(new SubscribeProductCommand($productId));
     }
+
+    public function it_throws_an_exception_if_another_product_with_the_same_identifiers_has_already_been_subscribed(
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
+        ProductRepositoryInterface $productRepository,
+        SubscriptionProviderInterface $subscriptionProvider,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        ProductInterface $product,
+        AttributeInterface $ean,
+        ValueInterface $eanValue
+    ) {
+        $productId = 42;
+        $anotherProductId = 541;
+        $subscriptionId = uniqid();
+        $suggestedValues = [[
+            'pimAttributeCode' => 'foo',
+            'value' => 'bar',
+        ]];
+
+        $product->getId()->willReturn($productId);
+        $product->getFamily()->willReturn(new Family());
+        $product->getValue('ean')->willReturn($eanValue);
+        $productRepository->find($productId)->willReturn($product);
+
+        $query = new GetProductSubscriptionStatusQuery($productId);
+        $getProductSubscriptionStatusHandler->handle($query)->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, true, true, 33),
+                false,
+                true,
+                true,
+                false
+            )
+        );
+
+        $ean->getCode()->willReturn('ean');
+        $eanValue->hasData()->willReturn(true);
+        $eanValue->__toString()->willReturn('an_ean');
+
+        $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+
+        $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
+
+        $response = new ProductSubscriptionResponse($anotherProductId, $subscriptionId, $suggestedValues, false, false);
+        $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
+
+        $this->shouldThrow(ProductSubscriptionException::productSubscriptionWithSameIdentifierAlreadyExist())->during(
+            'handle', [new SubscribeProductCommand($productId)]
+        );
+    }
 }

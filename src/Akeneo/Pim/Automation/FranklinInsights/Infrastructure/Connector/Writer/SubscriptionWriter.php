@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
@@ -84,6 +85,16 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
                     // TODO: ask POs for error message
                     $this->stepExecution->addWarning(
                         'akeneo_franklin_insights.entity.product_subscription.constraint.invalid_mapped_values',
+                        [],
+                        new DataInvalidItem(
+                            ['identifier' => $item->getProduct()->getIdentifier()]
+                        )
+                    );
+                } else {
+                    // If there's no subscription and no warning for the product id,
+                    // it means that there's already a subscription with the same identifiers, but with another tracker id (i.e. another product)
+                    $this->stepExecution->addWarning(
+                        ProductSubscriptionException::productSubscriptionWithSameIdentifierAlreadyExist()->getMessage(),
                         [],
                         new DataInvalidItem(
                             ['identifier' => $request->getProductIdentifier()]

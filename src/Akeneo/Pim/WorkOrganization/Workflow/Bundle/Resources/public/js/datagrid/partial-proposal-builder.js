@@ -50,7 +50,8 @@ define(
                             {
                                 title: title,
                                 cancelText: _.__('pim_common.cancel'),
-                                okText: _.__('pimee_enrich.entity.product.module.approval.send')
+                                okText: _.__('pimee_enrich.entity.product_draft.module.proposal.confirm'),
+                            illustrationClass: 'proposal'
                             }
                         );
 

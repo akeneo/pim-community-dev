@@ -26,16 +26,18 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder\FindAllRecordLabels;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder\RecordLabels;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class FindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
+class FindAllRecordLabelsTest extends SqlIntegrationTestCase
 {
-    /** @var FindRecordLabelsByIdentifiersInterface */
+    /** @var FindAllRecordLabels*/
     private $query;
 
     /** @var RecordIdentifier */
@@ -51,7 +53,7 @@ class FindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.onboarder.find_record_labels_by_identifiers');
+        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.onboarder.find_all_record_labels');
         $this->resetDB();
         $this->loadReferenceEntityAndRecords();
     }
@@ -59,33 +61,28 @@ class FindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_finds_record_labels_by_identifiers()
+    public function it_finds_all_record_labels()
     {
-        $result = $this->query->find([(string) $this->michaelIdentifier, (string) $this->dysonIdentifier]);
-        $this->assertEquals([
-            new RecordLabels(
-                (string) $this->dysonIdentifier,
-                ['fr_FR' => 'Dyson', 'en_US' => null, 'de_DE' => null],
-                'dyson',
-                'designer'
-            ),
-            new RecordLabels(
-                (string) $this->michaelIdentifier,
-                ['fr_FR' => null, 'en_US' => null, 'de_DE' => null],
-                'michael',
-                'designer'
-            ),
-        ], $result);
-
-        $result = $this->query->find([(string) $this->starckIdentifier]);
-        $this->assertEquals([
-            new RecordLabels(
-                (string) $this->starckIdentifier,
-                ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck US', 'de_DE' => null],
-                'starck',
-                'designer'
-            ),
-        ], $result);
+        $records = $this->query->find();
+        $records = iterator_to_array($records);
+        Assert::assertContains(new RecordLabels(
+            (string) $this->michaelIdentifier,
+            ['fr_FR' => null, 'en_US' => null, 'de_DE' => null],
+            'michael',
+            'designer'
+        ), $records, '', false, false);
+        Assert::assertContains(new RecordLabels(
+           (string) $this->starckIdentifier,
+           ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck US', 'de_DE' => null],
+           'starck',
+           'designer'
+        ), $records, '', false, false);
+        Assert::assertContains(new RecordLabels(
+           (string) $this->dysonIdentifier,
+           ['fr_FR' => 'Dyson', 'en_US' => null, 'de_DE' => null],
+           'dyson',
+           'designer'
+        ), $records, '', false, false);
     }
 
     private function resetDB(): void

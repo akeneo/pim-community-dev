@@ -104,6 +104,10 @@ class SubscribeProductHandler
 
         $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
 
+        if (false === $subscriptionResponse->getProductId()->equals($productId)) {
+            throw ProductSubscriptionException::productSubscriptionWithSameIdentifierAlreadyExist();
+        }
+
         $subscription = new ProductSubscription(
             $productInfos->getProductId(),
             $subscriptionResponse->getSubscriptionId(),
