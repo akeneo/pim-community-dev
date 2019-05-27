@@ -34,29 +34,22 @@ class DateValueFactory extends AbstractValueFactory
             );
         }
 
-
         try {
             $date = new \DateTime($data);
 
             if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-                $this->throwsInvalidDateException($attribute, $data);
+                throw $this->buildInvalidDateException($attribute, $data);
             }
         } catch (\Exception $e) {
-            $this->throwsInvalidDateException($attribute, $data);
+            throw $this->buildInvalidDateException($attribute, $data);
         }
 
         return $date;
     }
 
-    /**
-     * @param AttributeInterface $attribute
-     * @param string             $data
-     *
-     * @throws InvalidPropertyException
-     */
-    protected function throwsInvalidDateException(AttributeInterface $attribute, $data)
+    protected function buildInvalidDateException(AttributeInterface $attribute, $data): InvalidPropertyException
     {
-        throw InvalidPropertyException::dateExpected(
+        return InvalidPropertyException::dateExpected(
             $attribute->getCode(),
             'yyyy-mm-dd',
             static::class,
