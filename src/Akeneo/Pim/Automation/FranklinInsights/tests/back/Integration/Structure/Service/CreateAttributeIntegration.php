@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Structur
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -33,8 +34,7 @@ class CreateAttributeIntegration extends TestCase
         $this->createAttributeService->create(
             new AttributeCode('franklin_code'),
             new AttributeLabel('franklin_label'),
-            AttributeTypes::TEXT,
-            'other'
+            new AttributeType(AttributeTypes::TEXT)
         );
         $query = <<<SQL
 SELECT code FROM pim_catalog_attribute WHERE code = :CODE
@@ -46,6 +46,29 @@ SQL;
         $result = $statement->fetch();
 
         Assert::assertSame('franklin_code', $result['code']);
+    }
+
+    public function test_it_creates_an_attribute_when_attribute_type_does_not_exist(): void
+    {
+        $attributeTypeText = 'not_existing_attribute_type';
+
+        $query = <<<SQL
+SELECT count(1) AS row_count FROM pim_catalog_attribute
+WHERE attribute_type = :TYPE
+SQL;
+
+        $result = $this->dbal->executeQuery($query, [
+            'TYPE' => (string) $attributeTypeText
+        ])->fetch();
+
+        Assert::assertEquals(0, (int) $result['row_count']);
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->createAttributeService->create(
+            new AttributeCode('franklin_code'),
+            new AttributeLabel('franklin_label'),
+            new AttributeType($attributeTypeText)
+        );
     }
 
     /**
