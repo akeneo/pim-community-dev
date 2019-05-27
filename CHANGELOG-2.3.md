@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7657: Fix count on mass edit product selection
+
 # 2.3.46 (2019-05-27)
 
 ## Bug fixes
