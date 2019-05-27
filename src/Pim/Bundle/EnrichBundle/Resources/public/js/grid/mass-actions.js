@@ -110,6 +110,7 @@ define(
              * Updates the count after clicking in "Select all visible" button
              */
             selectVisible() {
+                this.selectNone();
                 this.collection.trigger('backgrid:selectAllVisible');
 
                 this.updateView();
