@@ -20,7 +20,6 @@ import NoAttribute from 'akeneoreferenceentity/application/component/record/edit
 import Key from 'akeneoreferenceentity/tools/key';
 import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
 import {redirectToProductGrid} from 'akeneoreferenceentity/application/event/router';
-import {NormalizedRecordCode} from 'akeneoreferenceentity/domain/model/record/record';
 import NotEnoughItems from 'akeneoreferenceentity/application/component/record/edit/product/not-enough-items';
 
 interface StateProps {
@@ -41,7 +40,7 @@ interface DispatchProps {
     onLinkedAttributeChange: (attributeCode: string) => void;
     onRedirectToProduct: (product: ProductModel) => void;
     onRedirectAttributeCreation: () => void;
-    onRedirectToProductGrid: (selectedAttribute: string, recordCode: NormalizedRecordCode) => void;
+    onRedirectToProductGrid: (selectedAttribute: string, recordCode: NormalizedCode) => void;
   };
 }
 
@@ -184,7 +183,7 @@ export default connect(
         onRedirectAttributeCreation: () => {
           dispatch(redirectToAttributeCreation());
         },
-        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedRecordCode) => {
+        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => {
           dispatch(redirectToProductGrid(selectedAttribute, recordCode));
         }
       },
