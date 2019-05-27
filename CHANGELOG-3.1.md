@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.4 (2019-05-27)
+
 ## Bug fixes
 
 - PIM-8374: Fix timeout when launching the completeness purge command
