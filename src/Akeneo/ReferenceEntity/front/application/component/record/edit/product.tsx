@@ -19,6 +19,9 @@ import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/at
 import NoAttribute from 'akeneoreferenceentity/application/component/record/edit/product/no-attribute';
 import Key from 'akeneoreferenceentity/tools/key';
 import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
+import {redirectToProductGrid} from 'akeneoreferenceentity/application/event/router';
+import {NormalizedRecordCode} from 'akeneoreferenceentity/domain/model/record/record';
+import NotEnoughItems from 'akeneoreferenceentity/application/component/record/edit/product/not-enough-items';
 
 interface StateProps {
   context: {
@@ -38,6 +41,7 @@ interface DispatchProps {
     onLinkedAttributeChange: (attributeCode: string) => void;
     onRedirectToProduct: (product: ProductModel) => void;
     onRedirectAttributeCreation: () => void;
+    onRedirectToProductGrid: (selectedAttribute: string, recordCode: NormalizedRecordCode) => void;
   };
 }
 
@@ -127,6 +131,12 @@ class Product extends React.Component<StateProps & DispatchProps> {
                 ) : null}
               </React.Fragment>
             )}
+            <NotEnoughItems
+              productCount={this.props.products.length}
+              totalCount={this.props.totalCount}
+              selectedAttribute={this.props.selectedAttribute}
+              showMore={() => this.props.events.onRedirectToProductGrid(this.props.selectedAttribute as string, this.props.recordCode)}
+            />
           </React.Fragment>
         ) : (
           <NoAttribute
@@ -174,6 +184,9 @@ export default connect(
         onRedirectAttributeCreation: () => {
           dispatch(redirectToAttributeCreation());
         },
+        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedRecordCode) => {
+          dispatch(redirectToProductGrid(selectedAttribute, recordCode));
+        }
       },
     };
   }

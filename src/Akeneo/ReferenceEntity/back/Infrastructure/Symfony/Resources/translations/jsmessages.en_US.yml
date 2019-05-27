@@ -123,6 +123,10 @@ pim_reference_entity:
         title: There is no product attribute linked to the reference entity "{{ entityLabel }}"
         subtitle: "To start linking products to this reference entity you can create a new one: "
         link: Create a new product attribute
+      not_enough_items:
+        title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
+        subtitle: To discover all the products linked, just click below!
+        button: View all products
       no_product:
         title: There are no products linked for the product attribute "{{ entityLabel }}"
         subtitle: "Start linking products to this attribute to see them here"

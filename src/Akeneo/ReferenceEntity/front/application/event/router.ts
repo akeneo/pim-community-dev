@@ -1,4 +1,5 @@
 import {NormalizedRecordCode} from 'akeneoreferenceentity/domain/model/record/record';
+import {NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
 
 export const redirectToRoute = (
   route: string,
@@ -8,6 +9,6 @@ export const redirectToRoute = (
   return {type: 'REDIRECT_TO_ROUTE', route, params, options};
 };
 
-export const redirectToProductGrid = (selectedAttribute: string, recordCode: NormalizedRecordCode) => {
+export const redirectToProductGrid = (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedRecordCode) => {
   return {type: 'REDIRECT_TO_PRODUCT_GRID', selectedAttribute, recordCode};
 };
