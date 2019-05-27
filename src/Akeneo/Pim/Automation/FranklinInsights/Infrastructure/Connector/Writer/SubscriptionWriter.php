@@ -87,7 +87,7 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
                         'akeneo_franklin_insights.entity.product_subscription.constraint.invalid_mapped_values',
                         [],
                         new DataInvalidItem(
-                            ['identifier' => $item->getProduct()->getIdentifier()]
+                            ['identifier' => $request->getProduct()->getIdentifier()]
                         )
                     );
                 } else {

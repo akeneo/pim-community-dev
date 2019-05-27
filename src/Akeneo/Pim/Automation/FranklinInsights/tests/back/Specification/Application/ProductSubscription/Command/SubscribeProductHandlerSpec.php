@@ -16,6 +16,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductInfosForSubscription;
@@ -109,27 +110,22 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_another_product_with_the_same_identifiers_has_already_been_subscribed(
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
-        ProductRepositoryInterface $productRepository,
-        SubscriptionProviderInterface $subscriptionProvider,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        ProductInterface $product,
-        AttributeInterface $ean,
-        ValueInterface $eanValue
+        SubscriptionProviderInterface $subscriptionProvider
     ) {
-        $productId = 42;
-        $anotherProductId = 541;
-        $subscriptionId = uniqid();
+        $productId = new ProductId(42);
+        $productIdentifierValues = new ProductIdentifierValues($productId, ['upc' => 'an_ean']);
+        $family = new Family(new FamilyCode('a_family'), []);
+        $subscriptionId = new SubscriptionId(uniqid());
         $suggestedValues = [[
             'pimAttributeCode' => 'foo',
             'value' => 'bar',
         ]];
 
-        $product->getId()->willReturn($productId);
-        $product->getFamily()->willReturn(new Family());
-        $product->getValue('ean')->willReturn($eanValue);
-        $productRepository->find($productId)->willReturn($product);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId, $productIdentifierValues, $family, 'a_product', false, false
+        ));
 
         $query = new GetProductSubscriptionStatusQuery($productId);
         $getProductSubscriptionStatusHandler->handle($query)->willReturn(
@@ -142,16 +138,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
             )
         );
 
-        $ean->getCode()->willReturn('ean');
-        $eanValue->hasData()->willReturn(true);
-        $eanValue->__toString()->willReturn('an_ean');
-
-        $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
-
-        $response = new ProductSubscriptionResponse($anotherProductId, $subscriptionId, $suggestedValues, false, false);
+        $response = new ProductSubscriptionResponse(new ProductId(666), $subscriptionId, $suggestedValues, false, false);
         $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
         $this->shouldThrow(ProductSubscriptionException::productSubscriptionWithSameIdentifierAlreadyExist())->during(
