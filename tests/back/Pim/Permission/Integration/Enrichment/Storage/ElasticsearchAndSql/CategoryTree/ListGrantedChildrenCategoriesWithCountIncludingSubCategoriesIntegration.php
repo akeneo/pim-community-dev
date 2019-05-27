@@ -18,6 +18,8 @@ class ListGrantedChildrenCategoriesWithCountIncludingSubCategoriesIntegration ex
     {
         parent::setUp();
 
+        $this->createAdminUser();
+
         $fixturesLoader = new CategoryTreeFixturesLoaderWithPermission($this->testKernel->getContainer());
         $fixturesLoader->adminUserAsRedactorAndITSupport();
 
