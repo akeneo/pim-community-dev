@@ -4,44 +4,49 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log;
 
 use Box\Spout\Writer\Common\Helper\ZipHelper;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CreateArchive
 {
+    /** @var FilesystemInterface */
+    private $logsStorage;
+
     /** @var string */
     private $logDirectory;
 
     /** @var string */
     private $tmpStorageDirectory;
 
-    public function __construct(string $logDirectory, string $tmpStorageDirectory)
-    {
+    public function __construct(
+        FilesystemInterface $logsStorage,
+        string $logDirectory,
+        string $tmpStorageDirectory
+    ) {
         $this->logDirectory = $logDirectory;
         $this->tmpStorageDirectory = $tmpStorageDirectory;
+        $this->logsStorage = $logsStorage;
     }
 
     public function create(): \SplFileInfo
     {
-        $archive = new ZipHelper($this->getLogArchiveDirectory());
+        $tmpLogsPath = $this->tmpStorageDirectory.DIRECTORY_SEPARATOR.'pim_authentication_logs';
+        (new Filesystem())->mkdir($tmpLogsPath);
+        $zipFilePath = tempnam($tmpLogsPath, 'logs');
+        $archive = new \ZipArchive();
+        if (!$archive->open($zipFilePath, \ZipArchive::CREATE)) {
+            throw new \Exception('');
+        }
 
         $this->addReadmeFileToArchive($archive);
         $this->addLogsFileToArchive($archive);
 
-        $archive->closeArchiveAndCopyToStream(fopen($archive->getZipFilePath(), 'wb+'));
+        $archive->close();
 
-        return new \SplfileInfo($archive->getZipFilePath());
+        return new \SplfileInfo($zipFilePath);
     }
 
-    private function getLogArchiveDirectory(): string
-    {
-        $logArchiveDirectory = $this->tmpStorageDirectory . DIRECTORY_SEPARATOR . 'pim_authentication_logs';
-
-        (new Filesystem())->mkdir($logArchiveDirectory);
-
-        return $logArchiveDirectory;
-    }
-
-    private function addReadmeFileToArchive(ZipHelper $archive): void
+    private function addReadmeFileToArchive(\ZipArchive $archive): void
     {
         $readmeContent = <<<README
 Several authentication logs file could be present in this archive.
@@ -60,22 +65,15 @@ If you encounter troubles regarding the SSO process you'll have to check the IDP
 
 README;
 
-        $readmeFile = fopen($this->getLogArchiveDirectory() . DIRECTORY_SEPARATOR . 'README.txt', 'wb+');
-        fwrite($readmeFile, $readmeContent);
-        fclose($readmeFile);
-
-        $archive->addFileToArchive($this->getLogArchiveDirectory(), 'README.txt');
+        $archive->addFromString('README.txt', $readmeContent);
     }
 
-    private function addLogsFileToArchive(ZipHelper $archive): void
+    private function addLogsFileToArchive(\ZipArchive $archive): void
     {
-        $logs = new \GlobIterator($this->logDirectory . DIRECTORY_SEPARATOR . 'authentication*.log');
-
-        if ($logs->count() > 0) {
-            $logDirectory = $this->logDirectory;
-            array_map(function (\SplFileInfo $logFile) use ($logDirectory, $archive) {
-                $archive->addFileToArchive($logDirectory, $logFile->getFilename());
-            }, iterator_to_array($logs));
+        $logs = $this->logsStorage->listContents();
+        foreach ($logs as $logFile) {
+            $logContent = $this->logsStorage->read($logFile['path']);
+            $archive->addFromString($logFile['basename'], $logContent);
         }
     }
 }

@@ -27,7 +27,7 @@ monolog:
             type:  console
         authentication:
             type: rotating_file
-            path: '%kernel.logs_dir%/authentication.log'
+            path: 'authentication.log'
             channels: ['security', 'request']
             level: error
             max_files: 10
