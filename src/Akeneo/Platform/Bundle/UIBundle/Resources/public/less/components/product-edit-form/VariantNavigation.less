@@ -5,9 +5,10 @@
   border-radius: 3px;
   height: 34px;
   margin-top: 20px;
+  display: flex;
 
   &-item {
-    display: inline-block;
+    display: inline-flex;
     padding: 0 20px;
     height: 32px;
     line-height: 32px;
@@ -52,18 +53,28 @@
         border-radius: 2px;
       }
     }
+
+    & + & {
+      margin-left: 10px;
+    }
   }
 
   &-itemLabel {
     cursor: pointer;
+    display: flex;
   }
 
   &-axisName {
     text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: ~"calc(100vw / 5)";
+    display: inline-block;
+    overflow: hidden;
+  }
 
-    &--selected:after {
-      content:":";
-    }
+  &-axisName&-axisName--selected + &-axisValue:before {
+    content:":";
   }
 
   &-listItem {
