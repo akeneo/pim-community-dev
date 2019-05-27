@@ -277,6 +277,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
         $itemPosition = null !== $this->stepExecution ? $this->stepExecution->getSummaryInfo('item_position') : 0;
         $invalidItem = new FileInvalidItem($item, $itemPosition);
+        
         return new InvalidItemException($message, $invalidItem, [], 0, $previousException);
     }
 }
