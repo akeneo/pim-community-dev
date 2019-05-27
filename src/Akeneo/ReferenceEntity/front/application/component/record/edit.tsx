@@ -196,7 +196,12 @@ class RecordEditView extends React.Component<EditProps> {
                               <div className="AknTitleContainer-rightButton">
                                 <button
                                   className="AknButton AknButton--big AknButton--apply AknButton--centered"
-                                  onClick={() => this.props.events.onRedirectToProductGrid(this.props.selectedAttribute as string, this.props.recordCode)}
+                                  onClick={() =>
+                                    this.props.events.onRedirectToProductGrid(
+                                      this.props.selectedAttribute as string,
+                                      this.props.recordCode
+                                    )
+                                  }
                                 >
                                   {__('pim_reference_entity.record.product.not_enough_items.button')}
                                 </button>
@@ -217,7 +222,6 @@ class RecordEditView extends React.Component<EditProps> {
                               ) : null}
                             </div>
                           )}
-
                         </div>
                       </div>
                       <div className="AknTitleContainer-line">

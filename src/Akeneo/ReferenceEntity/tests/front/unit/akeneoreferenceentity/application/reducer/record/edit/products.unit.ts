@@ -19,6 +19,7 @@ describe('akeneo > reference entity > application > reducer > record > edit --- 
       selectedAttribute: null,
       attributes: [],
       products: [],
+      totalCount: 0,
     });
   });
 

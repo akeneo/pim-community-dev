@@ -93,8 +93,8 @@ class Product extends React.Component<StateProps & DispatchProps> {
                         }}
                         ButtonView={AttributeButtonView}
                         isOpenLeft={true}
-                        />
-                      </div>
+                      />
+                    </div>
                   </div>
                 ) : null}
               </div>
@@ -134,7 +134,9 @@ class Product extends React.Component<StateProps & DispatchProps> {
               productCount={this.props.products.length}
               totalCount={this.props.totalCount}
               selectedAttribute={this.props.selectedAttribute}
-              showMore={() => this.props.events.onRedirectToProductGrid(this.props.selectedAttribute as string, this.props.recordCode)}
+              showMore={() =>
+                this.props.events.onRedirectToProductGrid(this.props.selectedAttribute as string, this.props.recordCode)
+              }
             />
           </React.Fragment>
         ) : (
@@ -185,7 +187,7 @@ export default connect(
         },
         onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => {
           dispatch(redirectToProductGrid(selectedAttribute, recordCode));
-        }
+        },
       },
     };
   }
