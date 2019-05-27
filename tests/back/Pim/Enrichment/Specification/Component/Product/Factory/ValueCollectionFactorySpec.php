@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -18,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\Attribute as StructureAttribute;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
@@ -602,5 +604,133 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->getIterator()->shouldHaveKey('number-<all_channels>-<all_locales>');
         $actualValues->getIterator()->shouldHaveKey('text-<all_channels>-<all_locales>');
         $actualValues->getIterator()->shouldHaveKey('yes_no-<all_channels>-<all_locales>');
+    }
+
+    function it_does_not_ask_for_the_attribute_codes_multiple_time_for_performance(
+        ValueFactory $valueFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
+    )
+    {
+        $numberAttribute = new StructureAttribute();
+        $numberAttribute->setCode('number');
+        $number2Attribute = new StructureAttribute();
+        $number2Attribute->setCode('number2');
+        $number3Attribute = new StructureAttribute();
+        $number3Attribute->setCode('number3');
+        $numberProductA = ScalarValue::value('number', 5);
+        $numberProductB = ScalarValue::value('number', 7);
+        $number2ProductA = ScalarValue::value('number2', 6);
+        $number3ProductB = ScalarValue::value('number3', 8);
+
+        $rawValues = [
+            'productA' => [
+                'number' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 5
+                    ]
+                ],
+                'number2' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 6
+                    ]
+                ]
+            ],
+            'productB' => [
+                'number' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 7
+                    ]
+                ],
+                'number3' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 8
+                    ]
+                ],
+            ]
+        ];
+
+        $getAttributeByCodes->forCodes(['number', 'number2', 'number3'])->willReturn(
+            [
+                new Attribute('number', AttributeTypes::NUMBER, []),
+                new Attribute('number2', AttributeTypes::NUMBER, []),
+                new Attribute('number3', AttributeTypes::NUMBER, []),
+            ]
+        );
+
+        $typesToCode = [
+            AttributeTypes::NUMBER => [
+                'number' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 5
+                            ]
+                        ],
+                        'properties' => [],
+                    ],
+                    [
+                        'identifier' => 'productB',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 7
+                            ]
+                        ],
+                        'properties' => [],
+                    ]
+                ],
+                'number2' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 6
+                            ]
+                        ],
+                        'properties' => [],
+                    ]
+                ],
+                'number3' => [
+                    [
+                        'identifier' => 'productB',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 8
+                            ]
+                        ],
+                        'properties' => [],
+                    ]
+                ]
+            ]
+        ];
+
+        $ongoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
+        $ongoingFilteredRawValues =new OnGoingFilteredRawValues($typesToCode, []);
+        $chainedObsoleteValueFilter->filterAll($ongoingNonFilteredRawValues)->willReturn($ongoingFilteredRawValues);
+
+        $attributeRepository->findOneByIdentifier('number')->willReturn($numberAttribute);
+        $attributeRepository->findOneByIdentifier('number2')->willReturn($number2Attribute);
+        $attributeRepository->findOneByIdentifier('number3')->willReturn($number3Attribute);
+
+        $valueFactory
+            ->create($numberAttribute, null, null, 5, true)
+            ->willReturn($numberProductA);
+
+        $valueFactory
+            ->create($numberAttribute, null, null, 7, true)
+            ->willReturn($numberProductB);
+
+        $valueFactory
+            ->create($number2Attribute, null, null, 6, true)
+            ->willReturn($number2ProductA);
+
+        $valueFactory
+            ->create($number3Attribute, null, null, 8, true)
+            ->willReturn($number3ProductB);
+
+        $valueCollections = $this->createMultipleFromStorageFormat($rawValues);
+        $valueCollections->shouldHaveCount(2);
     }
 }
