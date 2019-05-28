@@ -239,7 +239,7 @@ services:
             - '@pim_user.context.user'
 
     pim_enrich.controller.category_tree.product:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
+        class: '%pim_enrich.controller.category_tree.class%'
         arguments:
             - '@event_dispatcher'
             - '@pim_user.context.user'
@@ -248,7 +248,7 @@ services:
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
-            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - { related_entity: product, form_type: '%pim_enrich.form.type.category.class%', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
