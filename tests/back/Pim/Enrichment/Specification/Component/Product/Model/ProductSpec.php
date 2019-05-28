@@ -2,8 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\AddParentToProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CategorizedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ChangedParentOfProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\UncategorizedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -30,6 +33,8 @@ class ProductSpec extends ObjectBehavior
 
     function it_purge_events_when_popping_them(CategoryInterface $category1)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+
         $category1->getCode()->willReturn('category_1');
         $this->addCategory($category1);
 
@@ -39,6 +44,8 @@ class ProductSpec extends ObjectBehavior
 
     function it_categorized_the_product(CategoryInterface $category1, CategoryInterface $category2)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+
         $category1->getCode()->willReturn('category_1');
         $category2->getCode()->willReturn('category_2');
 
@@ -48,13 +55,15 @@ class ProductSpec extends ObjectBehavior
         $this->getCategories()->shouldHaveCount(2);
 
         $this->popEvents()->shouldBeLike([
-            new CategorizedProduct('category_1'),
-            new CategorizedProduct('category_2'),
+            new CategorizedProduct('my_identifier', 'category_1'),
+            new CategorizedProduct('my_identifier', 'category_2'),
         ]);
     }
 
     function it_uncategorized_the_product(CategoryInterface $category1)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+
         $category1->getCode()->willReturn('category_1');
 
         $this->addCategory($category1);
@@ -63,7 +72,7 @@ class ProductSpec extends ObjectBehavior
         $this->removeCategory($category1);
         $this->getCategories()->shouldHaveCount(0);
 
-        $this->popEvents()->shouldBeLike([new UncategorizedProduct('category_1')]);
+        $this->popEvents()->shouldBeLike([new UncategorizedProduct('my_identifier', 'category_1')]);
     }
 
     function it_is_categorized_or_uncategorized_the_product_by_replacing_all_categories(
@@ -71,6 +80,8 @@ class ProductSpec extends ObjectBehavior
         CategoryInterface $category2,
         CategoryInterface $category3
     ) {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+
         $category1->getCode()->willReturn('category_1');
         $category2->getCode()->willReturn('category_2');
         $category3->getCode()->willReturn('category_3');
@@ -81,8 +92,8 @@ class ProductSpec extends ObjectBehavior
 
         $this->setCategories(new ArrayCollection([$category2->getWrappedObject(), $category3->getWrappedObject()]));
         $this->popEvents()->shouldBeLike([
-            new UncategorizedProduct('category_1'),
-            new CategorizedProduct('category_3'),
+            new UncategorizedProduct('my_identifier', 'category_1'),
+            new CategorizedProduct('my_identifier', 'category_3'),
         ]);
     }
 
@@ -449,8 +460,14 @@ class ProductSpec extends ObjectBehavior
 
     function it_is_a_variant_product(ProductModelInterface $parent)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+
+        $parent->getCode()->willReturn('parent_code');
         $this->setParent($parent);
         $this->isVariant()->shouldReturn(true);
+        $this->popEvents()->shouldBeLike([
+            new AddParentToProduct('my_identifier', 'parent_code')
+        ]);
     }
 
     function it_has_the_values_of_the_variation(
@@ -480,6 +497,8 @@ class ProductSpec extends ObjectBehavior
         ValueInterface $otherValue,
         AttributeInterface $otherValueAttribute
     ) {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+        $productModel->getCode()->willReturn('product_model_code');
         $this->setValues($valueCollection);
         $this->setParent($productModel);
 
@@ -514,6 +533,9 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_a_variation_level(ProductModelInterface $productModel)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+        $productModel->getCode()->willReturn('product_model_code');
+
         $this->setParent($productModel);
         $productModel->getVariationLevel()->willReturn(7);
         $this->getVariationLevel()->shouldReturn(8);
@@ -521,6 +543,9 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_a_product_model(ProductModelInterface $productModel)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+        $productModel->getCode()->willReturn('product_model_code');
+
         $this->setParent($productModel);
         $this->getParent()->shouldReturn($productModel);
     }
