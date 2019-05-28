@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\AddParentToProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CategorizedProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ChangedParentOfProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CreatedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\DisabledProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\EnabledProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\UncategorizedProduct;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -58,7 +60,7 @@ abstract class AbstractProduct implements ProductInterface
     public $categoryIds = [];
 
     /** @var bool $enabled */
-    protected $enabled = true;
+    protected $enabled;
 
     /** @var Collection $groups */
     protected $groups;
@@ -98,6 +100,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
+        $this->enabled = $this->setEnabled(true);
     }
 
     /**
@@ -475,6 +478,11 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setEnabled($enabled)
     {
+        if ($enabled === $this->enabled){
+            return;
+        }
+
+        $this->events[] = true === $enabled ? new EnabledProduct($this->identifier) : new DisabledProduct($this->identifier);
         $this->enabled = $enabled;
 
         return $this;
