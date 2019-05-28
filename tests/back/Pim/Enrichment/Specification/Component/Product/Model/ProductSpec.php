@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CategorizedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\UncategorizedProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -26,12 +28,62 @@ class ProductSpec extends ObjectBehavior
         $this->getFamilyId()->shouldReturn(42);
     }
 
-    function it_belongs_to_categories(CategoryInterface $category1, CategoryInterface $category2)
+    function it_purge_events_when_popping_them(CategoryInterface $category1)
     {
+        $category1->getCode()->willReturn('category_1');
+        $this->addCategory($category1);
+
+        $this->popEvents()->shouldHaveCount(1);
+        $this->popEvents()->shouldHaveCount(0);
+    }
+
+    function it_categorized_the_product(CategoryInterface $category1, CategoryInterface $category2)
+    {
+        $category1->getCode()->willReturn('category_1');
+        $category2->getCode()->willReturn('category_2');
+
         $this->addCategory($category1);
         $this->getCategories()->shouldHaveCount(1);
         $this->addCategory($category2);
         $this->getCategories()->shouldHaveCount(2);
+
+        $this->popEvents()->shouldBeLike([
+            new CategorizedProduct('category_1'),
+            new CategorizedProduct('category_2'),
+        ]);
+    }
+
+    function it_uncategorized_the_product(CategoryInterface $category1)
+    {
+        $category1->getCode()->willReturn('category_1');
+
+        $this->addCategory($category1);
+        $this->popEvents();
+
+        $this->removeCategory($category1);
+        $this->getCategories()->shouldHaveCount(0);
+
+        $this->popEvents()->shouldBeLike([new UncategorizedProduct('category_1')]);
+    }
+
+    function it_is_categorized_or_uncategorized_the_product_by_replacing_all_categories(
+        CategoryInterface $category1,
+        CategoryInterface $category2,
+        CategoryInterface $category3
+    ) {
+        $category1->getCode()->willReturn('category_1');
+        $category2->getCode()->willReturn('category_2');
+        $category3->getCode()->willReturn('category_3');
+
+        $this->addCategory($category1);
+        $this->addCategory($category2);
+        $this->popEvents();
+
+        $this->setCategories(new ArrayCollection([$category2->getWrappedObject(), $category3->getWrappedObject()]));
+        $this->popEvents()->shouldBeLike([
+            new UncategorizedProduct('category_1'),
+            new CategorizedProduct('category_3'),
+        ]);
     }
 
     function it_returns_association_from_an_association_type(
