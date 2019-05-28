@@ -11,15 +11,24 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model\Events;
 class CategorizedProduct
 {
     /** @var string */
+    private $productIdentifier;
+
+    /** @var string */
     private $categoryCode;
 
-    public function __construct(string $categoryCode)
+    public function __construct(string $productIdentifier, string $categoryCode)
     {
+        $this->productIdentifier = $productIdentifier;
         $this->categoryCode = $categoryCode;
     }
 
     public function categoryCode(): string
     {
         return $this->categoryCode;
+    }
+
+    public function productIdentifier()
+    {
+        return $this->productIdentifier;
     }
 }
