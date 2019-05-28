@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\IndexedValueCollectionInterface as ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\IndexedValueCollectionInterface as ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
