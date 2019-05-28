@@ -19,17 +19,24 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\A
  */
 class FranklinAttributeType
 {
+    const AVAILABLE_TYPES = [
+        self::BOOLEAN_TYPE,
+        self::METRIC_TYPE,
+        self::MULTI_SELECT_TYPE,
+        self::SELECT_TYPE,
+        self::NUMBER_TYPE,
+        self::TEXT_TYPE,
+    ];
+
+    const BOOLEAN_TYPE = 'boolean';
+    const METRIC_TYPE = 'metric';
+    const MULTI_SELECT_TYPE = 'multiselect';
+    const SELECT_TYPE = 'select';
+    const NUMBER_TYPE = 'number';
+    const TEXT_TYPE = 'text';
+
     /** @var string */
     private $type;
-
-    const AVAILABLE_TYPES = [
-        'boolean',
-        'metric',
-        'multiselect',
-        'number',
-        'select',
-        'text',
-    ];
 
     /**
      * @param string $type

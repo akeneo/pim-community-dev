@@ -458,6 +458,19 @@ final class AttributesMappingContext implements Context
     }
 
     /**
+     * @Then a not supported metric type message should be sent
+     */
+    public function aNotSupportedMetricTypeMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, \InvalidArgumentException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            'Can not create attribute. Attribute of type "metric" is not allowed'
+        );
+    }
+
+    /**
      * @param mixed $franklinStatus
      *
      * @return int

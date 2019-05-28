@@ -16,12 +16,17 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
 class CreateAttributeInFamilyHandler
 {
+    const EXCLUDED_FRANKLIN_ATTRIBUTE_TYPES = [
+        FranklinAttributeType::METRIC_TYPE,
+    ];
+
     /** @var CreateAttributeInterface */
     private $createAttribute;
 
@@ -42,6 +47,8 @@ class CreateAttributeInFamilyHandler
 
     public function handle(CreateAttributeInFamilyCommand $command): void
     {
+        $this->validate($command);
+
         $this->createAttribute->create(
             $command->getPimAttributeCode(),
             new AttributeLabel((string) $command->getFranklinAttributeLabel()),
@@ -49,5 +56,16 @@ class CreateAttributeInFamilyHandler
         );
 
         $this->updateFamily->addAttributeToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode());
+    }
+
+    private function validate(CreateAttributeInFamilyCommand $command): void
+    {
+        $franklinAttributeType = (string) $command->getFranklinAttributeType();
+        if (in_array($franklinAttributeType, self::EXCLUDED_FRANKLIN_ATTRIBUTE_TYPES)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Can not create attribute. Attribute of type "%s" is not allowed',
+                $franklinAttributeType
+            ));
+        }
     }
 }
