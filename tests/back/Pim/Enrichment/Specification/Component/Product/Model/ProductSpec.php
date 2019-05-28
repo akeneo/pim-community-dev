@@ -2,7 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\AddParentToProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CategorizedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ChangedParentOfProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\UncategorizedProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -458,8 +460,14 @@ class ProductSpec extends ObjectBehavior
 
     function it_is_a_variant_product(ProductModelInterface $parent)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+
+        $parent->getCode()->willReturn('parent_code');
         $this->setParent($parent);
         $this->isVariant()->shouldReturn(true);
+        $this->popEvents()->shouldBeLike([
+            new AddParentToProduct('my_identifier', 'parent_code')
+        ]);
     }
 
     function it_has_the_values_of_the_variation(
@@ -489,6 +497,8 @@ class ProductSpec extends ObjectBehavior
         ValueInterface $otherValue,
         AttributeInterface $otherValueAttribute
     ) {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+        $productModel->getCode()->willReturn('product_model_code');
         $this->setValues($valueCollection);
         $this->setParent($productModel);
 
@@ -523,6 +533,9 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_a_variation_level(ProductModelInterface $productModel)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+        $productModel->getCode()->willReturn('product_model_code');
+
         $this->setParent($productModel);
         $productModel->getVariationLevel()->willReturn(7);
         $this->getVariationLevel()->shouldReturn(8);
@@ -530,6 +543,9 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_a_product_model(ProductModelInterface $productModel)
     {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+        $productModel->getCode()->willReturn('product_model_code');
+
         $this->setParent($productModel);
         $this->getParent()->shouldReturn($productModel);
     }

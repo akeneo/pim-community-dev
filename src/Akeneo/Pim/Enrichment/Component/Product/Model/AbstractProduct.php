@@ -3,7 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\AddParentToProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CategorizedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ChangedParentOfProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\UncategorizedProduct;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -703,6 +705,13 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setParent(ProductModelInterface $parent = null): void
     {
+        if (null === $this->parent && null !== $parent) {
+            $this->events[] = new AddParentToProduct($this->identifier, $parent->getCode());
+        }
+        else if (null !== $this->parent && null !== $parent) {
+            $this->events[] = new ChangedParentOfProduct($this->identifier, $this->parent->getCode(), $parent->getCode());
+        }
+
         $this->parent = $parent;
     }
 
