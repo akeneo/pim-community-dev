@@ -882,7 +882,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "The family variant \"familyVariantA1\" is not a variant of the family \"non_matching_family\". Check the expected format on the API documentation.",
+    "message": "The family \"non_matching_family\" does not match the family of the variant \"familyVariantA1\". Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
             "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"

@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -57,14 +58,17 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
+        $checkFamilyCode = false;
+        $familyCode = null;
         if (array_key_exists('family', $data)) {
             $familyCode = $data['family'];
             unset($data['family']);
+            $checkFamilyCode = true;
         }
 
         $this->productModelUpdater->update($productModel, $data, $options);
 
-        if (isset($familyCode)) {
+        if (true === $checkFamilyCode) {
             $this->validateFamilyCode($familyCode, $productModel);
         }
 
@@ -72,24 +76,34 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * Checks that the provided family code matches the family variant code
+     * @throws PropertyException
      */
     private function validateFamilyCode($familyCode, ProductModelInterface $productModel): void
     {
+        if (null !== $productModel->getId()) {
+            if (!is_string($familyCode) || empty($familyCode) || $productModel->getFamily()->getCode() !== $familyCode) {
+                throw ImmutablePropertyException::immutableProperty(
+                    'family',
+                    is_scalar($familyCode) ? $familyCode : gettype($familyCode),
+                    ProductModelInterface::class
+                );
+            }
+        }
+
+        if (null === $familyCode || '' === $familyCode) {
+            throw InvalidPropertyException::valueNotEmptyExpected('family', ProductModelInterface::class);
+        }
+
         if (!is_string($familyCode)) {
             throw InvalidPropertyTypeException::stringExpected('family', ProductModelInterface::class, $familyCode);
         }
 
-        if (null === $productModel->getFamily()) {
-            return;
-        }
-
-        if ($familyCode !== $productModel->getFamily()->getCode()) {
+        if (null !== $productModel->getFamilyVariant() && $familyCode !== $productModel->getFamily()->getCode()) {
             throw InvalidPropertyException::expected(
                 sprintf(
-                    'The family variant "%s" is not a variant of the family "%s".',
-                    $productModel->getFamilyVariant()->getCode(),
-                    $familyCode
+                    'The family "%s" does not match the family of the variant "%s".',
+                    $familyCode,
+                    $productModel->getFamilyVariant()->getCode()
                 ),
                 ProductModelInterface::class
             );
