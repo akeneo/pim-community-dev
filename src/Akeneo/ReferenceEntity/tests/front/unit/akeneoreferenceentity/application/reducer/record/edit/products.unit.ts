@@ -108,7 +108,14 @@ describe('akeneo > reference entity > application > reducer > record > edit --- 
     });
 
     expect(newState).toEqual({
-      selectedAttribute: 'front_view',
+      selectedAttribute: {
+        code: 'front_view',
+        labels: {
+          en_US: 'Nice front view',
+        },
+        reference_data_name: 'brand',
+        type: 'akeneo_reference_entity',
+      },
       attributes: [
         {
           code: 'front_view',

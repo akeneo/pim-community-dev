@@ -67,15 +67,13 @@ class Product extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const selectedDropdownAttribute = this.props.attributes.find(
-      (attribute: DropdownElement) => {
-        if (null === this.props.selectedAttribute) {
-          return false;
-        }
-
-        return attribute.identifier === this.props.selectedAttribute.code
+    const selectedDropdownAttribute = this.props.attributes.find((attribute: DropdownElement) => {
+      if (null === this.props.selectedAttribute) {
+        return false;
       }
-    );
+
+      return attribute.identifier === this.props.selectedAttribute.code;
+    });
 
     return (
       <React.Fragment>
@@ -83,9 +81,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
           <React.Fragment>
             <div className="AknFilterBox AknFilterBox--search">
               <div className="AknFilterBox-list">
-                  <span className="AknFilterBox-title">
-                    {__('pim_reference_entity.record.product.title')}
-                </span>
+                <span className="AknFilterBox-title">{__('pim_reference_entity.record.product.title')}</span>
                 <ItemsCounter count={this.props.totalCount} inline={true} />
                 {null !== this.props.selectedAttribute ? (
                   <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
@@ -141,7 +137,10 @@ class Product extends React.Component<StateProps & DispatchProps> {
               totalCount={this.props.totalCount}
               selectedAttribute={this.props.selectedAttribute as NormalizedAttribute}
               showMore={() =>
-                this.props.events.onRedirectToProductGrid((this.props.selectedAttribute as NormalizedAttribute).code, this.props.recordCode)
+                this.props.events.onRedirectToProductGrid(
+                  (this.props.selectedAttribute as NormalizedAttribute).code,
+                  this.props.recordCode
+                )
               }
             />
           </React.Fragment>

@@ -16,7 +16,10 @@ const initProductsState = (): ProductsState => ({
   totalCount: 0,
 });
 
-const getAttribute = (state: ProductsState, attributeCode: NormalizedAttributeCode): NormalizedAttribute | undefined => {
+const getAttribute = (
+  state: ProductsState,
+  attributeCode: NormalizedAttributeCode
+): NormalizedAttribute | undefined => {
   return state.attributes.find((attribute: any) => attributeCode === attribute.code);
 };
 

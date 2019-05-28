@@ -118,7 +118,7 @@ class AttributeImplementation implements Attribute {
       type: this.getType(),
       labels: this.getLabelCollection().normalize(),
       reference_data_name: this.getReferenceDataName(),
-      useable_as_grid_filter: this.getUseableAsGridFilter()
+      useable_as_grid_filter: this.getUseableAsGridFilter(),
     };
   }
 }

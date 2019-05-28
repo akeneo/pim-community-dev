@@ -134,7 +134,8 @@ class RecordEditView extends React.Component<EditProps> {
       createChannelReference(this.props.context.channel),
       createLocaleReference(this.props.context.locale)
     );
-    const isUsableSelectedAttributeOnTheGrid = null !== this.props.selectedAttribute && true === this.props.selectedAttribute.useable_as_grid_filter;
+    const isUsableSelectedAttributeOnTheGrid =
+      null !== this.props.selectedAttribute && true === this.props.selectedAttribute.useable_as_grid_filter;
 
     return (
       <React.Fragment>
