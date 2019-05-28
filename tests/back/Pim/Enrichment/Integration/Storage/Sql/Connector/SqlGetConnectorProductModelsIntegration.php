@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
@@ -75,7 +75,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
 
                 ],
                 [],
-                new ValueCollection([])
+                new ReadValueCollection([])
             ),
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
@@ -108,7 +108,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ],
                 ],
                 ['categoryA2'],
-                new ValueCollection(
+                new ReadValueCollection(
                     [
                         PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
                         ScalarValue::value('a_number_float', '12.5000'),
@@ -158,7 +158,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ],
                 ],
                 ['categoryA1', 'categoryA2'],
-                new ValueCollection(
+                new ReadValueCollection(
                     [
                         PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
                         ScalarValue::value('a_number_float', '12.5000'),
@@ -237,7 +237,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ],
                 ],
                 [],
-                new ValueCollection([])
+                new ReadValueCollection([])
             ),
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
@@ -270,7 +270,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ],
                 ],
                 ['categoryA2'],
-                new ValueCollection(
+                new ReadValueCollection(
                     [
                         ScalarValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
@@ -313,7 +313,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ],
                 ],
                 ['categoryA1', 'categoryA2'],
-                new ValueCollection(
+                new ReadValueCollection(
                     [
                         ScalarValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
@@ -371,7 +371,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
             ],
             ['categoryA1', 'categoryA2'],
-            new ValueCollection(
+            new ReadValueCollection(
                 [
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
                     ScalarValue::value('a_number_float', '12.5000'),
