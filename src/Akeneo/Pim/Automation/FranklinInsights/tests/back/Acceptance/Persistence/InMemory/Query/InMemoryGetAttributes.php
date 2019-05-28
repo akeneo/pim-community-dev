@@ -37,7 +37,14 @@ final class InMemoryGetAttributes implements GetAttributes
     public function forCodes(array $attributeCodes): array
     {
         return array_map(function (FranklinAttribute $franklinAttribute) : Attribute {
-            return new Attribute((string) $franklinAttribute->getCode(), $franklinAttribute->getType(), []);
+            return new Attribute(
+                (string) $franklinAttribute->getCode(),
+                $franklinAttribute->getType(),
+                [],
+                $franklinAttribute->isLocalizable(),
+                $franklinAttribute->isScopable(),
+                $franklinAttribute->getMetricFamily()
+            );
         }, $this->attributeRepository->findByCodes($attributeCodes));
     }
 }
