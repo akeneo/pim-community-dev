@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.5 (2019-05-28)
+
 ## Bug fixes
 
 - PIM-8380: Fix API regression on reference entity with a multiple links attribute
