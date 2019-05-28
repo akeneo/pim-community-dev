@@ -49,11 +49,6 @@ class ConnectorProductSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ConnectorProduct::class);
     }
 
-    function it_gets_attribute_codes_in_values()
-    {
-        $this->attributeCodesInValues()->shouldReturn(['attribute_code_1', 'attribute_code_2']);
-    }
-
     function it_filters_by_category_codes()
     {
         $connectorProduct = $this->filterByCategoryCodes(['category_code_1', 'category_code_3']);

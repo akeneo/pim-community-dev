@@ -53,11 +53,6 @@ final class ConnectorProductModelSpec extends ObjectBehavior
         $this->shouldHaveType(ConnectorProductModel::class);
     }
 
-    function it_gets_attribute_codes_in_values()
-    {
-        $this->attributeCodesInValues()->shouldBeLike(['text', 'description']);
-    }
-
     function it_gets_associated_product_identifiers()
     {
         $this->associatedProductIdentifiers()->shouldBeLike(['product_code_1', 'product_code_4']);

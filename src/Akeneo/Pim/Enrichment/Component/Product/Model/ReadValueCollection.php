@@ -117,6 +117,6 @@ class ReadValueCollection implements ValueCollectionInterface
     {
         $filteredValues = array_filter($this->values, $filterBy);
 
-        return new self($filteredValues);
+        return new self(array_values($filteredValues));
     }
 }

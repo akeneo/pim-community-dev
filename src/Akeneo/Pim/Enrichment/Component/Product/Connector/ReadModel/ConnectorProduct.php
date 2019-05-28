@@ -139,11 +139,6 @@ final class ConnectorProduct
         return $this->values;
     }
 
-    public function attributeCodesInValues(): array
-    {
-        return $this->values->getAttributeCodes();
-    }
-
     /**
      * The value cannot be an object.
      *
