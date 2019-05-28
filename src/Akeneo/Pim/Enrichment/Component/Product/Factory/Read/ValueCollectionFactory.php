@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
@@ -59,7 +59,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
         if (empty($rawValueCollectionsIndexedByType)) {
             foreach (array_keys($rawValueCollections) as $identifier) {
-                $valueCollections[$identifier] = new ValueCollection([]);
+                $valueCollections[$identifier] = new ReadValueCollection([]);
             }
 
             return $valueCollections;
@@ -78,7 +78,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
 
         foreach ($identifiersWithOnlyUnknownAttributes as $identifier) {
-            $valueCollections[$identifier] = new ValueCollection([]);
+            $valueCollections[$identifier] = new ReadValueCollection([]);
         }
 
         return $valueCollections;
@@ -159,7 +159,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                 }
             }
 
-            $entities[$productIdentifier] = new ValueCollection($values);
+            $entities[$productIdentifier] = new ReadValueCollection($values);
         }
 
         return $entities;
