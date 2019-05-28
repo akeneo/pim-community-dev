@@ -41,15 +41,15 @@ export const updateAttributeList = (referenceEntityIdentifier: ReferenceEntityId
 };
 
 export const updateProductList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const normalizedAttributeCode = getState().products.selectedAttribute;
+  const normalizedAttribute = getState().products.selectedAttribute;
 
-  if (null === normalizedAttributeCode) {
+  if (null === normalizedAttribute) {
     return;
   }
 
   const referenceEntityIdentifier = createIdentifier(getState().form.data.reference_entity_identifier);
   const recordCode = createRecordCode(getState().form.data.code);
-  const attributeCode = createAttributeCode(normalizedAttributeCode);
+  const attributeCode = createAttributeCode(normalizedAttribute.code);
   const channel = createChannelReference(getState().user.catalogChannel);
   const locale = createLocaleReference(getState().user.catalogLocale);
 

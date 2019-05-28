@@ -1,6 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
-import {NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
 
 const NoEnoughItems = ({
   productCount,
@@ -10,10 +10,10 @@ const NoEnoughItems = ({
 }: {
   productCount: number;
   totalCount: number;
-  selectedAttribute: NormalizedAttributeCode | null;
+  selectedAttribute: NormalizedAttribute | null;
   showMore: () => void;
 }) => {
-  if (null === selectedAttribute) {
+  if (null === selectedAttribute || false === selectedAttribute.useable_as_grid_filter) {
     return null;
   }
 
@@ -35,7 +35,7 @@ const NoEnoughItems = ({
       <button className="AknButton AknButton--big AknButton--apply AknButton--centered" onClick={() => showMore()}>
         {__('pim_reference_entity.record.product.not_enough_items.button')}
       </button>
-      <img className="AknImage--centered" src="/bundles/pimui/images/illustration_scroll.svg" />
+      <img className="AknImage--centered AknImage-marginTop" src="/bundles/pimui/images/illustration_scroll.svg" />
     </React.Fragment>
   );
 };

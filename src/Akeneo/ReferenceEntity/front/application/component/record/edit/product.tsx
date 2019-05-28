@@ -30,7 +30,7 @@ interface StateProps {
   products: ProductModel[];
   totalCount: number;
   attributes: DropdownElement[];
-  selectedAttribute: NormalizedAttributeCode | null;
+  selectedAttribute: NormalizedAttribute | null;
   recordCode: NormalizedCode;
   referenceEntityIdentifier: NormalizedIdentifier;
 }
@@ -40,7 +40,7 @@ interface DispatchProps {
     onLinkedAttributeChange: (attributeCode: string) => void;
     onRedirectToProduct: (product: ProductModel) => void;
     onRedirectAttributeCreation: () => void;
-    onRedirectToProductGrid: (selectedAttribute: string, recordCode: NormalizedCode) => void;
+    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => void;
   };
 }
 
@@ -67,8 +67,14 @@ class Product extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const selectedAttribute = this.props.attributes.find(
-      (attribute: DropdownElement) => attribute.identifier === this.props.selectedAttribute
+    const selectedDropdownAttribute = this.props.attributes.find(
+      (attribute: DropdownElement) => {
+        if (null === this.props.selectedAttribute) {
+          return false;
+        }
+
+        return attribute.identifier === this.props.selectedAttribute.code
+      }
     );
 
     return (
@@ -86,7 +92,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
                     <div className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin">
                       <Dropdown
                         elements={this.props.attributes}
-                        selectedElement={this.props.selectedAttribute}
+                        selectedElement={(this.props.selectedAttribute as NormalizedAttribute).code}
                         label={__('pim_reference_entity.record.product.attribute')}
                         onSelectionChange={(selectedElement: DropdownElement) => {
                           this.props.events.onLinkedAttributeChange(selectedElement.identifier);
@@ -120,9 +126,9 @@ class Product extends React.Component<StateProps & DispatchProps> {
               </div>
             ) : (
               <React.Fragment>
-                {null !== this.props.selectedAttribute && undefined !== selectedAttribute ? (
+                {undefined !== selectedDropdownAttribute ? (
                   <NoResult
-                    entityLabel={selectedAttribute.label}
+                    entityLabel={selectedDropdownAttribute.label}
                     title="pim_reference_entity.record.product.no_product.title"
                     subtitle="pim_reference_entity.record.product.no_product.subtitle"
                     type="product"
@@ -133,9 +139,9 @@ class Product extends React.Component<StateProps & DispatchProps> {
             <NotEnoughItems
               productCount={this.props.products.length}
               totalCount={this.props.totalCount}
-              selectedAttribute={this.props.selectedAttribute}
+              selectedAttribute={this.props.selectedAttribute as NormalizedAttribute}
               showMore={() =>
-                this.props.events.onRedirectToProductGrid(this.props.selectedAttribute as string, this.props.recordCode)
+                this.props.events.onRedirectToProductGrid((this.props.selectedAttribute as NormalizedAttribute).code, this.props.recordCode)
               }
             />
           </React.Fragment>
