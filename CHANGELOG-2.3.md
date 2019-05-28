@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8378: Fix DI for EntityWithFamilyVariantNormalizer injection
+- PIM-8385: Fix timeout when launching the clean attributes command
 
 # 2.3.46 (2019-05-27)
 

@@ -139,6 +139,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
     private function launchCleanTask(array $productIds, string $env, string $rootDir)
     {
         $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:product:refresh', sprintf('--env=%s', $env), implode(',', $productIds)]);
+        $process->setTimeout(null);
         $process->run();
     }
 }
