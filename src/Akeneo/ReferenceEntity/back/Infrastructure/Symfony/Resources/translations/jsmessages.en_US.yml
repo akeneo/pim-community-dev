@@ -125,7 +125,9 @@ pim_reference_entity:
         link: Create a new product attribute
       not_enough_items:
         title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
-        subtitle: To discover all the products linked, just click below!
+        subtitle:
+          usable_in_grid: To discover all the products linked, just click below!
+          not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
         button: View all products
       no_product:
         title: There are no products linked for the product attribute "{{ entityLabel }}"

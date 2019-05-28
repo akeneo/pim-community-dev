@@ -13,13 +13,17 @@ const NoEnoughItems = ({
   selectedAttribute: NormalizedAttribute | null;
   showMore: () => void;
 }) => {
-  if (null === selectedAttribute || false === selectedAttribute.useable_as_grid_filter) {
+  if (null === selectedAttribute) {
     return null;
   }
 
-  if (productCount >= totalCount) {
-    return null;
-  }
+  // if (productCount >= totalCount) {
+  //   return null;
+  // }
+
+  const subtitle = true === selectedAttribute.useable_as_grid_filter ?
+    'pim_reference_entity.record.product.not_enough_items.subtitle.usable_in_grid' :
+    'pim_reference_entity.record.product.not_enough_items.subtitle.not_usable_in_grid';
 
   return (
     <React.Fragment>
@@ -30,12 +34,14 @@ const NoEnoughItems = ({
         })}
       </div>
       <div className="AknGridContainer-notEnoughDataSubtitle">
-        {__('pim_reference_entity.record.product.not_enough_items.subtitle')}
+        {__(subtitle)}
       </div>
-      <button className="AknButton AknButton--big AknButton--apply AknButton--centered" onClick={() => showMore()}>
-        {__('pim_reference_entity.record.product.not_enough_items.button')}
-      </button>
-      <img className="AknImage--centered AknImage-marginTop" src="/bundles/pimui/images/illustration_scroll.svg" />
+      {true === selectedAttribute.useable_as_grid_filter ? (
+        <button className="AknButton AknButton--big AknButton--apply AknButton--centered" onClick={() => showMore()}>
+          {__('pim_reference_entity.record.product.not_enough_items.button')}
+        </button>
+      ) : null}
+      <img className="AknImage--centeredWithMargin" src="/bundles/pimui/images/illustration_scroll.svg" />
     </React.Fragment>
   );
 };
