@@ -27,7 +27,7 @@ class CategorizedProduct
         return $this->categoryCode;
     }
 
-    public function productIdentifier()
+    public function productIdentifier(): string
     {
         return $this->productIdentifier;
     }
