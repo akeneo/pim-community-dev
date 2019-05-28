@@ -39,34 +39,26 @@ final class NonExistingReferenceEntitiesSimpleSelectFilter implements NonExisten
             return $onGoingFilteredRawValues;
         }
 
-        $recordCodesIndexedByReferenceEntityIdentifier = [];
+        $recordCodesFromRawValues = $this->getAllRecordCodesFromRawValues($singleRecordLinkValues);
 
-        foreach ($singleRecordLinkValues as $attributeCode => $productData) {
-            foreach ($productData as $productValues) {
-                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
-                foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
-                    foreach ($valuesIndexedByLocale as $locale => $value) {
-                        if (!is_array($value)) {
-                            $recordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier][] = $value;
-                        }
-                    }
-                }
-            }
-        }
+        $existentRecordCodes = $this->findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($recordCodesFromRawValues);
 
-        $uniqueRecordCodesIndexedByReferenceEntityIdentifier = [];
-        foreach ($recordCodesIndexedByReferenceEntityIdentifier as $referenceEntityIdentifier => $recordCodes) {
-            $uniqueRecordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier] = array_unique($recordCodes);
-        }
+        $filteredValues = $this->removeNonExistentRecordCodesFromValues($singleRecordLinkValues, $existentRecordCodes);
 
-        $recordCodes = $this->findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($uniqueRecordCodesIndexedByReferenceEntityIdentifier);
+        return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
+    }
 
+    private function removeNonExistentRecordCodesFromValues(array $singleRecordLinkValues, array $recordCodes): array
+    {
         $filteredValues = [];
 
         foreach ($singleRecordLinkValues as $attributeCode => $productData) {
             foreach ($productData as $productValues) {
                 $singleLinkValues = [];
                 $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
+                if (!isset($recordCodes[$referenceEntityIdentifier])) {
+                    continue;
+                }
                 foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (!is_array($value)) {
@@ -89,6 +81,31 @@ final class NonExistingReferenceEntitiesSimpleSelectFilter implements NonExisten
             }
         }
 
-        return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
+        return $filteredValues;
+    }
+
+    private function getAllRecordCodesFromRawValues(array $singleRecordLinkValues): array
+    {
+        $recordCodesIndexedByReferenceEntityIdentifier = [];
+
+        foreach ($singleRecordLinkValues as $attributeCode => $productData) {
+            foreach ($productData as $productValues) {
+                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
+                foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
+                    foreach ($valuesIndexedByLocale as $locale => $value) {
+                        if (!is_array($value) && $value !== null) {
+                            $recordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier][] = $value;
+                        }
+                    }
+                }
+            }
+        }
+
+        $uniqueRecordCodesIndexedByReferenceEntityIdentifier = [];
+        foreach ($recordCodesIndexedByReferenceEntityIdentifier as $referenceEntityIdentifier => $recordCodes) {
+            $uniqueRecordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier] = array_unique($recordCodes);
+        }
+
+        return $uniqueRecordCodesIndexedByReferenceEntityIdentifier;
     }
 }
