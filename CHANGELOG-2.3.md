@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8385: Fix timeout when launching the clean attributes command
+
 # 2.3.46 (2019-05-27)
 
 ## Bug fixes
