@@ -224,4 +224,7 @@ interface ProductInterface extends
      * @return Collection
      */
     public function getCategoriesForVariation(): Collection;
+
+
+    public function popEvents(): array;
 }

@@ -3,6 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CategorizedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\UncategorizedProduct;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -78,6 +80,9 @@ abstract class AbstractProduct implements ProductInterface
 
     /** @var FamilyVariantInterface */
     protected $familyVariant;
+
+    /** @var array */
+    protected $events;
 
     /**
      * Constructor
@@ -374,6 +379,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
+            $this->events[] = new CategorizedProduct($category->getCode());
         }
 
         return $this;
@@ -384,6 +390,23 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setCategories(Collection $categories): void
     {
+        $previousCategoryCodes = array_map(function (CategoryInterface $category) {
+            return $category->getCode();
+        }, $this->categories);
+        $newCategoryCodes = array_map(function (CategoryInterface $category) {
+            return $category->getCode();
+        }, $categories);
+
+        $uncategorizedCategoryCodes = array_diff($previousCategoryCodes, $newCategoryCodes);
+        $categorizedCategoryCodes = array_diff($newCategoryCodes, $previousCategoryCodes);
+
+        foreach ($uncategorizedCategoryCodes as $uncategorizedCategoryCode) {
+            $this->events[] = new UncategorizedProduct($uncategorizedCategoryCode);
+        }
+        foreach ($categorizedCategoryCodes as $categorizedCategoryCode) {
+            $this->events[] = new CategorizedProduct($categorizedCategoryCode);
+        }
+
         $this->categories = $categories;
     }
 
@@ -392,7 +415,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeCategory(BaseCategoryInterface $category)
     {
-        $this->categories->removeElement($category);
+        if (!$this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
+        $this->events = new UncategorizedProduct($category->getCode());
 
         return $this;
     }
@@ -726,6 +752,11 @@ abstract class AbstractProduct implements ProductInterface
     public function isVariant(): bool
     {
         return null !== $this->getParent();
+    }
+
+    public function popEvents(): array
+    {
+        return $this->events;
     }
 
     /**
