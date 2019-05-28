@@ -13,16 +13,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\OptionValueFactor
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextAreaValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 
 class ValueCollectionFactorySpec extends ObjectBehavior
 {
@@ -57,11 +56,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(ValueCollectionFactory::class);
-    }
-
-    public function it_is_a_value_collection_factory()
-    {
-        $this->shouldBeAnInstanceOf(ValueCollectionFactoryInterface::class);
     }
 
     function it_creates_a_values_collection_from_the_storage_format_from_single(
@@ -130,13 +124,15 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
-        $actualValues->shouldHaveCount(4);
-
-        $actualIterator = $actualValues->getIterator();
-        $actualIterator->shouldHaveKey('sku-<all_channels>-<all_locales>');
-        $actualIterator->shouldHaveKey('description-ecommerce-en_US');
-        $actualIterator->shouldHaveKey('description-tablet-en_US');
+        $actualValues->shouldReturnAnInstanceOf(ReadValueCollection::class);
+        $actualValues->shouldBeLike(new ReadValueCollection(
+            [
+                ScalarValue::value('sku', 'foo'),
+                ScalarValue::scopableLocalizableValue('description', 'a text area for ecommerce in English', 'ecommerce', 'en_US'),
+                ScalarValue::scopableLocalizableValue('description', 'a text area for tablets in English', 'tablet', 'en_US'),
+                ScalarValue::scopableLocalizableValue('description', 'une zone de texte pour les tablettes en français', 'tablet', 'fr_FR'),
+            ]
+        ));
     }
 
     function it_skips_unknown_attributes_when_creating_a_values_collection_from_the_storage_format(
@@ -152,7 +148,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $getAttributeByCodes->forCodes(['attribute_that_does_not_exists'])->willReturn([]);
 
-        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ValueCollection([]));
+        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ReadValueCollection([]));
     }
 
     function it_skips_unknown_attributes_when_there_are_multiple_product(
@@ -201,8 +197,8 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
 
         $this->createMultipleFromStorageFormat($rawValueCollection)->shouldBeLike([
-            'productB' => new ValueCollection([OptionValue::value('color', 'red')]),
-            'productA' => new ValueCollection([]),
+            'productB' => new ReadValueCollection([OptionValue::value('color', 'red')]),
+            'productA' => new ReadValueCollection([]),
         ]);
     }
 
@@ -259,7 +255,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             new OnGoingFilteredRawValues($filteredRawValues, [])
         );
 
-        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ValueCollection([]));
+        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ReadValueCollection([]));
     }
 
     function it_does_not_filter_falsy_values(
@@ -337,10 +333,12 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldBeAnInstanceOf(ReadValueCollection::class);
         $actualValues->shouldHaveCount(3);
-        $actualValues->getIterator()->shouldHaveKey('number-<all_channels>-<all_locales>');
-        $actualValues->getIterator()->shouldHaveKey('text-<all_channels>-<all_locales>');
-        $actualValues->getIterator()->shouldHaveKey('yes_no-<all_channels>-<all_locales>');
+        $actualValues->shouldBeLike(new ReadValueCollection([
+            ScalarValue::value('number', 0.0),
+            ScalarValue::value('text', '0'),
+            ScalarValue::value('yes_no', false),
+        ]));
     }
 }

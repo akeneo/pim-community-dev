@@ -2,17 +2,14 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAndProductModelRowNormalizer;
-use Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -52,7 +49,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             90,
             1,
             'parent_code',
-            new ValueCollection([])
+            new WriteValueCollection([])
         );
 
         $this->supportsNormalization($row, 'datagrid')->shouldReturn(true);
@@ -65,7 +62,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
         $normalizer,
         $imageNormalizer
     ) {
-        $values = new ValueCollection([ScalarValue::value('scalar_attribute', 'data')]);
+        $values = new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')]);
 
         $row = Row::fromProduct(
             'identifier',

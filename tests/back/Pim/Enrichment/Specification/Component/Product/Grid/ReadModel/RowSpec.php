@@ -7,7 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperties;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -36,7 +36,7 @@ class RowSpec extends ObjectBehavior
                 90,
                 1,
                 'parent_code',
-                new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
+                new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
             ]
         );
 
@@ -55,7 +55,7 @@ class RowSpec extends ObjectBehavior
         $this->checked()->shouldReturn(true);
         $this->childrenCompleteness()->shouldReturn([]);
         $this->parentCode()->shouldReturn('parent_code');
-        $this->values()->shouldBeLike(new ValueCollection([ScalarValue::value('scalar_attribute', 'data')]));
+        $this->values()->shouldBeLike(new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')]));
         $this->additionalProperties()->shouldBeLike(new AdditionalProperties([]));
     }
 
@@ -73,7 +73,7 @@ class RowSpec extends ObjectBehavior
                 1,
                 [],
                 'parent_code',
-                new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
+                new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
             ]
         );
 
@@ -92,7 +92,7 @@ class RowSpec extends ObjectBehavior
         $this->checked()->shouldReturn(true);
         $this->childrenCompleteness()->shouldReturn([]);
         $this->parentCode()->shouldReturn('parent_code');
-        $this->values()->shouldBeLike(new ValueCollection([ScalarValue::value('scalar_attribute', 'data')]));
+        $this->values()->shouldBeLike(new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')]));
         $this->additionalProperties()->shouldBeLike(new AdditionalProperties([]));
     }
 
@@ -112,7 +112,7 @@ class RowSpec extends ObjectBehavior
                 90,
                 1,
                 'parent_code',
-                new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
+                new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
             ]
         );
 

@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection;
@@ -25,7 +25,7 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         AbstractAttribute $width,
         AbstractAttribute $sku,
         AbstractAttribute $image,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         \Iterator $valuesIterator,
         ValueInterface $descriptionValue,
         ValueInterface $priceValue,
@@ -87,7 +87,7 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         AbstractAttribute $sku,
         AbstractAttribute $image,
         AbstractAttribute $color,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         \Iterator $valuesIterator,
         ValueInterface $descriptionValue,
         ValueInterface $priceValue,
@@ -156,7 +156,7 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         AbstractAttribute $sku,
         AbstractAttribute $image,
         AbstractAttribute $size,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         \Iterator $valuesIterator,
         ValueInterface $descriptionValue,
         ValueInterface $priceValue,

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -61,7 +60,7 @@ final class Row
     /** @var null|string */
     private $parent;
 
-    /** @var ValueCollectionInterface */
+    /** @var WriteValueCollection */
     private $values;
 
     /** @var AdditionalProperties */
@@ -83,7 +82,7 @@ final class Row
      * @param bool                     $checked
      * @param array                    $childrenCompleteness
      * @param null|string              $parentCode
-     * @param ValueCollectionInterface $values
+     * @param WriteValueCollection $values
      * @param AdditionalProperties     $additionalProperties
      */
     private function __construct(
@@ -102,7 +101,7 @@ final class Row
         ?bool $checked,
         array $childrenCompleteness,
         ?string $parentCode,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         AdditionalProperties $additionalProperties
     ) {
         $this->identifier = $identifier;
@@ -136,7 +135,7 @@ final class Row
         ?int $completeness,
         int $technicalId,
         ?string $parentCode,
-        ValueCollection $values
+        WriteValueCollection $values
     ):self {
         return new self(
             $identifier,
@@ -169,7 +168,7 @@ final class Row
         int $technicalId,
         array $childrenCompleteness,
         ?string $parent,
-        ValueCollection $values
+        WriteValueCollection $values
     ):self {
         return new self(
             $code,
@@ -341,9 +340,9 @@ final class Row
     }
 
     /**
-     * @return ValueCollectionInterface
+     * @return WriteValueCollection
      */
-    public function values(): ValueCollectionInterface
+    public function values(): WriteValueCollection
     {
         return $this->values;
     }

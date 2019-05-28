@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer;
 use Doctrine\Common\Collections\Collection;
@@ -53,7 +53,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_properties_with_minimum_filled_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         Collection $completenesses
     ) {
         $serializer->implement(NormalizerInterface::class);
@@ -125,7 +125,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_properties_with_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         FamilyInterface $family,
         AttributeInterface $sku,
         Collection $completenesses
@@ -255,7 +255,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $channelRepository,
         AttributeInterface $sku,
         ProductInterface $variantProduct,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
         Collection $completenesses,
@@ -445,7 +445,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         $channelRepository,
         ProductInterface $variantProduct,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
         AttributeInterface $sku,
@@ -565,7 +565,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         $localeRepository,
         ProductInterface $variantProduct,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
         AttributeInterface $sku,
@@ -744,7 +744,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         NormalizerInterface $normalizer1,
         NormalizerInterface $normalizer2,
         ProductInterface $product,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         Collection $completenesses,
         $serializer,
         $channelRepository,

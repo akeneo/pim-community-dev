@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -26,7 +26,7 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var WriteValueCollectionFactory */
     protected $valueCollectionFactory;
 
     /**
@@ -76,9 +76,9 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
     }
 
     /**
-     * @return ValueCollectionFactoryInterface
+     * @return WriteValueCollectionFactory
      */
-    private function getProductValueCollectionFactory(): ValueCollectionFactoryInterface
+    private function getProductValueCollectionFactory(): WriteValueCollectionFactory
     {
         if (null === $this->valueCollectionFactory) {
             $this->valueCollectionFactory = $this->container->get('pim_catalog.factory.value_collection');

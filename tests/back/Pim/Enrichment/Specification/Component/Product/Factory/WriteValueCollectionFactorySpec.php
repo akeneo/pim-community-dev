@@ -14,16 +14,16 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\Attribute as StructureAttribute;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
-class ValueCollectionFactorySpec extends ObjectBehavior
+class WriteValueCollectionFactorySpec extends ObjectBehavior
 {
     function let(
         ValueFactory $valueFactory,
@@ -44,7 +44,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ValueCollectionFactory::class);
+        $this->shouldHaveType(WriteValueCollectionFactory::class);
     }
 
     function it_creates_a_values_collection_from_the_storage_format_from_single(
@@ -157,7 +157,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldReturnAnInstanceOf(WriteValueCollection::class);
         $actualValues->shouldHaveCount(4);
 
         $actualIterator = $actualValues->getIterator();
@@ -179,7 +179,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $getAttributeByCodes->forCodes(['attribute_that_does_not_exists'])->willReturn([]);
 
-        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ValueCollection([]));
+        $this->createFromStorageFormat($rawValues)->shouldBeLike(new WriteValueCollection([]));
     }
 
     function it_skips_unknown_attributes_when_there_are_multiple_product(
@@ -239,8 +239,8 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
 
         $this->createMultipleFromStorageFormat($rawValueCollection)->shouldBeLike([
-            'productB' => new ValueCollection([$value->getWrappedObject()]),
-            'productA' => new ValueCollection([]),
+            'productB' => new WriteValueCollection([$value->getWrappedObject()]),
+            'productA' => new WriteValueCollection([]),
         ]);
     }
 
@@ -297,7 +297,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             new OnGoingFilteredRawValues($filteredRawValues, [])
         );
 
-        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ValueCollection([]));
+        $this->createFromStorageFormat($rawValues)->shouldBeLike(new WriteValueCollection([]));
     }
 
     function it_skips_invalid_attributes_when_creating_a_values_collection_from_the_storage_format_single(
@@ -349,7 +349,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldReturnAnInstanceOf(WriteValueCollection::class);
         $actualValues->shouldHaveCount(0);
     }
 
@@ -404,7 +404,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldReturnAnInstanceOf(WriteValueCollection::class);
         $actualValues->shouldHaveCount(0);
     }
 
@@ -469,7 +469,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldReturnAnInstanceOf(WriteValueCollection::class);
         $actualValues->shouldHaveCount(1);
     }
 
@@ -599,7 +599,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldBeAnInstanceOf(WriteValueCollection::class);
         $actualValues->shouldHaveCount(3);
         $actualValues->getIterator()->shouldHaveKey('number-<all_channels>-<all_locales>');
         $actualValues->getIterator()->shouldHaveKey('text-<all_channels>-<all_locales>');

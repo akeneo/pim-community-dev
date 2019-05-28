@@ -6,11 +6,10 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
-class ValueCollectionSpec extends ObjectBehavior
+class WriteValueCollectionSpec extends ObjectBehavior
 {
     function let(
         AttributeInterface $length,
@@ -70,11 +69,11 @@ class ValueCollectionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ValueCollection::class);
+        $this->shouldHaveType(WriteValueCollection::class);
     }
 
     function it_creates_a_collection_from_another(
-        ValueCollectionInterface $collection,
+        WriteValueCollection $collection,
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
@@ -448,7 +447,7 @@ class ValueCollectionSpec extends ObjectBehavior
             }
         );
 
-        $filteredValues->shouldBeAnInstanceOf(ValueCollectionInterface::class);
+        $filteredValues->shouldBeAnInstanceOf(WriteValueCollection::class);
         $filteredValues->count()->shouldReturn(1);
         $filteredValues->first()->getAttributeCode()->shouldReturn('length');
     }

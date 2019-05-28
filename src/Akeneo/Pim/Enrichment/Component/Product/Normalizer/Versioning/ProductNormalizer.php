@@ -9,8 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -119,7 +119,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      * @param ProductInterface $product
      * @param array            $context
      *
-     * @return ValueCollectionInterface|ValueInterface[]
+     * @return WriteValueCollection|ValueInterface[]
      */
     protected function getFilteredValues(ProductInterface $product, array $context = [])
     {

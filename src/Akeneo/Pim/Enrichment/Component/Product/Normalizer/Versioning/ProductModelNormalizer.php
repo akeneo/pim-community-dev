@@ -86,10 +86,8 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
 
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValues = array_replace(
-                $normalizedValues,
-                $this->serializer->normalize($value, $format, $context)
-            );
+            $normalizedValue = $this->serializer->normalize($value, $format, $context);
+            $normalizedValues = array_replace($normalizedValues, $normalizedValue);
         }
         ksort($normalizedValues);
 

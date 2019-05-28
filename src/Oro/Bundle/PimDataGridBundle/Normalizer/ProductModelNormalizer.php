@@ -6,8 +6,8 @@ namespace Oro\Bundle\PimDataGridBundle\Normalizer;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
@@ -144,13 +144,13 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /**
      * Normalize the values of the productModel
      *
-     * @param ValueCollectionInterface $values
+     * @param WriteValueCollection $values
      * @param string                   $format
      * @param array                    $context
      *
      * @return array
      */
-    private function normalizeValues(ValueCollectionInterface $values, $format, array $context = []) : array
+    private function normalizeValues(WriteValueCollection $values, $format, array $context = []) : array
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);

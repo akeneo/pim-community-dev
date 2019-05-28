@@ -5,13 +5,10 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Stora
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValuesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
 {
@@ -34,9 +31,9 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     {
         $realValue = ScalarValue::value('attribute', null);
 
-        $valuesCollection = new ValueCollection([$realValue]);
+        $valuesCollection = new WriteValueCollection([$realValue]);
         $valuesArray = [$realValue];
-        $emptyValuesCollection = new ValueCollection();
+        $emptyValuesCollection = new WriteValueCollection();
         $randomCollection = new ArrayCollection([new \stdClass()]);
         $randomArray = [new \stdClass()];
 
@@ -51,7 +48,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_empty_collection_of_product_values() {
-        $this->normalize(new ValueCollection(), 'storage')->shouldReturn([]);
+        $this->normalize(new WriteValueCollection(), 'storage')->shouldReturn([]);
     }
 
     function it_normalizes_collection_of_product_values_in_storage_format(
@@ -60,7 +57,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         ValueInterface $descriptionEcommerceFrValue,
         ValueInterface $descriptionEcommerceEnValue,
         ValueInterface $descriptionPrintFrValue,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         \ArrayIterator $valuesIterator
     ) {
         $values->getIterator()->willReturn($valuesIterator);
@@ -137,7 +134,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $textValueEn = ScalarValue::scopableLocalizableValue('123', 'ecommerce', 'en_US', 'foo');
         $textValueFr = ScalarValue::scopableLocalizableValue('123', 'ecommerce', 'fr_FR', 'foo');
 
-        $values = new ValueCollection([$textValueEn, $textValueFr]);
+        $values = new WriteValueCollection([$textValueEn, $textValueFr]);
 
         $normalizer
             ->normalize($textValueEn, 'storage', [])

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
@@ -66,7 +66,7 @@ class ValuesNormalizerSpec extends ObjectBehavior
         );
 
 
-        $valueCollection = new ValueCollection([$scalarValue, $localizableScalarValue, $mediaValue]);
+        $valueCollection = new ReadValueCollection([$scalarValue, $localizableScalarValue, $mediaValue]);
         $this->normalize($valueCollection)->shouldReturn(
             [
                 'color' => [[

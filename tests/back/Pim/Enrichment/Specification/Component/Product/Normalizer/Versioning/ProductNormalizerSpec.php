@@ -16,7 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -54,7 +54,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ValueInterface $sku,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         FamilyInterface $family,
         ProductModelInterface $parent
     ) {
@@ -96,7 +96,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter,
         ProductInterface $product,
         ValueInterface $sku,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         FamilyInterface $family,
         $serializer
     ) {
@@ -146,7 +146,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductInterface $associatedProduct2,
         ValueInterface $skuAssocProduct1,
         ValueInterface $skuAssocProduct2,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         FamilyInterface $family,
         $serializer
     ) {
@@ -225,7 +225,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ValueInterface $sku,
         ValueInterface $colors,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         FamilyInterface $family
     ) {
         $family->getCode()->willReturn('shoes');
@@ -274,7 +274,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ValueInterface $price,
         Collection $prices,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ProductPriceInterface $productPrice,
         FamilyInterface $family,
         SerializerInterface $serializer

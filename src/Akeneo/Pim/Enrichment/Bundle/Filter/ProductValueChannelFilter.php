@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Filter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 
 /**
  * Filter the values according to channel codes provided in options.
@@ -57,6 +57,6 @@ class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilt
      */
     public function supportsCollection($collection, $type, array $options = [])
     {
-        return $collection instanceof ValueCollectionInterface;
+        return $collection instanceof WriteValueCollection;
     }
 }

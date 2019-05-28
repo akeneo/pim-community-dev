@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -81,13 +81,13 @@ class ProductModelNormalizer implements NormalizerInterface
     /**
      * Normalize the values of the product model
      *
-     * @param ValueCollectionInterface $values
+     * @param WriteValueCollection $values
      * @param string $format
      * @param array $context
      *
      * @return ArrayCollection
      */
-    private function normalizeValues(ValueCollectionInterface $values, ?string $format, array $context = [])
+    private function normalizeValues(WriteValueCollection $values, ?string $format, array $context = [])
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);
