@@ -397,7 +397,7 @@ class UserController
 
     private function additionalProperties($user): array
     {
-        $decimalSeparator['ui-locale-decimal-separator'] = $this->numberFactory
+        $decimalSeparator['ui_locale_decimal_separator'] = $this->numberFactory
             ->create(['locale' => $user['user_default_locale']])
             ->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
 
