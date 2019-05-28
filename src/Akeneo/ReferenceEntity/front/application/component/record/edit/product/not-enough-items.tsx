@@ -17,13 +17,14 @@ const NoEnoughItems = ({
     return null;
   }
 
-  // if (productCount >= totalCount) {
-  //   return null;
-  // }
+  if (productCount >= totalCount) {
+    return null;
+  }
 
-  const subtitle = true === selectedAttribute.useable_as_grid_filter ?
-    'pim_reference_entity.record.product.not_enough_items.subtitle.usable_in_grid' :
-    'pim_reference_entity.record.product.not_enough_items.subtitle.not_usable_in_grid';
+  const subtitle =
+    true === selectedAttribute.useable_as_grid_filter
+      ? 'pim_reference_entity.record.product.not_enough_items.subtitle.usable_in_grid'
+      : 'pim_reference_entity.record.product.not_enough_items.subtitle.not_usable_in_grid';
 
   return (
     <React.Fragment>
@@ -33,9 +34,7 @@ const NoEnoughItems = ({
           totalCount: totalCount,
         })}
       </div>
-      <div className="AknGridContainer-notEnoughDataSubtitle">
-        {__(subtitle)}
-      </div>
+      <div className="AknGridContainer-notEnoughDataSubtitle">{__(subtitle)}</div>
       {true === selectedAttribute.useable_as_grid_filter ? (
         <button className="AknButton AknButton--big AknButton--apply AknButton--centered" onClick={() => showMore()}>
           {__('pim_reference_entity.record.product.not_enough_items.button')}
