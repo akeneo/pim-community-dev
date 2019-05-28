@@ -153,7 +153,7 @@ Feature: Create an attribute linked to a reference entity
     When the user creates a number attribute "area" to the reference entity "city" with:
       | code | labels                                   | is_required | order | value_per_channel | value_per_locale | decimals_allowed | min_value | max_value |
       | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | false          | 10        | hello     |
-    Then there should be a validation error with message 'This value should be a number.'
+    Then there should be a validation error with message 'This value should be a number with the right decimal separator.'
 
   @acceptance-front
   Scenario: Create a simple valid text attribute
@@ -164,12 +164,12 @@ Feature: Create an attribute linked to a reference entity
     Then the user should not see any validation error
 
   @acceptance-front
-#  Scenario: Create an invalid text attribute
-#    Given the user has the following rights:
-#      | akeneo_referenceentity_attribute_create | true |
-#    When the user creates an attribute with an invalid code
-#    And the user saves the attribute with an invalid code
-#    Then the user should see the validation error "This field may only contain letters, numbers and underscores."
+  Scenario: Create an invalid text attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates an attribute with an invalid code
+    And the user saves the attribute with an invalid code
+    Then the user should see the validation error "This field may only contain letters, numbers and underscores."
 
   @acceptance-front
   Scenario: Create a simple valid record attribute

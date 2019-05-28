@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditNumberValueComma
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -118,11 +119,6 @@ class EditNumberValueCommandValidator extends ConstraintValidator
         return $violations;
     }
 
-    private function isInteger(EditNumberValueCommand $command): bool
-    {
-        return false !== filter_var($command->number, FILTER_VALIDATE_INT);
-    }
-
     private function checkMinBoundary(EditNumberValueCommand $command): ConstraintViolationListInterface
     {
         $violations = new ConstraintViolationList();
@@ -132,7 +128,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
             $violations = $validator->validate(
                 $command->number,
                 [
-                    new Constraints\Range(['min' => (float)$command->attribute->minValue()])
+                    new Constraints\Range(['min' => $command->attribute->minValue()])
                 ]
             );
         }
@@ -149,7 +145,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
             $violations = $validator->validate(
                 $command->number,
                 [
-                    new Constraints\Range(['max' => (float)$command->attribute->maxValue()])
+                    new Constraints\Range(['max' => $command->attribute->maxValue()])
                 ]
             );
         }
@@ -159,20 +155,22 @@ class EditNumberValueCommandValidator extends ConstraintValidator
 
     private function checkIsFloat(EditNumberValueCommand $command): ConstraintViolationListInterface
     {
-        $validator = Validation::createValidator();
-        $violations = $validator->validate(
-            $command->number,
-            [
-                new Constraints\Type(
-                    [
-                        'type'    => 'numeric',
-                        'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_NUMERIC,
-                    ]
-                ),
-            ]
-        );
+        $violationList = new ConstraintViolationList();
 
-        return $violations;
+        if (!is_numeric($command->number)) {
+            $violation = new ConstraintViolation(
+                EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_NUMERIC,
+                [],
+                [],
+                '',
+                '',
+                $command->number
+            );
+
+            $violationList->add($violation);
+        }
+
+        return $violationList;
     }
 
     private function checkIsInteger(EditNumberValueCommand $command): ConstraintViolationListInterface
@@ -180,13 +178,36 @@ class EditNumberValueCommandValidator extends ConstraintValidator
         $validator = Validation::createValidator();
         $violations = $validator->validate(
             $this->isInteger($command),
-            new Constraints\IsTrue(
-                [
-                    'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_NOT_BE_DECIMAL,
-                ]
-            )
+            new Constraints\IsTrue(['message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_INTEGER])
         );
 
+        if (0 === $violations->count()) {
+            $violations->addAll(
+                $validator->validate(
+                    $this->isTooLong($command),
+                    new Constraints\IsFalse(['message' => EditNumberValueCommandConstraint::INTEGER_TOO_LONG])
+                )
+            );
+        }
+
         return $violations;
+    }
+
+    private function isInteger(EditNumberValueCommand $command): bool
+    {
+        return 1 === preg_match('/^-?[0-9]+$/', $command->number);
+    }
+
+    /**
+     * When integers are passed in as strings, they might be greater than the integer's limit (imposed by the system)
+     * We need to check this in order to prevent loosing precisions.
+     *
+     * @param EditNumberValueCommand $command
+     *
+     * @return bool
+     */
+    private function isTooLong(EditNumberValueCommand $command) :bool
+    {
+        return ((string) ((int) $command->number)) !== (string) $command->number;
     }
 }

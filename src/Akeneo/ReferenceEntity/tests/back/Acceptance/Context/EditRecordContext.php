@@ -121,8 +121,9 @@ final class EditRecordContext implements Context
     private const INVALID_IMAGE_MIMETYPE = 144;
     private const INVALID_IMAGE_SIZE = '1000 Ko';
     private const INVALID_IMAGE_EXTENSION = ['gif'];
-    private const INVALID_IMAGE_EXISTS = '/files/not_found.png';
+    private const INTEGER_TOO_LONG = '99999999999999999999999999999999999999999999999999999999999999999999999999999999';
 
+    private const INVALID_IMAGE_EXISTS = '/files/not_found.png';
     private const FILE_TOO_BIG = 'too_big.jpeg';
     private const FILE_TOO_BIG_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
@@ -2531,12 +2532,14 @@ final class EditRecordContext implements Context
     {
         $emptyImage = null;
 
-        $value = current(array_filter(
-            $valueCollection,
-            function (array $value) use ($attributeAsImage) {
-                return $value['attribute'] === $attributeAsImage;
-            }
-        ));
+        $value = current(
+            array_filter(
+                $valueCollection,
+                function (array $value) use ($attributeAsImage) {
+                    return $value['attribute'] === $attributeAsImage;
+                }
+            )
+        );
 
         if (false === $value) {
             return $emptyImage;
@@ -2575,8 +2578,9 @@ final class EditRecordContext implements Context
 
     /**
      * @Given /^a record belonging to this reference entity with values of "([^"]*)" for the number attribute$/
+     * @Given /^a record belonging to this reference entity$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheNumberAttribute($numberValue)
+    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheNumberAttribute($numberValue = '0')
     {
         $recordValue = Value::create(
             AttributeIdentifier::create(
@@ -2596,19 +2600,21 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheNumberAttributeOfTheRecordTo($newData)
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
-            'labels'                     => [],
-            'values'                     => [
-                [
-                    'attribute' => self::NUMBER_ATTRIBUTE_IDENTIFIER,
-                    'channel'   => null,
-                    'locale'    => null,
-                    'data'      => $newData,
+        $editCommand = $this->editRecordCommandFactory->create(
+            [
+                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+                'code'                        => self::RECORD_CODE,
+                'labels'                      => [],
+                'values'                      => [
+                    [
+                        'attribute' => self::NUMBER_ATTRIBUTE_IDENTIFIER,
+                        'channel'   => null,
+                        'locale'    => null,
+                        'data'      => $newData,
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
         $this->executeCommand($editCommand);
     }
 
@@ -2665,7 +2671,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error on the property decimals allowed attribute with message "([^\']*)"$/
+     * @Then /^there should be a validation error on the number value with message "([^\']*)"$/
      */
     public function thereShouldBeAValidationErrorOnThePropertyDecimalsAllowedAttributeWithMessage($expectedMessage)
     {
@@ -2701,5 +2707,28 @@ final class EditRecordContext implements Context
                 AttributeLimit::fromString($maxValue)
             )
         );
+    }
+
+    /**
+     * @When /^the user updates the number value with an integer too long$/
+     */
+    public function theUserUpdatesTheNumberValueWithAnIntegerTooLong()
+    {
+        $editCommand = $this->editRecordCommandFactory->create(
+            [
+                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+                'code'                        => self::RECORD_CODE,
+                'labels'                      => [],
+                'values'                      => [
+                    [
+                        'attribute' => self::NUMBER_ATTRIBUTE_IDENTIFIER,
+                        'channel'   => null,
+                        'locale'    => null,
+                        'data'      => self::INTEGER_TOO_LONG,
+                    ],
+                ],
+            ]
+        );
+        $this->executeCommand($editCommand);
     }
 }
