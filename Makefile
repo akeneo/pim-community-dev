@@ -34,26 +34,29 @@ clean:
 
 behat.yml:
 	cp ./behat.yml.dist ./behat.yml
-	sed -i "s/127.0.0.1\//httpd-behat\//g" ./behat.yml
+	sed -i "s/127.0.0.1\//httpd:8080\//g" ./behat.yml
 	sed -i "s/127.0.0.1/selenium/g" ./behat.yml
 
 app/config/parameters.yml:
 	cp ./app/config/parameters.yml.dist ./app/config/parameters.yml
 	# Sed commands should be removed when env var will be introduce in the PIM
 	sed -i "s/database_host:.*localhost/database_host: mysql/g" ./app/config/parameters.yml
-	sed -i "s/localhost: 9200/elastic:changeme@elasticsearch:9200/g" ./app/config/parameters.yml
+	sed -i "s/localhost: 9200/elasticsearch:9200/g" ./app/config/parameters.yml
 
 app/config/parameters_test.yml:
 	cp ./app/config/parameters_test.yml.dist ./app/config/parameters_test.yml
 	# Sed commands should be removed when env var will be introduce in the PIM
-	sed -i "s/database_host:.*localhost/database_host:                        mysql-behat/g" ./app/config/parameters_test.yml
-	sed -i "s/localhost: 9200/elastic:changeme@elasticsearch:9200/g" ./app/config/parameters_test.yml
-	sed -i "s/product_index_name:.*akeneo_pim_product/product_index_name:                    test_akeneo_pim_product/g" ./app/config/parameters_test.yml
-	sed -i "s/product_model_index_name:.*akeneo_pim_product_model/product_model_index_name:              test_akeneo_pim_product_model/g" ./app/config/parameters_test.yml
-	sed -i "s/product_and_product_model_index_name:.*akeneo_pim_product_and_product_model/product_and_product_model_index_name:  test_akeneo_pim_product_and_product_model/g" ./app/config/parameters_test.yml
-	sed -i "s/record_index_name:.*akeneo_referenceentity_record/record_index_name:                     test_akeneo_referenceentity_record/g" ./app/config/parameters_test.yml
-	sed -i "s/product_proposal_index_name:.*akeneo_pim_product_proposal/product_proposal_index_name:           test_akeneo_pim_product_proposal/g" ./app/config/parameters_test.yml
-	sed -i "s/published_product_index_name:.*akeneo_pim_published_product/published_product_index_name:          test_akeneo_pim_published_product/g" ./app/config/parameters_test.yml
+	sed -i "s/database_host:.*localhost/database_host: mysql/g" ./app/config/parameters_test.yml
+	sed -i "s/database_name:.*akeneo_pim/database_name: akeneo_pim_test/g" ./app/config/parameters_test.yml
+	sed -i "s/database_user:.*akeneo_pim/database_user: akeneo_pim_test/g" ./app/config/parameters_test.yml
+	sed -i "s/database_password:.*akeneo_pim/database_password: akeneo_pim_test/g" ./app/config/parameters_test.yml
+	sed -i "s/localhost: 9200/elasticsearch:9200/g" ./app/config/parameters_test.yml
+	sed -i "s/product_index_name:.*akeneo_pim_product/product_index_name: test_akeneo_pim_product/g" ./app/config/parameters_test.yml
+	sed -i "s/product_model_index_name:.*akeneo_pim_product_model/product_model_index_name: test_akeneo_pim_product_model/g" ./app/config/parameters_test.yml
+	sed -i "s/product_and_product_model_index_name:.*akeneo_pim_product_and_product_model/product_and_product_model_index_name: test_akeneo_pim_product_and_product_model/g" ./app/config/parameters_test.yml
+	sed -i "s/record_index_name:.*akeneo_referenceentity_record/record_index_name: test_akeneo_referenceentity_record/g" ./app/config/parameters_test.yml
+	sed -i "s/product_proposal_index_name:.*akeneo_pim_product_proposal/product_proposal_index_name: test_akeneo_pim_product_proposal/g" ./app/config/parameters_test.yml
+	sed -i "s/published_product_index_name:.*akeneo_pim_published_product/published_product_index_name: test_akeneo_pim_published_product/g" ./app/config/parameters_test.yml
 	sed -i "s/published_product_and_product_model_index_name:.*akeneo_pim_published_product_and_product_model/published_product_and_product_model_index_name: test_akeneo_pim_published_product_and_product_model/g" ./app/config/parameters_test.yml
 
 docker-compose.override.yml:
@@ -65,7 +68,7 @@ docker-compose.override.yml:
 ## Remove all configuration file generated
 .PHONY: reset-conf
 reset-conf:
-	rm .env docker-compose.override.yml app/config/parameters_test.yml app/config/parameters.yml behat.yml
+	rm -f .env docker-compose.override.yml app/config/parameters_test.yml app/config/parameters.yml behat.yml
 
 ##
 ## PIM installation

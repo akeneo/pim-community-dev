@@ -404,8 +404,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
      */
     public function it_returns_empty_associations_if_there_is_no_asociation_type(): void
     {
-        $this->get('database_connection')->executeQuery('DELETE FROM akeneo_pim.pim_catalog_association_type_translation');
-        $this->get('database_connection')->executeQuery('DELETE FROM akeneo_pim.pim_catalog_association_type');
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type_translation');
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type');
 
         $subProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'));
 

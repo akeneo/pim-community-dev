@@ -25,21 +25,9 @@ services:
     ports:
       - '5910:5900'
 
-  httpd:
-    environment:
-      PHP_IDE_CONFIG: 'serverName=pim-ce'
-
-  httpd-behat:
-    environment:
-      PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
-
   mysql:
     ports:
       - '33006:3306'
-
-  mysql-behat:
-    ports:
-      - '33007:3306'
     tmpfs:
       - '/tmp'
       - '/var/lib/mysql'
@@ -47,7 +35,6 @@ services:
   elasticsearch:
     ports:
       - '9210:9200'
-
 
   object-storage:
     ports:

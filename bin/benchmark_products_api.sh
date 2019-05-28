@@ -34,7 +34,7 @@ boot_and_install_pim()
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
     docker-compose up -d --remove-orphans
-    PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)
+    PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd 8080 | cut -d ':' -f 2)
     rm -rf var/cache/*
     rm -f app/config/parameters_test.yml
     bin/docker/pim-setup.sh
@@ -76,8 +76,8 @@ boot_and_install_pim
 generate_reference_catalog
 
 cd $PIM_PATH
-PRODUCT_SIZE=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
-PRODUCT_COUNT=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
+PRODUCT_SIZE=$(docker-compose exec -T mysql mysql -uakeneo_pim_test -pakeneo_pim_test akeneo_pim_test -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
+PRODUCT_COUNT=$(docker-compose exec -T mysql mysql -uakeneo_pim_test -pakeneo_pim_test akeneo_pim_test -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
 message "Start bench products with 120 attributes"
 
 sleep 10
