@@ -191,9 +191,6 @@ define(
                 e.preventDefault();
             },
 
-            /**
-             * {@inheritdoc}
-             */
             _firstCurrency() {
                 return _.first(_.keys(this.currencies));
             },
