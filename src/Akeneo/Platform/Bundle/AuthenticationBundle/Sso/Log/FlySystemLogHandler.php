@@ -4,13 +4,12 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log;
 
 use League\Flysystem\FilesystemInterface;
-use League\Flysystem\MountManager;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 
 final class FlySystemLogHandler extends RotatingFileHandler
 {
-    /** @var MountManager */
+    /** @var FilesystemInterface */
     private $logStorage;
 
     public function __construct(
@@ -37,5 +36,24 @@ final class FlySystemLogHandler extends RotatingFileHandler
         }
 
         $this->logStorage->put($this->url, $record['formatted']);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getTimedFilename(): string
+    {
+        $fileInfo = pathinfo($this->filename);
+        $timedFilename = str_replace(
+            array('{filename}', '{date}'),
+            array($fileInfo['filename'], date($this->dateFormat)),
+            '.'.DIRECTORY_SEPARATOR.'saml'.DIRECTORY_SEPARATOR.$this->filenameFormat
+        );
+
+        if (!empty($fileInfo['extension'])) {
+            $timedFilename .= '.'.$fileInfo['extension'];
+        }
+
+        return $timedFilename;
     }
 }

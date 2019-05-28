@@ -70,7 +70,7 @@ README;
 
     private function addLogsFileToArchive(\ZipArchive $archive): void
     {
-        $logs = $this->logsStorage->listContents();
+        $logs = $this->logsStorage->listContents('/saml');
         foreach ($logs as $logFile) {
             $logContent = $this->logsStorage->read($logFile['path']);
             $archive->addFromString($logFile['basename'], $logContent);
