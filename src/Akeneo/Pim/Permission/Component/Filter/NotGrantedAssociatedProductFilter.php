@@ -75,9 +75,7 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
         $filteredEntityWithAssociations = clone $entityWithAssociations;
         $clonedAssociations = new ArrayCollection();
 
-        if (null !== $this->tokenStorage) {
-            $user = $this->tokenStorage->getToken()->getUser();
-        }
+        $user = $this->tokenStorage->getToken()->getUser();
 
         foreach ($filteredEntityWithAssociations->getAssociations() as $association) {
             $clonedAssociation = clone $association;

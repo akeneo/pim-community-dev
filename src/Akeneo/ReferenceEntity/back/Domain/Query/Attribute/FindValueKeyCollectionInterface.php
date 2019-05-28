@@ -23,5 +23,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface FindValueKeyCollectionInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection;
 }

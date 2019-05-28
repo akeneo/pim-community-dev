@@ -26,7 +26,7 @@ class InMemoryGenerateEmptyValues implements GenerateEmptyValuesInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $identifier): array
+    public function generate(ReferenceEntityIdentifier $identifier): array
     {
         throw new NotImplementedException('__invoke');
     }

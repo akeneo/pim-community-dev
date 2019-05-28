@@ -62,7 +62,7 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails
     {
         $result = $this->fetchResult($referenceEntityIdentifier, $recordCode);
 
@@ -116,9 +116,9 @@ SQL;
     private function hydrateRecordDetails($result): RecordDetails
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
-        $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
-        $attributesIndexedByIdentifier = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
-        $emptyValues = ($this->generateEmptyValues)($referenceEntityIdentifier);
+        $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
+        $emptyValues = $this->generateEmptyValues->generate($referenceEntityIdentifier);
 
         return $this->recordDetailsHydrator->hydrate(
             $result,

@@ -58,7 +58,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $identifiers, RecordQuery $query): array
+    public function find(array $identifiers, RecordQuery $query): array
     {
         $referenceEntityFilter = $query->getFilter('reference_entity');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);

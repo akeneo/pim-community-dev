@@ -536,7 +536,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
             ];
         }
 
-        $searchResult = ($this->findIdentifiersForQuery)(
+        $searchResult = $this->findIdentifiersForQuery->find(
             RecordQuery::createFromNormalized([
                 'locale'  => $locale,
                 'channel' => $channel,

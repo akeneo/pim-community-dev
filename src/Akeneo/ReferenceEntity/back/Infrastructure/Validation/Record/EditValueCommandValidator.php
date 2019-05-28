@@ -127,7 +127,7 @@ class EditValueCommandValidator extends ConstraintValidator
 
     private function checkScopableValue(AbstractEditValueCommand $command): void
     {
-        if (!($this->channelExists)(ChannelIdentifier::fromCode($command->channel))) {
+        if (!$this->channelExists->exists(ChannelIdentifier::fromCode($command->channel))) {
             $this->context->buildViolation(EditValueCommand::CHANNEL_SHOULD_EXIST)
                 ->setParameter('%channel_identifier%', $command->channel)
                 ->atPath((string) $command->attribute->getCode())
@@ -143,7 +143,7 @@ class EditValueCommandValidator extends ConstraintValidator
 
     private function checkLocalizableValue(AbstractEditValueCommand $command): void
     {
-        $activatedLocales = ($this->findActivatedLocalesByIdentifiers)(LocaleIdentifierCollection::fromNormalized([$command->locale]));
+        $activatedLocales = $this->findActivatedLocalesByIdentifiers->find(LocaleIdentifierCollection::fromNormalized([$command->locale]));
 
         if ($activatedLocales->isEmpty()) {
             $this->context->buildViolation(EditValueCommand::LOCALE_IS_NOT_ACTIVATED)
@@ -155,7 +155,7 @@ class EditValueCommandValidator extends ConstraintValidator
 
     private function checkLocaleIsActivatedForChannel(AbstractEditValueCommand $command): void
     {
-        $activatedLocalesPerChannels = ($this->findActivatedLocalesPerChannels)();
+        $activatedLocalesPerChannels = $this->findActivatedLocalesPerChannels->findAll();
 
         if (!array_key_exists($command->channel, $activatedLocalesPerChannels)
             || !in_array($command->locale, $activatedLocalesPerChannels[$command->channel])

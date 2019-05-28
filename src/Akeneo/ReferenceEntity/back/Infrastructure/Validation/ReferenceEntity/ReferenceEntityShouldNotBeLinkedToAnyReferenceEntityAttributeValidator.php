@@ -71,7 +71,7 @@ class ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttributeValidator ext
     private function validateCommand(DeleteReferenceEntityCommand $command): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->identifier);
-        $isLinked = ($this->isLinkedToAtLeastOneReferenceEntityAttribute)($referenceEntityIdentifier);
+        $isLinked = $this->isLinkedToAtLeastOneReferenceEntityAttribute->isLinked($referenceEntityIdentifier);
 
         if ($isLinked) {
             $this->context->buildViolation(ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute::ERROR_MESSAGE)

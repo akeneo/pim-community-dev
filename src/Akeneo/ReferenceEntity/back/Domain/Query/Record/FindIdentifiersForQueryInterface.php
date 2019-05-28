@@ -21,5 +21,5 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
  */
 interface FindIdentifiersForQueryInterface
 {
-    public function __invoke(RecordQuery $query): IdentifiersForQueryResult;
+    public function find(RecordQuery $query): IdentifiersForQueryResult;
 }

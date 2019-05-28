@@ -24,7 +24,7 @@ class AttributeSupportsOptions
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
+    public function supports(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
     {
         $identifier = $this->getAttributeIdentifier->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($identifier);

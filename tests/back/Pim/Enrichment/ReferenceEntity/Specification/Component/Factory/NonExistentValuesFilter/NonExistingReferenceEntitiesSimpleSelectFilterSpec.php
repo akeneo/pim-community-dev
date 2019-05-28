@@ -123,4 +123,82 @@ final class NonExistingReferenceEntitiesSimpleSelectFilterSpec extends ObjectBeh
             ]
         );
     }
+
+    public function it_handles_null_values(FindAllExistentRecordsForReferenceEntityIdentifiers $findAllExistentRecordsForReferenceEntityIdentifiers)
+    {
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
+            [
+                ReferenceEntityType::REFERENCE_ENTITY => [
+                    'brand1' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'apple'
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'brand'
+                            ]
+                        ],
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => null
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'color'
+                            ]
+                        ]
+                    ]
+                ],
+                AttributeTypes::TEXTAREA => [
+                    'a_description' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'plop'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        $recordCodesIndexedByReferenceEntityIdentifiers = [
+            'brand' => ['apple'],
+        ];
+
+        $findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($recordCodesIndexedByReferenceEntityIdentifiers)->willReturn(
+            [
+                'brand' => ['apple'],
+            ]
+        );
+
+        /** @var OnGoingFilteredRawValues $filteredCollection */
+        $filteredCollection = $this->filter($ongoingFilteredRawValues);
+        $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
+            [
+                ReferenceEntityType::REFERENCE_ENTITY => [
+                    'brand1' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'apple'
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'brand'
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        );
+    }
 }

@@ -33,7 +33,7 @@ class SqlFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttri
     /**
      * @return ConnectorAttribute
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
     {
         return $this->fetch($referenceEntityIdentifier, $attributeCode);
     }

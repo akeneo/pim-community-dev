@@ -80,10 +80,10 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
         $repository->getByIdentifier(AttributeIdentifier::fromString('image'))->willReturn($mainImageAttribute);
 
         $findReferenceEntityAttributeAsLabel
-            ->__invoke(ReferenceEntityIdentifier::fromString('designer'))
+            ->find(ReferenceEntityIdentifier::fromString('designer'))
             ->willReturn(AttributeAsLabelReference::fromAttributeIdentifier(AttributeIdentifier::fromString('label')));
         $findReferenceEntityAttributeAsImage
-            ->__invoke(ReferenceEntityIdentifier::fromString('designer'))
+            ->find(ReferenceEntityIdentifier::fromString('designer'))
             ->willReturn(AttributeAsImageReference::fromAttributeIdentifier(AttributeIdentifier::fromString('image')));
 
         $this->beConstructedWith($findReferenceEntityAttributeAsLabel, $findReferenceEntityAttributeAsImage, $repository);

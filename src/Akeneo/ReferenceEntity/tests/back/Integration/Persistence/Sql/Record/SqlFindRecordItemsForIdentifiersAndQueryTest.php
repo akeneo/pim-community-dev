@@ -69,7 +69,7 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
             'size' => 10,
         ]);
 
-        $this->assertEmpty(($this->findRecordItemsForIdentifiersAndQuery)(['michel_sardou', 'bob_ross'], $query));
+        $this->assertEmpty($this->findRecordItemsForIdentifiersAndQuery->find(['michel_sardou', 'bob_ross'], $query));
     }
 
     /**
@@ -91,7 +91,7 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
             'size' => 10,
         ]);
 
-        $recordItems = ($this->findRecordItemsForIdentifiersAndQuery)(
+        $recordItems = $this->findRecordItemsForIdentifiersAndQuery->find(
             [(string) $this->starckIdentifier, (string) $this->cocoIdentifier],
             $query
         );

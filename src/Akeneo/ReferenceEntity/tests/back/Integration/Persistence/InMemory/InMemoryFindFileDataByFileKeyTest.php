@@ -37,7 +37,7 @@ class InMemoryFindFileDataByFileKeyTest extends TestCase
         ];
         $this->findFileDataByFileKey->save($fileData);
 
-        $imageFound = ($this->findFileDataByFileKey)($fileData['filePath']);
+        $imageFound = $this->findFileDataByFileKey->find($fileData['filePath']);
 
         $this->assertEquals($fileData, $imageFound);
     }
@@ -52,7 +52,7 @@ class InMemoryFindFileDataByFileKeyTest extends TestCase
             'originalFilename' => 'kartell.jpg',
         ]);
 
-        $imageFound = ($this->findFileDataByFileKey)('foo/bar.jpg');
+        $imageFound = $this->findFileDataByFileKey->find('foo/bar.jpg');
 
         $this->assertNull($imageFound);
     }

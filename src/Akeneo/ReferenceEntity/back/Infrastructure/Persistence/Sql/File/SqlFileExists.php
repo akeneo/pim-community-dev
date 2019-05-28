@@ -27,7 +27,7 @@ class SqlFileExists implements FileExistsInterface
         $this->connection = $connection;
     }
 
-    public function __invoke(string $fileKey): bool
+    public function exists(string $fileKey): bool
     {
         $sql = <<<SQL
           SELECT EXISTS(

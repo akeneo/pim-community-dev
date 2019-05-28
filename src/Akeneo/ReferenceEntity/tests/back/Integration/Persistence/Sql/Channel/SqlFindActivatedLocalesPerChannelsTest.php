@@ -31,7 +31,7 @@ class SqlFindActivatedLocalesPerChannelsTest extends SqlIntegrationTestCase
     public function it_generates_an_empty_list(): void
     {
         $this->removeAllLocalesForAllChannels();
-        Assert::assertEmpty(($this->findActivatedLocalesPerChannels)());
+        Assert::assertEmpty($this->findActivatedLocalesPerChannels->findAll());
     }
 
     /**
@@ -39,7 +39,7 @@ class SqlFindActivatedLocalesPerChannelsTest extends SqlIntegrationTestCase
      */
     public function it_generates_the_matrix(): void
     {
-        $localesPerChannels = ($this->findActivatedLocalesPerChannels)();
+        $localesPerChannels = $this->findActivatedLocalesPerChannels->findAll();
 //      [
 //          'ecommerce' => ['en_US', 'fr_FR'],
 //          'mobile'    => ['de_DE'],

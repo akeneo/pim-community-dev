@@ -56,7 +56,7 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $identifiers, RecordQuery $recordQuery): array
+    public function find(array $identifiers, RecordQuery $recordQuery): array
     {
         $sql = <<<SQL
             SELECT 
@@ -84,8 +84,8 @@ SQL;
     private function hydrateRecords(array $results, RecordQuery $recordQuery): array
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier(current($results));
-        $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
-        $indexedAttributes = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
+        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
 
         $hydratedRecords = [];
         foreach ($results as $result) {

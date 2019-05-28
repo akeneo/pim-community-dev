@@ -19,6 +19,8 @@ class GetViewableCategoryCodesIntegration extends TestCase
     {
         parent::setUp();
 
+        $this->createAdminUser();
+
         $fixturesLoader = new CategoryTreeFixturesLoaderWithPermission($this->testKernel->getContainer());
 
         $fixturesLoader->adminUserAsRedactorAndITSupport();

@@ -55,7 +55,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             throw RecordNotFoundException::withIdentifier($recordIdentifier);
         }
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier);
-        $matrixWithValueKeys = ($this->findValueKeysToIndexForAllChannelsAndLocales)($referenceEntityIdentifier);
+        $matrixWithValueKeys = $this->findValueKeysToIndexForAllChannelsAndLocales->find($referenceEntityIdentifier);
         $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
         $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
         $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableRecordItem);
@@ -72,7 +72,7 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     public function normalizeRecordsByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
     {
-        $matrixWithValueKeys = ($this->findValueKeysToIndexForAllChannelsAndLocales)($referenceEntityIdentifier);
+        $matrixWithValueKeys = $this->findValueKeysToIndexForAllChannelsAndLocales->find($referenceEntityIdentifier);
         $searchableRecordItems = $this->findSearchableRecords->byReferenceEntityIdentifier($referenceEntityIdentifier);
         foreach ($searchableRecordItems as $searchableRecordItem) {
             $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);

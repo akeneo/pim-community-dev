@@ -64,7 +64,7 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
         $this->createReferenceEntity($referenceEntityIdentifier);
         $this->createAttribute($referenceEntityIdentifier);
 
-        $foundAttributeOptions = ($this->findConnectorAttributeOption)(
+        $foundAttributeOptions = $this->findConnectorAttributeOption->find(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('attribute_1_code')
         );
@@ -99,7 +99,7 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
         $this->createReferenceEntity($referenceEntityIdentifier);
         $this->createAttributeWithNoOptions($referenceEntityIdentifier);
 
-        $foundOptions = ($this->findConnectorAttributeOption)(
+        $foundOptions = $this->findConnectorAttributeOption->find(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('no_options')
         );

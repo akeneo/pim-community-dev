@@ -104,7 +104,7 @@ jobs:
                 when: always
           - run:
                 name: PHPStan
-                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
                 when: always
           - run:
                 name: Check Pullup
@@ -255,6 +255,28 @@ jobs:
         - run:
             name: Front acceptance tests
             command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+  back_performance:
+    machine:
+        enabled: true
+        docker_layer_caching: true
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Start containers
+          command: docker-compose up -d
+      - run:
+          name: Run performance tests
+          command: |
+            sleep 25
+            .circleci/run_performance_tests.sh
+      - store_test_results:
+          path: var/tests/phpunit
+      - store_artifacts:
+          path: var/tests/phpunit
 
 workflows:
   version: 2
@@ -313,3 +335,6 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - back_phpunit_end_to_end
+          - back_performance:
+                requires:
+                    - back_behat_legacy

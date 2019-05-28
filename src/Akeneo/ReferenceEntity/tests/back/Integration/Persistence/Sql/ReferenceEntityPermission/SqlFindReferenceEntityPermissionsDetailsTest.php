@@ -34,7 +34,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
     public function it_finds_the_reference_entity_permissions_details()
     {
         $this->loadFixtures();
-        $permissions = ($this->query)(ReferenceEntityIdentifier::fromString('designer'));
+        $permissions = $this->query->find(ReferenceEntityIdentifier::fromString('designer'));
         $this->assertPermissions(
             [
                 ['user_group_identifier' => 10, 'user_group_name' => 'Catalog Manager', 'right_level' => 'edit'],
@@ -51,7 +51,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
     {
         $this->loadFixtures();
         $this->createNewUserGroup();
-        $permissions = ($this->query)(ReferenceEntityIdentifier::fromString('designer'));
+        $permissions = $this->query->find(ReferenceEntityIdentifier::fromString('designer'));
         $this->assertPermissions(
             [
                 ['user_group_identifier' => 10, 'user_group_name' => 'Catalog Manager', 'right_level' => 'edit'],
@@ -68,7 +68,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
     public function it_sets_a_default_right_level_for_new_user_groups_when_there_are_no_permissions_set()
     {
         $this->createNewUserGroup();
-        $permissions = ($this->query)(ReferenceEntityIdentifier::fromString('designer'));
+        $permissions = $this->query->find(ReferenceEntityIdentifier::fromString('designer'));
         $this->assertPermissions(
             [
                 ['user_group_identifier' => 12, 'user_group_name' => 'New user group', 'right_level' => 'edit'],
@@ -82,7 +82,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
      */
     public function it_finds_no_permissions_details()
     {
-        $permissions = ($this->query)(ReferenceEntityIdentifier::fromString('brand'));
+        $permissions = $this->query->find(ReferenceEntityIdentifier::fromString('brand'));
         $this->assertEmpty($permissions);
     }
 

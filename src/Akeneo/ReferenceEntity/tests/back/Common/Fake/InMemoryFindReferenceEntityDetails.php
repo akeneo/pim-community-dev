@@ -44,12 +44,12 @@ class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsIn
     /**
      * {@inheritdoc}
      */
-    public function __invoke(
+    public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ): ?ReferenceEntityDetails {
         $key = $this->getKey($referenceEntityIdentifier);
 
-        $activatedLocales = ($this->activatedLocalesQuery)();
+        $activatedLocales = $this->activatedLocalesQuery->findAll();
         if (isset($this->results[$key])) {
             $this->results[$key]->labels = $this->getLabelsByActivatedLocale($this->results[$key]->labels, $activatedLocales);
         }

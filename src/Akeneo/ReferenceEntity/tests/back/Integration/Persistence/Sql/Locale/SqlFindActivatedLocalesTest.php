@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Locale;
 
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindActivatedLocalesTest extends SqlIntegrationTestCase
 {
+    /** @var FindActivatedLocalesInterface */
     private $localesAreActivated;
 
     public function setUp(): void
@@ -32,7 +34,7 @@ class SqlFindActivatedLocalesTest extends SqlIntegrationTestCase
      */
     public function it_finds_the_activated_locales(): void
     {
-        $localesFound = ($this->localesAreActivated)();
+        $localesFound = $this->localesAreActivated->findAll();
         sort($localesFound);
 
         $this->assertSame(['de_DE', 'en_US', 'fr_FR'], $localesFound);

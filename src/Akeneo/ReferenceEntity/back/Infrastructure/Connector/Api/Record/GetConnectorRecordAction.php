@@ -64,7 +64,7 @@ class GetConnectorRecordAction
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
-        $record = ($this->findConnectorRecord)($referenceEntityIdentifier, $recordCode);
+        $record = $this->findConnectorRecord->find($referenceEntityIdentifier, $recordCode);
 
         if (null === $record) {
             throw new NotFoundHttpException(sprintf('Record "%s" does not exist for the reference entity "%s".', $recordCode, $referenceEntityIdentifier));

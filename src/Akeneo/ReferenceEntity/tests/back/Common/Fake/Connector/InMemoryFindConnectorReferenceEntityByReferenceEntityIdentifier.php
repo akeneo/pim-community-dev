@@ -37,7 +37,7 @@ class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier implements
     /**
      * {@inheritdoc}
      */
-    public function __invoke(
+    public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ): ?ConnectorReferenceEntity {
         return $this->results[(string) $referenceEntityIdentifier] ?? null;

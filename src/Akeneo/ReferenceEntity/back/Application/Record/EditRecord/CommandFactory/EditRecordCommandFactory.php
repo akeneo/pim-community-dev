@@ -50,7 +50,7 @@ class EditRecordCommandFactory
         );
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-        $attributesIndexedByIdentifier = ($this->sqlFindAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = $this->sqlFindAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
 
         foreach ($normalizedCommand['values'] as $normalizedValue) {
             if (!$this->isUserInputCorrectlyFormed($normalizedValue)) {

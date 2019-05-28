@@ -20,7 +20,7 @@ class InMemoryFileExists implements FileExistsInterface
     /** @var string[] */
     private $fileKeys = [];
 
-    public function __invoke(string $fileKey): bool
+    public function exists(string $fileKey): bool
     {
         return in_array($fileKey, $this->fileKeys);
     }

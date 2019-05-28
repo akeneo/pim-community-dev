@@ -291,8 +291,8 @@ SQL;
     private function hydrateRecord($result): Record
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
-        $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
-        $attributesIndexedByIdentifier = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
 
         return $this->recordHydrator->hydrate(
             $result,
@@ -320,7 +320,7 @@ SQL;
             return $valueCollection;
         }
 
-        $attributesIndexedByIdentifier = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
 
         // Replace codes by identifiers in the value collection
         foreach ($onlyRecordsValues as $valueKey => $value) {

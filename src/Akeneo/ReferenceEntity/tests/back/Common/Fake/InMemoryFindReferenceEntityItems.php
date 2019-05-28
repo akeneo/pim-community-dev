@@ -33,7 +33,7 @@ class InMemoryFindReferenceEntityItems implements FindReferenceEntityItemsInterf
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): array
+    public function find(): array
     {
         return $this->results;
     }

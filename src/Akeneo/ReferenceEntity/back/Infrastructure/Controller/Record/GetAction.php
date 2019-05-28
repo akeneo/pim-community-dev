@@ -90,7 +90,7 @@ class GetAction
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $recordCode
     ): RecordDetails {
-        $result = ($this->findRecordDetailsQuery)($referenceEntityIdentifier, $recordCode);
+        $result = $this->findRecordDetailsQuery->find($referenceEntityIdentifier, $recordCode);
 
         if (null === $result) {
             throw new NotFoundHttpException();

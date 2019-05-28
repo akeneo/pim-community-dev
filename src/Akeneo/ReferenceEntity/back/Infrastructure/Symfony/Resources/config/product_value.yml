@@ -160,3 +160,15 @@ services:
             - '@pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers'
         tags:
             - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo_referenceentity.factory.read.product_value.reference_entity_collection:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value\ReferenceEntityCollectionValueFactory
+        public: false
+        tags:
+            - { name: akeneo.pim.enrichment.factory.read.product_value }
+
+    akeneo_referenceentity.factory.read.product_value.reference_entity:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value\ReferenceEntityValueFactory
+        public: false
+        tags:
+            - { name: akeneo.pim.enrichment.factory.read.product_value }

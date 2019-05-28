@@ -28,7 +28,7 @@ class InMemoryFindReferenceEntityAttributeAsLabel implements FindReferenceEntity
         $this->referenceEntityRepository = $referenceEntityRepository;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
     {
         try {
             $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);

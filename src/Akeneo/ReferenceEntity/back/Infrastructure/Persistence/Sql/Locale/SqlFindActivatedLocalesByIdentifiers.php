@@ -35,7 +35,7 @@ class SqlFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIden
     /**
      * {@inheritdoc}
      */
-    public function __invoke(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
+    public function find(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
     {
         $activatedLocaleCodes = [];
         if (!$localeIdentifiers->isEmpty()) {

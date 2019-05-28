@@ -41,5 +41,8 @@
             <directory suffix="EndToEnd.php">../vendor/akeneo/pim-community-dev/src</directory>
             <directory suffix="EndToEnd.php">../vendor/akeneo/pim-community-dev/tests/back</directory>
         </testsuite>
+        <testsuite name="PIM_Performance_Test">
+            <directory suffix="Performance.php">../tests/back</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

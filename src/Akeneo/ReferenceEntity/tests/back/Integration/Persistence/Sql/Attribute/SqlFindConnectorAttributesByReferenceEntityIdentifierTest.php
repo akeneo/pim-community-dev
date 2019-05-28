@@ -66,7 +66,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
         $this->createReferenceEntity('reference_entity');
         $connectorAttributes = $this->createConnectorAttributes('reference_entity');
 
-        $foundAttributes = ($this->findConnectorReferenceEntityAttributes)(ReferenceEntityIdentifier::fromString('reference_entity'));
+        $foundAttributes = $this->findConnectorReferenceEntityAttributes->find(ReferenceEntityIdentifier::fromString('reference_entity'));
 
         $normalizedAttributes = [];
         foreach ($connectorAttributes as $attribute) {
@@ -86,7 +86,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
      */
     public function it_returns_an_empty_array_if_no_attributes_found()
     {
-        $foundAttributes = ($this->findConnectorReferenceEntityAttributes)(ReferenceEntityIdentifier::fromString('whatever'));
+        $foundAttributes = $this->findConnectorReferenceEntityAttributes->find(ReferenceEntityIdentifier::fromString('whatever'));
 
         $this->assertSame([], $foundAttributes);
     }

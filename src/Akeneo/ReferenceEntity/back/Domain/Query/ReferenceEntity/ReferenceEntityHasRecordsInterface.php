@@ -23,5 +23,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface ReferenceEntityHasRecordsInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $identifier): bool;
+    public function hasRecords(ReferenceEntityIdentifier $identifier): bool;
 }

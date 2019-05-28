@@ -58,6 +58,12 @@ services:
         tags:
             - { name: pim_catalog.factory.value }
 
+    pimee_product_asset.factory.read.product_value.asset_collection:
+        class: 'Akeneo\Pim\Enrichment\Asset\Component\ReadAssetCollectionValueFactory'
+        public: false
+        tags:
+            - { name: akeneo.pim.enrichment.factory.read.product_value }
+
     ##### User Factory
     pimee_asset.factory.user.default_asset_delay_reminder:
         class: Akeneo\UserManagement\Component\Factory\SimpleDefaultProperty

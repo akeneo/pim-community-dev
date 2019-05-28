@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest */
+    /** @var InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier */
     private $query;
 
     public function setUp(): void
@@ -36,7 +36,7 @@ class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest extend
      */
     public function it_returns_null_when_finding_a_non_existent_reference_entity()
     {
-        $result = ($this->query)(
+        $result = $this->query->find(
             ReferenceEntityIdentifier::fromString('non_existent_reference_entity_identifier')
         );
 
@@ -59,7 +59,7 @@ class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest extend
             $referenceEntity
         );
 
-        $result = ($this->query)(
+        $result = $this->query->find(
             ReferenceEntityIdentifier::fromString('reference_entity_identifier')
         );
 

@@ -70,7 +70,7 @@ class CreateRecordHandler
         }
 
         /** @var AttributeAsLabelReference $attributeAsLabelReference */
-        $attributeAsLabelReference = ($this->findAttributeAsLabel)($referenceEntityIdentifier);
+        $attributeAsLabelReference = $this->findAttributeAsLabel->find($referenceEntityIdentifier);
         if ($attributeAsLabelReference->isEmpty()) {
             return [];
         }

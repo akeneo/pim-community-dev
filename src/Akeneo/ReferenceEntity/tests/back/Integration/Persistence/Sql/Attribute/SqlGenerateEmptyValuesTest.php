@@ -27,12 +27,12 @@ use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
 {
-    /** @var FindValueKeyCollectionInterface */
+    /** @var GenerateEmptyValuesInterface */
     private $generateEmptyValues;
 
     private $order = 2;
@@ -56,7 +56,7 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $name = $this->loadAttribute('designer', 'name', false, true);
         $age = $this->loadAttribute('designer', 'age', true, false);
         $weight = $this->loadAttribute('designer', 'weigth', true, true);
-        $emptyValues = ($this->generateEmptyValues)($designer);
+        $emptyValues = $this->generateEmptyValues->generate($designer);
 
         /** @var ReferenceEntity $referenceEntity */
         $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')

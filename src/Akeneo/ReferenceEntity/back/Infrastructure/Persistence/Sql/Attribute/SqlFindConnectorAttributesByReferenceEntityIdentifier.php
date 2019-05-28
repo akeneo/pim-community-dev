@@ -32,7 +32,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifier implements FindConne
     /**
      * @return ConnectorAttribute[]
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $results = $this->fetchAll($referenceEntityIdentifier);
 

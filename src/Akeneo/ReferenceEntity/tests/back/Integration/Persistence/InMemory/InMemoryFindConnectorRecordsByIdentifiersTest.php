@@ -61,7 +61,7 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
         $alessiRecordIdentifier = RecordIdentifier::fromString('brand_alessi_fingerprint');
         $this->findConnectorRecordsByIdentifiers->save($alessiRecordIdentifier, $alessiRecord);
 
-        $recordsFound = ($this->findConnectorRecordsByIdentifiers)([
+        $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
             $lexonRecordIdentifier->normalize(),
             $alessiRecordIdentifier->normalize(),
             'brand_muuto_fingerprint',
@@ -89,7 +89,7 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
         $recordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
         $this->findConnectorRecordsByIdentifiers->save($recordIdentifier, $connectorRecord);
 
-        $recordsFound = ($this->findConnectorRecordsByIdentifiers)([
+        $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
             'brand_lexon_fingerprint',
             'brand_muuto_fingerprint',
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
@@ -184,7 +184,7 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             ]
         );
 
-        $recordsFound = ($this->findConnectorRecordsByIdentifiers)([
+        $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
             $recordIdentifier->normalize(),
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
@@ -287,7 +287,7 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             ]
         );
 
-        $recordsFound = ($this->findConnectorRecordsByIdentifiers)([
+        $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
             $recordIdentifier->normalize(),
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),

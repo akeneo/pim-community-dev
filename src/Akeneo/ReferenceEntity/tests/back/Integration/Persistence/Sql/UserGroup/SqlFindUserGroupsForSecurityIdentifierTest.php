@@ -30,7 +30,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
     {
         $this->insertUserGroups();
 
-        $userGroupIdentifiers = ($this->findUserGroupsForSecurityIdentifiers)(SecurityIdentifier::fromString('admin'));
+        $userGroupIdentifiers = $this->findUserGroupsForSecurityIdentifiers->find(SecurityIdentifier::fromString('admin'));
         $normalizedUserGroupIdentifiers = array_map(
             function (UserGroupIdentifier $userGroupIdentifier) {
                 return $userGroupIdentifier->normalize();
@@ -46,7 +46,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
      */
     public function it_does_not_find_any_user_group()
     {
-        $this->assertEmpty(($this->findUserGroupsForSecurityIdentifiers)(SecurityIdentifier::fromString('julia')));
+        $this->assertEmpty($this->findUserGroupsForSecurityIdentifiers->find(SecurityIdentifier::fromString('julia')));
     }
 
     private function resetDB(): void

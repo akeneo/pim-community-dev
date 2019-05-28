@@ -58,7 +58,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
         $age = $this->loadAttribute('designer', 'age', true, false);
         $weight = $this->loadAttribute('designer', 'weigth', true, true);
 
-        $actualValueKeyCollection = ($this->findValueKeyCollection)($designer);
+        $actualValueKeyCollection = $this->findValueKeyCollection->find($designer);
 
         /** @var ReferenceEntity $referenceEntity */
         $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')

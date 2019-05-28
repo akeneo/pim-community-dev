@@ -62,7 +62,7 @@ class CreateRecordHandlerSpec extends ObjectBehavior
         $labelAttributeReference = AttributeAsLabelReference::createFromNormalized('label_brand_fingerprint');
 
         $findAttributeAsLabel
-            ->__invoke(Argument::type(ReferenceEntityIdentifier::class))
+            ->find(Argument::type(ReferenceEntityIdentifier::class))
             ->willReturn($labelAttributeReference);
 
         $recordRepository->nextIdentifier(

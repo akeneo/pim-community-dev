@@ -21,5 +21,5 @@ interface FindUserGroupsForSecurityIdentifierInterface
     /**
      * @return UserGroupIdentifier[]
      */
-    public function __invoke(SecurityIdentifier $securityIdentifier): array;
+    public function find(SecurityIdentifier $securityIdentifier): array;
 }

@@ -27,7 +27,7 @@ class InMemoryFindValueKeyCollection implements FindValueKeyCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $identifier): ValueKeyCollection
+    public function find(ReferenceEntityIdentifier $identifier): ValueKeyCollection
     {
         throw new NotImplementedException('__invoke');
     }

@@ -22,5 +22,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface FindExistingRecordCodesInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;
 }

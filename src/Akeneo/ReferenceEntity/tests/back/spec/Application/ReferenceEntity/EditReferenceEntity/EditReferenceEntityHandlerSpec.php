@@ -86,7 +86,7 @@ class EditReferenceEntityHandlerSpec extends ObjectBehavior
             }))
             ->shouldBeCalled();
 
-        $fileExists->__invoke('/path/image.jpg')->willReturn(false);
+        $fileExists->exists('/path/image.jpg')->willReturn(false);
 
         $storer->store(Argument::type(\SplFileInfo::class), Argument::type('string'))
             ->willReturn($fileInfo);
@@ -127,7 +127,7 @@ class EditReferenceEntityHandlerSpec extends ObjectBehavior
             }))
             ->shouldBeCalled();
 
-        $fileExists->__invoke('/path/image.jpg')->willReturn(true);
+        $fileExists->exists('/path/image.jpg')->willReturn(true);
 
         $repository->update($referenceEntity)->shouldBeCalled();
 

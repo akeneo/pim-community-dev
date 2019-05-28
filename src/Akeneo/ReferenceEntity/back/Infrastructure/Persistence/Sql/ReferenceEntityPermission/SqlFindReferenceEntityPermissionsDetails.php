@@ -32,7 +32,7 @@ class SqlFindReferenceEntityPermissionsDetails implements FindReferenceEntityPer
     /**
      * @return PermissionDetails[]
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $userGroups = $this->fetchUserGroups();
         $permissionDetails = $this->fetchPermissions($referenceEntityIdentifier);

@@ -27,7 +27,7 @@ class SqlFindFileDataByFileKey implements FindFileDataByFileKeyInterface
         $this->connection = $connection;
     }
 
-    public function __invoke(string $fileKey): ?array
+    public function find(string $fileKey): ?array
     {
         $sql = <<<SQL
           SELECT file_key, original_filename, size, mime_type, extension

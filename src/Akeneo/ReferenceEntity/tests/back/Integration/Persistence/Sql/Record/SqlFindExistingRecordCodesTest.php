@@ -59,7 +59,7 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $expectedRecordCodes = ['jacobs', 'starck'];
 
-        $recordCodes = ($this->existingRecordCodes)($referenceEntityIdentifier, ['Coco', 'starck', 'jacobs']);
+        $recordCodes = $this->existingRecordCodes->find($referenceEntityIdentifier, ['Coco', 'starck', 'jacobs']);
         $this->assertEquals($expectedRecordCodes, $recordCodes);
     }
 
