@@ -109,6 +109,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
         string $rootDir
     ): void {
         $progressBar->start();
+        $productIds = [];
 
         $productToCleanCount = 0;
         foreach ($products as $product) {
