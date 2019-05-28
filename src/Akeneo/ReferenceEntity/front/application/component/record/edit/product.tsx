@@ -60,33 +60,6 @@ const AttributeButtonView = ({selectedElement, onClick}: {selectedElement: Dropd
   </div>
 );
 
-
-{/* <div className="AknFilterBox AknFilterBox--search">
-  <div className="AknFilterBox-list filter-box">
-    <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
-    <ItemsCounter count={grid.matchesCount} />
-    <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
-      {Object.keys(filterViews).map((attributeCode: NormalizedAttributeIdentifier) => {
-        const View = filterViews[attributeCode].view;
-        const attribute = filterViews[attributeCode].attribute;
-        const filter = grid.filters.find((filter: Filter) => filter.field === getAttributeFilterKey(attribute));
-
-        return (
-          <div
-            key={attribute.getCode().stringValue()}
-            className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
-            data-attribute={attribute.getCode().stringValue()}
-            data-type={attribute.getType()}
-          >
-            <View attribute={attribute} filter={filter} onFilterUpdated={onFilterUpdated} />
-          </div>
-        );
-      })}
-    </div>
-    <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
-  </div>
-</div> */}
-
 class Product extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
@@ -104,7 +77,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
                   <span className="AknFilterBox-title">
                     {__('pim_reference_entity.record.product.title')}
                 </span>
-                <ItemsCounter count={this.props.totalCount} />
+                <ItemsCounter count={this.props.totalCount} inline={true} />
                 {null !== this.props.selectedAttribute ? (
                   <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
                     <div className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin">
