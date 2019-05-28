@@ -1,57 +1,42 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Psr\Log\LoggerInterface;
 
 /**
- * Create a product value collection.
- *
- * @author    Julien Janvier <j.janvier@gmail.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Anael Chardan <anael.chardan@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ValueCollectionFactory implements ValueCollectionFactoryInterface
 {
-    /** @var ValueFactory */
+    /** @var ReadValueFactory */
     private $valueFactory;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var LoggerInterface */
-    private $logger;
 
     /** @var GetAttributes */
     private $getAttributeByCodes;
 
     /** @var ChainedNonExistentValuesFilterInterface */
-    private $chainedObsoleteValueFilter;
+    private $chainedNonExistentValuesFilter;
 
     /** @var EmptyValuesCleaner */
     private $emptyValuesCleaner;
 
     public function __construct(
-        ValueFactory $valueFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        LoggerInterface $logger,
+        ReadValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter,
         EmptyValuesCleaner $emptyValuesCleaner
     ) {
         $this->valueFactory = $valueFactory;
-        $this->attributeRepository = $attributeRepository;
-        $this->logger = $logger;
         $this->getAttributeByCodes = $getAttributeByCodes;
-        $this->chainedObsoleteValueFilter = $chainedObsoleteValueFilter;
+        $this->chainedNonExistentValuesFilter = $chainedNonExistentValuesFilter;
         $this->emptyValuesCleaner = $emptyValuesCleaner;
     }
 
@@ -67,7 +52,9 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
-        $rawValueCollectionsIndexedByType = $this->sortRawValueCollectionsToValueCollectionsIndexedByType($rawValueCollections);
+        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
+
+        $rawValueCollectionsIndexedByType = $this->sortRawValueCollectionsToValueCollectionsIndexedByType($rawValueCollections, $attributes);
         $valueCollections = [];
 
         if (empty($rawValueCollectionsIndexedByType)) {
@@ -78,7 +65,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
             return $valueCollections;
         }
 
-        $filtered = $this->chainedObsoleteValueFilter->filterAll(
+        $filtered = $this->chainedNonExistentValuesFilter->filterAll(
             OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionsIndexedByType)
         );
 
@@ -86,7 +73,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
         $cleanRawValueCollection = $this->emptyValuesCleaner->cleanAllValues($rawValueCollection);
 
-        $valueCollections = $this->createValues($cleanRawValueCollection);
+        $valueCollections = $this->createValues($cleanRawValueCollection, $attributes);
 
         $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
 
@@ -97,20 +84,23 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         return $valueCollections;
     }
 
-    private function sortRawValueCollectionsToValueCollectionsIndexedByType(array $rawValueCollections): array
+    private function getAttributesUsedByProducts(array $rawValueCollections): array
     {
         $attributeCodes = [];
-        $attributeCodesPerProduct = [];
 
         foreach ($rawValueCollections as $productIdentifier => $rawValues) {
             foreach (array_keys($rawValues) as $attributeCode) {
                 $attributeCodes[] = (string) $attributeCode;
-                $attributeCodesPerProduct[$productIdentifier][] = $attributeCode;
             }
         }
 
-        $attributes = $this->getAttributeByCodes->forCodes(array_values(array_unique($attributeCodes)));
+        $attributes = $this->getAttributeByCodes->forCodes(array_unique($attributeCodes));
 
+        return $attributes;
+    }
+
+    private function sortRawValueCollectionsToValueCollectionsIndexedByType(array $rawValueCollections, array $attributes): array
+    {
         if (empty($attributes)) {
             return [];
         }
@@ -139,15 +129,20 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         return $typesToValues;
     }
 
-    private function createValues(array $rawValueCollections): array
+    private function createValues(array $rawValueCollections, array $attributes): array
     {
         $entities = [];
+
+        $attributesIndexedByCode = [];
+        foreach ($attributes as $attribute) {
+            $attributesIndexedByCode[$attribute->code()] = $attribute;
+        }
 
         foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
             $values = [];
 
             foreach ($valueCollection as $attributeCode => $channelRawValue) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+                $attribute = $attributesIndexedByCode[$attributeCode];
 
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {
                     if ('<all_channels>' === $channelCode) {
@@ -159,33 +154,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                             $localeCode = null;
                         }
 
-                        try {
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
-                        } catch (InvalidAttributeException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value with an invalid attribute "%s". %s',
-                                    $attributeCode,
-                                    $e->getMessage()
-                                )
-                            );
-                        } catch (InvalidPropertyException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value with the property "%s" that does not exist.',
-                                    $e->getPropertyValue()
-                                )
-                            );
-                        } catch (InvalidPropertyTypeException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value for attribute "%s" that does not have the ' .
-                                    'good type in database.',
-                                    $attribute->getCode()
-                                )
-                            );
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, null);
-                        }
+                        $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
                     }
                 }
             }

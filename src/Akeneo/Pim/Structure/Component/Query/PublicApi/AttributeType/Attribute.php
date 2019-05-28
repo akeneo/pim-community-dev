@@ -18,11 +18,23 @@ final class Attribute
     /** @var array */
     private $attributeProperties;
 
-    public function __construct(string $attributeCode, string $attributeType, array $attributeProperties)
+    /** @var bool */
+    private $isLocalizable;
+
+    /** @var bool */
+    private $isScopable;
+
+    /** @var ?string */
+    private $metricFamily;
+
+    public function __construct(string $attributeCode, string $attributeType, array $attributeProperties, bool $isLocalizable, bool $isScopable, ?string $metricFamily)
     {
         $this->attributeCode = $attributeCode;
         $this->attributeType = $attributeType;
         $this->attributeProperties = $attributeProperties;
+        $this->isLocalizable = $isLocalizable;
+        $this->isScopable = $isScopable;
+        $this->metricFamily = $metricFamily;
     }
 
     public function code(): string
@@ -38,5 +50,25 @@ final class Attribute
     public function properties(): array
     {
         return $this->attributeProperties;
+    }
+
+    public function isScopable(): bool
+    {
+        return $this->isScopable;
+    }
+
+    public function isLocalizable(): bool
+    {
+        return $this->isLocalizable;
+    }
+
+    public function isLocalizableAndScopable(): bool
+    {
+        return $this->isLocalizable() && $this->isScopable();
+    }
+
+    public function metricFamily(): ?string
+    {
+        return $this->metricFamily;
     }
 }
