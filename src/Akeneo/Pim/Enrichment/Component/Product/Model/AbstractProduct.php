@@ -392,10 +392,10 @@ abstract class AbstractProduct implements ProductInterface
     {
         $previousCategoryCodes = array_map(function (CategoryInterface $category) {
             return $category->getCode();
-        }, $this->categories);
+        }, $this->categories->toArray());
         $newCategoryCodes = array_map(function (CategoryInterface $category) {
             return $category->getCode();
-        }, $categories);
+        }, $categories->toArray());
 
         $uncategorizedCategoryCodes = array_diff($previousCategoryCodes, $newCategoryCodes);
         $categorizedCategoryCodes = array_diff($newCategoryCodes, $previousCategoryCodes);
@@ -415,10 +415,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeCategory(BaseCategoryInterface $category)
     {
-        if (!$this->categories->contains($category)) {
+        if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
+            $this->events[] = new UncategorizedProduct($category->getCode());
         }
-        $this->events = new UncategorizedProduct($category->getCode());
 
         return $this;
     }
@@ -756,8 +756,12 @@ abstract class AbstractProduct implements ProductInterface
 
     public function popEvents(): array
     {
-        return $this->events;
+        $events = $this->events;
+        $this->events = [];
+
+        return $events;
     }
+
 
     /**
      * @param EntityWithFamilyVariantInterface $entity

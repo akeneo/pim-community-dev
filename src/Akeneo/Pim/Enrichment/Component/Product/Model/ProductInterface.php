@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\BusinessEventsAwareInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
@@ -27,7 +28,8 @@ interface ProductInterface extends
     CategoryAwareInterface,
     EntityWithFamilyInterface,
     EntityWithFamilyVariantInterface,
-    EntityWithAssociationsInterface
+    EntityWithAssociationsInterface,
+    BusinessEventsAwareInterface
 {
     /**
      * Get the ID of the product
