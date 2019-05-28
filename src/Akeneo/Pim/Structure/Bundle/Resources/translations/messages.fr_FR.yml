@@ -1,7 +1,7 @@
 pim_enrich:
   attribute:
     tab:
-      parameter.title: Paramètres
+      parameter.title: Paramètres 
       value.title: Valeurs
       history.title: Historique
   family:
@@ -14,14 +14,14 @@ pim_enrich:
     family:
       page_title: Familles
       page_subtitle: Édition en masse (1 famille)|Édition en masse (%count% familles)
-      title: Choisir une opération
+      title: Choisissez une opération
       subtitle: Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées
       confirm: Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir des familles
-        second: Choisir une opération
-        third: Configurer
-        fourth: Confirmer
+        second: Choisissez une opération
+        third: Configurez l'opération à effectuer
+        fourth: Confirmation
 pim_enrich_attribute_form:
   code: Code
   type: Type d'attribut
