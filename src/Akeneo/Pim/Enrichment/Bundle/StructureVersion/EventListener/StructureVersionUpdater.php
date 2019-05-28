@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -38,11 +40,13 @@ class StructureVersionUpdater implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * Add the csv format
-     */
+
     public function onPostDBCreate(GenericEvent $event)
     {
+        if ($event->getSubject() instanceof ProductInterface || $event->getSubject() instanceof ProductModelInterface) {
+            return;
+        }
+
         $sql = <<<'SQL'
 REPLACE INTO akeneo_structure_version_last_update SET resource_name = :resource_name, last_update = :last_update;
 SQL;
