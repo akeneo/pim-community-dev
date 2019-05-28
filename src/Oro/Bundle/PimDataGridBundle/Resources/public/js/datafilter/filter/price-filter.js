@@ -52,7 +52,7 @@ define(
                 NumberFilter.prototype.initialize.apply(this, arguments);
 
                 this.emptyValue = {
-                    currency: _.first(_.keys(this.currencies)),
+                    currency: this._firstCurrency(),
                     type: _.findWhere(this.choices, { label: '=' }).data,
                     value: ''
                 };
