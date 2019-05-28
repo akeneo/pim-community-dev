@@ -70,3 +70,10 @@ services:
         arguments:
             - '@pim_user.repository.user'
             - '@akeneo_authentication.sso.configuration.repository'
+
+    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler:
+        arguments:
+            - '@oneup_flysystem.logs_storage_filesystem'
+            - 'authentication.log'
+            - 10
+            - 'error'

@@ -35,7 +35,7 @@ class CreateArchive
         $zipFilePath = tempnam($tmpLogsPath, 'logs');
         $archive = new \ZipArchive();
         if (!$archive->open($zipFilePath, \ZipArchive::CREATE)) {
-            throw new \Exception('');
+            throw new \RuntimeException('The zip file cannot be opened');
         }
 
         $this->addReadmeFileToArchive($archive);

@@ -8,7 +8,7 @@ use League\Flysystem\MountManager;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 
-final class MonologHandler extends RotatingFileHandler
+final class FlySystemLogHandler extends RotatingFileHandler
 {
     /** @var MountManager */
     private $logStorage;
