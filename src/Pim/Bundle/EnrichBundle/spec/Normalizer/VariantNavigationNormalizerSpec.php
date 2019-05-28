@@ -4,19 +4,19 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VariantNavigationNormalizerSpec extends ObjectBehavior
 {
     function let(
         LocaleRepositoryInterface $localeRepository,
-        EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
+        NormalizerInterface $entityWithFamilyVariantNormalizer
     ) {
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
 
