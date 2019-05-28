@@ -12,13 +12,15 @@ pim_title:
   pim_user_reset_check_email: Password Reset | Check Email
   pim_user_group_create: 'Groups | Create'
   pim_user_group_update: 'Group {{ group }} | Edit'
+confirmation:
+  remove:
+    user: Are you sure you want to delete this user?
+    group: Are you sure you want to delete this group?
 pim_user_management:
   entity:
     user:
       page_title:
         index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
-      properties:
-        phone: Phone
       module:
         create:
           button: Create user
