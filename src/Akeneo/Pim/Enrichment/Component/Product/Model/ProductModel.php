@@ -28,7 +28,7 @@ class ProductModel implements ProductModelInterface
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
      *
-     * @var ValueCollectionInterface
+     * @var WriteValueCollectionInterface
      */
     protected $values;
 
@@ -125,7 +125,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): ValueCollectionInterface
+    public function getValues(): WriteValueCollectionInterface
     {
         $values = ValueCollection::fromCollection($this->values);
 
@@ -135,7 +135,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getValuesForVariation(): ValueCollectionInterface
+    public function getValuesForVariation(): WriteValueCollectionInterface
     {
         return $this->values;
     }
@@ -143,7 +143,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ValueCollectionInterface $values): ProductModelInterface
+    public function setValues(WriteValueCollectionInterface $values): ProductModelInterface
     {
         $this->values = $values;
 
@@ -643,13 +643,13 @@ class ProductModel implements ProductModelInterface
 
     /**
      * @param EntityWithFamilyVariantInterface $entity
-     * @param ValueCollectionInterface         $valueCollection
+     * @param WriteValueCollectionInterface  $valueCollection
      *
-     * @return ValueCollectionInterface
+     * @return WriteValueCollectionInterface
      */
     private function getAllValues(
         EntityWithFamilyVariantInterface $entity,
-        ValueCollectionInterface $valueCollection
+        WriteValueCollectionInterface $valueCollection
     ) {
         $parent = $entity->getParent();
 

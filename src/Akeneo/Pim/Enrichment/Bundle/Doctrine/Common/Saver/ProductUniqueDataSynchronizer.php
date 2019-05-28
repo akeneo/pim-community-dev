@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * Synchronize the $uniqueData persistent collection of the product with the unique values of the product.
  * Those unique values come from the $values collection
- * {@see Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface}.
+ * {@see Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollectionInterface}.
  *
  * The only aim of the $uniqueData collection is to be able to save these information in the database via Doctrine.
  *

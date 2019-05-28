@@ -48,7 +48,7 @@ interface EntityWithFamilyVariantInterface extends EntityWithFamilyInterface
     public function setParent(ProductModelInterface $parent = null): void;
 
     /**
-     * @return ValueCollectionInterface
+     * @return WriteValueCollectionInterface
      */
-    public function getValuesForVariation(): ValueCollectionInterface;
+    public function getValuesForVariation(): WriteValueCollectionInterface;
 }

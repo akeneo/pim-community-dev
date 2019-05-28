@@ -36,7 +36,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
      *
-     * @var ValueCollectionInterface
+     * @var WriteValueCollectionInterface
      */
     protected $values;
 
@@ -280,7 +280,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): ValueCollectionInterface
+    public function getValues(): WriteValueCollectionInterface
     {
         if (!$this->isVariant()) {
             return $this->values;
@@ -294,7 +294,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ValueCollectionInterface $values)
+    public function setValues(WriteValueCollectionInterface $values)
     {
         $this->values = $values;
 
@@ -707,7 +707,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getValuesForVariation(): ValueCollectionInterface
+    public function getValuesForVariation(): WriteValueCollectionInterface
     {
         return $this->values;
     }
@@ -730,14 +730,14 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * @param EntityWithFamilyVariantInterface $entity
-     * @param ValueCollectionInterface         $valueCollection
+     * @param WriteValueCollectionInterface         $valueCollection
      *
-     * @return ValueCollectionInterface
+     * @return WriteValueCollectionInterface
      */
     private function getAllValues(
         EntityWithFamilyVariantInterface $entity,
-        ValueCollectionInterface $valueCollection
-    ): ValueCollectionInterface {
+        WriteValueCollectionInterface $valueCollection
+    ): WriteValueCollectionInterface {
         $parent = $entity->getParent();
 
         if (null === $parent) {

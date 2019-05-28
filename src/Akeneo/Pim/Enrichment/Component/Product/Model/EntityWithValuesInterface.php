@@ -27,18 +27,18 @@ interface EntityWithValuesInterface
     /**
      * Get values
      *
-     * @return ValueCollectionInterface
+     * @return WriteValueCollectionInterface
      */
     public function getValues();
 
     /**
      * Set values
      *
-     * @param ValueCollectionInterface $values
+     * @param WriteValueCollectionInterface $values
      *
      * @return EntityWithValuesInterface
      */
-    public function setValues(ValueCollectionInterface $values);
+    public function setValues(WriteValueCollectionInterface $values);
 
     /**
      * Get value related to attribute code
