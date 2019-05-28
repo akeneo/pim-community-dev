@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 
@@ -38,7 +38,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
                 ],
             ],
             ['category_code_1', 'category_code_2'],
-            new ValueCollection(
+            new ReadValueCollection(
                 [
                     ScalarValue::value('text', 'some text'),
                     ScalarValue::localizableValue('description', 'an English description', 'en_US'),
@@ -117,7 +117,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
         );
 
         $connectorProduct->values()->shouldBeLike(
-            new ValueCollection([ScalarValue::value('text', 'some text')])
+            new ReadValueCollection([ScalarValue::value('text', 'some text')])
         );
     }
 
@@ -126,7 +126,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
         $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes([], ['en_US', 'fr_FR']);
 
         $connectorProduct->values()->shouldBeLike(
-            new ValueCollection([])
+            new ReadValueCollection([])
         );
     }
 
@@ -138,7 +138,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
         );
 
         $connectorProduct->values()->shouldBeLike(
-            new ValueCollection(
+            new ReadValueCollection(
                 [
                     ScalarValue::value('text', 'some text'),
                     ScalarValue::localizableValue('description', 'an English description', 'en_US'),
@@ -155,7 +155,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
         );
 
         $connectorProduct->values()->shouldBeLike(
-            new ValueCollection(
+            new ReadValueCollection(
                 [
                     ScalarValue::value('text', 'some text'),
                 ]
@@ -167,7 +167,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
     {
         $connectorProductModel = $this->filterValuesByAttributeCodesAndLocaleCodes(['description'], ['fr_FR']);
         $connectorProductModel->values()->shouldBeLike(
-            new ValueCollection(
+            new ReadValueCollection(
                 [
                     ScalarValue::localizableValue('description', 'une description en français', 'fr_FR'),
                 ]
