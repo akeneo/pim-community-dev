@@ -26,7 +26,6 @@ data:
   PIM_ELASTICSEARCH_PORT: "9200"
   PIM_INSTALLER_DATA: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
   PIM_SECRET: {{ .Values.pim.secret }}
-  PIM_SHARED_STORAGE: /data
   SRNT_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/srnt.json
   SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
   SYMFONY_ENV: prod
