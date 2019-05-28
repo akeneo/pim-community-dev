@@ -109,7 +109,7 @@ batch_jobs:
     import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
   xlsx_group_export:
     label: Export des groupes en XLSX
-    export.label: Export de groupes
+    export.label: Export des groupes
   xlsx_group_import:
     label: Import des groupes en XLSX
     import.label: Import des groupes
