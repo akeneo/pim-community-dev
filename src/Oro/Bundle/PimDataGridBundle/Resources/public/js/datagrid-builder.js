@@ -14,6 +14,7 @@ define([
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .AknTitleContainer .span10:last',
+        headerCellModuleName = 'oro/datagrid/{{type}}-header-cell',
         cellModuleName = 'oro/datagrid/{{type}}-cell',
         actionModuleName = 'oro/datagrid/{{type}}-action',
         cellTypes = {
@@ -25,6 +26,9 @@ define([
         reservedActions = ['export', 'ajax', 'redirect', 'edit', 'delete'],
 
         helpers = {
+            headerCellType: function (type) {
+                return type + 'HeaderCell';
+            },
             cellType: function (type) {
                 return type + 'Cell';
             },
@@ -72,8 +76,13 @@ define([
                     moduleName = function (template, type) {
                         return template.replace('{{type}}', type);
                     };
-                // cells
+                // header cells & cells
                 _.each(metadata.columns, function (column) {
+                    var headerCellType = column.headerCell;
+                    if (undefined !== headerCellType) {
+                        modules[helpers.headerCellType(headerCellType)] = moduleName(headerCellModuleName, headerCellType);
+                    }
+
                     var type = column.type;
                     modules[helpers.cellType(type)] = moduleName(cellModuleName, cellTypes[type] || type);
                 });
@@ -155,14 +164,18 @@ define([
 
                 // columns
                 columns = _.map(metadata.columns, function (cell) {
-                    var cellOptionKeys = ['name', 'label', 'renderable', 'editable', 'sortable'],
+                    var cellOptionKeys = ['name', 'label', 'renderable', 'editable', 'sortable', 'headerCell'],
                         cellOptions = _.extend({}, defaultOptions, _.pick.apply(null, [cell].concat(cellOptionKeys))),
-                        extendOptions = _.omit.apply(null, [cell].concat(cellOptionKeys.concat('type'))),
+                        extraOptions = _.omit.apply(null, [cell].concat(cellOptionKeys.concat('type'))),
+                        headerCellType = modules[helpers.headerCellType(cell.headerCell)],
                         cellType = modules[helpers.cellType(cell.type)];
-                    if (!_.isEmpty(extendOptions)) {
-                        cellType = cellType.extend(extendOptions);
+                    if (!_.isEmpty(extraOptions)) {
+                        cellOptions.extraOptions = _.extend({}, extraOptions);
+                        cellType = cellType.extend(extraOptions);
                     }
+                    cellOptions.headerCell = headerCellType;
                     cellOptions.cell = cellType;
+
                     return cellOptions;
                 });
 
