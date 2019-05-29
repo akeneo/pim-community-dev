@@ -2,6 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyAddedToProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyOfProductChanged;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyRemovedFromProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductAddedToGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
@@ -12,20 +16,19 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdate
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ProductSpec extends ObjectBehavior
 {
@@ -36,8 +39,6 @@ class ProductSpec extends ObjectBehavior
             new ProductEnabled(null), // TODO: fix null
             new ProductCreated('my_identifier'),
         ]);
-
-        $this->popEvents();
     }
 
     function it_disables_the_product()
@@ -50,15 +51,45 @@ class ProductSpec extends ObjectBehavior
         ]);
     }
 
-    function it_has_family(FamilyInterface $family)
+    function it_can_have_a_family_added(FamilyInterface $family)
     {
+        $this->setId(1);
         $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
+
         $this->setFamily($family);
         $this->getFamily()->shouldReturn($family);
         $this->getFamilyId()->shouldReturn(42);
+        $this->popEvents()->shouldBeLike([new FamilyAddedToProduct('my_identifier', 'clothing')]);
     }
 
-    function it_purge_events_when_popping_them(CategoryInterface $category1)
+    function it_can_have_its_family_changed(FamilyInterface $family1, FamilyInterface $family2)
+    {
+        $this->setId(1);
+        $family1->getCode()->willReturn('clothing');
+        $family2->getCode()->willReturn('accessories');
+
+        $this->setFamily($family1);
+        $this->popEvents()->shouldBeLike([new FamilyAddedToProduct('my_identifier', 'clothing')]);
+        $this->setId(1);
+
+        $this->setFamily($family2);
+        $this->popEvents()->shouldBeLike([new FamilyOfProductChanged('my_identifier', 'clothing', 'accessories')]);
+    }
+
+    function it_can_have_its_family_removed(FamilyInterface $family)
+    {
+        $this->setId(1);
+        $family->getCode()->willreturn('clothing');
+
+        $this->setFamily($family);
+        $this->popEvents()->shouldBeLike([new FamilyAddedToProduct('my_identifier', 'clothing')]);
+
+        $this->setFamily(null);
+        $this->popEvents()->shouldBeLike([new FamilyRemovedFromProduct('my_identifier', 'clothing')]);
+    }
+
+    function it_purges_events_when_popping_them(CategoryInterface $category1)
     {
         $this->setId(1);
 
@@ -186,8 +217,8 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_not_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
+        $family->getCode()->willReturn('clothing');
         $attributes->contains($attribute)->willReturn(false);
-        $family->getId()->willReturn(42);
         $family->getAttributes()->willReturn($attributes);
         $this->setFamily($family);
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
@@ -195,8 +226,8 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
+        $family->getCode()->willReturn('clothing');
         $attributes->contains($attribute)->willReturn(true);
-        $family->getId()->willReturn(42);
         $family->getAttributes()->willReturn($attributes);
         $this->setFamily($family);
         $this->hasAttributeInfamily($attribute)->shouldReturn(true);
@@ -210,8 +241,8 @@ class ProductSpec extends ObjectBehavior
     function it_is_attribute_editable_with_family_containing_attribute(
         AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
+        $family->getCode()->willReturn('clothing');
         $familyAttributes->contains($attribute)->willReturn(true);
-        $family->getId()->willReturn(42);
         $family->getAttributes()->willReturn($familyAttributes);
         $this->setFamily($family);
 
@@ -229,7 +260,7 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
         $familyAttributes->contains($attribute)->willReturn(true);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
         $family->getAttributes()->willReturn($familyAttributes);
 
         $this->setFamily($family);
@@ -252,7 +283,7 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(true);
@@ -282,7 +313,7 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -311,7 +342,7 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(true);
@@ -355,7 +386,7 @@ class ProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $family->getAttributeAsLabel()->willReturn(null);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
 
         $identifier->getData()->willReturn('shovel');
         $identifier->getAttributeCode()->willReturn('name');
@@ -382,7 +413,7 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -409,7 +440,7 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -436,7 +467,7 @@ class ProductSpec extends ObjectBehavior
         $attributeAsImage->getCode()->willReturn('picture');
 
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
 
         $values->getByCodes('picture', null, null)->willReturn($pictureValue);
 
@@ -456,7 +487,7 @@ class ProductSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $family->getAttributeAsImage()->willReturn(null);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
 
         $this->setFamily($family);
 
@@ -471,7 +502,7 @@ class ProductSpec extends ObjectBehavior
         $attributeAsImage->getCode()->willReturn('picture');
 
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
-        $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothing');
 
         $values->getByCodes('picture', null, null)->willReturn(null);
 

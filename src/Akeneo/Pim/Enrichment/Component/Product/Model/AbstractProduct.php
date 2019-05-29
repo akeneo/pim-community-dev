@@ -3,10 +3,13 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyAddedToProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyOfProductChanged;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyRemovedFromProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductChanged;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductAddedToGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductChanged;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductDisabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
@@ -52,9 +55,6 @@ abstract class AbstractProduct implements ProductInterface
 
     /** @var FamilyInterface $family */
     protected $family;
-
-    /** @var int */
-    protected $familyId;
 
     /** @var Collection $categories */
     protected $categories;
@@ -244,20 +244,18 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setFamily(FamilyInterface $family = null)
     {
-        if (null !== $family) {
-            $this->familyId = $family->getId();
+        $formerFamilyCode = null !== $this->family ? $this->family->getCode() : null;
+        $newFamilyCode = null !== $family ? $family->getCode() : null;
+
+        if (null === $formerFamilyCode && null !== $newFamilyCode) {
+            $this->events[] = new FamilyAddedToProduct($this->identifier, $newFamilyCode);
+        } elseif (null !== $formerFamilyCode && null === $newFamilyCode) {
+            $this->events[] = new FamilyRemovedFromProduct($this->identifier, $formerFamilyCode);
+        } elseif ($formerFamilyCode !== $newFamilyCode) {
+            $this->events[] = new FamilyOfProductChanged($this->identifier, $formerFamilyCode, $newFamilyCode);
         }
+
         $this->family = $family;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFamilyId($familyId)
-    {
-        $this->familyId = $familyId;
 
         return $this;
     }
@@ -267,7 +265,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getFamilyId()
     {
-        return $this->familyId;
+        return null !== $this->family ? $this->family->getId() : null;
     }
 
     /**
