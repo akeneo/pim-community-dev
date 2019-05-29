@@ -3,11 +3,14 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductAddedToGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductDisabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -575,5 +578,50 @@ class ProductSpec extends ObjectBehavior
     {
         $this->setFamilyVariant($familyVariant);
         $this->getFamilyVariant()->shouldReturn($familyVariant);
+    }
+
+    function it_can_set_groups(GroupInterface $groupA, GroupInterface $groupB, GroupInterface $groupC)
+    {
+        $this->setId(42);
+        $groupA->getCode()->willReturn('groupA');
+        $groupB->getCode()->willReturn('groupB');
+        $groupC->getCode()->willReturn('groupC');
+
+        $this->setGroups(new ArrayCollection([$groupA->getWrappedObject(), $groupB->getWrappedObject()]));
+
+        $this->popEvents()->shouldBeLike([
+            new ProductAddedToGroup('my_identifier', 'groupA'),
+            new ProductAddedToGroup('my_identifier', 'groupB'),
+        ]);
+
+        $this->setGroups(new ArrayCollection([$groupC->getWrappedObject(), $groupA->getWrappedObject()]));
+        $this->popEvents()->shouldBeLike([
+            new ProductRemovedFromGroup('my_identifier', 'groupB'),
+            new ProductAddedToGroup('my_identifier', 'groupC'),
+        ]);
+    }
+
+    function it_can_be_added_to_a_group(GroupInterface $promotions)
+    {
+        $this->setId(42);
+        $promotions->getCode()->willReturn('promotions');
+
+        $promotions->addProduct($this)->shouldBeCalled();
+        $this->addGroup($promotions);
+
+        $this->popEvents()->shouldBeLike([new ProductAddedToGroup('my_identifier', 'promotions')]);
+    }
+
+    function it_can_be_removed_from_a_group(GroupInterface $promotions)
+    {
+        $promotions->getCode()->willReturn('promotions');
+        $this->setId(42);
+        $this->setGroups(new ArrayCollection([$promotions->getWrappedObject()]));
+        $this->popEvents()->shouldHaveCount(1);
+
+        $this->removeGroup($promotions);
+        $this->popEvents()->shouldBeLike([
+            new ProductRemovedFromGroup('my_identifier', 'promotions'),
+        ]);
     }
 }
