@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model\Events;
 
-class AddParentToProduct
+class ParentOfProductAdded
 {
     /** @var string */
     private $productIdentifier;
