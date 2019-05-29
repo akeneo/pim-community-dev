@@ -3,6 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\AssociationAddedToProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\AssociationRemovedFromProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductAddedToGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
@@ -604,6 +606,8 @@ abstract class AbstractProduct implements ProductInterface
 
             $this->associations->add($association);
             $association->setOwner($this);
+
+            $this->events[] = new AssociationAddedToProduct($this->identifier, $association->getId());
         }
 
         return $this;
@@ -614,7 +618,11 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
-        $this->associations->removeElement($association);
+        if ($this->associations->contains($association)) {
+            $this->associations->removeElement($association);
+
+            $this->events[] = new AssociationRemovedFromProduct($this->identifier, $association->getId());
+        }
 
         return $this;
     }
@@ -665,7 +673,17 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
+        $removedAssociations = array_diff($this->associations->toArray(), $associations->toArray());
+        $addedAssociations = array_diff($associations->toArray(), $this->associations->toArray());
+
         $this->associations = $associations;
+
+        foreach ($removedAssociations as $removedAssociation) {
+            $this->events[] = new AssociationRemovedFromProduct($this->identifier, $removedAssociation->getId());
+        }
+        foreach ($addedAssociations as $addedAssociation) {
+            $this->events[] = new AssociationAddedToProduct($this->identifier, $addedAssociation->getId());
+        }
 
         return $this;
     }
