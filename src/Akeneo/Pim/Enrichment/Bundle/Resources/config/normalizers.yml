@@ -30,6 +30,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product.product_value'
             - '@router'
+            - '@akeneo.pim.structure.query.get_attributes'
 
     pim_api.normalizer.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductModelNormalizer'

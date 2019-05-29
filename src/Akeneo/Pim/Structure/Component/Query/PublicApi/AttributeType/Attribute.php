@@ -27,14 +27,25 @@ final class Attribute
     /** @var ?string */
     private $metricFamily;
 
-    public function __construct(string $attributeCode, string $attributeType, array $attributeProperties, bool $isLocalizable, bool $isScopable, ?string $metricFamily)
-    {
+    /** @var bool */
+    private $decimalsAllowed;
+
+    public function __construct(
+        string $attributeCode,
+        string $attributeType,
+        array $attributeProperties,
+        bool $isLocalizable,
+        bool $isScopable,
+        ?string $metricFamily,
+        bool $decimalsAllowed
+    ) {
         $this->attributeCode = $attributeCode;
         $this->attributeType = $attributeType;
         $this->attributeProperties = $attributeProperties;
         $this->isLocalizable = $isLocalizable;
         $this->isScopable = $isScopable;
         $this->metricFamily = $metricFamily;
+        $this->decimalsAllowed = $decimalsAllowed;
     }
 
     public function code(): string
@@ -70,5 +81,10 @@ final class Attribute
     public function metricFamily(): ?string
     {
         return $this->metricFamily;
+    }
+
+    public function isDecimalsAllowed(): bool
+    {
+        return $this->decimalsAllowed;
     }
 }

@@ -12,6 +12,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormali
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Routing\RouterInterface;
@@ -23,10 +26,10 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class ConnectorProductModelNormalizerSpec extends ObjectBehavior
 {
-    function let(ProductValueNormalizer $productValuesNormalizer, RouterInterface $router)
+    function let(ProductValueNormalizer $productValuesNormalizer, RouterInterface $router, GetAttributes $getAttributes)
     {
         $this->beConstructedWith(
-            new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
+            new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject(),  $getAttributes->getwrappedObject()),
             new DateTimeNormalizer()
         );
         $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
@@ -37,8 +40,10 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ConnectorProductModelNormalizer::class);
     }
 
-    function it_normalizes_a_list_of_connector_product_models()
+    function it_normalizes_a_list_of_connector_product_models(GetAttributes $getAttributes)
     {
+        $getAttributes->forCodes([])->willReturn([]);
+
         $connector1 = new ConnectorProductModel(
             1,
             'code_1',
@@ -119,10 +124,13 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
              );
     }
 
-    function it_normalizes_a_single_connector_product_model(ProductValueNormalizer $productValuesNormalizer)
+    function it_normalizes_a_single_connector_product_model(ProductValueNormalizer $productValuesNormalizer, GetAttributes $getAttributes)
     {
+        $textAttribute = new Attribute('some_text', AttributeTypes::TEXT, [], false, false, null, false);
+        $getAttributes->forCodes(['some_text'])->willReturn([$textAttribute]);
+
         $scalarValue = ScalarValue::value('some_text', 'some data');
-        $productValuesNormalizer->normalize($scalarValue, 'standard')->willReturn(
+        $productValuesNormalizer->normalize($scalarValue, 'standard', ['attributes' => ['some_text' => $textAttribute]])->willReturn(
             [
                 'scope' => null,
                 'locale' => null,

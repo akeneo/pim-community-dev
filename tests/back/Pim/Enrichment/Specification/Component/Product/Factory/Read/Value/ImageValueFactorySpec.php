@@ -91,6 +91,6 @@ final class ImageValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::IMAGE, [], $isLocalizable, $isScopable, null);
+        return new Attribute('an_attribute', AttributeTypes::IMAGE, [], $isLocalizable, $isScopable, null, false);
     }
 }

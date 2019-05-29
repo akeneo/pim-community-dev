@@ -9,6 +9,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormali
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -16,9 +19,9 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ValuesNormalizerSpec extends ObjectBehavior
 {
-    function let(ProductValueNormalizer $productValueNormalizer, RouterInterface $router)
+    function let(ProductValueNormalizer $productValueNormalizer, RouterInterface $router, GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($productValueNormalizer, $router);
+        $this->beConstructedWith($productValueNormalizer, $router, $getAttributes);
         $router
             ->generate('pim_api_media_file_download', ['code' => 'a/b/c/file.txt'], Argument::any())
             ->willReturn('http://localhost/api/rest/v1/media-files/a/b/c/file.txt/download');
@@ -31,8 +34,15 @@ class ValuesNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ValuesNormalizer::class);
     }
 
-    function it_normalize_values_with_hal_links(ProductValueNormalizer $productValueNormalizer)
+    function it_normalize_values_with_hal_links(ProductValueNormalizer $productValueNormalizer, GetAttributes $getAttributes)
     {
+        $color = new Attribute('color', AttributeTypes::TEXT, [], false, false, null, false);
+        $name = new Attribute('name', AttributeTypes::TEXT, [], true, false, null, false);
+        $image = new Attribute('image', AttributeTypes::IMAGE, [], true, true, null, false);
+
+        $getAttributes->forCodes(['color', 'name', 'image'])->willReturn([$color, $name, $image]);
+
+        $context = ['attributes' => ['color' => $color, 'name' => $name, 'image' => $image]];
 
         $fileInfo = new FileInfo();
         $fileInfo->setKey('a/b/c/file.txt');
@@ -41,7 +51,7 @@ class ValuesNormalizerSpec extends ObjectBehavior
         $localizableScalarValue = ScalarValue::localizableValue('name', 'saymyname', 'en_US');
         $mediaValue = MediaValue::scopableLocalizableValue('image', $fileInfo, 'tablet', 'fr_FR');
 
-        $productValueNormalizer->normalize(ScalarValue::value('color', 'red'), 'standard')->willReturn(
+        $productValueNormalizer->normalize(ScalarValue::value('color', 'red'), 'standard', $context)->willReturn(
             [
                 'scope' => null,
                 'locale' => null,
@@ -49,7 +59,7 @@ class ValuesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $productValueNormalizer->normalize(ScalarValue::localizableValue('name', 'saymyname', 'en_US'), 'standard')->willReturn(
+        $productValueNormalizer->normalize(ScalarValue::localizableValue('name', 'saymyname', 'en_US'), 'standard', $context)->willReturn(
             [
                 'scope' => null,
                 'locale' => 'en_US',
@@ -57,7 +67,7 @@ class ValuesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $productValueNormalizer->normalize(MediaValue::scopableLocalizableValue('image', $fileInfo, 'tablet', 'fr_FR'), 'standard')->willReturn(
+        $productValueNormalizer->normalize(MediaValue::scopableLocalizableValue('image', $fileInfo, 'tablet', 'fr_FR'), 'standard', $context)->willReturn(
             [
                 'scope' => 'tablet',
                 'locale' => 'fr_FR',
