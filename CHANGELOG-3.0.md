@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8315: Fix undefined attribute groups in family mass edit
+
 # 3.0.21 (2019-05-27)
 
 ## Bug fixes

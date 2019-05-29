@@ -24,9 +24,9 @@ define(
             fetchAttributeGroups(attributes) {
                 const groupCodes = _.unique(_.pluck(attributes, 'group'));
 
-                return FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(groupCodes).then(function (attributeGroups) {
+                return FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(groupCodes).then((attributeGroups) => {
                     return this.populateGroupProperties(attributes, attributeGroups);
-                }.bind(this));
+                });
             },
 
             /**
@@ -34,13 +34,13 @@ define(
              */
             fetchItems: function (searchParameters) {
                 return this.getItemsToExclude()
-                    .then(function (identifiersToExclude) {
+                    .then((identifiersToExclude) => {
                         searchParameters.options.excluded_identifiers = identifiersToExclude;
 
                         return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters).then(attributes => {
                             return this.fetchAttributeGroups(attributes)
                         });
-                    }.bind(this));
+                    });
             },
 
             /**
