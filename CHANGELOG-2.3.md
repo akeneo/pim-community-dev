@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Technical improvement
+
+- PIM-8384: Improve queue to consume specific jobs
+
 ## Bug fixes
 
 - PIM-8378: Fix DI for EntityWithFamilyVariantNormalizer injection
