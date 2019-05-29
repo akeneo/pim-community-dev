@@ -471,7 +471,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setGroups(Collection $groups): void
     {
-        $formerGroupCodes = $this->groups->map(function(GroupInterface $group) {
+        $formerGroupCodes = $this->groups->map(function (GroupInterface $group) {
             return $group->getCode();
         })->toArray();
 
@@ -504,7 +504,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setEnabled($enabled)
     {
-        if ($enabled === $this->enabled){
+        if ($enabled === $this->enabled) {
             return;
         }
 
@@ -746,8 +746,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (null === $this->parent && null !== $parent) {
             $this->events[] = new ParentOfProductAdded($this->identifier, $parent->getCode());
-        }
-        else if (null !== $this->parent && null !== $parent) {
+        } elseif (null !== $this->parent && null !== $parent) {
             $this->events[] = new ParentOfProductChanged($this->identifier, $this->parent->getCode(), $parent->getCode());
         }
 
