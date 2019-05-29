@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Events\AddParentToProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CategorizedProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Events\CreatedProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Events\DisabledProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Events\EnabledProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Events\UncategorizedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductDisabled;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,8 +29,8 @@ class ProductSpec extends ObjectBehavior
     {
         $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
         $this->popEvents()->shouldBeLike([
-            new EnabledProduct(null), // TODO: fix null
-            new CreatedProduct('my_identifier'),
+            new ProductEnabled(null), // TODO: fix null
+            new ProductCreated('my_identifier'),
         ]);
 
         $this->popEvents();
@@ -42,7 +42,7 @@ class ProductSpec extends ObjectBehavior
 
         $this->setEnabled(false);
         $this->popEvents()->shouldBeLike([
-            new DisabledProduct('my_identifier'),
+            new ProductDisabled('my_identifier'),
         ]);
     }
 
@@ -79,8 +79,8 @@ class ProductSpec extends ObjectBehavior
         $this->getCategories()->shouldHaveCount(2);
 
         $this->popEvents()->shouldBeLike([
-            new CategorizedProduct('my_identifier', 'category_1'),
-            new CategorizedProduct('my_identifier', 'category_2'),
+            new ProductCategorized('my_identifier', 'category_1'),
+            new ProductCategorized('my_identifier', 'category_2'),
         ]);
     }
 
@@ -96,7 +96,7 @@ class ProductSpec extends ObjectBehavior
         $this->removeCategory($category1);
         $this->getCategories()->shouldHaveCount(0);
 
-        $this->popEvents()->shouldBeLike([new UncategorizedProduct('my_identifier', 'category_1')]);
+        $this->popEvents()->shouldBeLike([new ProductUncategorized('my_identifier', 'category_1')]);
     }
 
     function it_is_categorized_or_uncategorized_the_product_by_replacing_all_categories(
@@ -116,8 +116,8 @@ class ProductSpec extends ObjectBehavior
 
         $this->setCategories(new ArrayCollection([$category2->getWrappedObject(), $category3->getWrappedObject()]));
         $this->popEvents()->shouldBeLike([
-            new UncategorizedProduct('my_identifier', 'category_1'),
-            new CategorizedProduct('my_identifier', 'category_3'),
+            new ProductUncategorized('my_identifier', 'category_1'),
+            new ProductCategorized('my_identifier', 'category_3'),
         ]);
     }
 
@@ -490,7 +490,7 @@ class ProductSpec extends ObjectBehavior
         $this->setParent($parent);
         $this->isVariant()->shouldReturn(true);
         $this->popEvents()->shouldBeLike([
-            new AddParentToProduct('my_identifier', 'parent_code')
+            new ParentOfProductAdded('my_identifier', 'parent_code')
         ]);
     }
 
