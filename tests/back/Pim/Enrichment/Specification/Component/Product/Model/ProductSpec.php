@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductDisabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -622,6 +623,25 @@ class ProductSpec extends ObjectBehavior
         $this->removeGroup($promotions);
         $this->popEvents()->shouldBeLike([
             new ProductRemovedFromGroup('my_identifier', 'promotions'),
+        ]);
+    }
+
+    function it_does_not_pop_event_if_this_is_a_new_object()
+    {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+        $this->popEvents()->shouldBeLike([
+            new ProductCreated('my_identifier'),
+        ]);
+    }
+
+    function it_pops_an_event_if_identifier_change()
+    {
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
+        $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier_2'));
+
+        $this->popEvents()->shouldBeLike([
+            new ProductIdentifierUpdated('my_identifier_2', 'my_identifier'),
+            new ProductCreated('my_identifier_2'),
         ]);
     }
 }
