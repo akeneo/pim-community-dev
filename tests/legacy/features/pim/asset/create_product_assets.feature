@@ -26,7 +26,7 @@ Feature: Create product assets
       | title | Create a new asset |
     And I switch localizable button to yes
     And I fill the code with new_asset
-    When I press the "Save" button
+    When I press the "Confirm" button
     Then I should be on the "new_asset" asset edit page
     And I should see the reference upload zone
     And I should see the Mobile variation upload zone
@@ -41,7 +41,7 @@ Feature: Create product assets
       | title | Create a new asset |
     And I switch localizable button to no
     And I fill the code with new_asset
-    When I press the "Save" button
+    When I press the "Confirm" button
     Then I should be on the "new_asset" asset edit page
     And I should see the reference upload zone
     And I should see the Mobile variation upload zone
@@ -55,7 +55,7 @@ Feature: Create product assets
       | title | Create a new asset |
     And I switch localizable button to no
     And I upload the reference file akeneo.jpg
-    When I press the "Save" button
+    When I press the "Confirm" button
     Then I should be on the "akeneo" asset edit page
     And I should not be able to generate Mobile from reference
     And I should not be able to generate Tablet from reference
@@ -65,11 +65,12 @@ Feature: Create product assets
     And I am on the assets grid
     When I press the "Create an asset" button
     And I fill the code with random_asset
-    And I press the "Save" button
+    And I press the "Confirm" button
     Then I should be on the "random_asset" asset edit page
     When I am on the assets grid
     And I press the "Create an asset" button
-    And I fill the code with random_asset and wait for validation
+    And I fill the code with random_asset
+    And I press the "Confirm" button
     And I hover over the element ".validation-tooltip"
     Then I should see the text "Code must be unique. We generated a new one for you."
 
@@ -79,10 +80,10 @@ Feature: Create product assets
     And I am on the assets grid
     When I press the "Create an asset" button
     And I fill the code with random_asset_1
-    And I press the "Save" button
+    And I press the "Confirm" button
     Then I should be on the "random_asset_1" asset edit page
     When I am on the assets grid
     And I press the "Create an asset" button
     And I fill the code with random_asset
-    And I press the "Save" button
+    And I press the "Confirm" button
     Then I should be on the "random_asset" asset edit page

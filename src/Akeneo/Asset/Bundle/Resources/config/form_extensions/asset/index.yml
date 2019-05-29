@@ -64,8 +64,11 @@ extensions:
         targetZone: buttons
         aclResourceId: pimee_product_asset_create
         config:
-           title: create_asset.title
-           url: pimee_product_asset_create
+           title:     create_asset.title
+           modalForm: pimee-asset-index-create-modal
+
+    pimee-asset-index-create-modal:
+       module: pimee/asset/form/create-asset-modal
 
     pimee-asset-index-locale-switcher:
         module: pim/grid/locale-switcher
