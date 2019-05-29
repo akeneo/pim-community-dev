@@ -149,6 +149,10 @@ resource "google_monitoring_alert_policy" "alert_policy" {
 resource "null_resource" "metric" {
   count = "${length(local.metrics)}"
 
+  triggers = {
+    files = "${local_file.metric-rendered.*.content[count.index]}"
+  }
+
   provisioner "local-exec" {
     command = <<EOF
       gcloud beta logging metrics create ${local.pfid}-${local.metrics[count.index]} \
