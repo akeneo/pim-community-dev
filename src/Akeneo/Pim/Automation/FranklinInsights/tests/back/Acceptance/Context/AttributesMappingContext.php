@@ -211,7 +211,7 @@ final class AttributesMappingContext implements Context
         try {
             $command = new CreateAttributeInFamilyCommand(
                 new FamilyCode($familyCode),
-                AttributeCode::fromString($franklinAttrLabel),
+                AttributeCode::fromLabel($franklinAttrLabel),
                 new FranklinAttributeLabel($franklinAttrLabel),
                 new FranklinAttributeType($franklinAttrType)
             );

@@ -52,7 +52,7 @@ class AttributeCodeSpec extends ObjectBehavior
 
     public function it_creates_attribute_code_from_string(): void
     {
-        $this->beConstructedThrough('fromString', ['My unexpected Label!!']);
+        $this->beConstructedThrough('fromLabel', ['My unexpected Label!!']);
         $this->__toString()->shouldReturn('My_unexpected_Label__');
     }
 }

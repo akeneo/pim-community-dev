@@ -35,7 +35,7 @@ class CreateAttributeInFamilyCommandSpec extends ObjectBehavior
         $this->pimFamilyCode = new FamilyCode('my_family_code');
         $this->franklinAttributeLabel = new FranklinAttributeLabel('Franklin attribute label');
         $this->franklinAttributeType = new FranklinAttributeType('text');
-        $this->pimAttributeCode = AttributeCode::fromString((string) $this->franklinAttributeLabel);
+        $this->pimAttributeCode = AttributeCode::fromLabel((string) $this->franklinAttributeLabel);
 
         $this->beConstructedWith(
             $this->pimFamilyCode,

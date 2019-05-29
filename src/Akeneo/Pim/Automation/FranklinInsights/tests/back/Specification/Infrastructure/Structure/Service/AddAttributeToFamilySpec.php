@@ -68,7 +68,7 @@ class AddAttributeToFamilySpec extends ObjectBehavior
         $saver->save($family)->shouldBeCalled();
 
         $this->addAttributeToFamily(
-            AttributeCode::fromString('Foo'),
+            AttributeCode::fromLabel('Foo'),
             new FamilyCode('bar')
         )->shouldReturn(null);
     }
@@ -91,7 +91,7 @@ class AddAttributeToFamilySpec extends ObjectBehavior
         $saver->save($family)->shouldBeCalled();
 
         $this->addAttributeToFamily(
-            AttributeCode::fromString('Foo'),
+            AttributeCode::fromLabel('Foo'),
             new FamilyCode('bar')
         )->shouldReturn(null);
     }
@@ -105,7 +105,7 @@ class AddAttributeToFamilySpec extends ObjectBehavior
             ->during(
                 'addAttributeToFamily',
                 [
-                    AttributeCode::fromString('Foo'),
+                    AttributeCode::fromLabel('Foo'),
                     new FamilyCode('bar')
                 ]
             );
@@ -133,7 +133,7 @@ class AddAttributeToFamilySpec extends ObjectBehavior
             ->during(
                 'addAttributeToFamily',
                 [
-                    AttributeCode::fromString('Foo'),
+                    AttributeCode::fromLabel('Foo'),
                     new FamilyCode('bar')
                 ]
             );

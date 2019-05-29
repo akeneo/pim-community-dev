@@ -110,7 +110,7 @@ class CreateAttributeSpec extends ObjectBehavior
         $saver->save($attribute)->shouldBeCalled();
 
         $this->create(
-            AttributeCode::fromString('Foo bar'),
+            AttributeCode::fromLabel('Foo bar'),
             new AttributeLabel('Foo bar'),
             new AttributeType('pim_catalog_text')
         )->shouldReturn(null);
@@ -148,7 +148,7 @@ class CreateAttributeSpec extends ObjectBehavior
             ->during(
                 'create',
                 [
-                    AttributeCode::fromString('Foo bar'),
+                    AttributeCode::fromLabel('Foo bar'),
                     new AttributeLabel('Foo bar'),
                     new AttributeType('pim_catalog_text')
                 ]
