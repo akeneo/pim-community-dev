@@ -47,6 +47,7 @@ class ListProductModelWithCompletenessEndToEnd extends AbstractProductModelTestC
 		        },
 		        "code": "product_model_complete",
 		        "parent": null,
+		        "family": "familyA3",
 		        "family_variant": "familyVariantA3_by_a_yes_no",
 		        "categories": [],
 		        "values": {

@@ -48,6 +48,7 @@ class ProductModelNormalizer implements NormalizerInterface
     public function normalize($productModel, $format = null, array $context = []): array
     {
         $productModelStandard = $this->productModelNormalizer->normalize($productModel, 'standard', $context);
+        $productModelStandard['family'] = $productModel->getFamily()->getCode();
 
         $mediaAttributeCodes = $this->attributeRepository->getMediaAttributeCodes();
         foreach ($productModelStandard['values'] as $attributeCode => $values) {

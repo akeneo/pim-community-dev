@@ -10,6 +10,10 @@
 - TIP-1117: For security reasons, "admin" user is no longer part of the minimal catalog
 - TIP-1117: `pim:user:create` command now has a non interactive mode
 
+## Enhancements
+
+- TIP-1144: External API - add `family` into the product model format
+
 ## BC breaks
 
  - Service `pim_catalog.saver.channel` class has been changed to `Akeneo\Channel\Bundle\Storage\Orm\ChannelSaver`.

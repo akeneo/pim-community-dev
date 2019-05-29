@@ -150,6 +150,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
                 $row['created'],
                 $row['updated'],
                 $row['parent'],
+                $row['family'],
                 $row['family_variant'],
                 [],
                 $row['associations'] ?? [],

@@ -45,6 +45,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
             null,
+            'family',
             'family_variant',
             ['a_metadata_key' => 'a_metadata_value'],
             [
@@ -69,7 +70,8 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
             null,
-            'family_variant',
+            'another_family',
+            'another_family_variant',
             [],
             [],
             [],
@@ -81,6 +83,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                  [
                      [
                          'code' => 'code_1',
+                         'family' => 'family',
                          'family_variant' => 'family_variant',
                          'parent' => null,
                          'categories' => ['category_code_1', 'category_code_2'],
@@ -103,7 +106,8 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                      ],
                      [
                          'code' => 'code_2',
-                         'family_variant' => 'family_variant',
+                         'family' => 'another_family',
+                         'family_variant' => 'another_family_variant',
                          'parent' => null,
                          'categories' => [],
                          'values' => (object)[],
@@ -132,6 +136,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
             new \DateTimeImmutable('2018-05-16 12:10:15', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2018-05-17 14:20:44', new \DateTimeZone('UTC')),
             null,
+            'clothing',
             'clothing_by_size',
             [],
             [
@@ -148,6 +153,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
         $this->normalizeConnectorProductModel($connectorProductModel)->shouldReturn(
             [
                 'code' => 'product_model_code',
+                'family' => 'clothing',
                 'family_variant' => 'clothing_by_size',
                 'parent' => null,
                 'categories' => ['sportswear', 'men'],
