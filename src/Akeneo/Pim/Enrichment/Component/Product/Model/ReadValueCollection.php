@@ -14,12 +14,19 @@ class ReadValueCollection implements ValueCollectionInterface
     /** @var ValueInterface[] */
     private $values;
 
+    private $attributeCodes = [];
+
     /**
      * @param ValueInterface[] $values
      */
     public function __construct(array $values = [])
     {
         $this->values = $values;
+        $attributeCodes = [];
+        foreach ($this->values as $value) {
+            $attributeCodes[] = $value->getAttributeCode();
+        }
+        $this->attributeCodes = array_unique($attributeCodes);
     }
 
     /**
@@ -84,6 +91,11 @@ class ReadValueCollection implements ValueCollectionInterface
     public function getValues()
     {
         return array_values($this->values);
+    }
+
+    public function getAttributeCodes()
+    {
+        return $this->attributeCodes;
     }
 
     /**

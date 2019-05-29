@@ -16,6 +16,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 interface ValueCollectionInterface extends \Countable, \IteratorAggregate
 {
     /**
+     * Get the attributes used in the collection.
+     *
+     * @return string[]
+     */
+    public function getAttributeCodes();
+
+    /**
      * Checks whether a value is contained in the collection.
      * This is an O(n) operation, where n is the size of the collection.
      *

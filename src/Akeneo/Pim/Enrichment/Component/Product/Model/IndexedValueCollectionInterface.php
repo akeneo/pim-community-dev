@@ -119,13 +119,6 @@ interface IndexedValueCollectionInterface extends ValueCollectionInterface
     public function getByCodes($attributeCode, $channelCode = null, $localeCode = null);
 
     /**
-     * Get the attributes used in the collection.
-     *
-     * @return string[]
-     */
-    public function getAttributeCodes();
-
-    /**
      * Gets all keys/indices of the collection.
      *
      * @return array The keys/indices of the collection, in the order of the corresponding

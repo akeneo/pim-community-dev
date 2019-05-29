@@ -119,6 +119,11 @@ final class ConnectorProductModel
         return $this->values;
     }
 
+    public function attributeCodesInValues(): array
+    {
+        return $this->values->getAttributeCodes();
+    }
+
     public function associatedProductIdentifiers(): array
     {
         $associatedProducts = [];
