@@ -92,13 +92,21 @@ class ProductValueNormalizer implements NormalizerInterface
             return null;
         }
 
+        $attribute = null;
+
+        if (isset($context['attributes'])) {
+            $attribute = $context['attributes'][$value->getAttributeCode()] ?? null;
+        }
+
+        if ($attribute === null)
+
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
 
         if (null === $attribute) {
             return null;
         }
 
-        $attributeType = $attribute->getType();
+        $attributeType = $this->getAttributeType($value->getAttributeCode(), $context);
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
@@ -127,5 +135,10 @@ class ProductValueNormalizer implements NormalizerInterface
         $context['is_decimals_allowed'] = $attribute->isDecimalsAllowed();
 
         return $this->normalizer->normalize($value->getData(), $format, $context);
+    }
+
+    private function getAttributeType(string $attributeCode, array $context): string
+    {
+
     }
 }
