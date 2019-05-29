@@ -64,6 +64,15 @@ services:
             - '@security.token_storage'
             - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
 
+    pimee_catalog.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor:
+        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        decorates: akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor
+        decoration_inner_name: akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor.without_permission
+        arguments:
+            - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor.without_permission'
+            - '@security.token_storage'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
+
     pimee_catalog.query.product_query_builder_search_after_size_factory_external_api_with_permissions:
         public: false
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -93,7 +102,7 @@ services:
             - '@pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api.without_permission'
             - '@security.token_storage'
             - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
-    
+
     pimee_catalog.query.product_model_query_builder_from_size_factory_external_api_with_permissions:
         public: false
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'

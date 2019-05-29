@@ -8,7 +8,7 @@ const memo = (React as any).memo;
 const getLabel = (completeness: Completeness, type: ProductType) => {
   return PRODUCT_TYPE === type
     ? `${completeness.getRatio()} %`
-    : `${completeness.getCompleteCount()}/${completeness.getRequiredCount()}`;
+    : `${completeness.getCompleteChildren()}/${completeness.getTotalChildren()}`;
 };
 
 const getCompletenessClass = (completeness: Completeness) => {
@@ -21,30 +21,10 @@ const getCompletenessClass = (completeness: Completeness) => {
   }
 };
 
-const getTranslationKey = (completeness: Completeness) => {
-  const keyBase = 'pim_reference_entity.record.grid.completeness';
-
-  if (completeness.isComplete()) {
-    return `${keyBase}.title_complete`;
-  } else if (completeness.hasCompleteItems()) {
-    return `${keyBase}.title_ongoing`;
-  } else {
-    return `${keyBase}.title_non_complete`;
-  }
-};
-
 const ProductCompletenessLabel = memo(({completeness, type}: {completeness: Completeness; type: ProductType}) => {
   return (
     <div className="AknGrid-bodyCell string-cell AknBadge--topRight">
-      <span
-        title={__(getTranslationKey(completeness), {
-          complete: completeness.getCompleteCount(),
-          required: completeness.getRequiredCount(),
-        })}
-        className={getCompletenessClass(completeness)}
-      >
-        {getLabel(completeness, type)}
-      </span>
+      <span className={getCompletenessClass(completeness)}>{getLabel(completeness, type)}</span>
     </div>
   );
 });
