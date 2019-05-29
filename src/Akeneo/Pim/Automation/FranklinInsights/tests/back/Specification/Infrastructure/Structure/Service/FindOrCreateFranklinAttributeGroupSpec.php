@@ -15,9 +15,11 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\St
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\LocaleCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectEnglishActiveLocaleCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\CreateAttribute;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\FindOrCreateFranklinAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
@@ -39,9 +41,10 @@ class FindOrCreateFranklinAttributeGroupSpec extends ObjectBehavior
         SimpleFactoryInterface $factory,
         SaverInterface $saver,
         AttributeGroupRepositoryInterface $repository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SelectEnglishActiveLocaleCodesQueryInterface $englishActiveLocaleCodesQuery
     ): void {
-        $this->beConstructedWith($factory, $saver, $repository, $validator);
+        $this->beConstructedWith($factory, $saver, $repository, $validator, $englishActiveLocaleCodesQuery);
     }
 
     public function it_is_initializable(): void
@@ -56,12 +59,17 @@ class FindOrCreateFranklinAttributeGroupSpec extends ObjectBehavior
 
     public function it_finds_the_already_existing_attribute_group(
         $repository,
+        $factory,
+        $validator,
+        $saver,
         AttributeGroupInterface $attributeGroup
     ): void {
-        $attrGroupCode = new FranklinAttributeGroupCode();
-        $repository->findOneByIdentifier((string) $attrGroupCode)->willReturn($attributeGroup);
+        $repository->findOneByIdentifier(FranklinAttributeGroup::CODE)->willReturn($attributeGroup);
+        $factory->create()->shouldNotBeCalled();
+        $validator->validate($attributeGroup)->shouldNotBeCalled();
+        $saver->save($attributeGroup)->shouldNotBeCalled();
 
-        $this->findOrCreate()->shouldBeLike($attrGroupCode);
+        $this->findOrCreate();
     }
 
     public function it_creates_the_franklin_attribute_group(
@@ -69,19 +77,22 @@ class FindOrCreateFranklinAttributeGroupSpec extends ObjectBehavior
         $saver,
         $repository,
         $validator,
+        $englishActiveLocaleCodesQuery,
         AttributeGroupInterface $attributeGroup,
         ConstraintViolationListInterface $violations
     ): void {
-        $attrGroupCode = new FranklinAttributeGroupCode();
-        $repository->findOneByIdentifier((string) $attrGroupCode)->willReturn(null);
+        $repository->findOneByIdentifier(FranklinAttributeGroup::CODE)->willReturn(null);
+        $englishActiveLocaleCodesQuery->execute()->willReturn([new LocaleCode('en_GB')]);
 
         $factory->create()->willReturn($attributeGroup);
-        $attributeGroup->setCode((string) $attrGroupCode);
+        $attributeGroup->setCode(FranklinAttributeGroup::CODE);
+        $attributeGroup->setLocale('en_GB');
+        $attributeGroup->setLabel(FranklinAttributeGroup::LABEL);
 
         $validator->validate($attributeGroup)->willReturn($violations->getWrappedObject());
         $violations->count()->willReturn(0);
         $saver->save($attributeGroup)->shouldBeCalled();
 
-        $this->findOrCreate()->shouldBeLike($attrGroupCode);
+        $this->findOrCreate();
     }
 }

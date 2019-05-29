@@ -11,14 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service;
+namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\LocaleCode;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface FindOrCreateFranklinAttributeGroupInterface
+interface SelectEnglishActiveLocaleCodesQueryInterface
 {
-    public function findOrCreate(): void;
+    /**
+     * @return LocaleCode[]
+     */
+    public function execute(): array;
 }

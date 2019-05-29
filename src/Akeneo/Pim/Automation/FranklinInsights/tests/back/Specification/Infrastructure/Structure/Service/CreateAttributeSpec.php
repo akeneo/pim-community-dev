@@ -16,10 +16,12 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\St
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\LocaleCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectEnglishActiveLocaleCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert;
@@ -55,9 +57,19 @@ class CreateAttributeSpec extends ObjectBehavior
         AttributeUpdater $updater,
         AttributeSaver $saver,
         ValidatorInterface $validator,
-        FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup
+        FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup,
+        SelectEnglishActiveLocaleCodesQueryInterface $englishActiveLocaleCodesQuery
     ): void {
-        $this->beConstructedWith($factory, $updater, $saver, $validator, $findOrCreateFranklinAttributeGroup);
+        $englishActiveLocaleCodesQuery->execute()->willReturn([new LocaleCode('en_US')]);
+
+        $this->beConstructedWith(
+            $factory,
+            $updater,
+            $saver,
+            $validator,
+            $findOrCreateFranklinAttributeGroup,
+            $englishActiveLocaleCodesQuery
+        );
     }
 
     public function it_is_initializable(): void
@@ -79,10 +91,9 @@ class CreateAttributeSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ConstraintViolationListInterface $violations
     ): void {
-        $attributeGroupCode = new FranklinAttributeGroupCode();
         $attributeData = [
             'code' => 'Foo_bar',
-            'group' => (string) $attributeGroupCode,
+            'group' => FranklinAttributeGroup::CODE,
             'labels' => [
                 'en_US' => 'Foo bar'
             ],
@@ -90,7 +101,7 @@ class CreateAttributeSpec extends ObjectBehavior
             'scopable' => false
         ];
 
-        $findOrCreateFranklinAttributeGroup->findOrCreate()->willReturn($attributeGroupCode);
+        $findOrCreateFranklinAttributeGroup->findOrCreate()->shouldBeCalled();
 
         $factory->createAttribute('pim_catalog_text')->willReturn($attribute);
         $updater->update($attribute, $attributeData)->shouldBeCalled();
@@ -114,11 +125,9 @@ class CreateAttributeSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ConstraintViolationListInterface $violations
     ): void {
-        $attributeGroupCode = new FranklinAttributeGroupCode();
-
         $attributeData = [
             'code' => 'Foo_bar',
-            'group' => (string) $attributeGroupCode,
+            'group' => FranklinAttributeGroup::CODE,
             'labels' => [
                 'en_US' => 'Foo bar'
             ],
@@ -126,7 +135,7 @@ class CreateAttributeSpec extends ObjectBehavior
             'scopable' => false
         ];
 
-        $findOrCreateFranklinAttributeGroup->findOrCreate()->willReturn($attributeGroupCode);
+        $findOrCreateFranklinAttributeGroup->findOrCreate();
 
         $factory->createAttribute('pim_catalog_text')->willReturn($attribute);
         $updater->update($attribute, $attributeData)->shouldBeCalled();

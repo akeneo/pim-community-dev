@@ -11,24 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
+namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class FranklinAttributeGroupCode
+class LocaleCode
 {
-    private const CODE = 'franklin';
+    private $localeCode;
 
-    private $code;
-
-    public function __construct()
+    public function __construct(string $localeCode)
     {
-        $this->code = self::CODE;
+        $this->localeCode = $localeCode;
     }
 
-    public function __toString(): string
+    public function __toString()
     {
-        return (string) $this->code;
+        return $this->localeCode;
     }
 }

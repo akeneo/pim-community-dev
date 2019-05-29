@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -36,19 +36,18 @@ class FakeFindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttr
         $this->repository = $repository;
     }
 
-    public function findOrCreate(): FranklinAttributeGroupCode
+    public function findOrCreate(): void
     {
-        $attributeGroupCode = new FranklinAttributeGroupCode();
-        $attributeGroup = $this->repository->findOneByIdentifier((string) $attributeGroupCode);
+        $attributeGroup = $this->repository->findOneByIdentifier(FranklinAttributeGroup::CODE);
         if ($attributeGroup instanceof AttributeGroupInterface) {
-            return $attributeGroupCode;
+            return null;
         }
 
         $attributeGroup = $this->factory->create();
-        $attributeGroup->setCode((string) $attributeGroupCode);
+        $attributeGroup->setCode(FranklinAttributeGroup::CODE);
+        $attributeGroup->setLocale('en_US');
+        $attributeGroup->setLabel(FranklinAttributeGroup::LABEL);
 
         $this->repository->save($attributeGroup);
-
-        return $attributeGroupCode;
     }
 }

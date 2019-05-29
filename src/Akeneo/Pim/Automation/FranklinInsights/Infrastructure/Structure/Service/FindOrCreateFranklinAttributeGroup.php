@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroupCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectEnglishActiveLocaleCodesQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -31,29 +32,42 @@ class FindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttribut
     private $saver;
     private $repository;
     private $validator;
+    private $englishActiveLocaleCodeQuery;
 
     public function __construct(
         SimpleFactoryInterface $factory,
         SaverInterface $saver,
         AttributeGroupRepositoryInterface $repository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SelectEnglishActiveLocaleCodesQueryInterface $englishActiveLocaleCodeQuery
     ) {
         $this->factory = $factory;
         $this->saver = $saver;
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->englishActiveLocaleCodeQuery = $englishActiveLocaleCodeQuery;
     }
 
-    public function findOrCreate(): FranklinAttributeGroupCode
+    public function findOrCreate(): void
     {
-        $attributeGroupCode = new FranklinAttributeGroupCode();
-        $attributeGroup = $this->repository->findOneByIdentifier((string) $attributeGroupCode);
+        $attributeGroup = $this->repository->findOneByIdentifier(FranklinAttributeGroup::CODE);
         if ($attributeGroup instanceof AttributeGroupInterface) {
-            return $attributeGroupCode;
+            return;
         }
 
+        $this->createAttributeGroup();
+    }
+
+    private function createAttributeGroup(): void
+    {
         $attributeGroup = $this->factory->create();
-        $attributeGroup->setCode((string) $attributeGroupCode);
+        $attributeGroup->setCode((string) FranklinAttributeGroup::CODE);
+
+        $localeCodes = $this->englishActiveLocaleCodeQuery->execute();
+        foreach ($localeCodes as $localeCode) {
+            $attributeGroup->setLocale((string) $localeCode);
+            $attributeGroup->setLabel(FranklinAttributeGroup::LABEL);
+        }
 
         $violations = $this->validator->validate($attributeGroup);
         if (0 !== $violations->count()) {
@@ -61,7 +75,5 @@ class FindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttribut
         }
 
         $this->saver->save($attributeGroup);
-
-        return $attributeGroupCode;
     }
 }

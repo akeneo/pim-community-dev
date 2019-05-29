@@ -11,14 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service;
-
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
+namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface FindOrCreateFranklinAttributeGroupInterface
+final class FranklinAttributeGroup
 {
-    public function findOrCreate(): void;
+    const CODE = 'franklin';
+    const LABEL = 'Franklin';
 }
