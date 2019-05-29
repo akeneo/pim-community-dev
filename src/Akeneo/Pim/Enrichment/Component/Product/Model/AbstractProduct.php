@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\IdentifierUpdatedProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductAddedToGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
@@ -282,10 +283,16 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setIdentifier(ValueInterface $identifier)
     {
+        $previousIdentifier = $this->identifier;
+
         $this->identifier = $identifier->getData();
 
         $this->values->removeByAttributeCode($identifier->getAttributeCode());
         $this->values->add($identifier);
+
+        if ($previousIdentifier !== null && $previousIdentifier !== $this->identifier) {
+            $this->events[] = new IdentifierUpdatedProduct($this->identifier, $previousIdentifier);
+        }
 
         return $this;
     }
