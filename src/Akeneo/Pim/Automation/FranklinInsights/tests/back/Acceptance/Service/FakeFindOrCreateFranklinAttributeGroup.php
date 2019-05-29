@@ -40,7 +40,7 @@ class FakeFindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttr
     {
         $attributeGroup = $this->repository->findOneByIdentifier(FranklinAttributeGroup::CODE);
         if ($attributeGroup instanceof AttributeGroupInterface) {
-            return null;
+            return;
         }
 
         $attributeGroup = $this->factory->create();
