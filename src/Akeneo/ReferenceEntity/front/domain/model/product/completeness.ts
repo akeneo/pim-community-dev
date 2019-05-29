@@ -21,12 +21,23 @@ class Completeness {
     return this.complete === this.required;
   }
 
+  public hasCompleteItems() {
+    return this.complete > 0;
+  }
+
   public getRatio() {
     if (0 === this.required) {
       return 0;
     }
 
     return Math.round((100 * this.complete) / this.required);
+  }
+
+  public normalize(): NormalizedCompleteness {
+    return {
+      complete: this.complete,
+      required: this.required,
+    };
   }
 }
 

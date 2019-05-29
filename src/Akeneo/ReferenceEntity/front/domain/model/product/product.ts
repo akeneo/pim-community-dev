@@ -11,7 +11,7 @@ import Completeness, {
 
 export const PRODUCT_TYPE = 'product';
 export const PRODUCT_MODEL_TYPE = 'product_model';
-type ProductType = 'product' | 'product_model';
+export type ProductType = 'product' | 'product_model';
 
 type NormalizedProductIdentifier = string;
 type NormalizedProductId = string;
@@ -32,6 +32,7 @@ export default interface Product {
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
+  getCompleteness: () => Completeness;
   equals: (product: Product) => boolean;
   normalize: () => NormalizedProduct;
 }

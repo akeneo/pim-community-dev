@@ -1,6 +1,9 @@
 import * as React from 'react';
-import Product from 'akeneoreferenceentity/domain/model/product/product';
+import Product, {PRODUCT_MODEL_TYPE} from 'akeneoreferenceentity/domain/model/product/product';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
+import Completeness from 'akeneoreferenceentity/domain/model/product/completeness';
+import ProductCompletenessLabel from 'akeneoreferenceentity/application/component/app/product-completeness';
+
 const router = require('pim/router');
 
 export default ({
@@ -20,6 +23,7 @@ export default ({
           id: product.getId().stringValue(),
         })}`
       : '';
+  const completeness = Completeness.createFromNormalized(product.getCompleteness().normalize());
 
   return (
     <a
@@ -28,15 +32,17 @@ export default ({
       title={product.getLabel(locale)}
       className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${
         isLoading ? 'AknLoadingPlaceHolder' : ''
-      } ${product.getType() === 'product_model' ? 'AknGrid-bodyRow--withLayer' : ''}`}
+      } ${PRODUCT_MODEL_TYPE === product.getType() ? 'AknGrid-bodyRow--withLayer' : ''}`}
       data-identifier={product.getIdentifier().stringValue()}
     >
-      <span
+      <div
         className="AknGrid-fullImage"
         style={{
           backgroundImage: `url("${getImageShowUrl(product.getImage(), 'thumbnail')}")`,
         }}
-      />
+      >
+        <ProductCompletenessLabel completeness={completeness} type={product.getType()} />
+      </div>
       <span className="AknGrid-title">{product.getLabel(locale)}</span>
       <span className="AknGrid-subTitle">{product.getIdentifier().stringValue()}</span>
     </a>
