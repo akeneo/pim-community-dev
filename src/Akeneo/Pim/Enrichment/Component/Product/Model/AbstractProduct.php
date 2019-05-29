@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Events\IdentifierUpdatedProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductAddedToGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
@@ -11,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductChanged;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductDisabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -90,7 +90,7 @@ abstract class AbstractProduct implements ProductInterface
     protected $familyVariant;
 
     /** @var array */
-    protected $events;
+    protected $events = [];
 
     /**
      * Constructor
@@ -291,7 +291,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->values->add($identifier);
 
         if ($previousIdentifier !== null && $previousIdentifier !== $this->identifier) {
-            $this->events[] = new IdentifierUpdatedProduct($this->identifier, $previousIdentifier);
+            $this->events[] = new ProductIdentifierUpdated($this->identifier, $previousIdentifier);
         }
 
         return $this;
