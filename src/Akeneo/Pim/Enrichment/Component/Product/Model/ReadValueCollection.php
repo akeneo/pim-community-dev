@@ -14,6 +14,7 @@ class ReadValueCollection implements ValueCollectionInterface
     /** @var ValueInterface[] */
     private $values;
 
+    /** @var array|string[] */
     private $attributeCodes = [];
 
     /**

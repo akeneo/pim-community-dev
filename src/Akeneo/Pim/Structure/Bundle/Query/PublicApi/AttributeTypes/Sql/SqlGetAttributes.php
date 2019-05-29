@@ -16,6 +16,9 @@ final class SqlGetAttributes implements GetAttributes
     /** @var Connection */
     private $connection;
 
+    /** @var array|Attribute[] */
+    private $cache = [];
+
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
@@ -27,8 +30,32 @@ final class SqlGetAttributes implements GetAttributes
             return [];
         }
 
+        $cachedAttributeCodes = array_keys($this->cache);
+        $attributeCodesToQuery = array_diff($attributeCodes, $cachedAttributeCodes);
+
+        $attributesFromDb = $this->fetchAttributesFromDb($attributeCodesToQuery);
+
+        $this->cache = array_replace($this->cache, $attributesFromDb);
+
+        //It is to avoid errors on removed attributes
+        $attributeCodesToKeep = array_intersect(array_keys($this->cache), $attributeCodes);
+
+        $result = [];
+        foreach ($attributeCodesToKeep as $attributeCode) {
+            $result[] = $this->cache[(string)$attributeCode];
+        }
+
+        return $result;
+    }
+
+    private function fetchAttributesFromDb(array $attributeCodes): array
+    {
+        if ($attributeCodes === []) {
+            return [];
+        }
+
         $query = <<<SQL
-        SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family
+        SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family, decimals_allowed
         FROM pim_catalog_attribute
         WHERE code IN (:attributeCodes)
 SQL;
@@ -39,17 +66,21 @@ SQL;
             ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
-        return array_map(function (array $attribute): Attribute {
+        $codesToAttribute = [];
+        foreach ($rawResults as $attribute) {
             $properties = unserialize($attribute['properties']);
 
-            return new Attribute(
+            $codesToAttribute[(string)$attribute['code']] = new Attribute(
                 $attribute['code'],
                 $attribute['attribute_type'],
                 $properties,
                 boolval($attribute['is_localizable']),
                 boolval($attribute['is_scopable']),
-                $attribute['metric_family']
+                $attribute['metric_family'],
+                boolval($attribute['decimals_allowed'])
             );
-        }, $rawResults);
+        }
+
+        return $codesToAttribute;
     }
 }

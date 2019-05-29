@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -63,20 +64,19 @@ class ProductValueNormalizer implements NormalizerInterface
 
     protected function getCollectionValue(ValueInterface $value, ?string $format = null, array $context = []): array
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-
+        $attribute = $this->getAttribute($value->getAttributeCode(), $context);
 
         if (null === $attribute) {
             return [];
         }
 
-        $attributeType = $attribute->getType();
+        $attributeType = $attribute->type();
         $context['is_decimals_allowed'] = $attribute->isDecimalsAllowed();
 
         $data = [];
         foreach ($value->getData() as $item) {
             if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType ||
-                $attribute->isBackendTypeReferenceData()) {
+                isset($attribute->properties()['reference_data_name'])) {
                 $data[] = $item;
             } else {
                 $data[] = $this->normalizer->normalize($item, $format, $context);
@@ -92,13 +92,13 @@ class ProductValueNormalizer implements NormalizerInterface
             return null;
         }
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+        $attribute = $this->getAttribute($value->getAttributeCode(), $context);
 
-        if (null === $attribute) {
+        if ($attribute === null) {
             return null;
         }
 
-        $attributeType = $attribute->getType();
+        $attributeType = $attribute->type();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
@@ -127,5 +127,35 @@ class ProductValueNormalizer implements NormalizerInterface
         $context['is_decimals_allowed'] = $attribute->isDecimalsAllowed();
 
         return $this->normalizer->normalize($value->getData(), $format, $context);
+    }
+
+    private function getAttribute(string $attributeCode, array $context): ?Attribute
+    {
+        $attribute = null;
+
+        if (isset($context['attributes'])) {
+            $attribute = $context['attributes'][$attributeCode] ?? null;
+        }
+
+        if ($attribute !== null) {
+            return $attribute;
+        }
+
+        /** @var \Akeneo\Pim\Structure\Component\Model\Attribute $attribute */
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+        if ($attribute === null) {
+            return null;
+        }
+
+        return new Attribute(
+            $attributeCode,
+            $attribute->getType(),
+            $attribute->getProperties(),
+            $attribute->isLocalizable(),
+            $attribute->isScopable(),
+            $attribute->getMetricFamily(),
+            boolval($attribute->isDecimalsAllowed())
+        );
     }
 }

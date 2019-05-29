@@ -85,6 +85,6 @@ final class PriceCollectionValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::PRICE_COLLECTION, [], $isLocalizable, $isScopable, null);
+        return new Attribute('an_attribute', AttributeTypes::PRICE_COLLECTION, [], $isLocalizable, $isScopable, null, false);
     }
 }
