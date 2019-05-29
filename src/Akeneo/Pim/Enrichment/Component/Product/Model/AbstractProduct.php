@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductChanged;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductDisabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -89,7 +90,7 @@ abstract class AbstractProduct implements ProductInterface
     protected $familyVariant;
 
     /** @var array */
-    protected $events;
+    protected $events = [];
 
     /**
      * Constructor
@@ -282,10 +283,16 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setIdentifier(ValueInterface $identifier)
     {
+        $previousIdentifier = $this->identifier;
+
         $this->identifier = $identifier->getData();
 
         $this->values->removeByAttributeCode($identifier->getAttributeCode());
         $this->values->add($identifier);
+
+        if ($previousIdentifier !== null && $previousIdentifier !== $this->identifier) {
+            $this->events[] = new ProductIdentifierUpdated($this->identifier, $previousIdentifier);
+        }
 
         return $this;
     }
@@ -464,7 +471,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setGroups(Collection $groups): void
     {
-        $formerGroupCodes = $this->groups->map(function(GroupInterface $group) {
+        $formerGroupCodes = $this->groups->map(function (GroupInterface $group) {
             return $group->getCode();
         })->toArray();
 
@@ -497,7 +504,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setEnabled($enabled)
     {
-        if ($enabled === $this->enabled){
+        if ($enabled === $this->enabled) {
             return;
         }
 
@@ -739,8 +746,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (null === $this->parent && null !== $parent) {
             $this->events[] = new ParentOfProductAdded($this->identifier, $parent->getCode());
-        }
-        else if (null !== $this->parent && null !== $parent) {
+        } elseif (null !== $this->parent && null !== $parent) {
             $this->events[] = new ParentOfProductChanged($this->identifier, $this->parent->getCode(), $parent->getCode());
         }
 
