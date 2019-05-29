@@ -27,6 +27,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.connector.api.record_value_validator }
 
+    akeneo_referenceentity.infrastructure.connector.api.record_value_number_type_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\NumberTypeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+
     akeneo_referenceentity.infrastructure.connector.api.record_value_image_type_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\ImageTypeValidator
         tags:
@@ -80,6 +85,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.connector.api.create.attribute_validator }
 
+    akeneo_referenceentity.infrastructure.connector.api.create.number_attribute_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\NumberAttributeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.create.attribute_validator }
+
     akeneo_referenceentity.infrastructure.connector.api.edit.attribute_edition_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator
         arguments:
@@ -112,6 +122,10 @@ services:
         tags:
             - { name: akeneo_referenceentity.connector.api.edit.attribute_validator }
 
+    akeneo_referenceentity.infrastructure.connector.api.edit.number_attribute_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\NumberAttributeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.edit.attribute_validator }
 
     akeneo_referenceentity.infrastructure.connector.api.search_filters_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\SearchFiltersValidator

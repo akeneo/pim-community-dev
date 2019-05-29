@@ -148,6 +148,22 @@
                     "value_per_locale": false,
                     "value_per_channel": false,
                     "record_type": "city"
+                },
+                {
+                    "type": "number",
+                    "identifier": "year_of_birth_designer_79eb100099b9a8bf52609e00b7ee307e",
+                    "reference_entity_identifier": "designer",
+                    "code": "year_of_birth",
+                    "labels": {
+                        "en_US": "Year of Birth"
+                    },
+                    "is_required": false,
+                    "order": 6,
+                    "value_per_locale": false,
+                    "value_per_channel": false,
+                    "decimals_allowed": false,
+                    "min_value": "10",
+                    "max_value": "50"
                 }
             ],
             "permission": {

@@ -282,6 +282,13 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_hydrator }
 
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.number_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\NumberAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
     # Record value hydrators
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.data_hydrator_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry
@@ -377,6 +384,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.number_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\NumberDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
     # Record value transformers
     akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry
@@ -385,6 +397,11 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.record.transformer.text_connector_value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\TextConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.number_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\NumberConnectorValueTransformer
         tags:
             - { name: akeneo_referenceentity.connector_value_transformer }
 

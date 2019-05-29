@@ -262,9 +262,9 @@ Feature: Lists all attributes related to a reference entity
   # @acceptance-front
   Scenario: A validation occured because the code is not valid
     Given a valid reference entity
-     And the user has the following rights:
-       | akeneo_referenceentity_attribute_edit | true |
-       | akeneo_referenceentity_option_edit    | true |
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit | true |
+      | akeneo_referenceentity_option_edit    | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     And the user manages the options of the attribute
@@ -310,3 +310,26 @@ Feature: Lists all attributes related to a reference entity
     And the label of the "red" option should be locked
     And the user cannot remove the "red" option
     And the user cannot add a new option
+
+  @acceptance-front
+  Scenario: Edit the attribute number
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit | true |
+    When the user asks for the reference entity "designer"
+    And the user edit the attribute "year_of_birth"
+    Then the user edits the attribute property "Label" with value "Year of Birth"
+    And the user edits the attribute property "IsRequired" with value "true"
+    And the user edits the attribute property "DecimalsAllowed" with value "true"
+    And the user edits the attribute property "MinValue" with value "-10.12"
+    And the user edits the attribute property "MaxValue" with value "50"
+
+  @acceptance-front
+  Scenario: User can't edit the text attribute
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit | false |
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "year_of_birth"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "DecimalsAllowed"

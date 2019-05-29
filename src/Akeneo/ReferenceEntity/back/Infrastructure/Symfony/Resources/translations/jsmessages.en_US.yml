@@ -204,6 +204,7 @@ pim_reference_entity:
       record_collection: Reference entity multiple links
       option: Single option
       option_collection: Multiple options
+      number: Number
     is_required: required for completeness
     no_data:
       title: There are no custom attributes for {{ entityLabel }}
@@ -246,6 +247,8 @@ pim_reference_entity:
         allowed_extensions: Allowed extensions
         validation_rule: Validation rule
         regular_expression: Regular expression
+        min_value: Min value
+        max_value: Max value
         manage_options:
           confirmation:
             discard_changes: You will lose changes made to the list of options if you leave the page
@@ -260,6 +263,7 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Regular expression
             url: URL
+        decimals_allowed: Decimal values allowed
     delete:
       message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
       title: Attribute

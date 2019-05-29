@@ -93,6 +93,14 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_option_collection_ok.json');
     }
 
+    /**
+     * @test
+     */
+    public function it_creates_a_number_attribute(): void
+    {
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_number_ok.json');
+    }
+
 
     /**
      * @test

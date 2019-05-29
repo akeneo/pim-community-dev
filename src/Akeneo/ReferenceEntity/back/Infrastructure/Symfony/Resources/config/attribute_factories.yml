@@ -31,3 +31,8 @@ services:
         class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\OptionCollectionAttributeFactory
         tags:
             - { name: akeneo_referenceentity.attribute_factory }
+
+    akeneo_referenceentity.application.factory.number_attribute_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\NumberAttributeFactory
+        tags:
+            - { name: akeneo_referenceentity.attribute_factory }

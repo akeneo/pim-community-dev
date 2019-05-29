@@ -15,13 +15,14 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
@@ -32,6 +33,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
@@ -242,6 +244,33 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $this->assertAttribute($expectedOption, $actualOption);
     }
 
+    /**
+     * @test
+     */
+    public function it_creates_an_attribute_of_type_number_and_returns_it()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($referenceEntityIdentifier, AttributeCode::fromString('number'));
+        $expectedNumber = NumberAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('number'),
+            LabelCollection::fromArray(['en_US' => 'Colors', 'fr_FR' => 'Couleurs']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeDecimalsAllowed::fromBoolean(true),
+            AttributeLimit::fromString('10'),
+            AttributeLimit::limitless()
+        );
+
+        $this->attributeRepository->create($expectedNumber);
+
+        $actualNumber = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedNumber, $actualNumber);
+    }
 
     /**
      * @test

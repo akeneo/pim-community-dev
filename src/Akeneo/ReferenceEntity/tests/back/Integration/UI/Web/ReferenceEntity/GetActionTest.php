@@ -200,13 +200,30 @@ class GetActionTest extends ControllerIntegrationTestCase
             'record_type' => 'city'
         ];
 
+        $birthdate = new AttributeDetails();
+        $birthdate->identifier = 'year_of_birth_designer_79eb100099b9a8bf52609e00b7ee307e';
+        $birthdate->referenceEntityIdentifier = 'designer';
+        $birthdate->code = 'year_of_birth';
+        $birthdate->isRequired = false;
+        $birthdate->order = 6;
+        $birthdate->valuePerChannel = false;
+        $birthdate->valuePerLocale = false;
+        $birthdate->type = 'number';
+        $birthdate->labels = ['en_US' => 'Year of Birth'];
+        $birthdate->additionalProperties = [
+            'decimals_allowed' => false,
+            'min_value'  => '10',
+            'max_value'  => '50'
+        ];
+
         $entityItem->attributes = [
             $name,
             $bio,
             $portrait,
             $favoriteColor,
             $colors,
-            $city
+            $city,
+            $birthdate
         ];
         $queryHandler->save($entityItem);
 

@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_attribute_create_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
+    },
+    "body": {
+      "reference_entity_identifier": "designer",
+      "code": "niceattribute",
+      "type": "number",
+      "labels": {
+        "en_US": "Nice attribute"
+      },
+      "value_per_locale": false,
+      "value_per_channel": false,
+      "decimals_allowed": false
+    }
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}

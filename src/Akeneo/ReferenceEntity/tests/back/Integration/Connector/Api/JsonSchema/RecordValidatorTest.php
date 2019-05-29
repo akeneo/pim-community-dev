@@ -15,15 +15,18 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Api\JsonSchema;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
@@ -70,6 +73,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $this->loadImageAttribute();
         $this->loadOptionAttribute();
         $this->loadOptionCollectionAttribute();
+        $this->loadNumberAttribute();
     }
 
     /**
@@ -143,6 +147,13 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         ],
                     ],
                 ],
+                'year' => [
+                    [
+                        'locale'  => null,
+                        'channel' => null,
+                        'data'    => '1949',
+                    ],
+                ],
             ],
         ];
 
@@ -214,13 +225,20 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         ],
                     ],
                 ],
+                'year' => [
+                    [
+                        'locale'  => null,
+                        'channel' => null,
+                        'data'    => 1949,
+                    ],
+                ],
             ],
         ];
 
         $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
-        $this->assertCount(6, $errors);
+        $this->assertCount(7, $errors);
         $this->assertContains(
             [
                 'property' => 'values.country[0].data',
@@ -260,6 +278,13 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             [
                 'property' => 'values.products[0].data[2]',
                 'message'  => 'NULL value found, but a string is required'
+            ],
+            $errors
+        );
+        $this->assertContains(
+            [
+                'property' => 'values.year[0].data',
+                'message'  => 'Integer value found, but a string or a null is required'
             ],
             $errors
         );
@@ -417,6 +442,25 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $this->attributeRepository->create($attribute);
+    }
+
+    private function loadNumberAttribute()
+    {
+        $attribute = NumberAttribute::create(
+            AttributeIdentifier::create('brand', 'year', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            AttributeCode::fromString('year'),
+            LabelCollection::fromArray(['en_US' => 'Year']),
+            AttributeOrder::fromInteger($this->attributeOrder++),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeDecimalsAllowed::fromBoolean(false),
+            AttributeLimit::fromString('0'),
+            AttributeLimit::limitless()
         );
 
         $this->attributeRepository->create($attribute);

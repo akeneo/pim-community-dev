@@ -7,43 +7,49 @@
       "referenceEntityIdentifier": "designer"
     },
     "body": {
-      "identifier":"designer_starck_a1677570-a278-444b-ab46-baa1db199392",
-      "reference_entity_identifier":"designer",
-      "code":"starck",
-      "labels":{
-        "fr_FR":"Philippe Starck"
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "reference_entity_identifier": "designer",
+      "code": "starck",
+      "labels": {
+        "fr_FR": "Philippe Starck"
       },
-      "image":null,
-      "values":[
+      "image": null,
+      "values": [
         {
-          "attribute":"name_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":"Starck"
+          "attribute": "name_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "Starck"
         },
         {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"en_US",
-          "data":null
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "en_US",
+          "data": null
         },
         {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"fr_FR",
-          "data":null
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "fr_FR",
+          "data": null
         },
         {
-          "attribute":"website_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":null
+          "attribute": "website_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
         },
         {
-          "attribute":"portrait_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":null
+          "attribute": "portrait_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
+        },
+        {
+          "attribute": "age_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
         }
       ]
     }
