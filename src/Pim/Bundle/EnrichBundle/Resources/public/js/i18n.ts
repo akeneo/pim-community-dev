@@ -7,7 +7,7 @@ const flagTemplate = (country: string, language: string, displayLanguage: boolea
 };
 
 export const getFlag = (locale: string, displayLanguage: boolean = true): string => {
-  if (!locale) {
+  if (!locale || false === locale.includes('_')) {
     return '';
   }
 

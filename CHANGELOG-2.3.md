@@ -4,6 +4,7 @@
 
 - PIM-8378: Fix DI for EntityWithFamilyVariantNormalizer injection
 - PIM-8385: Fix timeout when launching the clean attributes command
+- PIM-7583: Prevent js error for locales without country
 
 # 2.3.46 (2019-05-27)
 
