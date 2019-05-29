@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureF
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -40,20 +41,20 @@ class FakeCreateAttribute implements CreateAttributeInterface
     /** @var InMemoryAttributeGroupRepository */
     private $attributeGroupRepository;
 
-    private $findOrCreateFranklinAttributeGroup;
+    private $ensureFranklinAttributeGroupExists;
 
     public function __construct(
         AttributeFactory $attributeFactory,
         AttributeUpdater $attributeUpdater,
         InMemoryAttributeRepository $attributeRepository,
         InMemoryAttributeGroupRepository $attributeGroupRepository,
-        EnsureFranklinAttributeGroupExistsInterface $findOrCreateFranklinAttributeGroup
+        EnsureFranklinAttributeGroupExistsInterface $ensureFranklinAttributeGroupExists
     ) {
         $this->attributeFactory = $attributeFactory;
         $this->attributeUpdater = $attributeUpdater;
         $this->attributeRepository = $attributeRepository;
         $this->attributeGroupRepository = $attributeGroupRepository;
-        $this->findOrCreateFranklinAttributeGroup = $findOrCreateFranklinAttributeGroup;
+        $this->ensureFranklinAttributeGroupExists = $ensureFranklinAttributeGroupExists;
     }
 
     public function create(
@@ -61,12 +62,12 @@ class FakeCreateAttribute implements CreateAttributeInterface
         AttributeLabel $attributeLabel,
         AttributeType $attributeType
     ): void {
-        $attributeGroupCode = $this->findOrCreateFranklinAttributeGroup->ensureExistence();
+        $this->ensureFranklinAttributeGroupExists->ensureExistence();
 
         $attribute = $this->attributeFactory->create();
         $attribute->setCode((string) $attributeCode);
         $attribute->setType((string) $attributeType);
-        $this->attributeUpdater->update($attribute, ['group' => (string) $attributeGroupCode]);
+        $this->attributeUpdater->update($attribute, ['group' => FranklinAttributeGroup::CODE]);
 
         $this->attributeRepository->save($attribute);
     }

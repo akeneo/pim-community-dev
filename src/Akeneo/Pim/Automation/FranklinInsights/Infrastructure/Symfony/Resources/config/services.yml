@@ -56,6 +56,7 @@ services:
             - '@pim_catalog.saver.attribute'
             - '@validator'
             - '@akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin'
 
     akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\AddAttributeToFamily'
@@ -66,9 +67,10 @@ services:
             - '@validator'
 
     akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\FakeEnsureFranklinAttributeGroupExists'
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\EnsureFranklinAttributeGroupExists'
         arguments:
             - '@pim_catalog.factory.attribute_group'
             - '@pim_catalog.saver.attribute_group'
             - '@pim_catalog.repository.attribute_group'
             - '@validator'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin'

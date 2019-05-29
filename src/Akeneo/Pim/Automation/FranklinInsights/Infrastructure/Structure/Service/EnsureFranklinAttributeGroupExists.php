@@ -32,20 +32,20 @@ class EnsureFranklinAttributeGroupExists implements EnsureFranklinAttributeGroup
     private $saver;
     private $repository;
     private $validator;
-    private $englishActiveLocaleCodeQuery;
+    private $selectActiveLocaleCodesManagedByFranklinQuery;
 
     public function __construct(
         SimpleFactoryInterface $factory,
         SaverInterface $saver,
         AttributeGroupRepositoryInterface $repository,
         ValidatorInterface $validator,
-        SelectActiveLocaleCodesManagedByFranklinQueryInterface $englishActiveLocaleCodeQuery
+        SelectActiveLocaleCodesManagedByFranklinQueryInterface $selectActiveLocaleCodesManagedByFranklinQuery
     ) {
         $this->factory = $factory;
         $this->saver = $saver;
         $this->repository = $repository;
         $this->validator = $validator;
-        $this->englishActiveLocaleCodeQuery = $englishActiveLocaleCodeQuery;
+        $this->selectActiveLocaleCodesManagedByFranklinQuery = $selectActiveLocaleCodesManagedByFranklinQuery;
     }
 
     public function ensureExistence(): void
@@ -63,7 +63,7 @@ class EnsureFranklinAttributeGroupExists implements EnsureFranklinAttributeGroup
         $attributeGroup = $this->factory->create();
         $attributeGroup->setCode((string) FranklinAttributeGroup::CODE);
 
-        $localeCodes = $this->englishActiveLocaleCodeQuery->execute();
+        $localeCodes = $this->selectActiveLocaleCodesManagedByFranklinQuery->execute();
         foreach ($localeCodes as $localeCode) {
             $attributeGroup->setLocale((string) $localeCode);
             $attributeGroup->setLabel(FranklinAttributeGroup::LABEL);

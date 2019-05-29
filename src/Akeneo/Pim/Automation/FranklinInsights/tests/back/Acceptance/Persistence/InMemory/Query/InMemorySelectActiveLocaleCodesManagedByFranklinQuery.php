@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\LocaleCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\SelectEnglishActiveLocaleCodeQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectActiveLocaleCodesManagedByFranklinQueryInterface;
 use Akeneo\Test\Acceptance\Locale\InMemoryLocaleRepository;
-use Doctrine\DBAL\Connection;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class InMemorySelectEnglishActiveLocaleCodesQuery implements SelectEnglishActiveLocaleCodeQueryInterface
+class InMemorySelectActiveLocaleCodesManagedByFranklinQuery implements SelectActiveLocaleCodesManagedByFranklinQueryInterface
 {
     /**
      * @var InMemoryLocaleRepository

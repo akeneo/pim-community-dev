@@ -36,9 +36,9 @@ class EnsureFranklinAttributeGroupExistsSpec extends ObjectBehavior
         SaverInterface $saver,
         AttributeGroupRepositoryInterface $repository,
         ValidatorInterface $validator,
-        SelectActiveLocaleCodesManagedByFranklinQueryInterface $englishActiveLocaleCodesQuery
+        SelectActiveLocaleCodesManagedByFranklinQueryInterface $activeLocaleCodesManagedByFranklinQuery
     ): void {
-        $this->beConstructedWith($factory, $saver, $repository, $validator, $englishActiveLocaleCodesQuery);
+        $this->beConstructedWith($factory, $saver, $repository, $validator, $activeLocaleCodesManagedByFranklinQuery);
     }
 
     public function it_is_initializable(): void
@@ -71,12 +71,12 @@ class EnsureFranklinAttributeGroupExistsSpec extends ObjectBehavior
         $saver,
         $repository,
         $validator,
-        $englishActiveLocaleCodesQuery,
+        $activeLocaleCodesManagedByFranklinQuery,
         AttributeGroupInterface $attributeGroup,
         ConstraintViolationListInterface $violations
     ): void {
         $repository->findOneByIdentifier(FranklinAttributeGroup::CODE)->willReturn(null);
-        $englishActiveLocaleCodesQuery->execute()->willReturn([new LocaleCode('en_GB')]);
+        $activeLocaleCodesManagedByFranklinQuery->execute()->willReturn([new LocaleCode('en_GB')]);
 
         $factory->create()->willReturn($attributeGroup);
         $attributeGroup->setCode(FranklinAttributeGroup::CODE);

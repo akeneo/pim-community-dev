@@ -23,10 +23,10 @@ use PHPUnit\Framework\Assert;
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class FindOrCreateFranklinAttributeGroupIntegration extends TestCase
+class EnsureFranklinAttributeGroupExistsIntegration extends TestCase
 {
     /** @var EnsureFranklinAttributeGroupExistsInterface */
-    private $findOrCreateFranklinAttributeGroupService;
+    private $ensureFranklinAttributeGroupExists;
 
     /** @var Connection */
     private $dbal;
@@ -35,7 +35,7 @@ class FindOrCreateFranklinAttributeGroupIntegration extends TestCase
     {
         parent::setUp();
         $this->dbal = $this->get('database_connection');
-        $this->findOrCreateFranklinAttributeGroupService = $this->get('akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists');
+        $this->ensureFranklinAttributeGroupExists = $this->get('akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists');
     }
 
     /**
@@ -54,26 +54,21 @@ VALUES ('franklin', 20, NOW(), NOW())
 SQL;
         $this->dbal->executeQuery($query);
 
-        $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->ensureExistence();
+        $this->ensureFranklinAttributeGroupExists->ensureExistence();
 
-        $statement = $this->executeGetFranklinAttributeGroupQuery();
-
-        Assert::assertInstanceOf(FranklinAttributeGroup::class, $attributeGroup);
-        Assert::assertSame('franklin', (string) $attributeGroup);
-        Assert::assertEquals(1, $statement->rowCount());
+        $stmt = $this->executeGetFranklinAttributeGroupQuery();
+        Assert::assertEquals(1, $stmt->rowCount());
     }
 
     public function test_it_creates_new_attribute_group()
     {
-        $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->ensureExistence();
+        $stmt = $this->executeGetFranklinAttributeGroupQuery();
+        Assert::assertEquals(0, $stmt->rowCount());
 
-        $statement = $this->executeGetFranklinAttributeGroupQuery();
-        $result = $statement->fetch();
+        $this->ensureFranklinAttributeGroupExists->ensureExistence();
 
-        Assert::assertInstanceOf(FranklinAttributeGroup::class, $attributeGroup);
-        Assert::assertSame('franklin', (string) $attributeGroup);
-        Assert::assertEquals(1, $statement->rowCount());
-        Assert::assertEquals('franklin', $result['code']);
+        $stmt = $this->executeGetFranklinAttributeGroupQuery();
+        Assert::assertEquals(1, $stmt->rowCount());
     }
 
     private function executeGetFranklinAttributeGroupQuery()

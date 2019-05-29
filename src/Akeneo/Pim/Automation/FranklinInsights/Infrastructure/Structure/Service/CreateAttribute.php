@@ -36,7 +36,7 @@ class CreateAttribute implements CreateAttributeInterface
     private $updater;
     private $saver;
     private $validator;
-    private $findOrCreateFranklinAttributeGroup;
+    private $ensureFranklinAttributeGroupExists;
     private $selectActiveLocaleCodesManagedByFranklinQuery;
 
     public function __construct(
@@ -44,14 +44,14 @@ class CreateAttribute implements CreateAttributeInterface
         AttributeUpdater $updater,
         AttributeSaver $saver,
         ValidatorInterface $validator,
-        EnsureFranklinAttributeGroupExistsInterface $findOrCreateFranklinAttributeGroup,
+        EnsureFranklinAttributeGroupExistsInterface $ensureFranklinAttributeGroupExists,
         SelectActiveLocaleCodesManagedByFranklinQueryInterface $selectActiveLocaleCodesManagedByFranklinQuery
     ) {
         $this->factory = $factory;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->validator = $validator;
-        $this->findOrCreateFranklinAttributeGroup = $findOrCreateFranklinAttributeGroup;
+        $this->ensureFranklinAttributeGroupExists = $ensureFranklinAttributeGroupExists;
         $this->selectActiveLocaleCodesManagedByFranklinQuery = $selectActiveLocaleCodesManagedByFranklinQuery;
     }
 
@@ -60,7 +60,7 @@ class CreateAttribute implements CreateAttributeInterface
         AttributeLabel $attributeLabel,
         AttributeType $attributeType
     ): void {
-        $this->findOrCreateFranklinAttributeGroup->ensureExistence();
+        $this->ensureFranklinAttributeGroupExists->ensureExistence();
 
         $data = [
             'code' => (string) $attributeCode,
@@ -86,12 +86,6 @@ class CreateAttribute implements CreateAttributeInterface
     {
         $localeCodes = $this->selectActiveLocaleCodesManagedByFranklinQuery->execute();
 
-        //array_fill_keys()
-        $labels = [];
-        foreach ($localeCodes as $localeCode) {
-            $labels[(string) $localeCode] = (string) $attributeLabel;
-        }
-
-        return $labels;
+        return array_fill_keys($localeCodes, (string) $attributeLabel);
     }
 }

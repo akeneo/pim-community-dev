@@ -27,7 +27,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists'
 
     akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeEnsureFranklinAttributeGroupExists'
+        class: Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeEnsureFranklinAttributeGroupExists
         arguments:
             - '@pim_catalog.factory.attribute_group'
             - '@pim_catalog.repository.attribute_group'

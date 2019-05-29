@@ -61,7 +61,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_english_active_locale_codes:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\InMemorySelectEnglishActiveLocaleCodesQuery'
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectActiveLocaleCodesManagedByFranklinQuery'
         arguments:
             - '@database_connection'

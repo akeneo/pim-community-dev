@@ -68,7 +68,7 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
 
     public function it_throws_exception_on_attribute_creation_when_type_is_metric($createAttribute, $addAttributeToFamily)
     {
-        $pimAttrCode = AttributeCode::fromString('Franklin attr label');
+        $pimAttrCode = AttributeCode::fromLabel('Franklin attr label');
         $pimFamilyCode = new FamilyCode('my_family_code');
         $franklinAttrLabel = new FranklinAttributeLabel('Franklin attr label');
         $franklinAttrType = new FranklinAttributeType('metric');

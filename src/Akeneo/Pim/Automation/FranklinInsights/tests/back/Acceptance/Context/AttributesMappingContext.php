@@ -218,6 +218,7 @@ final class AttributesMappingContext implements Context
             $this->createAttributeInFamilyHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
+            var_dump($e->getMessage());
         }
     }
 
