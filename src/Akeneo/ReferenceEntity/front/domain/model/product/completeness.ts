@@ -31,3 +31,4 @@ class Completeness {
 }
 
 export default Completeness;
+export const denormalizeCompleteness = Completeness.createFromNormalized;

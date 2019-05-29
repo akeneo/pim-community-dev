@@ -15,8 +15,8 @@ export const validateKeys = (object: any, keys: string[], message: string) => {
   }
 };
 
-const hydrate = (hydrator: any) => (element: any) => {
-  return hydrator(element);
+const hydrate = (hydrator: any) => (element: any, context?: any) => {
+  return hydrator(element, context);
 };
 
 const toArray = <Element>(elements: any): Element[] => {
@@ -27,6 +27,6 @@ const toArray = <Element>(elements: any): Element[] => {
   return Object.keys(elements).map((key: string): Element => elements[key]);
 };
 
-export default <Element>(hydrator: any) => (elements: any): Element[] => {
-  return toArray(elements).map(hydrate(hydrator));
+export default <Element>(hydrator: any) => (elements: any, context?: any): Element[] => {
+  return toArray(elements).map((element: Element) => hydrate(hydrator)(element, context));
 };

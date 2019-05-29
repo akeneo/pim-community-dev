@@ -32,7 +32,7 @@ export class ProductFetcherImplementation implements ProductFetcher {
     ).catch(errorHandler);
 
     return {
-      items: hydrateAll<Product>(hydrator)(backendProducts.items),
+      items: hydrateAll<Product>(hydrator)(backendProducts.items, {locale, channel}),
       matchesCount: backendProducts.items.length,
       totalCount: backendProducts.total_count,
     };
