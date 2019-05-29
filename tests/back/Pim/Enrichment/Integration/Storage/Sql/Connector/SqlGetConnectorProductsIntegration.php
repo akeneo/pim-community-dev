@@ -160,11 +160,11 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 ],
                 [],
                 new ReadValueCollection([
+                    OptionValue::value('a_simple_select', 'optionA'),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-                    OptionValue::value('a_simple_select', 'optionA'),
-                    ScalarValue::value('a_yes_no', false),
                 ])
             ),
             new ConnectorProduct(
@@ -201,11 +201,11 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 ],
                 [],
                 new ReadValueCollection([
+                    OptionValue::value('a_simple_select', 'optionB'),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-                    OptionValue::value('a_simple_select', 'optionB'),
-                    ScalarValue::value('a_yes_no', false),
                 ])
             ),
         ]);

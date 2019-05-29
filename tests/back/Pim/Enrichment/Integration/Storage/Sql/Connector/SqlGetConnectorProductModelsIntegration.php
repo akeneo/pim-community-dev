@@ -110,7 +110,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ['categoryA2'],
                 new ReadValueCollection(
                     [
-                        PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                        PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(number_format(50.00, 2), 'EUR')])),
                         ScalarValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
                             'a_localized_and_scopable_text_area',
@@ -160,7 +160,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ['categoryA1', 'categoryA2'],
                 new ReadValueCollection(
                     [
-                        PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                        OptionValue::value('a_simple_select', 'optionA'),
+                        PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(number_format(50.00, 2), 'EUR')])),
                         ScalarValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
                             'a_localized_and_scopable_text_area',
@@ -174,7 +175,6 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'ecommerce',
                             'fr_FR'
                         ),
-                        OptionValue::value('a_simple_select', 'optionA'),
                         ScalarValue::value('a_text', 'Lorem ipsum dolor sit amet'),
                     ]
                 )
@@ -315,6 +315,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ['categoryA1', 'categoryA2'],
                 new ReadValueCollection(
                     [
+                        OptionValue::value('a_simple_select', 'optionA'),
                         ScalarValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
                             'a_localized_and_scopable_text_area',
@@ -322,7 +323,6 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'ecommerce',
                             'en_US'
                         ),
-                        OptionValue::value('a_simple_select', 'optionA'),
                     ]
                 )
             ),
@@ -373,7 +373,9 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
             ['categoryA1', 'categoryA2'],
             new ReadValueCollection(
                 [
+                    OptionValue::value('a_simple_select', 'optionA'),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('a_text', 'Lorem ipsum dolor sit amet'),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue(
                         'a_localized_and_scopable_text_area',
@@ -387,22 +389,19 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'ecommerce',
                         'fr_FR'
                     ),
-                    OptionValue::value('a_simple_select', 'optionA'),
-                    ScalarValue::value('a_text', 'Lorem ipsum dolor sit amet'),
                 ]
             )
         );
 
-        Assert::assertEquals(
-            $expectedProductModel,
-            $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'))
-        );
+        $actualProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'));
+
+        Assert::assertEquals($expectedProductModel, $actualProductModel);
     }
 
     /**
      * @test
      */
-    public function it_returns_empty_associations_if_there_is_no_asociation_type(): void
+    public function it_returns_empty_associations_if_there_is_no_association_type(): void
     {
         $this->get('database_connection')->executeQuery('DELETE FROM akeneo_pim.pim_catalog_association_type_translation');
         $this->get('database_connection')->executeQuery('DELETE FROM akeneo_pim.pim_catalog_association_type');
