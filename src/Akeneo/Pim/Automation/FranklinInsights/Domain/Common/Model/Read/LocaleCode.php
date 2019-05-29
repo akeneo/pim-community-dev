@@ -22,6 +22,11 @@ class LocaleCode
 
     public function __construct(string $localeCode)
     {
+        if (empty($localeCode)) {
+            throw new \InvalidArgumentException(
+                sprintf('Locale code "%s" is invalid', $localeCode)
+            );
+        }
         $this->localeCode = $localeCode;
     }
 

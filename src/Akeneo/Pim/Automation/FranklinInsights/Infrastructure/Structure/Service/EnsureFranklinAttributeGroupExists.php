@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectEnglishActiveLocaleCodesQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectActiveLocaleCodesManagedByFranklinQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class FindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttributeGroupInterface
+class EnsureFranklinAttributeGroupExists implements EnsureFranklinAttributeGroupExistsInterface
 {
     private $factory;
     private $saver;
@@ -39,7 +39,7 @@ class FindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttribut
         SaverInterface $saver,
         AttributeGroupRepositoryInterface $repository,
         ValidatorInterface $validator,
-        SelectEnglishActiveLocaleCodesQueryInterface $englishActiveLocaleCodeQuery
+        SelectActiveLocaleCodesManagedByFranklinQueryInterface $englishActiveLocaleCodeQuery
     ) {
         $this->factory = $factory;
         $this->saver = $saver;
@@ -48,7 +48,7 @@ class FindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttribut
         $this->englishActiveLocaleCodeQuery = $englishActiveLocaleCodeQuery;
     }
 
-    public function findOrCreate(): void
+    public function ensureExistence(): void
     {
         $attributeGroup = $this->repository->findOneByIdentifier(FranklinAttributeGroup::CODE);
         if ($attributeGroup instanceof AttributeGroupInterface) {

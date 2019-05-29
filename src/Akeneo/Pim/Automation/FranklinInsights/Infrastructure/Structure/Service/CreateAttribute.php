@@ -14,22 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectEnglishActiveLocaleCodesQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectActiveLocaleCodesManagedByFranklinQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectEnglishActiveLocaleCodesQuery;
-use Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine\SelectEnglishActiveLocaleCodesQueryIntegration;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -42,22 +37,22 @@ class CreateAttribute implements CreateAttributeInterface
     private $saver;
     private $validator;
     private $findOrCreateFranklinAttributeGroup;
-    private $englishActiveLocaleCodeQuery;
+    private $selectActiveLocaleCodesManagedByFranklinQuery;
 
     public function __construct(
         AttributeFactory $factory,
         AttributeUpdater $updater,
         AttributeSaver $saver,
         ValidatorInterface $validator,
-        FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup,
-        SelectEnglishActiveLocaleCodesQueryInterface $englishActiveLocaleCodeQuery
+        EnsureFranklinAttributeGroupExistsInterface $findOrCreateFranklinAttributeGroup,
+        SelectActiveLocaleCodesManagedByFranklinQueryInterface $selectActiveLocaleCodesManagedByFranklinQuery
     ) {
         $this->factory = $factory;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->validator = $validator;
         $this->findOrCreateFranklinAttributeGroup = $findOrCreateFranklinAttributeGroup;
-        $this->englishActiveLocaleCodeQuery = $englishActiveLocaleCodeQuery;
+        $this->selectActiveLocaleCodesManagedByFranklinQuery = $selectActiveLocaleCodesManagedByFranklinQuery;
     }
 
     public function create(
@@ -65,7 +60,7 @@ class CreateAttribute implements CreateAttributeInterface
         AttributeLabel $attributeLabel,
         AttributeType $attributeType
     ): void {
-        $this->findOrCreateFranklinAttributeGroup->findOrCreate();
+        $this->findOrCreateFranklinAttributeGroup->ensureExistence();
 
         $data = [
             'code' => (string) $attributeCode,
@@ -89,7 +84,9 @@ class CreateAttribute implements CreateAttributeInterface
 
     private function prepareLabels(AttributeLabel $attributeLabel): array
     {
-        $localeCodes = $this->englishActiveLocaleCodeQuery->execute();
+        $localeCodes = $this->selectActiveLocaleCodesManagedByFranklinQuery->execute();
+
+        //array_fill_keys()
         $labels = [];
         foreach ($localeCodes as $localeCode) {
             $labels[(string) $localeCode] = (string) $attributeLabel;

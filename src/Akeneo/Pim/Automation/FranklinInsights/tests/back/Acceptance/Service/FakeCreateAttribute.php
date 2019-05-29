@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -48,7 +47,7 @@ class FakeCreateAttribute implements CreateAttributeInterface
         AttributeUpdater $attributeUpdater,
         InMemoryAttributeRepository $attributeRepository,
         InMemoryAttributeGroupRepository $attributeGroupRepository,
-        FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup
+        EnsureFranklinAttributeGroupExistsInterface $findOrCreateFranklinAttributeGroup
     ) {
         $this->attributeFactory = $attributeFactory;
         $this->attributeUpdater = $attributeUpdater;
@@ -62,7 +61,7 @@ class FakeCreateAttribute implements CreateAttributeInterface
         AttributeLabel $attributeLabel,
         AttributeType $attributeType
     ): void {
-        $attributeGroupCode = $this->findOrCreateFranklinAttributeGroup->findOrCreate();
+        $attributeGroupCode = $this->findOrCreateFranklinAttributeGroup->ensureExistence();
 
         $attribute = $this->attributeFactory->create();
         $attribute->setCode((string) $attributeCode);

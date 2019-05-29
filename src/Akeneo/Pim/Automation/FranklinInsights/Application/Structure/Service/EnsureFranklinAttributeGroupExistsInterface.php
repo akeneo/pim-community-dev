@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
-
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface FindOrCreateFranklinAttributeGroupInterface
+interface EnsureFranklinAttributeGroupExistsInterface
 {
-    public function findOrCreate(): void;
+    public function ensureExistence(): void;
 }

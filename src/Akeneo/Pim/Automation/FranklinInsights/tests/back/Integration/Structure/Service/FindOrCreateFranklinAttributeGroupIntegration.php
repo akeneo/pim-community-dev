@@ -13,7 +13,7 @@
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Structure\Service;
 
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -25,7 +25,7 @@ use PHPUnit\Framework\Assert;
  */
 class FindOrCreateFranklinAttributeGroupIntegration extends TestCase
 {
-    /** @var FindOrCreateFranklinAttributeGroupInterface */
+    /** @var EnsureFranklinAttributeGroupExistsInterface */
     private $findOrCreateFranklinAttributeGroupService;
 
     /** @var Connection */
@@ -35,7 +35,7 @@ class FindOrCreateFranklinAttributeGroupIntegration extends TestCase
     {
         parent::setUp();
         $this->dbal = $this->get('database_connection');
-        $this->findOrCreateFranklinAttributeGroupService = $this->get('akeneo.pim.automation.franklin_insights.application.structure.service.find_or_create_franklin_attribute_group');
+        $this->findOrCreateFranklinAttributeGroupService = $this->get('akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists');
     }
 
     /**
@@ -54,7 +54,7 @@ VALUES ('franklin', 20, NOW(), NOW())
 SQL;
         $this->dbal->executeQuery($query);
 
-        $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->findOrCreate();
+        $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->ensureExistence();
 
         $statement = $this->executeGetFranklinAttributeGroupQuery();
 
@@ -65,7 +65,7 @@ SQL;
 
     public function test_it_creates_new_attribute_group()
     {
-        $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->findOrCreate();
+        $attributeGroup = $this->findOrCreateFranklinAttributeGroupService->ensureExistence();
 
         $statement = $this->executeGetFranklinAttributeGroupQuery();
         $result = $statement->fetch();

@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\LocaleCode;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface SelectEnglishActiveLocaleCodesQueryInterface
+interface SelectActiveLocaleCodesManagedByFranklinQueryInterface
 {
     /**
      * @return LocaleCode[]

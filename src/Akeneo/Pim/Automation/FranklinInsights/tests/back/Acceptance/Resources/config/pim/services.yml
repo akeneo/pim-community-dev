@@ -24,10 +24,10 @@ services:
             - '@pim_catalog.updater.attribute'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_group'
-            - '@akeneo.pim.automation.franklin_insights.application.structure.service.find_or_create_franklin_attribute_group'
+            - '@akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists'
 
-    akeneo.pim.automation.franklin_insights.application.structure.service.find_or_create_franklin_attribute_group:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeFindOrCreateFranklinAttributeGroup'
+    akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeEnsureFranklinAttributeGroupExists'
         arguments:
             - '@pim_catalog.factory.attribute_group'
             - '@pim_catalog.repository.attribute_group'

@@ -63,17 +63,19 @@ class AddAttributeToFamily implements AddAttributeToFamilyInterface
 
     private function getFamily(FamilyCode $familyCode): ?FamilyInterface
     {
-        return $this->repository->findOneByIdentifier((string) $familyCode);
+        $family = $this->repository->findOneByIdentifier((string) $familyCode);
+        if (null === $family) {
+            throw new \InvalidArgumentException(
+                sprintf('Family with code "%s" does not exist', (string) $familyCode)
+            );
+        }
+
+        return $family;
     }
 
     public function addAttributeToFamily(AttributeCode $attributeCode, FamilyCode $familyCode): void
     {
         $family = $this->getFamily($familyCode);
-        if ($family === null) {
-            throw new \InvalidArgumentException(
-                sprintf('Family with code "%s" does not exist', (string) $familyCode)
-            );
-        }
 
         $familyAttributeCodes = $family->getAttributeCodes();
         array_push($familyAttributeCodes, (string) $attributeCode);

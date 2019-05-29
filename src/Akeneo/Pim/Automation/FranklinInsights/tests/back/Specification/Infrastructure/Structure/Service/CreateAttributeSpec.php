@@ -13,37 +13,21 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\LocaleCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectEnglishActiveLocaleCodesQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectActiveLocaleCodesManagedByFranklinQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\CreateAttribute;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -57,18 +41,18 @@ class CreateAttributeSpec extends ObjectBehavior
         AttributeUpdater $updater,
         AttributeSaver $saver,
         ValidatorInterface $validator,
-        FindOrCreateFranklinAttributeGroupInterface $findOrCreateFranklinAttributeGroup,
-        SelectEnglishActiveLocaleCodesQueryInterface $englishActiveLocaleCodesQuery
+        EnsureFranklinAttributeGroupExistsInterface $ensureFranklinAttributeGroupExists,
+        SelectActiveLocaleCodesManagedByFranklinQueryInterface $activeLocaleCodesQuery
     ): void {
-        $englishActiveLocaleCodesQuery->execute()->willReturn([new LocaleCode('en_US')]);
+        $activeLocaleCodesQuery->execute()->willReturn([new LocaleCode('en_US')]);
 
         $this->beConstructedWith(
             $factory,
             $updater,
             $saver,
             $validator,
-            $findOrCreateFranklinAttributeGroup,
-            $englishActiveLocaleCodesQuery
+            $ensureFranklinAttributeGroupExists,
+            $activeLocaleCodesQuery
         );
     }
 
@@ -87,7 +71,7 @@ class CreateAttributeSpec extends ObjectBehavior
         $updater,
         $validator,
         $saver,
-        $findOrCreateFranklinAttributeGroup,
+        $ensureFranklinAttributeGroupExists,
         AttributeInterface $attribute,
         ConstraintViolationListInterface $violations
     ): void {
@@ -101,7 +85,7 @@ class CreateAttributeSpec extends ObjectBehavior
             'scopable' => false
         ];
 
-        $findOrCreateFranklinAttributeGroup->findOrCreate()->shouldBeCalled();
+        $ensureFranklinAttributeGroupExists->ensureExistence()->shouldBeCalled();
 
         $factory->createAttribute('pim_catalog_text')->willReturn($attribute);
         $updater->update($attribute, $attributeData)->shouldBeCalled();
@@ -121,7 +105,7 @@ class CreateAttributeSpec extends ObjectBehavior
         $updater,
         $validator,
         $saver,
-        $findOrCreateFranklinAttributeGroup,
+        $ensureFranklinAttributeGroupExists,
         AttributeInterface $attribute,
         ConstraintViolationListInterface $violations
     ): void {
@@ -135,7 +119,7 @@ class CreateAttributeSpec extends ObjectBehavior
             'scopable' => false
         ];
 
-        $findOrCreateFranklinAttributeGroup->findOrCreate();
+        $ensureFranklinAttributeGroupExists->ensureExistence();
 
         $factory->createAttribute('pim_catalog_text')->willReturn($attribute);
         $updater->update($attribute, $attributeData)->shouldBeCalled();

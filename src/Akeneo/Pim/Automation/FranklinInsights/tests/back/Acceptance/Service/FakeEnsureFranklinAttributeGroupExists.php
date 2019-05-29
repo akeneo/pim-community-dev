@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class FakeFindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttributeGroupInterface
+class FakeEnsureFranklinAttributeGroupExists implements EnsureFranklinAttributeGroupExistsInterface
 {
     private $factory;
 
@@ -36,7 +36,7 @@ class FakeFindOrCreateFranklinAttributeGroup implements FindOrCreateFranklinAttr
         $this->repository = $repository;
     }
 
-    public function findOrCreate(): void
+    public function ensureExistence(): void
     {
         $attributeGroup = $this->repository->findOneByIdentifier(FranklinAttributeGroup::CODE);
         if ($attributeGroup instanceof AttributeGroupInterface) {

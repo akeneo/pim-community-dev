@@ -13,19 +13,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\FindOrCreateFranklinAttributeGroupInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\LocaleCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectEnglishActiveLocaleCodesQueryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectActiveLocaleCodesManagedByFranklinQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\CreateAttribute;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\FindOrCreateFranklinAttributeGroup;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\EnsureFranklinAttributeGroupExists;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -35,26 +29,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class FindOrCreateFranklinAttributeGroupSpec extends ObjectBehavior
+class EnsureFranklinAttributeGroupExistsSpec extends ObjectBehavior
 {
     public function let(
         SimpleFactoryInterface $factory,
         SaverInterface $saver,
         AttributeGroupRepositoryInterface $repository,
         ValidatorInterface $validator,
-        SelectEnglishActiveLocaleCodesQueryInterface $englishActiveLocaleCodesQuery
+        SelectActiveLocaleCodesManagedByFranklinQueryInterface $englishActiveLocaleCodesQuery
     ): void {
         $this->beConstructedWith($factory, $saver, $repository, $validator, $englishActiveLocaleCodesQuery);
     }
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(FindOrCreateFranklinAttributeGroup::class);
+        $this->shouldHaveType(EnsureFranklinAttributeGroupExists::class);
     }
 
     public function it_is_a_find_or_create_franklin_attribute_group(): void
     {
-        $this->shouldImplement(FindOrCreateFranklinAttributeGroupInterface::class);
+        $this->shouldImplement(EnsureFranklinAttributeGroupExistsInterface::class);
     }
 
     public function it_finds_the_already_existing_attribute_group(
@@ -69,7 +63,7 @@ class FindOrCreateFranklinAttributeGroupSpec extends ObjectBehavior
         $validator->validate($attributeGroup)->shouldNotBeCalled();
         $saver->save($attributeGroup)->shouldNotBeCalled();
 
-        $this->findOrCreate();
+        $this->ensureExistence();
     }
 
     public function it_creates_the_franklin_attribute_group(
@@ -93,6 +87,6 @@ class FindOrCreateFranklinAttributeGroupSpec extends ObjectBehavior
         $violations->count()->willReturn(0);
         $saver->save($attributeGroup)->shouldBeCalled();
 
-        $this->findOrCreate();
+        $this->ensureExistence();
     }
 }

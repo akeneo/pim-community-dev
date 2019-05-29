@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class FranklinAttributeGroup
+interface FranklinAttributeGroup
 {
     const CODE = 'franklin';
     const LABEL = 'Franklin';

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\LocaleCode;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectEnglishActiveLocaleCodesQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectActiveLocaleCodesQueryManagerByFranklin;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -35,7 +35,7 @@ class SelectEnglishActiveLocaleCodesQueryIntegration extends TestCase
         Assert::eq('en_US', $localeCodes[0]->__toString());
     }
 
-    private function getQuery(): SelectEnglishActiveLocaleCodesQuery
+    private function getQuery(): SelectActiveLocaleCodesQueryManagerByFranklin
     {
         return $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_english_active_locale_codes');
     }

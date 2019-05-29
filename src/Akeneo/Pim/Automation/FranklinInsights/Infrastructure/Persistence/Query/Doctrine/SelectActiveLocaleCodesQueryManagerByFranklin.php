@@ -20,7 +20,7 @@ use Doctrine\DBAL\Connection;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SelectEnglishActiveLocaleCodesQuery implements SelectEnglishActiveLocaleCodeQueryInterface
+class SelectActiveLocaleCodesQueryManagerByFranklin implements SelectEnglishActiveLocaleCodeQueryInterface
 {
     /** @var Connection */
     private $connection;
