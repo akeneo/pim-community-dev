@@ -3,7 +3,13 @@ oneup_flysystem:
         asset_storage_adapter:
             local:
                 directory: '%asset_storage_dir%'
+        logs_adapter:
+            local:
+                directory: '%kernel.logs_dir%'
     filesystems:
         asset_storage:
             adapter: asset_storage_adapter
             mount: assetStorage
+        logs_storage:
+            adapter: logs_adapter
+            mount: logsStorage
