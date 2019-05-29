@@ -21,6 +21,14 @@ define(
         FamilyAddAttributeSelect
     ) {
         return FamilyAddAttributeSelect.extend({
+            fetchAttributeGroups(attributes) {
+                const groupCodes = _.unique(_.pluck(attributes, 'group'));
+
+                return FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(groupCodes).then(function (attributeGroups) {
+                    return this.populateGroupProperties(attributes, attributeGroups);
+                }.bind(this));
+            },
+
             /**
              * {@inheritdoc}
              */
@@ -29,7 +37,9 @@ define(
                     .then(function (identifiersToExclude) {
                         searchParameters.options.excluded_identifiers = identifiersToExclude;
 
-                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
+                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters).then(attributes => {
+                            return this.fetchAttributeGroups(attributes)
+                        });
                     }.bind(this));
             },
 
