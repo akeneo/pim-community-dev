@@ -24,9 +24,10 @@ define(
             fetchAttributeGroups(attributes) {
                 const groupCodes = _.unique(_.pluck(attributes, 'group'));
 
-                return FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(groupCodes).then((attributeGroups) => {
-                    return this.populateGroupProperties(attributes, attributeGroups);
-                });
+                return FetcherRegistry.getFetcher('attribute-group')
+                    .fetchByIdentifiers(groupCodes).then((attributeGroups) => {
+                        return this.populateGroupProperties(attributes, attributeGroups);
+                    });
             },
 
             /**
@@ -37,9 +38,10 @@ define(
                     .then((identifiersToExclude) => {
                         searchParameters.options.excluded_identifiers = identifiersToExclude;
 
-                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters).then(attributes => {
-                            return this.fetchAttributeGroups(attributes)
-                        });
+                        return FetcherRegistry.getFetcher(this.mainFetcher)
+                            .search(searchParameters).then(attributes => {
+                                return this.fetchAttributeGroups(attributes)
+                            });
                     });
             },
 
