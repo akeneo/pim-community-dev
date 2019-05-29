@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Launcher;
 
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
@@ -49,14 +50,18 @@ class QueueJobLauncher implements JobLauncherInterface
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
+    /** @var BatchLogHandler */
+    private $batchLogHandler;
+
     /**
      * @param JobRepositoryInterface     $jobRepository
      * @param JobParametersFactory       $jobParametersFactory
      * @param JobRegistry                $jobRegistry
      * @param JobParametersValidator     $jobParametersValidator
      * @param JobExecutionQueueInterface $queue
-     * @param string                     $environment
      * @param EventDispatcherInterface   $eventDispatcher
+     * @param BatchLogHandler            $batchLogHandler
+     * @param string                     $environment
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
@@ -65,6 +70,7 @@ class QueueJobLauncher implements JobLauncherInterface
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $queue,
         EventDispatcherInterface $eventDispatcher,
+        BatchLogHandler $batchLogHandler,
         string $environment
     ) {
         $this->jobRepository = $jobRepository;
@@ -73,6 +79,7 @@ class QueueJobLauncher implements JobLauncherInterface
         $this->jobParametersValidator = $jobParametersValidator;
         $this->queue = $queue;
         $this->eventDispatcher = $eventDispatcher;
+        $this->batchLogHandler = $batchLogHandler;
         $this->environment = $environment;
     }
 
@@ -130,6 +137,8 @@ class QueueJobLauncher implements JobLauncherInterface
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
+
+        $this->batchLogHandler->setSubDirectory($jobExecution->getId());
 
         $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);
 

@@ -71,9 +71,9 @@ class BatchLogHandler extends StreamHandler
      *
      * @deprecated
      */
-    public function getRealPath($filename, $subDirectory = null)
+    private function getRealPath($filename, $subDirectory = null)
     {
-        if ($subDirectory) {
+        if (null !== $subDirectory) {
             return sprintf('%s/%s/%s', $this->logDir, $subDirectory, $filename);
         }
 
@@ -85,7 +85,7 @@ class BatchLogHandler extends StreamHandler
      */
     public function write(array $record)
     {
-        if (!$this->url) {
+        if (null === $this->url) {
             $this->url = $this->getRealPath($this->generateLogFilename());
         }
 

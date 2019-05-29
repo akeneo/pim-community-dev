@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\BatchQueueBundle\Launcher;
 
+use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -31,9 +32,10 @@ class QueueJobLauncherSpec extends ObjectBehavior
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $queue,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        BatchLogHandler $batchLogHandler
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $queue, $eventDispatcher, 'test');
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $queue, $eventDispatcher, $batchLogHandler, 'test');
     }
 
     function it_is_a_job_launcher()
