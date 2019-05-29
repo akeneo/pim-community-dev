@@ -107,6 +107,7 @@ config:
 
         oro/datagrid/product-and-product-model-image-cell: pimdatagrid/js/datagrid/cell/product-and-product-model-image-cell
         oro/datagrid/product-and-product-model-label-cell: pimdatagrid/js/datagrid/cell/product-and-product-model-label-cell
+        oro/datagrid/attribute-header-cell:                pimdatagrid/js/datagrid/header-cell/attribute-header-cell
 
         backbone/pageable-collection:           pimdatagrid/lib/backbone-pageable
         backgrid:                               pimdatagrid/lib/backgrid/backgrid
