@@ -4,11 +4,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductAddedToGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductChanged;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductDisabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -462,6 +464,23 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setGroups(Collection $groups): void
     {
+        $formerGroupCodes = $this->groups->map(function(GroupInterface $group) {
+            return $group->getCode();
+        })->toArray();
+
+        $newGroupCodes = $groups->map(function (GroupInterface $group) {
+            return $group->getCode();
+        })->toArray();
+
+        $removedGroupCodes = array_diff($formerGroupCodes, $newGroupCodes);
+        $addedGroupCodes = array_diff($newGroupCodes, $formerGroupCodes);
+        foreach ($removedGroupCodes as $groupCode) {
+            $this->events[] = new ProductRemovedFromGroup($this->identifier, $groupCode);
+        }
+        foreach ($addedGroupCodes as $groupCode) {
+            $this->events[] = new ProductAddedToGroup($this->identifier, $groupCode);
+        }
+
         $this->groups = $groups;
     }
 
@@ -540,6 +559,7 @@ abstract class AbstractProduct implements ProductInterface
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
             $group->addProduct($this);
+            $this->events[] = new ProductAddedToGroup($this->identifier, $group->getCode());
         }
 
         return $this;
@@ -550,7 +570,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeGroup(GroupInterface $group)
     {
-        $this->groups->removeElement($group);
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+            $this->events[] = new ProductRemovedFromGroup($this->identifier, $group->getCode());
+        }
 
         return $this;
     }
