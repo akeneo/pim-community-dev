@@ -1,5 +1,3 @@
-"Yes, I Agree": "Sí, Estic d'acord"
-"Yes, do it": "Sí, fes-ho"
 "Ok, got it.": "D'acord, ho entenc."
 "Edit": "Editar"
 "Unexpected error occured. Please contact system administrator.": "Error inesperat. Contacti amb el seu administrador de sistemes."
@@ -20,18 +18,13 @@ Second: Segon
 Millisecond: Mil·lisegon
 Microsecond: Microsegon
 "Time Zone": "Zona horària"
-Localized value: Valor amb configuració regional
 Columns: Columnes
 Datagrid Configuration: Configuració de la quadrícula de dades
-Action: Acció
 Unit: Unitat
 Currency: Moneda
 jstree:
   all: Tots els productes
   unclassified: Productes sense classificar
-  product:
-    all: Tots els productes
-    unclassified: Productes sense classificar
   no_tree: No hi ha cap arbre disponible
   include_sub: Incloure subcategories
 datetimepicker:
@@ -64,7 +57,7 @@ datetimepicker:
     February: Febrer
     March: Març
     April: Abril
-    May: Maig
+    May: Mai
     June: Juny
     July: Juliol
     August: Agost
@@ -77,7 +70,6 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Abr
-    May: Maig
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -85,25 +77,6 @@ datetimepicker:
     Oct: Oct
     Nov: Nov
     Dec: Des
-oro_config:
-  form:
-    config:
-      title: Configuració de sistema
-      tab:
-        system:
-          title: Sistema
-      group:
-        localization:
-          title: Configuració regional
-          system_locale: Idioma
-        notification:
-          title: Notificacions
-          system_notification: Notificacions de noves versions
-        loading_message:
-          title: S'estan carregant els missatges
-          label: Permetre els missatges que s'estan carregant
-        loading_messages:
-          label: Missatges de càrrega disponibles
 pim_ui:
   flash:
     unsaved_changes: 'Té canvis no desats. Segur que voleu sortir?'
@@ -112,73 +85,12 @@ pim_ui:
 "navigation.message.content.outdated": "El contingut de la pàgina {{ title }} és obsoleta, si us plau <a href='#' data-action='page-refresh'> recarregueu la pàgina</a>"
 "Content of pinned page is outdated": "El contingut de la pàgina marcada és antiquat"
 pim_common:
-  actions: Accions
-  add: Afegir
-  add_attributes: Afegir atributs
   after: Després
-  all: Tots
-  and: i
-  apply: Aplicar
   before: Abans
   by: per
-  cancel: Cancelar
-  code: Codi
-  confirm: Confirmar
-  confirm_deletion: Confirmar l'eliminació
   confirm_revocation: Confirmar la revocació
-  create: Crear
-  created: Creat
-  delete: Suprimir
-  done: Fet
-  edit: Editar
-  entity_updated: Hi ha canvis sense guardar.
-  from: Des de
-  general_properties: Propietats generals
-  history: Històric
-  label: Etiqueta
-  label_translations: Traduccions d'etiquetes
-  less_than: Menys de
-  loading: Carregant...
-  media_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
-  more_than: Més de
-  next: Següent
-  "no": "No"
-  none: Cap
-  not_available: N/D
-  now: Ara
-  ok: OK
-  permissions: Permisos
-  previous: Anterior
-  properties: Propietats
-  remove: Eliminar
-  required_label: (obligatori)
-  save: Desar
-  search: Cercar
-  select2:
-    search: Cercar...
-    no_match: No s’han trobat coincidències
-    load_more: Carregant més resultats...
-  status: Estat
-  to: fins a
-  type: Tipus
-  update: Actualitzar
-  "yes": "Sí"
   operator: Operador
-  operators:
-    "=": És igual a
-    "!=": No és igual a
-    ">=": Major o igual
-    ">": Més gran que
-    "<=": Inferiors o iguals
-    "<": Inferior a
-    EMPTY: Està buit
-    NOT EMPTY: No és buit
-    CONTAINS: Conté
-    DOES NOT CONTAIN: No conté
-    STARTS WITH: S'inicia amb
-    ENDS WITH: Acaba amb
 error:
-  exception: Oh no! S'ha produït un error de {{ status_code }}...
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
 alert:
   attribute_option:
@@ -187,30 +99,17 @@ alert:
   session_storage:
     not_available: El navegador web no sembla compatible amb sessionStorage. Contacteu amb l'administrador
 pim_enrich.entity.fallback:
-  flash:
-    generic_error: S'ha produït un error
-    update:
-      fail: Actualització fallida
-      success: Actualització completada
-    delete:
-      fail: No podeu eliminar aquest element
-      success: Element suprimit correctament
   module:
     delete:
-      title: Suprimir aquest {{ itemName }}
       alternative_title: Confirmeu l'eliminació
-      item: Esteu segur que voleu eliminar aquest element?
       item_placeholder: Esteu segur que voleu suprimir aquest {{ itemName }}? Aquesta acció no es pot desfer.
     edit:
-      leave: Esteu segur que voleu sortir d'aquesta pàgina?
-      discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
       discard_changes_title: Estàs segur?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: Connexió API creada correctament
     delete:
-      success: Connexió d'API revocada amb èxit
       fail: No pot revocar aquesta connexió API
   page_title:
     index: "]-Inf, 1]{{ count }} connexió API|]1, Inf[{{ count }} connexions API"
@@ -230,89 +129,28 @@ pim_enrich.entity.job_execution:
       invalid_xlsx: Descarregar dades no vàlides
       invalid_csv: Descarregar dades no vàlides
 pim_title:
-  oro_default: Panell de contol
-  pim_enrich_attributegroup_index: Grups d'atribut
-  pim_enrich_attributegroup_create: Grups d'atributs | Crear
-  pim_enrich_attributegroup_edit: Grup d'atributs {{ group.label }} | Editar
-  pim_enrich_catalog_volume_index: Seguiment del volum del catàleg
-  pim_enrich_categorytree_index: Arbres de categories
-  pim_enrich_categorytree_create: Arbres de categories | Crear
   pim_enrich_categorytree_edit: Arbre de categoria {{ category.label }} | Editar
-  pim_enrich_categorytree_create_tree: Arbres de categories | Crear
-  pim_enrich_attribute_index: Atributs
-  pim_enrich_attribute_create: Atributs | Crear
   pim_enrich_attribute_edit: Atribut {{ attribute.label }} | Editar
-  pim_enrich_product_index: Productes
   pim_enrich_product_edit: Producte {{ product.label }} | Editar
   pim_enrich_product_model_edit: Model de producte {{ product.label }} | Editar
-  pim_enrich_family_index: Famílies
   pim_enrich_family_edit: Família {{ family.label }} | Editar
-  pim_enrich_channel_index: Canals
-  pim_enrich_channel_create: Canals | Crear
   pim_enrich_channel_edit: Canal {{ channel.label }} | Editar
-  pim_enrich_currency_index: Monedes
-  pim_enrich_locale_index: Configuracions regionals
-  pim_enrich_group_index: Grups
   pim_enrich_group_edit: Grup {{ group.label }} | Editar
-  pim_enrich_associationtype_index: Tipus d'associació
-  pim_enrich_associationtype_edit: Tipus d'Associació {{ association type.label }} | Editar
-  pim_enrich_grouptype_index: Tipus de grup
-  pim_enrich_grouptype_edit: Tipus de grup {{ group type.label }} | Editar
-  pim_enrich_mass_edit_action_choose: Editar en massa | Triar
-  pim_enrich_mass_edit_action_configure: Editar en massa | Configurar
-  pim_enrich_mass_edit_action_perform: Editar en massa | Realitzar
-  pim_enrich_job_tracker_index: Seguiment del procés
-  pim_enrich_job_tracker_show: Seguiment del procés | Mostrar tasca
   pim_enrich_api_connection_index: Connexions d'API
   pim_enrich_api_connection_create: Connexions d'API | Crear
-  pim_enrich_mass_edit_action: Edició massiva
-  pim_analytics_system_info_index: Informació del sistema
 pim_menu:
   tab:
     activity: Activitat
     imports: Importacions
     exports: Exportacions
-    settings: Preferències
-    system: Sistema
     help:
       title: Ajuda
       helper: Centre d'ajuda d'Akeneo
   item:
-    association_type: Tipus d'associació
-    attribute_group: Grups d'atribut
-    channel: Canals
-    currency: Monedes
-    dashboard: Panell de contol
-    family: Famílies
-    group: Grups
-    group_type: Tipus de grup
     product_model: Models de producte
-    export_history: Històric d'exportacions
-    export_profile: Perfils d'exportació
-    import_history: Històric d'importacions
-    import_profile: Perfils d'importació
-    configuration: Configuració
-    user_management: Gestió d'usuaris
-    user: Usuaris
-    user_group: Grup d'usuaris
-    user_role: Rols
-    info: Informació del sistema
-    job_tracker: Seguiment del procés
     api_connection: Connexions d'API
-    catalog_volume: Seguiment del volum del catàleg
   navigation:
     activity: Activitat de navegació
     system: Sistema de navegació
     user: Navegació de gestió d'usuaris
     settings: Navegació de configuració
-    product: Navegació de producte
-    product_infos: Informació del Producte
-  user:
-    logout: Tanca sessió
-    user_account: El meu compte
-pim_notification:
-  types:
-    import: Importar
-    export: Exportar
-    quick_export: Exportació ràpida
-    mass_edit: Edició massiva

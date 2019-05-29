@@ -1,15 +1,9 @@
 pim_title:
-  pim_user_index: Usuaris
-  pim_user_role_index: Rols
-  pim_user_group_index: Grup d'usuaris
-  oro_config_configuration_system: Configuració
   pim_user_edit: 'Usuari {{ username }} | Editar'
   pim_user_create: 'Usuaris | Crear'
   pim_user_role_update: 'Rol {{ role }} | Editar'
   pim_user_role_create: 'Rol | Crear'
-  pim_user_security_login: Iniciar Sessió
   pim_user_reset_reset: Reiniciar contrasenya
-  pim_user_reset_request: He oblidat la contrasenya
   pim_user_reset_check_email: Reiniciar contrasenya | Revisar el correu electrònic
   pim_user_group_create: 'Grups | Crear'
   pim_user_group_update: 'Grup {{ group }} | Editar'
@@ -24,9 +18,6 @@ pim_enrich:
         delete:
           fail: No es pot suprimir l'usuari
           success: L'usuari s'ha suprimit
-      module:
-        delete:
-          confirm: Esteu segur que voleu eliminar aquest usuari?
 pim_user_management:
   entity:
     user:
@@ -41,55 +32,13 @@ pim_user_management:
       page_title:
         index: "]-Inf, 1] {{ count }} usuari|]1, Inf [{{ count }} usuaris"
       properties:
-        username: Nom d’usuari
-        name_prefix: Prefix del nom
-        first_name: Nom
-        middle_name: Primer cognom
-        last_name: Segon cognom
-        name_suffix: Sufix del nom
-        phone: Telèfon
-        avatar: Avatar
-        email: Adreça electrònica
-        catalog_locale: Catàleg de configuracions regionals
-        catalog_scope: Catàleg d'abastos
-        default_tree: Arbre per defecte
-        default_asset_tree: Arbre de recursos per defecte
-        product_grid_filters: Filtres de quadrícula de producte
-        current_password: Contrasenya actual
-        new_password: Contrasenya nova
-        new_password_repeat: Nova contrasenya (repetir)
-        password: Contrasenya
         password_repeat: Contrasenya (repetir)
-        ui_locale: Configuració regional de la interfície d'usuari
-        timezone: Zona horària
-        default_product_grid_view: Vista de quadrícula de producte per defecte
-        default_published_product_grid_view: Vista de graella de productes publicats per defecte
-        proposals_to_review_notification: Quan hi hagi una nova proposta per revisar
-        proposals_state_notifications: Quan la proposta sigui acceptada o rebutjada
       module:
-        create:
-          button: Crear usuari
-        delete:
-          confirm: Esteu segur que voleu eliminar aquest usuari?
         update:
-          additional: Addicional
           groups_and_roles: Grups i rols
-          password: Contrasenya
-          interfaces: Interfícies
-          notifications: Notificacions
     role:
-      plural_label: Rols
       page_title:
         index: "]-Inf, 1] {{ count }} rol|]1, Inf [{{ count }} rols"
-      module:
-        create:
-          button: Crear rol
-        delete:
-          confirm: Estàs segur que vols suprimir aquest rol?
     group:
-      plural_label: Grup d'usuaris
       page_title:
         index: "]-Inf, 1] {{ count }} grup|]1, Inf [{{ count }} grups"
-      module:
-        create:
-          button: Crear grup

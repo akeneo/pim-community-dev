@@ -1,70 +1,23 @@
 batch_jobs:
   default_steps:
-    validation: Validar arxius
-    import_associations: Importar associacions
     import_root_product_model: Importar el model de producte base
     import_sub_product_model: Importar el model de subproducte
     compute_data_related_to_family_root_product_models: Calcular les dades dels models de producte de base
     compute_data_related_to_family_sub_product_models: Calcular les dades del model de subproducte
-    compute_data_related_to_family_products: Calcular les dades de productes
-    compute_product_models_descendants: Calcular descendents dels models de producte
-    compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
-    compute_completeness_of_products_family: Calcular la completesa de la família de productes
-  csv_product_export:
-    label: Exportar productes a CSV
-    export.label: Exportar productes
   csv_product_model_export:
     label: Exportar model de producte a CSV
     export.label: Exportar model de producte
-  csv_category_export:
-    label: Exportar categories en CSV
-    export.label: Exportar categories
-  csv_attribute_export:
-    label: Exportar atributs a CSV
-    export.label: Exportar atributs
-  csv_attribute_option_export:
-    label: Exportar opcions d'atribut en CSV
-    export.label: Exportar opcions d'atribut
-  csv_association_type_export:
-    label: Exportar tipus d'associació en CSV
-    export.label: Exportar tipus d'associacions
-  csv_group_export:
-    label: Exportar grups en CSV
-    export.label: Exportar grups
-  csv_family_export:
-    label: Exportar famílies en CSV
-    export.label: Exportar família
   csv_family_variant_export:
     label: Exportar variant de família a CSV
     export.label: Exportar variant de família
-  csv_product_import:
-    label: Importar producte en CSV
-    import.label: Importar productes
   csv_product_model_import:
     label: Importar model de producte a CSV
     import_product_model_descendants.label: Calcular descendents del model de producte
-  csv_category_import:
-    label: Importar categories en CSV
-    import.label: Importar categories
-  csv_attribute_import:
-    label: Importar atributs en CSV
-    import.label: Importar atributs
-  csv_attribute_option_import:
-    label: Importar opcions d'atribut en CSV
-    import.label: Importar opcions d'atribut
-  csv_association_type_import:
-    label: Importar tipus d'associació en CSV
-    import.label: Importar tipus d'associació
   csv_family_import:
-    label: Importar famílies en CSV
-    import.label: Importar família
     compute_data_related_to_family_variants.label: Calcular les dades del model de producte
   csv_family_variant_import:
     label: Importar variant de família a CSV
     import.label: Importar variant de família
-  csv_group_import:
-    label: Importar grups en CSV
-    import.label: Importar grups
   csv_attribute_group_export:
     label: Exportació de grup d'atributs en CSV
     export.label: Exportació de grup d'atributs
@@ -77,69 +30,23 @@ batch_jobs:
   csv_group_type_import:
     label: Importació de tipus de grup en CSV
     import.label: Importació de tipus de grup
-  xlsx_category_import:
-    label: Importació de categoria en XLSX
-    import.label: Importar categories
-  xlsx_association_type_import:
-    label: Importar tipus d'associació en XLSX
-    import.label: Importar tipus d'associació
-  xlsx_attribute_import:
-    label: Atribut importació en XLSX
-    import.label: Importar atributs
-  xlsx_attribute_option_import:
-    label: Importació d'opcions d'atribut en XLSX
-    import.label: Importar opcions d'atribut
-  xlsx_family_import:
-    label: Importació de família en XLSX
-    import.label: Importar família
   xlsx_family_variant_import:
     label: Importar variant de família a XLSX
     import.label: Importar variant de família
-  xlsx_product_export:
-    label: Exportació de producte en XLSX
-    export.label: Exportar productes
   xlsx_product_model_export:
     label: Exportar model de producte a XLSX
     export.label: Exportar model de producte
-  xlsx_product_import:
-    label: Importació de producte en XLSX
-    import.label: Importar productes
   xlsx_product_model_import:
     label: Importar model de producte a XLSX
     import_product_model_descendants.label: Calcular descendents del model de producte
-  xlsx_group_export:
-    label: Exportació de grup en XLSX
-    export.label: Exportar grups
-  xlsx_group_import:
-    label: Importació de grup en XLSX
-    import.label: Importar grups
-  xlsx_family_export:
-    label: Exportació de família en XLSX
-    export.label: Exportar família
   xlsx_family_variant_export:
     label: Exportar variant de família en XLSX
     export.label: Exportar variant de família
-  xlsx_category_export:
-    label: Exportació de categoria en XLSX
-    export.label: Exportar categories
-  xlsx_attribute_export:
-    label: Importació d'atribut de XLSX
-    export.label: Importació d'atribut de XLSX
-  xlsx_attribute_option_export:
-    label: Exportació d'opcions d'atribut en XLSX
-    export.label: Exportació d'opcions d'atribut en XLSX
-  xlsx_association_type_export:
-    label: Exportació de tipus d'associació en CSV
-    export.label: Exportació de tipus d'associació en CSV
   xlsx_attribute_group_export:
     label: Exportació de grup d'atributs en XLSX
-    export.label: Exportació de grup d'atributs
   xlsx_group_type_export:
     label: Exportació de tipus de grup en XLSX
-    export.label: Exportació de tipus de grup
   xlsx_attribute_group_import:
     label: Impoftació de grup d'atributs en XLSX
-    import.label: Importació de grup d'atributs
   xlsx_group_type_import:
     label: Importació de tipus de grup en XLSX
-    import.label: Importació de tipus de grup

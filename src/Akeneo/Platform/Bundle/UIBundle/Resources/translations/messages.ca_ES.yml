@@ -6,7 +6,6 @@ Attribute Group list: Llista de grups d'atribut
 Users: Usuaris
 Roles: Rols
 Groups: Grups
-Configuration: Configuració
 Currency list: Llista de monedes
 Locale list: Llista de configuracions regionals
 Logged in as: Heu entrat com a
@@ -45,42 +44,12 @@ pim_ui.system_config:
     loading_messages.tooltip: Tots els missatges de càrrega disponibles estaran separats per salts de línia
   group:
     loading_message.title: S'estan carregant els missatges
-other_actions: Altres accions
-pim_common:
-  cancel: Cancelar
-  save: Desar
-  delete: Suprimir
-  update: Actualitzar
-  view: Vista
-  edit: Editar
-  created: Creat
-  updated: Actualitzat
-  create: Crear
-  permissions: Permisos
-  properties: Propietats
-  name: Nom
-  remove: Eliminar
 pim_enrich:
   acl:
-    locale:
-      index: Llistar configuracions regionals
-    currency:
-      index: Llistar monedes
-      toggle: Tancar monedes
     product:
-      index: Llistar productes
-      create: Crear un producte
       edit_attributes: Edita els atributs d'un producte
-      remove: Treure un producte
-      add_attribute: Afegir un atribut a un producte
-      remove_attribute: Treure un atribut d'un producte
-      categories_view: Consultar les categories d'un producte
       associations_view: Mostra l'associació d'un producte
       associations_edit: Afegir associacions a un producte
-      change_family: Canviar la família del producte
-      change_state: Canviar l'estat del producte
-      add_to_groups: Afegir el producte a grups
-      mass_edit: Accions d'edició en massa del producte
       comment: Comentar productes
       download: Descarregar el producte en format PDF
       history: Veure l'històric del producte
@@ -91,62 +60,26 @@ pim_enrich:
       history: Veure l'històric del model de producte
       remove: Eliminar un model de producte
     category:
-      list: Llistar categories
-      create: Crear una categoria
-      edit: Editar una categoria
-      remove: Eliminar una categoria
-      move: Moure categoria
-      children: Veure subcategories
       products: Veure productes de la categoria
       history: Veure l'històric de la categoria
     channel:
-      index: Llistar canals
-      create: Crear un canal
-      edit: Editar un canal
-      remove: Eliminar un canal
       history: Veure l'històric del canal
     family:
       index: Llistar famílies
-      create: Crear una família
       edit_properties: Editar les propietats d'una família
       edit_attributes: Editar els atributs d'una família
       edit_variants: Editar una variant familiar
-      remove: Eliminar una família
       history: Veure l'històric de la família
     family_variant:
       remove: Eliminar una variant familiar
     attribute_group:
       index: Llistar grups d'atribut
-      create: Crear un grup d'atributs
-      edit: Editar un grup d'atributs
-      remove: Suprimir un grup d'atributs
-      sort: Ordenar grups d'atribut
-      add_attribute: Afegir l'atribut a un grup
-      remove_attribute: Suprimir l'atribut d'un grup
       history: Veure l'històric d'un grup d'atributs
     attribute:
-      index: Llistar atributs
-      create: Crear un atribut
-      edit: Editar un atribut
-      remove: Eliminar un atribut
-      sort: Ordena els atributs dins els grups d'atributs
       history: Veure l'històric dels atributs
     group:
-      index: Llistar grups
-      create: Crear un grup
-      edit: Editar un grup
-      remove: Eliminar un grup
       history: Veure l'històric del grup
-    group_type:
-      index: Llistar tipus de grup
-      create: Crear un tipus de grup
-      edit: Editar un tipus de grup
-      remove: Eliminar un tipus de grup
     association_type:
-      index: Llistar tipus d'associació
-      create: Crear un tipus d'associació
-      edit: Editar un tipus d'associació
-      remove: Eliminar un tipus d'associació
       history: Veure l'històric del tipus d'associació
     association:
       remove: Eliminar associacions d'un producte
@@ -155,17 +88,6 @@ pim_enrich:
     api_connection:
       manage: Gestionar les connexions de l'API
   acl_group:
-    association_type: Tipus d'associació
-    attribute: Atributs
-    attribute_group: Grups d'atribut
-    category: Categories
-    channel: Canals
-    currency: Monedes
-    family: Famílies
-    group: Grups
-    group_type: Tipus de grup
-    locale: Configuracions regionals
-    product: Productes
     product_model: Models de producte
   notification:
     settings:
@@ -173,21 +95,8 @@ pim_enrich:
         start: El local s'ha eliminat del canal. Actualment s'està netejant la completesa d'ells.
         done: S'ha acabat de suprimir el local en un canal.
   create:
-    attribute: crear atribut
-    attribute group: crear grup d'atributs
-    category: crear categoria
     tree: crear arbre
-    channel: crear canal
-    currency: crear moneda
-    family: crear família
-    locale: crear configuració regional
-    product: crear producte
-    group: crear grup
-    association type: crear tipus d'associació
-    group type: crear tipus de grup
-    drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
 confirmation:
-  delete: Confirmar l'eliminació
   leave: Esteu segur que voleu sortir d'aquesta pàgina?
   discard changes: Si sortiu de la pàgina perdreu els canvis a %entity%.
   remove:
@@ -196,8 +105,6 @@ confirmation:
 flash:
   entity:
     removed: L'element ha estat suprimit
-  attribute:
-    identifier_not_removable: L'atribut identificador no es pot suprimir
   category:
     removed: Categoria suprimida correctament
   tree:
@@ -239,8 +146,6 @@ info:
     no group types: No existeix cap tipus de grup, feu clic aquí per crear-ne un
     more products: '%count% productes més...'
   association type:
-    show products: Mostrar productes
-    show groups: Mostrar grups
     remove from products: Si suprimiu aquest tipus d'associació, se suprimirà de %count% productes.
     none exist: No existeix cap tipus d'associació.
     create one: Feu clic aquí per crear-ne un
@@ -248,7 +153,6 @@ info:
     auto option sorting: Si s'activa, les opcions s'ordenaran automàticament per les seves etiquetes configurades regionalment
   completeness:
     not calculated: No s'ha calculat encara
-Created: Creat
 Updated: Actualitzat
 Last update: Darrera actualització
 by: Per
@@ -258,18 +162,15 @@ Manage groups: Gestionar grups
 Code: Codi
 Name: Nom
 Type: Tipus
-Scope: Canal
 Required: Obligatori
 Unique: Únic
 Not required: No és obligatori
-Translatable: Traduïble
 Scopable: Abastable
 Localizable: Configurable regionalment
 Unique value: Valor únic
 Attribute group: Grup d'atributs
 Other: Altres
 Variants behavior when edited: Comportament de les variants quan s'editen
-Edit: Editar
 Remove: Eliminar
 Parameters: Paràmetres
 System: Sistema
@@ -278,30 +179,23 @@ General parameters: Paràmetres generals
 Backend parameters: Paràmetres del servidor principal
 Label: Etiqueta
 Default label: Etiqueta per defecte
-Default value: Valor per defecte
 Attributetype: Tipus d'atribut
-Attribute type: Tipus d'atribut
 Defaultvalue: Valor per defecte
 Variant: Variant
 Smart: Intel·ligent
 Useable as grid column: Utilitzable com a columna de quadrícula
 Useable as grid filter: Utilitzable en quadrícula
 Family: Família
-Image: Imatge
 Variant products: Variant de productes
 Available locales: Configuracions regionals disponibles
 Locale specific: Configuració regional específica
 default: Per defecte
 Axis: Eix
 Add attributes: Afegir atributs
-Translate from: Traduir de
-switch_on: "Sí"
-switch_off: "No"
 Close: Tancar
 Search: Cercar
 Choose the attribute type: Trieu el tipus d'atribut
 Choose the attribute group: Trieu el grup de l'atribut
-Drag and drop a file or click here: Arrossegui aquí un arxiu o feu-hi clic
 Drop an image or click here: Arrossegui aquí una imatge o feu-hi clic
 Automatic option sorting: Ordenació automàtica de les opcions
 save_attribute_before_manage_option: Per administrar opcions, guardeu primer l'atribut si us plau
@@ -317,18 +211,13 @@ Category tree: Arbre de categories
 Completeness: Integritat
 Attribute used as label: Atribut utilitzat com a etiqueta
 Credentials: Credencials
-Global: Global
-Channel: Canal
 Expand all channels: Ampliar tots els canals
 Collapse all channels: Col·lapsa tots els canals
-Always override: Anul·lar sempre
 Ask: Preguntar
-General Properties: Propietats generals
 Group values: Valors de grup
 New group: Nou grup
 Groups overview: Resum de grups
 'Y-m-d h:i:s': 'A-m-d H:m:s'
-Max characters: Màxim de caràcters
 Validation rule: Regla de validació
 Validation regexp: Validació regexp
 Wysiwyg enabled: WYSIWYG habilitat
@@ -343,65 +232,41 @@ Default metric unit: Unitat mètrica per defecte
 Max file size: Mida màxima de l'arxiu (MB)
 Allowed extensions: Extensions permeses
 None: Cap
-E-mail: Correu electrònic
 URL: URL
 Regular expression: Expressió regular
 Minimum input length: Longitud mínima d'entrada
-Default: Per defecte
-Attributes: Atributs
-Title: Títol
-pim_catalog_identifier: Identificador
 pim_catalog_text: Texte
 pim_catalog_textarea: Àrea de Text
 pim_catalog_number: Nombre
 pim_catalog_price_collection: Preu
 pim_catalog_multiselect: Selecció múltiple
 pim_catalog_simpleselect: Selecció simple
-pim_catalog_file: Arxiu
 pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
 pim_catalog_metric: Mètrica
 pim_reference_data_simpleselect: Selecció simple de dades de referència
 pim_reference_data_multiselect: Selecció múltiple de dades de referència
-Activated: Activat
-Disable: Deshabilitar
+Edit: Editar
 To enable: Per activar
 Select attributes: Seleccionar atributs
 Select: Seleccionar
 Remove this attribute: Eliminar aquest atribut
 Copy: Copiar
+Translate from: Traduir de
 Current tab: Pestanya actual
-Group: Grup
 View group: Veure grup
-Products: Productes
-Properties: Propietats
 History: Històric
 pane.accordion:
   node_values: Valors de node
   general_properties: Propietats generals
   locale_values: Valors de configuració regional
-  backend_parameters: Paràmetres del servidor principal
-  general_parameters: Paràmetres generals
   validation_parameters: Paràmetres de validació
-  label_translations: Traduccions d'etiquetes
-  options: Opcions
-  group_values: Valors de grup
 popin.create:
-  association_type.title: Crear un nou tipus d'associació
-  group.title: Crea un grup nou
-  product.title: Crear un nou producte
-  option.title: Crear una nova opció
-In group: En grup
+  group.title: Crear un nou grup
 Attribute as label: Atribut com a etiqueta
 Is associated: Està associat
 Complete: Complet
-Created At: Creat el
-Updated At: Actualitzat el
-Enabled: Habilitat
-Disabled: Deshabilitat
-Status: Estat
-Change History: Historial de canvis
 Data Audit: Auditoria de dades
 Data Audit - System: 'Auditoria de dades - sistema'
 Action: Acció
@@ -415,7 +280,6 @@ Logged at: Connectat a
 Deleted: Eliminat
 Old values: Valors antics
 New values: Valors nous
-System configuration: Configuració de sistema
 General setup: Organització general
 Localization: Configuració regional
 Localization options: Opcions de configuració regional
@@ -445,7 +309,6 @@ oro.locale:
       language: "Seleccioneu l'idioma de sistema que desitjeu utilitzar"
       timezone: "Seleccioneu la zona horària per mostrar data i hora"
       currency: "Seleccioneu la moneda per defecte"
-Selected products successfully deleted: Els productes seleccionats s'han eliminat correctament
 pim_mass_edit:
   notification:
     mass_edit:
@@ -469,19 +332,11 @@ job_execution.summary:
   deleted_products: Productes suprimits
   deleted_product_models: Models de productes suprimits
 pim_mass_edit_execution_show: Execucions edicions en massa | Detalls
-edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs
 update_product_value.steps.update_product_value_processor.title: Actualitzar el valor del producte
 remove_product_value.steps.update_product_value_processor.title: Treure el valor del producte
-edit_common_attributes: Editar atributs
 edit_common_attributes_clean: Netejar arxius per atributs
-perform.steps.duplicated.title: Eix duplicat
-perform.steps.excluded.title: Producte exclòs
 mass_edit report:
   overview: Edició en massa d'informes
 job_tracker:
-  tab:
-    title: Seguiment del procés
   filter:
     started_at: Va començar a
-
-

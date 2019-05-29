@@ -88,7 +88,7 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuration du système
+      title: Configuration système
       tab:
         system:
           title: Système
@@ -123,7 +123,7 @@ pim_common:
   by: par
   cancel: Annuler
   code: Code
-  confirm: Confirmer
+  confirm: Confirmation
   confirm_deletion: Supprimer l'élément
   confirm_revocation: Confirmer la révocation
   create: Créer
@@ -137,29 +137,29 @@ pim_common:
   history: Historique
   label: Libellé
   label_translations: Traduction des libellés
+  Label or identifier: libellé ou identifiant
   less_than: Moins de
   loading: Chargement en cours...
   media_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
   more_than: Plus de
   next: Suivant
   "no": "Non"
-  none: Aucun
+  none: Aucune
   not_available: N/A
   now: Maintenant
   ok: OK
-  permissions: Permissions
+  permissions: Autorisations
   previous: Précédent
   properties: Propriétés
   remove: Supprimer
   required_label: (obligatoire)
-  save: Enregistrer
-  search: Recherche
+  search: Rechercher
   select2:
     search: Rechercher...
     no_match: Aucune correspondance trouvée
     load_more: Chargement de plus de résultats...
   status: État
-  to: À
+  to: jusqu'au
   type: Type
   update: Mettre à jour
   "yes": "Oui"
@@ -177,7 +177,6 @@ pim_common:
     DOES NOT CONTAIN: Ne contient pas
     STARTS WITH: Commence par
     ENDS WITH: Finit par
-  Label or identifier: libellé ou identifiant
 error:
   exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
@@ -233,15 +232,15 @@ pim_enrich.entity.job_execution:
 pim_title:
   oro_default: Tableau de bord
   pim_enrich_attributegroup_index: Groupes d'attributs
-  pim_enrich_attributegroup_create: Groupe d'attributs | Création
+  pim_enrich_attributegroup_create: Groupe d'attributs | Créer
   pim_enrich_attributegroup_edit: Groupe d'attributs {{ group.label }} | Édition
   pim_enrich_catalog_volume_index: Volumétrie du catalogue
   pim_enrich_categorytree_index: Arborescences des catégories
-  pim_enrich_categorytree_create: Arborescences | Création
+  pim_enrich_categorytree_create: Arborescences | Créer
   pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Édition
-  pim_enrich_categorytree_create_tree: Arborescences | Création
+  pim_enrich_categorytree_create_tree: Arborescences | Créer
   pim_enrich_attribute_index: Attributs
-  pim_enrich_attribute_create: Attributs | Création
+  pim_enrich_attribute_create: Attributs | Créer
   pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Édition
   pim_enrich_product_index: Produits
   pim_enrich_product_edit: Produit {{ product.label }} | Édition
@@ -249,7 +248,7 @@ pim_title:
   pim_enrich_family_index: Familles
   pim_enrich_family_edit: Famille {{ family.label }} | Édition
   pim_enrich_channel_index: Canaux
-  pim_enrich_channel_create: Canaux | Création
+  pim_enrich_channel_create: Canaux | Créer
   pim_enrich_channel_edit: Canal {{ channel.label }} | Édition
   pim_enrich_currency_index: Devises
   pim_enrich_locale_index: Locales
@@ -257,10 +256,10 @@ pim_title:
   pim_enrich_group_edit: Groupe {{ group.label }} | Édition
   pim_enrich_associationtype_index: Types d'association
   pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Édition
-  pim_enrich_grouptype_index: Types de groupe
+  pim_enrich_grouptype_index: Types de groupes
   pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Édition
-  pim_enrich_mass_edit_action_choose: Édition en masse | Choisir
-  pim_enrich_mass_edit_action_configure: Édition en masse | Configurer
+  pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
+  pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
@@ -286,10 +285,10 @@ pim_menu:
     dashboard: Tableau de bord
     family: Familles
     group: Groupes
-    group_type: Types de groupe
+    group_type: Types de groupes
     product_model: Modèles de produits
     export_history: Historique des exports
-    export_profile: Profils d'export
+    export_profile: Profils d'exports
     import_history: Historique des imports
     import_profile: Profils d'import
     configuration: Configuration
