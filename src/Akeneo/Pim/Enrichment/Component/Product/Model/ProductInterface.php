@@ -190,15 +190,6 @@ interface ProductInterface extends
     public function getFamilyId();
 
     /**
-     * Set family id
-     *
-     * @param int $familyId
-     *
-     * @return ProductInterface
-     */
-    public function setFamilyId($familyId);
-
-    /**
      * @return ArrayCollection
      */
     public function getUniqueData();

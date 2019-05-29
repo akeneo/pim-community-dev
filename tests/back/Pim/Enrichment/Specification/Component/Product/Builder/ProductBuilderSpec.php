@@ -2,19 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Builder;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductEvents;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -58,6 +56,7 @@ class ProductBuilderSpec extends ObjectBehavior
         FamilyInterface $tshirtFamily,
         AttributeInterface $identifierAttribute
     ) {
+        $identifierAttribute->getCode()->willReturn('sku');
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
         $entityWithValuesBuilder->addOrReplaceValue(
             Argument::type(ProductInterface::class),
@@ -65,10 +64,17 @@ class ProductBuilderSpec extends ObjectBehavior
             null,
             null,
             'mysku'
-        );
+        )->will(function($args) {
+            list($product, $attribute, $localeCode, $scopeCode, $data) = $args;
 
+            $value = ScalarValue::value($attribute->getCode(), $data);
+            $product->setIdentifier($value);
+
+            return $value;
+        });
+
+        $tshirtFamily->getCode()->willReturn('tshirt');
         $familyRepository->findOneByIdentifier('tshirt')->willReturn($tshirtFamily);
-        $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
 
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
