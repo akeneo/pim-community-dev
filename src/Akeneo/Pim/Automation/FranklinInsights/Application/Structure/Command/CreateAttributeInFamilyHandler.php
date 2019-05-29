@@ -23,10 +23,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAtt
  */
 class CreateAttributeInFamilyHandler
 {
-    const EXCLUDED_FRANKLIN_ATTRIBUTE_TYPES = [
-        FranklinAttributeType::METRIC_TYPE,
-    ];
-
     /** @var CreateAttributeInterface */
     private $createAttribute;
 
@@ -60,11 +56,10 @@ class CreateAttributeInFamilyHandler
 
     private function validate(CreateAttributeInFamilyCommand $command): void
     {
-        $franklinAttributeType = (string) $command->getFranklinAttributeType();
-        if (in_array($franklinAttributeType, self::EXCLUDED_FRANKLIN_ATTRIBUTE_TYPES)) {
+        if (FranklinAttributeType::METRIC_TYPE === (string) $command->getFranklinAttributeType()) {
             throw new \InvalidArgumentException(sprintf(
                 'Can not create attribute. Attribute of type "%s" is not allowed',
-                $franklinAttributeType
+                FranklinAttributeType::METRIC_TYPE
             ));
         }
     }
