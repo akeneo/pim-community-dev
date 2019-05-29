@@ -38,15 +38,15 @@ final class ValuesNormalizer
     {
         $attributeCodes = $values->getAttributeCodes();
         $attributes = $this->getAttributes->forCodes($attributeCodes);
-        $attributeTypesIndexedByCode = [];
+        $attributesIndexedByCode = [];
 
         foreach ($attributes as $attribute) {
-            $attributeTypesIndexedByCode[$attribute->code()] = $attribute->type();
+            $attributesIndexedByCode[$attribute->code()] = $attribute;
         }
 
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValue = $this->valueNormalizer->normalize($value, 'standard', ['attributes' => $attributeTypesIndexedByCode]);
+            $normalizedValue = $this->valueNormalizer->normalize($value, 'standard', ['attributes' => $attributesIndexedByCode]);
             if ($value instanceof MediaValue) {
                 $normalizedValue = $this->addHalLink($value, $normalizedValue);
             }

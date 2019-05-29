@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Stand
 
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -56,6 +57,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->getProperties()->willReturn([]);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getMetricFamily()->willReturn(null);
 
         $this->normalize($value)->shouldReturn(
             [
@@ -84,6 +89,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->getProperties()->willReturn([]);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getMetricFamily()->willReturn(null);
 
         $this->normalize($value)->shouldReturn(
             [
@@ -112,6 +121,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->getProperties()->willReturn([]);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getMetricFamily()->willReturn(null);
 
         $this->normalize($value)->shouldReturn(
             [
@@ -139,7 +152,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->isDecimalsAllowed()->willReturn(true);
         $attribute->getType()->willReturn(AttributeTypes::NUMBER);
-        $attribute->isDecimalsAllowed()->willReturn(true);
+        $attribute->getProperties()->willReturn([]);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getMetricFamily()->willReturn(null);
 
         $this->normalize($value)->shouldReturn(
             [
@@ -167,7 +183,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->isDecimalsAllowed()->willReturn(false);
         $attribute->getType()->willReturn(AttributeTypes::NUMBER);
-        $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->getProperties()->willReturn([]);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getMetricFamily()->willReturn(null);
 
         $this->normalize($value)->shouldReturn(
             [
@@ -196,6 +215,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->getProperties()->willReturn([]);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getMetricFamily()->willReturn(null);
 
         $this->normalize($value)->shouldReturn(
             [
@@ -224,6 +247,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
         $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->getProperties()->willReturn([]);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getMetricFamily()->willReturn(null);
 
         $this->normalize($value)->shouldReturn(
             [
@@ -246,8 +273,29 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
+        $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->getProperties()->willReturn([]);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getMetricFamily()->willReturn(null);
 
         $this->normalize($value)->shouldReturn(
+            [
+                'locale' => 'en_US',
+                'scope'  => 'ecommerce',
+                'data'   => 'foo',
+            ]
+        );
+    }
+
+    function it_does_not_call_the_attribute_repository_if_the_data_is_in_the_context(ScalarValue $value)
+    {
+        $value->getData()->willReturn('foo');
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $this->normalize($value, null, ['attributes' => ['attribute' => new Attribute('attribute', AttributeTypes::TEXT, [], true, true, null, false)]])->shouldReturn(
             [
                 'locale' => 'en_US',
                 'scope'  => 'ecommerce',

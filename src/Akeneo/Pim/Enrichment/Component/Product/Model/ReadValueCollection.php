@@ -30,16 +30,6 @@ class ReadValueCollection implements ValueCollectionInterface
     }
 
     /**
-     * Get the attributes used in the collection.
-     *
-     * @return string[]
-     */
-    public function getAttributeCodes()
-    {
-        return array_keys($this->values);
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function toArray()
