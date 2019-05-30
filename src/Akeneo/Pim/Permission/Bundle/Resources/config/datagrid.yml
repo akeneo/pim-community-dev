@@ -117,7 +117,9 @@ services:
             - '@form.factory'
             - '@oro_filter.filter_utility'
             - '@security.token_storage'
-            - '@pimee_security.repository.category_access'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
+            - '@akeneo.pim.enrichment.category.get_ownable_category_codes'
+            - '@akeneo.pim.enrichment.category.get_editable_category_codes'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_permission }
 

@@ -14,7 +14,7 @@ services:
         class: '%pimee_security.event_subscriber.datagrid.product_category_access.class%'
         arguments:
             - '@security.token_storage'
-            - '@pimee_security.repository.category_access'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
         tags:
             - { name: kernel.event_subscriber }
 

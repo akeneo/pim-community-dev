@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql\Category;
 
-use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCategoryCodes;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetEditableCategoryCodes;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoaderWithPermission;
@@ -13,7 +13,7 @@ use AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Elasticse
  * @author    Anaël CHARDAN <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class GetViewableCategoryCodesIntegration extends TestCase
+class GetEditableCategoryCodesIntegration extends TestCase
 {
     protected function setUp(): void
     {
@@ -45,39 +45,17 @@ class GetViewableCategoryCodesIntegration extends TestCase
             ]
         ]);
 
-        $fixturesLoader->givenTheViewableCategories([
+        $fixturesLoader->givenTheEditableCategories([
             'tree_1_child_1_level_3',
             'tree_1_child_1_level_2',
             'tree_1_child_3_level_2'
         ]);
     }
 
-    public function test_it_gets_viewable_categories_for_category_codes_and_user_id(): void
-    {
-        $expected = ['tree_1_child_1_level_3', 'tree_1_child_1_level_2'];
-        $actual = $this->getQuery()->forCategoryCodes(
-            $this->getAdminUser()->getId(),
-            ['tree_1_child_1_level_3', 'tree_2_child_1_level_2', 'tree_1_child_1_level_2', 'tree_2_child_1_level_2']
-        );
-
-        $this->assertEqualsCanonicalizing($expected, $actual);
-    }
-
-    public function test_it_gets_viewable_categories_for_group_ids(): void
+    public function test_it_gets_editable_categories_for_group_ids(): void
     {
         $expected = ['master', 'tree_1_child_1_level_3', 'tree_1_child_1_level_2', 'tree_1_child_3_level_2'];
         $actual = $this->getQuery()->forGroupIds($this->getAdminUser()->getGroupsIds());
-
-        $this->assertEqualsCanonicalizing($expected, $actual);
-    }
-
-    public function test_it_does_not_get_viewable_categories_for_category_codes(): void
-    {
-        $expected = [];
-        $actual = $this->getQuery()->forCategoryCodes(
-            $this->getAdminUser()->getId(),
-            ['tree_2_child_1_level_2', 'tree_1_child_3_level_1']
-        );
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
@@ -87,9 +65,9 @@ class GetViewableCategoryCodesIntegration extends TestCase
         return $this->testKernel->getContainer()->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 
-    private function getQuery(): GetViewableCategoryCodes
+    private function getQuery(): GetEditableCategoryCodes
     {
-        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.category.get_viewable_category_codes');
+        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.category.get_editable_category_codes');
     }
 
     /**

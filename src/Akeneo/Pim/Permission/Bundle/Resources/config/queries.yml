@@ -103,3 +103,13 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCategoryCodes'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.category.get_ownable_category_codes:
+        class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetOwnableCategoryCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.category.get_editable_category_codes:
+        class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetEditableCategoryCodes'
+        arguments:
+            - '@database_connection'

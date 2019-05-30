@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -9,9 +10,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProductRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProductRepositoryInterface;
 
@@ -19,9 +18,9 @@ class ProductRepositorySpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        CategoryAccessRepository $categoryAccessRepository
+        GetGrantedCategoryCodes $getAllGrantedCategoryCodes
     ) {
-        $this->beConstructedWith($productQueryBuilderFactory, $categoryAccessRepository);
+        $this->beConstructedWith($productQueryBuilderFactory, $getAllGrantedCategoryCodes);
     }
 
     function it_is_initializable()
@@ -36,7 +35,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_finds_the_product_affected_by_the_project(
         $productQueryBuilderFactory,
-        $categoryAccessRepository,
+        GetGrantedCategoryCodes $getAllGrantedCategoryCodes,
         ProductQueryBuilderInterface $productQueryBuilder,
         ProjectInterface $project,
         CursorInterface $products,
@@ -64,7 +63,8 @@ class ProductRepositorySpec extends ObjectBehavior
         $productQueryBuilder->addFilter('name', '=', 'Gibson Les Paul')->shouldBeCalled();
 
         $project->getOwner()->willReturn($user);
-        $categoryAccessRepository->getGrantedCategoryCodes($user, Attributes::VIEW_ITEMS)->willReturn(['foo', 'bar']);
+        $user->getGroupsIds()->willReturn([1,2]);
+        $getAllGrantedCategoryCodes->forGroupIds([1,2])->willReturn(['foo', 'bar']);
         $productQueryBuilder->addFilter('categories', 'IN OR UNCLASSIFIED', ['foo', 'bar'], ['type_checking' => false])->shouldBeCalled();
         $productQueryBuilder->addFilter('family', 'NOT EMPTY', null)->shouldBeCalled();
 
