@@ -16,6 +16,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueEdited;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -112,6 +114,24 @@ abstract class AbstractProduct implements ProductInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    public function addOrReplaceValue(ValueInterface $value): void
+    {
+        $formerValue = $this->getValue($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        if (null !== $formerValue) {
+            if ($formerValue->isEqual($value)) {
+                return;
+            }
+
+            $this->values->remove($formerValue);
+            $this->values->add($value);
+
+            $this->events[] = new ValueEdited($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        } else {
+            $this->values->add($value);
+            $this->events[] = new ValueAdded($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        }
     }
 
     /**

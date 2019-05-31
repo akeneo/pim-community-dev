@@ -15,9 +15,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueEdited;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -673,6 +676,40 @@ class ProductSpec extends ObjectBehavior
         $this->popEvents()->shouldBeLike([
             new ProductIdentifierUpdated('my_identifier_2', 'my_identifier'),
             new ProductCreated('my_identifier_2'),
+        ]);
+    }
+
+    function it_adds_a_value()
+    {
+        $this->setId(1);
+
+        $this->addOrReplaceValue(ScalarValue::value('attribute_code', 'data'));
+
+        $this->popEvents()->shouldBeLike([
+            new ValueAdded('my_identifier', 'attribute_code', null, null)
+        ]);
+    }
+
+    function it_replaces_an_identical_value()
+    {
+        $this->setId(1);
+        $this->setValues(new ValueCollection([ScalarValue::value('attribute_code', 'data')]));
+        $this->popEvents();
+
+        $this->addOrReplaceValue(ScalarValue::value('attribute_code', 'data'));
+
+        $this->popEvents()->shouldBeLike([]);
+    }
+
+    function it_replaces_a_value()
+    {
+        $this->setId(1);
+        $this->setValues(new ValueCollection([ScalarValue::value('attribute_code', 'former_data')]));
+        $this->popEvents();
+
+        $this->addOrReplaceValue(ScalarValue::value('attribute_code', 'data'));
+        $this->popEvents()->shouldBeLike([
+            new ValueEdited('my_identifier', 'attribute_code', null, null)
         ]);
     }
 }
