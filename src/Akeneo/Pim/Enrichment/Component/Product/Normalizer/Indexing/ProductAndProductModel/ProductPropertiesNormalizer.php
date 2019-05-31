@@ -169,32 +169,6 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     }
 
     /**
-     * Normalizes all the values of a product model and its parents.
-     *
-     * @param null|ProductModelInterface $productModel
-     * @param array                      $context
-     *
-     * @return array
-     */
-    private function getAllParentsValues(?ProductModelInterface $productModel, array $context) : array
-    {
-        if (null === $productModel || $productModel->getValues()->isEmpty()) {
-            return [];
-        }
-
-        $productModelNormalizedValues = $this->serializer->normalize(
-            $productModel->getValues(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-            $context
-        );
-
-        return array_merge(
-            $productModelNormalizedValues,
-            $this->getAllParentsValues($productModel->getParent(), $context)
-        );
-    }
-
-    /**
      * @param \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface $product
      *
      * @return array
