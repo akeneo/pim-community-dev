@@ -94,7 +94,7 @@ class ProductValueNormalizer implements NormalizerInterface
 
         $attribute = $this->getAttribute($value->getAttributeCode(), $context);
 
-        if ($attribute === null)  {
+        if ($attribute === null) {
             return null;
         }
 
