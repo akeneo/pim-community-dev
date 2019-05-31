@@ -540,9 +540,8 @@ class ProductSpec extends ObjectBehavior
         $this->getValuesForVariation()->shouldBeLike($valueCollection);
     }
 
-    function it_has_values_when_it_is_not_variant(
-        ValueCollectionInterface $valueCollection
-    ) {
+    function it_has_values_when_it_is_not_variant() {
+        $valueCollection = new ValueCollection([]);
         $this->setValues($valueCollection);
         $this->setParent(null);
 

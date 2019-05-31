@@ -320,11 +320,11 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValues(): ValueCollectionInterface
     {
-        if (!$this->isVariant()) {
-            return $this->values;
-        }
-
         $values = ValueCollection::fromCollection($this->values);
+
+        if (!$this->isVariant()) {
+            return $values;
+        }
 
         return $this->getAllValues($this, $values);
     }
