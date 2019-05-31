@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdate
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueDeleted;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueEdited;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -195,7 +196,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeValue(ValueInterface $value)
     {
-        $this->values->remove($value);
+        $isRemoved = $this->values->remove($value);
+        if (true === $isRemoved) {
+            $this->events[] = new ValueDeleted($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        }
 
         return $this;
     }

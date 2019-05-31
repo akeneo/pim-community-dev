@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdate
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueDeleted;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueEdited;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
@@ -710,5 +711,29 @@ class ProductSpec extends ObjectBehavior
         $this->popEvents()->shouldBeLike([
             new ValueEdited('my_identifier', 'attribute_code', null, null)
         ]);
+    }
+
+    function it_removes_a_value()
+    {
+        $value = ScalarValue::value('attribute_code', 'former_data');
+
+        $this->setId(1);
+        $this->setValues(new ValueCollection([$value]));
+        $this->popEvents();
+
+        $this->removeValue($value);
+        $this->popEvents()->shouldBeLike([
+            new ValueDeleted('my_identifier', 'attribute_code', null, null)
+        ]);
+    }
+
+    function it_does_not_remove_non_existent_value()
+    {
+        $this->setId(1);
+        $this->setValues(new ValueCollection([]));
+        $this->popEvents();
+
+        $this->removeValue(ScalarValue::value('attribute_code', 'former_data'));
+        $this->popEvents()->shouldBeLike([]);
     }
 }
