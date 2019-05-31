@@ -82,8 +82,9 @@ config:
 
         # View
         akeneo/franklin-insights/view/settings/attributes-mapping/state: akeneofranklininsights/js/view/attributes-mapping/state.ts
+        akeneo/franklin-insights/view/settings/attributes-mapping/family-progress: akeneofranklininsights/js/view/attributes-mapping/family-progress.ts
         akeneo/franklin-insights/view/settings/attributes-mapping/family-selector: akeneofranklininsights/js/view/attributes-mapping/family-selector.ts
-        akeneo/franklin-insights/view/settings/attributes-mapping/family-selector-and-status: akeneofranklininsights/js/view/attributes-mapping/family-selector-and-status.ts
+        akeneo/franklin-insights/view/settings/attributes-mapping/family-status: akeneofranklininsights/js/view/attributes-mapping/family-status.ts
         akeneo/franklin-insights/view/settings/attributes-mapping/table: akeneofranklininsights/js/view/attributes-mapping/table.ts
         akeneo/franklin-insights/view/settings/identifiers-mapping/table: akeneofranklininsights/js/view/identifiers-mapping/table.ts
         akeneo/franklin-insights/view/settings/attributes-mapping/title: akeneofranklininsights/js/view/attributes-mapping/title.ts
@@ -101,7 +102,8 @@ config:
         akeneo/franklin-insights/template/settings/attribute-options-mapping/edit: akeneofranklininsights/templates/attribute-options-mapping/edit.html
         akeneo/franklin-insights/template/settings/attribute-options-mapping/modal: akeneofranklininsights/templates/attribute-options-mapping/modal.html
         akeneo/franklin-insights/template/settings/attributes-mapping/table: akeneofranklininsights/templates/attributes-mapping/table.html
-        akeneo/franklin-insights/template/settings/attributes-mapping/family-selector-and-status: akeneofranklininsights/templates/attributes-mapping/family-selector-and-status.html
+        akeneo/franklin-insights/template/settings/attributes-mapping/family-progress: akeneofranklininsights/templates/attributes-mapping/family-progress.html
+        akeneo/franklin-insights/template/settings/attributes-mapping/family-status: akeneofranklininsights/templates/attributes-mapping/family-status.html
         akeneo/franklin-insights/template/settings/attributes-mapping/family-mapping: akeneofranklininsights/templates/attributes-mapping/family-mapping.html
         akeneo/franklin-insights/template/settings/attributes-mapping/family-line: akeneofranklininsights/templates/attributes-mapping/family-line.html
         akeneo/franklin-insights/template/settings/attributes-mapping/warning: akeneofranklininsights/templates/attributes-mapping/warning.html

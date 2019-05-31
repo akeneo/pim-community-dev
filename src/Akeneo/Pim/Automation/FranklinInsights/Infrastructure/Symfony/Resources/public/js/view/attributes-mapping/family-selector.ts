@@ -8,7 +8,7 @@
  */
 
 import * as _ from 'underscore';
-import FamilySelectorAndStatus = require('./family-selector-and-status');
+import FamilyMappingStatus from '../../model/family-mapping-status';
 
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -30,13 +30,13 @@ interface Config {
 class FamilySelector extends BaseSelect {
   private readonly lineView = _.template(lineTemplate);
 
-  constructor(config: { config: Config }) {
+  constructor(config: {config: Config}) {
     super(config);
     this.events = {
-      'change input': (event: { target: any }) => {
+      'change input': (event: {target: any}) => {
         FetcherRegistry.getFetcher('attributes-mapping-by-family')
           .fetch(this.getFieldValue(event.target), {cached: false})
-          .then((family: { code: string }) => {
+          .then((family: {code: string}) => {
             const hasRedirected = Router.redirectToRoute('akeneo_franklin_insights_attributes_mapping_edit', {
               familyCode: family.code,
             });
@@ -68,23 +68,23 @@ class FamilySelector extends BaseSelect {
    *
    * @return {object}
    */
-  public onGetResult(item: { text: string }) {
+  public onGetResult(item: {text: string}) {
     return this.lineView({item});
   }
 
   /**
    * {@inheritdoc}
    */
-  public convertBackendItem(item: { status: number }) {
+  public convertBackendItem(item: {status: number}) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
     switch (item.status) {
-      case FamilySelectorAndStatus.FAMILY_MAPPING_FULL:
+      case FamilyMappingStatus.MAPPING_FULL:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--full';
         break;
-      case FamilySelectorAndStatus.FAMILY_MAPPING_PENDING:
+      case FamilyMappingStatus.MAPPING_PENDING:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--pending';
         break;
-      case FamilySelectorAndStatus.FAMILY_MAPPING_EMPTY:
+      case FamilyMappingStatus.MAPPING_EMPTY:
       default:
         result.className = '';
     }

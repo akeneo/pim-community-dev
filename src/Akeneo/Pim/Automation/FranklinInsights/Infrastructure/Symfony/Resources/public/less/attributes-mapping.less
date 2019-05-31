@@ -1,6 +1,12 @@
 @import './web/bundles/pimui/less/base/variables';
 
 .AknFranklin {
+    .attribute-mapping-search {
+        position: sticky;
+        top: 321px;
+        z-index: 1;
+    }
+
     table.attribute-mapping {
         table-layout: fixed;
     }
@@ -73,6 +79,64 @@
             }
             .select2-choice {
                 border: 1px solid darken(@AknGreen, 5%);
+            }
+        }
+    }
+
+    .family-mapping {
+        display: flex;
+        position: sticky;
+        top: 136px;
+        z-index: 1;
+        padding: 20px 0;
+        background-color: white;
+
+        .family-progress {
+            flex: auto;
+            border-left: @AknMediumGrey solid 1px;
+            padding-left: 28px;
+
+            h2 {
+                margin: 5px 0;
+                color: @AknDarkBlue;
+                font-size: @AknFontSizeBigger;
+            }
+
+            p.description {
+                font-size: @AknFontSizeSmall;
+            }
+
+            .progress {
+                color: @AknDarkBlue;
+                margin-top: 15px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .family-selector {
+            h2 {
+                margin: 5px 0;
+                color: @AknDarkBlue;
+                font-size: @AknDefaultFontSize;
+            }
+
+            .status {
+                background-repeat: no-repeat;
+                background-position: 0% 50%;
+                background-size: 25px;
+                padding-left: 30px;
+
+                &.full {
+                    background-image: url("../images/icon-robot-green.svg");
+                }
+
+                &.pending {
+                    background-image: url("../images/icon-robot-yellow.svg");
+                }
+            }
+
+            .AknFieldContainer {
+                margin-bottom: 0;
             }
         }
     }

@@ -66,11 +66,18 @@ akeneo_franklin_insights:
                     subscribe: 'Subscribe family to Franklin'
                     subscribed: 'Subscribed to Franklin'
                 index:
+                    family_selector:
+                        title: 'Choose a family to map'
                     error: "You need to create a family in your catalog to access this page."
                     family_status:
                         pending: 'New Franklin attributes to review'
                         full: 'All Franklin attributes mapped'
                     types_mismatch_warning: 'Warning: attributes types mismatch.'
+                    family_progress:
+                        title: 'Number of attribute mapped'
+                        description: "With this progress bar, you're able to know where you are on your attribute mapping."
+                        mapped_attribute_count: '{{ count }} attributes mapped'
+
             constraint:
                 missing_target_key: 'Missing target key for mapping'
                 missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'
