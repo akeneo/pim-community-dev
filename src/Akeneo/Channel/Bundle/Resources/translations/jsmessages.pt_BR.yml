@@ -62,7 +62,7 @@ pim_enrich.entity.channel:
 pim_enrich.entity.locale:
   label: local
   uppercase_label: Localidade
-  plural_label: Localidades
+  plural_label: Locais
   page_title:
     index: "]-Inf, 1]{{ count }} local|]1, Inf[{{ count }} locais"
 pim_enrich.entity.currency:

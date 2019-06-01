@@ -25,7 +25,7 @@ pim_user:
       new_password: Nouveau mot de passe
       new_password_again: Nouveau mot de passe (répéter)
       default_grid_view:
-        none: Aucun
+        none: Aucune
       default_product_grid_view:
         label: Vue par défaut de la grille des produits
       ui_locale: Langue de l'interface
@@ -46,7 +46,7 @@ pim_user:
         basic_information: Informations de base
         contact_information: Information de contact
       additional:
-        title: Supplémentaire
+        title: Complémentaire
       additional_data:
         title: Données supplémentaires
       interfaces:
@@ -72,10 +72,10 @@ pim_user:
       general.title: Général
       users.title: Utilisateurs
   roles:
-    title: Rôle
+    title: rôle
     tab:
       general: Général
-      action: Permissions
+      action: Autorisations
       users: Utilisateurs
   controller:
     group:
@@ -90,7 +90,7 @@ pim_user:
 pim_datagrid:
   columns:
     user:
-      createdAt: "Crée le"
+      createdAt: "Créé le"
       updatedAt: "Mis à jour le"
     roles:
       label: "Libellé"
@@ -104,7 +104,7 @@ flash:
   role:
     removed: Le rôle a bien été supprimé
   user:
-    removed: Utilisateur supprimé avec succès
+    removed: L'utilisateur a bien été supprimé
 oro_security:
   acl_group:
     user: Utilisateurs
@@ -127,7 +127,7 @@ oro_security:
       edit: Modifier les groupes d'utilisateurs
       delete: Supprimer un groupe d'utilisateurs
 (default): Autorisations par défaut sur les entités
-VIEW: Voir
+VIEW: Afficher
 CREATE: Créer
 EDIT: Modifier
 DELETE: Supprimer

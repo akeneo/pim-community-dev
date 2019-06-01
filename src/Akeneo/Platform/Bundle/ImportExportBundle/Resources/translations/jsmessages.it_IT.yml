@@ -56,7 +56,7 @@ pim_import_export:
         fetching: Raccolta di dati sull'esecuzione del lavoro...
         warning: Attenzione
         header.step: Passo
-        header.warnings: Avvisi
+        header.warnings: Attenzione
         header.summary: Riepilogo
         header.start: Inizio
         header.end: Fine
@@ -92,7 +92,7 @@ pim_import_export:
             help: Un carattere utilizzato per impostare il delimitatore di campo
           enclosure:
             title: Contenitore
-            help: Un carattere utilizzato per impostare il contenitore del campo
+            help: Un carattere utilizzato per impostare il delimitatore del campo
           with_header:
             title: Con intestazione
             help: Stampare o no la l'intestazione della colonna
@@ -101,7 +101,7 @@ pim_import_export:
             help: Esportare o meno i file e le immagini del prodotto
           lines_per_file:
             title: Numero di linee per file
-            help: Definire il numero limite di righe per file
+            help: Definisci il numero limite di righe per file
           upload_allowed:
             title: Consentire il caricamento di file
             help: Consentire o no il caricamento diretto di file
@@ -140,10 +140,16 @@ pim_enrich:
       module:
         delete:
           confirm: Sei sicuro di voler eliminare questo profilo di importazione?
+      flash:
+        delete:
+          success: Profilo di importazione rimosso con successo
     export_profile:
       module:
         delete:
           confirm: Sei sicuro di voler eliminare questo profilo di esportazione?
+      flash:
+        delete:
+          success: Profilo di esportazione rimosso con successo
 pim_title:
   pim_importexport_export_profile_index: Gestione profili di esportazione
   pim_importexport_export_profile_edit: Profilo di esportazione {{ job.label }} | Modifica
