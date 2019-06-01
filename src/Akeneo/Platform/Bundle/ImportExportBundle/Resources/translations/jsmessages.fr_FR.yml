@@ -1,7 +1,7 @@
 job_execution:
   summary:
     display_item: Afficher l'élément
-    hide_item: Masquer l'élément
+    hide_item: Voir moins
 pim_connector:
   export:
     categories:
@@ -37,7 +37,7 @@ pim_import_export:
       uppercase_label: Profil d'export
       flash:
         create:
-          success: Le profil d'exportation a bien été créé
+          success: Le profil d'export a bien été créé
       page_title:
         index: "]-Inf, 1]{{ count }} profil d'export|]1, Inf[{{ count }} profils d'export"
       module:
@@ -49,7 +49,7 @@ pim_import_export:
       refreshBtn.title: Mettre à jour
       button:
         show_profile.title: Afficher le profil
-        download_log.title: Télécharger l'historique
+        download_log.title: Télécharger les logs
         download_file.title: Télécharger le fichier généré
         download_archive.title: Télécharger l'archive générée
       summary:
@@ -63,7 +63,7 @@ pim_import_export:
     job_instance:
       fail:
         launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous disposez des droits pour le lancer.
-        save: Impossible de sauvegarder le profil. Assurez-vous que vous disposez des droits pour l'éditer.
+        save: Impossible d'enregistrer le profil. Assurez-vous que vous disposez des droits pour le modifier.
       button:
         export.title: Exporter maintenant
         import.launch: Importer maintenant
@@ -79,8 +79,8 @@ pim_import_export:
           title: Contenu
         properties:
           decimal_separator:
-            title: Séparateur de décimales
-            help: Détermine le séparateur de décimale
+            title: Séparateur de décimale
+            help: Détermine le séparateur de décimales
           date_format:
             title: Format de date
             help: Déterminer le format des champs de type date
@@ -139,7 +139,7 @@ pim_import_export:
       job_type:
         import: Import
         export: Export
-        mass_edit: Edition en masse
+        mass_edit: Edition de masse
         quick_export: Export rapide
         compute_product_models_descendants: Mise à jour des descendants des modèles de produit
         compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes

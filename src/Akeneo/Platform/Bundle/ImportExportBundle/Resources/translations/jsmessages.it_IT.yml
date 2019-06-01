@@ -56,7 +56,7 @@ pim_import_export:
         fetching: Raccolta di dati sull'esecuzione del lavoro...
         warning: Attenzione
         header.step: Passo
-        header.warnings: Avvisi
+        header.warnings: Attenzione
         header.summary: Riepilogo
         header.start: Inizio
         header.end: Fine
@@ -92,7 +92,7 @@ pim_import_export:
             help: Un carattere utilizzato per impostare il delimitatore di campo
           enclosure:
             title: Contenitore
-            help: Un carattere utilizzato per impostare il contenitore del campo
+            help: Un carattere utilizzato per impostare il delimitatore del campo
           with_header:
             title: Con intestazione
             help: Stampare o no la l'intestazione della colonna
@@ -101,7 +101,7 @@ pim_import_export:
             help: Esportare o meno i file e le immagini del prodotto
           lines_per_file:
             title: Numero di linee per file
-            help: Definire il numero limite di righe per file
+            help: Definisci il numero limite di righe per file
           upload_allowed:
             title: Consentire il caricamento di file
             help: Consentire o no il caricamento diretto di file
@@ -131,15 +131,15 @@ pim_import_export:
       file_path: Percorso del file
   widget:
     last_operations:
-      empty: Nessuna operazione trovata
+      empty: Nessun operazione trovata
       date: Data
       profile_name: Nome profilo
-      details: Dettagli
-      warning_count: Avvisi
+      details: Dettaglio
+      warning_count: Attenzione
       job_type:
-        import: Importa
-        export: Esporta
-        mass_edit: Modifica di massa
+        import: '&Import'
+        export: Esportazioni
+        mass_edit: Azione di massa modificata
         quick_export: Esportazione rapida
         compute_product_models_descendants: Calcola modelli di prodotto discendenti
         compute_family_variant_structure_changes: Calcola le modifiche della struttura della famiglia variante

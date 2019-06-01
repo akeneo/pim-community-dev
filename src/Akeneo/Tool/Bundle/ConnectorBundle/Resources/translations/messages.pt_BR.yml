@@ -4,7 +4,7 @@ pim_connector:
       invalid_item_columns_count: 'Esperava ter %totalColumnsCount% colunas, porém tem %itemColumnsCount% em %filePath%:%lineno%'
 job_execution.summary:
   read: ler
-  write: escrever
+  write: escrito
   skip: pulado
   create: criado
   process: processado

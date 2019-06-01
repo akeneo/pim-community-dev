@@ -13,7 +13,7 @@ pim_enrich.entity.family:
     create:
       success: Famille créée avec succès
     delete:
-      success: Famille supprimée avec succès
+      success: La famille a bien été supprimée
       fail: Impossible de supprimer cette famille
   property:
     attribute_as_label: Attribut utilisé comme étiquette
@@ -123,7 +123,7 @@ pim_enrich.entity.attribute:
       fail: L'attribut n'a pas pu être mis à jour.
       fields_not_ready: "L'attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
     delete:
-      success: Attribut supprimé avec succès
+      success: L'attribut a bien été supprimé
       fail: Impossible de supprimer cet attribut
   page_title:
     index: "]-Inf, 1]{{ count }} attribut|]1, Inf[{{ count }} attributs"
@@ -225,9 +225,9 @@ pim_enrich.mass_edit.family:
       title: Actions de masse sur les familles
       label_count: "]0, Inf[Sélectionnez votre action"
     configure:
-      label: Configurer
+      label: Configurez l'opération à effectuer
     confirm:
-      label: Confirmer
+      label: Confirmation
     launched:
       label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
   operation:
