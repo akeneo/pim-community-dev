@@ -12,7 +12,6 @@ pim_analytics:
     download: TXT
   info_type:
     pim_edition: Видання
-    pim_version: Версія
     pim_storage_driver: Сховище
     pim_environment: Середовище
     pim_install_time: Час встановлення
@@ -49,9 +48,3 @@ pim_analytics:
     mongodb_version: Версія MongoDB
     server_version: Версія серверу
     php_extensions: Розширення PHP
-  acl:
-    system_info:
-      index: Інформація про систему
-pim_menu:
-  item:
-    system_info: Інформація про систему

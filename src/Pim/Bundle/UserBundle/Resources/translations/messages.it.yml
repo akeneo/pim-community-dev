@@ -24,7 +24,7 @@ oro.user.grid.users:
     firstName: "Nome"
     lastName: "Cognome"
     createdAt: "Creato il"
-    updatedAt: "Caricato il"
+    updatedAt: "Aggiornato il"
     enabled: "Stato"
 oro.user.grid.roles:
   columns:
@@ -89,12 +89,12 @@ user:
   default_product_grid_view:
     label: Visualizzazione predefinita griglia prodotti
   default_grid_view:
-    none: Nessun
+    none: Nessuno
   timezone: Fuso orario
 Role: Ruolo
 Owner: Proprietario
 General: Generale
-Entity: Entità
+Entity: Soggetto
 Capabilities: Funzionalità
 Save and close: Salva e chiudi
 Has role: Ha il ruolo
@@ -129,9 +129,9 @@ oro_security:
       delete: Rimuovi gruppo utenti
 (default): Autorizzazione predefinita su entità
 VIEW: Visualizzazione
-CREATE: Crea
+CREATE: Creare
 EDIT: Modifica
-DELETE: Eliminare
+DELETE: Elimina
 ASSIGN: Assegna
 SHARE: Condividi
 oro:
@@ -142,7 +142,7 @@ oro:
       DEEP: Divisione
       GLOBAL: Organizzazione
       SYSTEM: Sistema
-      NONE: Nessun
+      NONE: Nessuno
 Create group: Crea gruppo
 btn.create.user-group: Crea gruppo
 Has group: Ha gruppo

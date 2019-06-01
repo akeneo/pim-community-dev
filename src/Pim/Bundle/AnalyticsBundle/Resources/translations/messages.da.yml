@@ -42,7 +42,7 @@ pim_analytics:
     mariadb_version: MariaDB version
     mongodb_version: MongoDB version
     server_version: Serverversion
-    php_extensions: PHP udvidelser
+    php_extensions: PHP suffiks
   acl:
     system_info:
       index: Systemoplysninger

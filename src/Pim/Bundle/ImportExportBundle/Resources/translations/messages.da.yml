@@ -1,8 +1,6 @@
 Job: Job
 Connector: Connector
 pim_import_export:
-  job: Job
-  connector: Connector
   status:
     0: Klar
   batch_status:
@@ -19,7 +17,6 @@ pim_import_export:
     output: download genererede fil|download genererede filer
     input: download læs file|download læse filer
     invalid_xlsx: download ugyldige data
-    invalid_csv: download ugyldige data
   notification:
     export:
       error: Eksport af <strong>%label%</strong> mislykkedes
@@ -32,7 +29,6 @@ pim_import_export:
   list: Vælg et job
   job_profile:
     tab:
-      property.title: Generelle egenskaber
       history.title: Historik
       job_content.title: Indhold
 pim_title.export_profile.index: Eksporter profil håndtering
@@ -108,10 +104,8 @@ flash:
     removed: Importen er blevet fjernet
     updated: Importen er blevet opdateret
     running: Importen kører
-General properties: Generelle egenskaber
 History: Historik
 pane.accordion:
-  properties: Egenskaber
   global_settings: Globale indstillinger
   filters: Filtre
 popin.create:
@@ -126,7 +120,7 @@ Show profile: Vis profil
 execution details: udførelse detaljer
 job_execution.summary:
   read: læs
-  write: skrevet
+  write: gemt
   skip: sprunget over
   create: oprettet
   update: opdateret
@@ -138,17 +132,7 @@ job_execution.summary:
     skipped: ignoreret, udvidelse i hvidlisten
 Step: Trin
 Status: Status
-Warnings: Advarsler
 Summary: Opsummering
 Start: Start
 End: Slut
-set_attribute_requirements: Indstil attribut krav
-COMPLETED: Afsluttet
-STARTING: Starter
-STARTED: Startet
-STOPPING: Stopper
-STOPPED: Stoppet
-FAILED: Mislykkedes
-ABANDONED: Opgivet
-UNKNOWN: Ukendt
 warning.label: Advarsel

@@ -6,7 +6,6 @@ Attribute Group list: Attribut gruppe liste
 Users: Brugere
 Roles: Roller
 Groups: Grupper
-Configuration: Konfiguration
 Currency list: Valuta liste
 Locale list: Lande liste
 Logged in as: Logget ind som
@@ -41,8 +40,8 @@ required: (Påkrævet)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Aktivere indlæsning af meddelelser
+    loading_message_enabled.tooltip: Vis brugervenlige beskeder mens siden indlæses
     loading_messages.label: Tilgængelige indlæsnings meddelelser
     loading_messages.tooltip: Alle tilgængelige indlæsnings meddelelser adskilt med linjeskift
   group:
     loading_message.title: Indlæser meddelelser
-other_actions: andre handlinger

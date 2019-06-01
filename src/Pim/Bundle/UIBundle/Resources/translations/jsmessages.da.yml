@@ -1,10 +1,8 @@
-Close: Luk
 Update: Opdater
 Selected Rows: Markerede rækker
 "Yes": "Ja"
 "Yes, Delete": "Ja, slet"
 "Yes, I Agree": "Ja, jeg er enig"
-"Yes, do it": "Ja, gør det"
 "No": "Nej"
 "Ok, got it.": "OK, fik det."
 "Cancel": "Annuller"
@@ -35,15 +33,11 @@ Localized value: Lokaliseret værdi
 Columns: Kolonner
 Datagrid Configuration: DataGrid konfiguration
 Apply: Anvend
-Action: Handling
 Unit: Enhed
 Currency: Valuta
 jstree:
   all: Alle produkter
   unclassified: Ikke-klassificerede produkter
-  product:
-    all: Alle produkter
-    unclassified: Ikke-klassificerede produkter
   no_tree: Intet træ tilgængeligt
   include_sub: Inkluder underkategorier
   loading: Indlæser ...
@@ -90,7 +84,6 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Apr
-    May: Maj
     Jun: Jun
     Jul: Jul
     Aug: Aug
@@ -109,9 +102,6 @@ oro_config:
         localization:
           title: Lokalisering
           system_locale: Sprog
-        notification:
-          title: Notifikationer
-          system_notification: Notifikation om nye versioner
         loading_message:
           title: Indlæser meddelelser
           label: Aktivere indlæsning af meddelelser

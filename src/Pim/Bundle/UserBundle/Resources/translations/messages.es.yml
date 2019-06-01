@@ -47,7 +47,7 @@ Additional: Adicional
 Groups and Roles: Grupos y Roles
 Username: Nombre de usuario
 Password: Contraseña
-Password (again): Contraseña (nuevamente)
+Password (again): Contraseña (repetir)
 Re-enter password: Re-ingresar contraseña
 Name prefix: Prefijo del nombre
 First name: Primer nombre
@@ -62,7 +62,7 @@ Catalog locale: Local de catálogo
 Catalog scope: Ambito del Catálogo
 Default tree: Árbol por defecto
 Business Units: Unidades de negocio
-Email synchronization settings: Configuración de sincronización de correo electrónico
+Email synchronization settings: Configuraciones de sincronización de e-mail
 Host: Host
 Port: Puerto
 Ssl: SSL
@@ -89,7 +89,7 @@ user:
   default_product_grid_view:
     label: Vista de cuadrícula de producto automática
   default_grid_view:
-    none: Ninguno
+    none: Ninguna
   timezone: Zona horaria
 Role: Rol
 Owner: Propietario
@@ -100,12 +100,11 @@ Save and close: Guardar y cerrar
 Has role: Tiene rol
 role:
   title: rol
-  overview: rol
   edit: Editar rol
   create: Crear rol
 btn.create.role: Crear rol
 rights:
-  action: Permisos
+  action: Permisiones
 oro_security:
   acl_group:
     user: Usuarios
@@ -128,10 +127,10 @@ oro_security:
       edit: Editar grupos de usuarios
       delete: Eliminar un usuario del grupo
 (default): Permisos predeterminados en entidades
-VIEW: Vista
+VIEW: Visualizar
 CREATE: Crear
 EDIT: Editar
-DELETE: Eliminar
+DELETE: Borrar
 ASSIGN: Asignar
 SHARE: Compartir
 oro:
@@ -142,9 +141,8 @@ oro:
       DEEP: División
       GLOBAL: Organización
       SYSTEM: Sistema
-      NONE: Ninguno
+      NONE: Ninguna
 Create group: Crear grupo
-btn.create.user-group: Crear grupo
 Has group: Tiene grupo
 Save and Close: Guardar y cerrar
 user-group.overview: Grupos

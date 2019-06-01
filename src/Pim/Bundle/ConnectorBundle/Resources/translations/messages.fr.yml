@@ -13,7 +13,7 @@ pim_connector:
     product_processor.title: Création des produits
     category_processor.title: Création des catégories
     association_processor.title: Création d'association
-    product_association_processor.title: Création d'association
+    product_association_processor.title: Création des associations
     group_processor.title: Création des groupes
     attribute_processor.title: Création des attributs
     attribute_option_processor.title: Création des options d'attributs
@@ -37,7 +37,7 @@ job_execution.summary:
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
-    title: 'Encodage du fichier :'
+    title: 'Encodage de fichier :'
     skipped: ignoré(s), extension dans la liste blanche
   product_skipped_no_diff: produit(s) ignoré(s) (aucune différence)
   product_skipped_no_associations: produit(s) ignoré(s) (aucune association détectée)
@@ -192,7 +192,7 @@ batch_jobs:
     import_associations.label: Import des associations de produits
   xlsx_group_export:
     label: Export des groupes en XLSX
-    export.label: Export de groupes
+    export.label: Export des groupes
   xlsx_group_import:
     label: Import des groupes en XLSX
     validation.label: Validation du fichier

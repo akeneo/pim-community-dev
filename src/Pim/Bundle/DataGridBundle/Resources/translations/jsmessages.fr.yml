@@ -11,9 +11,9 @@ Your local changes will be lost. Are you sure you want to refresh grid?: Vos mod
 Reset Confirmation: Confirmation de remise à zéro
 Your local changes will be lost. Are you sure you want to reset grid?: Vos modifications locales seront perdues. Êtes-vous certain(e) de vouloir actualiser la grille ?
 Confirmation: Confirmation
-edit: Modifier
+edit: modifier
 copy: copier
-remove: Retirer
+remove: Supprimer
 Status: État
 All: Tous
 Per page: Par page
@@ -45,7 +45,7 @@ oro.datagrid.action.reset: "Réinitialiser"
 oro.datagrid.action.refresh: "Mettre à jour"
 oro_datagrid.select.all: "Tous"
 oro_datagrid.select.visible: "Tous les éléments visibles"
-oro_datagrid.select.none: "Aucun"
+oro_datagrid.select.none: "Aucune"
 oro_datagrid.select.select: "Sélectionner"
 pim.grid.ajax_choice_filter.label_empty: est vide
 pim.grid.ajax_choice_filter.label_not_empty: n'est pas vide
@@ -72,7 +72,7 @@ pim_datagrid:
     label: Colonnes
     title: Configurer les colonnes
     all_groups: Tous les groupes
-    search: Recherche
+    search: Rechercher
     clear: Réinitialiser
     displayed_columns: Colonnes sélectionnées
     apply: Appliquer
@@ -100,7 +100,7 @@ grid.view_selector:
   remove: Supprimer cette vue
   create_view: Créer une vue
   create: Créer
-  search: Recherche
+  search: Rechercher
   views: Vues
   placeholder: Nom de la nouvelle vue
   choose_label: Choisissez un titre pour la vue

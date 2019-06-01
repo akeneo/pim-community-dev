@@ -2,7 +2,6 @@ pim_user:
   user:
     tab:
       general.title: Generelt
-      additional.title: Yderligere
       group_and_role.title: Grupper og roller
       password.title: Adgangskode
       business_unit.title: Afdelinger
@@ -23,9 +22,6 @@ oro.user.grid.users:
     email: "E-mail"
     firstName: "Fornavn"
     lastName: "Efternavn"
-    createdAt: "Oprettet den"
-    updatedAt: "Opdateret den"
-    enabled: "Status"
 oro.user.grid.roles:
   columns:
     label: "Etiket"
@@ -35,15 +31,11 @@ oro.user.grid.groups:
 pim_title:
   user.index: Brugere
   user_role.index: Roller
-  user_group.index: Grupper
   system_configuration.index: Konfiguration
 user.title: Bruger
-user.overview: Bruger
 Users Management: Bruger administration
 Create user: Opret bruger
-btn.create.user: Opret bruger
 New user: Ny bruger
-Additional: Yderligere
 Groups and Roles: Grupper og roller
 Username: Brugernavn
 Password: Adgangskode
@@ -68,7 +60,6 @@ Ssl: SSL
 Last logged in: Sidst logget ind
 Login count: Antal logins
 Additional Information: Yderligere oplysninger
-Interfaces: Grænseflader
 Basic Information: Grundlæggende oplysninger
 Contact Information: Kontaktoplysninger
 User name: Brugernavn
@@ -89,11 +80,9 @@ user:
     label: Standard produkt gittervisningen
   default_grid_view:
     none: Ingen
-  timezone: Tidszone
 Role: Rolle
 Owner: Ejer
 General: Generelt
-Entity: Enhed
 Capabilities: Kapaciteter
 Save and close: Gem og luk
 Has role: Har rolle
@@ -102,13 +91,10 @@ role:
   overview: rolle
   edit: Rediger rolle
   create: Opret rolle
-btn.create.role: Opret rolle
 rights:
   action: Rettigheder
 oro_security:
   acl_group:
-    user: Brugere
-    role: Roller
     group: Brugergrupper
   acl:
     user:
@@ -128,25 +114,19 @@ oro_security:
       delete: Fjern en brugergruppe
 (default): Standardtilladelse på enheder
 VIEW: Se
-CREATE: Opret
 EDIT: Redigér
-DELETE: Slet
 ASSIGN: Tildel
 SHARE: Del
 oro:
   security:
     access-level:
-      BASIC: Bruger
       LOCAL: Afdeling
       DEEP: Division
       GLOBAL: Organisation
       SYSTEM: System
       NONE: Ingen
 Create group: Opret gruppe
-btn.create.user-group: Opret gruppe
 Has group: Har gruppen
-Save and Close: Gem og luk
-user-group.overview: Grupper
 Log in: Log på
 Remember me on this computer: Husk mig på denne computer
 Forgot your password?: Glemt din adgangskode?
