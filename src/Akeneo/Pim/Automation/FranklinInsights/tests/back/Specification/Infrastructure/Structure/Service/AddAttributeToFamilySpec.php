@@ -23,6 +23,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -117,7 +118,8 @@ class AddAttributeToFamilySpec extends ObjectBehavior
         $repository,
         $validator,
         FamilyInterface $family,
-        ConstraintViolationListInterface $violations
+        ConstraintViolationListInterface $violations,
+        ConstraintViolationInterface $violation
     ): void {
         $repository->findOneByIdentifier('bar')->willReturn($family);
         $family->getAttributeCodes()->willReturn([]);
@@ -125,11 +127,13 @@ class AddAttributeToFamilySpec extends ObjectBehavior
         $updater->update($family, ['attributes' => ['Foo']])->shouldBeCalled();
         $validator->validate($family)->willReturn($violations->getWrappedObject());
         $violations->count()->willReturn(1);
+        $violations->get(0)->willReturn($violation);
+        $violation->getMessage()->willReturn('validation message');
 
         $saver->save($family)->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(new ViolationHttpException($violations->getWrappedObject()))
+            ->shouldThrow(new \Exception('validation message'))
             ->during(
                 'addAttributeToFamily',
                 [

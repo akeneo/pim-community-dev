@@ -71,7 +71,7 @@ class EnsureFranklinAttributeGroupExists implements EnsureFranklinAttributeGroup
 
         $violations = $this->validator->validate($attributeGroup);
         if (0 !== $violations->count()) {
-            throw new ViolationHttpException($violations);
+            throw new \Exception($violations->get(0)->getMessage());
         }
 
         $this->saver->save($attributeGroup);

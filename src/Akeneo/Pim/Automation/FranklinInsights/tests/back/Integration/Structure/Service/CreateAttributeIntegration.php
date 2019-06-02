@@ -55,7 +55,7 @@ SQL;
 
         $beforeStatement = $this->executeGetAttributeQuery($attributeCodeText);
 
-        $this->expectException(ViolationHttpException::class);
+        $this->expectException(\Exception::class);
 
         $this->createAttributeService->create(
             new AttributeCode($attributeCodeText),

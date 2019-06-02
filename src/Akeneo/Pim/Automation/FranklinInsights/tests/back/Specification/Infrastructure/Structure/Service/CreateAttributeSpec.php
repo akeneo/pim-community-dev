@@ -28,6 +28,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -107,7 +108,8 @@ class CreateAttributeSpec extends ObjectBehavior
         $saver,
         $ensureFranklinAttributeGroupExists,
         AttributeInterface $attribute,
-        ConstraintViolationListInterface $violations
+        ConstraintViolationListInterface $violations,
+        ConstraintViolationInterface $violation
     ): void {
         $attributeData = [
             'code' => 'Foo_bar',
@@ -125,10 +127,13 @@ class CreateAttributeSpec extends ObjectBehavior
         $updater->update($attribute, $attributeData)->shouldBeCalled();
         $validator->validate($attribute)->willReturn($violations->getWrappedObject());
         $violations->count()->willReturn(1);
+        $violations->get(0)->willReturn($violation);
+        $violation->getMessage()->willReturn('validation message');
+
         $saver->save($attribute)->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(new ViolationHttpException($violations->getWrappedObject()))
+            ->shouldThrow(new \Exception('validation message'))
             ->during(
                 'create',
                 [

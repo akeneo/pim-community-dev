@@ -87,7 +87,7 @@ class AddAttributeToFamily implements AddAttributeToFamilyInterface
 
         $violations = $this->validator->validate($family);
         if (0 !== $violations->count()) {
-            throw new ViolationHttpException($violations);
+            throw new \Exception($violations->get(0)->getMessage());
         }
 
         $this->saver->save($family);

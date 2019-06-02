@@ -76,7 +76,7 @@ class CreateAttribute implements CreateAttributeInterface
 
         $violations = $this->validator->validate($attribute);
         if (0 !== $violations->count()) {
-            throw new ViolationHttpException($violations);
+            throw new \Exception($violations->get(0)->getMessage());
         }
 
         $this->saver->save($attribute);
