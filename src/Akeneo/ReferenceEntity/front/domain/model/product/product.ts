@@ -63,7 +63,7 @@ class ProductImplementation implements Product {
       throw new InvalidArgumentError('Product expects a File as image argument');
     }
     if (!(completeness instanceof Completeness)) {
-      throw new InvalidArgumentError('Product expects a File as image argument');
+      throw new InvalidArgumentError('Product expects a Completeness as completeness argument');
     }
 
     Object.freeze(this);

@@ -6,11 +6,9 @@ import Completeness from 'akeneoreferenceentity/domain/model/product/completenes
 const memo = (React as any).memo;
 
 const getLabel = (completeness: Completeness, type: ProductType) => {
-  return `${
-    PRODUCT_TYPE === type
-      ? completeness.getRatio() + ' %'
-      : completeness.getCompleteCount() + '/' + completeness.getRequiredCount()
-  }`;
+  return PRODUCT_TYPE === type
+    ? `${completeness.getRatio()} %`
+    : `${completeness.getCompleteCount()}/${completeness.getRequiredCount()}`;
 };
 
 const getCompletenessClass = (completeness: Completeness) => {
