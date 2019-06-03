@@ -338,7 +338,16 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setValues(ValueCollectionInterface $values)
     {
-        $this->values = $values;
+        $formerValues = $this->getValues();
+        foreach ($formerValues as $formerValue) {
+            if (null === $values->getByCodes($formerValue->getAttributeCode(), $formerValue->getScopeCode(), $formerValue->getLocaleCode())) {
+                $this->removeValue($formerValue);
+            }
+        }
+
+        foreach($values as $value) {
+            $this->addOrReplaceValue($value);
+        }
 
         return $this;
     }

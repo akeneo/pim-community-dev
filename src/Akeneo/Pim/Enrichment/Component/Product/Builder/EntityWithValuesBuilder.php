@@ -60,7 +60,7 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         $newValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
         $formerValue = $entityWithEntityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
 
-        $shouldRemoveValue = ('' === $data['data'] || [] === $data['data'] || null === $data['data']);
+        $shouldRemoveValue = ('' === $data || [] === $data || null === $data);
         if ($shouldRemoveValue && null !== $formerValue) {
             $entityWithEntityWithValues->removeValue($formerValue);
 
@@ -77,9 +77,6 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         }
 
         $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-
-
-
         $entityWithEntityWithValues->addValue($value);
 
         return $value;

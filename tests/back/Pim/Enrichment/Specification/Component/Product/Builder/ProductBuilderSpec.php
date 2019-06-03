@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductEvents;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -56,6 +57,7 @@ class ProductBuilderSpec extends ObjectBehavior
         FamilyInterface $tshirtFamily,
         AttributeInterface $identifierAttribute
     ) {
+        $identifierAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
         $identifierAttribute->getCode()->willReturn('sku');
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
         $entityWithValuesBuilder->addOrReplaceValue(
