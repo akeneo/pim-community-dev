@@ -53,7 +53,7 @@ class StructureController
 
         $data = json_decode($request->getContent(), true);
 
-        $pimAttributeCode = AttributeCode::fromString($data['franklinAttributeLabel']);
+        $pimAttributeCode = AttributeCode::fromLabel($data['franklinAttributeLabel']);
         $command = new CreateAttributeInFamilyCommand(
             new FamilyCode($data['familyCode']),
             $pimAttributeCode,
