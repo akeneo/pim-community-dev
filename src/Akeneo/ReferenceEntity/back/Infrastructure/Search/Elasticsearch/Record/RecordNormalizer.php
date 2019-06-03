@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
@@ -164,10 +168,14 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     private function generateFilterableValues(SearchableRecordItem $searchableRecordItem): array
     {
-        // TODO: maybe set up const for attribute types, or make existent ones public
         $valueKeys = $this->findValueKeysByAttributeType->find(
             ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier),
-            ['option', 'option_collection', 'record', 'record_collection']
+            [
+                OptionAttribute::ATTRIBUTE_TYPE,
+                OptionCollectionAttribute::ATTRIBUTE_TYPE,
+                RecordAttribute::ATTRIBUTE_TYPE,
+                RecordCollectionAttribute::ATTRIBUTE_TYPE
+            ]
         );
         $result = [];
         foreach ($valueKeys as $valueKey) {
