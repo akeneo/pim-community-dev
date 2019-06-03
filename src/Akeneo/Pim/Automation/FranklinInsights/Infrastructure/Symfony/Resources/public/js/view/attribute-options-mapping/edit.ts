@@ -176,4 +176,4 @@ class AttributeOptionsMapping extends BaseForm {
   }
 }
 
-export default AttributeOptionsMapping;
+export = AttributeOptionsMapping;

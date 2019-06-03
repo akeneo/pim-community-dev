@@ -22,7 +22,7 @@ import IAttributeMapping from '../../model/attribute-mapping';
 import AttributeMappingStatus from "../../model/attribute-mapping-status";
 
 import CreateAttributeButton from './create-attribute-button';
-import AttributeOptionsMapping from '../attribute-options-mapping/edit';
+import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttributeWithWarning from './simple-select-attribute-with-warning';
 import BaseView = require('pimui/js/view/base');
 
