@@ -345,7 +345,7 @@ abstract class AbstractProduct implements ProductInterface
             }
         }
 
-        foreach($values as $value) {
+        foreach ($values as $value) {
             $this->addOrReplaceValue($value);
         }
 
