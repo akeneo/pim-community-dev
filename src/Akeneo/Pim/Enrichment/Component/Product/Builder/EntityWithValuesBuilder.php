@@ -51,27 +51,36 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
      * {@inheritdoc}
      */
     public function addOrReplaceValue(
-        EntityWithValuesInterface $entityWithValues,
+        EntityWithValuesInterface $entityWithEntityWithValues,
         AttributeInterface $attribute,
         ?string $localeCode,
         ?string $scopeCode,
         $data
     ) : ValueInterface {
-        $value = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
-        if (null !== $value) {
-            $entityWithValues->removeValue($value);
+        $newValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+        $formerValue = $entityWithEntityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
+
+        $shouldRemoveValue = ('' === $data['data'] || [] === $data['data'] || null === $data['data']);
+        if ($shouldRemoveValue && null !== $formerValue) {
+            $entityWithEntityWithValues->removeValue($formerValue);
+
+            return $newValue;
+        }
+
+
+        if (null !== $formerValue) {
+            if ($formerValue->isEqual($newValue)) {
+                return $formerValue;
+            }
+
+            $entityWithEntityWithValues->removeValue($formerValue);
         }
 
         $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-        $entityWithValues->addValue($value);
 
-        // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType() &&
-            null !== $data &&
-            $entityWithValues instanceof ProductInterface
-        ) {
-            $entityWithValues->setIdentifier($value);
-        }
+
+
+        $entityWithEntityWithValues->addValue($value);
 
         return $value;
     }
