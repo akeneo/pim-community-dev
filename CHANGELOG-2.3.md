@@ -1,5 +1,17 @@
 # 2.3.x
 
+# 2.3.47 (2019-06-03)
+
+## Technical improvement
+
+- PIM-8384: Improve queue to consume specific jobs
+
+## Bug fixes
+
+- PIM-8378: Fix DI for EntityWithFamilyVariantNormalizer injection
+- PIM-8385: Fix timeout when launching the clean attributes command
+- PIM-8381: Do not expose disabled locales in attribute options export
+
 # 2.3.46 (2019-05-27)
 
 ## Bug fixes

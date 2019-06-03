@@ -284,17 +284,22 @@ class JobLauncher
     /**
      * Launch the daemon command to consume and launch one job execution.
      *
+     * @param array $options
+     *
      * @return BufferedOutput
      */
-    public function launchConsumerOnce(): BufferedOutput
+    public function launchConsumerOnce(array $options = []): BufferedOutput
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
-        $arrayInput = [
-            'command'  => JobQueueConsumerCommand::COMMAND_NAME,
-            '--run-once' => true,
-        ];
+        $arrayInput = array_merge(
+            $options,
+            [
+                'command'  => JobQueueConsumerCommand::COMMAND_NAME,
+                '--run-once' => true,
+            ]
+        );
 
         $input = new ArrayInput($arrayInput);
         $output = new BufferedOutput();

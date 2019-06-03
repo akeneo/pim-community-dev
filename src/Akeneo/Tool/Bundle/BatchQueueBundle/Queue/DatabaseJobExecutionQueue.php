@@ -44,12 +44,16 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
     /**
      * {@inheritdoc}
      */
-    public function consume(string $consumer): JobExecutionMessage
+    public function consume(string $consumer, array $jobInstanceCodes = []): JobExecutionMessage
     {
         $hasBeenUpdated = false;
 
         do {
-            $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
+            if (empty($jobInstanceCodes)) {
+                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
+            } else {
+                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes($jobInstanceCodes);
+            }
 
             if (null !== $jobExecutionMessage) {
                 $jobExecutionMessage->consumedBy($consumer);
