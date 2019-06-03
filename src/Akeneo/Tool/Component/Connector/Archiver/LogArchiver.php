@@ -43,7 +43,9 @@ class LogArchiver implements ArchiverInterface
      */
     public function getArchives(JobExecution $jobExecution)
     {
-        // TODO: Implement getArchives() method.
+        $archives = [];
+
+        return $archives;
     }
 
     /**
