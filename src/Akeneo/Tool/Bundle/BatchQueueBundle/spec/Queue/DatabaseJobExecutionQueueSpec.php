@@ -6,12 +6,12 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class DatabaseJobExecutionQueueSpec extends ObjectBehavior
 {
-    function let(
-        JobExecutionMessageRepository $jobExecutionMessageRepository
-    ) {
+    function let(JobExecutionMessageRepository $jobExecutionMessageRepository)
+    {
         $this->beConstructedWith($jobExecutionMessageRepository);
     }
 
