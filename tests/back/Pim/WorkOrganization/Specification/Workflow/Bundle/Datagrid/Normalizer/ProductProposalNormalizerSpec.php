@@ -3,12 +3,10 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
@@ -74,7 +72,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $value->getScopeCode()->willReturn(null);
         $value->getLocaleCode()->willReturn(null);
         $product->getIdentifier()->willReturn(2);
-        $valueCollection = new ValueCollection();
+        $valueCollection = new WriteValueCollection();
         $valueCollection->add($value->getWrappedObject());
         $standardNormalizer->normalize(
             $valueCollection,

@@ -85,8 +85,8 @@ class ProductModelProposalNormalizer implements NormalizerInterface
     }
 
     /**
-     * During the fetch of the Draft, the ValueCollectionFactory will remove the empty values. This behavior is here
-     * to prevent the display of empty values in the PEF for optional attributes.
+     * During the fetch of the Draft, the ValueCollectionFactory will remove the empty values. As empty values are
+     * filtered in the raw values, deleted values are not rendered properly for the proposal.
      * As the ValueCollectionFactory is used for the Draft too, the $rawValues does not contains empty values anymore.
      * This implies that the proposal are not correctly displayed in the datagrid if you use the $rawValues.
      * So, instead of using the $rawValues, we recalculate the values to display from the $changes field.
