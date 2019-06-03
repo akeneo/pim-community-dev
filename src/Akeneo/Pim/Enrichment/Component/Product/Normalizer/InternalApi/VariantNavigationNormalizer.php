@@ -23,16 +23,16 @@ class VariantNavigationNormalizer implements NormalizerInterface
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
 
-    /** @var EntityWithFamilyVariantNormalizer */
+    /** @var NormalizerInterface */
     private $entityWithFamilyVariantNormalizer;
 
     /**
-     * @param LocaleRepositoryInterface         $localeRepository
-     * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param NormalizerInterface       $entityWithFamilyVariantNormalizer
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
-        EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
+        NormalizerInterface $entityWithFamilyVariantNormalizer
     ) {
         $this->localeRepository = $localeRepository;
         $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
