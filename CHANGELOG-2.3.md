@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.47 (2019-06-03)
+
 ## Technical improvement
 
 - PIM-8384: Improve queue to consume specific jobs
