@@ -23,6 +23,8 @@ services:
         arguments:
             - '@pim_standard_format_serializer'
             - '@pim_datagrid_serializer'
+            - '@pim_catalog.factory.value'
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true

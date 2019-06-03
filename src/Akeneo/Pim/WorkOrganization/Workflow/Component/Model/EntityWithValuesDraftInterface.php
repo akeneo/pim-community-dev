@@ -143,7 +143,7 @@ interface EntityWithValuesDraftInterface extends EntityWithValuesInterface
     public function setEntityWithValue(EntityWithValuesInterface $entityWithValues): EntityWithValuesDraftInterface;
 
     /**
-     * @return EntityWithValuesDraftInterface
+     * @return EntityWithValuesInterface
      */
     public function getEntityWithValue(): EntityWithValuesInterface;
 }

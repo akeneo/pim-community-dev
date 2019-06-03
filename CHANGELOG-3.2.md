@@ -4,6 +4,8 @@
 
 ## Bug fixes
 
+- GITHUB-10083: Fix proposal datagrid render when deleting values
+
 ## Technical improvement
 
 ## BC breaks
