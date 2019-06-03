@@ -13,23 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
@@ -40,13 +24,19 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     /** @var FindAttributesDetailsInterface */
     private $findAttributesDetails;
 
+    /** @var array */
+    private $fixturesDesigner;
+
+    /** @var array */
+    private $fixturesBrand;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->findAttributesDetails = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
         $this->resetDB();
-        $this->loadReferenceEntitiesAndAttributes();
+        $this->loadFixtures();
     }
 
     /**
@@ -69,99 +59,19 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntitiesAndAttributes(): void
+    private function loadFixtures(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        /** @var FixturesLoader $fixturesLoader */
+        $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
 
-        $referenceEntityFull = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
-            [
-                'fr_FR' => 'Concepteur',
-                'en_US' => 'Designer',
-            ],
-            Image::createEmpty()
-        );
-        $referenceEntityRepository->create($referenceEntityFull);
+        $this->fixturesDesigner = $fixturesLoader
+            ->referenceEntity('designer')
+            ->withAttributes(['name', 'email', 'regex', 'long_description', 'main_image'])
+            ->load();
 
-        $name = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('name'),
-            LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        );
-        $email = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'email', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('email'),
-            LabelCollection::fromArray(['en_US' => 'Email']),
-            AttributeOrder::fromInteger(3),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155),
-            AttributeValidationRule::fromString(AttributeValidationRule::EMAIL),
-            AttributeRegularExpression::createEmpty()
-        );
-        $customRegex = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'regex', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('regex'),
-            LabelCollection::fromArray(['en_US' => 'Regex']),
-            AttributeOrder::fromInteger(4),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155),
-            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::fromString('/\w+/')
-        );
-        $longDescription = TextAttribute::createTextarea(
-            AttributeIdentifier::create('designer', 'long_description', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('long_description'),
-            LabelCollection::fromArray(['en_US' => 'Long description']),
-            AttributeOrder::fromInteger(5),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155),
-            AttributeIsRichTextEditor::fromBoolean(true)
-        );
-        $imageAttribute = ImageAttribute::create(
-            AttributeIdentifier::create('designer', 'image', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('main_image'),
-            LabelCollection::fromArray(['en_US' => 'Portrait']),
-            AttributeOrder::fromInteger(6),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromString('1000'),
-            AttributeAllowedExtensions::fromList(['pdf'])
-        );
-        $attributesRepository->create($name);
-        $attributesRepository->create($email);
-        $attributesRepository->create($customRegex);
-        $attributesRepository->create($longDescription);
-        $attributesRepository->create($imageAttribute);
-
-        $referenceEntityEmpty = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
-            [
-                'fr_FR' => 'Marque',
-                'en_US' => 'Brand',
-            ],
-            Image::createEmpty()
-        );
-        $referenceEntityRepository->create($referenceEntityEmpty);
+        $this->fixturesBrand = $fixturesLoader
+            ->referenceEntity('brand')
+            ->load();
     }
 
     /**
@@ -174,16 +84,16 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
         $expectedName = new AttributeDetails();
         $expectedName->type = 'text';
-        $expectedName->identifier = 'name_designer_test';
+        $expectedName->identifier = (string) $this->fixturesDesigner['attributes']['name']->getIdentifier();
         $expectedName->referenceEntityIdentifier = 'designer';
         $expectedName->code = 'name';
-        $expectedName->labels = ['en_US' => 'Name'];
+        $expectedName->labels = ['en_US' => 'Name', 'fr_FR' => 'Nom'];
         $expectedName->order = 2;
-        $expectedName->isRequired = true;
-        $expectedName->valuePerChannel = true;
+        $expectedName->isRequired = false;
+        $expectedName->valuePerChannel = false;
         $expectedName->valuePerLocale = true;
         $expectedName->additionalProperties = [
-            'max_length' => 155,
+            'max_length' => 25,
             'is_textarea' => false,
             'is_rich_text_editor' => false,
             'validation_rule' => 'none',
@@ -199,14 +109,14 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
         $expectedEmail = new AttributeDetails();
         $expectedEmail->type = 'text';
-        $expectedEmail->identifier = 'email_designer_test';
+        $expectedEmail->identifier = (string) $this->fixturesDesigner['attributes']['email']->getIdentifier();
         $expectedEmail->referenceEntityIdentifier = 'designer';
         $expectedEmail->code = 'email';
-        $expectedEmail->labels = ['en_US' => 'Email'];
+        $expectedEmail->labels = ['en_US' => 'Email', 'fr_FR' => 'Email'];
         $expectedEmail->order = 3;
         $expectedEmail->isRequired = true;
-        $expectedEmail->valuePerChannel = true;
-        $expectedEmail->valuePerLocale = true;
+        $expectedEmail->valuePerChannel = false;
+        $expectedEmail->valuePerLocale = false;
         $expectedEmail->additionalProperties = [
             'max_length' => 155,
             'is_textarea' => false,
@@ -224,7 +134,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
         $expectedRegex = new AttributeDetails();
         $expectedRegex->type = 'text';
-        $expectedRegex->identifier = 'regex_designer_test';
+        $expectedRegex->identifier = (string) $this->fixturesDesigner['attributes']['regex']->getIdentifier();
         $expectedRegex->referenceEntityIdentifier = 'designer';
         $expectedRegex->code = 'regex';
         $expectedRegex->labels = ['en_US' => 'Regex'];
@@ -249,7 +159,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
         $expectedLongDescription = new AttributeDetails();
         $expectedLongDescription->type = 'text';
-        $expectedLongDescription->identifier = 'long_description_designer_test';
+        $expectedLongDescription->identifier = (string) $this->fixturesDesigner['attributes']['long_description']->getIdentifier();
         $expectedLongDescription->referenceEntityIdentifier = 'designer';
         $expectedLongDescription->code = 'long_description';
         $expectedLongDescription->labels = ['en_US' => 'Long description'];
@@ -278,17 +188,17 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
         $expectedImage = new AttributeDetails();
         $expectedImage->type = 'image';
-        $expectedImage->identifier = 'image_designer_test';
+        $expectedImage->identifier = (string) $this->fixturesDesigner['attributes']['main_image']->getIdentifier();
         $expectedImage->referenceEntityIdentifier = 'designer';
         $expectedImage->code = 'main_image';
         $expectedImage->labels = ['en_US' => 'Portrait'];
         $expectedImage->order = 6;
         $expectedImage->isRequired = true;
         $expectedImage->valuePerChannel = true;
-        $expectedImage->valuePerLocale = true;
+        $expectedImage->valuePerLocale = false;
         $expectedImage->additionalProperties = [
             'max_file_size' => '1000',
-            'allowed_extensions' => ['pdf'],
+            'allowed_extensions' => ['png'],
         ];
 
         $this->assertEquals($expectedImage, $actualImage);
