@@ -20,6 +20,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
+use spec\PhpSpec\Exception\Fracture\InterfaceNotImplementedExceptionSpec;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -109,7 +110,12 @@ class AttributesMappingContext extends PimContext
         /** @var NodeElement $cell */
         $cell = $this->spin(
             function () use ($franklinAttrLabel) {
-                return $this->getCurrentPage()->find('xpath', '//td[text()[contains(.,"'.$franklinAttrLabel.'")]]');
+                $nodeElements = $this->getCurrentPage()->findAll('css', '.franklin-attribute div.label');
+                foreach ($nodeElements as $nodeElement) {
+                    if ($franklinAttrLabel === $nodeElement->getText()) {
+                        return $nodeElement->getParent();
+                    }
+                }
             },
             'Could not find franklin attribute row for label "'.$franklinAttrLabel.'".'
         );
