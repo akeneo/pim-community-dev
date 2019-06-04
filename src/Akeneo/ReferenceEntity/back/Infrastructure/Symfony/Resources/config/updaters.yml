@@ -72,12 +72,12 @@ services:
         tags:
             - { name: akeneo_referenceentity.record_value_updater }
 
-    # akeneo_referenceentity.application.edit_record.record_value_updater.uploaded_file_updater:
-    #     class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\UploadedFileUpdater
-    #     arguments:
-    #         - '@akeneo_file_storage.file_storage.file.file_storer'
-    #     tags:
-    #         - { name: akeneo_referenceentity.record_value_updater }
+    akeneo_referenceentity.application.edit_record.record_value_updater.uploaded_file_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\UploadedFileUpdater
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
 
     akeneo_referenceentity.application.edit_record.record_value_updater.stored_file_updater:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\StoredFileUpdater

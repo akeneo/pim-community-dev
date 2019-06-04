@@ -36,7 +36,7 @@ class StoredFileUpdater implements ValueUpdaterInterface
 {
     public function supports(AbstractEditValueCommand $command): bool
     {
-        return $command instanceof EditStoredFileValueCommand || $command instanceof EditUploadedFileValueCommand;
+        return $command instanceof EditStoredFileValueCommand;
     }
 
     public function __invoke(Record $record, AbstractEditValueCommand $command): void
