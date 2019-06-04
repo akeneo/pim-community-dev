@@ -104,6 +104,8 @@ class ProductBuilder implements ProductBuilderInterface
         if (AttributeTypes::IDENTIFIER === $attribute->getType() && null !== $data && $entityWithValues instanceof ProductInterface) {
             $identifierValue = ScalarValue::value($attribute->getCode(), $data);
             $entityWithValues->setIdentifier($identifierValue);
+
+            return $identifierValue;
         }
 
         return $this->entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
