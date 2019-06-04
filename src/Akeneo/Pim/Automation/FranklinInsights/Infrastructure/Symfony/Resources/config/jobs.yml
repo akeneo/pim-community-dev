@@ -185,3 +185,12 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    # job launchers
+    akeneo.pim.automation.franklin_insights.connector.job_launcher.schedule_fetch_products:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\ScheduleFetchProductsJob'
+        arguments:
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@pim_user.repository.user'
+            - '@akeneo_batch_queue.queue.job_execution_message_repository'
