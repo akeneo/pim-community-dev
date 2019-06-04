@@ -1,5 +1,4 @@
 parameters:
-    pim_enrich.controller.category_tree.class: Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
     pim_api.controller.media_file.class: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\MediaFileController
 
 services:

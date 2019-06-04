@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8315: Fix undefined attribute groups in family mass edit
+- PIM-8410: Remove unused controller class parameter `pim_enrich.controller.category_tree.class`
 
 # 3.0.21 (2019-05-27)
 
