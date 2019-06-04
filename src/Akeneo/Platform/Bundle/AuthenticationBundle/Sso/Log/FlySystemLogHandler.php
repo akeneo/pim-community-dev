@@ -34,8 +34,12 @@ final class FlySystemLogHandler extends RotatingFileHandler
         if (null === $this->url || '' === $this->url) {
             throw new \LogicException('Missing stream url, the stream can not be opened. This may be caused by a premature call to close().');
         }
+        $logFileContent = '';
+        if ($this->logStorage->has($this->url)) {
+            $logFileContent = $this->logStorage->read($this->url);
+        }
 
-        $this->logStorage->put($this->url, $record['formatted']);
+        $this->logStorage->put($this->url, $logFileContent.$record['formatted']);
     }
 
     /**
