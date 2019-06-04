@@ -4,11 +4,9 @@ namespace spec\Oro\Bundle\PimDataGridBundle\Datasource;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
@@ -106,7 +104,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             90,
             1,
             'parent_code',
-            new ValueCollection()
+            new WriteValueCollection()
         );
         $query->__invoke(new Query\FetchProductAndProductModelRowsParameters(
             $pqb->getWrappedObject(),

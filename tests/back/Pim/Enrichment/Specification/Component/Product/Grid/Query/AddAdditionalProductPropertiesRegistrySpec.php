@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPrope
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -50,7 +50,7 @@ class AddAdditionalProductPropertiesRegistrySpec extends ObjectBehavior
                 90,
                 1,
                 'parent_code',
-                new ValueCollection([])
+                new WriteValueCollection([])
             ),
             Row::fromProduct(
                 'identifier_2',
@@ -64,7 +64,7 @@ class AddAdditionalProductPropertiesRegistrySpec extends ObjectBehavior
                 90,
                 1,
                 'parent_code',
-                new ValueCollection([])
+                new WriteValueCollection([])
             ),
         ];
 

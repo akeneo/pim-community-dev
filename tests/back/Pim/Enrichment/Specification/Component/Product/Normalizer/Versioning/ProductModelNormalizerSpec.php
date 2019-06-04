@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer;
@@ -13,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -50,7 +51,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         Serializer $serializer,
         ProductModelInterface $productModel,
         ValueInterface $sku,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         \Iterator $iterator,
         FamilyVariantInterface $familyVariant
     ) {
@@ -88,7 +89,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ProductModelInterface $parent,
         ValueInterface $sku,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         \Iterator $iterator,
         FamilyVariantInterface $familyVariant
     ) {
@@ -126,7 +127,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         Serializer $serializer,
         ProductModelInterface $productModel,
         ValueInterface $sku,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         \Iterator $iterator,
         FamilyVariantInterface $familyVariant,
         ProductModelAssociation $myCrossSell,

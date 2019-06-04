@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraint;
@@ -44,7 +44,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violation,
         EntityWithValuesInterface $product,
         \ArrayIterator $iterator,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $identifier,
         AttributeInterface $attribute,
         Constraint $constraint,
@@ -95,7 +95,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violationProductValue,
         EntityWithValuesInterface $product,
         \ArrayIterator $iterator,
-        ValueCollectionInterface $productValues,
+        WriteValueCollection $productValues,
         ValueInterface $sku,
         AttributeInterface $attribute,
         Constraint $lengthConstraint,
@@ -155,7 +155,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violationProductValue,
         EntityWithValuesInterface $product,
         \ArrayIterator $iterator,
-        ValueCollectionInterface $productValues,
+        WriteValueCollection $productValues,
         ValueInterface $sku,
         AttributeInterface $attribute,
         Constraint $regexpConstraint,
@@ -220,7 +220,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violation,
         EntityWithValuesInterface $product,
         \ArrayIterator $iterator,
-        ValueCollectionInterface $productValues,
+        WriteValueCollection $productValues,
         ValueInterface $description,
         AttributeInterface $attribute,
         Constraint $constraint,

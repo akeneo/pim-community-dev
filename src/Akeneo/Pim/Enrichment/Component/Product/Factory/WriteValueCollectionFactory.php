@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -19,7 +19,7 @@ use Psr\Log\LoggerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValueCollectionFactory implements ValueCollectionFactoryInterface
+class WriteValueCollectionFactory
 {
     /** @var ValueFactory */
     private $valueFactory;
@@ -55,10 +55,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         $this->emptyValuesCleaner = $emptyValuesCleaner;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createFromStorageFormat(array $rawValues)
+    public function createFromStorageFormat(array $rawValues): WriteValueCollection
     {
         $notUsedIdentifier = 'not_used_identifier';
 
@@ -72,7 +69,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
         if (empty($rawValueCollectionsIndexedByType)) {
             foreach (array_keys($rawValueCollections) as $identifier) {
-                $valueCollections[$identifier] = new ValueCollection([]);
+                $valueCollections[$identifier] = new WriteValueCollection([]);
             }
 
             return $valueCollections;
@@ -91,7 +88,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
 
         foreach ($identifiersWithOnlyUnknownAttributes as $identifier) {
-            $valueCollections[$identifier] = new ValueCollection([]);
+            $valueCollections[$identifier] = new WriteValueCollection([]);
         }
 
         return $valueCollections;
@@ -190,7 +187,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                 }
             }
 
-            $entities[$productIdentifier] = new ValueCollection($values);
+            $entities[$productIdentifier] = new WriteValueCollection($values);
         }
 
         return $entities;

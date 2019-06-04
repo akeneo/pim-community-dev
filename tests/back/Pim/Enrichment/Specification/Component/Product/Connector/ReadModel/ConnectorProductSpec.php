@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 
@@ -36,7 +36,7 @@ class ConnectorProductSpec extends ObjectBehavior
                 ]
             ],
             [],
-            new ValueCollection([
+            new ReadValueCollection([
                 ScalarValue::value('attribute_code_1', 'data'),
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'en_US'),
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'fr_FR')
@@ -47,11 +47,6 @@ class ConnectorProductSpec extends ObjectBehavior
     function it_is_a_connector_product()
     {
         $this->shouldBeAnInstanceOf(ConnectorProduct::class);
-    }
-
-    function it_gets_attribute_codes_in_values()
-    {
-        $this->attributeCodesInValues()->shouldReturn(['attribute_code_1', 'attribute_code_2']);
     }
 
     function it_filters_by_category_codes()
@@ -113,7 +108,7 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes(['attribute_code_1', 'attribute_code_4'], ['en_US', 'fr_FR']);
 
         $connectorProduct->values()->shouldBeLike(
-            new ValueCollection([ScalarValue::value('attribute_code_1', 'data')])
+            new ReadValueCollection([ScalarValue::value('attribute_code_1', 'data')])
         );
     }
 
@@ -122,7 +117,7 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes([], ['en_US', 'fr_FR']);
 
         $connectorProduct->values()->shouldBeLike(
-            new ValueCollection([])
+            new ReadValueCollection([])
         );
     }
 
@@ -131,7 +126,7 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes(['attribute_code_1', 'attribute_code_2'], ['en_US']);
 
         $connectorProduct->values()->shouldBeLike(
-            new ValueCollection([
+            new ReadValueCollection([
                 ScalarValue::value('attribute_code_1', 'data'),
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'en_US')
             ])
@@ -143,7 +138,7 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes(['attribute_code_1', 'attribute_code_2'], []);
 
         $connectorProduct->values()->shouldBeLike(
-            new ValueCollection([
+            new ReadValueCollection([
                 ScalarValue::value('attribute_code_1', 'data'),
             ])
         );
@@ -175,7 +170,7 @@ class ConnectorProductSpec extends ObjectBehavior
             null,
             [],
             [],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $this->associatedProductIdentifiers()->shouldReturn([]);

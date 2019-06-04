@@ -36,7 +36,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
      *
-     * @var ValueCollectionInterface
+     * @var WriteValueCollection
      */
     protected $values;
 
@@ -84,7 +84,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function __construct()
     {
-        $this->values = new ValueCollection();
+        $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
@@ -280,13 +280,13 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): ValueCollectionInterface
+    public function getValues(): WriteValueCollection
     {
         if (!$this->isVariant()) {
             return $this->values;
         }
 
-        $values = ValueCollection::fromCollection($this->values);
+        $values = WriteValueCollection::fromCollection($this->values);
 
         return $this->getAllValues($this, $values);
     }
@@ -294,7 +294,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ValueCollectionInterface $values)
+    public function setValues(WriteValueCollection $values)
     {
         $this->values = $values;
 
@@ -707,7 +707,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getValuesForVariation(): ValueCollectionInterface
+    public function getValuesForVariation(): WriteValueCollection
     {
         return $this->values;
     }
@@ -730,14 +730,14 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * @param EntityWithFamilyVariantInterface $entity
-     * @param ValueCollectionInterface         $valueCollection
+     * @param WriteValueCollection         $valueCollection
      *
-     * @return ValueCollectionInterface
+     * @return WriteValueCollection
      */
     private function getAllValues(
         EntityWithFamilyVariantInterface $entity,
-        ValueCollectionInterface $valueCollection
-    ): ValueCollectionInterface {
+        WriteValueCollection $valueCollection
+    ): WriteValueCollection {
         $parent = $entity->getParent();
 
         if (null === $parent) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
@@ -45,7 +45,7 @@ final class ConnectorProductModel
     /** @var array */
     private $categoryCodes;
 
-    /** @var ValueCollectionInterface */
+    /** @var ReadValueCollection */
     private $values;
 
     public function __construct(
@@ -59,7 +59,7 @@ final class ConnectorProductModel
         array $metadata,
         array $associations,
         array $categoryCodes,
-        ValueCollectionInterface $values
+        ReadValueCollection $values
     ) {
         $this->id = $id;
         $this->code = $code;
@@ -124,7 +124,7 @@ final class ConnectorProductModel
         return $this->categoryCodes;
     }
 
-    public function values(): ValueCollectionInterface
+    public function values(): ReadValueCollection
     {
         return $this->values;
     }

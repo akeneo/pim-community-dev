@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFr
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
@@ -39,7 +39,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
     /** @var GetGroupAssociationsByProductModelCodes */
     private $getGroupAssociationsByProductModelCodes;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var ValueCollectionFactory */
     private $valueCollectionFactory;
 
     public function __construct(
@@ -48,7 +48,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         GetProductAssociationsByProductModelCodes $getProductAssociationsByProductModelCodes,
         GetProductModelsAssociationsByProductModelCodes $getProductModelAssociationsByProductModelCodes,
         GetGroupAssociationsByProductModelCodes $getGroupAssociationsByProductModelCodes,
-        ValueCollectionFactoryInterface $valueCollectionFactory
+        ValueCollectionFactory $valueCollectionFactory
     ) {
         $this->getValuesAndPropertiesFromProductModelCodes = $getValuesAndPropertiesFromProductModelCodes;
         $this->getCategoryCodesByProductModelCodes = $getCategoryCodesByProductModelCodes;

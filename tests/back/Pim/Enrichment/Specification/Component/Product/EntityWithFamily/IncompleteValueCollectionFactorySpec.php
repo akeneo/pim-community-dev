@@ -11,7 +11,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 
@@ -58,7 +58,7 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $name,
         $ecommerce,
         EntityWithFamilyInterface $product,
-        ValueCollectionInterface $productValues,
+        WriteValueCollection $productValues,
         RequiredValueCollection $requiredValues,
         RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
@@ -120,7 +120,7 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $price,
         $ecommerce,
         EntityWithFamilyInterface $product,
-        ValueCollectionInterface $productValues,
+        WriteValueCollection $productValues,
         RequiredValueCollection $requiredValues,
         RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
@@ -157,7 +157,7 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $price,
         $ecommerce,
         EntityWithFamilyInterface $product,
-        ValueCollectionInterface $productValues,
+        WriteValueCollection $productValues,
         RequiredValueCollection $requiredValues,
         RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
@@ -193,7 +193,7 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $price,
         $ecommerce,
         EntityWithFamilyInterface $product,
-        ValueCollectionInterface $productValues,
+        WriteValueCollection $productValues,
         RequiredValueCollection $requiredValues,
         RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,

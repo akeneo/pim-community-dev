@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -35,7 +35,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $standardNormalizer,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
-        ValueCollection $values
+        WriteValueCollection $values
     ) {
         $productModel->getCode()->willReturn('code');
         $productModel->getParent()->willReturn(null);
@@ -85,7 +85,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $standardNormalizer,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
-        ValueCollection $values,
+        WriteValueCollection $values,
         ProductModelInterface $parentModel
     ) {
         $productModel->getCode()->willReturn('code');

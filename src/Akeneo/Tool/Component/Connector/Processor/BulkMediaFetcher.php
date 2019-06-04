@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Processor;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
@@ -49,11 +49,11 @@ class BulkMediaFetcher
     /**
      * Fetch the media of the items to the target
      *
-     * @param ValueCollectionInterface $values
+     * @param WriteValueCollection $values
      * @param string                   $target
      * @param string                   $identifier
      */
-    public function fetchAll(ValueCollectionInterface $values, $target, $identifier)
+    public function fetchAll(WriteValueCollection $values, $target, $identifier)
     {
         $target = DIRECTORY_SEPARATOR !== substr($target, -1) ? $target . DIRECTORY_SEPARATOR : $target;
 

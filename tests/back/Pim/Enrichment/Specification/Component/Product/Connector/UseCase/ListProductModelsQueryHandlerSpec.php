@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -73,7 +73,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             ['workflow_status' => 'working_copy'],
             [],
             ['category_code_1'],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $connectorProductModel2 = new ConnectorProductModel(
@@ -87,7 +87,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             ['workflow_status' => 'in_progress'],
             [],
             ['category_code_4'],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
 
@@ -134,7 +134,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             ['workflow_status' => 'working_copy'],
             [],
             ['category_code_1'],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $connectorProductModel2 = new ConnectorProductModel(
@@ -148,7 +148,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             ['workflow_status' => 'in_progress'],
             [],
             ['category_code_4'],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
 

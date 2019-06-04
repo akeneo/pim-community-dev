@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Exter
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
@@ -29,7 +29,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
             new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
             new DateTimeNormalizer()
         );
-        $productValuesNormalizer->normalize(Argument::type(ValueCollection::class), 'standard')->willReturn([]);
+        $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
     }
 
     function it_is_a_normalizer_of_a_list_of_connector_products()
@@ -61,7 +61,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                 ],
             ],
             ['category_code_1', 'category_code_2'],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $connector2 = new ConnectorProductModel(
@@ -75,7 +75,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $this->normalizeConnectorProductModelList(new ConnectorProductModelList(1, [$connector1, $connector2]))
@@ -147,7 +147,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                 ],
             ],
             ['sportswear', 'men'],
-            new ValueCollection([$scalarValue])
+            new ReadValueCollection([$scalarValue])
         );
 
         $this->normalizeConnectorProductModel($connectorProductModel)->shouldReturn(

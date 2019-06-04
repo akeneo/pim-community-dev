@@ -2,7 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -42,6 +43,6 @@ class ProductValuesNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return 'standard' === $format && $data instanceof ValueCollectionInterface;
+        return 'standard' === $format && ($data instanceof WriteValueCollection || $data instanceof ReadValueCollection);
     }
 }

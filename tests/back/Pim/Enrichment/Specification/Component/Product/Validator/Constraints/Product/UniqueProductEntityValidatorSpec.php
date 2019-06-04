@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntityValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
@@ -45,7 +45,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         ProductInterface $product,
         ProductInterface $productInDatabase,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $identifierValue,
         AttributeInterface $identifierAttribute
     ) {
@@ -78,7 +78,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $attributeRepository,
         ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $identifierValue,
         AttributeInterface $identifierAttribute
     ) {
@@ -106,7 +106,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $objectRepository,
         UniqueValuesSet $uniqueValuesSet,
         ProductInterface $product,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $identifierValue
     ) {
         $constraint = new UniqueProductEntity();
@@ -127,7 +127,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
 
     function it_does_nothing_if_the_product_does_not_have_an_identifier(
         ProductInterface $product,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $constraint = new UniqueProductEntity();
 

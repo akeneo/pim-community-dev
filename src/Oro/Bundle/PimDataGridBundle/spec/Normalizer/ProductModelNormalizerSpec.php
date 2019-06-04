@@ -12,7 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
@@ -65,7 +65,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ValueInterface $image,
@@ -173,7 +173,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ValueInterface $image,
@@ -283,7 +283,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ValueInterface $image,

@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscribe
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
@@ -45,7 +45,7 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
         $serializer,
         EntityWithValuesInterface $entity,
         GenericEvent $event,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $event->getSubject()->willReturn($entity);
         $entity->getValues()->willReturn($values);
@@ -61,7 +61,7 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
     function it_computes_raw_values_of_a_product_model(
         $serializer,
         ProductModelInterface $rootProductModel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $descriptionValue,
         ValueInterface $colorValue,
         ValueInterface $imageValue,
@@ -94,7 +94,7 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
         $imageValue->getLocaleCode()->willReturn(null);
 
 
-        $serializer->normalize(Argument::type(ValueCollectionInterface::class), 'storage')->willReturn(
+        $serializer->normalize(Argument::type(WriteValueCollection::class), 'storage')->willReturn(
             ['storage_value1' => 'data1', 'storage_value2' => 'data2']
         );
         $rootProductModel->setRawValues(['storage_value1' => 'data1', 'storage_value2' => 'data2'])->shouldBeCalled();
@@ -105,7 +105,7 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
     function it_computes_raw_values_of_a_product(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $descriptionValue,
         ValueInterface $colorValue,
         ValueInterface $imageValue,
@@ -138,7 +138,7 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
         $imageValue->getLocaleCode()->willReturn(null);
 
 
-        $serializer->normalize(Argument::type(ValueCollectionInterface::class), 'storage')->willReturn(
+        $serializer->normalize(Argument::type(WriteValueCollection::class), 'storage')->willReturn(
             ['storage_value1' => 'data1', 'storage_value2' => 'data2']
         );
         $product->setRawValues(['storage_value1' => 'data1', 'storage_value2' => 'data2'])->shouldBeCalled();

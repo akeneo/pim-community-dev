@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ProductSpec extends ObjectBehavior
@@ -153,7 +153,7 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_label_of_the_product_without_specified_scope(
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $nameValue,
         ValueInterface $identifier
     ) {
@@ -183,7 +183,7 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_label_regardless_of_the_specified_scope_if_the_attribute_as_label_is_not_scopable(
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $nameValue,
         ValueInterface $identifier
     ) {
@@ -212,7 +212,7 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_label_if_the_scope_is_specified_and_the_attribute_as_label_is_scopable(
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $nameValue,
         ValueInterface $identifier
     ) {
@@ -240,7 +240,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_gets_the_identifier_as_label_if_there_is_no_family(
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
@@ -260,7 +260,7 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_identifier_as_label_if_there_is_no_attribute_as_label(
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $identifier
     ) {
         $family->getAttributeAsLabel()->willReturn(null);
@@ -283,7 +283,7 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_identifier_as_label_if_the_label_value_is_null(
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $nameValue,
         ValueInterface $identifier
     ) {
@@ -310,7 +310,7 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_identifier_as_label_if_the_label_value_data_is_empty(
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $nameValue,
         ValueInterface $identifier
     ) {
@@ -339,7 +339,7 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_image_of_the_product(
         FamilyInterface $family,
         AttributeInterface $attributeAsImage,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $pictureValue
     ) {
         $attributeAsImage->getCode()->willReturn('picture');
@@ -375,7 +375,7 @@ class ProductSpec extends ObjectBehavior
     function it_gets_no_image_if_the_value_of_image_is_empty(
         FamilyInterface $family,
         AttributeInterface $attributeAsImage,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $attributeAsImage->getCode()->willReturn('picture');
 
@@ -402,7 +402,7 @@ class ProductSpec extends ObjectBehavior
     }
 
     function it_has_the_values_of_the_variation(
-        ValueCollectionInterface $valueCollection
+        WriteValueCollection $valueCollection
     ) {
         $this->setValues($valueCollection);
 
@@ -410,7 +410,7 @@ class ProductSpec extends ObjectBehavior
     }
 
     function it_has_values_when_it_is_not_variant(
-        ValueCollectionInterface $valueCollection
+        WriteValueCollection $valueCollection
     ) {
         $this->setValues($valueCollection);
         $this->setParent(null);
@@ -419,9 +419,9 @@ class ProductSpec extends ObjectBehavior
     }
 
     function it_has_values_of_its_parent_when_it_is_variant(
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         ProductModelInterface $productModel,
-        ValueCollectionInterface $parentValuesCollection,
+        WriteValueCollection $parentValuesCollection,
         \Iterator $iterator,
         ValueInterface $value,
         AttributeInterface $valueAttribute,

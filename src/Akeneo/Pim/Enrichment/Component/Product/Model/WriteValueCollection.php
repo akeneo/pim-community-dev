@@ -17,7 +17,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValueCollection implements ValueCollectionInterface
+class WriteValueCollection implements \Countable, \IteratorAggregate
 {
     /** @var ValueInterface[] */
     private $values;
@@ -43,13 +43,18 @@ class ValueCollection implements ValueCollectionInterface
     }
 
     /**
-     * @param ValueCollectionInterface $collection
+     * @param WriteValueCollection $collection
      *
-     * @return ValueCollectionInterface
+     * @return WriteValueCollection
      */
-    public static function fromCollection(ValueCollectionInterface $collection): ValueCollectionInterface
+    public static function fromCollection(WriteValueCollection $collection): WriteValueCollection
     {
         return new static($collection->toArray());
+    }
+
+    public function toReadValueCollection(): ReadValueCollection
+    {
+        return new ReadValueCollection($this->values);
     }
 
     /**

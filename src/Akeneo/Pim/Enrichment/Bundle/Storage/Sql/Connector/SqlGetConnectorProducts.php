@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromPro
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -40,7 +40,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     /** @var GetCategoryCodesByProductIdentifiers */
     private $getCategoryCodesByProductIdentifiers;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var ValueCollectionFactory */
     private $valueCollectionFactory;
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -52,7 +52,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         GetProductModelAssociationsByProductIdentifiers $getProductModelAssociationsByProductIdentifiers,
         GetGroupAssociationsByProductIdentifiers $getGroupAssociationsByProductIdentifiers,
         GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers,
-        ValueCollectionFactoryInterface $valueCollectionFactory,
+        ValueCollectionFactory $valueCollectionFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->getValuesAndPropertiesFromProductIdentifiers = $getValuesAndPropertiesFromProductIdentifiers;

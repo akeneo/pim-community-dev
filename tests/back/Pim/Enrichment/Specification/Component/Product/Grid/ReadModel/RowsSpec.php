@@ -6,10 +6,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 
@@ -29,7 +28,7 @@ class RowsSpec extends ObjectBehavior
             90,
             1,
             'parent_code',
-            new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
+            new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
         );
 
         $this->beConstructedWith([$row], 100);
@@ -59,7 +58,7 @@ class RowsSpec extends ObjectBehavior
             90,
             1,
             'parent_code',
-            new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
+            new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
         );
 
         $this->rows()->shouldBeLike([$row]);

@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -67,7 +67,7 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         OnlyExpectedAttributes $constraint,
         AttributeInterface $color,
         FamilyInterface $family,
-        ValueCollection $valuesForVariation
+        WriteValueCollection $valuesForVariation
     ) {
         $color->getCode()->willReturn('color');
         $entity->getFamilyVariant()->willReturn($familyVariant);
@@ -94,7 +94,7 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         AttributeInterface $price,
         ConstraintViolationBuilderInterface $violation,
         FamilyInterface $family,
-        ValueCollection $valuesForVariation
+        WriteValueCollection $valuesForVariation
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($valuesForVariation);
