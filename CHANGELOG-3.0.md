@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.22 (2019-06-04)
+
 ## Bug fixes
 
 - PIM-8389: Fix asset end of use display when no date is set
