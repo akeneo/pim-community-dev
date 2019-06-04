@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -19,21 +21,23 @@ class LogArchiver implements ArchiverInterface
     /**
      * {@inheritDoc}
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         $logPath = $jobExecution->getLogFile();
 
         if (is_file($logPath)) {
             $log = fopen($logPath, 'r');
             $this->filesystem->writeStream($logPath, $log);
-            fclose($log);
+            if (is_resource($log)) {
+                fclose($log);
+            }
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         return in_array($jobExecution->getJobInstance()->getType(), [JobInstance::TYPE_EXPORT, JobInstance::TYPE_IMPORT]);
     }
@@ -41,7 +45,7 @@ class LogArchiver implements ArchiverInterface
     /**
      * {@inheritDoc}
      */
-    public function getArchives(JobExecution $jobExecution)
+    public function getArchives(JobExecution $jobExecution): array
     {
         $archives = [];
 
@@ -59,7 +63,7 @@ class LogArchiver implements ArchiverInterface
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'log';
     }

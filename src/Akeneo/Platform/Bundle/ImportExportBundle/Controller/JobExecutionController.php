@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -52,7 +53,7 @@ class JobExecutionController
     protected $jobExecutionRepo;
 
     /** @var FilesystemInterface */
-    private $fs;
+    private $logFileSystem;
 
     /**
      * @param EngineInterface          $templating
@@ -62,7 +63,7 @@ class JobExecutionController
      * @param JobExecutionArchivist    $archivist
      * @param JobExecutionManager      $jobExecutionManager
      * @param JobExecutionRepository   $jobExecutionRepo
-     * @param FilesystemInterface      $fs
+     * @param FilesystemInterface      $logFileSystem
      * @param string                   $jobType
      */
     public function __construct(
@@ -73,7 +74,7 @@ class JobExecutionController
         JobExecutionArchivist $archivist,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
-        FilesystemInterface $fs,
+        FilesystemInterface $logFileSystem,
         $jobType
     ) {
         $this->templating = $templating;
@@ -83,7 +84,7 @@ class JobExecutionController
         $this->archivist = $archivist;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo = $jobExecutionRepo;
-        $this->fs = $fs;
+        $this->logFileSystem = $logFileSystem;
         $this->jobType = $jobType;
     }
 
@@ -93,7 +94,7 @@ class JobExecutionController
      * @param int $id
      *
      * @return Response
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function downloadLogFileAction($id)
     {
@@ -105,7 +106,7 @@ class JobExecutionController
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
-        $logFileContent = $this->fs->read($jobExecution->getLogFile());
+        $logFileContent = $this->logFileSystem->read($jobExecution->getLogFile());
 
         $response = new Response($logFileContent);
         $disposition = $response->headers->makeDisposition(
