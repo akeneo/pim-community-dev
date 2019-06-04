@@ -51,18 +51,18 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
      * {@inheritdoc}
      */
     public function addOrReplaceValue(
-        EntityWithValuesInterface $entityWithEntityWithValues,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         ?string $localeCode,
         ?string $scopeCode,
         $data
     ) : ValueInterface {
         $newValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-        $formerValue = $entityWithEntityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
+        $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
 
         $shouldRemoveValue = ('' === $data || [] === $data || null === $data);
         if ($shouldRemoveValue && null !== $formerValue) {
-            $entityWithEntityWithValues->removeValue($formerValue);
+            $entityWithValues->removeValue($formerValue);
 
             return $newValue;
         }
@@ -73,11 +73,11 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
                 return $formerValue;
             }
 
-            $entityWithEntityWithValues->removeValue($formerValue);
+            $entityWithValues->removeValue($formerValue);
         }
 
         $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-        $entityWithEntityWithValues->addValue($value);
+        $entityWithValues->addValue($value);
 
         return $value;
     }

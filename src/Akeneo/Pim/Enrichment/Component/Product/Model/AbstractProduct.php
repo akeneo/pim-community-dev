@@ -106,7 +106,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
-        $this->enabled = $this->setEnabled(true);
+        $this->setEnabled(true);
     }
 
     /**
@@ -338,7 +338,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setValues(ValueCollectionInterface $values)
     {
-        $formerValues = $this->getValues();
+        if (null === $this->values) {
+            $this->values = new ValueCollection();
+        }
+        $formerValues = $this->values;
         foreach ($formerValues as $formerValue) {
             if (null === $values->getByCodes($formerValue->getAttributeCode(), $formerValue->getScopeCode(), $formerValue->getLocaleCode())) {
                 $this->removeValue($formerValue);
@@ -539,7 +542,7 @@ abstract class AbstractProduct implements ProductInterface
             return;
         }
 
-        $this->events[] = true === $enabled ? new ProductEnabled($this->identifier) : new ProductDisabled($this->identifier);
+        $this->events[] = (true === $enabled) ? new ProductEnabled($this->identifier) : new ProductDisabled($this->identifier);
         $this->enabled = $enabled;
 
         return $this;

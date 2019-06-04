@@ -19,7 +19,7 @@ interface EntityWithValuesBuilderInterface
     public function addAttribute(EntityWithValuesInterface $entityWithValues, AttributeInterface $attribute);
 
     public function addOrReplaceValue(
-        EntityWithValuesInterface $entityWithEntityWithValues,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         ?string $localeCode,
         ?string $scopeCode,
