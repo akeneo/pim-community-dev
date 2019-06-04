@@ -6,16 +6,19 @@ import LabelCollection, {
 import AttributeCode, {NormalizedCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
 
 type AttributeType = string;
+type UseableAsGridFilter = boolean;
 
 type NormalizedAttributeType = string;
 type NormalizedReferenceDataName = string;
 type ReferenceDataName = string;
+type NormalizedUseableAsGridFilter = boolean;
 
 export interface NormalizedAttribute {
   code: NormalizedCode;
   type: NormalizedAttributeType;
   labels: NormalizedLabelCollection;
   reference_data_name: NormalizedReferenceDataName;
+  useable_as_grid_filter: NormalizedUseableAsGridFilter;
 }
 
 export default interface Attribute {
@@ -24,6 +27,7 @@ export default interface Attribute {
   getReferenceDataName: () => ReferenceDataName;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
+  getUseableAsGridFilter: () => UseableAsGridFilter;
   equals: (attribute: Attribute) => boolean;
   normalize: () => NormalizedAttribute;
 }
@@ -34,7 +38,8 @@ class AttributeImplementation implements Attribute {
     private code: Code,
     private type: AttributeType,
     private labelCollection: LabelCollection,
-    private referenceDataName: ReferenceDataName
+    private referenceDataName: ReferenceDataName,
+    private useableAsGridFilter: UseableAsGridFilter
   ) {
     if (!(code instanceof Code)) {
       throw new InvalidArgumentError('Attribute expects an AttributeCode as code argument');
@@ -48,6 +53,9 @@ class AttributeImplementation implements Attribute {
     if (typeof referenceDataName !== 'string') {
       throw new InvalidArgumentError('Attribute expects a string as referenceDataName argument');
     }
+    if (typeof useableAsGridFilter !== 'boolean') {
+      throw new InvalidArgumentError('Attribute expects a boolean as type argument');
+    }
 
     Object.freeze(this);
   }
@@ -56,9 +64,10 @@ class AttributeImplementation implements Attribute {
     code: Code,
     type: AttributeType,
     labelCollection: LabelCollection,
-    referenceDataName: ReferenceDataName
+    referenceDataName: ReferenceDataName,
+    useableAsGridFilter: UseableAsGridFilter
   ): Attribute {
-    return new AttributeImplementation(code, type, labelCollection, referenceDataName);
+    return new AttributeImplementation(code, type, labelCollection, referenceDataName, useableAsGridFilter);
   }
 
   public static createFromNormalized(normalizedAttribute: NormalizedAttribute): Attribute {
@@ -66,8 +75,9 @@ class AttributeImplementation implements Attribute {
     const type = normalizedAttribute.type;
     const referenceDataName = normalizedAttribute.reference_data_name;
     const labelCollection = createLabelCollection(normalizedAttribute.labels);
+    const useableAsGridFilter = normalizedAttribute.useable_as_grid_filter;
 
-    return AttributeImplementation.create(code, type, labelCollection, referenceDataName);
+    return AttributeImplementation.create(code, type, labelCollection, referenceDataName, useableAsGridFilter);
   }
 
   public getCode(): Code {
@@ -94,6 +104,10 @@ class AttributeImplementation implements Attribute {
     return this.referenceDataName;
   }
 
+  public getUseableAsGridFilter(): UseableAsGridFilter {
+    return this.useableAsGridFilter;
+  }
+
   public equals(attribute: Attribute): boolean {
     return attribute.getCode().equals(this.code);
   }
@@ -104,6 +118,7 @@ class AttributeImplementation implements Attribute {
       type: this.getType(),
       labels: this.getLabelCollection().normalize(),
       reference_data_name: this.getReferenceDataName(),
+      useable_as_grid_filter: this.getUseableAsGridFilter(),
     };
   }
 }

@@ -11,7 +11,6 @@ import ReferenceEntityIdentifier, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {createCode as createAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import Product from 'akeneoreferenceentity/domain/model/product/product';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
 import hydrate from 'akeneoreferenceentity/application/hydrator/product/attribute';
 import AttributeCode from 'akeneoreferenceentity/domain/model/product/attribute/code';
@@ -42,15 +41,15 @@ export const updateAttributeList = (referenceEntityIdentifier: ReferenceEntityId
 };
 
 export const updateProductList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const normalizedAttributeCode = getState().products.selectedAttribute;
+  const normalizedAttribute = getState().products.selectedAttribute;
 
-  if (null === normalizedAttributeCode) {
+  if (null === normalizedAttribute) {
     return;
   }
 
   const referenceEntityIdentifier = createIdentifier(getState().form.data.reference_entity_identifier);
   const recordCode = createRecordCode(getState().form.data.code);
-  const attributeCode = createAttributeCode(normalizedAttributeCode);
+  const attributeCode = createAttributeCode(normalizedAttribute.code);
   const channel = createChannelReference(getState().user.catalogChannel);
   const locale = createLocaleReference(getState().user.catalogLocale);
 
@@ -62,7 +61,7 @@ export const updateProductList = () => async (dispatch: any, getState: () => Edi
     locale
   );
 
-  dispatch(productListProductListUpdated(products.map((product: Product) => product.normalize())));
+  dispatch(productListProductListUpdated(products.items, products.totalCount));
 };
 
 export const attributeSelected = (attributeCode: AttributeCode) => async (dispatch: any): Promise<void> => {

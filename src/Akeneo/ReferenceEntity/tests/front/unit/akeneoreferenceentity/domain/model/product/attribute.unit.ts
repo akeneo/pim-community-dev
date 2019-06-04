@@ -9,12 +9,14 @@ const frontView = denormalizeAttribute({
   type: 'akeneo_reference_entity',
   labels: {en_US: 'My nice attribute'},
   reference_data_name: 'brand',
+  useable_as_grid_filter: true,
 });
 const sideView = denormalizeAttribute({
   code: 'side_view',
   type: 'akeneo_reference_entity',
   labels: {en_US: 'My nice attribute'},
   reference_data_name: 'brand',
+  useable_as_grid_filter: true,
 });
 
 describe('akeneo > reference entity > domain > model --- attribute', () => {
@@ -41,12 +43,17 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
     expect(frontView.getLabelCollection()).toEqual(createLabelCollection({en_US: 'My nice attribute'}));
   });
 
+  test('I can get know if the attribute is useable in the grid', () => {
+    expect(frontView.getUseableAsGridFilter()).toEqual(true);
+  });
+
   test('I can normalize my attribute', () => {
     expect(frontView.normalize()).toEqual({
       code: 'front_view',
       type: 'akeneo_reference_entity',
       labels: {en_US: 'My nice attribute'},
       reference_data_name: 'brand',
+      useable_as_grid_filter: true,
     });
   });
 
@@ -56,7 +63,8 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
         'nice_attribute',
         'akeneo_reference_entity',
         createLabelCollection({en_US: 'My nice attribute'}),
-        'brand'
+        'brand',
+        false
       );
     }).toThrow('Attribute expects an AttributeCode as code argument');
 
@@ -65,7 +73,8 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
         denormalizeAttributeCode('nice_attribute'),
         12,
         createLabelCollection({en_US: 'My nice attribute'}),
-        'brand'
+        'brand',
+        false
       );
     }).toThrow('Attribute expects a string as type argument');
 
@@ -74,7 +83,8 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
         denormalizeAttributeCode('nice_attribute'),
         'akeneo_reference_entity',
         {en_US: 'My nice attribute'},
-        'brand'
+        'brand',
+        false
       );
     }).toThrow('Attribute expects a LabelCollection as labelCollection argument');
 
@@ -83,8 +93,19 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
         denormalizeAttributeCode('nice_attribute'),
         'akeneo_reference_entity',
         createLabelCollection({en_US: 'My nice attribute'}),
-        null
+        null,
+        false
       );
     }).toThrow('Attribute expects a string as referenceDataName argument');
+
+    expect(() => {
+      createAttribute(
+        denormalizeAttributeCode('nice_attribute'),
+        'akeneo_reference_entity',
+        createLabelCollection({en_US: 'My nice attribute'}),
+        'brand',
+        'false'
+      );
+    }).toThrow('Attribute expects a boolean as type argument');
   });
 });

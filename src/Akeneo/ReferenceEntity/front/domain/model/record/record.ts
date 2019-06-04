@@ -8,11 +8,12 @@ import {NormalizedValue, NormalizedMinimalValue} from 'akeneoreferenceentity/dom
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import Completeness, {NormalizedCompleteness} from 'akeneoreferenceentity/domain/model/record/completeness';
+import {NormalizedCode as NormalizedRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 
 interface CommonNormalizedRecord {
   identifier: NormalizedRecordIdentifier;
   reference_entity_identifier: string;
-  code: string;
+  code: NormalizedRecordCode;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
 }

@@ -4,6 +4,7 @@ import Product from 'akeneoreferenceentity/domain/model/product/product';
 import AttributeCode from 'akeneoreferenceentity/domain/model/product/attribute/code';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import {SearchResult} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 
 export default interface Fetcher {
   fetchLinkedProducts: (
@@ -12,5 +13,5 @@ export default interface Fetcher {
     attributeCode: AttributeCode,
     channel: ChannelReference,
     locale: LocaleReference
-  ) => Promise<Product[]>;
+  ) => Promise<SearchResult<Product>>;
 }

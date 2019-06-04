@@ -18,6 +18,9 @@ import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
 import NoAttribute from 'akeneoreferenceentity/application/component/record/edit/product/no-attribute';
 import Key from 'akeneoreferenceentity/tools/key';
+import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
+import {redirectToProductGrid} from 'akeneoreferenceentity/application/event/router';
+import NotEnoughItems from 'akeneoreferenceentity/application/component/record/edit/product/not-enough-items';
 
 interface StateProps {
   context: {
@@ -25,8 +28,9 @@ interface StateProps {
     channel: string;
   };
   products: ProductModel[];
+  totalCount: number;
   attributes: DropdownElement[];
-  selectedAttribute: NormalizedAttributeCode | null;
+  selectedAttribute: NormalizedAttribute | null;
   recordCode: NormalizedCode;
   referenceEntityIdentifier: NormalizedIdentifier;
 }
@@ -36,6 +40,7 @@ interface DispatchProps {
     onLinkedAttributeChange: (attributeCode: string) => void;
     onRedirectToProduct: (product: ProductModel) => void;
     onRedirectAttributeCreation: () => void;
+    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => void;
   };
 }
 
@@ -62,29 +67,40 @@ class Product extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const selectedAttribute = this.props.attributes.find(
-      (attribute: DropdownElement) => attribute.identifier === this.props.selectedAttribute
-    );
+    const selectedDropdownAttribute = this.props.attributes.find((attribute: DropdownElement) => {
+      if (null === this.props.selectedAttribute) {
+        return false;
+      }
+
+      return attribute.identifier === this.props.selectedAttribute.code;
+    });
 
     return (
       <React.Fragment>
         {0 < this.props.attributes.length ? (
           <React.Fragment>
-            <header className="AknSubsection-title">
-              <span className="group-label">{__('pim_reference_entity.record.product.title')}</span>
-              {null !== this.props.selectedAttribute ? (
-                <Dropdown
-                  elements={this.props.attributes}
-                  selectedElement={this.props.selectedAttribute}
-                  label={__('pim_reference_entity.record.product.attribute')}
-                  onSelectionChange={(selectedElement: DropdownElement) => {
-                    this.props.events.onLinkedAttributeChange(selectedElement.identifier);
-                  }}
-                  ButtonView={AttributeButtonView}
-                  isOpenLeft={true}
-                />
-              ) : null}
-            </header>
+            <div className="AknFilterBox AknFilterBox--search">
+              <div className="AknFilterBox-list">
+                <span className="AknFilterBox-title">{__('pim_reference_entity.record.product.title')}</span>
+                <ItemsCounter count={this.props.totalCount} inline={true} />
+                {null !== this.props.selectedAttribute ? (
+                  <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
+                    <div className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin">
+                      <Dropdown
+                        elements={this.props.attributes}
+                        selectedElement={(this.props.selectedAttribute as NormalizedAttribute).code}
+                        label={__('pim_reference_entity.record.product.attribute')}
+                        onSelectionChange={(selectedElement: DropdownElement) => {
+                          this.props.events.onLinkedAttributeChange(selectedElement.identifier);
+                        }}
+                        ButtonView={AttributeButtonView}
+                        isOpenLeft={true}
+                      />
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
             {0 < this.props.products.length && null !== this.props.selectedAttribute ? (
               <div className="AknSubsection">
                 <div className="AknGrid--gallery">
@@ -106,9 +122,9 @@ class Product extends React.Component<StateProps & DispatchProps> {
               </div>
             ) : (
               <React.Fragment>
-                {null !== this.props.selectedAttribute && undefined !== selectedAttribute ? (
+                {undefined !== selectedDropdownAttribute ? (
                   <NoResult
-                    entityLabel={selectedAttribute.label}
+                    entityLabel={selectedDropdownAttribute.label}
                     title="pim_reference_entity.record.product.no_product.title"
                     subtitle="pim_reference_entity.record.product.no_product.subtitle"
                     type="product"
@@ -116,6 +132,17 @@ class Product extends React.Component<StateProps & DispatchProps> {
                 ) : null}
               </React.Fragment>
             )}
+            <NotEnoughItems
+              productCount={this.props.products.length}
+              totalCount={this.props.totalCount}
+              selectedAttribute={this.props.selectedAttribute as NormalizedAttribute}
+              showMore={() =>
+                this.props.events.onRedirectToProductGrid(
+                  (this.props.selectedAttribute as NormalizedAttribute).code,
+                  this.props.recordCode
+                )
+              }
+            />
           </React.Fragment>
         ) : (
           <NoAttribute
@@ -140,6 +167,7 @@ export default connect(
       products: state.products.products.map((normalizedProduct: NormalizedProduct) =>
         denormalizeProduct(normalizedProduct)
       ),
+      totalCount: state.products.totalCount,
       attributes: state.products.attributes.map((attribute: NormalizedAttribute) => ({
         identifier: attribute.code,
         label: getLabel(attribute.labels, state.user.catalogLocale, attribute.code),
@@ -161,6 +189,9 @@ export default connect(
         },
         onRedirectAttributeCreation: () => {
           dispatch(redirectToAttributeCreation());
+        },
+        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => {
+          dispatch(redirectToProductGrid(selectedAttribute, recordCode));
         },
       },
     };

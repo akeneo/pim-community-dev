@@ -13,6 +13,8 @@ pim_reference_entity:
         remove: Remove
         download: Download
         upload: Drag and drop to upload
+  grid:
+    counter: '{{ count }} result|{{ count }} results'
   reference_entity:
     validation:
       code:
@@ -112,16 +114,23 @@ pim_reference_entity:
       delete_all: Delete all records
       back: Back to list
     product:
-      attribute: Linked attribute
+      attribute: Product attribute
+      counter: '{{ totalCount }} result|{{ totalCount }} results'
       dropdown:
-        attribute: Product Attribute
+        attribute: Product attribute
       title: Products
       no_attribute:
         title: There is no product attribute linked to the reference entity "{{ entityLabel }}"
         subtitle: "To start linking products to this reference entity you can create a new one: "
         link: Create a new product attribute
+      not_enough_items:
+        title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
+        subtitle:
+          usable_in_grid: To discover all the products linked, just click below!
+          not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
+        button: View all products
       no_product:
-        title: There are no product linked for the product attribute "{{ entityLabel }}"
+        title: There are no products linked for the product attribute "{{ entityLabel }}"
         subtitle: "Start linking products to this attribute to see them here"
     enrich:
       title: Record attributes
@@ -146,7 +155,6 @@ pim_reference_entity:
     grid:
       search: Search on label, code and text attributes
       filter:
-        counter: '{{ matchesCount }} result|{{ matchesCount }} results'
         completeness:
           label: Complete
           all: All

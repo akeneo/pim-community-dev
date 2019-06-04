@@ -31,6 +31,10 @@ import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel
 import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
 import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+import {NormalizedCode} from 'akeneoreferenceentity/domain/model/record/code';
+import {NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
+import {redirectToProductGrid} from 'akeneoreferenceentity/application/event/router';
 
 const securityContext = require('pim/security-context');
 
@@ -60,6 +64,8 @@ interface StateProps {
   confirmDelete: {
     isActive: boolean;
   };
+  selectedAttribute: NormalizedAttribute | null;
+  recordCode: NormalizedCode;
 }
 
 interface DispatchProps {
@@ -72,6 +78,7 @@ interface DispatchProps {
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
     backToReferenceEntity: () => void;
+    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => void;
   };
 }
 
@@ -127,6 +134,8 @@ class RecordEditView extends React.Component<EditProps> {
       createChannelReference(this.props.context.channel),
       createLocaleReference(this.props.context.locale)
     );
+    const isUsableSelectedAttributeOnTheGrid =
+      null !== this.props.selectedAttribute && true === this.props.selectedAttribute.useable_as_grid_filter;
 
     return (
       <React.Fragment>
@@ -185,19 +194,39 @@ class RecordEditView extends React.Component<EditProps> {
                               viewName="pim-reference-entity-index-user-navigation"
                             />
                           </div>
-                          <div className="AknTitleContainer-actionsContainer AknButtonList">
-                            {this.getSecondaryActions(this.props.rights.record.delete)}
-                            {this.props.rights.record.edit ? (
-                              <div className="AknTitleContainer-rightButton">
-                                <button
-                                  className="AknButton AknButton--apply"
-                                  onClick={this.props.events.onSaveEditForm}
-                                >
-                                  {__('pim_reference_entity.record.button.save')}
-                                </button>
+                          {'product' === this.props.sidebar.currentTab ? (
+                            isUsableSelectedAttributeOnTheGrid ? (
+                              <div className="AknTitleContainer-actionsContainer AknButtonList">
+                                <div className="AknTitleContainer-rightButton">
+                                  <button
+                                    className="AknButton AknButton--big AknButton--apply AknButton--centered"
+                                    onClick={() =>
+                                      this.props.events.onRedirectToProductGrid(
+                                        (this.props.selectedAttribute as NormalizedAttribute).code,
+                                        this.props.recordCode
+                                      )
+                                    }
+                                  >
+                                    {__('pim_reference_entity.record.product.not_enough_items.button')}
+                                  </button>
+                                </div>
                               </div>
-                            ) : null}
-                          </div>
+                            ) : null
+                          ) : (
+                            <div className="AknTitleContainer-actionsContainer AknButtonList">
+                              {this.getSecondaryActions(this.props.rights.record.delete)}
+                              {this.props.rights.record.edit ? (
+                                <div className="AknTitleContainer-rightButton">
+                                  <button
+                                    className="AknButton AknButton--apply"
+                                    onClick={this.props.events.onSaveEditForm}
+                                  >
+                                    {__('pim_reference_entity.record.button.save')}
+                                  </button>
+                                </div>
+                              ) : null}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="AknTitleContainer-line">
@@ -287,6 +316,8 @@ export default connect(
         },
       },
       confirmDelete: state.confirmDelete,
+      selectedAttribute: state.products.selectedAttribute,
+      recordCode: state.form.data.code,
     };
   },
   (dispatch: any): DispatchProps => {
@@ -315,6 +346,9 @@ export default connect(
         },
         backToReferenceEntity: () => {
           dispatch(backToReferenceEntity());
+        },
+        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => {
+          dispatch(redirectToProductGrid(selectedAttribute, recordCode));
         },
       },
     };

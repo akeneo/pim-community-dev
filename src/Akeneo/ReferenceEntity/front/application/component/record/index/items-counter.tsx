@@ -1,18 +1,16 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 
-export default ({matchesCount}: {matchesCount: number}) => {
+export default React.memo(({count, inline = false}: {count: number; inline?: boolean}) => {
   return (
-    <div className="AknFilterBox-filterContainer">
-      <div className="AknFilterBox-itemsCounter">
-        {__(
-          'pim_reference_entity.record.grid.filter.counter',
-          {
-            matchesCount: matchesCount,
-          },
-          matchesCount
-        )}
-      </div>
+    <div className={`AknFilterBox-itemsCounter ${inline ? 'AknFilterBox-itemsCounter--inline' : ''}`}>
+      {__(
+        'pim_reference_entity.grid.counter',
+        {
+          count: count,
+        },
+        count
+      )}
     </div>
   );
-};
+});

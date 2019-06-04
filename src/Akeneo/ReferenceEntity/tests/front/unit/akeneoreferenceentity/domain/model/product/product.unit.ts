@@ -10,6 +10,7 @@ const product = denormalizeProduct({
   type: 'product',
   labels: {en_US: 'My nice product'},
   image: null,
+  completeness: {required: 0, complete: 0},
 });
 const productModel = denormalizeProduct({
   id: 'nice',
@@ -17,6 +18,7 @@ const productModel = denormalizeProduct({
   type: 'product_model',
   labels: {en_US: 'An awesome product model'},
   image: null,
+  completeness: {required: 0, complete: 0},
 });
 
 describe('akeneo > reference entity > domain > model --- product', () => {
@@ -59,6 +61,7 @@ describe('akeneo > reference entity > domain > model --- product', () => {
       type: 'product',
       labels: {en_US: 'My nice product'},
       image: null,
+      completeness: {required: 0, complete: 0},
     });
   });
 
@@ -112,5 +115,15 @@ describe('akeneo > reference entity > domain > model --- product', () => {
         null
       );
     }).toThrow('Product expects a File as image argument');
+
+    expect(() => {
+      createProduct(
+        denormalizeProductIdentifier('123456'),
+        denormalizeProductIdentifier('nice_product'),
+        'product',
+        createLabelCollection({en_US: 'My nice product'}),
+        denormalizeFile(null)
+      );
+    }).toThrow('Product expects a Completeness as completeness argument');
   });
 });

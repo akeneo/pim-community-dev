@@ -4,10 +4,14 @@ import LabelCollection, {
   createLabelCollection,
 } from 'akeneoreferenceentity/domain/model/label-collection';
 import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+import Completeness, {
+  NormalizedCompleteness,
+  denormalizeCompleteness,
+} from 'akeneoreferenceentity/domain/model/product/completeness';
 
 export const PRODUCT_TYPE = 'product';
 export const PRODUCT_MODEL_TYPE = 'product_model';
-type ProductType = 'product' | 'product_model';
+export type ProductType = 'product' | 'product_model';
 
 type NormalizedProductIdentifier = string;
 type NormalizedProductId = string;
@@ -18,6 +22,7 @@ export interface NormalizedProduct {
   type: ProductType;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
+  completeness: NormalizedCompleteness;
 }
 
 export default interface Product {
@@ -27,6 +32,7 @@ export default interface Product {
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
+  getCompleteness: () => Completeness;
   equals: (product: Product) => boolean;
   normalize: () => NormalizedProduct;
 }
@@ -38,7 +44,8 @@ class ProductImplementation implements Product {
     private identifier: Identifier,
     private type: ProductType,
     private labelCollection: LabelCollection,
-    private image: File
+    private image: File,
+    private completeness: Completeness
   ) {
     if (!(id instanceof Identifier)) {
       throw new InvalidArgumentError('Product expects an ProductIdentifier as id argument');
@@ -55,6 +62,9 @@ class ProductImplementation implements Product {
     if (!(image instanceof File)) {
       throw new InvalidArgumentError('Product expects a File as image argument');
     }
+    if (!(completeness instanceof Completeness)) {
+      throw new InvalidArgumentError('Product expects a Completeness as completeness argument');
+    }
 
     Object.freeze(this);
   }
@@ -64,9 +74,10 @@ class ProductImplementation implements Product {
     identifier: Identifier,
     type: ProductType,
     labelCollection: LabelCollection,
-    image: File
+    image: File,
+    completeness: Completeness
   ): Product {
-    return new ProductImplementation(id, identifier, type, labelCollection, image);
+    return new ProductImplementation(id, identifier, type, labelCollection, image, completeness);
   }
 
   public static createFromNormalized(normalizedProduct: NormalizedProduct): Product {
@@ -75,8 +86,9 @@ class ProductImplementation implements Product {
     const identifier = createIdentifier(normalizedProduct.identifier);
     const labelCollection = createLabelCollection(normalizedProduct.labels);
     const image = denormalizeFile(normalizedProduct.image);
+    const completeness = denormalizeCompleteness(normalizedProduct.completeness);
 
-    return ProductImplementation.create(id, identifier, type, labelCollection, image);
+    return ProductImplementation.create(id, identifier, type, labelCollection, image, completeness);
   }
 
   public getId(): Identifier {
@@ -107,6 +119,10 @@ class ProductImplementation implements Product {
     return this.image;
   }
 
+  public getCompleteness(): Completeness {
+    return this.completeness;
+  }
+
   public equals(product: Product): boolean {
     return product.getIdentifier().equals(this.identifier);
   }
@@ -118,6 +134,7 @@ class ProductImplementation implements Product {
       type: this.getType(),
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),
+      completeness: this.getCompleteness().normalize(),
     };
   }
 }
