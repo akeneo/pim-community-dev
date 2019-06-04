@@ -16,7 +16,7 @@ namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\Configuration;
@@ -89,16 +89,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
                 ]
             ],
             ['workflow_status' => 'working_copy'],
-            new ValueCollection([
-                ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
-                ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
-                ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
-                ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
-                ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'en_US'),
-                ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'fr_FR'),
-                ScalarValue::value('sub_product_model_axis_attribute', true),
-                ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'en_US'),
-                ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'fr_FR'),
+            new ReadValueCollection([
                 ScalarValue::value('variant_product_axis_attribute', true),
                 ScalarValue::localizableValue('variant_product_edit_attribute', true, 'en_US'),
                 ScalarValue::localizableValue('variant_product_edit_attribute', true, 'fr_FR'),
@@ -106,6 +97,15 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
                 ScalarValue::localizableValue('variant_product_view_attribute', true, 'en_US'),
                 ScalarValue::localizableValue('variant_product_view_attribute', true, 'fr_FR'),
                 ScalarValue::localizableValue('variant_product_view_attribute', false, 'zh_CN'),
+                ScalarValue::value('sub_product_model_axis_attribute', true),
+                ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'fr_FR'),
+                ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'fr_FR'),
+                ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
+                ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
             ])
         );
         $expectedProductList = new ConnectorProductList(1, [$expectedProduct]);

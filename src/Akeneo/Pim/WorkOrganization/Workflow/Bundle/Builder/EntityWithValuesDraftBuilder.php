@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -48,7 +48,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $entityWithValuesDraftRepository;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var WriteValueCollectionFactory */
     protected $valueCollectionFactory;
 
     /** @var ValueFactory */
@@ -60,7 +60,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         IdentifiableObjectRepositoryInterface $attributeRepository,
         EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
-        ValueCollectionFactoryInterface $valueCollectionFactory,
+        WriteValueCollectionFactory $valueCollectionFactory,
         ValueFactory $valueFactory
     ) {
         $this->normalizer = $normalizer;
@@ -114,7 +114,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
 
         if (!empty($diff)) {
             $entityWithValuesDraft = $this->getEntityWithValuesDraft($entityWithValues, $username);
-            $entityWithValuesDraft->setValues(new ValueCollection($values));
+            $entityWithValuesDraft->setValues(new WriteValueCollection($values));
             $entityWithValuesDraft->setChanges($diff);
             $entityWithValuesDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
 

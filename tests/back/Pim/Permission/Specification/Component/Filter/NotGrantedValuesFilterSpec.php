@@ -4,23 +4,18 @@ namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
-use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class NotGrantedValuesFilterSpec extends ObjectBehavior
@@ -47,7 +42,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         $authorizationChecker,
         $attributeRepository,
         EntityWithValuesInterface $entityWithValues,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $textValue,
         ValueInterface $colorValue,
         AttributeInterface $textAttribute,
@@ -83,7 +78,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         $localeRepository,
         $attributeRepository,
         EntityWithValuesInterface $entityWithValues,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $descriptionFrValue,
         ValueInterface $descriptionEnValue,
         AttributeInterface $descriptionAttribute,
@@ -128,7 +123,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         $authorizationChecker,
         $attributeRepository,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $textValue,
         ValueInterface $colorValue,
         AttributeInterface $textAttribute,

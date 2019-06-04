@@ -3,7 +3,7 @@
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Import\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
@@ -97,7 +97,7 @@ abstract class AbstractProductImportTestCase extends TestCase
             }
         }
 
-        $productDraft->setValues(new ValueCollection($values));
+        $productDraft->setValues(new WriteValueCollection($values));
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);

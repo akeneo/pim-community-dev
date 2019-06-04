@@ -75,7 +75,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
@@ -210,7 +211,7 @@ $rules = [
         // TIP-1003: Do not override Community services
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent',
-        'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',

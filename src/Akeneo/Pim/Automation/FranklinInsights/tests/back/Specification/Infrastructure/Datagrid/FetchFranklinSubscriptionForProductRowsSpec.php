@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\Pro
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -39,10 +39,10 @@ class FetchFranklinSubscriptionForProductRowsSpec extends ObjectBehavior
         $queryParameters = new FetchProductAndProductModelRowsParameters($pqb->getWrappedObject(), [], '', '');
         $this->add($queryParameters, [])->shouldReturn([]);
 
-        $row1 = Row::fromProduct('product_123', null, [], true, new \DateTime(), new \DateTime(), '', null, null, 123, null, new ValueCollection());
+        $row1 = Row::fromProduct('product_123', null, [], true, new \DateTime(), new \DateTime(), '', null, null, 123, null, new WriteValueCollection());
         $newRow1 = $row1->addAdditionalProperty(new AdditionalProperty('franklin_subscription', 'Enabled'));
 
-        $row2 = Row::fromProduct('product_456', null, [], true, new \DateTime(), new \DateTime(), '', null, null, 456, null, new ValueCollection());
+        $row2 = Row::fromProduct('product_456', null, [], true, new \DateTime(), new \DateTime(), '', null, null, 456, null, new WriteValueCollection());
         $newRow2 = $row2->addAdditionalProperty(new AdditionalProperty('franklin_subscription', 'Disabled'));
 
         $productSubscriptionsExistQuery->execute([123, 456])->willReturn([123 => true, 456 => false]);

@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -32,10 +32,10 @@ class FetchFranklinSubscriptionForProductModelRowsSpec extends ObjectBehavior
     {
         $queryParameters = new FetchProductAndProductModelRowsParameters($pqb->getWrappedObject(), [], '', '');
 
-        $row1 = Row::fromProductModel('product_123', '', new \DateTime(), new \DateTime(), '', null, 123, [], null, new ValueCollection());
+        $row1 = Row::fromProductModel('product_123', '', new \DateTime(), new \DateTime(), '', null, 123, [], null, new WriteValueCollection());
         $newRow1 = $row1->addAdditionalProperty(new AdditionalProperty('franklin_subscription', null));
 
-        $row2 = Row::fromProductModel('product_456', '', new \DateTime(), new \DateTime(), '', null, 456, [], null, new ValueCollection());
+        $row2 = Row::fromProductModel('product_456', '', new \DateTime(), new \DateTime(), '', null, 456, [], null, new WriteValueCollection());
         $newRow2 = $row2->addAdditionalProperty(new AdditionalProperty('franklin_subscription', null));
 
         $this->add($queryParameters, [$row1, $row2])->shouldBeLike([$newRow1, $newRow2]);

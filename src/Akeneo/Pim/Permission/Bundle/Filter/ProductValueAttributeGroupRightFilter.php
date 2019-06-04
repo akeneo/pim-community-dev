@@ -13,8 +13,8 @@ namespace Akeneo\Pim\Permission\Bundle\Filter;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -89,7 +89,7 @@ class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter 
      */
     public function supportsCollection($collection, $type, array $options = [])
     {
-        return $collection instanceof ValueCollectionInterface && null !== $this->tokenStorage->getToken();
+        return $collection instanceof WriteValueCollection && null !== $this->tokenStorage->getToken();
     }
 
     /**

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 
 /**
  * Product draft
@@ -36,7 +36,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
     /** @var \DateTime */
     protected $createdAt;
 
-    /** @var ValueCollectionInterface */
+    /** @var WriteValueCollection */
     protected $values;
 
     /** @var array */
@@ -402,7 +402,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): ValueCollectionInterface
+    public function getValues(): WriteValueCollection
     {
         return $this->values;
     }
@@ -410,7 +410,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ValueCollectionInterface $values): EntityWithValuesDraftInterface
+    public function setValues(WriteValueCollection $values)
     {
         $this->values = $values;
 

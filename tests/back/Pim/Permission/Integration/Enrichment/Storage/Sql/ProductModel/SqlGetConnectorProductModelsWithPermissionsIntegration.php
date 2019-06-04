@@ -15,7 +15,7 @@ namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\TestCase;
@@ -85,7 +85,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                 ['workflow_status' => 'working_copy'],
                 $emptyAssociations,
                 ['own_category'],
-                new ValueCollection([
+                new ReadValueCollection([
                     ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
                     ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
                     ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
@@ -103,7 +103,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                 ['workflow_status' => 'working_copy'],
                 $emptyAssociations,
                 ['own_category'],
-                new ValueCollection([
+                new ReadValueCollection([
                     ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
                     ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
                     ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),

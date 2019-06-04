@@ -6,12 +6,12 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -25,7 +25,7 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
-        ValueCollectionFactoryInterface $valueCollectionFactory
+        WriteValueCollectionFactory $valueCollectionFactory
     )
     {
         $this->beConstructedWith($authorizationChecker, $attributeRepository, $localeRepository, $valueCollectionFactory);
@@ -54,7 +54,7 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         AttributeRepositoryInterface $colorAttribute,
         LocaleInterface $frLocale,
         LocaleInterface $enLocale,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $allValues = [
             'text' => [
@@ -94,14 +94,22 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $frLocale)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enLocale)->willReturn(false);
 
-        $valueCollectionFactory->createFromStorageFormat($notGrantedValues)->willReturn([$textValue, $colorValue]);
+        $textValue->getAttributeCode()->willReturn('text');
+        $textValue->getScopeCode()->willReturn(null);
+        $textValue->getLocaleCode()->willReturn(null);
+
+        $colorValue->getAttributeCode()->willReturn('color');
+        $colorValue->getScopeCode()->willReturn(null);
+        $colorValue->getLocaleCode()->willReturn('en_US');
+
+        $valueCollectionFactory->createFromStorageFormat($notGrantedValues)->willReturn(new WriteValueCollection([$textValue->getWrappedObject(), $colorValue->getWrappedObject()]));
 
         $filteredProduct->getFamilyVariant()->willReturn(null);
         $filteredProduct->getValues()->willReturn($values);
         $fullProduct->setValues($values)->shouldBeCalled();
 
-        $fullProduct->addValue($textValue)->shouldBeCalled();
-        $fullProduct->addValue($colorValue)->shouldBeCalled();
+        $fullProduct->addValue($textValue->getWrappedObject())->shouldBeCalled();
+        $fullProduct->addValue($colorValue->getWrappedObject())->shouldBeCalled();
 
         $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
     }

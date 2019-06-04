@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
@@ -40,7 +40,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_model_proposal(
         $serializer,
         EntityWithValuesDraftInterface $productModelProposal,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         ProductModelInterface $productModel,
         FamilyInterface $family,
         AttributeInterface $attribute
@@ -92,7 +92,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_model_proposal_without_attribute_as_label(
         $serializer,
         EntityWithValuesDraftInterface $productModelProposal,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         ProductModelInterface $productModel,
         FamilyInterface $family,
         AttributeInterface $attribute

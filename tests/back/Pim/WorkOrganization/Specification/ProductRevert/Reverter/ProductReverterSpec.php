@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\RevertException;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -39,7 +39,7 @@ class ProductReverterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationsList,
-        ValueCollectionInterface $productValueCollection
+        WriteValueCollection $productValueCollection
     ) {
         $snapshot = [
             'identifier' => 'sku-1',
@@ -84,7 +84,7 @@ class ProductReverterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationsList,
-        ValueCollectionInterface $productValueCollection
+        WriteValueCollection $productValueCollection
     ) {
         $snapshot = [
             'identifier' => 'sku-1',
@@ -129,7 +129,7 @@ class ProductReverterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationsList,
-        ValueCollectionInterface $productValueCollection
+        WriteValueCollection $productValueCollection
     ) {
         $snapshot = [
             'identifier' => 'sku-1',
@@ -174,7 +174,7 @@ class ProductReverterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationsList,
-        ValueCollectionInterface $productValueCollection
+        WriteValueCollection $productValueCollection
     ) {
         $snapshot = [
             'identifier' => 'sku-1',
@@ -219,7 +219,7 @@ class ProductReverterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationsList,
-        ValueCollectionInterface $productValueCollection
+        WriteValueCollection $productValueCollection
     ) {
         $snapshot = [
             'identifier' => 'sku-1',

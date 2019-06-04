@@ -5,9 +5,8 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Nor
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelProposalNormalizerSpec extends ObjectBehavior
@@ -32,7 +31,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         $datagridNormalizer,
         CollectionFilterInterface $filter,
         ProductModelDraft $productModelProposal,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         ProductModelInterface $productModel
     ) {
         $context = [

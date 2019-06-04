@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\Subsc
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
@@ -58,7 +58,7 @@ class DataFixturesContext implements Context
     /** @var ProductBuilderInterface */
     private $productBuilder;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     /** @var EntityBuilder */
@@ -94,7 +94,7 @@ class DataFixturesContext implements Context
     /**
      * @param InMemoryProductRepository $productRepository
      * @param ProductBuilderInterface $productBuilder
-     * @param ValueCollectionFactoryInterface $valueCollectionFactory
+     * @param WriteValueCollectionFactory $valueCollectionFactory
      * @param InMemoryFamilyRepository $familyRepository
      * @param FamilyFactory $familyFactory
      * @param InMemoryAttributeRepository $attributeRepository
@@ -112,7 +112,7 @@ class DataFixturesContext implements Context
     public function __construct(
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
-        ValueCollectionFactoryInterface $valueCollectionFactory,
+        WriteValueCollectionFactory $valueCollectionFactory,
         InMemoryFamilyRepository $familyRepository,
         FamilyFactory $familyFactory,
         InMemoryAttributeRepository $attributeRepository,
