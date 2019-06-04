@@ -62,7 +62,7 @@ class SqlFindReferenceEntityAttributeAsLabelTest extends SqlIntegrationTestCase
     {
         /** @var FixturesLoader $fixturesLoader */
         $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
-        $this->fixtures = $fixturesLoader
+        $fixturesLoader
             ->referenceEntity('designer')
             ->load();
     }
