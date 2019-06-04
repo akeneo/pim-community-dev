@@ -47,6 +47,11 @@
     top: -10px;
   }
 
+  &--search&--sticky {
+    position: sticky;
+    top: 182px;
+    z-index: 3;
+  }
 
   &-title {
     order: -1;
@@ -260,6 +265,12 @@
   &-itemsCounter {
     padding-right: 8px;
     border-right: 1px solid #ccd1d8;
-    color: #9452BA
+    color: #9452BA;
+
+    &--inline {
+      padding-right: 10px;
+      position: relative;
+      top: 2px;
+    }
   }
 }
