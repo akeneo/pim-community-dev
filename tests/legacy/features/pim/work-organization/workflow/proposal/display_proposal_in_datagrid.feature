@@ -11,6 +11,19 @@ Feature: Display proposals in datagrid
       | categories | winter_top    |
       | sku        | my-jacket     |
       | price      | 45 USD,75 EUR |
+      | name-en_US | Jackets       |
+
+  @github https://github.com/akeneo/pim-community-dev/issues/10083
+  Scenario: Successfully display removed data in the proposal datagrid
+    Given Mary proposed the following change to "my-jacket":
+      | field | value |
+      | Name  |       |
+    When I am logged in as "Julia"
+    And I edit the "my-jacket" product
+    And I visit the "Proposals" column tab
+    Then I should see the following proposals:
+      | product   | author | attribute | original | new |
+      | my-jacket | Mary   | name      | Jackets  |     |
 
   Scenario: Successfully propose to remove a price attribute
     Given Mary proposed the following change to "my-jacket":

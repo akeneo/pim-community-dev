@@ -2,18 +2,25 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelProposalNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $standardNormalizer, NormalizerInterface $datagridNormalizer)
-    {
-        $this->beConstructedWith($standardNormalizer, $datagridNormalizer);
+    function let(
+        NormalizerInterface $standardNormalizer,
+        NormalizerInterface $datagridNormalizer,
+        ValueFactory $valueFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ) {
+        $this->beConstructedWith($standardNormalizer, $datagridNormalizer, $valueFactory, $attributeRepository);
     }
 
     function it_should_implement()
@@ -29,10 +36,13 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
     function it_normalizes(
         $standardNormalizer,
         $datagridNormalizer,
-        CollectionFilterInterface $filter,
+        $valueFactory,
+        $attributeRepository,
         ProductModelDraft $productModelProposal,
         WriteValueCollection $valueCollection,
-        ProductModelInterface $productModel
+        ProductModelInterface $productModel,
+        ValueInterface $value,
+        AttributeInterface $attribute
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -42,19 +52,11 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         ];
 
         $created = new \DateTime('2017-01-01T01:03:34+01:00');
-        $filter->filterCollection($valueCollection, 'pim.transform.product_value.structured', $context)
-            ->willReturn($valueCollection);
-        $standardNormalizer->normalize($valueCollection, 'standard', $context)->willReturn(
-            [
-                'text' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'my text',
-                    ],
-                ],
+        $changes = [
+            'values' => [
+                'text' => [['locale' => null, 'scope' => null, 'data' => 'my text']]
             ]
-        );
+        ];
         $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
 
         $productModelProposal->getId()->willReturn(1);
@@ -63,6 +65,30 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         $productModelProposal->getEntityWithValue()->willReturn($productModel);
         $productModelProposal->getCreatedAt()->willReturn($created);
         $productModelProposal->getValues()->willReturn($valueCollection);
+
+        $productModelProposal->getChanges()->willReturn($changes);
+        $attributeRepository->findOneByIdentifier('text')->willReturn($attribute);
+        $valueFactory->create($attribute, null, null, 'my text')->willReturn($value);
+        $value->getAttributeCode()->willReturn('text');
+        $value->getScopeCode()->willReturn(null);
+        $value->getLocaleCode()->willReturn(null);
+        $valueCollection = new WriteValueCollection();
+        $valueCollection->add($value->getWrappedObject());
+        $standardNormalizer->normalize(
+            $valueCollection,
+            'standard',
+            $context
+        )->willReturn([
+                'text' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'my text',
+                    ],
+                ]
+            ]
+        );
+
         $productModel->getCode()->willReturn('fake-spec-model');
 
         $this->normalize($productModelProposal, 'datagrid', $context)->shouldReturn(
