@@ -1,0 +1,53 @@
+@import './web/bundles/pimui/less/base/variables';
+
+.AknFranklin {
+    table.attribute-mapping {
+        table-layout: fixed;
+    }
+
+    th.catalog-attribute {
+        width: 350px;
+    }
+
+    td.franklin-attribute {
+        line-height: 25px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        .label {
+            color: @AknLightPurple;
+            font-weight: bold;
+        }
+
+        .type {
+            font-weight: bold;
+        }
+
+        .summary {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            .title {
+                font-weight: bold;
+            }
+
+            ol {
+                display: inline;
+
+                li {
+                    display: inline;
+                    font-style: italic;
+                }
+
+                li:after {
+                    content: ', ';
+                }
+
+                li:last-child:after {
+                    content: '';
+                }
+            }
+        }
+    }
+}

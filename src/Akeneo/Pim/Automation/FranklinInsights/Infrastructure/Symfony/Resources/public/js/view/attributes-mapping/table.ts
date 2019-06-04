@@ -147,9 +147,7 @@ class AttributeMapping extends BaseView {
         statuses: this.getMappingStatuses(),
         franklinAttribute: __(this.config.labels.franklinAttribute),
         catalogAttribute: __(this.config.labels.catalogAttribute),
-        attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
-        type: __(this.config.labels.type),
-        valuesSummaryKey: this.config.labels.valuesSummary,
+        attributeMappingStatus: __(this.config.labels.attributeMappingStatus)
       })
     );
 

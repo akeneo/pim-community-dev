@@ -7,35 +7,35 @@
  * file that was distributed with this source code.
  */
 
+import { Model, View } from 'backbone';
 import * as _ from 'underscore';
-import {View} from 'backbone';
 import AttributeSaver from '../../saver/attribute-saver';
 
 const __ = require('oro/translator');
 const SecurityContext = require('pim/security-context');
 
-class CreateAttributeButton extends View {
+class CreateAttributeButton extends View<Model> {
   private template = _.template(`
-    <button class="AknActionButton">
+    <button class="AknButton AknButton--apply">
       <%= __('akeneo_franklin_insights.entity.attributes_mapping.fields.create_attribute.btn') %>
     </button>
   `);
 
-  events() {
+  constructor(
+    private familyCode: string,
+    private franklinAttributeLabel: string,
+    private franklinAttributeType: string,
+  ) {
+    super();
+  }
+
+  public events() {
     return {
       'click button': this.onCreate,
     };
   }
 
-  constructor(
-    private familyCode: string,
-    private franklinAttributeLabel: string,
-    private franklinAttributeType: string
-  ) {
-    super();
-  }
-
-  render() {
+  public render() {
     if (false === this.isGranted()) {
       return this;
     }
@@ -51,7 +51,7 @@ class CreateAttributeButton extends View {
       franklinAttributeLabel: this.franklinAttributeLabel,
       franklinAttributeType: this.franklinAttributeType,
     });
-    
+
     this.trigger('attribute_created', response.code);
   }
 

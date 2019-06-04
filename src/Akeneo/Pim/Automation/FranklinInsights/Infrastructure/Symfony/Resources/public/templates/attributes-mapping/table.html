@@ -1,43 +1,50 @@
 <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
-<table class="AknGrid AknGrid--unclickable">
+
+<table class="AknGrid AknGrid--unclickable attribute-mapping">
     <tr class="AknGrid-header">
-        <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- franklinAttribute %></th>
-        <th class="AknGrid-headerCell"><%- catalogAttribute %></th>
+        <th class="AknGrid-headerCell"><%- franklinAttribute %></th>
+        <th class="AknGrid-headerCell catalog-attribute"><%- catalogAttribute %></th>
         <th class="AknGrid-headerCell"></th>
-        <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeMappingStatus %></th>
+        <th class="AknGrid-headerCell"><%- attributeMappingStatus %></th>
     </tr>
+
     <% Object.keys(mapping).forEach((franklin_attribute_code) => { %>
-        <tr class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row line"
-            data-franklin-attribute="<%- mapping[franklin_attribute_code].franklinAttribute.label %>"
-            data-status="<%- mapping[franklin_attribute_code].status %>"
-        >
-            <td class="AknGrid-bodyCell AknGrid-bodyCell--flex AknGrid-bodyCell--highlightWithTooltip searchable-value">
+    <tr
+        class="AknGrid-bodyRow searchable-row line"
+        data-franklin-attribute="<%- mapping[franklin_attribute_code].franklinAttribute.label %>"
+        data-status="<%- mapping[franklin_attribute_code].status %>"
+    >
+        <td class="AknGrid-bodyCell franklin-attribute">
+            <div class="label">
                 <%- mapping[franklin_attribute_code].franklinAttribute.label %>
-                <div class="AknDropdown">
-                    <div class="AknIconButton AknIconButton--value AknGrid-onHoverElement summary-button" data-toggle="dropdown"></div>
-                    <div class="AknDropdown-menu AknDropdown-menu--offset">
-                        <div class="AknDropdown-menuTitle">
-                            <%= __(valuesSummaryKey, {
-                                label: '<span class="AknDropdown-menuTitle--soft">' + escapeHtml(mapping[franklin_attribute_code].franklinAttribute.label) + '</span>'
-                            }) %>
-                        </div>
-                        <div class="AknColumn-block AknDropdown-menuSection">
-                            <div class="AknColumn-subtitle"><%- type %></div>
-                            <div class="AknColumn-value"><%- mapping[franklin_attribute_code].franklinAttribute.type %></div>
-                        </div>
-                        <% mapping[franklin_attribute_code].franklinAttribute.summary.forEach((summaryItem) => { %>
-                            <div class="AknDropdown-menuLink AknDropdown-menuLink--inactive"><%- summaryItem %></div>
-                        <% }) %>
-                    </div>
-                </div>
-            </td>
-            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- franklin_attribute_code %>">
-            </td>
-            <td class="AknGrid-bodyCell create-attribute-button" data-franklin-attribute-code="<%- franklin_attribute_code %>">
-            </td>
-            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--big">
-                <%- statuses[mapping[franklin_attribute_code].status] %>
-            </td>
-        </tr>
+            </div>
+            <div class="type">
+                <%- __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_attribute_type', { type:
+                __(`akeneo_franklin_insights.entity.franklin_attribute.type.${mapping[franklin_attribute_code].franklinAttribute.type}`)
+                }) %>
+            </div>
+            <div class="summary">
+                <span class="title">
+                    <%- __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_value_sample') %>
+                </span>
+                <ol>
+                    <% mapping[franklin_attribute_code].franklinAttribute.summary.forEach((summaryItem) => { %>
+                    <li><%- summaryItem %></li>
+                    <% }) %>
+                </ol>
+            </div>
+        </td>
+        <td
+            class="AknGrid-bodyCell attribute-selector"
+            data-franklin-attribute-code="<%- franklin_attribute_code %>"
+        ></td>
+        <td
+            class="AknGrid-bodyCell create-attribute-button"
+            data-franklin-attribute-code="<%- franklin_attribute_code %>"
+        ></td>
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--big">
+            <%- statuses[mapping[franklin_attribute_code].status] %>
+        </td>
+    </tr>
     <% }) %>
 </table>
