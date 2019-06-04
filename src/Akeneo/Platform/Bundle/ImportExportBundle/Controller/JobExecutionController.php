@@ -8,10 +8,12 @@ use Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
+use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,6 +52,9 @@ class JobExecutionController
     /** @var JobExecutionRepository */
     protected $jobExecutionRepo;
 
+    /** @var FilesystemInterface */
+    private $logFileSystem;
+
     /**
      * @param EngineInterface          $templating
      * @param TranslatorInterface      $translator
@@ -58,6 +63,7 @@ class JobExecutionController
      * @param JobExecutionArchivist    $archivist
      * @param JobExecutionManager      $jobExecutionManager
      * @param JobExecutionRepository   $jobExecutionRepo
+     * @param FilesystemInterface      $logFileSystem
      * @param string                   $jobType
      */
     public function __construct(
@@ -68,6 +74,7 @@ class JobExecutionController
         JobExecutionArchivist $archivist,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
+        FilesystemInterface $logFileSystem,
         $jobType
     ) {
         $this->templating = $templating;
@@ -77,6 +84,7 @@ class JobExecutionController
         $this->archivist = $archivist;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo = $jobExecutionRepo;
+        $this->logFileSystem = $logFileSystem;
         $this->jobType = $jobType;
     }
 
@@ -85,7 +93,8 @@ class JobExecutionController
      *
      * @param int $id
      *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return Response
+     * @throws FileNotFoundException
      */
     public function downloadLogFileAction($id)
     {
@@ -97,8 +106,14 @@ class JobExecutionController
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
-        $response = new BinaryFileResponse($jobExecution->getLogFile());
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+        $logFileContent = $this->logFileSystem->read($jobExecution->getLogFile());
+
+        $response = new Response($logFileContent);
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            basename($jobExecution->getLogFile())
+        );
+        $response->headers->set('Content-Disposition', $disposition);
 
         return $response;
     }
