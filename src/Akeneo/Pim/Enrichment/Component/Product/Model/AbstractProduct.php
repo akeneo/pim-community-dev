@@ -119,7 +119,7 @@ abstract class AbstractProduct implements ProductInterface
 
     public function addOrReplaceValue(ValueInterface $value): void
     {
-        $formerValue = $this->getValue($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        $formerValue = $this->values->getByCodes($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
         if (null !== $formerValue) {
             if ($formerValue->isEqual($value)) {
                 return;
