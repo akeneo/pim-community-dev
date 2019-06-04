@@ -241,6 +241,11 @@ class AttributeMapping extends BaseView {
     franklinAttributeCode: string,
     isAttributeOptionsButtonVisible: boolean
   ) {
+    let perfectMatchClass = '';
+    if (this.isPimAttributePreFilled(mapping[franklinAttributeCode])) {
+      perfectMatchClass = 'perfect-match';
+    }
+    
     const $dom = this.$el.find('.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]');
     const attributeSelector = new SimpleSelectAttributeWithWarning({
       config: {
@@ -251,7 +256,7 @@ class AttributeMapping extends BaseView {
         perfectMappings: PERFECT_MAPPINGS[mapping[franklinAttributeCode].franklinAttribute.type],
         families: [this.getFamilyCode()],
       },
-      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
+      className: `AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline ${perfectMatchClass}`,
     });
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
@@ -274,6 +279,17 @@ class AttributeMapping extends BaseView {
     return attributeSelector;
   }
 
+  private isPimAttributePreFilled(franklinAttributeMapping: IAttributeMapping) {
+    if (AttributeMappingStatus.ATTRIBUTE_PENDING !== franklinAttributeMapping.status) {
+      return false;
+    }
+    if (null !== franklinAttributeMapping.attribute && '' !== franklinAttributeMapping.attribute) {
+      return true;
+    }
+
+    return false;
+  }
+
   private appendCreateAttributeButton(
     franklinAttributeCode: string,
     familyCode: string,
@@ -289,13 +305,10 @@ class AttributeMapping extends BaseView {
   }
 
   private isAllowedToCreateAttribute(franklinAttributeMapping: IAttributeMapping): boolean {
-    if (AttributeMappingStatus.ATTRIBUTE_PENDING !== franklinAttributeMapping.status) {
+    if (this.isPimAttributePreFilled(franklinAttributeMapping)) {
       return false;
     }
     if (true === DISALLOWED_CREATE_ATTRIBUTE_FRANKLIN_TYPES.includes(franklinAttributeMapping.franklinAttribute.type)) {
-      return false;
-    }
-    if (null !== franklinAttributeMapping.attribute && '' !== franklinAttributeMapping.attribute) {
       return false;
     }
 
