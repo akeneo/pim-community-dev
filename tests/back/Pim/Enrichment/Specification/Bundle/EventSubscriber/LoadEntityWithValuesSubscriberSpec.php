@@ -48,6 +48,7 @@ class LoadEntityWithValuesSubscriberSpec extends ObjectBehavior
             ->willReturn($values);
 
         $product->setValues($values)->shouldBeCalled();
+        $product->popEvents()->shouldBeCalled();
 
         $this->postLoad($event);
     }

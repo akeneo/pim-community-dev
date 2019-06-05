@@ -16,6 +16,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductEnabled;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductIdentifierUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductRemovedFromGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductUncategorized;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueDeleted;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ValueEdited;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -103,7 +106,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
-        $this->enabled = $this->setEnabled(true);
+        $this->setEnabled(true);
     }
 
     /**
@@ -112,6 +115,24 @@ abstract class AbstractProduct implements ProductInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    public function addOrReplaceValue(ValueInterface $value): void
+    {
+        $formerValue = $this->values->getByCodes($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        if (null !== $formerValue) {
+            if ($formerValue->isEqual($value)) {
+                return;
+            }
+
+            $this->values->remove($formerValue);
+            $this->values->add($value);
+
+            $this->events[] = new ValueEdited($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        } else {
+            $this->values->add($value);
+            $this->events[] = new ValueAdded($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        }
     }
 
     /**
@@ -175,7 +196,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeValue(ValueInterface $value)
     {
-        $this->values->remove($value);
+        $isRemoved = $this->values->remove($value);
+        if (true === $isRemoved) {
+            $this->events[] = new ValueDeleted($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        }
 
         return $this;
     }
@@ -300,11 +324,11 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValues(): WriteValueCollection
     {
-        if (!$this->isVariant()) {
-            return $this->values;
-        }
-
         $values = WriteValueCollection::fromCollection($this->values);
+
+        if (!$this->isVariant()) {
+            return $values;
+        }
 
         return $this->getAllValues($this, $values);
     }
@@ -314,7 +338,19 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setValues(WriteValueCollection $values)
     {
-        $this->values = $values;
+        if (null === $this->values) {
+            $this->values = new WriteValueCollection();
+        }
+        $formerValues = $this->values;
+        foreach ($formerValues as $formerValue) {
+            if (null === $values->getByCodes($formerValue->getAttributeCode(), $formerValue->getScopeCode(), $formerValue->getLocaleCode())) {
+                $this->removeValue($formerValue);
+            }
+        }
+
+        foreach ($values as $value) {
+            $this->addOrReplaceValue($value);
+        }
 
         return $this;
     }
@@ -506,7 +542,7 @@ abstract class AbstractProduct implements ProductInterface
             return;
         }
 
-        $this->events[] = true === $enabled ? new ProductEnabled($this->identifier) : new ProductDisabled($this->identifier);
+        $this->events[] = (true === $enabled) ? new ProductEnabled($this->identifier) : new ProductDisabled($this->identifier);
         $this->enabled = $enabled;
 
         return $this;

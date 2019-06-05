@@ -112,20 +112,8 @@ class EntityBuilder
         ProductModelInterface $parent,
         array $data
     ): ProductInterface {
-        $variantProduct = new Product();
-
-        $identifierAttribute = $this->container->get('pim_catalog.repository.attribute')->findOneByCode('sku');
-
-        $entityWithValuesBuilder = $this->container->get('pim_catalog.builder.entity_with_values');
-        $entityWithValuesBuilder->addOrReplaceValue($variantProduct, $identifierAttribute, null, null, $identifier);
-
-        $this->container->get('pim_catalog.updater.product')->update(
-            $variantProduct,
-            [
-                'family' => $familyCode,
-            ]
-        );
-
+        $entityWithValuesBuilder = $this->container->get('pim_catalog.builder.product');
+        $variantProduct = $entityWithValuesBuilder->createProduct($identifier, $familyCode);
         $variantProduct->setParent($parent);
 
         $familyVariant = $this->container->get('pim_catalog.repository.family_variant')->findOneByCode($familyVariantCode);
