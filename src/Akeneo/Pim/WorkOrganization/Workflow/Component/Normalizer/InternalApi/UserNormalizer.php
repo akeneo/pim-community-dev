@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -19,12 +19,20 @@ class UserNormalizer implements NormalizerInterface
     /** @var CategoryAccessRepository */
     private $categoryAccessRepository;
 
-    /**
-     * @param CategoryAccessRepository $categoryAccessRepository
-     */
-    public function __construct(CategoryAccessRepository $categoryAccessRepository)
-    {
+    /** @var GetGrantedCategoryCodes */
+    private $getAllEditableCategoryCodes;
+
+    /** @var GetGrantedCategoryCodes */
+    private $getAllOwnableCategoryCodes;
+
+    public function __construct(
+        CategoryAccessRepository $categoryAccessRepository,
+        GetGrantedCategoryCodes $getAllEditableCategoryCodes,
+        GetGrantedCategoryCodes $getAllOwnableCategoryCodes
+    ) {
         $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->getAllEditableCategoryCodes = $getAllEditableCategoryCodes;
+        $this->getAllOwnableCategoryCodes = $getAllOwnableCategoryCodes;
     }
 
     /**
@@ -46,17 +54,16 @@ class UserNormalizer implements NormalizerInterface
         return $data instanceof UserInterface && 'internal_api' === $format;
     }
 
-    private function displayProposalsToReviewNotification($user): bool
+    private function displayProposalsToReviewNotification(UserInterface $user): bool
     {
         return $this->categoryAccessRepository->isOwner($user);
     }
 
-    private function displayProposalsStateNotification($user): bool
+    private function displayProposalsStateNotification(UserInterface $user): bool
     {
-        $editableCategories = $this->categoryAccessRepository
-            ->getGrantedCategoryCodes($user, Attributes::EDIT_ITEMS);
-        $ownedCategories = $this->categoryAccessRepository
-            ->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS);
+        $userGroupIds = $user->getGroupsIds();
+        $editableCategories = $this->getAllEditableCategoryCodes->forGroupIds($userGroupIds);
+        $ownedCategories = $this->getAllOwnableCategoryCodes->forGroupIds($userGroupIds);
 
         $editableButNotOwned = array_diff($editableCategories, $ownedCategories);
 

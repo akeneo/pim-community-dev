@@ -12,8 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProductRepositoryInterface;
 
@@ -25,19 +24,15 @@ class ProductRepository implements ProductRepositoryInterface
     /** @var ProductQueryBuilderFactoryInterface */
     protected $productQueryBuilderFactory;
 
-    /** @var CategoryAccessRepository */
-    protected $categoryAccessRepository;
+    /** @var GetGrantedCategoryCodes */
+    private $getAllViewableCategoryCodes;
 
-    /**
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-     * @param CategoryAccessRepository            $categoryAccessRepository
-     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        CategoryAccessRepository $categoryAccessRepository
+        GetGrantedCategoryCodes $getAllViewableCategoryCodes
     ) {
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->getAllViewableCategoryCodes = $getAllViewableCategoryCodes;
     }
 
     /**
@@ -60,10 +55,7 @@ class ProductRepository implements ProductRepositoryInterface
             $productQueryBuilder->addFilter($productFiler['field'], $productFiler['operator'], $productFiler['value']);
         }
 
-        $categoriesCodes = $this->categoryAccessRepository->getGrantedCategoryCodes(
-            $project->getOwner(),
-            Attributes::VIEW_ITEMS
-        );
+        $categoriesCodes = $this->getAllViewableCategoryCodes->forGroupIds($project->getOwner()->getGroupsIds());
 
         $productQueryBuilder->addFilter('categories', 'IN OR UNCLASSIFIED', $categoriesCodes, ['type_checking' => false]);
         $productQueryBuilder->addFilter('family', 'NOT EMPTY', null);

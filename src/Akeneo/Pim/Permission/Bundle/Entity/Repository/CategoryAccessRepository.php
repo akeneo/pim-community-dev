@@ -110,29 +110,6 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     }
 
     /**
-     * Get granted category query builder
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function getGrantedCategoryQB(UserInterface $user, $accessLevel)
-    {
-        $qb = $this->createQueryBuilder('ca');
-        $qb
-            ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
-            ->setParameter('groups', $user->getGroups()->toArray())
-            ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
-            ->resetDQLParts(['select'])
-            ->innerJoin('ca.category', 'c', 'c.id')
-            ->select('c.id')
-            ->distinct(true);
-
-        return $qb;
-    }
-
-    /**
      * Get granted categories ids from the provided category
      *
      * @param CategoryInterface $category
@@ -269,28 +246,6 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN, 'ca.id');
 
         return array_map('intval', $ids);
-    }
-
-    /**
-     * Returns granted category codes
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     *
-     * @return string[]
-     */
-    public function getGrantedCategoryCodes(UserInterface $user, $accessLevel)
-    {
-        $qb = $this->getGrantedCategoryQB($user, $accessLevel)
-            ->resetDQLParts(['select'])
-            ->select('c.code');
-
-        return array_map(
-            function ($row) {
-                return $row['code'];
-            },
-            $qb->getQuery()->getArrayResult()
-        );
     }
 
     /**

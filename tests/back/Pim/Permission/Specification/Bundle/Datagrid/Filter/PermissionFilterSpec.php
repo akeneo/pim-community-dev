@@ -2,14 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Datagrid\Filter;
 
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimFilterBundle\Datasource\Orm\OrmFilterProductDatasourceAdapter;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -20,24 +19,26 @@ class PermissionFilterSpec extends ObjectBehavior
     function let(
         FormFactoryInterface $factory,
         FilterUtility $utility,
-        CategoryAccessRepository $accessRepository,
         TokenInterface $token,
         UserInterface $user,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        GetGrantedCategoryCodes $getAllViewableCategoryCodes,
+        GetGrantedCategoryCodes $getAllOwnableCategoryCodes,
+        GetGrantedCategoryCodes $getAllEditableCategoryCodes
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
+        $user->getGroupsIds()->willReturn([1,2]);
 
-        $this->beConstructedWith($factory, $utility, $tokenStorage, $accessRepository);
+        $this->beConstructedWith($factory, $utility, $tokenStorage, $getAllViewableCategoryCodes, $getAllOwnableCategoryCodes, $getAllEditableCategoryCodes);
     }
 
     function it_applies_a_filter_on_owned_products_with_granted_categories(
-        $accessRepository,
-        $user,
+        GetGrantedCategoryCodes $getAllOwnableCategoryCodes,
         ProductQueryBuilderInterface $pqb,
         OrmFilterProductDatasourceAdapter $datasource
     ) {
-        $accessRepository->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS)->willReturn(['bar', 'baz']);
+        $getAllOwnableCategoryCodes->forGroupIds([1,2])->willReturn(['bar', 'baz']);
         $datasource->getProductQueryBuilder()->willReturn($pqb);
 
         $pqb->getRawFilters()->willReturn([[
@@ -52,7 +53,8 @@ class PermissionFilterSpec extends ObjectBehavior
         $pqb->addFilter(
             'categories',
             Operators::IN_LIST_OR_UNCLASSIFIED,
-            ['bar', 'baz']
+            ['bar', 'baz'],
+            ['type_checking' => false]
         )->shouldBeCalled();
 
         $this->apply(
@@ -65,12 +67,11 @@ class PermissionFilterSpec extends ObjectBehavior
     }
 
     function it_applies_a_filter_on_owned_products_without_granted_categories(
-        $accessRepository,
-        $user,
+        GetGrantedCategoryCodes $getAllOwnableCategoryCodes,
         ProductQueryBuilderInterface $pqb,
         OrmFilterProductDatasourceAdapter $datasource
     ) {
-        $accessRepository->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS)->willReturn([]);
+        $getAllOwnableCategoryCodes->forGroupIds([1,2])->willReturn([]);
         $datasource->getProductQueryBuilder()->willReturn($pqb);
 
         $pqb->getRawFilters()->willReturn([[

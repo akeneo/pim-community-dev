@@ -88,6 +88,27 @@ class CategoryTreeFixturesLoaderWithPermission
      */
     public function givenTheViewableCategories(array $categoryCodes): void
     {
+        $this->givenTheRightOnCategoryCodes(Attributes::VIEW_ITEMS, $categoryCodes);
+    }
+
+    /**
+     * @param array $categoryCodes
+     */
+    public function givenTheOwnableCategories(array $categoryCodes): void
+    {
+        $this->givenTheRightOnCategoryCodes(Attributes::OWN_PRODUCTS, $categoryCodes);
+    }
+
+    /**
+     * @param array $categoryCodes
+     */
+    public function givenTheEditableCategories(array $categoryCodes): void
+    {
+        $this->givenTheRightOnCategoryCodes(Attributes::EDIT_ITEMS, $categoryCodes);
+    }
+
+    private function givenTheRightOnCategoryCodes(string $accessLevel, $categoryCodes): void
+    {
         $accessManager = $this->container->get('pimee_security.manager.category_access');
         $entityManager = $this->container->get('doctrine')->getEntityManager();
         $groupRepository = $this->container->get('pim_user.repository.group');
@@ -100,8 +121,8 @@ class CategoryTreeFixturesLoaderWithPermission
 
             $accessManager->revokeAccess($category);
             $entityManager->flush($category);
-            $accessManager->grantAccess($category, $itSupportUserGroup, Attributes::VIEW_ITEMS);
-            $accessManager->grantAccess($category, $redactorUserGroup, Attributes::VIEW_ITEMS);
+            $accessManager->grantAccess($category, $itSupportUserGroup, $accessLevel);
+            $accessManager->grantAccess($category, $redactorUserGroup, $accessLevel);
         }
     }
 }

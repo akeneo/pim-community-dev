@@ -170,6 +170,7 @@ $rules = [
         'Doctrine\ORM\QueryBuilder',
 
         // TODO: permission
+        'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes',
         'Akeneo\Pim\Permission\Component\Attributes',
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
 
