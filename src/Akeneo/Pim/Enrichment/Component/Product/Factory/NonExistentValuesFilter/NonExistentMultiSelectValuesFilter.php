@@ -29,7 +29,9 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
             return $onGoingFilteredRawValues;
         }
 
-        $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
+        $optionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode(
+            $this->getOptionCodes($selectValues)
+        );
 
         $filteredValues = [];
 
@@ -40,7 +42,10 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $optionCodes[$attributeCode] ?? []);
+                            $multiSelectValues[$channel][$locale] = array_intersect(
+                                $value,
+                                $optionCodes[$attributeCode] ?? []
+                            );
                         }
                     }
                 }
@@ -57,18 +62,11 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
+    private function getExistingOptionCodes(array $selectValues): array
     {
         $optionCodes = $this->getOptionCodes($selectValues);
-        $existingOptionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
-        $caseInsensitiveOptionsCodes = [];
-        foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
-            foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
-                $caseInsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
-            }
-        }
 
-        return $caseInsensitiveOptionsCodes;
+        return $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
     }
 
     private function getOptionCodes(array $selectValues): array
@@ -95,22 +93,5 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
         }
 
         return $uniqueOptionCodes;
-    }
-
-    private function arrayIntersectCaseInsensitive(array $givenOptionCodes, array $existentOptionCodesIndexedInsensitive): array
-    {
-        $result = [];
-
-        if (empty($existentOptionCodesIndexedInsensitive)) {
-            return [];
-        }
-
-        foreach ($givenOptionCodes as $optionCode) {
-            if (isset($existentOptionCodesIndexedInsensitive[strtolower($optionCode ?? '')])) {
-                $result[] = $existentOptionCodesIndexedInsensitive[strtolower($optionCode)];
-            }
-        }
-
-        return $result;
     }
 }

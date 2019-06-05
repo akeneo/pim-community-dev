@@ -7,6 +7,8 @@ settings:
                 filter: ['lowercase']
             identifier_normalizer:
                 filter: ['lowercase']
+            attribute_option_normalizer:
+                filter: ['lowercase']
         char_filter:
             newline_pattern:
                 pattern: '\\n'
