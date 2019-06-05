@@ -40,12 +40,12 @@ class ValueDeleted
         return $this->attributeCode;
     }
 
-    public function localeCode(): string
+    public function localeCode(): ?string
     {
         return $this->localeCode;
     }
 
-    public function channelCode(): string
+    public function channelCode(): ?string
     {
         return $this->channelCode;
     }
