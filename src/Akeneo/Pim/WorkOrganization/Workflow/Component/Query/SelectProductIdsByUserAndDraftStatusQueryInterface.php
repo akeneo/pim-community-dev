@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Query;
 
-
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
