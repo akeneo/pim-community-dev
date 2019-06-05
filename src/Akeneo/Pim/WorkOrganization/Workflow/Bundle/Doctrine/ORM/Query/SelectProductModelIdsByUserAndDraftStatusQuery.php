@@ -28,7 +28,7 @@ class SelectProductModelIdsByUserAndDraftStatusQuery implements SelectProductMod
         $this->connection = $connection;
     }
 
-    public function execute(string $username, array $draftStatuses)
+    public function execute(string $username, array $draftStatuses): array
     {
         $querySql = <<<SQL
     SELECT product_model_id FROM pimee_workflow_product_model_draft

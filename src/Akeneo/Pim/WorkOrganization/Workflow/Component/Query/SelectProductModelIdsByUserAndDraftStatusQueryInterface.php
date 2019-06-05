@@ -25,5 +25,5 @@ interface SelectProductModelIdsByUserAndDraftStatusQueryInterface
      *
      * @return int[]
      */
-    public function execute(string $username, array $draftStatuses);
+    public function execute(string $username, array $draftStatuses): array;
 }
