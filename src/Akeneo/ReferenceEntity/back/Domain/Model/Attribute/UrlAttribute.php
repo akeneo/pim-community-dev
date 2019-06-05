@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -25,14 +27,14 @@ class UrlAttribute extends AbstractAttribute
 {
     private const ATTRIBUTE_TYPE = 'url';
 
-    /** @var AttributeUrlPrefix  */
-    private $urlPrefix;
+    /** @var Prefix  */
+    private $prefix;
 
-    /** @var AttributeUrlSuffix  */
-    private $urlSuffix;
+    /** @var Suffix  */
+    private $suffix;
 
-    /** @var AttributeUrlType  */
-    private $urlType;
+    /** @var PreviewType  */
+    private $previewType;
 
     private function __construct(
         AttributeIdentifier $identifier,
@@ -43,9 +45,9 @@ class UrlAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeUrlPrefix $urlPrefix,
-        AttributeUrlSuffix $urlSuffix,
-        AttributeUrlType $urlType
+        Prefix $prefix,
+        Suffix $suffix,
+        PreviewType $previewType
     ) {
         parent::__construct(
             $identifier,
@@ -58,9 +60,9 @@ class UrlAttribute extends AbstractAttribute
             $valuePerLocale
         );
 
-        $this->urlPrefix = $urlPrefix;
-        $this->urlSuffix = $urlSuffix;
-        $this->urlType = $urlType;
+        $this->prefix = $prefix;
+        $this->suffix = $suffix;
+        $this->previewType = $previewType;
     }
 
     public static function create(
@@ -72,9 +74,9 @@ class UrlAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeUrlPrefix $urlPrefix,
-        AttributeUrlSuffix $urlSuffix,
-        AttributeUrlType $urlType
+        Prefix $prefix,
+        Suffix $suffix,
+        PreviewType $previewType
     ) {
         return new self(
             $identifier,
@@ -85,9 +87,9 @@ class UrlAttribute extends AbstractAttribute
             $isRequired,
             $valuePerChannel,
             $valuePerLocale,
-            $urlPrefix,
-            $urlSuffix,
-            $urlType
+            $prefix,
+            $suffix,
+            $previewType
         );
     }
 
@@ -96,9 +98,9 @@ class UrlAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'url_type' => $this->urlType->normalize(),
-                'prefix' => $this->urlPrefix->normalize(),
-                'suffix' => $this->urlSuffix->normalize(),
+                'preview_type' => $this->previewType->normalize(),
+                'prefix' => $this->prefix->normalize(),
+                'suffix' => $this->suffix->normalize(),
             ]
         );
     }

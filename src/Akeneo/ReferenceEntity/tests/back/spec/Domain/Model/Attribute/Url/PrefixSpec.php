@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute\Url;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeUrlSuffix;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
 use PhpSpec\ObjectBehavior;
 
 
@@ -11,21 +11,21 @@ use PhpSpec\ObjectBehavior;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeUrlSuffixSpec extends ObjectBehavior
+class PrefixSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('fromString', ['/500x500']);
+        $this->beConstructedThrough('fromString', ['http://www.binder.com']);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeUrlSuffix::class);
+        $this->shouldHaveType(Prefix::class);
     }
 
     function it_normalizes_itself()
     {
-        $this->normalize()->shouldReturn('/500x500');
+        $this->normalize()->shouldReturn('http://www.binder.com');
     }
 
     public function it_throws_if_it_is_created_with_an_empty_value()

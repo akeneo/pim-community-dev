@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute\Url;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeUrlType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
 use PhpSpec\ObjectBehavior;
 
 
@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeUrlTypeSpec extends ObjectBehavior
+class PreviewTypeSpec extends ObjectBehavior
 {
     function let()
     {
@@ -20,7 +20,7 @@ class AttributeUrlTypeSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeUrlType::class);
+        $this->shouldHaveType(PreviewType::class);
     }
 
     function it_normalizes_itself()
