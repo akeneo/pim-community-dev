@@ -209,14 +209,17 @@ class EnterpriseWebUser extends BaseWebUser
         $partialButton = sprintf('.partial-%s-link', $partialAction);
 
         foreach ($hash as $row) {
-            $button = $this->getElementByDataAttribute($row, $partialButton);
-            $this->wait();
+            $button = $this->spin(function () use ($row, $partialButton) {
+                return $this->getElementByDataAttribute($row, $partialButton);
+            }, sprintf('Unable to the button to approve/reject'));
+
             $button->click();
 
             $comment = isset($row['comment']) ? $row['comment'] : '';
 
             $this->iFillInThisCommentInThePopin($comment);
             $this->iPressTheButtonInThePopin("Send");
+            sleep(1);
         }
     }
 
