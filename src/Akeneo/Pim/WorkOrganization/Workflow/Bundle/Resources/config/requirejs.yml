@@ -58,6 +58,7 @@ config:
         pimee/template/product/unpublish:                       akeneopimworkflow/templates/product/unpublish.html
         pimee/template/product/source-switcher:                 akeneopimworkflow/templates/product/source-switcher.html
         pimee/template/product/submit-draft:                    akeneopimworkflow/templates/product/submit-draft.html
+        pimee/template/product/submit-draft-sequential-edit:    akeneopimworkflow/templates/product/submit-draft-sequential-edit.html
         pimee/template/product/original-product:                akeneopimworkflow/templates/product/original-product.html
         pimee/template/product/tab/attribute/modified-by-draft: akeneopimworkflow/templates/product/tab/attributes/modified-by-draft.html
         pimee/templates/dashboard/proposal-widget: akeneopimworkflow/templates/proposal/widget/proposal-widget.html

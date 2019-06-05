@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ScheduleFetchProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
@@ -42,25 +43,23 @@ class SaveAttributesMappingByFamilyHandler
     /** @var SelectFamilyAttributeCodesQueryInterface */
     private $selectFamilyAttributeCodesQuery;
 
-    /**
-     * @param FamilyRepositoryInterface                $familyRepository
-     * @param AttributeRepositoryInterface             $attributeRepository
-     * @param AttributesMappingProviderInterface       $attributesMappingProvider
-     * @param ProductSubscriptionRepositoryInterface   $subscriptionRepository
-     * @param SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
-     */
+    /** @var ScheduleFetchProductsInterface */
+    private $scheduleFetchProducts;
+
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributesMappingProviderInterface $attributesMappingProvider,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery,
+        ScheduleFetchProductsInterface $scheduleFetchProducts
     ) {
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->attributesMappingProvider = $attributesMappingProvider;
         $this->subscriptionRepository = $subscriptionRepository;
         $this->selectFamilyAttributeCodesQuery = $selectFamilyAttributeCodesQuery;
+        $this->scheduleFetchProducts = $scheduleFetchProducts;
     }
 
     /**
@@ -106,5 +105,8 @@ class SaveAttributesMappingByFamilyHandler
 
         $this->attributesMappingProvider->saveAttributesMapping($familyCode, $attributesMapping);
         $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily($familyCode);
+
+        // Ideally, it should not be done here, but triggered from an event.
+        $this->scheduleFetchProducts->schedule();
     }
 }

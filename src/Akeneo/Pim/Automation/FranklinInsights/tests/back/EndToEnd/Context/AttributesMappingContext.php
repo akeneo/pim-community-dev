@@ -17,8 +17,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyReposi
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
+use spec\PhpSpec\Exception\Fracture\InterfaceNotImplementedExceptionSpec;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -92,6 +94,54 @@ class AttributesMappingContext extends PimContext
     public function franklinAttributeShouldNotBeMapped(string $franklinAttributeId): void
     {
         $this->getMainContext()->getSubcontext('assertions')->assertPageNotContainsText('There are unsaved changes');
+    }
+
+    /**
+     * @When I create the :franklinAttrType attribute :franklinAttrLabel in the family :familyCode
+     */
+    public function iCreateTheAttributeInTheFamily(
+        string $franklinAttrType,
+        string $franklinAttrLabel,
+        string $familyCode
+    ): void {
+        $this->getNavigationContext()->iAmLoggedInAs('admin', 'admin');
+        $this->getNavigationContext()->iAmOnThePage('Franklin attributes mapping');
+
+        /** @var NodeElement $cell */
+        $cell = $this->spin(
+            function () use ($franklinAttrLabel) {
+                $nodeElements = $this->getCurrentPage()->findAll('css', '.franklin-attribute div.label');
+                foreach ($nodeElements as $nodeElement) {
+                    if ($franklinAttrLabel === $nodeElement->getText()) {
+                        return $nodeElement->getParent();
+                    }
+                }
+            },
+            'Could not find franklin attribute row for label "'.$franklinAttrLabel.'".'
+        );
+
+        /** @var NodeElement $button */
+        $button = $this->spin(
+            function () use ($cell) {
+                return $cell->getParent()->find('css', 'td.create-attribute-button button');
+            },
+            'Could not find create attribute button for "'.$franklinAttrLabel.'"'
+        );
+
+        $button->click();
+    }
+
+    /**
+     * @Then the family :familyCode should have the :franklinAttrType attribute :attrCode
+     */
+    public function theFamilyShouldHaveTheAttribute($familyCode, $franklinAttrType, $attrCode): void
+    {
+        $this->spin(
+            function () use ($attrCode) {
+                return $this->getCurrentPage()->find('css', 'input[value="'.$attrCode.'"]');
+            },
+            'Could not find selected attribute for code "'.$attrCode.'".'
+        );
     }
 
     /**

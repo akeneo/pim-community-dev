@@ -54,11 +54,13 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
-            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             // TODO: should be removed see with JJ and AL
             'Akeneo\Tool\Bundle\BatchBundle',
+            'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository',
 
             // External dependencies
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Security\Core\User\UserInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\Validator\Constraints',
 

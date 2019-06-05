@@ -11,7 +11,7 @@ import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import AttributesMapping from '../../model/attributes-mapping';
 import AttributesMappingForFamily from '../../model/attributes-mapping-for-family';
-import AttributeMapping = require('./table');
+import AttributeMappingStatus from "../../model/attribute-mapping-status";
 
 const __ = require('oro/translator');
 const template = require('akeneo/franklin-insights/template/settings/attributes-mapping/family-selector-and-status');
@@ -80,7 +80,7 @@ class FamilySelectorAndStatus extends BaseView {
     }
 
     franklinAttributes.forEach((franklinAttribute: string) => {
-      if (AttributeMapping.ATTRIBUTE_PENDING === mapping[franklinAttribute].status) {
+      if (AttributeMappingStatus.ATTRIBUTE_PENDING === mapping[franklinAttribute].status) {
         status = FamilySelectorAndStatus.FAMILY_MAPPING_PENDING;
       }
     });

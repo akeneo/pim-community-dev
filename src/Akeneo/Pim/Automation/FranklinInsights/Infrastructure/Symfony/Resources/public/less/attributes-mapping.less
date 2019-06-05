@@ -1,0 +1,79 @@
+@import './web/bundles/pimui/less/base/variables';
+
+.AknFranklin {
+    table.attribute-mapping {
+        table-layout: fixed;
+    }
+
+    th.catalog-attribute {
+        width: 350px;
+        padding-left: 35px;
+    }
+
+    td.franklin-attribute {
+        line-height: 25px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        .label {
+            color: @AknLightPurple;
+            font-weight: bold;
+        }
+
+        .type {
+            font-weight: bold;
+        }
+
+        .summary {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            .title {
+                font-weight: bold;
+            }
+
+            ol {
+                display: inline;
+
+                li {
+                    display: inline;
+                    font-style: italic;
+                }
+
+                li:after {
+                    content: ', ';
+                }
+
+                li:last-child:after {
+                    content: '';
+                }
+            }
+        }
+    }
+
+    td.attribute-selector {
+        .AknFieldContainer {
+            margin-left: 30px;
+        }
+        .AknFieldContainer-inputContainer {
+            width: 320px;
+        }
+        .perfect-match {
+            &:before {
+                content: url('/bundles/pimui/images/icon-checkwhite.svg');
+                width: 24px;
+                height: 24px;
+                background-color: darken(@AknGreen, 5%);
+                border-radius: 12px;
+                margin-top: 8px;
+                position: absolute;
+                top: 0;
+                left: -30px;
+            }
+            .select2-choice {
+                border: 1px solid darken(@AknGreen, 5%);
+            }
+        }
+    }
+}

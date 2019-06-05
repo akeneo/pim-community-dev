@@ -4,6 +4,14 @@ pim_menu:
 
 akeneo_franklin_insights:
     entity:
+        franklin_attribute:
+            type:
+                boolean: Boolean
+                metric: Metric
+                multiselect: 'Multi select'
+                number: Number
+                select: Select
+                text: Text
         data_provider:
             ask_franklin_down: "Sorry, something went wrong. Please try again later."
             authentication_error: "Sorry, failed to authenticate to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help."
@@ -38,14 +46,21 @@ akeneo_franklin_insights:
                 locale_specific_not_allowed: "Locale specific attributes are not allowed as identifier"
         attributes_mapping:
             label: Attributes mapping
+            flash:
+                create_attribute_success: 'Attribute successfully created and attached to the family "{{ family }}".'
+                create_attribute_error: 'Sorry, an error occurred while creating or attaching the attribute to the family.'
+                suggest_attribute_mapping_error: 'Catalog attribute "[{{ catalogAttributeCode }}]" is already mapped on the Franklin attribute "{{ franklinAttributeLabel }}".'
             fields:
                 franklin_attribute: 'Franklin attribute'
+                franklin_attribute_type: '{{ type }} attribute'
+                franklin_value_sample: 'Value sample:'
                 franklin_insights:
                     label: Franklin attribute status
                     pending: Pending
                     active: Active
                     inactive: Inactive
-                values_summary: "Values summary: {{ label }}"
+                create_attribute:
+                    btn: Create attribute
             module:
                 subscribe:
                     subscribe: 'Subscribe family to Franklin'

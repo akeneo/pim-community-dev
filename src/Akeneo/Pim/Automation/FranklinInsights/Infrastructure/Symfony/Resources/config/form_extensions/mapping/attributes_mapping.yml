@@ -88,6 +88,7 @@ extensions:
         parent: akeneo-franklin-insights-settings-attributes-mapping-index-tab-content
         position: 30
         targetZone: mapping
+        className: AknFranklin
         config:
             labels:
                 pending: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending

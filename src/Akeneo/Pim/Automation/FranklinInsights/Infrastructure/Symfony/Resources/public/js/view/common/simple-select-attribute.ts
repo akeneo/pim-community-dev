@@ -80,14 +80,10 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       id: item.code,
       text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
       group: {
-        text: (
-          item.group ?
-            i18n.getLabel(
-              this.attributeGroups[item.group].labels,
-              UserContext.get('catalogLocale'),
-              this.attributeGroups[item.group],
-            ) : ''
-        ),
+        text: this.getAttributeGroupLabel(
+            item.group,
+            this.attributeGroups[item.group] && this.attributeGroups[item.group].labels
+        )
       },
       type: item.type,
     };
@@ -141,6 +137,14 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
    */
   private onGetResult(item: { text: string, group: { text: string } }): string {
     return this.lineView({item});
+  }
+
+  private getAttributeGroupLabel(group: string = '', labels: { [locale: string]: string } = {}): string {
+    return i18n.getLabel(
+        labels,
+        UserContext.get('catalogLocale'),
+        group,
+    );
   }
 }
 

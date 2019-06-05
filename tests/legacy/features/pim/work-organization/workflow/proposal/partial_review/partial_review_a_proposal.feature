@@ -65,14 +65,14 @@ Feature: Partial review a proposal
       | product | author | attribute          | original | new    |
       | jacket  | Mary   | name               | Coat     | Jacket |
       | jacket  | Mary   | weather_conditions | Dry      | Snowy  |
-    When I partially reject:
+    When I partially approve:
       | product | author | attribute          | locale | scope |
       | jacket  | Mary   | weather_conditions |        |       |
     Then the grid should contain 1 element
     And I should see the following proposals:
       | product | author | attribute | original | new    |
       | jacket  | Mary   | name      | Coat     | Jacket |
-    When I partially approve:
+    When I partially reject:
       | product | author | attribute | locale | scope |
       | jacket  | Mary   | name      | en_US  |       |
     Then the grid should contain 0 element

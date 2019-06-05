@@ -1,0 +1,11 @@
+<div class="AknSeveralActionsButton AknSeveralActionsButton--action AknDropdown">
+    <button type="button" class="AknSeveralActionsButton-mainAction submit-draft-and-continue">
+        <%- isLast ? __('pimee_enrich.entity.product.module.approval.send_and_finish') : __('pimee_enrich.entity.product.module.approval.send_and_next') %>
+    </button>
+    <button type="button" class="AknSeveralActionsButton-caretContainer" data-toggle="dropdown">
+        <img src="/bundles/pimui/images/icon-down-white.svg" class="AknSeveralActionsButton-caret"/>
+    </button>
+    <ul class="AknSeveralActionsButton-menu AknDropdown-menu">
+        <li><button class="AknDropdown-menuLink submit-draft"><%- __('pimee_enrich.entity.product.module.approval.send') %></button></li>
+    </ul>
+</div>

@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ScheduleFetchProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
@@ -37,14 +38,16 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         AttributesMappingProviderInterface $attributesMappingProvider,
         ProductSubscriptionRepository $subscriptionRepository,
-        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery,
+        ScheduleFetchProductsInterface $scheduleFetchProducts
     ): void {
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $attributesMappingProvider,
             $subscriptionRepository,
-            $selectFamilyAttributeCodesQuery
+            $selectFamilyAttributeCodesQuery,
+            $scheduleFetchProducts
         );
     }
 
@@ -223,7 +226,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $attributesMappingProvider,
         $subscriptionRepository,
-        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery,
+        ScheduleFetchProductsInterface $scheduleFetchProducts
     ): void {
         $attributesMapping = [
             'memory' => [
@@ -265,6 +269,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $subscriptionRepository
             ->emptySuggestedDataAndMissingMappingByFamily($command->getFamilyCode())
             ->shouldBeCalled();
+
+        $scheduleFetchProducts->schedule()->shouldBeCalled();
 
         $this->handle($command);
     }

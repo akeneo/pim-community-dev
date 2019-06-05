@@ -21,3 +21,7 @@ akeneo_franklin_insights_attributes_mapping:
 akeneo_franklin_insights_attribute_options_mapping:
     resource: '@AkeneoFranklinInsightsBundle/Resources/config/routing/attribute_options_mapping.yml'
     prefix: '/franklin-insights/mapping/attributes'
+
+akeneo_franklin_insights_structure:
+    resource: '@AkeneoFranklinInsightsBundle/Resources/config/routing/structure.yml'
+    prefix: '/franklin-insights/structure'
