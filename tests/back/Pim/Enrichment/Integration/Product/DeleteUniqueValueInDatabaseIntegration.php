@@ -98,8 +98,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
     private function setUniqueValueAtNullForAttribute(string $attributeCode): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $product->getValues()->removeByAttributeCode($attributeCode);
-        $product->getValues()->add(ScalarValue::value('name', null));
+        $product->addOrReplaceValue(ScalarValue::value('name', null));
 
         $constraintList = $this->get('validator')->validate($product);
         $this->assertEquals(0, $constraintList->count());
@@ -111,7 +110,8 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
     private function deleteUniqueValueForAttribute(string $attributeCode): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $product->getValues()->removeByAttributeCode($attributeCode);
+        $oldValue = $product->getValue($attributeCode);
+        $product->removeValue($oldValue);
         $constraintList = $this->get('validator')->validate($product);
         $this->assertEquals(0, $constraintList->count());
 

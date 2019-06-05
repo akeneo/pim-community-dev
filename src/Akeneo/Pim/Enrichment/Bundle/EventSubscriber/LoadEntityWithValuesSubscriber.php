@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\BusinessEventsAwareInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
@@ -73,6 +74,9 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
 
         $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
         $entity->setValues($values);
+        if ($entity instanceof BusinessEventsAwareInterface) {
+            $entity->popEvents();
+        }
     }
 
     /**

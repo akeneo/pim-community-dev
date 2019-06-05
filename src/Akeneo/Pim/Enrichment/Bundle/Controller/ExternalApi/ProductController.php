@@ -298,9 +298,9 @@ class ProductController
         $data = $this->orderData($data);
 
         if (isset($data['parent'])) {
-            $product = $this->variantProductBuilder->createProduct($data['identifier']);
+            $product = $this->variantProductBuilder->createProduct($data['identifier'] ?? null);
         } else {
-            $product = $this->productBuilder->createProduct();
+            $product = $this->productBuilder->createProduct($data['identifier'] ?? null);
         }
 
         $this->updateProduct($product, $data, 'post_products');

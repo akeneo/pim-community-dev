@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
@@ -20,93 +21,67 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($valuesResolver, $productValueFactory);
     }
 
-    function it_adds_an_empty_product_value(
+    function it_adds_a_product_value(
         $productValueFactory,
         ProductInterface $product,
-        AttributeInterface $size,
-        AttributeInterface $color,
-        ValueInterface $sizeValue,
-        ValueInterface $colorValue
+        AttributeInterface $size
     ) {
         $size->getCode()->willReturn('size');
         $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
 
-        $color->getCode()->willReturn('color');
-        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $color->isLocalizable()->willReturn(true);
-        $color->isScopable()->willReturn(true);
+        $product->getValue('size', null, null)->willReturn(null);
+        $sizeValue = ScalarValue::value('size', 'XL');
+        $productValueFactory->create($size, null, null, 'XL')->willReturn($sizeValue);
 
-        $product->getValue('size', null, null)->willReturn($sizeValue);
-        $product->getValue('color', 'en_US', 'ecommerce')->willReturn($colorValue);
+        $product->removeValue(Argument::any())->shouldNotBeCalled();
+        $product->addValue($sizeValue)->shouldBeCalled();
 
-        $product->removeValue($sizeValue)->willReturn($product);
-        $product->removeValue($colorValue)->willReturn($product);
-
-        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
-        $productValueFactory->create($color, 'ecommerce', 'en_US', null)->willReturn($colorValue);
-
-        $product->addValue($sizeValue)->willReturn($product);
-        $product->addValue($colorValue)->willReturn($product);
-
-        $this->addOrReplaceValue($product, $size, null, null, null);
-        $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', null);
+        $this->addOrReplaceValue($product, $size, null, null, 'XL');
     }
 
-    function it_adds_a_non_empty_product_value(
+    function it_replaces_a_product_value(
         $productValueFactory,
         ProductInterface $product,
-        AttributeInterface $size,
-        AttributeInterface $color,
-        ValueInterface $sizeValue,
-        ValueInterface $colorValue
+        AttributeInterface $color
     ) {
-        $size->getCode()->willReturn('size');
-        $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $size->isLocalizable()->willReturn(false);
-        $size->isScopable()->willReturn(false);
-
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $color->isLocalizable()->willReturn(true);
         $color->isScopable()->willReturn(true);
 
-        $product->getValue('size', null, null)->willReturn($sizeValue);
-        $product->getValue('color', 'en_US', 'ecommerce')->willReturn($colorValue);
+        $formerColorValue = ScalarValue::scopableLocalizableValue('color', 'red', 'ecommerce', 'en_US');
+        $product->getValue('color', 'en_US', 'ecommerce')->willReturn($formerColorValue);
 
-        $product->removeValue($sizeValue)->willReturn($product);
-        $product->removeValue($colorValue)->willReturn($product);
+        $newColorValue = ScalarValue::scopableLocalizableValue('color', 'blue', 'ecommerce', 'en_US');
+        $productValueFactory->create($color, 'ecommerce', 'en_US', 'blue')->willReturn($newColorValue);
 
-        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
-        $productValueFactory->create($color, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
+        $product->removeValue($formerColorValue)->shouldBeCalled();
+        $product->addValue($newColorValue)->shouldBeCalled();
 
-        $product->addValue($sizeValue)->willReturn($product);
-        $product->addValue($colorValue)->willReturn($product);
-
-        $this->addOrReplaceValue($product, $size, null, null, null);
-        $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', 'red');
+        $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', 'blue');
     }
 
-    function it_adds_a_product_value_if_there_was_not_a_previous_one(
+    function it_does_not_replace_identical_values(
         $productValueFactory,
         ProductInterface $product,
-        AttributeInterface $label,
-        ValueInterface $value
+        AttributeInterface $label
     ) {
         $label->getCode()->willReturn('label');
         $label->getType()->willReturn(AttributeTypes::TEXT);
         $label->isLocalizable()->willReturn(false);
         $label->isScopable()->willReturn(false);
 
-        $product->getValue('label', null, null)->willReturn(null);
+        $formerLabelValue = ScalarValue::value('label', 'A label');
+        $product->getValue('label', null, null)->willReturn($formerLabelValue);
+
+        $newLabelValue = ScalarValue::value('label', 'A label');
+        $productValueFactory->create($label, null, null, 'A label')->willReturn($newLabelValue);
 
         $product->removeValue(Argument::any())->shouldNotBeCalled();
+        $product->addValue(Argument::any())->shouldNotBeCalled();
 
-        $productValueFactory->create($label, null, null, 'foobar')->willReturn($value);
-
-        $product->addValue($value)->willReturn($product);
-
-        $this->addOrReplaceValue($product, $label, null, null, 'foobar');
+        $this->addOrReplaceValue($product, $label, null, null, 'A label');
     }
 }

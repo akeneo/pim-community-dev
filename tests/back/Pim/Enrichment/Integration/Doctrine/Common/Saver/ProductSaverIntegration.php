@@ -108,27 +108,18 @@ class ProductSaverIntegration extends TestCase
     }
 
     /**
-     * TODO: should be replaced by a proper object (builder, factory, whatever)
-     *
      * @param ProductModelInterface $productModel
      * @param string                $productIdentifier
-     * @param string                $familyVariantCode
      *
      * @return ProductInterface
      */
-    private function createVariantProduct(ProductModelInterface $productModel, string $productIdentifier, string $familyVariantCode): ProductInterface
+    private function createVariantProduct(ProductModelInterface $productModel, string $productIdentifier): ProductInterface
     {
-        $product = new Product();
-        $product->setParent($productModel);
+        $variantProduct = $this->get('pim_catalog.builder.product')->createProduct($productIdentifier, $productModel->getFamily()->getCode());
+        $variantProduct->setParent($productModel);
+        $variantProduct->setFamilyVariant($productModel->getFamilyVariant());
 
-        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier($familyVariantCode);
-        $product->setFamilyVariant($familyVariant);
-        $product->setFamily($familyVariant->getFamily());
-
-        $identifierAttribute = $this->get('pim_catalog.repository.attribute')->getIdentifier();
-        $this->get('pim_catalog.builder.product')->addOrReplaceValue($product, $identifierAttribute, null, null, $productIdentifier);
-
-        return $product;
+        return $variantProduct;
     }
 
     /**

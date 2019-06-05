@@ -3,7 +3,6 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
@@ -75,7 +74,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('1111111287');
 
-        $this->assertNull($product->getValuesForVariation()->getByCodes('name'));
+        $this->assertNull($product->getValuesForVariation()->getByCodes('name', null, 'en_US'));
 
         $familyVariant = $this->get('pim_catalog.repository.family_variant')
             ->findOneByIdentifier('shoes_size');

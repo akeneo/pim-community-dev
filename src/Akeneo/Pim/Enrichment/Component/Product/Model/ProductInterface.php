@@ -218,6 +218,7 @@ interface ProductInterface extends
      */
     public function getCategoriesForVariation(): Collection;
 
+    public function addOrReplaceValue(ValueInterface $value): void;
 
     public function popEvents(): array;
 }
