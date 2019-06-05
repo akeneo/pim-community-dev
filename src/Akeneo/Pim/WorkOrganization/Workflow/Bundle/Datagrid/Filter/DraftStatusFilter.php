@@ -72,11 +72,11 @@ class DraftStatusFilter implements FilterInterface
                 $operator = 'NOT IN';
                 break;
             case self::WAITING_FOR_APPROVAL:
-                $draftStatuses = [EntityWithValuesDraftInterface::IN_PROGRESS];
+                $draftStatuses = [EntityWithValuesDraftInterface::READY];
                 $operator = 'IN';
                 break;
             case self::IN_PROGRESS:
-                $draftStatuses = [EntityWithValuesDraftInterface::READY];
+                $draftStatuses = [EntityWithValuesDraftInterface::IN_PROGRESS];
                 $operator = 'IN';
                 break;
             default:
