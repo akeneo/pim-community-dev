@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Proposal;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -61,7 +62,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
 
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($product->getId(), $suggestedValues)],
+            [new ProposalSuggestedData(new ProductId($product->getId()), $suggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -91,7 +92,7 @@ class ProposalUpsertIntegration extends TestCase
         );
 
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($product->getId(), $suggestedValues)],
+            [new ProposalSuggestedData(new ProductId($product->getId()), $suggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -136,7 +137,7 @@ class ProposalUpsertIntegration extends TestCase
             ],
         ];
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($product->getId(), $newSuggestedValues)],
+            [new ProposalSuggestedData(new ProductId($product->getId()), $newSuggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -165,7 +166,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
         $this->proposalUpsert->process(
             [
-                new ProposalSuggestedData($product->getId(), $invalidValues),
+                new ProposalSuggestedData(new ProductId($product->getId()), $invalidValues),
             ],
             ProposalAuthor::USERNAME
         );

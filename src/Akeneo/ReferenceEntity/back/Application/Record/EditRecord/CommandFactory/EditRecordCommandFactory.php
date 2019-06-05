@@ -50,10 +50,10 @@ class EditRecordCommandFactory
         );
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-        $attributesIndexedByIdentifier = ($this->sqlFindAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = $this->sqlFindAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
 
         foreach ($normalizedCommand['values'] as $normalizedValue) {
-            if (!$this->isUserIntputCorrectlyFormed($normalizedValue)) {
+            if (!$this->isUserInputCorrectlyFormed($normalizedValue)) {
                 // we ignore the user input, it might be malformed.
                 continue;
             }
@@ -78,7 +78,7 @@ class EditRecordCommandFactory
             && array_key_exists('values', $normalizedCommand);
     }
 
-    private function isUserIntputCorrectlyFormed($normalizedValue): bool
+    private function isUserInputCorrectlyFormed($normalizedValue): bool
     {
         return array_key_exists('attribute', $normalizedValue);
     }

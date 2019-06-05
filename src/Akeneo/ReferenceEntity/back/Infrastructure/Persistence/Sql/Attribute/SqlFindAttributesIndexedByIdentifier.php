@@ -45,7 +45,7 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
      *
      * @return AbstractAttribute[]
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         if (!isset($this->cachedResults[$referenceEntityIdentifier->normalize()])) {
             $results = $this->fetchResult($referenceEntityIdentifier);

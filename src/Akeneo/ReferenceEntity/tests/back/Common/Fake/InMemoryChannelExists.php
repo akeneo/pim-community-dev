@@ -25,7 +25,7 @@ class InMemoryChannelExists implements ChannelExistsInterface
     /** @var ChannelIdentifier[] */
     private $channels = [];
 
-    public function __invoke(ChannelIdentifier $channelIdentifier): bool
+    public function exists(ChannelIdentifier $channelIdentifier): bool
     {
         foreach ($this->channels as $existingChannel) {
             if ($existingChannel->equals($channelIdentifier)) {

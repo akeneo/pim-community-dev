@@ -1,9 +1,9 @@
 extensions:
     pimee-user-edit-form-email-notifications:
         module: pim/form/common/fields/boolean
-        parent: pim-user-edit-form-groups-and-roles-tab-content
+        parent: pim-user-edit-form-additional-tab-content
         targetZone: content
-        position: 35
+        position: 39
         config:
             fieldName: email_notifications
             label: user.email_notifications

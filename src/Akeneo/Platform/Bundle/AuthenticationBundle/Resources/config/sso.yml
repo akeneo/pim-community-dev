@@ -40,6 +40,7 @@ services:
     akeneo_authentication.sso.log.create_archive:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive'
         arguments:
+            - '@oneup_flysystem.logs_storage_filesystem'
             - '%logs_dir%'
             - '%tmp_storage_dir%'
 
@@ -69,3 +70,10 @@ services:
         arguments:
             - '@pim_user.repository.user'
             - '@akeneo_authentication.sso.configuration.repository'
+
+    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler:
+        arguments:
+            - '@oneup_flysystem.logs_storage_filesystem'
+            - 'authentication.log'
+            - 10
+            - 'error'

@@ -32,7 +32,7 @@ class InMemoryFindUserGroupsForSecurityIdentifierTest extends TestCase
         $this->query->stubWith([
             'julia' => [UserGroupIdentifier::fromInteger(1), UserGroupIdentifier::fromInteger(2)],
         ]);
-        $userGroupIdentifiers = ($this->query)(SecurityIdentifier::fromString('julia'));
+        $userGroupIdentifiers = $this->query->find(SecurityIdentifier::fromString('julia'));
 
         $normalizedUserGroupIdentifiers = array_map(
             function (UserGroupIdentifier $userGroupIdentifier) {
@@ -49,7 +49,7 @@ class InMemoryFindUserGroupsForSecurityIdentifierTest extends TestCase
      */
     public function it_returns_no_user_group()
     {
-        $userGroupIdentifiers = ($this->query)(SecurityIdentifier::fromString('julia'));
+        $userGroupIdentifiers = $this->query->find(SecurityIdentifier::fromString('julia'));
         $this->assertEmpty($userGroupIdentifiers);
     }
 }

@@ -35,9 +35,9 @@ class CreateMediaFileWithPermissionsEndToEnd extends AbstractMediaFileTestCase
                 ],
                 'a_number_float' => [['data' => '12.05', 'locale' => null, 'scope' => null]],
                 'a_localizable_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'de_DE', 'scope' => null]
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'de_DE', 'scope' => null]
                 ],
                 'a_metric_without_decimal_negative' => [
                     ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]

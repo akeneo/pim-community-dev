@@ -23,7 +23,7 @@ const DetailRow = memo(
   }) => {
     if (true === placeholder) {
       return (
-        <tr className="AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder">
+        <tr className="AknGrid-bodyRow">
           {columns.map((colum: Column) => {
             return (
               <td key={colum.key} className="AknGrid-bodyCell">
@@ -37,7 +37,7 @@ const DetailRow = memo(
 
     return (
       <tr
-        className="AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder"
+        className="AknGrid-bodyRow"
         data-identifier={record.identifier}
         onClick={event => {
           event.preventDefault();

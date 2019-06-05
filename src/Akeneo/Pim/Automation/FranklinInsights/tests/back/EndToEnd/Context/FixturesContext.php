@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdent
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Test\Common\EntityBuilder;
@@ -175,7 +176,7 @@ class FixturesContext extends PimContext
 
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $command = new SubscribeProductCommand($product->getId());
+        $command = new SubscribeProductCommand(new ProductId($product->getId()));
         $this->subscribeProductHandler->handle($command);
     }
 

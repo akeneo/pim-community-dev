@@ -186,6 +186,8 @@ pim_analytics:
   info_type:
     nb_assets: Anzahl der Assets
 pim_assets_collection: Sammlung von Assets
+akeneo_reference_entity: Referenz-Entität Einzelverknüpfung
+akeneo_reference_entity_collection: Referenz-Entität Mehrfachverknüpfungen
 pim_api:
   acl:
     asset_category:

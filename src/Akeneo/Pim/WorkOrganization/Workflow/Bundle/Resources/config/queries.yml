@@ -49,6 +49,16 @@ services:
         arguments:
             - '@database_connection'
 
+    pimee_workflow.query.get_workflow_status_from_product_model_codes:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\GetWorkflowStatusFromProductModelCodes
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.get_workflow_status_from_product_identifiers:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\GetWorkflowStatusFromProductIdentifiers
+        arguments:
+            - '@database_connection'
+
     pimee_workflow.query.select_product_ids_by_user_and_draft_status:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectProductIdsByUserAndDraftStatusQuery
         arguments:

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
@@ -36,7 +37,12 @@ class AttributesMappingResponse implements \IteratorAggregate
     public function addAttribute(AttributeMapping $attribute): self
     {
         $this->attributes[] = $attribute;
-        usort($this->attributes, function ($a, $b) {
+
+        usort($this->attributes, function (AttributeMapping $a, AttributeMapping $b) {
+            $mapped = $a->isMapped() <=> $b->isMapped();
+            if ($mapped !== 0) {
+                return $mapped;
+            }
             return $a->getTargetAttributeLabel() <=> $b->getTargetAttributeLabel();
         });
 
@@ -57,6 +63,17 @@ class AttributesMappingResponse implements \IteratorAggregate
         }
 
         return false;
+    }
+
+    public function getPendingAttributesFranklinLabels(): array
+    {
+        $attributes = array_filter($this->attributes, function (AttributeMapping $attributeMapping) {
+            return AttributeMappingStatus::ATTRIBUTE_PENDING === $attributeMapping->getStatus();
+        });
+
+        return array_map(function (AttributeMapping $attributeMapping) {
+            return $attributeMapping->getTargetAttributeLabel();
+        }, $attributes);
     }
 
     /**

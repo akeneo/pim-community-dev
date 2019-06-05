@@ -26,8 +26,6 @@ monolog:
         console:
             type:  console
         authentication:
-            type: rotating_file
-            path: '%kernel.logs_dir%/authentication.log'
+            type: service
+            id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler'
             channels: ['security', 'request']
-            level: error
-            max_files: 10

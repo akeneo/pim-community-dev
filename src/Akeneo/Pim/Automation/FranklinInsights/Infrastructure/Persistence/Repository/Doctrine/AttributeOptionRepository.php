@@ -106,10 +106,12 @@ SQL;
 
     private function buildAttributeOption(array $row): AttributeOption
     {
+        $translations = isset($row['translations']) ? json_decode($row['translations'], true) : [];
+
         return new AttributeOption(
             $row['attribute_option_code'],
             new AttributeCode($row['attribute_code']),
-            $row['translations'] ?? []
+            $translations
         );
     }
 

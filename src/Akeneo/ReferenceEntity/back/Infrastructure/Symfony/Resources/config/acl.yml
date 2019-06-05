@@ -28,6 +28,11 @@ akeneo_referenceentity_record_edit:
     label: akeneo_referenceentity.acl.record.edit
     group_name: akeneo_referenceentity.acl_group.reference_entity
 
+akeneo_referenceentity_record_list_product:
+    type: action
+    label: akeneo_referenceentity.acl.record.list_product
+    group_name: akeneo_referenceentity.acl_group.reference_entity
+
 akeneo_referenceentity_record_delete:
     type: action
     label: akeneo_referenceentity.acl.record.delete

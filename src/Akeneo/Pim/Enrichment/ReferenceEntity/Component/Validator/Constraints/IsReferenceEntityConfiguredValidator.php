@@ -66,7 +66,7 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
         }
 
         if (in_array($attribute->getType(), $this->referenceEntityTypes) &&
-            null === ($this->findReferenceEntityDetails)($referenceEntityIdentifier)
+            null === $this->findReferenceEntityDetails->find($referenceEntityIdentifier)
         ) {
             $this->addUnknownViolation($constraint, $rawReferenceEntityIdentifier);
         }

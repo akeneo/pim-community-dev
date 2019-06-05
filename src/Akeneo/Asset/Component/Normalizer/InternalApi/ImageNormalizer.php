@@ -58,7 +58,11 @@ class ImageNormalizer extends BaseImageNormalizer
             $referenceData = $referenceDataRepository->findOneByIdentifier($assetCodes[0]);
 
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-            $fileInfo = $referenceData->getReference($locale)->getFileInfo();
+            $reference = $referenceData->getReference($locale);
+            if (null === $reference) {
+                return null;
+            }
+            $fileInfo = $reference->getFileInfo();
             if (null === $fileInfo) {
                 return null;
             }

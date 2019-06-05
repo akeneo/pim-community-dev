@@ -52,6 +52,10 @@ class Completeness {
   }
 
   public getRatio() {
+    if (0 === this.required) {
+      return 0;
+    }
+
     return Math.round((100 * this.complete) / this.required);
   }
 }

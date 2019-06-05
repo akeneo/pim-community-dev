@@ -29,7 +29,7 @@ class InMemoryFindActivatedLocalesByIdentifiers implements FindActivatedLocalesB
     /**
      * {@inheritdoc}
      */
-    public function __invoke(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
+    public function find(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
     {
         $activatedLocales = [];
         foreach ($localeIdentifiers as $localeIdentifier) {

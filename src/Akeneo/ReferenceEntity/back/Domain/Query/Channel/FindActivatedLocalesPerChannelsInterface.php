@@ -12,5 +12,5 @@ interface FindActivatedLocalesPerChannelsInterface
      *      'mobile' => ['en_US']
      * ]
      */
-    public function __invoke(): array;
+    public function findAll(): array;
 }

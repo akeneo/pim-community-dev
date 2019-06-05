@@ -20,6 +20,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as PimAttribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption as PimAttributeOption;
+use Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater;
 use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -42,6 +43,9 @@ final class AttributeOptionRepositoryIntegration extends TestCase
     /** @var AttributeOptionRepositoryInterface */
     private $attributeOptionRepository;
 
+    /** @var AttributeOptionUpdater */
+    private $attributeOptionUpdater;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -49,6 +53,7 @@ final class AttributeOptionRepositoryIntegration extends TestCase
         $this->attributeBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute');
         $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
         $this->attributeOptionSaver = $this->getFromTestContainer('pim_catalog.saver.attribute_option');
+        $this->attributeOptionUpdater = $this->getFromTestContainer('pim_catalog.updater.attribute_option');
         $this->attributeOptionRepository = $this->getFromTestContainer(
             'akeneo.pim.automation.franklin_insights.repository.attribute_option'
         );
@@ -63,14 +68,18 @@ final class AttributeOptionRepositoryIntegration extends TestCase
         $this->assertNull($attributeOption);
 
         $attribute = $this->createAttribute('router');
-        $this->createAttributeOption('color', $attribute);
+        $this->createAttributeOption('color', $attribute, ['en_US' => 'Color', 'fr_FR' => 'Couleur']);
         $this->createAttributeOption('size', $attribute);
 
         $attributeOption = $this->attributeOptionRepository->findOneByIdentifier(
             new AttributeCode('router'),
             'color'
         );
-        $expectedAttributeOption = new AttributeOption('color', new AttributeCode('router'));
+        $expectedAttributeOption = new AttributeOption(
+            'color',
+            new AttributeCode('router'),
+            ['en_US' => 'Color', 'fr_FR' => 'Couleur']
+        );
         $this->assertEquals($attributeOption, $expectedAttributeOption);
     }
 
@@ -98,11 +107,17 @@ final class AttributeOptionRepositoryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function createAttributeOption(string $attributeOptionCode, PimAttribute $attribute): PimAttributeOption
+    private function createAttributeOption(string $attributeOptionCode, PimAttribute $attribute, ?array $labels = []): PimAttributeOption
     {
         $attributeOption = new PimAttributeOption();
         $attributeOption->setCode($attributeOptionCode);
         $attributeOption->setAttribute($attribute);
+
+        if (! empty($labels)) {
+            $this->attributeOptionUpdater->update($attributeOption, [
+                'labels' => $labels,
+            ]);
+        }
 
         $this->attributeOptionSaver->save($attributeOption);
 

@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
@@ -36,15 +37,14 @@ class UpdateSubscriptionFamilyHandlerSpec extends ObjectBehavior
         $productSubscriptionRepository,
         $subscriptionProvider
     ): void {
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $productId = new ProductId(42);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
         $subscriptionProvider->updateFamilyInfos(Argument::cetera())->shouldNotBeCalled();
 
-        $this->shouldThrow(ProductNotSubscribedException::notSubscribed(42))->during(
+        $this->shouldThrow(ProductNotSubscribedException::notSubscribed())->during(
             'handle',
             [
-                new UpdateSubscriptionFamilyCommand(
-                    42, new FamilyCode('router')
-                ),
+                new UpdateSubscriptionFamilyCommand($productId, new FamilyCode('router')),
             ]
         );
     }
@@ -54,8 +54,9 @@ class UpdateSubscriptionFamilyHandlerSpec extends ObjectBehavior
         $subscriptionProvider,
         FamilyRepositoryInterface $familyRepository
     ): void {
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(
-            new ProductSubscription(42, new SubscriptionId('123456-abcdef'), [])
+        $productId = new ProductId(42);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(
+            new ProductSubscription($productId, new SubscriptionId('123456-abcdef'), [])
         );
 
         $familyCode = new FamilyCode('router');
@@ -64,6 +65,6 @@ class UpdateSubscriptionFamilyHandlerSpec extends ObjectBehavior
 
         $subscriptionProvider->updateFamilyInfos('123456-abcdef', $family)->shouldBeCalled();
 
-        $this->handle(new UpdateSubscriptionFamilyCommand(42, $familyCode));
+        $this->handle(new UpdateSubscriptionFamilyCommand($productId, $familyCode));
     }
 }

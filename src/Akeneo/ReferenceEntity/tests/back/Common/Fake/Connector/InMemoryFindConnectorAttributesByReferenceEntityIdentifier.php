@@ -37,7 +37,7 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifier implements Find
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         return $this->attributes[(string) $referenceEntityIdentifier] ?? [];
     }

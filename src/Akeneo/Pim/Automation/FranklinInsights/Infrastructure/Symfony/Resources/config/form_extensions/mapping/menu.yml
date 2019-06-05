@@ -6,4 +6,4 @@ extensions:
         position: 210
         config:
             title: pim_menu.item.franklin
-            to: akeneo_franklin_insights_identifiers_mapping_edit
+            to: akeneo_franklin_insights_mapping_index

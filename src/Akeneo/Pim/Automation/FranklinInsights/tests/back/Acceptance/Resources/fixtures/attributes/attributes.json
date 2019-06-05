@@ -6,8 +6,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "SKU",
-      "fr_FR": "UGS"
+      "en_US": "SKU"
     }
   },
   "identifier": {
@@ -24,8 +23,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "ASIN",
-      "fr_FR": "ASIN"
+      "en_US": "ASIN"
     }
   },
   "pim_upc": {
@@ -35,8 +33,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "UPC",
-      "fr_FR": "UPC"
+      "en_US": "UPC"
     }
   },
   "mpn": {
@@ -46,8 +43,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "MPN",
-      "fr_FR": "MPN"
+      "en_US": "MPN"
     }
   },
   "pim_brand": {
@@ -57,8 +53,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Brand",
-      "fr_FR": "Marque"
+      "en_US": "Brand"
     }
   },
   "ean": {
@@ -75,8 +70,7 @@
     "localizable": true,
     "scopable": true,
     "labels": {
-      "en_US": "Description",
-      "fr_FR": "Description"
+      "en_US": "Description"
     }
   },
   "memory": {
@@ -86,19 +80,17 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Memory",
-      "fr_FR": "Mémoire"
+      "en_US": "Memory"
     }
   },
   "name": {
     "code": "name",
     "type": "pim_catalog_text",
     "group": "other",
-    "localizable": true,
+    "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Name",
-      "fr_FR": "Libellé"
+      "en_US": "Name"
     }
   },
   "picture": {
@@ -108,8 +100,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Picture",
-      "fr_FR": "Image"
+      "en_US": "Picture"
     }
   },
   "processor": {
@@ -121,8 +112,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Processor",
-      "fr_FR": "Processeur"
+      "en_US": "Processor"
     }
   },
   "price": {
@@ -132,8 +122,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Price",
-      "fr_FR": "Prix"
+      "en_US": "Price"
     }
   },
   "release_date": {
@@ -143,8 +132,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Release date",
-      "fr_FR": "Date de sortie"
+      "en_US": "Release date"
     }
   },
   "power_device": {
@@ -161,8 +149,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Color",
-      "fr_FR": "Couleur"
+      "en_US": "Color"
     }
   },
   "weight": {
@@ -172,8 +159,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Weight",
-      "fr_FR": "Poids"
+      "en_US": "Weight"
     }
   },
   "specifications": {
@@ -183,8 +169,7 @@
     "localizable": false,
     "scopable": true,
     "labels": {
-      "en_US": "Specifications",
-      "fr_FR": "Specifications"
+      "en_US": "Specifications"
     }
   },
   "connectivity": {
@@ -194,8 +179,7 @@
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Connectivity",
-      "fr_FR": "Connectivité"
+      "en_US": "Connectivity"
     }
   }
 }

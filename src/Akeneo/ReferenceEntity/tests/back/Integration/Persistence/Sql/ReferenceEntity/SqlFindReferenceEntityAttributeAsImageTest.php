@@ -54,7 +54,7 @@ class SqlFindReferenceEntityAttributeAsImageTest extends SqlIntegrationTestCase
 
         $expectedAttributeAsImage = $referenceEntity->getAttributeAsImageReference();
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $attributeAsImage = ($this->findAttributeAsImage)($referenceEntityIdentifier);
+        $attributeAsImage = $this->findAttributeAsImage->find($referenceEntityIdentifier);
 
         $this->assertEquals($expectedAttributeAsImage, $attributeAsImage);
     }
@@ -65,7 +65,7 @@ class SqlFindReferenceEntityAttributeAsImageTest extends SqlIntegrationTestCase
     public function it_returns_an_empty_attribute_as_image_if_the_reference_entity_was_not_found()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown');
-        $attributeAsImage = ($this->findAttributeAsImage)($referenceEntityIdentifier);
+        $attributeAsImage = $this->findAttributeAsImage->find($referenceEntityIdentifier);
 
         $this->assertTrue($attributeAsImage->isEmpty());
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\ProductSubscriptionUpdater;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
@@ -42,7 +43,7 @@ class ProductSubscriptionUpdaterSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled();
 
-        $this->updateSubscribedProduct(42);
+        $this->updateSubscribedProduct(new ProductId(42));
     }
 
     public function it_updates_a_product_unsubscribed_to_franklin(Client $client): void
@@ -62,6 +63,6 @@ class ProductSubscriptionUpdaterSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled();
 
-        $this->updateUnsubscribedProduct(42);
+        $this->updateUnsubscribedProduct(new ProductId(42));
     }
 }

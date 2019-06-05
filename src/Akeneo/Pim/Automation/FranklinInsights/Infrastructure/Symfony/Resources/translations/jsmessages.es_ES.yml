@@ -1,7 +1,3 @@
-pim_title:
-  akeneo_franklin_insights_connection_edit: 'Conexión Franklin Insights'
-  akeneo_franklin_insights_identifiers_mapping_edit: 'Configuración de Franklin Insights'
-  akeneo_franklin_insights_attributes_mapping_edit: 'Configuración de Franklin Insights'
 akeneo_franklin_insights:
   entity:
     data_provider:
@@ -82,6 +78,7 @@ akeneo_franklin_insights:
         activated: 'Habilitado'
         activate: 'Activar'
   settings:
+    page_title: 'Configuración de Franklin Insights'
     module:
       title:
         sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Merger;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -94,20 +94,20 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $localeRepository;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     /**
      * @param AuthorizationCheckerInterface         $authorizationChecker
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param ValueCollectionFactoryInterface       $valueCollectionFactory
+     * @param WriteValueCollectionFactory       $valueCollectionFactory
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
-        ValueCollectionFactoryInterface $valueCollectionFactory
+        WriteValueCollectionFactory $valueCollectionFactory
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->attributeRepository = $attributeRepository;

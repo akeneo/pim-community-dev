@@ -9,11 +9,10 @@ use Akeneo\Asset\Component\Model\CategoryInterface;
 use Akeneo\Asset\Component\Model\Tag;
 use Akeneo\Asset\Component\Model\TagInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
@@ -132,7 +131,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $productDraft->markAsInProgress();
                 $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
             }
-            $productDraft->setValues(new ValueCollection($values));
+            $productDraft->setValues(new WriteValueCollection($values));
 
             $this->getContainer()->get('pimee_workflow.saver.product_draft')->save($productDraft);
             $this->getContainer()->get('akeneo_elasticsearch.client.product_proposal')->refreshIndex();

@@ -22,5 +22,5 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
  */
 interface RecordItemHydratorInterface
 {
-    public function hydrate(array $row, RecordQuery $query): RecordItem;
+    public function hydrate(array $row, RecordQuery $query, array $context = []): RecordItem;
 }

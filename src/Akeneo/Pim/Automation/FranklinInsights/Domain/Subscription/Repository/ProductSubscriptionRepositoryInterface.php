@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 
 /**
@@ -32,14 +33,14 @@ interface ProductSubscriptionRepositoryInterface
     public function bulkSave(array $subscriptions): void;
 
     /**
-     * @param int $productId
+     * @param ProductId $productId
      *
      * @return ProductSubscription|null
      */
-    public function findOneByProductId(int $productId): ?ProductSubscription;
+    public function findOneByProductId(ProductId $productId): ?ProductSubscription;
 
     /**
-     * @param int[] $productIds
+     * @param ProductId[] $productIds
      *
      * @return ProductSubscription[]
      */
@@ -69,7 +70,7 @@ interface ProductSubscriptionRepositoryInterface
     public function emptySuggestedData(): void;
 
     /**
-     * @param int[] $productIds
+     * @param ProductId[] $productIds
      */
     public function emptySuggestedDataByProducts(array $productIds): void;
 

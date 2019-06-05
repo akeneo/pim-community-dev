@@ -55,7 +55,7 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
     {
         $this->loadAttributesWithImageType();
 
-        $imageAttributeCodes = ($this->findImageAttributeCodes)(ReferenceEntityIdentifier::fromString('designer'));
+        $imageAttributeCodes = $this->findImageAttributeCodes->find(ReferenceEntityIdentifier::fromString('designer'));
         $expectedCodes = [
             AttributeCode::fromString('image'),
             AttributeCode::fromString('second_image')
@@ -71,7 +71,7 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
     {
         $this->loadAttributesWithoutImageType();
 
-        $imageAttributeCodes = ($this->findImageAttributeCodes)(ReferenceEntityIdentifier::fromString('designer'));
+        $imageAttributeCodes = $this->findImageAttributeCodes->find(ReferenceEntityIdentifier::fromString('designer'));
 
         $this->assertSame([], $imageAttributeCodes);
     }

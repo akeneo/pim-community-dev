@@ -19,9 +19,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -61,7 +60,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
      *
-     * @var ValueCollectionInterface
+     * @var WriteValueCollection
      */
     protected $values;
 
@@ -112,7 +111,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     public function __construct()
     {
-        $this->values = new ValueCollection();
+        $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
@@ -317,13 +316,13 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): ValueCollectionInterface
+    public function getValues(): WriteValueCollection
     {
         if (!$this->isVariant()) {
             return $this->values;
         }
 
-        $values = ValueCollection::fromCollection($this->values);
+        $values = WriteValueCollection::fromCollection($this->values);
 
         return $this->getAllValues($this, $values);
     }
@@ -331,7 +330,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ValueCollectionInterface $values)
+    public function setValues(WriteValueCollection $values)
     {
         $this->values = $values;
 
@@ -774,7 +773,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getValuesForVariation(): ValueCollectionInterface
+    public function getValuesForVariation(): WriteValueCollection
     {
         return $this->values;
     }
@@ -795,16 +794,10 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         return null !== $this->getParent();
     }
 
-    /**
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param ValueCollectionInterface         $valueCollection
-     *
-     * @return ValueCollectionInterface
-     */
     private function getAllValues(
         EntityWithFamilyVariantInterface $entity,
-        ValueCollectionInterface $valueCollection
-    ): ValueCollectionInterface {
+        WriteValueCollection $valueCollection
+    ): WriteValueCollection {
         $parent = $entity->getParent();
 
         if (null === $parent) {

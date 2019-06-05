@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Pim\Permission\Component\Authorization;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;

@@ -3,29 +3,60 @@ import * as $ from 'jquery';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 const routing = require('routing');
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import recordFetcher, {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import {NormalizedRecord, NormalizedItemRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
+import __ from 'akeneoreferenceentity/tools/translator';
+import {
+  getTranslationKey,
+  getCompletenessClass,
+  getLabel as getCompletenessLabel,
+} from 'akeneoreferenceentity/application/component/app/completeness';
+import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
 
-const renderRow = (label: string, record: NormalizedRecord, withLink: boolean) => {
+const renderRow = (label: string, normalizedRecord: NormalizedRecord, withLink: boolean, compact: boolean) => {
+  const normalizedCompleteness = (normalizedRecord as NormalizedItemRecord).completeness;
+  const completeness =
+    undefined !== normalizedCompleteness ? Completeness.createFromNormalized(normalizedCompleteness) : undefined;
+  const completenessHTML =
+    undefined !== completeness && completeness.hasRequiredAttribute()
+      ? `
+  <span
+    title="${__(getTranslationKey(completeness), {
+      complete: completeness.getCompleteAttributeCount(),
+      required: completeness.getRequiredAttributeCount(),
+    })}"
+    class="${getCompletenessClass(completeness, false)}"
+  >
+    ${getCompletenessLabel(completeness.getRatio(), false)}
+  </span>`
+      : '';
+
   return `
-  <img width="34" height="34" src="${getImageShowUrl(denormalizeFile(record.image), 'thumbnail_small')}"/>
-  <span class="select2-result-label-main">${label}</span>
-  <span class="select2-result-label-hint">${record.code}</span>
+  <img width="34" height="34" src="${getImageShowUrl(denormalizeFile(normalizedRecord.image), 'thumbnail_small')}"/>
+  <span class="select2-result-label-main">
+    <span class="select2-result-label-top">
+      ${normalizedRecord.code}
+    </span>
+    <span class="select2-result-label-bottom">${label}</span>
+  </span>
+  <span class="select2-result-label-hint">
+    ${completenessHTML}
+  </span>
   ${
-    withLink
+    withLink && !compact
       ? `<a
       class="select2-result-label-link AknIconButton AknIconButton--small AknIconButton--link"
-      data-reference-entity-identifier="${record.reference_entity_identifier}"
-      data-record-code="${record.code}"
+      data-reference-entity-identifier="${normalizedRecord.reference_entity_identifier}"
+      data-record-code="${normalizedRecord.code}"
       target="_blank"
       href="#${routing.generate('akeneo_reference_entities_record_edit', {
-        referenceEntityIdentifier: record.reference_entity_identifier,
-        recordCode: record.code,
+        referenceEntityIdentifier: normalizedRecord.reference_entity_identifier,
+        recordCode: normalizedRecord.code,
         tab: 'enrich',
       })}"></a>`
       : ''
@@ -162,9 +193,12 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
           } else {
             const initialValue = element.val();
             recordFetcher
-              .fetch(this.props.referenceEntityIdentifier, RecordCode.create(initialValue))
-              .then((recordResult: RecordResult) => {
-                callback(this.formatItem(recordResult.record.normalize()));
+              .fetchByCodes(this.props.referenceEntityIdentifier, [RecordCode.create(initialValue)], {
+                channel: this.props.channel.stringValue(),
+                locale: this.props.locale.stringValue(),
+              })
+              .then((records: NormalizedRecord[]) => {
+                callback(this.formatItem(records[0]));
               });
           }
         },
@@ -172,10 +206,14 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
           if (Array.isArray(record) && 0 === record.length) {
             return;
           }
-          container.addClass('select2-search-choice-value').append($(renderRow(record.text, record.original, false)));
+          container
+            .addClass('select2-search-choice-value')
+            .append($(renderRow(record.text, record.original, false, this.props.compact)));
         },
         formatResult: (record: Select2Item, container: any) => {
-          container.addClass('select2-search-choice-value').append($(renderRow(record.text, record.original, true)));
+          container
+            .addClass('select2-search-choice-value')
+            .append($(renderRow(record.text, record.original, true, this.props.compact)));
         },
       });
 
@@ -255,12 +293,13 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
         />
         {!compact ? (
           <div className="record-selector-link-container">
-            {valueList.map((value: RecordCode) => (
+            {valueList.map((recordCode: RecordCode) => (
               <a
+                key={recordCode.stringValue()}
                 className="AknFieldContainer-inputLink AknIconButton AknIconButton--compact AknIconButton--link"
                 href={`#${routing.generate('akeneo_reference_entities_record_edit', {
                   referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
-                  recordCode: value.stringValue(),
+                  recordCode: recordCode.stringValue(),
                   tab: 'enrich',
                 })}`}
                 target="_blank"

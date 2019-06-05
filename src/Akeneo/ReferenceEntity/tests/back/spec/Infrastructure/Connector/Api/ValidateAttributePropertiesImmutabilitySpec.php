@@ -38,7 +38,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->__invoke($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -78,7 +78,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->__invoke($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -101,7 +101,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->__invoke($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -126,7 +126,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->__invoke($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -151,7 +151,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->__invoke($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'designer_country',
             'type' => 'record',
@@ -178,7 +178,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->__invoke($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 
 /**
@@ -23,7 +24,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\Subsc
  */
 final class ProductSubscriptionResponse
 {
-    /** @var int */
+    /** @var ProductId */
     private $productId;
 
     /** @var SubscriptionId */
@@ -38,15 +39,8 @@ final class ProductSubscriptionResponse
     /** @var bool */
     private $isCancelled;
 
-    /**
-     * @param int $productId
-     * @param SubscriptionId $subscriptionId
-     * @param array $suggestedData
-     * @param bool $isMappingMissing
-     * @param bool $isCancelled
-     */
     public function __construct(
-        int $productId,
+        ProductId $productId,
         SubscriptionId $subscriptionId,
         array $suggestedData,
         bool $isMappingMissing,
@@ -59,10 +53,7 @@ final class ProductSubscriptionResponse
         $this->isCancelled = $isCancelled;
     }
 
-    /**
-     * @return int
-     */
-    public function getProductId(): int
+    public function getProductId(): ProductId
     {
         return $this->productId;
     }

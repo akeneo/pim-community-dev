@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeO
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -56,7 +57,7 @@ class AttributeOptionsSpec extends ObjectBehavior
 
     public function it_gets_catalog_option_codes(): void
     {
-        $this->getCatalogOptionCodes()->shouldReturn(['color1', 'color2']);
+        $this->getCatalogOptionCodes()->shouldBeLike([new AttributeOptionCode('color1'), new AttributeOptionCode('color2')]);
     }
 
     public function it_throws_an_exception_if_mapping_is_empty(): void

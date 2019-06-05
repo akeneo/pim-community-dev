@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -25,7 +26,7 @@ class GetProductSubscriptionStatusQuerySpec extends ObjectBehavior
 
     public function let(): void
     {
-        $this->productId = 42;
+        $this->productId = new ProductId(42);
 
         $this->beConstructedWith($this->productId);
     }
@@ -37,6 +38,6 @@ class GetProductSubscriptionStatusQuerySpec extends ObjectBehavior
 
     public function it_returns_the_product_id(): void
     {
-        $this->getProductId()->shouldReturn(42);
+        $this->getProductId()->shouldReturn($this->productId);
     }
 }

@@ -1,0 +1,40 @@
+extensions:
+    pimee-user-show-notifications-tab:
+        module: pim/common/tab
+        parent: pim-user-show-form-tabs
+        targetZone: container
+        position: 60
+        config:
+            label: pim_user_management.entity.user.module.update.notifications
+    
+    pimee-user-show-notifications-tab-content:
+        module: pim/common/simple-view
+        parent: pimee-user-show-notifications-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+    
+    pimee-user-show-proposals-to-review-notification:
+        module: pimee/user/fields/visible-boolean
+        parent: pimee-user-show-notifications-tab-content
+        targetZone: content
+        position: 10
+        config:
+            fieldName: properties.proposals_to_review_notification
+            label: pim_user_management.entity.user.properties.proposals_to_review_notification
+            visibilityField: display_proposals_to_review_notification
+            readOnly: true
+    
+    pimee-user-show-proposals-state-notifications:
+        module: pimee/user/fields/visible-boolean
+        parent: pimee-user-show-notifications-tab-content
+        targetZone: content
+        position: 20
+        config:
+            fieldName: properties.proposals_state_notifications
+            label: pim_user_management.entity.user.properties.proposals_state_notifications
+            visibilityField: display_proposals_state_notifications
+            readOnly: true

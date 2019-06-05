@@ -132,6 +132,28 @@
           "channel": null,
           "locale": null,
           "data": null
+        },
+        {
+          "attribute": {
+            "identifier": "age_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "age",
+            "labels": {
+              "fr_FR": "Age",
+              "en_US": "Age"
+            },
+            "order": 4,
+            "is_required": false,
+            "value_per_channel": false,
+            "value_per_locale": false,
+            "type": "number",
+            "decimals_allowed": false,
+            "min_value": "10",
+            "max_value": "20"
+          },
+          "channel": null,
+          "locale": null,
+          "data": null
         }
       ],
       "permission": {

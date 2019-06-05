@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
@@ -59,7 +60,7 @@ class ProductSubscriptionStatusContext implements Context
             throw new \InvalidArgumentException(sprintf('No product with identifier "%s" found.', $identifier));
         }
 
-        $query = new GetProductSubscriptionStatusQuery($product->getId());
+        $query = new GetProductSubscriptionStatusQuery(new ProductId($product->getId()));
         $this->retrievedSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($query);
     }
 

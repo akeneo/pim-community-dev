@@ -54,7 +54,7 @@ class GetConnectorAttributeAction
         }
 
         $attributeCode = AttributeCode::fromString($code);
-        $attribute = ($this->findConnectorAttributeQuery)($referenceEntityIdentifier, $attributeCode);
+        $attribute = $this->findConnectorAttributeQuery->find($referenceEntityIdentifier, $attributeCode);
 
         if (null === $attribute) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist for the reference entity "%s".', $code, $referenceEntityIdentifier));

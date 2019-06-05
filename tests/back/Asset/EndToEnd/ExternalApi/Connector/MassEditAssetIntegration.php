@@ -15,6 +15,7 @@ class MassEditAssetIntegration extends TestCase
 {
     public function testToMassClassifyMoreAssetsThanBatchSize()
     {
+        $this->createAdminUser();
         $assets = $this->createAssets();
 
         $ids = array_map(function (AssetInterface $asset) {

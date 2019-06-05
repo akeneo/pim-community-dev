@@ -38,7 +38,7 @@ const CommonRow = memo(
 
     return (
       <tr
-        className="AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder"
+        className="AknGrid-bodyRow"
         data-identifier={record.identifier}
         onClick={event => {
           event.preventDefault();

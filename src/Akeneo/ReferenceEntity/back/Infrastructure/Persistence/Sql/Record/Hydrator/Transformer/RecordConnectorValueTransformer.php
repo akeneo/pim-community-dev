@@ -16,7 +16,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -25,12 +26,12 @@ use Webmozart\Assert\Assert;
  */
 class RecordConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    /** @var FindCodesByIdentifiersInterface */
+    private $findCodesByIdentifiers;
 
-    public function __construct(RecordExistsInterface $recordExists)
+    public function __construct(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
-        $this->recordExists = $recordExists;
+        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
     }
 
     public function supports(AbstractAttribute $attribute): bool
@@ -42,17 +43,17 @@ class RecordConnectorValueTransformer implements ConnectorValueTransformerInterf
     {
         Assert::true($this->supports($attribute));
 
-        $recordCode = RecordCode::fromString($normalizedValue['data']);
-        $referenceEntityIdentifier = $attribute->getRecordType();
+        $recordIdentifier = RecordIdentifier::fromString($normalizedValue['data']);
+        $recordCodes = $this->findCodesByIdentifiers->find([$recordIdentifier]);
 
-        if (false === $this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode)) {
+        if (empty($recordCodes)) {
             return null;
         }
 
         return [
             'locale'  => $normalizedValue['locale'],
             'channel' => $normalizedValue['channel'],
-            'data'    => (string) $recordCode,
+            'data'    => (string) current($recordCodes),
         ];
     }
 }

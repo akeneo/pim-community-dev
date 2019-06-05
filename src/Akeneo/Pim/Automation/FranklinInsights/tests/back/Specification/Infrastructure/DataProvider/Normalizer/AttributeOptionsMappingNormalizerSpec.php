@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -43,9 +44,9 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
 
         $mapping = new Write\AttributeOptionsMapping($attributeCode);
         $mapping
-            ->addAttributeOption(new Write\AttributeOption('color1', 'red', 'color_1'))
+            ->addAttributeOption(new Write\AttributeOption('color1', 'red', new AttributeOptionCode('color_1')))
             ->addAttributeOption(new Write\AttributeOption('color2', 'blue', null))
-            ->addAttributeOption(new Write\AttributeOption('color3', 'yellow', 'color_3'));
+            ->addAttributeOption(new Write\AttributeOption('color3', 'yellow', new AttributeOptionCode('color_3')));
 
         $option1 = new Read\AttributeOption('color_1', $attributeCode, [
             'en_US' => 'red',

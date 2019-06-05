@@ -15,10 +15,12 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Cont
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesMappingStatusNormalizer;
@@ -36,9 +38,6 @@ class AttributesMappingController
 {
     use CheckAccessTrait;
 
-    /** @var GetAttributesMappingByFamilyHandler */
-    private $getAttributesMappingByFamilyHandler;
-
     /** @var SaveAttributesMappingByFamilyHandler */
     private $saveAttributesMappingByFamilyHandler;
 
@@ -51,28 +50,23 @@ class AttributesMappingController
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
-    /**
-     * @param GetAttributesMappingByFamilyHandler  $getAttributesMappingByFamilyHandler
-     * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
-     * @param SearchFamiliesHandler                $searchFamiliesHandler
-     * @param FamiliesMappingStatusNormalizer      $familiesNormalizer
-     * @param AttributesMappingNormalizer          $attributesMappingNormalizer
-     * @param SecurityFacade                       $securityFacade
-     */
+    /** @var GetAttributesMappingWithSuggestionsHandler */
+    private $getAttributesMappingWithSuggestions;
+
     public function __construct(
-        GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         FamiliesMappingStatusNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        GetAttributesMappingWithSuggestionsHandler $getAttributesMappingWithSuggestions
     ) {
-        $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
         $this->familiesNormalizer = $familiesNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
         $this->securityFacade = $securityFacade;
+        $this->getAttributesMappingWithSuggestions = $getAttributesMappingWithSuggestions;
     }
 
     /**
@@ -111,9 +105,8 @@ class AttributesMappingController
     public function getAction(string $identifier): JsonResponse
     {
         $this->checkAccess('akeneo_franklin_insights_settings_mapping');
-        $familyAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle(
-            new GetAttributesMappingByFamilyQuery(new FamilyCode($identifier))
-        );
+
+        $familyAttributesMapping = $this->getAttributesMappingWithSuggestions->handle(new GetAttributesMappingWithSuggestionsQuery(new FamilyCode($identifier)));
 
         return new JsonResponse([
             'code' => $identifier,
@@ -124,8 +117,6 @@ class AttributesMappingController
     /**
      * @param string $identifier
      * @param Request $request
-     *
-     * @throws \Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException
      *
      * @return Response
      */
@@ -142,9 +133,13 @@ class AttributesMappingController
             throw new BadRequestHttpException('No mapping have been sent');
         }
 
-        $familyCode = new FamilyCode($identifier);
-        $command = new SaveAttributesMappingByFamilyCommand($familyCode, $data['mapping']);
-        $this->saveAttributesMappingByFamilyHandler->handle($command);
+        try {
+            $familyCode = new FamilyCode($identifier);
+            $command = new SaveAttributesMappingByFamilyCommand($familyCode, $data['mapping']);
+            $this->saveAttributesMappingByFamilyHandler->handle($command);
+        } catch (AttributeMappingException | DataProviderException $e) {
+            return new JsonResponse([[$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse($data);
     }

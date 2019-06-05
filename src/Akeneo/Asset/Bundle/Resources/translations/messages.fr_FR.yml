@@ -70,6 +70,7 @@ pimee_product_asset:
         image_height_error: Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une hauteur inférieure à celle requise par la transformation.
         not_applicable: Impossible de générer la variation pour le canal %channel%.
         non_registered: Aucune transformation %transformation% enregistrée pour le mime type %mimeType%. Impossible de générer la variation pour le canal %channel%.
+        missing_asset_transformation_for_channel: Impossible de générer la variation %channel%, veuillez définir une transformation de ressource pour ce canal.
         error: Impossible de générer la variation pour le canal %channel%.
         success: Les fichiers de variation ont été générés avec succès.
       update:

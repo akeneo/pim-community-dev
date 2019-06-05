@@ -43,7 +43,7 @@ class GetConnectorReferenceEntityAction
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $referenceEntity = ($this->findConnectorReferenceEntity)($code);
+        $referenceEntity = $this->findConnectorReferenceEntity->find($code);
 
         if (null === $referenceEntity) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $code));

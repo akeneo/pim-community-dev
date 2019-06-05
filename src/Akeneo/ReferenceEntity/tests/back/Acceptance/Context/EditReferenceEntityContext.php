@@ -76,6 +76,7 @@ final class EditReferenceEntityContext implements Context
 
     /**
      * @Given /^a reference entity$/
+     * @Given /^a reference entity "designer"$/
      * @Given /^a valid reference entity$/
      */
     public function theFollowingReferenceEntity()

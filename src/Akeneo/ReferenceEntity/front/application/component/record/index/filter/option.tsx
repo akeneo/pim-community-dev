@@ -40,8 +40,20 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
     },
     {} as {[label: string]: string}
   );
+
+  const emptyFilter = () => {
+    setIsOpen(false);
+    onFilterUpdated({
+      field: getAttributeFilterKey(attribute),
+      operator: DEFAULT_OPERATOR,
+      value: [],
+      context: {},
+    });
+  };
   const value = undefined !== filter ? filter.value : [];
-  const labels = value.map((optionCode: NormalizedOptionCode) => availableOptions[optionCode]);
+  const labels = value.map((optionCode: NormalizedOptionCode) =>
+    undefined !== availableOptions[optionCode] ? availableOptions[optionCode] : `[${optionCode}]`
+  );
 
   return (
     <React.Fragment>
@@ -64,7 +76,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">
                 <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>
-                <div className="AknIconButton AknIconButton--delete" onClick={() => setIsOpen(false)} />
+                <div className="AknIconButton AknIconButton--erase" onClick={emptyFilter} />
               </div>
               <div>
                 <Select2

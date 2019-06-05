@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -74,7 +75,7 @@ class ProductToVariantProductSubscriber implements EventSubscriberInterface
     private function unsubscribeProduct(int $productId): void
     {
         try {
-            $command = new UnsubscribeProductCommand($productId);
+            $command = new UnsubscribeProductCommand(new ProductId($productId));
             $this->unsubscribeProductHandler->handle($command);
         } catch (ProductNotSubscribedException $e) {
             // Silently catch exception if the product is not subscribed

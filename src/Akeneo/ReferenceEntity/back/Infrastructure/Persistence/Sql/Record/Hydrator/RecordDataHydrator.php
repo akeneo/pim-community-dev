@@ -14,11 +14,10 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -26,12 +25,12 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
  */
 class RecordDataHydrator implements DataHydratorInterface
 {
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    /** @var FindCodesByIdentifiersInterface */
+    private $findCodesByIdentifiers;
 
-    public function __construct(RecordExistsInterface $recordExists)
+    public function __construct(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
-        $this->recordExists = $recordExists;
+        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
     }
 
     public function supports(AbstractAttribute $attribute): bool
@@ -41,18 +40,22 @@ class RecordDataHydrator implements DataHydratorInterface
 
     public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
-        if (!$this->existsRecord($normalizedData, $attribute)) {
+        $code = $this->findCode($normalizedData);
+        if (null === $code) {
             return EmptyData::create();
         }
 
-        return RecordData::createFromNormalize($normalizedData);
+        return RecordData::createFromNormalize($code);
     }
 
-    private function existsRecord(string $normalizedData, RecordAttribute $attribute): bool
+    private function findCode(string $normalizedData): ?string
     {
-        return $this->recordExists->withReferenceEntityAndCode(
-            $attribute->getRecordType(),
-            RecordCode::fromString($normalizedData)
-        );
+        $results = $this->findCodesByIdentifiers->find([$normalizedData]);
+
+        if (empty($results)) {
+            return null;
+        }
+
+        return current($results);
     }
 }

@@ -86,7 +86,7 @@ class RecordAttribute extends AbstractAttribute
         );
     }
 
-    protected function getType(): string
+    public function getType(): string
     {
         return self::ATTRIBUTE_TYPE;
     }

@@ -82,7 +82,7 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
         $materials = $this->loadRequiredAttributeWithValuePerLocale('materials');
         $age = $this->loadNotRequiredAttribute('age');
 
-        $actualValueKeyCollection = ($this->findRequiredValueKeyCollection)($designer, $channel, $locales);
+        $actualValueKeyCollection = $this->findRequiredValueKeyCollection->find($designer, $channel, $locales);
 
         $this->assertInstanceOf(ValueKeyCollection::class, $actualValueKeyCollection);
         $normalizedActualValueKeyCollection = $actualValueKeyCollection->normalize();
@@ -109,7 +109,7 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
         $channel = ChannelIdentifier::fromCode('mobile');
         $locales = LocaleIdentifierCollection::fromNormalized(['fr_FR', 'en_US']);
 
-        $valueKeyCollection = ($this->findRequiredValueKeyCollection)($designer, $channel, $locales);
+        $valueKeyCollection = $this->findRequiredValueKeyCollection->find($designer, $channel, $locales);
         $this->assertInstanceOf(ValueKeyCollection::class, $valueKeyCollection);
         $this->assertEmpty($valueKeyCollection->normalize());
     }

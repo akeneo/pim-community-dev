@@ -40,7 +40,7 @@ class SqlFindConnectorReferenceEntityByReferenceEntityIdentifier implements Find
         $this->referenceEntityHydrator = $hydrator;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $identifier): ?ConnectorReferenceEntity
+    public function find(ReferenceEntityIdentifier $identifier): ?ConnectorReferenceEntity
     {
         $sql = <<<SQL
         SELECT

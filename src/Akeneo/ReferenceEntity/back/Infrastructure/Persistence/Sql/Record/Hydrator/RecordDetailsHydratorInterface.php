@@ -22,5 +22,5 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
  */
 interface RecordDetailsHydratorInterface
 {
-    public function hydrate(array $row, array $emptyValues): RecordDetails;
+    public function hydrate(array $row, array $emptyValues, ValueKeyCollection $valueKeyCollection, array $attributes): RecordDetails;
 }

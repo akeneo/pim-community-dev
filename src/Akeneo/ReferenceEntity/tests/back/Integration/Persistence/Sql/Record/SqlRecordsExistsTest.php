@@ -35,16 +35,17 @@ use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 class SqlRecordsExistsTest extends SqlIntegrationTestCase
 {
     /** @var SqlRecordsExists */
-    private $recordsExistsForReferenceEntity;
+    private $query;
+
+    /** @var string */
+    private $recordIdentifier;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->recordsExistsForReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.records_exists');
+        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.records_exists');
         $this->resetDB();
-        $this->loadReferenceEntityDesigner();
-        $this->loadRecordStarck();
     }
 
     /**
@@ -52,11 +53,25 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
      */
     public function it_tells_if_there_are_corresponding_records_identifiers()
     {
-        $existingRecordCodes = $this->recordsExistsForReferenceEntity->withReferenceEntityAndCodes(
+        $this->loadReferenceEntityDesigner();
+        $this->loadRecordStarck();
+        $existingRecordCodes = $this->query->withReferenceEntityAndCodes(
             ReferenceEntityIdentifier::fromString('designer'),
-            ['starck', 'unknown']
+            ['starck', 'coco', 'unknown']
         );
-        $this->assertEquals(['starck'], $existingRecordCodes);
+        $this->assertEquals(['coco', 'starck'], $existingRecordCodes);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_list_if_none_of_the_records_exists()
+    {
+        $existingRecordCodes = $this->query->withReferenceEntityAndCodes(
+            ReferenceEntityIdentifier::fromString('designer'),
+            ['unknown']
+        );
+        $this->assertEmpty($existingRecordCodes);
     }
 
     private function resetDB(): void
@@ -86,11 +101,11 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
 
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $recordCode = RecordCode::fromString('starck');
-        $recordIdentifier = RecordIdentifier::fromString('stark_designer_fingerprint');
+        $this->recordIdentifier = RecordIdentifier::fromString('stark_designer_fingerprint');
 
         $recordRepository->create(
             Record::create(
-                $recordIdentifier,
+                $this->recordIdentifier,
                 $referenceEntityIdentifier,
                 $recordCode,
                 ValueCollection::fromValues([
@@ -101,6 +116,15 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
                         TextData::fromString('Philippe Starck')
                     ),
                 ])
+            )
+        );
+
+        $recordRepository->create(
+            Record::create(
+                RecordIdentifier::fromString('coco_designer_fingerprint'),
+                $referenceEntityIdentifier,
+                RecordCode::fromString('coco'),
+                ValueCollection::fromValues([])
             )
         );
     }

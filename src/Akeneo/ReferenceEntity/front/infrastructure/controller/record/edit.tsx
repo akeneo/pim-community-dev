@@ -24,6 +24,7 @@ import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar'
 import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
+import {updateAttributeList} from 'akeneoreferenceentity/application/action/product/attribute';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -45,6 +46,8 @@ class RecordEditController extends BaseController {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
     $(window).on('beforeunload', this.beforeUnload);
 
+    const referenceEntityIdentifier = createReferenceEntityIdentifier(route.params.referenceEntityIdentifier);
+
     recordFetcher
       .fetch(
         createReferenceEntityIdentifier(route.params.referenceEntityIdentifier),
@@ -62,6 +65,7 @@ class RecordEditController extends BaseController {
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_record_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateActivatedLocales() as any);
+        this.store.dispatch(updateAttributeList(referenceEntityIdentifier) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         fetcherRegistry

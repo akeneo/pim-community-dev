@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeO
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
@@ -40,10 +41,10 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
 
     public function it_gets_option_codes(): void
     {
-        $this->addAttributeOption(new AttributeOption('color1', 'red', 'pim_color_1'));
-        $this->addAttributeOption(new AttributeOption('color2', 'blue', 'pim_color_2'));
+        $this->addAttributeOption(new AttributeOption('color1', 'red', new AttributeOptionCode('pim_color_1')));
+        $this->addAttributeOption(new AttributeOption('color2', 'blue', new AttributeOptionCode('pim_color_2')));
 
-        $this->getOptionCodes()->shouldReturn(['pim_color_1', 'pim_color_2']);
+        $this->getOptionCodes()->shouldBeLike([new AttributeOptionCode('pim_color_1'), new AttributeOptionCode('pim_color_2')]);
     }
 
     public function it_returns_an_empty_array_when_no_options(): void

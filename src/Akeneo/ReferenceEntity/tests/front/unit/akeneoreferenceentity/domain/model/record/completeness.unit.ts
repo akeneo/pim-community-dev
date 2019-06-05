@@ -110,6 +110,11 @@ describe('akeneo > record > domain > model --- completeness', () => {
     expect(completeness.getRatio()).toBe(50);
   });
 
+  test('I can get the ratio if there is no required attributes', () => {
+    const completeness = Completeness.createFromValues([]);
+    expect(completeness.getRatio()).toBe(0);
+  });
+
   test('I can know if there is no required attribute', () => {
     const completeness = Completeness.createFromValues(
       valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeFr)

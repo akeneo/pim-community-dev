@@ -78,7 +78,7 @@ class CreateDraftCommand extends UpdateProductCommand
                     EntityWithValuesDraftInterface::IN_PROGRESS,
                     EntityWithValuesDraftInterface::READY
                 ),
-                EntityWithValuesDraftInterface::IN_PROGRESS
+                (string) EntityWithValuesDraftInterface::IN_PROGRESS
             );
     }
 
@@ -114,7 +114,7 @@ class CreateDraftCommand extends UpdateProductCommand
         }
 
         if (null !== $productDraft = $this->getEntityWithValuesDraftBuilder()->build($entityWithValues, $username)) {
-            $status = EntityWithValuesDraftInterface::READY === $input->getArgument('draft_status') ?
+            $status = EntityWithValuesDraftInterface::READY === (int) $input->getArgument('draft_status') ?
                 EntityWithValuesDraftInterface::CHANGE_TO_REVIEW :
                 EntityWithValuesDraftInterface::CHANGE_DRAFT;
             $productDraft->setAllReviewStatuses($status);

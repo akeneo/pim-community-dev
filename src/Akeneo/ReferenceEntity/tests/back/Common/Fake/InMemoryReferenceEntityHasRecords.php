@@ -30,7 +30,7 @@ class InMemoryReferenceEntityHasRecords implements ReferenceEntityHasRecordsInte
         $this->recordRepository = $recordRepository;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $identifier): bool
+    public function hasRecords(ReferenceEntityIdentifier $identifier): bool
     {
         return $this->recordRepository->referenceEntityHasRecords($identifier);
     }

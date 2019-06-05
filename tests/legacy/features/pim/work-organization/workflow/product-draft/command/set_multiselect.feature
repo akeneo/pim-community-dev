@@ -1,3 +1,4 @@
+#  TODO: TIP-1163 Check the case sensitivity of proposals
 Feature: Create a draft with a multi select fields
   In order to update products
   As a redactor user
@@ -15,7 +16,7 @@ Feature: Create a draft with a multi select fields
       | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["Dry", "Wet"], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
       | product       | username | result                                                                                                                                                                                         |
-      | akeneo_tshirt | Mary     | {"values": {"weather_conditions": [{"locale": null, "scope": null, "data": ["dry", "wet"]}]}, "review_statuses": {"weather_conditions": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | akeneo_tshirt | Mary     | {"values": {"weather_conditions": [{"locale": null, "scope": null, "data": ["Dry", "Wet"]}]}, "review_statuses": {"weather_conditions": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | weather_conditions |  |
 
@@ -28,17 +29,17 @@ Feature: Create a draft with a multi select fields
       | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["Cold", "Dry", "Wet"], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
       | product       | username | result                                                                                                                                                                                                |
-      | akeneo_tshirt | Mary     | {"values": {"weather_conditions": [{"locale": null, "scope": null, "data":["cold", "dry", "wet"]}]}, "review_statuses": {"weather_conditions": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | akeneo_tshirt | Mary     | {"values": {"weather_conditions": [{"locale": null, "scope": null, "data":["Cold", "Dry", "Wet"]}]}, "review_statuses": {"weather_conditions": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | weather_conditions | [dry] |
 
   Scenario: Do not create a draft with same values as product
     Given the following product values:
       | product       | attribute          | value   |
-      | akeneo_tshirt | weather_conditions | Dry,Wet |
+      | akeneo_tshirt | weather_conditions | dry,wet |
     Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                      | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["Dry", "Wet"], "locale": null, "scope": null}] | {}     | Mary     |
+      | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["dry", "wet"], "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:
       | product       | username |
       | akeneo_tshirt | Mary     |

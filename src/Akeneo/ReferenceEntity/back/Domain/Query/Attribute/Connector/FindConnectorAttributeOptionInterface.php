@@ -19,5 +19,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 
 interface FindConnectorAttributeOptionInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $attributeOptionCode): ?ConnectorAttributeOption;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $attributeOptionCode): ?ConnectorAttributeOption;
 }

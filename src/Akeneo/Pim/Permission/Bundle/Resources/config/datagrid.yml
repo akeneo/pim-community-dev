@@ -54,8 +54,8 @@ services:
         class: '%pimee_security.datagrid.configuration.product.row_actions_configurator.class%'
         arguments:
             - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
-            - '@pimee_security.product_grid.query.fetch_user_rights_on_product'
-            - '@pimee_security.product_grid.query.fetch_user_rights_on_product_model'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'
             - '@pim_user.context.user'
 
     pim_datagrid.extension.filter:

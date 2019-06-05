@@ -137,6 +137,9 @@ class EnterpriseDataGridContext extends BaseDataGridContext
                 }
 
                 $change = $datagrid->find('css', vsprintf($selector, $params));
+                if (null === $change) {
+                    return null;
+                }
 
                 $original = $change->find('css', '.original-value');
                 $new      = $change->find('css', '.new-value');

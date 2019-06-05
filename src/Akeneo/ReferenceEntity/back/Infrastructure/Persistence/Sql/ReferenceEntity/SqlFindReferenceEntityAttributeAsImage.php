@@ -28,7 +28,7 @@ class SqlFindReferenceEntityAttributeAsImage implements FindReferenceEntityAttri
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference
     {
         $query = <<<SQL
         SELECT attribute_as_image

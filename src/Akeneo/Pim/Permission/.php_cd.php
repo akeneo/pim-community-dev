@@ -17,7 +17,6 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Pim\Permission\Component',
         'Symfony\Bundle\FrameworkBundle\Templating\EngineInterface',
-
         // it implements a CE query differently for permissions
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
@@ -26,6 +25,13 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts',
+        'Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers',
+        'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes',
 
         // TIP-1000: Permissions should not be linked to Locale
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
@@ -69,7 +75,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
@@ -199,11 +206,12 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator',
 
         // TIP-1003: Do not override Community services
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent',
-        'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',

@@ -52,7 +52,7 @@ class UpdateSubscriptionFamilyHandler
     {
         $subscription = $this->productSubscriptionRepository->findOneByProductId($command->productId());
         if (null === $subscription) {
-            throw ProductNotSubscribedException::notSubscribed($command->productId());
+            throw ProductNotSubscribedException::notSubscribed();
         }
 
         $family = $this->familyRepository->findOneByIdentifier($command->familyCode());

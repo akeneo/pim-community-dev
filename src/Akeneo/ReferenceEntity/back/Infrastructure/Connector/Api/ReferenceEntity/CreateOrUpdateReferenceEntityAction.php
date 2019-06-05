@@ -175,7 +175,7 @@ class CreateOrUpdateReferenceEntityAction
 
     private function getImageData(string $imageFileKey): array
     {
-        $imageData = ($this->findFileData)($imageFileKey);
+        $imageData = $this->findFileData->find($imageFileKey);
 
         if (null === $imageData) {
             throw new UnprocessableEntityHttpException(sprintf(

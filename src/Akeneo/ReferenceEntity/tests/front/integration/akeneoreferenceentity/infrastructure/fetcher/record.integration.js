@@ -135,6 +135,25 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               data: {fileData: {}},
               locale: {localeReference: null},
             },
+            {
+              attribute: {
+                code: {code: 'age'},
+                referenceEntityIdentifier: {identifier: 'designer'},
+                identifier: {identifier: 'age_designer_fingerprint'},
+                decimalsAllowed: {decimalsAllowed: false},
+                isRequired: false,
+                labelCollection: {labels: {en_US: 'Age', fr_FR: 'Age'}},
+                maxValue: {maxValue: '20'},
+                minValue: {minValue: '10'},
+                order: 4,
+                type: 'number',
+                valuePerChannel: false,
+                valuePerLocale: false,
+              },
+              channel: {channelReference: null},
+              data: {numberData: ''},
+              locale: {localeReference: null},
+            },
           ],
         },
       },
@@ -195,7 +214,17 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             city_designer_79eb100099b9a8bf52609e00b7ee307e: {
               attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
               channel: null,
-              data: 'paris',
+              context: {
+                labels: {
+                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
+                    labels: {
+                      en_US: 'Paris',
+                    },
+                    code: 'paris',
+                  },
+                },
+              },
+              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
               locale: null,
             },
             colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
@@ -207,7 +236,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           },
           completeness: {
             complete: 0,
-            required: 2,
+            required: 1,
           },
         },
         {
@@ -232,7 +261,17 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             city_designer_79eb100099b9a8bf52609e00b7ee307e: {
               attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
               channel: null,
-              data: 'paris',
+              context: {
+                labels: {
+                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
+                    labels: {
+                      en_US: 'Paris',
+                    },
+                    code: 'paris',
+                  },
+                },
+              },
+              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
               locale: null,
             },
             colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
@@ -243,8 +282,8 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             },
           },
           completeness: {
-            complete: 1,
-            required: 2,
+            complete: 0,
+            required: 1,
           },
         },
       ],

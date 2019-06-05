@@ -81,7 +81,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown_reference_entity');
         $recordCode = RecordCode::fromString('unknown_record_code');
-        $this->assertNull(($this->findRecordDetailsQuery)($referenceEntityIdentifier, $recordCode));
+        $this->assertNull($this->findRecordDetailsQuery->find($referenceEntityIdentifier, $recordCode));
     }
 
     /**
@@ -93,7 +93,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
 
         $recordCode = RecordCode::fromString('starck');
-        $actualStarck = ($this->findRecordDetailsQuery)($referenceEntityIdentifier, $recordCode);
+        $actualStarck = $this->findRecordDetailsQuery->find($referenceEntityIdentifier, $recordCode);
         $nameAttribute = $this->attributeRepository->getByIdentifier(
             AttributeIdentifier::create('designer', 'name', 'fingerprint')
         );

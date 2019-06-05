@@ -42,7 +42,7 @@ class SqlFindFileDataByFileKeyTest extends SqlIntegrationTestCase
      */
     public function it_returns_the_file_data_for_a_given_file_key()
     {
-        $fileData = ($this->findfileByFileKey)('files/starck.jpg');
+        $fileData = $this->findfileByFileKey->find('files/starck.jpg');
 
         $this->assertSame([
             'filePath'         => 'files/starck.jpg',
@@ -58,7 +58,7 @@ class SqlFindFileDataByFileKeyTest extends SqlIntegrationTestCase
      */
     public function it_returns_null_if_no_file_was_found()
     {
-        $file = ($this->findfileByFileKey)('files/smith.jpg');
+        $file = $this->findfileByFileKey->find('files/smith.jpg');
 
         $this->assertNull($file);
     }

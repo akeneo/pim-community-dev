@@ -35,7 +35,7 @@ class SqlFindActivatedLocalesPerChannels implements FindActivatedLocalesPerChann
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): array
+    public function findAll(): array
     {
         $query = <<<SQL
 SELECT c.code as channel_code, JSON_ARRAYAGG(l.code) AS locales_codes

@@ -34,7 +34,7 @@ class InMemoryFindImageAttributeCodes implements FindImageAttributeCodesInterfac
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $attributes = $this->attributeRepository->getAttributes();
         $imageAttributeCodes = [];

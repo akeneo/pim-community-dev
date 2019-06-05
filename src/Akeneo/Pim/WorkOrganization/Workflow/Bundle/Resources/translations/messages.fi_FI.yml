@@ -28,7 +28,7 @@ pimee_workflow:
       error:
         draft_not_ready: Tämä ehdotus ei ole valmis hyväksyttäväksi
         not_product_owner: Et omista tuotetta, joka liittyy tähän ehdotukseen
-        cannot_edit_attributes: Et voi muokata attribuutteja, joita tämä ehdotus muokkaa
+        cannot_edit_attributes: Et voi muokata määritteitä, joita tämä ehdotus muokkaa
         invalid_draft: Tätä ehdotusta ei voi käyttää seuraavan virheen vuoksi. %error%
   proposal:
     to_review: '%author.firstname% %author.lastname% on lähettänyt ehdotuksen tarkistaa tuotteen %product.label%'

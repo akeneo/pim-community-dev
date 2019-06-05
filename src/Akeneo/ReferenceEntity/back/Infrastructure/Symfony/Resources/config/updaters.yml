@@ -53,6 +53,16 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
 
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.decimals_allowed:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\DecimalsAllowedUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.min_max_value:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MinMaxValueUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
     # Records
     akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistry
@@ -96,5 +106,10 @@ services:
 
     akeneo_referenceentity.application.edit_record.record_value_updater.option_collection_updater:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\OptionCollectionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.number_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\NumberUpdater
         tags:
             - { name: akeneo_referenceentity.record_value_updater }

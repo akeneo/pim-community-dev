@@ -40,7 +40,7 @@ class IndexAction
      */
     public function __invoke(): JsonResponse
     {
-        $referenceEntityItems = ($this->findReferenceEntitiesQuery)();
+        $referenceEntityItems = $this->findReferenceEntitiesQuery->find();
         $normalizedReferenceEntityItems = $this->normalizeReferenceEntityItems($referenceEntityItems);
 
         return new JsonResponse([

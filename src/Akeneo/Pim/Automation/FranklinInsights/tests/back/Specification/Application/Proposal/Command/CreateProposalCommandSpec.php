@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use PhpSpec\ObjectBehavior;
@@ -28,7 +29,7 @@ class CreateProposalCommandSpec extends ObjectBehavior
 
     public function let(): void
     {
-        $this->productSubscription = new ProductSubscription(42, new SubscriptionId(uniqid()), []);
+        $this->productSubscription = new ProductSubscription(new ProductId(42), new SubscriptionId(uniqid()), []);
         $this->beConstructedWith($this->productSubscription);
     }
 

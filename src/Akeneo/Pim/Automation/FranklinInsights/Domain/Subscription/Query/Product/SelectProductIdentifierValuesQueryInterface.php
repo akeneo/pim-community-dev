@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 
 /**
@@ -21,9 +22,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\Produc
 interface SelectProductIdentifierValuesQueryInterface
 {
     /**
-     * Retrieves mapped identifer values for given products.
+     * Retrieves mapped identifier values for given products.
      *
-     * @param int[] $productIds
+     * @param ProductId[] $productIds
      *
      * @return ProductIdentifierValuesCollection
      */

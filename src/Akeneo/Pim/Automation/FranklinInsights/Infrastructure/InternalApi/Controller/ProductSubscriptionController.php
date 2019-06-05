@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer as InternalApi;
@@ -82,7 +83,7 @@ class ProductSubscriptionController
         $this->checkAccess('akeneo_franklin_insights_product_subscription');
 
         try {
-            $command = new SubscribeProductCommand($productId);
+            $command = new SubscribeProductCommand(new ProductId($productId));
             $this->subscribeProductHandler->handle($command);
 
             return new JsonResponse();
@@ -98,7 +99,7 @@ class ProductSubscriptionController
      */
     public function getProductSubscriptionStatusAction(int $productId): Response
     {
-        $getProductSubscriptionStatus = new GetProductSubscriptionStatusQuery($productId);
+        $getProductSubscriptionStatus = new GetProductSubscriptionStatusQuery(new ProductId($productId));
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($getProductSubscriptionStatus);
 
         return new JsonResponse($this->productSubscriptionStatusNormalizer->normalize($productSubscriptionStatus));
@@ -118,7 +119,7 @@ class ProductSubscriptionController
         $this->checkAccess('akeneo_franklin_insights_product_subscription');
 
         try {
-            $command = new UnsubscribeProductCommand($productId);
+            $command = new UnsubscribeProductCommand(new ProductId($productId));
             $this->unsubscribeProductHandler->handle($command);
 
             return new JsonResponse();

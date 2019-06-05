@@ -11,7 +11,7 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
@@ -66,7 +66,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product,
         EntityWithValuesDraftInterface $partialDraft,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
@@ -118,7 +118,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product,
         EntityWithValuesDraftInterface $partialDraft,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
@@ -159,7 +159,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $remover,
         EntityWithValuesDraftInterface $draft,
         ProductInterface $product,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
@@ -212,7 +212,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         EntityWithValuesDraftInterface $draft,
         ProductInterface $product,
         EntityWithValuesDraftInterface $partialDraft,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
@@ -274,7 +274,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $valuesFilter,
         $draftSaver,
         EntityWithValuesDraftInterface $draft,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getValues()->willReturn($values);
@@ -413,7 +413,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $remover,
         $draftSaver,
         EntityWithValuesDraftInterface $productDraft,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
         $productDraft->getValues()->willReturn($values);

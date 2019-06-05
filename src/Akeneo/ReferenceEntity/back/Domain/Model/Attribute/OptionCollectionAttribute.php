@@ -128,7 +128,7 @@ class OptionCollectionAttribute extends AbstractAttribute
         return $this->attributeOptions[(string) $code];
     }
 
-    protected function getType(): string
+    public function getType(): string
     {
         return self::ATTRIBUTE_TYPE;
     }

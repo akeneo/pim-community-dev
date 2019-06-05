@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 
@@ -30,7 +31,7 @@ class ProductSubscription
     /** @var SuggestedData */
     private $suggestedData;
 
-    /** @var int */
+    /** @var ProductId */
     private $productId;
 
     /** @var array */
@@ -54,12 +55,7 @@ class ProductSubscription
     /** @var bool */
     private $isCancelled = false;
 
-    /**
-     * @param int $productId
-     * @param SubscriptionId $subscriptionId
-     * @param array $productIdentifiers
-     */
-    public function __construct(int $productId, SubscriptionId $subscriptionId, array $productIdentifiers)
+    public function __construct(ProductId $productId, SubscriptionId $subscriptionId, array $productIdentifiers)
     {
         $this->productId = $productId;
         $this->subscriptionId = $subscriptionId;
@@ -69,10 +65,7 @@ class ProductSubscription
         $this->fillProductIdentifiers($productIdentifiers);
     }
 
-    /**
-     * @return int
-     */
-    public function getProductId(): int
+    public function getProductId(): ProductId
     {
         return $this->productId;
     }

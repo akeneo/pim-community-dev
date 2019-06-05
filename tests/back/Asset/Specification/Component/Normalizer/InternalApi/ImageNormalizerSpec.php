@@ -9,7 +9,6 @@ use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -111,6 +110,34 @@ class ImageNormalizerSpec extends ObjectBehavior
         $asset->getReference(null)->willReturn($reference);
         $reference->getFileInfo()->willReturn(null);
         $fileNormalizer->normalize($fileInfo)->shouldNotBeCalled();
+
+        $this->normalize($value)->shouldReturn(null);
+    }
+
+    function it_returns_null_if_there_is_no_reference(
+        $fileNormalizer,
+        $localeRepository,
+        $attributeRepository,
+        $repositoryResolver,
+        AssetInterface $asset,
+        AttributeInterface $attribute,
+        ReferenceDataCollectionValue $value,
+        AssetRepositoryInterface $referenceDataRepository
+    ) {
+        $attributeCode = 'assets-collection';
+
+        $value->getAttributeCode()->willReturn($attributeCode);
+        $value->getData()->willReturn([$attributeCode]);
+        $attributeRepository->findOneByIdentifier('assets-collection')->willReturn($attribute);
+        $attribute->getReferenceDataName()->willReturn('assets');
+
+        $repositoryResolver->resolve('assets')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneByIdentifier($attributeCode)->willReturn($asset);
+
+        $localeRepository->findOneByIdentifier(null)->willReturn(null);
+        $asset->getReference(null)->willReturn(null);
+
+        $fileNormalizer->normalize(Argument::any())->shouldNotBeCalled();
 
         $this->normalize($value)->shouldReturn(null);
     }

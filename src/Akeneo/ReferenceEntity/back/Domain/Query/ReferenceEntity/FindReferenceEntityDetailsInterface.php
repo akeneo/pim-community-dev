@@ -23,5 +23,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface FindReferenceEntityDetailsInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $identifier): ?ReferenceEntityDetails;
+    public function find(ReferenceEntityIdentifier $identifier): ?ReferenceEntityDetails;
 }

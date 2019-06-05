@@ -38,7 +38,8 @@
         "12kg"
       ],
       "status": "pending"
-    }, {
+    },
+    {
       "from": {
         "id": "color",
         "label": {
@@ -54,6 +55,18 @@
         "red"
       ],
       "status": "active"
+    },
+    {
+      "from": {
+        "id": "name",
+        "label": {
+          "en_us": "Name"
+        },
+        "type": "text"
+      },
+      "to": null,
+      "summary": [],
+      "status": "pending"
     }
   ]
 }

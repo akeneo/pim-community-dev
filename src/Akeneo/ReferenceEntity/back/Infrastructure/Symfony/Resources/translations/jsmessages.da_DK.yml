@@ -47,7 +47,11 @@ pim_reference_entity:
       filter:
         completeness:
           label: Fuldført
+          all: Alle
+          'yes': 'Ja'
+          'no': 'Nej'
         option:
+          all: Alle
           operator:
             in: I listen
       column:

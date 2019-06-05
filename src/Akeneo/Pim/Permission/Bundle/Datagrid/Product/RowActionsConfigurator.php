@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProduct;
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\FetchUserRightsOnProduct;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\FetchUserRightsOnProductModel;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
@@ -90,7 +90,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function getProductModelRights(ResultRecordInterface $record): array
     {
         $user = $this->userContext->getUser();
-        $userRight = $this->fetchUserRightsOnProductModel->fetch($record->getValue('identifier'), $user->getId());
+        $userRight = $this->fetchUserRightsOnProductModel->fetchByIdentifier($record->getValue('identifier'), $user->getId());
 
         return [
             'show'            => !($userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable()),
@@ -104,7 +104,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function getProductRights(ResultRecordInterface $record): array
     {
         $user = $this->userContext->getUser();
-        $userRight = $this->fetchUserRightsOnProduct->fetch($record->getValue('identifier'), $user->getId());
+        $userRight = $this->fetchUserRightsOnProduct->fetchByIdentifier($record->getValue('identifier'), $user->getId());
 
         return [
             'show'            => !($userRight->canApplyDraftOnProduct() || $userRight->isProductEditable()),

@@ -48,17 +48,17 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
      */
     public function process(array $suggestedData, string $author): int
     {
-        $processed = [];
+        $processed = 0;
         foreach ($suggestedData as $data) {
-            $product = $this->productRepository->find($data->getProductId());
+            $product = $this->productRepository->find($data->getProductId()->toInt());
             $this->productUpdater->update($product, ['values' => $data->getSuggestedValues()]);
 
             $key = sprintf('%s-%s', $product->getIdentifier(), $author);
             $this->drafts[$key] = $product->getValues()->toArray();
-            $processed[] = $data->getProductId();
+            $processed++;
         }
 
-        return count($processed);
+        return $processed;
     }
 
     /**

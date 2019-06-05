@@ -17,5 +17,5 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
 
 interface FindConnectorReferenceEntityItemsInterface
 {
-    public function __invoke(ReferenceEntityQuery $query): array;
+    public function find(ReferenceEntityQuery $query): array;
 }

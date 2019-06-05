@@ -9,9 +9,11 @@ use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHand
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
@@ -22,6 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
@@ -99,19 +102,21 @@ class EditAttributeContext implements Context
                 );
             }
 
-            $this->attributeRepository->create(TextAttribute::createText(
-                $identifier,
-                ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
-                AttributeCode::fromString($attribute['code']),
-                LabelCollection::fromArray(json_decode($attribute['labels'], true)),
-                AttributeOrder::fromInteger((int) $attribute['order']),
-                AttributeIsRequired::fromBoolean((bool) $attribute['required']),
-                AttributeValuePerChannel::fromBoolean((bool) $attribute['value_per_channel']),
-                AttributeValuePerLocale::fromBoolean((bool) $attribute['value_per_locale']),
-                AttributeMaxLength::fromInteger((int) $attribute['max_length']),
-                AttributeValidationRule::none(),
-                AttributeRegularExpression::createEmpty()
-            ));
+            $this->attributeRepository->create(
+                TextAttribute::createText(
+                    $identifier,
+                    ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
+                    AttributeCode::fromString($attribute['code']),
+                    LabelCollection::fromArray(json_decode($attribute['labels'], true)),
+                    AttributeOrder::fromInteger((int)$attribute['order']),
+                    AttributeIsRequired::fromBoolean((bool)$attribute['required']),
+                    AttributeValuePerChannel::fromBoolean((bool)$attribute['value_per_channel']),
+                    AttributeValuePerLocale::fromBoolean((bool)$attribute['value_per_locale']),
+                    AttributeMaxLength::fromInteger((int)$attribute['max_length']),
+                    AttributeValidationRule::none(),
+                    AttributeRegularExpression::createEmpty()
+                )
+            );
         }
     }
 
@@ -128,19 +133,21 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createText(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([$localeCode => $label]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(100),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([$localeCode => $label]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxLength::fromInteger(100),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
     }
 
     /**
@@ -163,19 +170,21 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createText(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(100),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(100),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
     }
 
     /**
@@ -206,19 +215,21 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createText(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger($maxLength),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger($maxLength),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
     }
 
     /**
@@ -229,7 +240,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateMaxLength = [
-            'identifier' => (string) $identifier,
+            'identifier' => (string)$identifier,
             'max_length' => json_decode($newMaxLength),
         ];
         $this->updateAttribute($updateMaxLength);
@@ -260,18 +271,20 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(ImageAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([$localeCode => $label]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromString('210'),
-            AttributeAllowedExtensions::fromList(['png'])
-        ));
+        $this->attributeRepository->create(
+            ImageAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([$localeCode => $label]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxFileSize::fromString('210'),
+                AttributeAllowedExtensions::fromList(['png'])
+            )
+        );
     }
 
     /**
@@ -287,17 +300,19 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(RecordAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([$localeCode => $label]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            ReferenceEntityIdentifier::fromString('dummy_identifier')
-        ));
+        $this->attributeRepository->create(
+            RecordAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([$localeCode => $label]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                ReferenceEntityIdentifier::fromString('dummy_identifier')
+            )
+        );
     }
 
     /**
@@ -313,17 +328,19 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(RecordCollectionAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([$localeCode => $label]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            ReferenceEntityIdentifier::fromString('dummy_identifier')
-        ));
+        $this->attributeRepository->create(
+            RecordCollectionAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([$localeCode => $label]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                ReferenceEntityIdentifier::fromString('dummy_identifier')
+            )
+        );
     }
 
     /**
@@ -334,18 +351,20 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(ImageAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromString($maxFileSize),
-            AttributeAllowedExtensions::fromList(['png'])
-        ));
+        $this->attributeRepository->create(
+            ImageAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxFileSize::fromString($maxFileSize),
+                AttributeAllowedExtensions::fromList(['png'])
+            )
+        );
     }
 
     /**
@@ -356,7 +375,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateMaxFileSize = [
-            'identifier' => (string) $identifier,
+            'identifier'    => (string)$identifier,
             'max_file_size' => json_decode($newMaxFileSize),
         ];
         $this->updateAttribute($updateMaxFileSize);
@@ -390,7 +409,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateAllowedExtensions = [
-            'identifier' => (string) $identifier,
+            'identifier'         => (string)$identifier,
             'allowed_extensions' => json_decode($newAllowedExtension),
         ];
         $this->updateAttribute($updateAllowedExtensions);
@@ -426,8 +445,8 @@ class EditAttributeContext implements Context
         $label = json_decode($label);
         $localeCode = json_decode($localeCode);
         $updateLabels = [
-            'identifier' => (string) $identifier,
-            'labels' => [$localeCode => $label],
+            'identifier' => (string)$identifier,
+            'labels'     => [$localeCode => $label],
         ];
         $this->updateAttribute($updateLabels);
     }
@@ -440,7 +459,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateIsRequired = [
-            'identifier' => (string) $identifier,
+            'identifier'  => (string)$identifier,
             'is_required' => json_decode($invalidValue),
         ];
         $this->updateAttribute($updateIsRequired);
@@ -494,18 +513,20 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(ImageAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxFileSize::fromString('200'),
-            AttributeAllowedExtensions::fromList(['png'])
-        ));
+        $this->attributeRepository->create(
+            ImageAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::fromString('200'),
+                AttributeAllowedExtensions::fromList(['png'])
+            )
+        );
     }
 
     /**
@@ -519,18 +540,20 @@ class EditAttributeContext implements Context
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $extensions = json_decode($normalizedExtensions);
-        $this->attributeRepository->create(ImageAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromString('200'),
-            AttributeAllowedExtensions::fromList($extensions)
-        ));
+        $this->attributeRepository->create(
+            ImageAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxFileSize::fromString('200'),
+                AttributeAllowedExtensions::fromList($extensions)
+            )
+        );
     }
 
     /**
@@ -541,18 +564,20 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createTextarea(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(150),
-            AttributeIsRichTextEditor::fromBoolean(true)
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createTextarea(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(150),
+                AttributeIsRichTextEditor::fromBoolean(true)
+            )
+        );
     }
 
     /**
@@ -563,7 +588,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateIsTextarea = [
-            'identifier' => (string) $identifier,
+            'identifier'  => (string)$identifier,
             'is_textarea' => json_decode($newIsTextarea),
         ];
         $this->updateAttribute($updateIsTextarea);
@@ -591,19 +616,21 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createText(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(150),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(150),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
     }
 
     /**
@@ -617,8 +644,11 @@ class EditAttributeContext implements Context
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         $normalizedAttribute = $attribute->normalize();
         Assert::assertTrue($normalizedAttribute['is_textarea'], 'isTextarea should be true');
-        Assert::assertEquals(AttributeValidationRule::NONE, $normalizedAttribute['validation_rule'],
-            'validationRule should be none');
+        Assert::assertEquals(
+            AttributeValidationRule::NONE,
+            $normalizedAttribute['validation_rule'],
+            'validationRule should be none'
+        );
         Assert::assertNull($normalizedAttribute['regular_expression'], 'regularExpression should be null');
     }
 
@@ -630,19 +660,21 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createText(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(150),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(150),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
     }
 
     /**
@@ -653,7 +685,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateValidationRule = [
-            'identifier' => (string) $identifier,
+            'identifier'      => (string)$identifier,
             'validation_rule' => json_decode($newValidationRule),
         ];
         $this->updateAttribute($updateValidationRule);
@@ -682,19 +714,21 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createText(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(150),
-            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::fromString($regularExpression)
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(150),
+                AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+                AttributeRegularExpression::fromString($regularExpression)
+            )
+        );
     }
 
     /**
@@ -720,7 +754,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $editRegularExpression = [
-            'identifier' => (string) $identifier,
+            'identifier'         => (string)$identifier,
             'regular_expression' => json_decode($newRegularExpression),
         ];
         $this->updateAttribute($editRegularExpression);
@@ -749,7 +783,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $removeRegularExpression = [
-            'identifier' => (string) $identifier,
+            'identifier'         => (string)$identifier,
             'regular_expression' => null,
         ];
         $this->updateAttribute($removeRegularExpression);
@@ -777,7 +811,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $removeValidationRule = [
-            'identifier' => (string) $identifier,
+            'identifier'      => (string)$identifier,
             'validation_rule' => AttributeValidationRule::NONE,
         ];
         $this->updateAttribute($removeValidationRule);
@@ -805,18 +839,20 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createTextarea(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(150),
-            AttributeIsRichTextEditor::fromBoolean(false)
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createTextarea(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(150),
+                AttributeIsRichTextEditor::fromBoolean(false)
+            )
+        );
     }
 
     /**
@@ -827,7 +863,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateIsRichTextEditor = [
-            'identifier' => (string) $identifier,
+            'identifier'          => (string)$identifier,
             'is_rich_text_editor' => json_decode($newIsRichTextEditor),
         ];
         $this->updateAttribute($updateIsRichTextEditor);
@@ -856,9 +892,9 @@ class EditAttributeContext implements Context
 
         $newflag = json_decode($newflag);
         $updates = [
-            'identifier' => (string) $identifier,
+            'identifier'          => (string)$identifier,
             'is_rich_text_editor' => $newflag,
-            'is_textarea' => $newflag,
+            'is_textarea'         => $newflag,
         ];
         $this->updateAttribute($updates);
     }
@@ -874,8 +910,8 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updates = [
-            'identifier' => (string) $identifier,
-            'is_textarea' => json_decode($textareaFlag),
+            'identifier'      => (string)$identifier,
+            'is_textarea'     => json_decode($textareaFlag),
             'validation_rule' => $validationRule,
         ];
         $this->updateAttribute($updates);
@@ -891,8 +927,10 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         $normalizedAttribute = $attribute->normalize();
-        Assert::assertTrue($normalizedAttribute['is_rich_text_editor'],
-            'Expected is rich text editor to be true, but found false');
+        Assert::assertTrue(
+            $normalizedAttribute['is_rich_text_editor'],
+            'Expected is rich text editor to be true, but found false'
+        );
     }
 
     private function updateAttribute(array $updates): void
@@ -912,19 +950,21 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createText(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(100),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(100),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
     }
 
     /**
@@ -936,7 +976,7 @@ class EditAttributeContext implements Context
 
         $valuePerLocale = json_decode($valuePerLocale);
         $updateValuePerLocale = [
-            'identifier' => (string) $identifier,
+            'identifier'       => (string)$identifier,
             'value_per_locale' => $valuePerLocale,
         ];
         $this->updateAttribute($updateValuePerLocale);
@@ -961,19 +1001,21 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(TextAttribute::createText(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(100),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        ));
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(100),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
     }
 
     /**
@@ -985,7 +1027,7 @@ class EditAttributeContext implements Context
 
         $valuePerChannel = json_decode($valuePerChannel);
         $updateValuePerChannel = [
-            'identifier' => (string) $identifier,
+            'identifier'       => (string)$identifier,
             'value_per_locale' => $valuePerChannel,
         ];
         $this->updateAttribute($updateValuePerChannel);
@@ -999,17 +1041,19 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(RecordAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('dummy_identifier')
-        ));
+        $this->attributeRepository->create(
+            RecordAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                ReferenceEntityIdentifier::fromString('dummy_identifier')
+            )
+        );
     }
 
     /**
@@ -1020,17 +1064,19 @@ class EditAttributeContext implements Context
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
-        $this->attributeRepository->create(RecordCollectionAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('dummy_identifier')
-        ));
+        $this->attributeRepository->create(
+            RecordCollectionAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                ReferenceEntityIdentifier::fromString('dummy_identifier')
+            )
+        );
     }
 
     /**
@@ -1048,17 +1094,19 @@ class EditAttributeContext implements Context
                 );
             }
 
-            $this->attributeRepository->create(RecordAttribute::create(
-                $identifier,
-                ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
-                AttributeCode::fromString($attribute['code']),
-                LabelCollection::fromArray(json_decode($attribute['labels'], true)),
-                AttributeOrder::fromInteger((int) $attribute['order']),
-                AttributeIsRequired::fromBoolean((bool) $attribute['required']),
-                AttributeValuePerChannel::fromBoolean((bool) $attribute['value_per_channel']),
-                AttributeValuePerLocale::fromBoolean((bool) $attribute['value_per_locale']),
-                ReferenceEntityIdentifier::fromString($attribute['record_type'])
-            ));
+            $this->attributeRepository->create(
+                RecordAttribute::create(
+                    $identifier,
+                    ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
+                    AttributeCode::fromString($attribute['code']),
+                    LabelCollection::fromArray(json_decode($attribute['labels'], true)),
+                    AttributeOrder::fromInteger((int)$attribute['order']),
+                    AttributeIsRequired::fromBoolean((bool)$attribute['required']),
+                    AttributeValuePerChannel::fromBoolean((bool)$attribute['value_per_channel']),
+                    AttributeValuePerLocale::fromBoolean((bool)$attribute['value_per_locale']),
+                    ReferenceEntityIdentifier::fromString($attribute['record_type'])
+                )
+            );
         }
     }
 
@@ -1072,15 +1120,16 @@ class EditAttributeContext implements Context
 
         $this->attributeRepository->create(
             OptionAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString('favorite_color'),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true)
-        ));
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString('favorite_color'),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true)
+            )
+        );
     }
 
     /**
@@ -1104,46 +1153,61 @@ class EditAttributeContext implements Context
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions([
-            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
-            AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray(['en_US' => 'Green']))
-        ]);
+        $optionAttribute->setOptions(
+            [
+                AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
+                AttributeOption::create(
+                    OptionCode::fromString('green'),
+                    LabelCollection::fromArray(['en_US' => 'Green'])
+                )
+            ]
+        );
         $this->attributeRepository->create($optionAttribute);
     }
 
     /**
      * @When /^the user adds the option \'([^\']*)\' with label \'([^\']*)\' for locale \'([^\']*)\' to this attribute$/
      */
-    public function theUserAddsTheOptionWithLabelForLocaleToThisAttribute(string $optionCode, string $label, string $locale): void
-    {
+    public function theUserAddsTheOptionWithLabelForLocaleToThisAttribute(
+        string $optionCode,
+        string $label,
+        string $locale
+    ): void {
         if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
             $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
         } else {
             $identifier = 'unknown';
         }
 
-        $this->updateAttribute([
-            'identifier' => (string) $identifier,
-            'options' => [
-                [
-                    'code' => $optionCode,
-                    'labels' => [ $locale => $label ]
+        $this->updateAttribute(
+            [
+                'identifier' => (string)$identifier,
+                'options'    => [
+                    [
+                        'code'   => $optionCode,
+                        'labels' => [$locale => $label]
+                    ]
                 ]
             ]
-        ]);
+        );
     }
 
     /**
      * @Then /^the option( collection)? attribute should have an option \'([^\']*)\' with label \'([^\']*)\' for the locale \'([^\']*)\'$/
      */
-    public function theOptionAttributeShouldHaveAnOptionWithLabelForTheLocale($isCollection, $optionCode, $label, $locale)
-    {
+    public function theOptionAttributeShouldHaveAnOptionWithLabelForTheLocale(
+        $isCollection,
+        $optionCode,
+        $label,
+        $locale
+    ) {
         $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         Assert::assertNotEmpty($attribute->normalize()['options']);
-        Assert::assertEquals([
+        Assert::assertEquals(
+            [
                 [
                     'code'   => $optionCode,
                     'labels' => [$locale => $label],
@@ -1178,9 +1242,11 @@ class EditAttributeContext implements Context
             $identifier,
             ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([
-                $locale => $label
-            ]),
+            LabelCollection::fromArray(
+                [
+                    $locale => $label
+                ]
+            ),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
@@ -1203,15 +1269,17 @@ class EditAttributeContext implements Context
         $tooManyOptions = [];
         for ($i = 0; $i < $optionsCount; $i++) {
             $tooManyOptions[] = [
-                'code' => (string) $i,
+                'code'   => (string)$i,
                 'labels' => []
             ];
         }
 
-        $this->updateAttribute([
-            'identifier' => (string) $identifier,
-            'options' => $tooManyOptions
-        ]);
+        $this->updateAttribute(
+            [
+                'identifier' => (string)$identifier,
+                'options'    => $tooManyOptions
+            ]
+        );
     }
 
     /**
@@ -1236,10 +1304,12 @@ class EditAttributeContext implements Context
             ],
         ];
 
-        $this->updateAttribute([
-            'identifier' => (string) $identifier,
-            'options' => $duplicates
-        ]);
+        $this->updateAttribute(
+            [
+                'identifier' => (string)$identifier,
+                'options'    => $duplicates
+            ]
+        );
     }
 
     /**
@@ -1253,15 +1323,17 @@ class EditAttributeContext implements Context
             $identifier = 'unknown';
         }
 
-        $this->updateAttribute([
-            'identifier' => (string) $identifier,
-            'options' => [
-                [
-                    'code'   => json_decode($optionCode, true),
-                    'labels' => [],
-                ],
+        $this->updateAttribute(
+            [
+                'identifier' => (string)$identifier,
+                'options'    => [
+                    [
+                        'code'   => json_decode($optionCode, true),
+                        'labels' => [],
+                    ],
+                ]
             ]
-        ]);
+        );
     }
 
     /**
@@ -1275,15 +1347,17 @@ class EditAttributeContext implements Context
             $identifier = 'unknown';
         }
 
-        $this->updateAttribute([
-            'identifier' => (string) $identifier,
-            'options' => [
-                [
-                    'code'   => str_repeat('a', 256),
-                    'labels' => [],
-                ],
+        $this->updateAttribute(
+            [
+                'identifier' => (string)$identifier,
+                'options'    => [
+                    [
+                        'code'   => str_repeat('a', 256),
+                        'labels' => [],
+                    ],
+                ]
             ]
-        ]);
+        );
     }
 
     /**
@@ -1297,15 +1371,17 @@ class EditAttributeContext implements Context
             $identifier = 'unknown';
         }
 
-        $this->updateAttribute([
-            'identifier' => (string) $identifier,
-            'options' => [
-                [
-                    'code'   => 'option_code',
-                    'labels' => [ 'fr_FR' => json_decode($invalidLabel, true)],
-                ],
+        $this->updateAttribute(
+            [
+                'identifier' => (string)$identifier,
+                'options'    => [
+                    [
+                        'code'   => 'option_code',
+                        'labels' => ['fr_FR' => json_decode($invalidLabel, true)],
+                    ],
+                ]
             ]
-        ]);
+        );
     }
 
     /**
@@ -1329,10 +1405,297 @@ class EditAttributeContext implements Context
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions([
-            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
-            AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray(['en_US' => 'Green']))
-        ]);
+        $optionAttribute->setOptions(
+            [
+                AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
+                AttributeOption::create(
+                    OptionCode::fromString('green'),
+                    LabelCollection::fromArray(['en_US' => 'Green'])
+                )
+            ]
+        );
         $this->attributeRepository->create($optionAttribute);
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     */
+    public function aReferenceEntityWithANumberAttributeAndTheLabelEqualTo(
+        string $attributeCode,
+        string $localeCode,
+        string $label
+    ): void {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode($localeCode));
+
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([$localeCode => $label]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeDecimalsAllowed::fromBoolean(false),
+                AttributeLimit::limitless(),
+                AttributeLimit::limitless()
+            )
+        );
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' non decimal$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' no min value$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' no max value$/
+     */
+    public function aReferenceEntityWithANumberAttributeNonDecimal(string $attributeCode): void
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
+                AttributeLimit::limitless(),
+                AttributeLimit::limitless()
+            )
+        );
+    }
+
+    /**
+     * @When /^the user sets the \'([^\']*)\' attribute to have decimal values$/
+     */
+    public function theUserSetsTheAttributeToHaveDecimalValues(string $attributeCode): void
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateDecimalsAllowed = [
+            'identifier' => (string)$identifier,
+            'decimals_allowed' => true,
+        ];
+        $this->updateAttribute($updateDecimalsAllowed);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' could have decimal values$/
+     */
+    public function couldHaveDecimalValues(string $attributeCode): void
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals(true, $attribute->normalize()['decimals_allowed']);
+    }
+
+    /**
+     * @When /^the user sets the min value of \'([^\']*)\' to (\d+)$/
+     */
+    public function theUserSetsTheMinValueOfTo(string $attributeCode, string $minValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMinValue = ['identifier' => (string) $identifier, 'min_value' => $minValue];
+        $this->updateAttribute($updateMinValue);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' min value should be (\d+)$/
+     */
+    public function minValueShouldBe(string $attributeCode, string $expectedMinValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals($expectedMinValue, $attribute->normalize()['min_value']);
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a min value$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a min value set to 150$/
+     */
+    public function aReferenceEntityWithANumberAttributeWithAMinValue(string $attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
+                AttributeLimit::fromString('150'),
+                AttributeLimit::limitless()
+            )
+        );
+    }
+
+    /**
+     * @When /^the user unsets the min value of \'([^\']*)\'$/
+     */
+    public function theUserUnsetsTheMinValueOf(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMinValue = ['identifier' => (string) $identifier, 'min_value' => null];
+        $this->updateAttribute($updateMinValue);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' should not have a min value$/
+     */
+    public function shouldNotHaveAMinValue(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertNull($attribute->normalize()['min_value']);
+    }
+
+    /**
+     * @When /^the user sets the max value of \'([^\']*)\' to (\d+)$/
+     */
+    public function theUserSetsTheMaxValueOfTo(string $attributeCode, string $maxValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMaxValue = ['identifier' => (string) $identifier, 'max_value' => $maxValue];
+        $this->updateAttribute($updateMaxValue);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' max value should be (\d+)$/
+     */
+    public function maxValueShouldBe(string $attributeCode, string $expectedMaxValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals($expectedMaxValue, $attribute->normalize()['max_value']);
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\'$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value set to 200$/
+     */
+    public function aReferenceEntityWithANumberAttributeWithAMaxValue(string $attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
+                AttributeLimit::limitless(),
+                AttributeLimit::fromString('200')
+            )
+        );
+    }
+
+    /**
+     * @When /^the user unsets the max value of \'([^\']*)\'$/
+     */
+    public function theUserUnsetsTheMaxValueOf(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMaxValue = ['identifier' => (string) $identifier, 'max_value' => null];
+        $this->updateAttribute($updateMaxValue);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' should not have a max value$/
+     */
+    public function shouldNotHaveAMaxValue(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertNull($attribute->normalize()['max_value']);
+    }
+
+    /**
+     * @When /^the user sets the is decimal property of the \'([^\']*)\' attribute to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheAttributeTo(string $attributeCode, $invalidValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $updateDecimalsAllowed = [
+            'identifier'  => (string)$identifier,
+            'decimals_allowed' => json_decode($invalidValue),
+        ];
+        $this->updateAttribute($updateDecimalsAllowed);
+    }
+
+    /**
+     * @When /^the user sets the min value of the \'([^\']*)\' attribute to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheMinValueOfTheAttributeTo(string $attributeCode, $invalidValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $updateMinValue = [
+            'identifier' => (string)$identifier,
+            'min_value'  => json_decode($invalidValue),
+        ];
+        $this->updateAttribute($updateMinValue);
+    }
+
+    /**
+     * @When /^the user sets the max value of the \'([^\']*)\' attribute to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheMaxValueOfTheAttributeTo(string $attributeCode, $invalidValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $updateMinValue = [
+            'identifier' => (string)$identifier,
+            'max_value'  => json_decode($invalidValue),
+        ];
+        $this->updateAttribute($updateMinValue);
+    }
+
+    /**
+     * @When /^the user sets the min value of \'([^\']*)\' to (\d+) and the max value to (\d+)$/
+     */
+    public function theUserSetsTheMinValueOfToAndTheMaxValueTo(string $attributeCode, string $minValue, string $maxValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMaxValue = [
+            'identifier' => (string) $identifier,
+            'min_value' => $minValue,
+            'max_value' => $maxValue
+        ];
+        $this->updateAttribute($updateMaxValue);
     }
 }

@@ -1,8 +1,3 @@
-pim_title:
-    akeneo_franklin_insights_connection_edit: 'Franklin Insights connection'
-    akeneo_franklin_insights_identifiers_mapping_edit: 'Franklin Insights settings'
-    akeneo_franklin_insights_attributes_mapping_edit: 'Franklin Insights settings'
-
 pim_menu:
     item:
         franklin: Franklin Insights
@@ -12,7 +7,7 @@ akeneo_franklin_insights:
         data_provider:
             ask_franklin_down: "Sorry, something went wrong. Please try again later."
             authentication_error: "Sorry, failed to authenticate to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help."
-            bad_request_error: "Sorry, an problem occured communicating with Franklin Insights. Please contact your administrator."
+            bad_request_error: "Sorry, a problem occured communicating with Franklin Insights. Please contact your administrator."
         identifier_mapping:
             plural_label: Identifiers
             flash:
@@ -69,7 +64,7 @@ akeneo_franklin_insights:
                 localizable_not_allowed: 'Franklin attributes cannot be mapped to a PIM localizable attribute'
                 scopable_not_allowed: 'Franklin attributes cannot be mapped to a PIM scopable attribute'
                 locale_specific_not_allowed: 'Franklin attributes cannot be mapped to a PIM locale specific attribute'
-                duplicated_pim_attribute: 'A pim attribute cannot be used twice or more in the attributes mapping'
+                duplicated_pim_attribute: "Mapping can't be saved as you mapped several Franklin attributes to the same PIM attribute"
                 attribute_not_in_family_not_allowed: 'PIM attribute must be in the selected family.'
                 only_unknown_mapped_attributes: 'No attribute in the attributes mapping can be found'
         product_subscription:
@@ -96,6 +91,7 @@ akeneo_franklin_insights:
                     no_identifier_filled: 'Product identifiers required.'
                     invalid_mapping: "Identifiers mapping required."
         attribute_options_mapping:
+            label: 'Attribute options mapping'
             constraint:
                 no_attribute_options_mapped: 'Franklin attribute options cannot be mapped with an empty mapping'
             fields:
@@ -133,6 +129,7 @@ akeneo_franklin_insights:
                 activate: 'Activate'
 
     settings:
+        page_title: 'Franklin Insights Settings'
         attributes_mapping_title: 'Attributes mapping'
         identifiers_mapping_title: 'Identifiers mapping'
         module:
@@ -191,3 +188,13 @@ pim_enrich.entity.attribute:
         save:
             title: 'Warning!'
             warning: '{1}Deleting an attribute may impact 1 Franklin subscription. Are you sure?|]1,+Inf[Deleting an attribute may impact {{ count }} Franklin subscriptions. Are you sure?'
+
+pim_title:
+    akeneo_franklin_insights_connection_edit: Franklin Insights Connection
+    akeneo_franklin_insights_mapping_index: Franklin Insights Mapping
+    akeneo_franklin_insights_identifiers_mapping_edit: Franklin Insights Edit Identifiers Mapping
+    akeneo_franklin_insights_attributes_mapping_edit: Franklin Insights Edit Attributes Mapping
+
+pim_notification:
+    types:
+        franklin_insights: Franklin Insights

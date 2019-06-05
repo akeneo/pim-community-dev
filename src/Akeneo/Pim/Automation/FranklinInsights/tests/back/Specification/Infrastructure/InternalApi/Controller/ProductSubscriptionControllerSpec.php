@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\ProductSubscriptionController;
@@ -62,7 +63,7 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
 
         $productId = 42;
 
-        $command = new UnsubscribeProductCommand($productId);
+        $command = new UnsubscribeProductCommand(new ProductId($productId));
         $unsubscribeProductHandler->handle($command)->shouldBeCalled();
 
         $this->unsubscribeAction($request, 42)->shouldReturnAnInstanceOf(JsonResponse::class);

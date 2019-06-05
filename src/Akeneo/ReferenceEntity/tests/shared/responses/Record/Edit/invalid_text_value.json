@@ -14,36 +14,42 @@
         "fr_FR": "Philippe Starck"
       },
       "image": null,
-      "values":[
+      "values": [
         {
-          "attribute":"name_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":"Philippe Starck"
+          "attribute": "name_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "Philippe Starck"
         },
         {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"en_US",
-          "data":null
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "en_US",
+          "data": null
         },
         {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"fr_FR",
-          "data":null
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "fr_FR",
+          "data": null
         },
         {
-          "attribute":"website_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":"hello world"
+          "attribute": "website_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "hello world"
         },
         {
-          "attribute":"portrait_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":null
+          "attribute": "portrait_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
+        },
+        {
+          "attribute": "age_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
         }
       ]
     }
@@ -54,14 +60,15 @@
       {
         "messageTemplate": "This value is not a valid URL.",
         "parameters": {
-          "{{ value }}": "\"hello world\""
+          "{{ value }}": "\u0022hello world\u0022"
         },
         "plural": null,
         "message": "This value is not a valid URL.",
         "root": {
           "referenceEntityIdentifier": "designer",
           "code": "starck",
-          "labels": [],
+          "labels": [
+          ],
           "image": null,
           "editRecordValueCommands": [
             {
@@ -70,19 +77,25 @@
                 "regularExpression": {
                   "empty": true
                 },
-                "maxLength": [],
+                "maxLength": [
+                ],
                 "textarea": false,
                 "validationRuleSetToRegularExpression": false,
                 "validationRuleSetToEmail": false,
                 "validationRuleSetToUrl": false,
                 "validationRule": true,
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
+                "type": "text",
+                "identifier": [
+                ],
+                "referenceEntityIdentifier": [
+                ],
+                "code": [
+                ],
                 "labelCodes": [
                   "fr_FR"
                 ],
-                "order": [],
+                "order": [
+                ],
                 "valuePerChannel": false,
                 "valuePerLocale": false
               },
@@ -94,19 +107,25 @@
                 "regularExpression": {
                   "empty": true
                 },
-                "maxLength": [],
+                "maxLength": [
+                ],
                 "textarea": true,
                 "validationRuleSetToRegularExpression": false,
                 "validationRuleSetToEmail": false,
                 "validationRuleSetToUrl": false,
                 "validationRule": true,
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
+                "type": "text",
+                "identifier": [
+                ],
+                "referenceEntityIdentifier": [
+                ],
+                "code": [
+                ],
                 "labelCodes": [
                   "fr_FR"
                 ],
-                "order": [],
+                "order": [
+                ],
                 "valuePerChannel": false,
                 "valuePerLocale": true
               },
@@ -118,19 +137,25 @@
                 "regularExpression": {
                   "empty": true
                 },
-                "maxLength": [],
+                "maxLength": [
+                ],
                 "textarea": true,
                 "validationRuleSetToRegularExpression": false,
                 "validationRuleSetToEmail": false,
                 "validationRuleSetToUrl": false,
                 "validationRule": true,
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
+                "type": "text",
+                "identifier": [
+                ],
+                "referenceEntityIdentifier": [
+                ],
+                "code": [
+                ],
                 "labelCodes": [
                   "fr_FR"
                 ],
-                "order": [],
+                "order": [
+                ],
                 "valuePerChannel": false,
                 "valuePerLocale": true
               },
@@ -143,19 +168,25 @@
                 "regularExpression": {
                   "empty": true
                 },
-                "maxLength": [],
+                "maxLength": [
+                ],
                 "textarea": false,
                 "validationRuleSetToRegularExpression": false,
                 "validationRuleSetToEmail": false,
                 "validationRuleSetToUrl": true,
                 "validationRule": false,
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
+                "type": "text",
+                "identifier": [
+                ],
+                "referenceEntityIdentifier": [
+                ],
+                "code": [
+                ],
                 "labelCodes": [
                   "fr_FR"
                 ],
-                "order": [],
+                "order": [
+                ],
                 "valuePerChannel": false,
                 "valuePerLocale": false
               },
@@ -165,6 +196,7 @@
             {
               "attribute": {
                 "maxFileSizeLimit": false,
+                "type": "image",
                 "maxFileSize": {
                   "limit": false
                 },
@@ -184,6 +216,24 @@
               },
               "channel": null,
               "locale": null
+            },
+            {
+              "attribute": {
+                "type": "number",
+                "minLimitless": false,
+                "maxLimitless": false,
+                "identifier": [],
+                "referenceEntityIdentifier": [],
+                "code": [],
+                "labelCodes": [
+                  "en_US"
+                ],
+                "order": [],
+                "valuePerChannel": false,
+                "valuePerLocale": false
+              },
+              "channel": null,
+              "locale": null
             }
           ]
         },
@@ -194,19 +244,25 @@
             "regularExpression": {
               "empty": true
             },
-            "maxLength": [],
+            "maxLength": [
+            ],
             "textarea": false,
             "validationRuleSetToRegularExpression": false,
             "validationRuleSetToEmail": false,
             "validationRuleSetToUrl": true,
             "validationRule": false,
-            "identifier": [],
-            "referenceEntityIdentifier": [],
-            "code": [],
+            "type": "text",
+            "identifier": [
+            ],
+            "referenceEntityIdentifier": [
+            ],
+            "code": [
+            ],
             "labelCodes": [
               "fr_FR"
             ],
-            "order": [],
+            "order": [
+            ],
             "valuePerChannel": false,
             "valuePerLocale": false
           },
@@ -216,7 +272,8 @@
         "constraint": {
           "targets": "class",
           "defaultOption": null,
-          "requiredOptions": [],
+          "requiredOptions": [
+          ],
           "payload": null
         },
         "cause": null,

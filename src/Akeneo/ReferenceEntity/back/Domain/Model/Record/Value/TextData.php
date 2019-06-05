@@ -13,7 +13,7 @@ class TextData implements ValueDataInterface
 
     private function __construct(string $text)
     {
-        Assert::notEmpty($text, 'Text data should be a non empty string');
+        Assert::stringNotEmpty($text, 'Text data should be a non empty string');
 
         $this->text = $text;
     }

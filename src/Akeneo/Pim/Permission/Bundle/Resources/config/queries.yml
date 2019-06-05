@@ -47,14 +47,14 @@ services:
         arguments:
             - '@database_connection'
             - '@oro_datagrid.configuration.provider.chain'
-            -
-    pimee_security.product_grid.query.fetch_user_rights_on_product:
-        class: Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProduct
+
+    akeneo.pim.permission.product.query.fetch_user_rights_on_product:
+        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\FetchUserRightsOnProduct
         arguments:
             - '@database_connection'
 
-    pimee_security.product_grid.query.fetch_user_rights_on_product_model:
-        class: Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel
+    akeneo.pim.permission.product.query.fetch_user_rights_on_product_model:
+        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\FetchUserRightsOnProductModel
         arguments:
             - '@database_connection'
 
@@ -94,7 +94,12 @@ services:
         arguments:
             - '@database_connection'
 
-    pimee_security.query.is_value_viewable_by_user_for_locale:
-        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\IsValueViewableByUserForLocale'
+    pimee_security.query.get_all_viewable_locales_for_user:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.category.get_viewable_category_codes:
+        class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCategoryCodes'
         arguments:
             - '@database_connection'

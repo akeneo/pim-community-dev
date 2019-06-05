@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\UnsubscriptionWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -50,7 +51,7 @@ class UnsubscriptionWriterSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
-        $handler->handle(new UnsubscribeProductCommand(42))->shouldBeCalled();
+        $handler->handle(new UnsubscribeProductCommand(new ProductId(42)))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('unsubscribed')->shouldBeCalled();
 
         $this->write([$product])->shouldReturn(null);
@@ -64,7 +65,7 @@ class UnsubscriptionWriterSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn('a-sku');
 
-        $handler->handle(new UnsubscribeProductCommand(42))->willThrow(
+        $handler->handle(new UnsubscribeProductCommand(new ProductId(42)))->willThrow(
             new ProductSubscriptionException('Product is not subscribed')
         );
 

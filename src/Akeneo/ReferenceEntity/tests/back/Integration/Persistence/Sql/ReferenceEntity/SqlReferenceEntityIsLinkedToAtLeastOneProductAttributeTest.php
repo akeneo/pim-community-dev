@@ -47,15 +47,15 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInte
     public function it_tells_if_a_reference_entity_is_linked_to_at_least_one_product_attribute()
     {
         $identifier = ReferenceEntityIdentifier::fromString('designer');
-        $isLinked = ($this->query)($identifier);
+        $isLinked = $this->query->isLinked($identifier);
         $this->assertTrue($isLinked);
 
         $identifier = ReferenceEntityIdentifier::fromString('city');
-        $isLinked = ($this->query)($identifier);
+        $isLinked = $this->query->isLinked($identifier);
         $this->assertTrue($isLinked);
 
         $identifier = ReferenceEntityIdentifier::fromString('brand');
-        $isLinked = ($this->query)($identifier);
+        $isLinked = $this->query->isLinked($identifier);
         $this->assertFalse($isLinked);
     }
 

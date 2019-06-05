@@ -40,8 +40,8 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
     }
 
     function it_creates_an_edit_record_command(
-        $editRecordValueCommandFactoryRegistry,
-        $findAttributesIndexedByIdentifier,
+        EditValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         EditValueCommandFactoryInterface $textValueCommandFactory,
         TextAttribute $descriptionAttribute,
         TextAttribute $numericCodeAttribute,
@@ -73,7 +73,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         ];
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $findAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
+        $findAttributesIndexedByIdentifier->find(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
             'desginer_description_fingerprint' => $descriptionAttribute,
             'designer_42_fingerprint' => $numericCodeAttribute
         ]);
@@ -118,7 +118,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_an_attribute_to_edit_does_not_exist(
-        $findAttributesIndexedByIdentifier,
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         TextAttribute $descriptionAttribute
     ) {
         $normalizedRecord = [
@@ -141,7 +141,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         ];
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $findAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
+        $findAttributesIndexedByIdentifier->find(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
             'desginer_description_fingerprint' => $descriptionAttribute
         ]);
         $descriptionAttribute->getCode()->willReturn(AttributeCode::fromString('description'));

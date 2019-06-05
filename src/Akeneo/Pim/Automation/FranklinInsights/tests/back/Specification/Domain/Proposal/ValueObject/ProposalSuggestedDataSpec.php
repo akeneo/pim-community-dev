@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
@@ -24,14 +25,15 @@ class ProposalSuggestedDataSpec extends ObjectBehavior
 {
     public function it_is_a_write_model_for_suggested_data(): void
     {
-        $this->beConstructedWith(42, ['abc' => 'def']);
+        $this->beConstructedWith(new ProductId(42), ['abc' => 'def']);
         $this->shouldBeAnInstanceOf(ProposalSuggestedData::class);
     }
 
     public function it_exposes_its_properties(ProductInterface $product): void
     {
-        $this->beConstructedWith(42, ['foo' => 'bar']);
-        $this->getProductId()->shouldReturn(42);
+        $productId = new ProductId(42);
+        $this->beConstructedWith($productId, ['foo' => 'bar']);
+        $this->getProductId()->shouldReturn($productId);
         $this->getSuggestedValues()->shouldReturn(['foo' => 'bar']);
     }
 }

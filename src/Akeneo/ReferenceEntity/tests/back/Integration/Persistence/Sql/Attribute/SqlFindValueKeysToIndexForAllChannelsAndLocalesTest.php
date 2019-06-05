@@ -49,7 +49,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
      */
     public function it_generates_an_empty_list()
     {
-        $valueKeyCollection = ($this->findValuesToIndexForChannelAndLocale)(ReferenceEntityIdentifier::fromString('designer'),
+        $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(ReferenceEntityIdentifier::fromString('designer'),
             ChannelIdentifier::fromCode('ecommerce'), LocaleIdentifier::fromCode('en_US'));
         Assert::assertEquals(
             [
@@ -67,7 +67,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
     public function it_generates_a_list_of_value_keys_of_text_attributes_only()
     {
         $this->loadReferenceEntityAndAttributes();
-        $valueKeyCollection = ($this->findValuesToIndexForChannelAndLocale)(
+        $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(
             ReferenceEntityIdentifier::fromString('designer'),
             ChannelIdentifier::fromCode('ecommerce'),
             LocaleIdentifier::fromCode('en_US')

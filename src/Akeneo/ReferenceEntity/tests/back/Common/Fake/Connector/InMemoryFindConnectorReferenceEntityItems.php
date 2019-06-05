@@ -38,7 +38,7 @@ class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenc
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityQuery $query): array
+    public function find(ReferenceEntityQuery $query): array
     {
         $searchAfterCode = $query->getSearchAfterIdentifier();
         $referenceEntities = array_values(array_filter($this->results, function (ConnectorReferenceEntity $referenceEntity) use ($searchAfterCode): bool {

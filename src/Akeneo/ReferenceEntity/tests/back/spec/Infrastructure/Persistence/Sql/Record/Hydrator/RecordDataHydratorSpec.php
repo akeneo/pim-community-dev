@@ -3,22 +3,19 @@
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDataHydrator;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class RecordDataHydratorSpec extends ObjectBehavior
 {
-    function let(RecordExistsInterface $recordExists)
+    function let(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
-        $this->beConstructedWith($recordExists);
+        $this->beConstructedWith($findCodesByIdentifiers);
     }
 
     function it_is_initializable()
@@ -35,35 +32,33 @@ class RecordDataHydratorSpec extends ObjectBehavior
     }
 
     function it_hydrates_record_collection_data_only_if_the_records_still_exists(
-        RecordExistsInterface $recordExists,
+        FindCodesByIdentifiersInterface $findCodesByIdentifiers,
         RecordAttribute $recordAttribute
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('referenceEntityType');
         $recordAttribute->getRecordType()->willReturn($referenceEntityIdentifier);
-        $recordExists->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            Argument::that(function (RecordCode $recordCode) {
-                return 'phillipe_starck' === $recordCode->normalize();
-            })
-        )->willReturn(true);
-        $recordData = $this->hydrate('phillipe_starck', $recordAttribute);
+
+        $findCodesByIdentifiers
+            ->find(['phillipe_starck_123456'])
+            ->willReturn(['phillipe_starck']);
+
+        $recordData = $this->hydrate('phillipe_starck_123456', $recordAttribute);
         $recordData->shouldBeAnInstanceOf(RecordData::class);
         $recordData->normalize()->shouldReturn('phillipe_starck');
     }
 
     function it_returns_an_empty_data_if_the_records_does_not_exists_anymore(
-        RecordExistsInterface $recordExists,
+        FindCodesByIdentifiersInterface $findCodesByIdentifiers,
         RecordAttribute $recordAttribute
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('referenceEntityType');
         $recordAttribute->getRecordType()->willReturn($referenceEntityIdentifier);
-        $recordExists->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            Argument::that(function (RecordCode $recordCode) {
-                return 'phillipe_starck' === $recordCode->normalize() || 'patricia_urquiola' === $recordCode->normalize();
-            })
-        )->willReturn(false);
-        $recordData = $this->hydrate('phillipe_starck', $recordAttribute);
+
+        $findCodesByIdentifiers
+            ->find(['phillipe_starck_123456'])
+            ->willReturn([]);
+
+        $recordData = $this->hydrate('phillipe_starck_123456', $recordAttribute);
         $recordData->shouldBeAnInstanceOf(EmptyData::class);
     }
 }

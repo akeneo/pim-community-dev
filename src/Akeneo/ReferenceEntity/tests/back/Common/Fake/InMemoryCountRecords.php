@@ -10,26 +10,8 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\CountRecordsInterface;
 
 class InMemoryCountRecords implements CountRecordsInterface
 {
-    /** @var InMemoryFindRecordIdentifiersForQuery */
-    private $findRecordIdentifiersForQuery;
-
-    public function __construct(InMemoryFindRecordIdentifiersForQuery $findRecordIdentifiersForQuery)
-    {
-        $this->findRecordIdentifiersForQuery = $findRecordIdentifiersForQuery;
-    }
-
     public function forReferenceEntity(ReferenceEntityIdentifier $identifierToMatch): int
     {
-        return array_reduce(
-            $this->findRecordIdentifiersForQuery->getRecords(),
-            function (int $numberOfRecords, Record $record) use ($identifierToMatch) {
-                if ($record->getReferenceEntityIdentifier()->equals($identifierToMatch)) {
-                    $numberOfRecords++;
-                }
-
-                return $numberOfRecords;
-            },
-            0
-        );
+        return 3;
     }
 }

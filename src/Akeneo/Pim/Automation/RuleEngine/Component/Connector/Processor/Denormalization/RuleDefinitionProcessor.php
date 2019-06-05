@@ -11,12 +11,19 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -45,19 +52,19 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     /** @var string */
     protected $class;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param DenormalizerInterface                 $denormalizer
-     * @param ValidatorInterface                    $validator
-     * @param ObjectDetacherInterface               $detacher
-     * @param string                                $ruleDefinitionClass
-     * @param string                                $ruleClass
-     */
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var FileStorerInterface */
+    private $fileStorer;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
+        AttributeRepositoryInterface $attributeRepository,
+        FileStorerInterface $fileStorer,
         $ruleDefinitionClass,
         $ruleClass
     ) {
@@ -67,6 +74,8 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
         $this->detacher = $detacher;
         $this->ruleClass = $ruleClass;
         $this->class = $ruleDefinitionClass;
+        $this->attributeRepository = $attributeRepository;
+        $this->fileStorer = $fileStorer;
     }
 
     /**
@@ -96,10 +105,13 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
      */
     protected function buildRuleFromItemAndDefinition(array $item, RuleDefinitionInterface $definition = null)
     {
+        $rule = null;
+
         try {
+            $item = $this->storeMedias($item);
             $rule = $this->denormalizer
                 ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
-        } catch (\LogicException $e) {
+        } catch (\Exception $e) {
             $this->skipItemWithMessage($item, $e->getMessage());
         }
 
@@ -139,5 +151,41 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     protected function detachObject($object)
     {
         $this->detacher->detach($object);
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return array
+     * @throws FileRemovalException
+     * @throws FileTransferException
+     * @throws \Exception
+     */
+    private function storeMedias(array $item): array
+    {
+        $mediaAttributeCodes = $this->attributeRepository->findMediaAttributeCodes();
+
+        foreach ($item['actions'] as $key => $action) {
+            if (!isset($action['value'])) {
+                continue;
+            }
+
+            $actionField = $action['field'] ?? $action['from_field'];
+            $attribute = $this->attributeRepository->findOneByIdentifier($actionField);
+
+            if (null !== $attribute &&
+                in_array($attribute->getCode(), $mediaAttributeCodes) &&
+                file_exists($action['value'])
+            ) {
+                $fileInfo = $this->fileStorer->store(
+                    new \SplFileInfo($action['value']),
+                    FileStorage::CATALOG_STORAGE_ALIAS
+                );
+
+                $item['actions'][$key]['value'] = $fileInfo->getKey();
+            }
+        }
+
+        return $item;
     }
 }

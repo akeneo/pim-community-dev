@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -63,7 +64,7 @@ class ProductRemoveSubscriberSpec extends ObjectBehavior
 
         $this->onPostRemove($event);
 
-        $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(42))->shouldHaveBeenCalled();
+        $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(new ProductId(42)))->shouldHaveBeenCalled();
     }
 
     public function it_does_nothing_if_removed_object_is_not_a_product(

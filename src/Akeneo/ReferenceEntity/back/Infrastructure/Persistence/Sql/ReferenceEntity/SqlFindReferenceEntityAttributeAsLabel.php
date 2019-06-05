@@ -28,7 +28,7 @@ class SqlFindReferenceEntityAttributeAsLabel implements FindReferenceEntityAttri
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
     {
         $query = <<<SQL
         SELECT attribute_as_label

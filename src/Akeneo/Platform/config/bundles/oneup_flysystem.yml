@@ -3,29 +3,13 @@ oneup_flysystem:
         asset_storage_adapter:
             local:
                 directory: '%asset_storage_dir%'
-        catalog_storage_adapter:
+        logs_adapter:
             local:
-                directory: '%catalog_storage_dir%'
-        tmp_storage_adapter:
-            local:
-                directory: '%tmp_storage_dir%'
-        archivist_adapter:
-            local:
-                directory: '%archive_dir%'
+                directory: '%kernel.logs_dir%'
     filesystems:
         asset_storage:
             adapter: asset_storage_adapter
             mount: assetStorage
-        catalog_storage:
-            adapter: catalog_storage_adapter
-            mount: catalogStorage
-        tmp_storage:
-            adapter: tmp_storage_adapter
-            mount: tmpStorage
-            plugins:
-                - oneup_flysystem.plugin.list_files
-        archivist:
-            adapter: archivist_adapter
-            mount: archivist
-            plugins:
-                - oneup_flysystem.plugin.list_files
+        logs_storage:
+            adapter: logs_adapter
+            mount: logsStorage

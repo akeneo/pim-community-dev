@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Su
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
@@ -91,7 +92,7 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
-        $subscriptionRepository->findByProductIds([42])->willReturn([]);
+        $subscriptionRepository->findByProductIds([new ProductId(42)])->willReturn([]);
 
         $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
@@ -126,7 +127,7 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
-        $subscriptionRepository->findByProductIds([42])->willReturn([]);
+        $subscriptionRepository->findByProductIds([new ProductId(42)])->willReturn([]);
 
         $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
@@ -140,19 +141,20 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $resubscribeProducts,
         ProductInterface $product
     ): void {
-        $subscription = new ProductSubscription(42, new SubscriptionId('abc-123'), ['asin' => 'ABC123']);
+        $productId = new ProductId(42);
+        $subscription = new ProductSubscription($productId, new SubscriptionId('abc-123'), ['asin' => 'ABC123']);
         $product->getId()->willReturn(42);
 
         $identifierValuesCollection = new ProductIdentifierValuesCollection();
         $identifierValuesCollection->add(
             new ProductIdentifierValues(
-                42,
+                $productId,
                 ['asin' => 'ABC123', 'upc' => '123456']
             )
         );
 
-        $selectProductIdentifierValuesQuery->execute([42])->willReturn($identifierValuesCollection);
-        $subscriptionRepository->findByProductIds([42])->willReturn([$subscription]);
+        $selectProductIdentifierValuesQuery->execute([$productId])->willReturn($identifierValuesCollection);
+        $subscriptionRepository->findByProductIds([$productId])->willReturn([$subscription]);
 
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
 
@@ -166,20 +168,21 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $resubscribeProducts,
         ProductInterface $product
     ): void {
-        $subscription = new ProductSubscription(42, new SubscriptionId('a-fake-id'), ['asin' => '123456']);
-        $subscriptionRepository->findByProductIds([42])->willReturn([$subscription]);
+        $productId = new ProductId(42);
+        $subscription = new ProductSubscription($productId, new SubscriptionId('a-fake-id'), ['asin' => '123456']);
+        $subscriptionRepository->findByProductIds([$productId])->willReturn([$subscription]);
 
         $product->getId()->willReturn(42);
         $identifierValuesCollection = new ProductIdentifierValuesCollection();
         $identifierValuesCollection->add(
             new ProductIdentifierValues(
-                42,
+                $productId,
                 ['mpn' => 'Akeneo-PIM', 'brand' => 'Akeneo']
             )
         );
-        $selectProductIdentifierValuesQuery->execute([42])->willReturn($identifierValuesCollection);
+        $selectProductIdentifierValuesQuery->execute([$productId])->willReturn($identifierValuesCollection);
 
-        $resubscribeProducts->process([42])->shouldBeCalled();
+        $resubscribeProducts->process([$productId])->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }
@@ -193,28 +196,31 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
     ): void {
         $product1->getId()->willReturn(42);
         $product2->getId()->willReturn(44);
-        $subscriptionRepository->findByProductIds([42, 44])->willReturn(
+        $productId1 = new ProductId(42);
+        $productId2 = new ProductId(44);
+
+        $subscriptionRepository->findByProductIds([$productId1, $productId2])->willReturn(
             [
-                new ProductSubscription(42, new SubscriptionId('abc-123'), ['asin' => 'ABC123', 'upc' => '987654321']),
-                new ProductSubscription(44, new SubscriptionId('def-456'), ['asin' => 'DEF987']),
+                new ProductSubscription($productId1, new SubscriptionId('abc-123'), ['asin' => 'ABC123', 'upc' => '987654321']),
+                new ProductSubscription($productId2, new SubscriptionId('def-456'), ['asin' => 'DEF987']),
             ]
         );
 
         $identifierValuesCollection = new ProductIdentifierValuesCollection();
         $identifierValuesCollection->add(
             new ProductIdentifierValues(
-                42,
+                $productId1,
                 ['mpn' => 'Akeneo-PIM', 'brand' => 'Akeneo']
             ));
         $identifierValuesCollection->add(
             new ProductIdentifierValues(
-                44,
+                $productId2,
                 ['asin' => 'DEF987']
             )
         );
-        $selectProductIdentifierValuesQuery->execute([42, 44])->willReturn($identifierValuesCollection);
+        $selectProductIdentifierValuesQuery->execute([$productId1, $productId2])->willReturn($identifierValuesCollection);
 
-        $resubscribeProducts->process([42])->shouldBeCalled();
+        $resubscribeProducts->process([$productId1])->shouldBeCalled();
 
         $this->onPostSaveAll(
             new GenericEvent([$product1->getWrappedObject(), $product2->getWrappedObject()])

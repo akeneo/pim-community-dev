@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
@@ -54,10 +55,10 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     /**
      * {@inheritdoc}
      */
-    public function findOneByProductId(int $productId): ?ProductSubscription
+    public function findOneByProductId(ProductId $productId): ?ProductSubscription
     {
         foreach ($this->subscriptions as $subscription) {
-            if ($subscription->getProductId() === $productId) {
+            if ($subscription->getProductId()->equals($productId)) {
                 return $subscription;
             }
         }
@@ -72,8 +73,12 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
      */
     public function findByProductIds(array $productIds): array
     {
+        $productIds = array_map(function (ProductId $productId) {
+            return $productId->toInt();
+        }, $productIds);
+
         return array_filter($this->subscriptions, function (ProductSubscription $subscription) use ($productIds) {
-            return in_array($subscription->getProductId(), $productIds, true);
+            return in_array($subscription->getProductId()->toInt(), $productIds, true);
         });
     }
 
@@ -122,8 +127,12 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
      */
     public function emptySuggestedDataByProducts(array $productIds): void
     {
+        $productIds = array_map(function (ProductId $productId) {
+            return $productId->toInt();
+        }, $productIds);
+
         foreach ($this->subscriptions as $subscription) {
-            if (in_array($subscription->getProductId(), $productIds)) {
+            if (in_array($subscription->getProductId()->toInt(), $productIds)) {
                 $subscription->setSuggestedData(new SuggestedData([]));
             }
         }
@@ -137,7 +146,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
         $family = $this->familyRepository->findOneByIdentifier((string) $familyCode);
 
         foreach ($this->subscriptions as $subscription) {
-            $product = $this->productRepository->find($subscription->getProductId());
+            $product = $this->productRepository->find($subscription->getProductId()->toInt());
             if ($product->getFamily()->getId() === $family->getId()) {
                 $subscription->setSuggestedData(new SuggestedData([]));
                 $subscription->markAsMissingMapping(true);

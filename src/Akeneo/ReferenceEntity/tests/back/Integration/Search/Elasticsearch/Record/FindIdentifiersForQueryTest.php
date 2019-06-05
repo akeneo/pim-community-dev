@@ -71,7 +71,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertsame([
             'identifiers' => ['brand_kartell', 'brand_alessi', 'brand_bangolufsen'],
             'matches_count' => 3
@@ -104,7 +104,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertsame([
             'identifiers' => ['brand_kartell', 'brand_alessi', 'brand_bangolufsen'],
             'matches_count' => 3
@@ -137,7 +137,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertsame([
             'identifiers' => ['brand_bangolufsen'],
             'matches_count' => 1
@@ -170,7 +170,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertsame([
             'identifiers' => ['brand_bangolufsen'],
             'matches_count' => 1
@@ -203,7 +203,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertsame([
             'identifiers' => ['brand_alessi'],
             'matches_count' => 1
@@ -230,7 +230,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertsame([
             'identifiers' => ['brand_alessi'],
             'matches_count' => 1
@@ -257,7 +257,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertsame([
             'identifiers' => [],
             'matches_count' => 0
@@ -290,7 +290,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertsame([
             'identifiers' => ['brand_bangolufsen'],
             'matches_count' => 1
@@ -323,7 +323,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertSame([
             'identifiers' => ['brand_kartell', 'brand_alessi'],
             'matches_count' => 2
@@ -350,7 +350,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertSame([
             'identifiers' => ['brand_kartell', 'brand_alessi', 'brand_bangolufsen'],
             'matches_count' => 3
@@ -383,7 +383,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertSame([
             'identifiers' => ['brand_kartell'],
             'matches_count' => 1
@@ -437,7 +437,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
 
         Assert::assertSame([
             'identifiers' => ['after'],
@@ -471,7 +471,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ]
         ]);
 
-        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertSame([
             'identifiers' => ['brand_alessi', 'brand_bangolufsen'],
             'matches_count' => 2
@@ -492,7 +492,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             []
         );
 
-        $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingIdentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertSame([
             'identifiers' => ['brand_bangolufsen', 'brand_kartell'],
             'matches_count' => 3
@@ -513,7 +513,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             []
         );
 
-        $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
+        $matchingIdentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertSame([
             'identifiers' => ['brand_alessi', 'brand_bangolufsen', 'brand_kartell'],
             'matches_count' => 3

@@ -1,7 +1,3 @@
-pim_title:
-  akeneo_franklin_insights_connection_edit: 'Connexió de les estadístiques de Franklin'
-  akeneo_franklin_insights_identifiers_mapping_edit: 'Configuració de les estadístiques de Franklin'
-  akeneo_franklin_insights_attributes_mapping_edit: 'Configuració de les estadístiques de Franklin'
 pim_menu:
   item:
     franklin: Estadístiques de Franklin
@@ -60,6 +56,7 @@ akeneo_franklin_insights:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
         missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
         attribute_not_in_family_not_allowed: 'L''atribut PIM ha de ser de la família seleccionada.'
+        only_unknown_mapped_attributes: 'No s''han trobat atributs en el mapatge d''atributs'
     product_subscription:
       flash:
         create:
@@ -116,6 +113,7 @@ akeneo_franklin_insights:
         activated: 'Activat'
         activate: 'Activat'
   settings:
+    page_title: 'Configuració de les estadístiques de Franklin'
     attributes_mapping_title: 'Mapatge dels atributs'
     module:
       title:

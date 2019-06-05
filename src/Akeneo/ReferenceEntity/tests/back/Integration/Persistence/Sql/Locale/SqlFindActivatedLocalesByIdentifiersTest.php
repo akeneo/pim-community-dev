@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Locale;
 
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
 {
+    /** @var FindActivatedLocalesByIdentifiersInterface */
     private $localesAreActivated;
 
     public function setUp(): void
@@ -35,7 +37,7 @@ class SqlFindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
     {
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized(['fr_FR', 'fr_BE', 'en_US']);
 
-        $localesFound = ($this->localesAreActivated)($localeIdentifiers);
+        $localesFound = $this->localesAreActivated->find($localeIdentifiers);
         $localesFound = $localesFound->normalize();
         sort($localesFound);
 
@@ -48,7 +50,7 @@ class SqlFindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
     public function it_returns_an_empty_collection_if_no_activated_locales_have_been_found(): void
     {
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized(['ww_ZZ', 'fr_BE']);
-        $localesFound = ($this->localesAreActivated)($localeIdentifiers);
+        $localesFound = $this->localesAreActivated->find($localeIdentifiers);
 
         $this->assertTrue($localesFound->isEmpty());
     }

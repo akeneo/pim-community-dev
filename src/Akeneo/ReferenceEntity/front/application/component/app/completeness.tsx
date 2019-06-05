@@ -4,11 +4,11 @@ import __ from 'akeneoreferenceentity/tools/translator';
 
 const memo = (React as any).memo;
 
-const getLabel = (value: number, expanded: boolean) => {
+export const getLabel = (value: number, expanded: boolean) => {
   return `${expanded ? __('pim_reference_entity.record.completeness.label') + ': ' : ''}${value}%`;
 };
 
-const getCompletenessClass = (completeness: Completeness, expanded: boolean) => {
+export const getCompletenessClass = (completeness: Completeness, expanded: boolean) => {
   if (!completeness.hasCompleteAttribute()) {
     return `AknBadge AknBadge--${expanded ? 'big' : 'medium'} AknBadge--invalid`;
   } else if (completeness.isComplete()) {
@@ -18,13 +18,15 @@ const getCompletenessClass = (completeness: Completeness, expanded: boolean) => 
   }
 };
 
-const getTranslationKey = (completeness: Completeness) => {
+export const getTranslationKey = (completeness: Completeness) => {
+  const keyBase = 'pim_reference_entity.record.grid.completeness';
+
   if (!completeness.hasCompleteAttribute()) {
-    return 'title_non_complete';
+    return `${keyBase}.title_non_complete`;
   } else if (completeness.isComplete()) {
-    return 'title_complete';
+    return `${keyBase}.title_complete`;
   } else {
-    return 'title_ongoing';
+    return `${keyBase}.title_ongoing`;
   }
 };
 
@@ -35,7 +37,7 @@ const CompletenessLabel = memo(({completeness, expanded = true}: {completeness: 
 
   return (
     <span
-      title={__(`pim_reference_entity.record.grid.completeness.${getTranslationKey(completeness)}`, {
+      title={__(getTranslationKey(completeness), {
         complete: completeness.getCompleteAttributeCount(),
         required: completeness.getRequiredAttributeCount(),
       })}

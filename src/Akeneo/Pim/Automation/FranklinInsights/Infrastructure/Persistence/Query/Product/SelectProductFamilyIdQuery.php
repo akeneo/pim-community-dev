@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductFamilyIdQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -37,14 +38,14 @@ class SelectProductFamilyIdQuery implements SelectProductFamilyIdQueryInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(int $productId): ?int
+    public function execute(ProductId $productId): ?int
     {
         $query = <<<SQL
 SELECT family_id
 FROM pim_catalog_product
 WHERE id = :product_id 
 SQL;
-        $bindParams = ['product_id' => $productId];
+        $bindParams = ['product_id' => $productId->toInt()];
         $statement = $this->connection->executeQuery($query, $bindParams);
         $result = $statement->fetch();
 

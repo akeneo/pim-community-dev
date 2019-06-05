@@ -35,7 +35,7 @@ class RemoveUserGroupSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($userGroup);
         $userGroup->getId()->willReturn(10);
 
-        $findReferenceEntityWhereUserGroupIsLastToHaveEditRight->__invoke(10)->willReturn(['designer']);
+        $findReferenceEntityWhereUserGroupIsLastToHaveEditRight->find(10)->willReturn(['designer']);
 
         $this->shouldThrow(ResourceDeletionDeniedException::class)
             ->during('checkUserGroupPermissionsOnReferenceEntity', [$event]);
@@ -49,7 +49,7 @@ class RemoveUserGroupSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($userGroup);
         $userGroup->getId()->willReturn(10);
 
-        $findReferenceEntityWhereUserGroupIsLastToHaveEditRight->__invoke(10)->willReturn([]);
+        $findReferenceEntityWhereUserGroupIsLastToHaveEditRight->find(10)->willReturn([]);
 
         $this->checkUserGroupPermissionsOnReferenceEntity($event);
     }

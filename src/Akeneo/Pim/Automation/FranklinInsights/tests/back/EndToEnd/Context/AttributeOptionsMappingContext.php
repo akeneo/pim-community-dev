@@ -151,8 +151,7 @@ class AttributeOptionsMappingContext extends PimContext
             new AttributeCode($attributeCode),
             $optionCode
         );
-        $attributeOption->setLocale('en_US');
 
-        return $attributeOption->getTranslation()->getLabel();
+        return $attributeOption->getTranslations()['en_US'];
     }
 }

@@ -56,7 +56,7 @@ class InMemoryFindReferenceEntityAttributeAsLabelTest extends TestCase
         );
         $this->referenceEntityRepository->create($referenceEntity);
 
-        $attributeAsLabel = ($this->findReferenceEntityAttributeAsLabel)($referenceEntityIdentifier);
+        $attributeAsLabel = $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier);
 
         $this->assertSame($expectedAttributeAsLabel, $attributeAsLabel);
     }
@@ -67,7 +67,7 @@ class InMemoryFindReferenceEntityAttributeAsLabelTest extends TestCase
     public function it_returns_an_empty_attribute_as_label_if_the_reference_entity_was_not_found()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown');
-        $attributeAsLabel = ($this->findReferenceEntityAttributeAsLabel)($referenceEntityIdentifier);
+        $attributeAsLabel = $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier);
 
         $this->assertTrue($attributeAsLabel->isEmpty());
     }

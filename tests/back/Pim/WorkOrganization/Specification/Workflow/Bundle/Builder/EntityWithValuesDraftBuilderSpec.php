@@ -7,13 +7,12 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder\EntityWithValuesDraftBuilder;
@@ -30,7 +29,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
-        ValueCollectionFactoryInterface $valueCollectionFactory,
+        WriteValueCollectionFactory $valueCollectionFactory,
         ValueFactory $valueFactory
     ) {
         $this->beConstructedWith(
@@ -62,8 +61,8 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
         EntityWithValuesDraftInterface $productDraft,
-        ValueCollectionInterface $newValuesCollection,
-        ValueCollectionInterface $originalValuesCollection
+        WriteValueCollection $newValuesCollection,
+        WriteValueCollection $originalValuesCollection
     ) {
         $product->isVariant()->willReturn(false);
         $rawValues = [
@@ -109,7 +108,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getLocaleCode()->willReturn(null);
 
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
-        $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
+        $productDraft->setValues(new WriteValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
@@ -131,8 +130,8 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
         EntityWithValuesDraftInterface $productDraft,
-        ValueCollectionInterface $newValuesCollection,
-        ValueCollectionInterface $originalValuesCollection
+        WriteValueCollection $newValuesCollection,
+        WriteValueCollection $originalValuesCollection
     ) {
         $product->isVariant()->willReturn(false);
         $rawValues = [];
@@ -166,7 +165,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getLocaleCode()->willReturn(null);
 
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
-        $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
+        $productDraft->setValues(new WriteValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
@@ -184,8 +183,8 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         AttributeInterface $textAttribute,
         ValueInterface $textValue,
         ComparatorInterface $textComparator,
-        ValueCollectionInterface $newValuesCollection,
-        ValueCollectionInterface $originalValuesCollection
+        WriteValueCollection $newValuesCollection,
+        WriteValueCollection $originalValuesCollection
     ) {
         $product->isVariant()->willReturn(false);
         $rawValues = [
@@ -230,8 +229,8 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $textAttribute,
         ValueInterface $textValue,
-        ValueCollectionInterface $newValuesCollection,
-        ValueCollectionInterface $originalValuesCollection
+        WriteValueCollection $newValuesCollection,
+        WriteValueCollection $originalValuesCollection
     ) {
         $product->isVariant()->willReturn(false);
         $rawValues = [
@@ -279,8 +278,8 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
         EntityWithValuesDraftInterface $productDraft,
-        ValueCollectionInterface $newValuesCollection,
-        ValueCollectionInterface $originalValuesCollection
+        WriteValueCollection $newValuesCollection,
+        WriteValueCollection $originalValuesCollection
     ) {
         $variantProduct->isVariant()->willReturn(true);
         $rawValues = [
@@ -324,7 +323,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getLocaleCode()->willReturn(null);
 
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($variantProduct, 'mary')->willReturn($productDraft);
-        $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
+        $productDraft->setValues(new WriteValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
@@ -349,8 +348,8 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ComparatorInterface $textComparator,
         ComparatorInterface $colorComparator,
         EntityWithValuesDraftInterface $productDraft,
-        ValueCollectionInterface $newValuesCollection,
-        ValueCollectionInterface $originalValuesCollection,
+        WriteValueCollection $newValuesCollection,
+        WriteValueCollection $originalValuesCollection,
         ProductModelInterface $parent
     ) {
         $variantProduct->isVariant()->willReturn(true);
@@ -427,7 +426,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         )->willReturn(null);
 
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($variantProduct, 'mary')->willReturn($productDraft);
-        $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
+        $productDraft->setValues(new WriteValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();

@@ -15,8 +15,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -55,8 +53,8 @@ SQL;
                 'codes' => Connection::PARAM_STR_ARRAY
             ]
         );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAll(\PDO::FETCH_COLUMN);
 
-        return array_values($result);
+        return $results;
     }
 }

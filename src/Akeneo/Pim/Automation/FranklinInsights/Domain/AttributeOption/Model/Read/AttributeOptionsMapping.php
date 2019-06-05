@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 
 /**
@@ -64,14 +65,15 @@ final class AttributeOptionsMapping
     }
 
     /**
-     * @param string $attributeOptionCode
+     * @param AttributeOptionCode $attributeOptionCode
      *
      * @return bool
      */
-    public function hasPimAttributeOption(string $attributeOptionCode): bool
+    public function hasPimAttributeOption(AttributeOptionCode $attributeOptionCode): bool
     {
         foreach ($this->mapping as $attributeOption) {
-            if ($attributeOption->catalogAttributeOptionCode() === $attributeOptionCode) {
+            $pimAttributeOption = $attributeOption->catalogAttributeOptionCode();
+            if (null !== $pimAttributeOption && $pimAttributeOption->equals($attributeOptionCode)) {
                 return true;
             }
         }

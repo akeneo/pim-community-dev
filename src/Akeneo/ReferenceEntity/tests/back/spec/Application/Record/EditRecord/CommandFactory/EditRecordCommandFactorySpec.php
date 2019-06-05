@@ -76,7 +76,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
-        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
+        $sqlFindAttributesIndexedByIdentifier->find(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
             'desginer_description_fingerprint' => $descriptionAttribute
         ]);
 
@@ -109,7 +109,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
             'values' => [ [ 'malformed data']]
         ];
 
-        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([]);
+        $sqlFindAttributesIndexedByIdentifier->find(Argument::type(ReferenceEntityIdentifier::class))->willReturn([]);
         $editRecordValueCommandFactoryRegistry->getFactory()->shouldNotBeCalled();
         $command = $this->create($normalizedCommand);
         $command->editRecordValueCommands->shouldBeEqualTo([]);
@@ -134,7 +134,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
                 ],
             ],
         ];
-        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([]);
+        $sqlFindAttributesIndexedByIdentifier->find(Argument::type(ReferenceEntityIdentifier::class))->willReturn([]);
         $editRecordValueCommandFactoryRegistry->getFactory()->shouldNotBeCalled();
         $command = $this->create($normalizedCommand);
         $command->editRecordValueCommands->shouldBeEqualTo([]);

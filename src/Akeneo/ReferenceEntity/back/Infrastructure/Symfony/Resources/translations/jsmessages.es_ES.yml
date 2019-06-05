@@ -136,8 +136,11 @@ pim_reference_entity:
       filter:
         completeness:
           label: Completo
-          all: TODOS
+          all: Todos
+          'yes': 'SÍ'
+          'no': 'No'
         option:
+          all: Todos
           operator:
             in: En la lista
       column:

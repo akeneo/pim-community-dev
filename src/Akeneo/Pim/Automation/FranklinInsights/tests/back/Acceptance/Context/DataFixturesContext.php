@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
@@ -57,7 +58,7 @@ class DataFixturesContext implements Context
     /** @var ProductBuilderInterface */
     private $productBuilder;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     /** @var EntityBuilder */
@@ -93,7 +94,7 @@ class DataFixturesContext implements Context
     /**
      * @param InMemoryProductRepository $productRepository
      * @param ProductBuilderInterface $productBuilder
-     * @param ValueCollectionFactoryInterface $valueCollectionFactory
+     * @param WriteValueCollectionFactory $valueCollectionFactory
      * @param InMemoryFamilyRepository $familyRepository
      * @param FamilyFactory $familyFactory
      * @param InMemoryAttributeRepository $attributeRepository
@@ -111,7 +112,7 @@ class DataFixturesContext implements Context
     public function __construct(
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
-        ValueCollectionFactoryInterface $valueCollectionFactory,
+        WriteValueCollectionFactory $valueCollectionFactory,
         InMemoryFamilyRepository $familyRepository,
         FamilyFactory $familyFactory,
         InMemoryAttributeRepository $attributeRepository,
@@ -245,7 +246,7 @@ class DataFixturesContext implements Context
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $subscription = new ProductSubscription($product->getId(), new SubscriptionId(uniqid()), ['sku' => '72527273070']);
+        $subscription = new ProductSubscription(new ProductId($product->getId()), new SubscriptionId(uniqid()), ['sku' => '72527273070']);
         $this->subscriptionRepository->save($subscription);
     }
 
@@ -258,7 +259,7 @@ class DataFixturesContext implements Context
     {
         $this->theProductIsSubscribedToFranklin($identifier);
         $product = $this->productRepository->findOneByIdentifier($identifier);
-        $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
+        $subscription = $this->subscriptionRepository->findOneByProductId(new ProductId($product->getId()));
 
         $suggestedData = $this->loadJsonFileAsArray(sprintf('suggested-data/suggested_data-%s.json', $identifier));
         $subscription->setSuggestedData(new SuggestedData($suggestedData));
@@ -387,17 +388,21 @@ class DataFixturesContext implements Context
      *
      * @param array $attributeCodes
      */
-    private function loadAttributes(array $attributeCodes): void
+    private function loadAttributes(array $attributeCodes)
     {
         $normalizedAttributes = $this->loadJsonFileAsArray('attributes/attributes.json');
 
         $attributeGroup = $this->attributeGroupBuilder->build(['code' => 'other']);
         $this->attributeGroupRepository->save($attributeGroup);
 
+        $attributes = [];
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeBuilder->build($normalizedAttributes[$attributeCode]);
             $this->attributeRepository->save($attribute);
+            $attributes[] = $attribute;
         }
+
+        return $attributes;
     }
 
     /**
@@ -410,10 +415,14 @@ class DataFixturesContext implements Context
     {
         $normalizedFamily = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
 
-        $this->loadAttributes($normalizedFamily['attributes']);
+        $attributes = $this->loadAttributes($normalizedFamily['attributes']);
 
         $family = $this->familyBuilder->build($normalizedFamily);
         $this->familyRepository->save($family);
+
+        foreach ($attributes as $attribute) {
+            $attribute->addFamily($family);
+        }
     }
 
     /**

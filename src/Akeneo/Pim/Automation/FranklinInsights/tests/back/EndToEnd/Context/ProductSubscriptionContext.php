@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames;
@@ -222,7 +223,7 @@ class ProductSubscriptionContext extends PimContext
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
         $this->spin(function () use ($product): bool {
-            $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+            $productSubscription = $this->productSubscriptionRepository->findOneByProductId(new ProductId($product->getId()));
 
             return $productSubscription instanceof ProductSubscription;
         }, sprintf('Cannot find any subscription for product "%s".', $product->getIdentifier()));
@@ -238,7 +239,7 @@ class ProductSubscriptionContext extends PimContext
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
         $this->spin(function () use ($product): bool {
-            $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+            $productSubscription = $this->productSubscriptionRepository->findOneByProductId(new ProductId($product->getId()));
 
             return null === $productSubscription;
         }, sprintf('Found a subscription for product "%s" when there should be none.', $product->getIdentifier()));

@@ -156,6 +156,11 @@ class RecordQuery
         );
     }
 
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
     public function getValueFilters(): array
     {
         $filters =  array_values(array_filter($this->filters, function ($filter) {

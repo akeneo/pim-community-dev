@@ -1,10 +1,10 @@
 extensions:
     pimee-user-show-email-notifications:
         module: pim/form/common/fields/boolean
-        parent: pim-user-show-groups-and-roles-tab-content
+        parent: pim-user-show-additional-tab-content
         targetZone: content
-        position: 30
+        position: 39
         config:
             fieldName: email_notifications
             label: user.email_notifications
-            isReadOnly: true
+            readOnly: true

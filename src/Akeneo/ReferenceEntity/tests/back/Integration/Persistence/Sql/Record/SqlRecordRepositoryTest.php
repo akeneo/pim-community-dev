@@ -29,6 +29,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -39,11 +41,11 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
@@ -64,12 +66,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
-
-    /** @var AttributeAsLabelReference */
-    private $attributeAsLabel;
-
-    /** @var AttributeAsImageReference */
-    private $attributeAsImage;
 
     public function setUp(): void
     {
@@ -371,6 +367,130 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_replaces_record_value_codes_by_their_identifiers_when_creating_a_record()
+    {
+        // Create the brand we will link
+        $referenceEntityIdentifierBrand = ReferenceEntityIdentifier::fromString('brand');
+        $brandCode = RecordCode::fromString('ikea');
+        $brandIdentifier = $this->repository->nextIdentifier($referenceEntityIdentifierBrand, $brandCode);
+        $record = Record::create(
+            $brandIdentifier,
+            $referenceEntityIdentifierBrand,
+            $brandCode,
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($record);
+
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $recordCode = RecordCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+
+        $record = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('brand_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    RecordData::createFromNormalize('ikea')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('brands_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    RecordCollectionData::createFromNormalize(['ikea'])
+                ),
+            ])
+        );
+        $this->repository->create($record);
+        $recordFound = $this->repository->getByIdentifier($identifier);
+        $this->assertEquals($record->normalize(), $recordFound->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function it_replaces_record_value_codes_by_their_identifiers_when_updating_a_record()
+    {
+        // Create the brand we will link
+        $referenceEntityIdentifierBrand = ReferenceEntityIdentifier::fromString('brand');
+        $brandCode = RecordCode::fromString('ikea');
+        $brandIdentifier = $this->repository->nextIdentifier($referenceEntityIdentifierBrand, $brandCode);
+        $record = Record::create(
+            $brandIdentifier,
+            $referenceEntityIdentifierBrand,
+            $brandCode,
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($record);
+
+        // Create the designer we will update
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $recordCode = RecordCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+
+        $record = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Starck')
+                ),
+            ])
+        );
+        $this->repository->create($record);
+        $this->eventDispatcherMock->reset();
+
+        $valueToUpdate = Value::create(
+            AttributeIdentifier::fromString('brand_designer_fingerprint'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            RecordData::createFromNormalize('ikea')
+        );
+        $record->setValue($valueToUpdate);
+        $valueToUpdate = Value::create(
+            AttributeIdentifier::fromString('brands_designer_fingerprint'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            RecordCollectionData::createFromNormalize(['ikea'])
+        );
+        $record->setValue($valueToUpdate);
+        $this->repository->update($record);
+
+        $this->eventDispatcherMock->assertEventDispatched(RecordUpdatedEvent::class);
+        $recordFound = $this->repository->getByIdentifier($identifier);
+        $this->assertEquals($record->normalize(), $recordFound->normalize());
+    }
+
+    /**
+     * @test
+     */
     public function it_counts_the_records()
     {
         $this->assertEquals(0, $this->repository->count());
@@ -558,12 +678,34 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             AttributeMaxFileSize::fromString('250.2'),
             AttributeAllowedExtensions::fromList(['png'])
         );
+        $brand = RecordAttribute::create(
+            AttributeIdentifier::create('designer', 'brand', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('brand'),
+            LabelCollection::fromArray(['en_US' => 'Brand']),
+            AttributeOrder::fromInteger(4),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('brand')
+        );
+        $brands = RecordCollectionAttribute::create(
+            AttributeIdentifier::create('designer', 'brands', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('brands'),
+            LabelCollection::fromArray(['en_US' => 'Brands']),
+            AttributeOrder::fromInteger(5),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('brand')
+        );
+
         $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attributesRepository->create($name);
         $attributesRepository->create($image);
-
-        $this->attributeAsLabel = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        $this->attributeAsImage = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributesRepository->create($brand);
+        $attributesRepository->create($brands);
     }
 
     /**

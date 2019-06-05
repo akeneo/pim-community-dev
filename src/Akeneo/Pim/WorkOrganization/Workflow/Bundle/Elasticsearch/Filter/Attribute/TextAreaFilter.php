@@ -54,11 +54,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
-            $this->checkValue($attribute, $value);
-            $escapedValue = $this->escapeValue($value);
-        }
-
+        $escapedValue = $this->sanitizeValue($attribute, $operator, $value);
         $attributePaths = $this->attributePathResolver->getAttributePaths($attribute);
 
         switch ($operator) {
@@ -170,5 +166,16 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
         if (!is_string($value) && null !== $value) {
             throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $value);
         }
+    }
+
+    private function sanitizeValue(AttributeInterface $attribute, string $operator, $value): ?string
+    {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $this->checkValue($attribute, $value);
+
+            return $this->escapeValue($value);
+        }
+
+        return null;
     }
 }

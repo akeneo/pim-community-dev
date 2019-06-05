@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
@@ -86,7 +87,7 @@ class ProductSubscriptionContext implements Context
         $product = $this->findProduct($identifier);
 
         try {
-            $command = new SubscribeProductCommand($product->getId());
+            $command = new SubscribeProductCommand(new ProductId($product->getId()));
             $this->subscribeProductHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
@@ -104,7 +105,7 @@ class ProductSubscriptionContext implements Context
         Assert::isInstanceOf($product, ProductInterface::class);
 
         try {
-            $command = new UnsubscribeProductCommand($product->getId());
+            $command = new UnsubscribeProductCommand(new ProductId($product->getId()));
             $this->unsubscribeProductHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
@@ -142,7 +143,7 @@ class ProductSubscriptionContext implements Context
         foreach ($table->getHash() as $productRow) {
             $product = $this->findProduct($productRow['identifier']);
 
-            $command = new SubscribeProductCommand($product->getId());
+            $command = new SubscribeProductCommand(new ProductId($product->getId()));
             $this->subscribeProductHandler->handle($command);
         }
     }
@@ -155,7 +156,7 @@ class ProductSubscriptionContext implements Context
     public function theProductShouldBeSubscribed(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
-        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        $productSubscription = $this->productSubscriptionRepository->findOneByProductId(new ProductId($product->getId()));
         Assert::isInstanceOf($productSubscription, ProductSubscription::class);
     }
 
@@ -167,7 +168,7 @@ class ProductSubscriptionContext implements Context
     public function theProductShouldNotBeSubscribed(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
-        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        $productSubscription = $this->productSubscriptionRepository->findOneByProductId(new ProductId($product->getId()));
         Assert::null($productSubscription);
     }
 
@@ -190,7 +191,7 @@ class ProductSubscriptionContext implements Context
     public function theSuggestedDataForTheSubscriptionOfProductShouldBeEmpty(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
-        $subscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        $subscription = $this->productSubscriptionRepository->findOneByProductId(new ProductId($product->getId()));
 
         Assert::true($subscription->getSuggestedData()->isEmpty());
     }

@@ -20,7 +20,7 @@ class InMemoryFindUserGroupsForSecurityIdentifier implements FindUserGroupsForSe
     /**
      * @return UserGroupIdentifier[]
      */
-    public function __invoke(SecurityIdentifier $securityIdentifier): array
+    public function find(SecurityIdentifier $securityIdentifier): array
     {
         return $this->groupsForUsers[$securityIdentifier->stringValue()] ?? [];
     }

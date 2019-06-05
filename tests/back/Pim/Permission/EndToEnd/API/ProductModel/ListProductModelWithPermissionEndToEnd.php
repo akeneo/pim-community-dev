@@ -3,10 +3,10 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\ProductModel;
 
 use Akeneo\Test\Integration\Configuration;
-use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListProductModelWithPermissionEndToEnd extends ApiTestCase
@@ -55,102 +55,6 @@ class ListProductModelWithPermissionEndToEnd extends ApiTestCase
         ];
         sort($expectedCodes);
         Assert::assertSame($expectedCodes, $codes);
-    }
-
-    /**
-     * @group critical
-     */
-    public function testGetListOfViewableAttributesAndLocaleValues()
-    {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('GET', 'api/rest/v1/product-models');
-        $response = $client->getResponse();
-
-        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
-
-        $expected = <<<JSON
-{
-    "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=10"},
-        "first": {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=10"}
-    },
-    "current_page": 1,
-    "_embedded": {
-        "items": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http://localhost/api/rest/v1/product-models/root_product_model"
-                    }
-                },
-                "code":"root_product_model",
-                "family_variant":"family_variant_permission",
-                "parent":null,
-                "categories":["own_category"],
-                "values":{
-                    "root_product_model_edit_attribute":[
-                        {"locale":"en_US","scope":null,"data":true},
-                        {"locale":"fr_FR","scope":null,"data":true}
-                    ],
-                    "root_product_model_view_attribute":[
-                        {"locale":"en_US","scope":null,"data":true},
-                        {"locale":"fr_FR","scope":null,"data":true}
-                    ]
-                },
-                "created": "2016-06-14T13:12:50+02:00",
-                "updated": "2016-06-14T13:12:50+02:00",
-                "associations": [],
-                "metadata": {
-                    "workflow_status": "working_copy"
-                }
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": "http://localhost/api/rest/v1/product-models/sub_product_model"
-                    }
-                },
-                "code":"sub_product_model",
-                "family_variant":"family_variant_permission",
-                "parent":"root_product_model",
-                "categories":["own_category"],
-                "values":{
-                    "sub_product_model_view_attribute":[
-                        {"locale":"en_US", "scope":null, "data":true},
-                        {"locale":"fr_FR", "scope":null, "data":true}
-                    ],
-                    "sub_product_model_edit_attribute":[
-                        {"locale":"en_US", "scope":null, "data":true},
-                        {"locale":"fr_FR", "scope":null, "data":true}
-                    ],
-                    "sub_product_model_axis_attribute":[
-                        {"locale":null, "scope":null, "data":true}
-                    ],
-                    "root_product_model_edit_attribute":[
-                        {"locale":"en_US","scope":null,"data":true},
-                        {"locale":"fr_FR","scope":null,"data":true}
-                    ],
-                    "root_product_model_view_attribute":[
-                        {"locale":"en_US","scope":null,"data":true},
-                        {"locale":"fr_FR","scope":null,"data":true}
-                    ]
-                },
-                "created": "2016-06-14T13:12:50+02:00",
-                "updated": "2016-06-14T13:12:50+02:00",
-                "associations": [],
-                "metadata": {
-                    "workflow_status": "working_copy"
-                }
-            }
-        ]
-    }
-}
-JSON;
-
-        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**

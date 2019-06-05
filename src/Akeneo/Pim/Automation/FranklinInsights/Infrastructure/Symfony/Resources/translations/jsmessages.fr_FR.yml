@@ -1,7 +1,3 @@
-pim_title:
-  akeneo_franklin_insights_connection_edit: 'Connexion à Franklin Insights'
-  akeneo_franklin_insights_identifiers_mapping_edit: 'Paramètres de Franklin Insights'
-  akeneo_franklin_insights_attributes_mapping_edit: 'Paramètres de Franklin Insights'
 pim_menu:
   item:
     franklin: Franklin Insights
@@ -128,6 +124,7 @@ akeneo_franklin_insights:
         activated: 'Activé'
         activate: 'Activer'
   settings:
+    page_title: 'Paramètres de Franklin Insights'
     attributes_mapping_title: 'Mapping des attributs'
     identifiers_mapping_title: 'Mapping des identifiants'
     module:
@@ -182,3 +179,6 @@ pim_enrich.entity.attribute:
     save:
       title: 'Attention !'
       warning: '{1}Supprimer un attribut peut impacter 1 abonnement Franklin. Êtes vous sûr(e) ?|]1,+Inf[Supprimer un attribut peut impacter {{ count }} abonnements Franklin. Êtes vous sûr(e) ?'
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights

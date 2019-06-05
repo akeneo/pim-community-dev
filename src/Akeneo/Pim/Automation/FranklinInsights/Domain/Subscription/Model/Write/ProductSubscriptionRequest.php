@@ -13,64 +13,63 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 
 /**
- * Holds a ProductInterface, and provides its values given a defined mapping.
+ * Holds the information needed to subscribe a product.
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 final class ProductSubscriptionRequest
 {
-    /** @var ProductInterface */
-    private $product;
+    /** @var ProductId */
+    private $productId;
 
-    /**
-     * @param ProductInterface $product
-     */
-    public function __construct(ProductInterface $product)
-    {
-        $this->product = $product;
+    /** @var Family */
+    private $family;
+
+    /** @var ProductIdentifierValues */
+    private $productIdentifierValues;
+
+    /** @var string */
+    private $productIdentifier;
+
+    public function __construct(
+        ProductId $productId,
+        Family $family,
+        ProductIdentifierValues $productIdentifierValues,
+        string $productIdentifier
+    ) {
+        $this->productId = $productId;
+        $this->family = $family;
+        $this->productIdentifierValues = $productIdentifierValues;
+        $this->productIdentifier = $productIdentifier;
     }
 
-    /**
-     * @return ProductInterface
-     */
-    public function getProduct(): ProductInterface
+    public function getProductId(): ProductId
     {
-        return $this->product;
+        return $this->productId;
     }
 
-    /**
-     * Returns the product values corresponding to the provided mapping.
-     *
-     * @param IdentifiersMapping $mapping
-     *
-     * @return array
-     */
-    public function getMappedValues(IdentifiersMapping $mapping): array
+    public function getProductIdentifier(): string
     {
-        $mapped = [];
-        foreach ($mapping as $franklinCode => $identifierMapping) {
-            if (!$identifierMapping instanceof IdentifierMapping) {
-                continue;
-            }
+        return $this->productIdentifier;
+    }
 
-            $mappedAttributeCode = $identifierMapping->getAttributeCode();
-            if (!$mappedAttributeCode instanceof AttributeCode) {
-                continue;
-            }
+    public function getFamily(): Family
+    {
+        return $this->family;
+    }
 
-            $value = $this->product->getValue((string) $mappedAttributeCode);
-            if (null !== $value && $value->hasData()) {
-                $mapped[$franklinCode] = (string) $value;
-            }
-        }
+    public function getMappedValues(): array
+    {
+        $mappedValues = array_filter($this->productIdentifierValues->toArray(), function ($value) {
+            return null !== $value;
+        });
 
-        return $this->doNotKeepMpnOrBrandAlone($mapped);
+        return $this->doNotKeepMpnOrBrandAlone($mappedValues);
     }
 
     /**

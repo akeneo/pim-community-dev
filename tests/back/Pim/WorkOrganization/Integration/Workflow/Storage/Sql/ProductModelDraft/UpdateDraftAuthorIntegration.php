@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Storage\Sql\ProductModelDraft;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -20,7 +20,7 @@ class UpdateDraftAuthorIntegration extends TestCase
         $draft = $this
             ->get('pimee_workflow.factory.product_model_draft')
             ->createEntityWithValueDraft($productModel, 'admin');
-        $draft->setValues(new ValueCollection());
+        $draft->setValues(new WriteValueCollection());
         $this->get('pimee_workflow.saver.product_model_draft')->save($draft);
 
         $this->get('pimee_workflow.sql.product_model.update_draft_author')->execute('admin', 'new_admin');

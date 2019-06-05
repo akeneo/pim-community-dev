@@ -59,6 +59,11 @@ final class InMemoryAttributeRepository implements AttributeRepositoryInterface
         $this->attributeRepository->save($attribute);
     }
 
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        return $this->attributeRepository->findBy($criteria, $orderBy, $limit, $offset);
+    }
+
     /**
      * @param $attribute
      *

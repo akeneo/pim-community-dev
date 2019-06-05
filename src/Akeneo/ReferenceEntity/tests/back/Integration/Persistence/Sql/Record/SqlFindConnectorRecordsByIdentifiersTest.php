@@ -115,7 +115,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             );
         }
 
-        $connectorRecordsFound = ($this->findConnectorRecordsQuery)($identifiers, $recordQuery);
+        $connectorRecordsFound = $this->findConnectorRecordsQuery->find($identifiers, $recordQuery);
 
         $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
     }
@@ -159,7 +159,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             );
         }
 
-        $connectorRecordsFound = ($this->findConnectorRecordsQuery)($identifiers, $recordQuery);
+        $connectorRecordsFound = $this->findConnectorRecordsQuery->find($identifiers, $recordQuery);
 
         $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
     }
@@ -198,7 +198,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             );
         }
 
-        $connectorRecordsFound = ($this->findConnectorRecordsQuery)($identifiers, $recordQuery);
+        $connectorRecordsFound = $this->findConnectorRecordsQuery->find($identifiers, $recordQuery);
 
         $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
     }
@@ -219,7 +219,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             []
         );
 
-        $recordsFound = ($this->findConnectorRecordsQuery)(['foo', 'bar'], $recordQuery);
+        $recordsFound = $this->findConnectorRecordsQuery->find(['foo', 'bar'], $recordQuery);
         $this->assertSame([], $recordsFound);
     }
 

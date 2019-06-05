@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -31,9 +32,13 @@ final class AttributeOptions implements \IteratorAggregate
         $this->validateOptions($options);
 
         foreach ($options as $franklinOptionId => $option) {
+            $attributeOptionCode = null;
+            if (! empty($option['catalogAttributeOptionCode'])) {
+                $attributeOptionCode = new AttributeOptionCode($option['catalogAttributeOptionCode']);
+            }
             $this->options[$franklinOptionId] = new AttributeOptionMappingRequest(
                 $option['franklinAttributeOptionCode']['label'],
-                $option['catalogAttributeOptionCode'],
+                $attributeOptionCode,
                 (int) $option['status']
             );
         }

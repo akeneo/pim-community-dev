@@ -1,7 +1,7 @@
 import CommonRows from 'akeneoreferenceentity/application/component/record/index/row/common';
 import ActionViews from 'akeneoreferenceentity/application/component/record/index/row/action';
 import DetailsView from 'akeneoreferenceentity/application/component/record/index/row/detail';
-import NoResult from 'akeneoreferenceentity/application/component/record/index/no-result';
+import NoResult from 'akeneoreferenceentity/application/component/app/no-result';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
@@ -204,7 +204,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
         <div className="AknFilterBox AknFilterBox--search">
           <div className="AknFilterBox-list filter-box">
             <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
-            <ItemsCounter matchesCount={grid.matchesCount} />
+            <ItemsCounter count={grid.matchesCount} />
             <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
               {Object.keys(filterViews).map((attributeCode: NormalizedAttributeIdentifier) => {
                 const View = filterViews[attributeCode].view;

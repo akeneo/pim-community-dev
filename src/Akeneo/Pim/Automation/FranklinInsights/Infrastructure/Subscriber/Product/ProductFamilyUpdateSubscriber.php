@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductFamilyIdQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -93,7 +94,7 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $originalFamilyId = $this->selectProductFamilyIdQuery->execute($product->getId());
+        $originalFamilyId = $this->selectProductFamilyIdQuery->execute(new ProductId($product->getId()));
         if (null === $originalFamilyId) {
             return;
         }
@@ -118,24 +119,26 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
         if (!$product instanceof ProductInterface) {
             return;
         }
+
+        $productId = new ProductId($product->getId());
         if (in_array($product->getId(), $this->productsToUnsubscribe, true)) {
-            $this->unsubscribeProduct($product->getId());
+            $this->unsubscribeProduct($productId);
 
             return;
         }
         if (in_array($product->getId(), $this->productsToUpdateSubscriptionFamily, true)) {
             // TODO: The family code should be retrieved from a FranklinInsights Product read model
             $familyCode = new FamilyCode($product->getFamily()->getCode());
-            $this->updateSubscriptionFamily($product->getId(), $familyCode);
+            $this->updateSubscriptionFamily($productId, $familyCode);
         }
     }
 
     /**
      * Call product unsubscription.
      *
-     * @param int $productId
+     * @param ProductId $productId
      */
-    private function unsubscribeProduct(int $productId): void
+    private function unsubscribeProduct(ProductId $productId): void
     {
         try {
             $command = new UnsubscribeProductCommand($productId);
@@ -147,11 +150,7 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param int        $productId
-     * @param FamilyCode $familyCode
-     */
-    private function updateSubscriptionFamily(int $productId, FamilyCode $familyCode): void
+    private function updateSubscriptionFamily(ProductId $productId, FamilyCode $familyCode): void
     {
         try {
             $command = new UpdateSubscriptionFamilyCommand($productId, $familyCode);

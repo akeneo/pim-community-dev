@@ -63,6 +63,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface',
 
         // TODO: permission
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
@@ -115,9 +117,10 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
@@ -150,6 +153,9 @@ $rules = [
         'Doctrine\Common',
         'Symfony\Component',
         'Akeneo\Tool\Component',
+
+        // TODO: imports should be decoupled
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
@@ -193,8 +199,8 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData',

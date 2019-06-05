@@ -70,15 +70,12 @@ final class ListRecordContext implements Context
     }
 
     /**
-     * @Given the records :recordCodes
-    */
-    public function theRecords($recordCodes)
+     * @Given /^a list of records$/
+     */
+    public function aListOfRecords()
     {
         $this->loadReferenceEntity();
-
-        array_map(function (string $recordCode) {
-            $this->loadRecord($recordCode);
-        }, explode(',', $recordCodes));
+        $this->loadRecord();
     }
 
     /**
@@ -181,12 +178,6 @@ final class ListRecordContext implements Context
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'full_text',
-                    'operator' => '=',
-                    'value' => '',
-                    'context' => []
-                ],
-                [
                     'field' => 'reference_entity',
                     'operator' => '=',
                     'value' => 'designer',
@@ -198,12 +189,15 @@ final class ListRecordContext implements Context
         $this->result = ($this->searchRecord)($query);
     }
 
-    private function loadRecord(string $recordCode): void
+    private function loadRecord(): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
         $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
-        $identifier = RecordIdentifier::fromString($recordCode . '_fingerprint');
+
+        // STARCK
+        $recordCode = RecordCode::fromString('starck');
+        $identifier = RecordIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
@@ -211,15 +205,52 @@ final class ListRecordContext implements Context
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString(ucfirst((string) $recordCode))
         );
-        $recordCode = RecordCode::fromString($recordCode);
-        $record = Record::create(
+
+        $recordStarck = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
             ValueCollection::fromValues([$labelValue])
         );
-        $this->recordRepository->create($record);
-        $this->findIdentifiersForQuery->add($record);
+        $this->recordRepository->create($recordStarck);
+
+        // COCO
+        $recordCode = RecordCode::fromString('coco');
+        $identifier = RecordIdentifier::fromString('designer_coco_34aee120-fa95-4ff2-8439-bea116120e34');
+
+        $labelValue = Value::create(
+            $attributeAsLabel->getIdentifier(),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString(ucfirst((string) $recordCode))
+        );
+
+        $recordCoco = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            ValueCollection::fromValues([$labelValue])
+        );
+        $this->recordRepository->create($recordCoco);
+
+        // DYSON
+        $recordCode = RecordCode::fromString('dyson');
+        $identifier = RecordIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
+
+        $labelValue = Value::create(
+            $attributeAsLabel->getIdentifier(),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString(ucfirst((string) $recordCode))
+        );
+
+        $recordDyson = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            ValueCollection::fromValues([$labelValue])
+        );
+        $this->recordRepository->create($recordDyson);
     }
 
     private function loadReferenceEntity(): void

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Integration\Persistence\Query\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -40,7 +41,7 @@ class SelectProductFamilyIdQueryIntegration extends TestCase
     {
         $product = $this->createProductWithFamily();
 
-        $familyId = $this->getQueryService()->execute($product->getId());
+        $familyId = $this->getQueryService()->execute(new ProductId($product->getId()));
 
         Assert::eq($this->familyId, $familyId);
     }
@@ -49,7 +50,7 @@ class SelectProductFamilyIdQueryIntegration extends TestCase
     {
         $product = $this->createProductWithoutFamily();
 
-        $familyId = $this->getQueryService()->execute($product->getId());
+        $familyId = $this->getQueryService()->execute(new ProductId($product->getId()));
 
         Assert::null($familyId);
     }

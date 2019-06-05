@@ -41,9 +41,9 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $activatedLocales = ($this->activatedLocalesQuery)();
+        $activatedLocales = $this->activatedLocalesQuery->findAll();
         $key = (string) $referenceEntityIdentifier;
 
         if (!isset($this->results[$key])) {

@@ -18,5 +18,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 
 interface FindReferenceEntityAttributeAsLabelInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference;
 }

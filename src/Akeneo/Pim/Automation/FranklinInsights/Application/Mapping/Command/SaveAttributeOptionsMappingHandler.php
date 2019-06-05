@@ -68,7 +68,7 @@ class SaveAttributeOptionsMappingHandler
 
         $attributeOptionsMapping = new AttributeOptionsMapping($command->attributeCode());
         foreach ($command->attributeOptions() as $franklinOptionId => $attributeOption) {
-            $optionCode = in_array($attributeOption->getPimAttributeOptionCode(), $optionCodes, true)
+            $optionCode = in_array((string) $attributeOption->getPimAttributeOptionCode(), $optionCodes, true)
                 ? $attributeOption->getPimAttributeOptionCode() : null;
 
             $attributeOptionsMapping->addAttributeOption(new AttributeOption(

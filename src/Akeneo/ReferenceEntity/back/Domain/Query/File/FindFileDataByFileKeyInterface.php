@@ -27,5 +27,5 @@ namespace Akeneo\ReferenceEntity\Domain\Query\File;
  */
 interface FindFileDataByFileKeyInterface
 {
-    public function __invoke(string $fileKey): ?array;
+    public function find(string $fileKey): ?array;
 }

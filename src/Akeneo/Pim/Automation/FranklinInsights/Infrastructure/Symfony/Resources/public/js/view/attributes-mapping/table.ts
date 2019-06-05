@@ -27,6 +27,7 @@ const template = require('akeneo/franklin-insights/template/settings/attributes-
 const modalTemplate = require('pim/template/common/modal-centered');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
+const Property = require('pim/common/property');
 
 interface Config {
   labels: {
@@ -197,7 +198,7 @@ class AttributeMapping extends BaseView {
     );
     const attributeSelector = new SimpleSelectAttributeWithWarning({
       config: {
-        fieldName: 'mapping.' + franklinAttributeCode + '.attribute',
+        fieldName: Property.propertyPath(['mapping', franklinAttributeCode, 'attribute']),
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
         types: AttributeMapping.ALLOWED_CATALOG_TYPES,
@@ -209,6 +210,9 @@ class AttributeMapping extends BaseView {
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
       attributeSelector.render();
+    });
+
+    attributeSelector.on('post_render', () => {
       if (isAttributeOptionsButtonVisible) {
         attributeSelector.$el.find('.icons-container').append(
           $('<div>')
@@ -217,6 +221,7 @@ class AttributeMapping extends BaseView {
             .attr('title', __('pim_common.edit')),
         );
       }
+
       $dom.prepend(attributeSelector.$el);
     });
   }
@@ -243,7 +248,7 @@ class AttributeMapping extends BaseView {
     const franklinAttributeLabel = $line.data('franklin-attribute') as string;
     const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
     const catalogAttributeCode =
-        $line.find('input[name="mapping.' + franklinAttributeCode + '.attribute"]').val() as string;
+        $line.find('input[name="' + Property.propertyPath(['mapping', franklinAttributeCode, 'attribute']) + '"]').val() as string;
     const familyCode = AttributeMapping.getFamilyCode();
 
     $.when(
@@ -260,33 +265,47 @@ class AttributeMapping extends BaseView {
       );
 
       const formContent = form.getExtension('content') as AttributeOptionsMapping;
-      formContent
-        .setFamilyCode(familyCode)
-        .setCatalogAttributeCode(catalogAttributeCode)
-        .setFranklinAttributeCode(franklinAttributeCode);
+      formContent.initializeMapping(familyCode, catalogAttributeCode, franklinAttributeCode).then(() => {
+        this.attributeOptionsMappingModal = new (Backbone as any).BootstrapModal({
+          modalOptions: {
+            backdrop: 'static',
+            keyboard: false,
+          },
+          okCloses: false,
+          title: __('akeneo_franklin_insights.entity.attribute_options_mapping.module.edit.title', {
+            familyLabel,
+            franklinAttributeLabel,
+          }),
+          content: form,
+          template: this.modalTemplate,
+          innerClassName: 'AknFullPage--full AknFullPage--fixedWidth',
+          okText: '',
+        });
+        this.attributeOptionsMappingModal.on('cancel', this.closeOptionsMappingAfterCancel.bind(this));
+        this.attributeOptionsMappingModal.open();
+        this.attributeOptionsMappingForm = form;
 
-      this.attributeOptionsMappingModal = new (Backbone as any).BootstrapModal({
-        modalOptions: {
-          backdrop: 'static',
-          keyboard: false,
-        },
-        okCloses: false,
-        title: __('akeneo_franklin_insights.entity.attribute_options_mapping.module.edit.title', {
-          familyLabel,
-          franklinAttributeLabel,
-        }),
-        content: form,
-        template: this.modalTemplate,
-        innerClassName: 'AknFullPage--full AknFullPage--fixedWidth',
-        okText: '',
+        this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
       });
-      this.attributeOptionsMappingModal.open();
-      this.attributeOptionsMappingForm = form;
-
-      this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
-
-      this.attributeOptionsMappingModal.on('cancel', this.closeAttributeOptionsMappingModal.bind(this));
     });
+  }
+
+  /**
+   * Prevents closing if there are unsaved changes
+   */
+  private closeOptionsMappingAfterCancel(): void {
+    let canLeaveEvent = {canLeave: true};
+
+    if (null !== this.attributeOptionsMappingForm) {
+      this.attributeOptionsMappingForm.trigger('pim_enrich:form:can-leave', canLeaveEvent);
+    }
+    this.attributeOptionsMappingModal._preventClose = false;
+    if (!canLeaveEvent.canLeave) {
+      this.attributeOptionsMappingModal._preventClose = true;
+      return;
+    }
+
+    this.closeAttributeOptionsMappingModal();
   }
 
   /**

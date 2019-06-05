@@ -1,0 +1,17 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "rules": {
+    "interface-name": [true, "never-prefix"],
+    "no-var-requires": false,
+    "object-literal-sort-keys": [false],
+    "prefer-for-of": false,
+    "quotemark": [true, "single"],
+    "radix": false,
+    "switch-default": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
+    "max-line-length": false
+  }
+}

@@ -69,7 +69,7 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
 
     private function validateCommand(EditRecordCollectionValueCommand $command): void
     {
-        $foundRecords = ($this->existingRecordCodes)(
+        $foundRecords = $this->existingRecordCodes->find(
             ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
             $command->recordCodes
         );

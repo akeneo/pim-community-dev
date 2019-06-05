@@ -51,6 +51,6 @@ class OptionCollectionDataHydrator implements DataHydratorInterface
             $optionCollectionAttribute->normalize()['options']
         );
 
-        return array_intersect($optionCodesFromDatabase, $optionCodesFromModel);
+        return array_values(array_intersect($optionCodesFromDatabase, $optionCodesFromModel));
     }
 }

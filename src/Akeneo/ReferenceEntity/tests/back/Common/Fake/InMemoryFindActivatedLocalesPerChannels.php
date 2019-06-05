@@ -23,7 +23,7 @@ class InMemoryFindActivatedLocalesPerChannels implements FindActivatedLocalesPer
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): array
+    public function findAll(): array
     {
         return $this->activatedLocalesPerChannels;
     }

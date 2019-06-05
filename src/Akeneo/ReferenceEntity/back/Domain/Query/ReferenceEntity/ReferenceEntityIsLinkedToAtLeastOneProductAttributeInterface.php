@@ -23,5 +23,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $identifier): bool;
+    public function isLinked(ReferenceEntityIdentifier $identifier): bool;
 }

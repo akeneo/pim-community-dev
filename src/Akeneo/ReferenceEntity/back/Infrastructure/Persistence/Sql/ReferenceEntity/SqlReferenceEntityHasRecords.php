@@ -33,7 +33,7 @@ class SqlReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $identifier): bool
+    public function hasRecords(ReferenceEntityIdentifier $identifier): bool
     {
         $statement = $this->executeQuery($identifier);
 

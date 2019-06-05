@@ -21,12 +21,7 @@ class ProductNotSubscribedException extends \Exception
     /** @var string */
     private const CONSTRAINT_KEY = 'akeneo_franklin_insights.entity.product_subscription.constraint.%s';
 
-    /**
-     * @param int $productId
-     *
-     * @return ProductNotSubscribedException
-     */
-    public static function notSubscribed(int $productId): ProductNotSubscribedException
+    public static function notSubscribed(): ProductNotSubscribedException
     {
         return new static(sprintf(static::CONSTRAINT_KEY, 'not_subscribed'));
     }

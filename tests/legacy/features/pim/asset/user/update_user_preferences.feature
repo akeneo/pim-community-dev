@@ -10,12 +10,12 @@ Feature: Update user preferences
 
   Scenario: Successfully disable/enable email notifications
     Given I edit the "Julia" user
-    And I visit the "Groups and roles" tab
+    And I visit the "Additional" tab
     And I check the "Email notifications" switch
     And I save the user
     Then the user "Julia" should have email notifications enabled
     Then I edit the "Julia" user
-    And I visit the "Groups and roles" tab
+    And I visit the "Additional" tab
     And I uncheck the "Email notifications" switch
     And I save the user
     Then the user "Julia" should have email notifications disabled

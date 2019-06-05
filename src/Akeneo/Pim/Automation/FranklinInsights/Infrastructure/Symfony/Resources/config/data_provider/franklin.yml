@@ -2,7 +2,6 @@ services:
     akeneo.pim.automation.franklin_insights.data_provider.product_subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\SubscriptionProvider'
         arguments:
-            - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
             - '@akeneo.pim.automation.franklin_insights.franklin_client.subscription'
             - '@akeneo.pim.automation.franklin_insights.repository.configuration'
             - '@akeneo.pim.automation.franklin_insights.repository.family'

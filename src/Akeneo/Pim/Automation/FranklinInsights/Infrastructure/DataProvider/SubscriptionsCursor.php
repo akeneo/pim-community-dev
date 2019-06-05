@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
@@ -57,7 +58,7 @@ class SubscriptionsCursor implements \Iterator
         );
 
         return new ProductSubscriptionResponse(
-            $subscription->getTrackerId(),
+            new ProductId($subscription->getTrackerId()),
             new SubscriptionId($subscription->getSubscriptionId()),
             $suggestedValues,
             $subscription->isMappingMissing(),

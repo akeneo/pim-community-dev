@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Asset;
 
+use Akeneo\Asset\Component\FileStorage as AssetFileStorage;
+
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
@@ -46,7 +48,7 @@ class DownloadAssetVariationFileIntegration extends AbstractAssetTestCase
         $this->assertSame('image/png', $response->headers->get('content-type'));
         $this->assertEquals(
             $contentFile,
-            file_get_contents($this->getVariationFile('non_localizable_asset', 'ecommerce', null))
+            $this->getVariationFileContent('non_localizable_asset', 'ecommerce', null)
         );
     }
 
@@ -72,7 +74,7 @@ class DownloadAssetVariationFileIntegration extends AbstractAssetTestCase
         $this->assertSame('image/png', $response->headers->get('content-type'));
         $this->assertEquals(
             $contentFile,
-            file_get_contents($this->getVariationFile('localizable_asset', 'ecommerce', 'en_US'))
+            $this->getVariationFileContent('localizable_asset', 'ecommerce', 'en_US')
         );
     }
 
@@ -266,17 +268,11 @@ JSON;
     }
 
     /**
-     * Returns the real path to an asset variation file for a given channel and
+     * Returns the content of an asset variation file for a given channel and
      * locale (locale is provided only if the asset is localizable, must be null
      * otherwise).
-     *
-     * @param string      $assetCode
-     * @param string      $channelCode
-     * @param null|string $localeCode
-     *
-     * @return string
      */
-    private function getVariationFile(string $assetCode, string $channelCode, ?string $localeCode): string
+    private function getVariationFileContent(string $assetCode, string $channelCode, ?string $localeCode): string
     {
         $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($assetCode);
         $this->assertNotNull($asset);
@@ -296,12 +292,9 @@ JSON;
         $fileInfo = $variation->getFileInfo();
         $this->assertNotNull($variation);
 
-        $variationFileRealPath = sprintf(
-            '%s/%s',
-            $this->getParameter('asset_storage_dir'),
-            $fileInfo->getKey()
-        );
+        $filesystem = $this->get('akeneo_file_storage.file_storage.filesystem_provider')->getFilesystem(AssetFileStorage::ASSET_STORAGE_ALIAS);
+        $content = $filesystem->read($fileInfo->getKey());
 
-        return realpath($variationFileRealPath);
+        return $content;
     }
 }

@@ -55,11 +55,30 @@ const ActionRow = memo(
 
     return (
       <tr
-        className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${placeholder ? 'AknLoadingPlaceHolder' : ''}`}
+        className={`AknGrid-bodyRow ${placeholder ? 'AknLoadingPlaceHolder' : ''}`}
         data-identifier={record.identifier}
       >
         <td className="AknGrid-bodyCell AknGrid-bodyCell--action">
           <div className="AknButtonList AknButtonList--right AknButtonList--expanded">
+            <a
+              tabIndex={0}
+              href={path}
+              onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
+                event.preventDefault();
+                if (Key.Space === event.key) onRedirectToRecord(record);
+
+                return false;
+              }}
+              className={accesButtonClassName}
+              data-identifier={record.identifier}
+              onClick={event => {
+                event.preventDefault();
+
+                onRedirectToRecord(record);
+
+                return false;
+              }}
+            />
             {rights.record.delete ? (
               <span
                 tabIndex={0}
@@ -81,25 +100,6 @@ const ActionRow = memo(
                 }}
               />
             ) : null}
-            <a
-              tabIndex={0}
-              href={path}
-              onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
-                event.preventDefault();
-                if (Key.Space === event.key) onRedirectToRecord(record);
-
-                return false;
-              }}
-              className={accesButtonClassName}
-              data-identifier={record.identifier}
-              onClick={event => {
-                event.preventDefault();
-
-                onRedirectToRecord(record);
-
-                return false;
-              }}
-            />
           </div>
         </td>
       </tr>

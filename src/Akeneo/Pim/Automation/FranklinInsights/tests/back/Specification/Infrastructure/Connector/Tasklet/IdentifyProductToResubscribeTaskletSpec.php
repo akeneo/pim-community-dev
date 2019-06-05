@@ -6,10 +6,12 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectNonNullRequestedIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\IdentifyProductToResubscribeTasklet;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Product;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -74,16 +76,20 @@ class IdentifyProductToResubscribeTaskletSpec extends ObjectBehavior
         ]);
         $selectNonNullRequestedIdentifiersQuery->execute(['asin'], 56, 100)->willReturn([]);
 
+        $productId42 = new ProductId(42);
+        $productId44 = new ProductId(44);
+        $productId56 = new ProductId(56);
+
         $newIdentifierValuesCollection = new ProductIdentifierValuesCollection();
-        $newIdentifierValuesCollection->add(new ProductIdentifierValues(42, ['asin' => 'TYU654']));
-        $newIdentifierValuesCollection->add(new ProductIdentifierValues(44, ['asin' => 'DEF456']));
-        $selectProductIdentifierValuesQuery->execute([42, 44])->willReturn($newIdentifierValuesCollection);
+        $newIdentifierValuesCollection->add(new ProductIdentifierValues($productId42, ['asin' => 'TYU654']));
+        $newIdentifierValuesCollection->add(new ProductIdentifierValues($productId44, ['asin' => 'DEF456']));
+        $selectProductIdentifierValuesQuery->execute([$productId42, $productId44])->willReturn($newIdentifierValuesCollection);
 
         $nextIdentifierValuesCollection = new ProductIdentifierValuesCollection();
-        $nextIdentifierValuesCollection->add(new ProductIdentifierValues(56, []));
-        $selectProductIdentifierValuesQuery->execute([56])->willReturn($nextIdentifierValuesCollection);
+        $nextIdentifierValuesCollection->add(new ProductIdentifierValues($productId56, []));
+        $selectProductIdentifierValuesQuery->execute([$productId56])->willReturn($nextIdentifierValuesCollection);
 
-        $resubscribeProducts->process([42, 56])->shouldBeCalled();
+        $resubscribeProducts->process([$productId42, $productId56])->shouldBeCalled();
 
         $this->execute();
     }

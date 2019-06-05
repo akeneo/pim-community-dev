@@ -14,28 +14,22 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
 class UnsubscribeProductCommandSpec extends ObjectBehavior
 {
     public function it_is_an_unsubscribe_product_command(): void
     {
-        $this->beConstructedWith(42);
+        $this->beConstructedWith(new ProductId(42));
         $this->shouldHaveType(UnsubscribeProductCommand::class);
     }
 
     public function it_exposes_product_id(): void
     {
-        $this->beConstructedWith(42);
+        $productId = new ProductId(42);
+        $this->beConstructedWith($productId);
 
-        $this->getProductId()->shouldReturn(42);
-    }
-
-    public function it_throws_an_exception_if_product_id_is_negative(): void
-    {
-        $this->beConstructedWith(-42);
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Product id should be a positive integer'))
-            ->duringInstantiation();
+        $this->getProductId()->shouldReturn($productId);
     }
 }

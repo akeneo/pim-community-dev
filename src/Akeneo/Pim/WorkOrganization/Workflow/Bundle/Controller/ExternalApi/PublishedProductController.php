@@ -36,6 +36,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -376,6 +377,10 @@ class PublishedProductController
         $searchParameters = [];
 
         if ($request->query->has('search')) {
+            $search = json_decode($request->query->get('search'), true);
+            if (!is_array($search)) {
+                throw new BadRequestHttpException('Search query parameter should be valid JSON.');
+            }
             $searchString = $request->query->get('search', '');
             $searchParameters = $this->queryParametersChecker->checkCriterionParameters($searchString);
 

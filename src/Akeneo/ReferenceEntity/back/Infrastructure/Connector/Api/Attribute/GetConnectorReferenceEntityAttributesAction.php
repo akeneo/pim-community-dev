@@ -58,7 +58,7 @@ class GetConnectorReferenceEntityAttributesAction
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
-        $attributes = ($this->findConnectorReferenceEntityAttributes)($referenceEntityIdentifier);
+        $attributes = $this->findConnectorReferenceEntityAttributes->find($referenceEntityIdentifier);
 
         $normalizedAttributes = [];
 

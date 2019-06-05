@@ -32,7 +32,7 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
     {
         if (!isset($this->cachedResult[$referenceEntityIdentifier->normalize()])) {
             $this->cachedResult[$referenceEntityIdentifier->normalize()] = $this->fetch($referenceEntityIdentifier);

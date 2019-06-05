@@ -23,5 +23,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface GenerateEmptyValuesInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $identifier): array;
+    public function generate(ReferenceEntityIdentifier $identifier): array;
 }

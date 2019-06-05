@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
@@ -55,6 +56,10 @@ WHERE p.id IN (:product_ids)
 GROUP BY p.id;
 SQL;
 
+        $productIds = array_map(function (ProductId $productId) {
+            return $productId->toInt();
+        }, $productIds);
+
         $statement = $this->connection->executeQuery(
             $sql,
             ['product_ids' => $productIds],
@@ -65,7 +70,7 @@ SQL;
         foreach ($result as $row) {
             $identifierValuesCollection->add(
                 new ProductIdentifierValues(
-                    (int) $row['productId'],
+                    new ProductId((int) $row['productId']),
                     json_decode($row['mapped_identifier_values'], true)
                 )
             );

@@ -17,9 +17,11 @@ use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -28,6 +30,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
@@ -153,6 +156,14 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_error_if_we_send_an_invalid_file_value()
     {
         $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_image_value.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_error_if_we_send_a_number_out_of_range()
+    {
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_number_out_of_range.json');
     }
 
     /**
@@ -336,7 +347,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $repository->create($ikeaRecord);
 
         // record attribute
-        $recordAttribute = RecordAttribute::create(
+        $numberAttribute = RecordAttribute::create(
             AttributeIdentifier::create('designer', 'linked_brand', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('linked_brand'),
@@ -348,7 +359,25 @@ class EditActionTest extends ControllerIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand')
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->create($recordAttribute);
+            ->create($numberAttribute);
+
+        // record attribute
+        $numberAttribute = NumberAttribute::create(
+            AttributeIdentifier::create('designer', 'age', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('age'),
+            LabelCollection::fromArray(['en_US' => 'Linked brand']),
+            AttributeOrder::fromInteger(6),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeDecimalsAllowed::fromBoolean(false),
+            AttributeLimit::fromString('-10'),
+            AttributeLimit::fromString('10')
+        );
+        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->create($numberAttribute);
+
 
         $parisRecord = Record::create(
             RecordIdentifier::create('city', 'paris', 'fingerprint'),

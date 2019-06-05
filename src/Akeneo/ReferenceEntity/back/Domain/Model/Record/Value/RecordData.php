@@ -27,7 +27,7 @@ class RecordData implements ValueDataInterface
 
     private function __construct(string $recordCode)
     {
-        Assert::notEmpty($recordCode, 'Record code should be a non empty string');
+        Assert::stringNotEmpty($recordCode, 'Record code should be a non empty string');
 
         $this->recordCode = $recordCode;
     }

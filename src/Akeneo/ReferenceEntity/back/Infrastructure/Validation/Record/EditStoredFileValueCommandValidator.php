@@ -87,7 +87,7 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
             );
         }
 
-        if (is_string($command->filePath) && '' !== $command->filePath && !($this->fileExists)($command->filePath)) {
+        if (is_string($command->filePath) && '' !== $command->filePath && !$this->fileExists->exists($command->filePath)) {
             $this->context->buildViolation(EditStoredFileValueCommandConstraint::FILE_SHOULD_EXIST)
                 ->atPath((string) $attribute->getCode())
                 ->setParameter('%file_path%', $command->filePath)

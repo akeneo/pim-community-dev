@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Cursor\PendingSubscriptionCursor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
@@ -55,9 +56,9 @@ class PendingSubscriptionReaderSpec extends ObjectBehavior
 
     public function it_iterates_on_the_pending_subscriptions($subscriptionRepository): void
     {
-        $subscription1 = new ProductSubscription(42, new SubscriptionId('subscription-42'), ['asin' => 'asin-42']);
-        $subscription2 = new ProductSubscription(43, new SubscriptionId('subscription-43'), ['upc' => 'upc-43']);
-        $subscription3 = new ProductSubscription(44, new SubscriptionId('subscription-44'), ['asin' => 'asin-44']);
+        $subscription1 = new ProductSubscription(new ProductId(42), new SubscriptionId('subscription-42'), ['asin' => 'asin-42']);
+        $subscription2 = new ProductSubscription(new ProductId(43), new SubscriptionId('subscription-43'), ['upc' => 'upc-43']);
+        $subscription3 = new ProductSubscription(new ProductId(44), new SubscriptionId('subscription-44'), ['asin' => 'asin-44']);
 
         $subscriptionRepository->findPendingSubscriptions(2, null)->willReturn([$subscription1, $subscription2]);
         $subscriptionRepository->findPendingSubscriptions(2, new SubscriptionId('subscription-43'))->willReturn([$subscription3]);
@@ -71,8 +72,8 @@ class PendingSubscriptionReaderSpec extends ObjectBehavior
 
     public function it_increments_the_reading_count($subscriptionRepository, $stepExecution): void
     {
-        $subscription1 = new ProductSubscription(42, new SubscriptionId('subscription-42'), ['asin' => 'asin-42']);
-        $subscription2 = new ProductSubscription(43, new SubscriptionId('subscription-43'), ['upc' => 'upc-43']);
+        $subscription1 = new ProductSubscription(new ProductId(42), new SubscriptionId('subscription-42'), ['asin' => 'asin-42']);
+        $subscription2 = new ProductSubscription(new ProductId(43), new SubscriptionId('subscription-43'), ['upc' => 'upc-43']);
 
         $subscriptionRepository->findPendingSubscriptions(2, null)->willReturn([$subscription1, $subscription2]);
         $subscriptionRepository->findPendingSubscriptions(2, new SubscriptionId('subscription-43'))->willReturn([]);

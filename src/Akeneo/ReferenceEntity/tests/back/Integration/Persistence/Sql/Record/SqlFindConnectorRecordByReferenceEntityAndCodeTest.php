@@ -135,7 +135,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ]
         );
 
-        $recordFound = ($this->findConnectorRecordQuery)(ReferenceEntityIdentifier::fromString('designer'), $record->getCode());
+        $recordFound = $this->findConnectorRecordQuery->find(ReferenceEntityIdentifier::fromString('designer'), $record->getCode());
 
         $this->assertSameRecords($expectedRecord, $recordFound);
     }
@@ -148,7 +148,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('Foo');
 
-        $recordFound = ($this->findConnectorRecordQuery)($referenceEntityIdentifier, $recordCode);
+        $recordFound = $this->findConnectorRecordQuery->find($referenceEntityIdentifier, $recordCode);
 
         $this->assertNull($recordFound);
     }
@@ -373,7 +373,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
         $currentRecord = $currentRecord->normalize();
         $currentRecord['values'] = $this->sortRecordValues($currentRecord['values']);
 
-        $this->assertSame($expectedRecord, $currentRecord);
+        $this->assertEquals($expectedRecord, $currentRecord);
     }
 
     private function sortRecordValues(array $recordValues): array

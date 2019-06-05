@@ -1,0 +1,52 @@
+extensions:
+    # Save Button
+    pim-user-edit-form-save:
+        module: pim/form/common/save-form
+        parent: pim-user-edit-form
+        targetZone: buttons
+        position: 0
+        config:
+            updateSuccessMessage: pim_user_management.entity.user.flash.update.success
+            updateFailureMessage: pim_user_management.entity.user.flash.update.fail
+            notReadyMessage: pim_user_management.entity.user.flash.update.fields_not_ready
+            url: pim_user_user_rest_post
+            excludedProperties: ['display_proposals_to_review_notification', 'display_proposals_state_notifications', 'last_login', 'login_count', 'password']
+    
+    # Notifications tab
+    pimee-user-edit-form-notifications-tab:
+        module: pim/common/tab
+        parent: pim-user-edit-form-form-tabs
+        targetZone: container
+        position: 60
+        config:
+            label: pim_user_management.entity.user.module.update.notifications
+    
+    pimee-user-edit-form-notifications-tab-content:
+        module: pim/common/simple-view
+        parent: pimee-user-edit-form-notifications-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+    
+    pimee-user-edit-form-proposals-to-review-notification:
+        module: pimee/user/fields/visible-boolean
+        parent: pimee-user-edit-form-notifications-tab-content
+        targetZone: content
+        position: 10
+        config:
+            fieldName: properties.proposals_to_review_notification
+            label: pim_user_management.entity.user.properties.proposals_to_review_notification
+            visibilityField: display_proposals_to_review_notification
+
+    pimee-user-edit-form-proposals-state-notifications:
+        module: pimee/user/fields/visible-boolean
+        parent: pimee-user-edit-form-notifications-tab-content
+        targetZone: content
+        position: 20
+        config:
+            fieldName: properties.proposals_state_notifications
+            label: pim_user_management.entity.user.properties.proposals_state_notifications
+            visibilityField: display_proposals_state_notifications

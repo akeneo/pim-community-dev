@@ -28,9 +28,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
                 ],
                 'a_number_float' => [['data' => '12.05', 'locale' => null, 'scope' => null]],
                 'a_localizable_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'de_DE', 'scope' => null]
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'de_DE', 'scope' => null]
                 ],
                 'a_metric_without_decimal_negative' => [
                     ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
@@ -209,7 +209,28 @@ abstract class AbstractProductTestCase extends ApiTestCase
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
+    "associations": {
+        "PACK": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "SUBSTITUTION": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "UPSELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "X_SELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        }
+    },
     "metadata": {
         "workflow_status": "working_copy"
     }
@@ -232,7 +253,28 @@ JSON;
     "values": {},
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
+    "associations": {
+        "PACK": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "SUBSTITUTION": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "UPSELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "X_SELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        }
+    },
     "metadata": {
         "workflow_status": "working_copy"
     }
@@ -255,7 +297,28 @@ JSON;
     "values": {},
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
+    "associations": {
+        "PACK": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "SUBSTITUTION": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "UPSELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "X_SELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        }
+    },
     "metadata": {
         "workflow_status": "working_copy"
     }

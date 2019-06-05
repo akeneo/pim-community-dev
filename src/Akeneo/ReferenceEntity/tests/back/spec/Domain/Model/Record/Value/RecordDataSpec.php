@@ -44,4 +44,13 @@ class RecordDataSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn('starck');
     }
+
+    /**
+     * @see https://akeneo.atlassian.net/browse/PIM-8294
+     */
+    public function it_can_contain_the_zero_string()
+    {
+        $this->beConstructedThrough('createFromNormalize', ['0']);
+        $this->normalize()->shouldReturn('0');
+    }
 }

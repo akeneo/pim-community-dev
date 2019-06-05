@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -28,23 +30,17 @@ final class AttributeOptionMapping
     /** @var string */
     private $franklinAttributeOptionLabel;
 
-    /** @var string */
+    /** @var AttributeOptionCode */
     private $catalogAttributeOptionCode;
 
     /** @var int */
     private $status;
 
-    /**
-     * @param string $franklinAttributeOptionId
-     * @param string $franklinAttributeOptionLabel
-     * @param int $status
-     * @param string|null $catalogAttributeOptionCode
-     */
     public function __construct(
         string $franklinAttributeOptionId,
         string $franklinAttributeOptionLabel,
         int $status,
-        ?string $catalogAttributeOptionCode
+        ?AttributeOptionCode $catalogAttributeOptionCode
     ) {
         $this->franklinAttributeOptionId = $franklinAttributeOptionId;
         $this->franklinAttributeOptionLabel = $franklinAttributeOptionLabel;
@@ -77,9 +73,9 @@ final class AttributeOptionMapping
     }
 
     /**
-     * @return string
+     * @return AttributeOptionCode
      */
-    public function catalogAttributeOptionCode(): ?string
+    public function catalogAttributeOptionCode(): ?AttributeOptionCode
     {
         return $this->catalogAttributeOptionCode;
     }

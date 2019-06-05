@@ -104,7 +104,7 @@ class FilterRecordsByCompletenessValidator extends ConstraintValidator
     private function getActivatedLocalesPerChannels(): array
     {
         if (null === $this->activatedLocalesPerChannels) {
-            $this->activatedLocalesPerChannels = ($this->findActivatedLocalesPerChannels)();
+            $this->activatedLocalesPerChannels = $this->findActivatedLocalesPerChannels->findAll();
         }
 
         return $this->activatedLocalesPerChannels;

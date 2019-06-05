@@ -45,7 +45,7 @@ class LocalesShouldBeActivatedValidator extends ConstraintValidator
             return;
         }
 
-        $activatedLocaleIdentifiers = ($this->findActivatedLocales)($localeIdentifiers);
+        $activatedLocaleIdentifiers = $this->findActivatedLocales->find($localeIdentifiers);
         $notActivatedLocales = array_diff($localeIdentifiers->normalize(), $activatedLocaleIdentifiers->normalize());
 
         if (!empty($notActivatedLocales)) {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
@@ -40,7 +41,7 @@ class ProductSubscriptionResponseCollectionSpec extends ObjectBehavior
 
     public function it_can_add_and_retrieve_subscription_responses(): void
     {
-        $response = new ProductSubscriptionResponse(42, new SubscriptionId('123-456-789'), [], false, false);
+        $response = new ProductSubscriptionResponse(new ProductId(42), new SubscriptionId('123-456-789'), [], false, false);
         $this->add($response)->shouldReturn(null);
 
         $this->get(42)->shouldReturn($response);

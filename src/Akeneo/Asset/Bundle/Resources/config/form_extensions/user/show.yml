@@ -10,7 +10,7 @@ extensions:
       required: true
       isMultiple: false
       allowClear: false
-      isReadOnly: true
+      readOnly: true
 
   pimee-user-show-asset-delay-reminder:
     module: pim/form/common/fields/number
@@ -21,4 +21,4 @@ extensions:
       fieldName: properties.asset_delay_reminder
       label: user.asset_delay_reminder
       required: true
-      isReadOnly: true
+      readOnly: true

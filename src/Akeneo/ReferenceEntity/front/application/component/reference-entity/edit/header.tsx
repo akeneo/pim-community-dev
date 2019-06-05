@@ -104,7 +104,10 @@ class Header extends React.Component<HeaderProps> {
                       viewName="pim-reference-entity-index-user-navigation"
                     />
                   </div>
-                  <div className="AknTitleContainer-actionsContainer AknButtonList">{secondaryActions()}<div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div></div>
+                  <div className="AknTitleContainer-actionsContainer AknButtonList">
+                    {secondaryActions()}
+                    <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
+                  </div>
                 </div>
               </div>
               <div className="AknTitleContainer-line">
