@@ -46,7 +46,7 @@ class FiltersColumn extends BaseView {
   readonly filterGroupTemplate: string = `
     <ul class="ui-multiselect-checkboxes ui-helper-reset full">
         <li class="ui-multiselect-optgroup-label">
-            <a><%- groupName %></a>
+            <a title="<%- groupName %>"><%- groupName %></a>
         </li>
         <% filters.forEach(filter => { %>
           <li>
@@ -198,7 +198,7 @@ class FiltersColumn extends BaseView {
 
     if (searchValue.length === 0) {
       this.searchedFilters = undefined;
-      
+
       return this.renderFilters();
     }
 
