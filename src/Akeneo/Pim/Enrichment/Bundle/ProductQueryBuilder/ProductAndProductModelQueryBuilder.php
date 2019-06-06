@@ -96,7 +96,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             $this->addFilter('parent', Operators::IS_EMPTY, null);
         }
 
-        if (!$this->hasRawFilter('field', 'parent') && !$this->hasRawFilter('field', 'id')) {
+        if ($this->shouldAggregateResults()) {
             $this->searchAggregator->aggregateResults($this->getQueryBuilder(), $this->getRawFilters());
         }
 
@@ -184,5 +184,18 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         ));
 
         return $hasFilter;
+    }
+
+    /**
+     * The clause on the Id is a workaround to fix an issue when filtering by Id.
+     * Without this clause, if there's a filter on a category and a filter on an Id of a product variant, this one will not be fetched.
+     * It's because the "Aggregator" will add a clause in the ES query to ignore the product variants whose ancestors have the category.
+     * Ideally we should fix this aggregation, because it happens for some other filters than the Id (per instance for the group and the dates)
+     * But a proper solution would need too much reworks. So for now we only add this workaround.
+     * It's acceptable that the product variants are not aggregated when filtering by Id, but not for other filters.
+     */
+    private function shouldAggregateResults(): bool
+    {
+        return !$this->hasRawFilter('field', 'parent') && !$this->hasRawFilter('field', 'id');
     }
 }
