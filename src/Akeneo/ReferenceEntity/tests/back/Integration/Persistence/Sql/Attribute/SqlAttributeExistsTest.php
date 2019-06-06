@@ -76,9 +76,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        /** @var FixturesLoader $fixturesLoader */
-        $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
-        $this->fixtures = $fixturesLoader
+        $this->fixtures = $this->fixturesLoader
             ->referenceEntity('designer')
             ->withAttributes(['name'])
             ->load();

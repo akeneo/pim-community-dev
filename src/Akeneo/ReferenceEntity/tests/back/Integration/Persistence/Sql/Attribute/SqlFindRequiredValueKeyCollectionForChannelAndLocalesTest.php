@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -85,8 +84,7 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
     public function it_does_not_return_value_keys_for_the_locales_that_are_not_activated_for_the_channel()
     {
         $this->resetDB();
-        $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
-        $this->fixturesDesigner = $fixturesLoader
+        $this->fixturesDesigner = $this->fixturesLoader
             ->referenceEntity('designer')
             ->withAttributes(['long_description'])
             ->load();
@@ -107,15 +105,12 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
 
     private function loadFixtures(): void
     {
-        /** @var FixturesLoader $fixturesLoader */
-        $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
-
-        $this->fixturesDesigner = $fixturesLoader
+        $this->fixturesDesigner = $this->fixturesLoader
             ->referenceEntity('designer')
             ->withAttributes(['country', 'main_image', 'long_description', 'materials', 'nickname'])
             ->load();
 
-        $this->fixturesCountry = $fixturesLoader
+        $this->fixturesCountry = $this->fixturesLoader
             ->referenceEntity('country')
             ->load();
     }

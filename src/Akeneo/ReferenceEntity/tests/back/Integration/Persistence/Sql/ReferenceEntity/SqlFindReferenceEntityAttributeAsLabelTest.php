@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
@@ -60,9 +59,7 @@ class SqlFindReferenceEntityAttributeAsLabelTest extends SqlIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        /** @var FixturesLoader $fixturesLoader */
-        $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
-        $fixturesLoader
+        $this->fixturesLoader
             ->referenceEntity('designer')
             ->load();
     }

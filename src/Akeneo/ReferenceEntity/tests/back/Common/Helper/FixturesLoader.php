@@ -26,14 +26,12 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
 
 class FixturesLoader

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
@@ -61,15 +60,12 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        /** @var FixturesLoader $fixturesLoader */
-        $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
-
-        $this->fixturesDesigner = $fixturesLoader
+        $this->fixturesDesigner = $this->fixturesLoader
             ->referenceEntity('designer')
             ->withAttributes(['name', 'email', 'regex', 'long_description', 'main_image'])
             ->load();
 
-        $this->fixturesBrand = $fixturesLoader
+        $this->fixturesBrand = $this->fixturesLoader
             ->referenceEntity('brand')
             ->load();
     }

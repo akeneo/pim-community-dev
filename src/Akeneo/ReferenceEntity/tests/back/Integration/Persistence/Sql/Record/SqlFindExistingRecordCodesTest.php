@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
@@ -60,14 +59,11 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        /** @var FixturesLoader $fixturesLoader */
-        $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
-
-        $fixturesLoader
+        $this->fixturesLoader
             ->referenceEntity('designer')
             ->load();
 
-        $fixturesLoader
+        $this->fixturesLoader
             ->record('designer', 'starck')
             ->withValues([
                 'label' => [
@@ -80,7 +76,7 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
             ])
             ->load();
 
-        $fixturesLoader
+        $this->fixturesLoader
             ->record('designer', 'jacobs')
             ->withValues([
                 'label' => [

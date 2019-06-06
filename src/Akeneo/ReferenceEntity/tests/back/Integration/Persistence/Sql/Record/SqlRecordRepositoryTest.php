@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
@@ -619,14 +618,11 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        /** @var FixturesLoader $fixturesLoader */
-        $fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
-
-        $fixturesLoader
+        $this->fixturesLoader
             ->referenceEntity('brand')
             ->load();
 
-        $this->fixturesDesigner = $fixturesLoader
+        $this->fixturesDesigner = $this->fixturesLoader
             ->referenceEntity('designer')
             ->withAttributes(['name', 'main_image', 'brand', 'brands'])
             ->load();
