@@ -109,4 +109,19 @@ class UrlAttribute extends AbstractAttribute
     {
         return self::ATTRIBUTE_TYPE;
     }
+
+    public function setPrefix(Prefix $prefix): void
+    {
+        $this->prefix = $prefix;
+    }
+
+    public function setSuffix(Suffix $suffix): void
+    {
+        $this->suffix = $suffix;
+    }
+    
+    public function setPreviewType(PreviewType $previewType): void
+    {
+        $this->previewType = $previewType;
+    }
 }
