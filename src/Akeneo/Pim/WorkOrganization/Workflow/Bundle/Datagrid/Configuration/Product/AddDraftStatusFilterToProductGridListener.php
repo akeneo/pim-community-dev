@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\Product;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\DraftStatusFilter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 
@@ -38,9 +39,9 @@ class AddDraftStatusFilterToProductGridListener
             'options' => [
                 'field_options' => [
                     'choices' => [
-                        'Waiting for approval' => 2,
-                        'In Progress' => 1,
-                        'Working copy' => 0,
+                        'Waiting for approval' => DraftStatusFilter::WAITING_FOR_APPROVAL,
+                        'In Progress' => DraftStatusFilter::IN_PROGRESS,
+                        'Working copy' => DraftStatusFilter::WORKING_COPY,
                     ]
                 ]
             ]
