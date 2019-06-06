@@ -100,9 +100,6 @@ extensions:
                 inactive: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive
                 franklinAttribute: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_attribute
                 catalogAttribute: akeneo_franklin_insights.entity.identifier_mapping.fields.catalog_attribute
-                attributeMappingStatus: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.label
-                valuesSummary: akeneo_franklin_insights.entity.attributes_mapping.fields.values_summary
-                type: pim_common.type
 
     akeneo-franklin-insights-settings-attributes-mapping-index-front-search-filter:
         module: akeneo/franklin-insights/view/common/front-search-filter
