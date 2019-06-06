@@ -25,3 +25,5 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'

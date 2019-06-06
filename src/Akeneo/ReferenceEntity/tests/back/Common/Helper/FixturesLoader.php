@@ -19,13 +19,22 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
 
 class FixturesLoader
 {
@@ -35,24 +44,59 @@ class FixturesLoader
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var RecordRepositoryInterface */
+    private $recordRepository;
+
+    /** @var ValueHydratorInterface */
+    private $valueHydrator;
+
     /** @var string */
     private $loadedRefEntity;
 
     /** @var string[] */
     private $loadedAttributes = [];
 
+    /** @var string */
+    private $loadedRecordRefEntity;
+
+    /** @var string */
+    private $loadedRecordCode;
+
+    /** @var array */
+    private $loadedValues;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        RecordRepositoryInterface $recordRepository,
+        ValueHydratorInterface $valueHydrator
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->recordRepository = $recordRepository;
+        $this->valueHydrator = $valueHydrator;
     }
 
     public function referenceEntity(string $identifier): self
     {
         $this->loadedRefEntity = $identifier;
         $this->loadedAttributes = [];
+
+        return $this;
+    }
+
+    public function record(string $referenceEntityIdentifier, string $recordCode): self
+    {
+        $this->loadedRecordRefEntity = $referenceEntityIdentifier;
+        $this->loadedRecordCode = $recordCode;
+        $this->loadedValues = [];
+
+        return $this;
+    }
+
+    public function withValues(array $values): self
+    {
+        $this->loadedValues = $values;
 
         return $this;
     }
@@ -70,12 +114,24 @@ class FixturesLoader
 
     public function load(): array
     {
-        $referenceEntity = $this->loadReferenceEntity();
-        $attributes = $this->loadAttributes($referenceEntity->getIdentifier());
+        if (null !== $this->loadedRefEntity) {
+            $referenceEntity = $this->loadReferenceEntity();
+            $attributes = $this->loadAttributes($referenceEntity->getIdentifier());
+        }
+
+        if (null !== $this->loadedRecordCode) {
+            $record = $this->loadRecord();
+            $this->loadValues($record->getIdentifier());
+        }
+
+        $this->loadedRefEntity = null;
+        $this->loadedAttributes = [];
+        $this->loadedRecordRefEntity = null;
+        $this->loadedRecordCode = null;
 
         return [
-            'reference_entity' => $referenceEntity,
-            'attributes' => $attributes
+            'reference_entity' => $referenceEntity ?? null,
+            'attributes' => $attributes ?? []
         ];
     }
 
@@ -270,6 +326,46 @@ class FixturesLoader
             );
         }
 
+        // BRAND
+        if (in_array('brand', $this->loadedAttributes)) {
+            $attributes['brand'] = RecordAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $referenceEntityIdentifier,
+                    AttributeCode::fromString('brand')
+                ),
+                $referenceEntityIdentifier,
+                AttributeCode::fromString('brand'),
+                LabelCollection::fromArray([
+                    'fr_FR' => 'Marque',
+                ]),
+                $this->getOrderForAttribute('brand'),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                ReferenceEntityIdentifier::fromString('brand')
+            );
+        }
+
+        // BRANDS
+        if (in_array('brands', $this->loadedAttributes)) {
+            $attributes['brands'] = RecordCollectionAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $referenceEntityIdentifier,
+                    AttributeCode::fromString('brands')
+                ),
+                $referenceEntityIdentifier,
+                AttributeCode::fromString('brands'),
+                LabelCollection::fromArray([
+                    'fr_FR' => 'Marques',
+                ]),
+                $this->getOrderForAttribute('brands'),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                ReferenceEntityIdentifier::fromString('brand')
+            );
+        }
+
         // MATERIALS
         if (in_array('materials', $this->loadedAttributes)) {
             $attributes['materials'] = OptionCollectionAttribute::create(
@@ -316,6 +412,45 @@ class FixturesLoader
         }
 
         return $attributes;
+    }
+
+    private function loadRecord(): Record
+    {
+        $recordIdentifier = $this->recordRepository->nextIdentifier(
+            ReferenceEntityIdentifier::fromString($this->loadedRecordRefEntity),
+            RecordCode::fromString($this->loadedRecordCode)
+        );
+
+        $record = Record::create(
+            $recordIdentifier,
+            ReferenceEntityIdentifier::fromString($this->loadedRecordRefEntity),
+            RecordCode::fromString($this->loadedRecordCode),
+            ValueCollection::fromValues([])
+        );
+
+        $this->recordRepository->create($record);
+
+        return $record;
+    }
+
+    private function loadValues(RecordIdentifier $recordIdentifier): void
+    {
+        $record = $this->recordRepository->getByIdentifier($recordIdentifier);
+        $attributes = $this->attributeRepository->findByReferenceEntity(
+            ReferenceEntityIdentifier::fromString($this->loadedRecordRefEntity)
+        );
+
+        foreach ($this->loadedValues as $attributeCode => $values) {
+            $attribute = current(array_filter($attributes, function (AbstractAttribute $attribute) use ($attributeCode) {
+                return (string) $attribute->getCode() === $attributeCode;
+            }));
+
+            foreach ($values as $value) {
+                $record->setValue($this->valueHydrator->hydrate($value, $attribute));
+            }
+        }
+
+        $this->recordRepository->update($record);
     }
 
     private function getOrderForAttribute(string $code): AttributeOrder
