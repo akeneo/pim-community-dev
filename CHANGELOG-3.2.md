@@ -2,6 +2,28 @@
 
 ## Improvements
 
+- DAPI-137: Add possibility to filter products by draft status
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Bug fixes
 
 - GITHUB-10083: Fix proposal datagrid render when deleting values
