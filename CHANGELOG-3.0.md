@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8412: Fix wrong display of too long attribute group labels when filtering in the datagrid
+
 # 3.0.22 (2019-06-04)
 
 ## Bug fixes
