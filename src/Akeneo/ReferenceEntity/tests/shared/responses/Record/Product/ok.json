@@ -15,31 +15,25 @@
     "body": {
       "items": [
         {
-          "id": 46,
-          "identifier": "model-braided-hat",
-          "label": "Braided hat ",
-          "document_type": "product_model",
-          "image": {
-            "filePath": "1\/f\/9\/5\/1f95ca29346f0383b2aa7d1f064f7c37e31fc6be_braided_hat.jpg",
-            "originalFilename": "braided-hat.jpg"
-          },
+          "id": 1,
+          "identifier": "1111111304",
+          "label": "[1111111304]",
+          "document_type": "product",
+          "image": null,
           "completeness": null,
-          "variant_product_completenesses": {
-            "completeChildren": 2,
-            "totalChildren": 2
-          }
+          "variant_product_completenesses": null
         },
         {
-          "id": 691,
-          "identifier": "1111111304",
-          "label": "Sunglasses",
-          "document_type": "product",
-          "image": {
-            "filePath": "1\/f\/3\/5\/1f35ce7f7cadd57336c6b43c06dda987e897f9c3_sunglasses.jpg",
-            "originalFilename": "sunglasses.jpg"
-          },
-          "completeness": 57,
-          "variant_product_completenesses": null
+          "id": 1,
+          "identifier": "model-braided-hat",
+          "label": "[model-braided-hat]",
+          "document_type": "product_model",
+          "image": null,
+          "completeness": null,
+          "variant_product_completenesses": {
+            "completeChildren": 0,
+            "totalChildren": 0
+          }
         }
       ],
       "total_count": 2

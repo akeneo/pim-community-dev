@@ -26,7 +26,7 @@ class Completeness {
   }
 
   public hasCompleteItems() {
-    return this.completeChildren > 0;
+    return this.ratio > 0 || this.completeChildren > 0;
   }
 
   public getRatio() {
