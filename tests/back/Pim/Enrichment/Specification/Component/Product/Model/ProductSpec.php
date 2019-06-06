@@ -628,14 +628,14 @@ class ProductSpec extends ObjectBehavior
     {
         $this->setId(42);
         $this->setValues(new WriteValueCollection([
-            ScalarValue::value('name', 'saucisson'),
+            ScalarValue::scopableLocalizableValue('description', 'saucisson', 'mobile', 'fr_FR'),
         ]));
         $this->popEvents();
 
         $this->setValues(
             new WriteValueCollection(
                 [
-                    ScalarValue::value('name', 'saucisson'),
+                    ScalarValue::scopableLocalizableValue('description', 'saucisson', 'mobile', 'fr_FR'),
                 ]
             )
         );
