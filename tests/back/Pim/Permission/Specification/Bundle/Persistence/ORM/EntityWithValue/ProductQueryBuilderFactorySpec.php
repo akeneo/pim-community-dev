@@ -2,25 +2,24 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue;
 
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 class ProductQueryBuilderFactorySpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $categoryAccessRepository
+        GetGrantedCategoryCodes $getAllGrantedCategoryCodes
     ) {
-        $this->beConstructedWith($pqbFactory, $tokenStorage, $categoryAccessRepository, 'VIEW_ITEMS');
+        $this->beConstructedWith($pqbFactory, $tokenStorage, $getAllGrantedCategoryCodes);
     }
 
     function it_implements_a_product_query_builder_factory_interface()
@@ -36,7 +35,7 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
     function it_injects_granted_categories_in_pqb(
         $pqbFactory,
         $tokenStorage,
-        $categoryAccessRepository,
+        GetGrantedCategoryCodes $getAllGrantedCategoryCodes,
         ProductQueryBuilderInterface $pqb,
         TokenInterface $token,
         UserInterface $user
@@ -44,12 +43,15 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         $pqbFactory->create([])->willReturn($pqb);
 
         $categoryCodes = ['category_1', 'category_2'];
-        $categoryAccessRepository->getGrantedCategoryCodes($user, Attributes::VIEW_ITEMS)->willReturn($categoryCodes);
+        $user->getId()->willReturn(1);
+
+        $getAllGrantedCategoryCodes->forGroupIds([1,2,3,4])->willReturn($categoryCodes);
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
+        $user->getGroupsIds()->willReturn([1,2,3,4]);
 
-        $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $categoryCodes)->shouldBeCalled();
+        $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $categoryCodes, ['type_checking' => false])->shouldBeCalled();
         $this->create([])->shouldReturn($pqb);
     }
 

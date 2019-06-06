@@ -39,20 +39,6 @@ Feature: Send a product draft for approval
     And I save the product
     Then its status should be "In progress"
 
-  Scenario: Successfully restore the product draft data when I send it for approval with unsaved changes
-    Given I change the "Name" to "Baggy"
-    And I save the product
-    And I should see that Name is a modified value
-    And I change the "Name" to "Extra large baggy"
-    Then I should see the text "There are unsaved changes."
-    When I press the Send for approval button
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to send this draft?                                                                    |
-      | content | Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes? |
-    When I confirm the dialog
-    Then I should see the flash message "Product draft sent for approval"
-    And the product Name should be "Baggy"
-
   Scenario: Successfully send a product draft for approval with a comment
     When I change the "Name" to "Baggy"
     And I save the product

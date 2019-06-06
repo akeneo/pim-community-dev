@@ -14,8 +14,9 @@ namespace Akeneo\Pim\Permission\Bundle\Datagrid\Filter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
@@ -41,25 +42,29 @@ class PermissionFilter extends OroChoiceFilter
     /* @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var CategoryAccessRepository $repository */
-    protected $accessRepository;
+    /** @var GetGrantedCategoryCodes */
+    private $getAllViewableCategoryCodes;
 
-    /**
-     * @param FormFactoryInterface     $factory
-     * @param FilterUtility            $util
-     * @param TokenStorageInterface    $tokenStorage
-     * @param CategoryAccessRepository $accessRepository
-     */
+    /** @var GetGrantedCategoryCodes */
+    private $getAllOwnableCategoryCodes;
+
+    /** @var GetGrantedCategoryCodes */
+    private $getAllEditableCategoryCodes;
+
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $accessRepository
+        GetGrantedCategoryCodes $getAllViewableCategoryCodes,
+        GetGrantedCategoryCodes $getAllOwnableCategoryCodes,
+        GetGrantedCategoryCodes $getAllEditableCategoryCodes
     ) {
         parent::__construct($factory, $util);
 
         $this->tokenStorage = $tokenStorage;
-        $this->accessRepository = $accessRepository;
+        $this->getAllViewableCategoryCodes = $getAllViewableCategoryCodes;
+        $this->getAllOwnableCategoryCodes = $getAllOwnableCategoryCodes;
+        $this->getAllEditableCategoryCodes = $getAllEditableCategoryCodes;
     }
 
     /**
@@ -76,12 +81,31 @@ class PermissionFilter extends OroChoiceFilter
 
         $level = $data['type'];
         $user = $this->tokenStorage->getToken()->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return false;
+        }
+
         $pqb = $ds->getProductQueryBuilder();
         $this->removeCategoryInListOrUnclassified($pqb);
+        $userGroupIds = $user->getGroupsIds();
 
-        $grantedCategoryCodes = $this->accessRepository->getGrantedCategoryCodes($user, $level);
+        $grantedCategoryCodes = [];
+
+        switch ($level) {
+            case Attributes::OWN_PRODUCTS:
+                $grantedCategoryCodes = $this->getAllOwnableCategoryCodes->forGroupIds($userGroupIds);
+                break;
+            case Attributes::EDIT_ITEMS:
+                $grantedCategoryCodes = $this->getAllEditableCategoryCodes->forGroupIds($userGroupIds);
+                break;
+            case Attributes::VIEW_ITEMS:
+                $grantedCategoryCodes = $this->getAllViewableCategoryCodes->forGroupIds($userGroupIds);
+                break;
+        }
+
         if (count($grantedCategoryCodes) > 0) {
-            $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategoryCodes);
+            $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategoryCodes, ['type_checking' => false]);
         } else {
             $pqb->addFilter('categories', Operators::UNCLASSIFIED, '');
         }

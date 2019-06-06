@@ -47,3 +47,30 @@ services:
         arguments:
             - '@pim_notification.factory.notification'
             - '@pim_notification.notifier'
+
+    akeneo.pim.automation.franklin_insights.application.structure.service.create_attribute:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\CreateAttribute'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@validator'
+            - '@akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin'
+
+    akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\AddAttributeToFamily'
+        arguments:
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@pim_catalog.repository.family'
+            - '@validator'
+
+    akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\EnsureFranklinAttributeGroupExists'
+        arguments:
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.repository.attribute_group'
+            - '@validator'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin'

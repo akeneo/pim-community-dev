@@ -10,8 +10,8 @@ franklin-insights-coupling: vendor
 franklin-insights-phpstan: vendor
 	$(PHP_EXEC) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation/FranklinInsights -l 1
 
-.PHONY: franklin-insights-specs
-franklin-insights-specs: vendor
+.PHONY: franklin-insights-unit
+franklin-insights-unit: vendor
 	$(PHP_EXEC) vendor/bin/phpspec run src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Specification
 
 .PHONY: franklin-insights-acceptance
@@ -33,4 +33,4 @@ franklin-insights-cs: vendor
 	$(YARN_EXEC) prettier --config src/Akeneo/Pim/Automation/FranklinInsights/.prettierrc.json --check src/Akeneo/Pim/Automation/FranklinInsights/**/*.ts
 
 .PHONY: franklin-insights-tests
-franklin-insights-tests: franklin-insights-coupling franklin-insights-specs franklin-insights-acceptance franklin-insights-integration franklin-insights-end-to-end franklin-insights-cs franklin-insights-phpstan
+franklin-insights-tests: franklin-insights-coupling franklin-insights-cs franklin-insights-phpstan franklin-insights-unit franklin-insights-acceptance franklin-insights-integration franklin-insights-end-to-end

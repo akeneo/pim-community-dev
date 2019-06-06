@@ -38,7 +38,7 @@ services:
         class: '%pimee_teamwork_assistant.repository.product.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory_without_permission'
-            - '@pimee_security.repository.category_access'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
 
     pimee_teamwork_assistant.repository.family_requirement:
         class: '%pimee_teamwork_assistant.repository.family_requirement.class%'

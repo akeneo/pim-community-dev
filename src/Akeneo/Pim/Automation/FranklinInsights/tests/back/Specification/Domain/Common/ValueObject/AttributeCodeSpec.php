@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributeCodeSpec extends ObjectBehavior
 {
-    public function it_is_a_attribute_code(): void
+    public function it_is_an_attribute_code(): void
     {
         $this->beConstructedWith('foo');
         $this->shouldBeAnInstanceOf(AttributeCode::class);
@@ -48,5 +48,11 @@ class AttributeCodeSpec extends ObjectBehavior
 
         $attributeCode3 = new AttributeCode('bar');
         $this->equals($attributeCode3)->shouldReturn(false);
+    }
+
+    public function it_creates_attribute_code_from_string(): void
+    {
+        $this->beConstructedThrough('fromLabel', ['My unexpected Label!!']);
+        $this->__toString()->shouldReturn('My_unexpected_Label__');
     }
 }

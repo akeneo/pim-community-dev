@@ -67,18 +67,6 @@ class FixturesContext extends PimContext
     /** @var BulkSaverInterface */
     private $optionSaver;
 
-    /**
-     * @param string $mainContextClass
-     * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
-     * @param SubscribeProductHandler $subscribeProductHandler
-     * @param EntityBuilder $attributeBuilder
-     * @param BulkSaverInterface $attributeSaver
-     * @param EntityBuilder $familyBuilder
-     * @param SaverInterface $familySaver
-     * @param Builder\Product $productBuilder
-     * @param SaverInterface $productSaver
-     * @param ProductRepositoryInterface $productRepository
-     */
     public function __construct(
         string $mainContextClass,
         SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler,

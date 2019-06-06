@@ -12,6 +12,7 @@ Feature: Retrieve some family attributes from Franklin
       | product_weight        | Product Weight         | metric                |                    | pending |
       | name                  | Name                   | text                  |                    | pending |
       | color                 | Color                  | multiselect           | color              | active  |
+      | warranty              | Warranty               | text                  |                    | pending |
 
   Scenario: Successfully retrieve an attributes mapping with a suggestion on one pending attribute
     Given the family "router"
@@ -21,6 +22,7 @@ Feature: Retrieve some family attributes from Franklin
       | product_weight        | Product Weight         | metric                |                    | pending |
       | name                  | Name                   | text                  | name               | pending |
       | color                 | Color                  | multiselect           | color              | active  |
+      | warranty              | Warranty               | text                  |                    | pending |
 
   Scenario: Successfully retrieve an attributes mapping with unknown attribute type
     Given the family "webcam"

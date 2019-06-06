@@ -13,7 +13,7 @@ use Doctrine\DBAL\ParameterType;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetViewableCategoryCodes
+final class GetViewableCategoryCodes implements GetGrantedCategoryCodes
 {
     /** @var Connection */
     private $connection;
@@ -26,9 +26,6 @@ final class GetViewableCategoryCodes
         $this->connection = $connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function forCategoryCodes(int $userId, array $categoryCodes): array
     {
         if ($categoryCodes === []) {
@@ -57,5 +54,32 @@ SQL;
         return array_map(function ($result) {
             return $result['category_code'];
         }, $results);
+    }
+
+    /**
+     * This query use a subselect to compute the distinct directly on the ids of the categories. This is done for performance reason.
+     */
+    public function forGroupIds(array $groupIds): array
+    {
+        $query = <<<SQL
+SELECT category.code as category_code
+FROM 
+(
+    SELECT 
+        DISTINCT p1_.category_id 
+    FROM 
+        pimee_security_product_category_access p1_ 
+    WHERE 
+        p1_.view_items = 1
+        AND p1_.user_group_id IN (?)
+) as viewable_category 
+JOIN pim_catalog_category category ON category.id = viewable_category.category_id;
+SQL;
+
+        $categoryCodes = $this->connection->fetchAll($query, [$groupIds], [Connection::PARAM_INT_ARRAY]);
+
+        return array_map(function ($categoryCode) : string {
+            return $categoryCode['category_code'];
+        }, $categoryCodes);
     }
 }

@@ -102,3 +102,5 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\UserNormalizer'
         arguments:
             $categoryAccessRepository: '@pimee_security.repository.category_access'
+            $getAllEditableCategoryCodes: '@akeneo.pim.enrichment.category.get_editable_category_codes'
+            $getAllOwnableCategoryCodes: '@akeneo.pim.enrichment.category.get_ownable_category_codes'

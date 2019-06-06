@@ -138,6 +138,8 @@ pimee_enrich.entity.product:
         approval:
             send: Send for approval
             sent: Sent for approval
+            send_and_next: Send and next
+            send_and_finish: Send and finish
 
 pimee_enrich.entity.published_product:
     flash:
@@ -173,6 +175,7 @@ pimee_enrich.entity.product_draft:
         create:
             success: Product draft sent for approval
             fail: You cannot send this draft for approval
+            skip: Product draft hasn't been sent for approval as no value has been edited
     module:
         create:
             label: Save draft

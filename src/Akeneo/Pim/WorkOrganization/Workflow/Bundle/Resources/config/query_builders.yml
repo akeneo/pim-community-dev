@@ -61,8 +61,7 @@ services:
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory.without_permission'
             - '@security.token_storage'
-            - '@pimee_security.repository.category_access'
-            - 'VIEW_ITEMS'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
 
     pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory_with_permissions:
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -71,8 +70,7 @@ services:
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory.without_permission'
             - '@security.token_storage'
-            - '@pimee_security.repository.category_access'
-            - 'VIEW_ITEMS'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
 
     pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory_with_permissions:
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -81,8 +79,7 @@ services:
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory.without_permission'
             - '@security.token_storage'
-            - '@pimee_security.repository.category_access'
-            - 'VIEW_ITEMS'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
 
     pimee_workflow.query.product_proposal_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -113,8 +110,7 @@ services:
         arguments:
             - '@pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory.without_permission'
             - '@security.token_storage'
-            - '@pimee_security.repository.category_access'
-            - 'OWN_PRODUCTS'
+            - '@akeneo.pim.enrichment.category.get_ownable_category_codes'
     #Filters
     pimee_workflow.query.filter.product_proposal_registry:
         class: '%pim_catalog.query.filter.registry.class%'

@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\Permission\Bundle\Controller\InternalApi;
 
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -34,34 +34,37 @@ class PermissionRestController
     /** @var AttributeGroupRepositoryInterface */
     protected $attributeGroupRepo;
 
-    /** @var CategoryAccessRepository */
-    protected $categoryAccessRepo;
-
     /** @var UserContext */
     protected $userContext;
 
     /** @var EntityRepository */
     protected $jobInstanceRepo;
 
-    /**
-     * @param AuthorizationCheckerInterface     $authorizationChecker
-     * @param AttributeGroupRepositoryInterface $attributeGroupRepo
-     * @param CategoryAccessRepository          $categoryAccessRepo
-     * @param UserContext                       $userContext
-     * @param EntityRepository                  $jobInstanceRepo
-     */
+    /** @var GetGrantedCategoryCodes */
+    private $getAllViewableCategoryCodes;
+
+    /** @var GetGrantedCategoryCodes */
+    private $getAllEditableCategoryCodes;
+
+    /** @var GetGrantedCategoryCodes */
+    private $getAllOwnableCategoryCodes;
+
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeGroupRepositoryInterface $attributeGroupRepo,
-        CategoryAccessRepository $categoryAccessRepo,
         UserContext $userContext,
-        EntityRepository $jobInstanceRepo
+        EntityRepository $jobInstanceRepo,
+        GetGrantedCategoryCodes $getAllViewableCategoryCodes,
+        GetGrantedCategoryCodes $getAllEditableCategoryCodes,
+        GetGrantedCategoryCodes $getAllOwnableCategoryCodes
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->attributeGroupRepo   = $attributeGroupRepo;
-        $this->categoryAccessRepo   = $categoryAccessRepo;
         $this->userContext          = $userContext;
         $this->jobInstanceRepo      = $jobInstanceRepo;
+        $this->getAllViewableCategoryCodes = $getAllViewableCategoryCodes;
+        $this->getAllEditableCategoryCodes = $getAllEditableCategoryCodes;
+        $this->getAllOwnableCategoryCodes = $getAllOwnableCategoryCodes;
     }
 
     /**
@@ -106,15 +109,11 @@ class PermissionRestController
 
         $user = $this->userContext->getUser();
 
-        $categories = [];
-        $permissions = [
-            Attributes::VIEW_ITEMS,
-            Attributes::EDIT_ITEMS,
-            Attributes::OWN_PRODUCTS
+        $categories = [
+            Attributes::VIEW_ITEMS => $this->getAllViewableCategoryCodes->forGroupIds($user->getGroupsIds()),
+            Attributes::EDIT_ITEMS => $this->getAllEditableCategoryCodes->forGroupIds($user->getGroupsIds()),
+            Attributes::OWN_PRODUCTS => $this->getAllOwnableCategoryCodes->forGroupIds($user->getGroupsIds()),
         ];
-        foreach ($permissions as $permission) {
-            $categories[$permission] = $this->categoryAccessRepo->getGrantedCategoryCodes($user, $permission);
-        }
 
         return new JsonResponse(
             [

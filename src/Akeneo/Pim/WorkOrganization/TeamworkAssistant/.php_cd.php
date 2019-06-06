@@ -59,8 +59,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
         // TODO: Permission
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
-        'Akeneo\Pim\Permission\Component\Attributes',
+        'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes',
 
         // TIP-976: TWA should not be linked to Workflow
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter',

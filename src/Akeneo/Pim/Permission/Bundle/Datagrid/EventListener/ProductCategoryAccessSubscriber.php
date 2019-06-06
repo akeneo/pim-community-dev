@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
@@ -30,26 +31,22 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var CategoryAccessRepository */
-    protected $accessRepository;
-
     /** @var array */
     protected $grantedCategoryIdsPerUser;
 
     /** @var array */
     protected $grantedCategoryCodesPerUser;
 
-    /**
-     * @param TokenStorageInterface    $tokenStorage
-     * @param CategoryAccessRepository $accessRepository
-     */
+    /** @var GetGrantedCategoryCodes */
+    private $getAllViewableCategoryCodes;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $accessRepository
+        GetGrantedCategoryCodes $getAllViewableCategoryCodes
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->accessRepository = $accessRepository;
         $this->grantedCategoryCodesPerUser = [];
+        $this->getAllViewableCategoryCodes = $getAllViewableCategoryCodes;
     }
 
     /**
@@ -80,13 +77,11 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
             ));
         }
 
-        $userId = $this->tokenStorage->getToken()->getUser()->getId();
+        $user = $this->tokenStorage->getToken()->getUser();
+        $userId = $user->getId();
 
         if (!isset($this->grantedCategoryCodesPerUser[$userId])) {
-            $this->grantedCategoryCodesPerUser[$userId] =  $this->accessRepository->getGrantedCategoryCodes(
-                $this->tokenStorage->getToken()->getUser(),
-                Attributes::VIEW_ITEMS
-            );
+            $this->grantedCategoryCodesPerUser[$userId] = $this->getAllViewableCategoryCodes->forGroupIds($user->getGroupsIds());
         }
 
         $grantedCategories = $this->grantedCategoryCodesPerUser[$userId];

@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import Family from '../../model/family';
 import BaseView = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
@@ -18,33 +19,28 @@ interface Config {
   title: string;
 }
 
-interface Family {
-  code: string;
-  labels: Array<{ [localeCode: string]: string }>;
-}
-
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>
  */
 class Title extends BaseView {
   private config: Config;
 
-  constructor(options: { config: Config }) {
-    super({ ...options });
+  constructor(options: {config: Config}) {
+    super({...options});
 
-    this.config = { ...this.config, ...options.config };
+    this.config = {...this.config, ...options.config};
   }
 
   public render(): BaseView {
-    const data: { code: string } = this.getFormData();
+    const data: {code: string} = this.getFormData();
 
     FetcherRegistry.getFetcher('family')
-    .fetch(data.code)
-    .then((family: Family) => {
-      const familyLabel = i18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
+      .fetch(data.code)
+      .then((family: Family) => {
+        const familyLabel = i18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
 
-      this.$el.text(`${familyLabel} ${__(this.config.title)}`);
-    });
+        this.$el.text(`${familyLabel} ${__(this.config.title)}`);
+      });
 
     return this;
   }

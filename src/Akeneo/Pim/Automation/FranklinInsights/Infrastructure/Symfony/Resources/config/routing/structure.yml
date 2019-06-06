@@ -1,0 +1,4 @@
+akeneo_franklin_insights_structure_create_attribute:
+    path: /attribute
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.structure:createAttributeAction }
+    methods: [POST]

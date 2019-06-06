@@ -10,3 +10,27 @@ services:
 
     akeneo.pim.automation.franklin_insights.subscriber.subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subscription\NullSubscriptionSubscriber'
+
+    akeneo.pim.automation.franklin_insights.connector.job_launcher.schedule_fetch_products:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Connector\FakeScheduleFetchProducts'
+
+    akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeAddAttributeToFamily'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.family'
+
+    akeneo.pim.automation.franklin_insights.application.structure.service.create_attribute:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeCreateAttribute'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_group'
+            - '@akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists'
+
+    akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists:
+        class: Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeEnsureFranklinAttributeGroupExists
+        arguments:
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.repository.attribute_group'

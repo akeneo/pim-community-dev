@@ -14,7 +14,8 @@ namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -24,34 +25,23 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 {
-    /** @var string */
-    private $accessLevel;
-
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
-    /** @var CategoryAccessRepository */
-    private $categoryAccessRepository;
+    /** @var GetGrantedCategoryCodes */
+    private $getAllGrantedCategoryCodes;
 
-    /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param TokenStorageInterface               $tokenStorage
-     * @param CategoryAccessRepository            $categoryAccessRepository
-     * @param string                              $accessLevel
-     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $categoryAccessRepository,
-        string $accessLevel
+        GetGrantedCategoryCodes $getAllGrantedCategoryCodes
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->tokenStorage = $tokenStorage;
-        $this->categoryAccessRepository = $categoryAccessRepository;
-        $this->accessLevel = $accessLevel;
+        $this->getAllGrantedCategoryCodes = $getAllGrantedCategoryCodes;
     }
 
     /**
@@ -70,12 +60,14 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 
         $pqb = $this->pqbFactory->create($options);
 
-        $grantedCategories = $this->categoryAccessRepository->getGrantedCategoryCodes(
-            $token->getUser(),
-            $this->accessLevel
-        );
+        $user = $token->getUser();
+        if (!$user instanceof UserInterface) {
+            throw new \RuntimeException("The user given is not a user");
+        }
 
-        $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategories);
+        $grantedCategories = $this->getAllGrantedCategoryCodes->forGroupIds($user->getGroupsIds());
+
+        $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategories, ['type_checking' => false]);
 
         return $pqb;
     }
