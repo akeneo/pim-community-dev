@@ -28,9 +28,9 @@ use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
  */
 class DraftStatusFilter implements FilterInterface
 {
-    private const WORKING_COPY = 0;
-    private const IN_PROGRESS = 1;
-    private const WAITING_FOR_APPROVAL = 2;
+    const WORKING_COPY = 0;
+    const IN_PROGRESS = 1;
+    const WAITING_FOR_APPROVAL = 2;
 
     private $choiceFilter;
 
@@ -91,10 +91,9 @@ class DraftStatusFilter implements FilterInterface
         $productIds = $this->selectProductIdsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
         $productModelIds = $this->selectProductModelIdsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
         $esIds = $this->prepareIdsForEsFilter($productIds, $productModelIds);
+        $esIds = empty($esIds) ? ['null'] : $esIds;
 
-        //if (!empty($esIds)) {
-            $this->filterUtility->applyFilter($filterDatasource, 'id', $operator, $esIds);
-        //}
+        $this->filterUtility->applyFilter($filterDatasource, 'id', $operator, $esIds);
 
         return true;
     }
