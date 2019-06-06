@@ -29,7 +29,7 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
             return $onGoingFilteredRawValues;
         }
 
-        $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
+        $optionCodes = $this->getExistingOptionCodes($selectValues);
 
         $filteredValues = [];
 
@@ -39,7 +39,7 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = ($optionCodes[$attributeCode] ?? [])[strtolower($value ?? '')] ?? '';
+                            $simpleSelectValues[$channel][$locale] = ($optionCodes[$attributeCode] ?? [])[$value ?? ''] ?? '';
                         }
                     }
                 }
@@ -56,7 +56,7 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
+    private function getExistingOptionCodes(array $selectValues): array
     {
         $optionCodes = $this->getOptionCodes($selectValues);
         $existingOptionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
@@ -64,7 +64,7 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
         $caseInsensitiveOptionsCodes = [];
         foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
             foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
-                $caseInsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
+                $caseInsensitiveOptionsCodes[$attributeCode][$optionCodeForThisAttribute] = $optionCodeForThisAttribute;
             }
         }
 

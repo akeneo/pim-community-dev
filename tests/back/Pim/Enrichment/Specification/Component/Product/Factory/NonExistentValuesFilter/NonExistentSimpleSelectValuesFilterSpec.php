@@ -74,7 +74,7 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
 
         $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->willReturn(
             [
-                'a_select' => ['option_toto'],
+                'a_select' => ['option_ToTo'],
             ]
         );
 
@@ -88,7 +88,7 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 '<all_channels>' => [
-                                    '<all_locales>' => 'option_toto'
+                                    '<all_locales>' => 'option_ToTo'
                                 ],
                             ]
                         ],

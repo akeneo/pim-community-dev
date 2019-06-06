@@ -29,9 +29,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
             return $onGoingFilteredRawValues;
         }
 
-        $optionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode(
-            $this->getOptionCodes($selectValues)
-        );
+        $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
 
         $filteredValues = [];
 
@@ -42,10 +40,10 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = array_intersect(
+                            $multiSelectValues[$channel][$locale] = array_values(array_intersect(
                                 $value,
                                 $optionCodes[$attributeCode] ?? []
-                            );
+                            ));
                         }
                     }
                 }
@@ -62,11 +60,18 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingOptionCodes(array $selectValues): array
+    private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
     {
         $optionCodes = $this->getOptionCodes($selectValues);
+        $existingOptionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
+        $caseInsensitiveOptionsCodes = [];
+        foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
+            foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
+                $caseInsensitiveOptionsCodes[$attributeCode][$optionCodeForThisAttribute] = $optionCodeForThisAttribute;
+            }
+        }
 
-        return $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
+        return $caseInsensitiveOptionsCodes;
     }
 
     private function getOptionCodes(array $selectValues): array
