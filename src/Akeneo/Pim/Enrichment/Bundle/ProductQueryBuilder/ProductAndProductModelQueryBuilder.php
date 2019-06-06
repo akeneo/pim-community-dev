@@ -96,7 +96,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             $this->addFilter('parent', Operators::IS_EMPTY, null);
         }
 
-        if (!$this->hasRawFilter('field', 'parent')) {
+        if (!$this->hasRawFilter('field', 'parent') && !$this->hasRawFilter('field', 'id')) {
             $this->searchAggregator->aggregateResults($this->getQueryBuilder(), $this->getRawFilters());
         }
 
