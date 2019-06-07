@@ -86,11 +86,7 @@ SQL;
     {
         return [
             ['franklin_code_text', 'franklin_label_text', AttributeTypes::TEXT, 'franklin_code_text'],
-            ['franklin_code_textarea', 'franklin_label_textarea', AttributeTypes::TEXTAREA, 'franklin_code_textarea'],
-            ['franklin_code_boolean', 'franklin_label_boolean', AttributeTypes::BOOLEAN, 'franklin_code_boolean'],
             ['franklin_code_number', 'franklin_label_number', AttributeTypes::NUMBER, 'franklin_code_number'],
-            ['franklin_code_simple_select', 'franklin_label_simple_select', AttributeTypes::OPTION_SIMPLE_SELECT, 'franklin_code_simple_select'],
-            ['franklin_code_multi_select', 'franklin_label_multi_select', AttributeTypes::OPTION_MULTI_SELECT, 'franklin_code_multi_select'],
         ];
     }
 
