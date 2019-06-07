@@ -21,6 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class Prefix
 {
+    public const EMPTY = null;
+
     /** @var ?string */
     private $prefix;
 
@@ -34,6 +36,16 @@ class Prefix
         Assert::nullOrStringNotEmpty($prefix, 'The prefix cannot be an empty string');
 
         return new self($prefix);
+    }
+
+    public static function createEmpty(): self
+    {
+        return new self(self::EMPTY);
+    }
+
+    public function isEmpty(): bool
+    {
+        return self::EMPTY === $this->prefix;
     }
 
     public function normalize(): ?string

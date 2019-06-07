@@ -21,6 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class Suffix
 {
+    public const EMPTY = null;
+
     /** @var ?string */
     private $suffix;
 
@@ -34,6 +36,16 @@ class Suffix
         Assert::nullOrStringNotEmpty($suffix, 'The suffix cannot be an empty string');
 
         return new self($suffix);
+    }
+
+    public static function createEmpty(): self
+    {
+        return new self(self::EMPTY);
+    }
+
+    public function isEmpty(): bool
+    {
+        return self::EMPTY === $this->suffix;
     }
 
     public function normalize(): ?string

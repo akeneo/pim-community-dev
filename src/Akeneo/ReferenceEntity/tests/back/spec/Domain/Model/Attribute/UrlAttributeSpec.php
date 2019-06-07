@@ -75,6 +75,26 @@ class UrlAttributeSpec extends ObjectBehavior
         );
     }
 
+    function it_creates_an_image_url_without_prefix_and_suffix()
+    {
+        $this->beConstructedThrough(
+            'create',
+            [
+                AttributeIdentifier::create('city', 'area', 'test'),
+                ReferenceEntityIdentifier::fromString('city'),
+                AttributeCode::fromString('area'),
+                LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                Prefix::createEmpty(),
+                Suffix::createEmpty(),
+                PreviewType::fromString('image'),
+            ]
+        );
+    }
+
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn(
