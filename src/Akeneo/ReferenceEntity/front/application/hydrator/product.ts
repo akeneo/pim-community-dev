@@ -11,10 +11,6 @@ import {accessProperty} from 'akeneoreferenceentity/tools/property';
 const getProductCompleteness = (normalizedProduct: any): NormalizedCompleteness => {
   const completenessRatio = accessProperty(normalizedProduct, `completeness`, undefined);
 
-  if (undefined === completenessRatio) {
-    return {completeChildren: 0, totalChildren: 0, ratio: 0};
-  }
-
   return {
     completeChildren: 0,
     totalChildren: 0,

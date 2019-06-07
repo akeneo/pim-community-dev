@@ -31,10 +31,12 @@ describe('akeneo > reference entity > domain > model > product --- completeness'
     expect(incompleteProductModel.getRatio()).toEqual(0);
     expect(incompleteProductModel.isComplete()).toEqual(false);
     expect(completeProductModel.isComplete()).toEqual(true);
+    expect(completeProductModel.hasCompleteItems()).toEqual(true);
 
     expect(completeProduct.normalize()).toEqual({completeChildren: 0, totalChildren: 0, ratio: 100});
     expect(completeProduct.getRatio()).toEqual(100);
     expect(completeProduct.isComplete()).toEqual(true);
     expect(incompleteProduct.isComplete()).toEqual(false);
+    expect(incompleteProduct.hasCompleteItems()).toEqual(true);
   });
 });

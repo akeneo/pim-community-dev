@@ -58,6 +58,31 @@ describe('akeneo > reference entity > application > hydrator --- product', () =>
         },
       })
     );
+    expect(
+      hydrator(
+        {
+          identifier: 'nice_product',
+          id: '123456',
+          document_type: 'product_model',
+          label: 'My nice product',
+          image: null,
+        },
+        {locale: createLocaleReference('en_US')}
+      )
+    ).toEqual(
+      denormalizeProduct({
+        id: '123456',
+        identifier: 'nice_product',
+        type: 'product_model',
+        labels: {en_US: 'My nice product'},
+        image: null,
+        completeness: {
+          completeChildren: 0,
+          totalChildren: 0,
+          ratio: 0,
+        },
+      })
+    );
   });
 
   test('It throw an error if I pass a malformed product', () => {
