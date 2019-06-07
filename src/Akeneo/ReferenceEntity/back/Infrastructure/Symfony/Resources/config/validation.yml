@@ -378,6 +378,21 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMa
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxValue: ~
 
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPrefixCommand:
+    properties:
+        prefix:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Prefix: ~
+
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditSuffixCommand:
+    properties:
+        suffix:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Suffix: ~
+
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPreviewTypeCommand:
+    properties:
+        previewType:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\PreviewType: ~
+
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
     properties:
         options:

@@ -23,7 +23,7 @@ class PreviewType
 {
     private const IMAGE = 'image';
     private const OTHER = 'other';
-    private const PREVIEW_TYPES = [
+    public const PREVIEW_TYPES = [
         self::IMAGE,
         self::OTHER
     ];
