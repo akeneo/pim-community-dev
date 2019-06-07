@@ -72,6 +72,6 @@ services:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory
         arguments:
             $valueFactory: '@akeneo.pim.enrichment.factory.read.value'
-            $getAttributeByCodes: '@akeneo.pim.structure.query.get_attributes'
+            $getAttributeByCodes: '@akeneo.pim.structure.query.lru_cached_get_attributes'
             $chainedNonExistentValuesFilter: '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
             $emptyValuesCleaner: '@akeneo.pim.enrichment.factory.empty_values_cleaner'

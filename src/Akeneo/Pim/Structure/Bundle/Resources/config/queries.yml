@@ -8,3 +8,8 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql\SqlGetAttributes'
         arguments:
             $connection: '@database_connection'
+
+    akeneo.pim.structure.query.lru_cached_get_attributes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql\LRUCachedGetAttributes'
+        arguments:
+            $getAttributes: '@akeneo.pim.structure.query.get_attributes'

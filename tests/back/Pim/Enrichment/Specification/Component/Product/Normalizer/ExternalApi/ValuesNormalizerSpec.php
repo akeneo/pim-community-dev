@@ -22,8 +22,6 @@ class ValuesNormalizerSpec extends ObjectBehavior
         $router
             ->generate('pim_api_media_file_download', ['code' => 'a/b/c/file.txt'], Argument::any())
             ->willReturn('http://localhost/api/rest/v1/media-files/a/b/c/file.txt/download');
-
-
     }
 
     function it_is_a_normalizer_of_values_for_the_connector()
@@ -33,7 +31,6 @@ class ValuesNormalizerSpec extends ObjectBehavior
 
     function it_normalize_values_with_hal_links(ProductValueNormalizer $productValueNormalizer)
     {
-
         $fileInfo = new FileInfo();
         $fileInfo->setKey('a/b/c/file.txt');
 
@@ -64,7 +61,6 @@ class ValuesNormalizerSpec extends ObjectBehavior
                 'data' => 'a/b/c/file.txt'
             ]
         );
-
 
         $valueCollection = new ReadValueCollection([$scalarValue, $localizableScalarValue, $mediaValue]);
         $this->normalize($valueCollection)->shouldReturn(

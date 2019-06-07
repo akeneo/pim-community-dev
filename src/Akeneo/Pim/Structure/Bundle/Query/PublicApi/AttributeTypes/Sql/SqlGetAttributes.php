@@ -28,7 +28,7 @@ final class SqlGetAttributes implements GetAttributes
         }
 
         $query = <<<SQL
-        SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family
+        SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family, decimals_allowed
         FROM pim_catalog_attribute
         WHERE code IN (:attributeCodes)
 SQL;
@@ -48,8 +48,20 @@ SQL;
                 $properties,
                 boolval($attribute['is_localizable']),
                 boolval($attribute['is_scopable']),
-                $attribute['metric_family']
+                $attribute['metric_family'],
+                boolval($attribute['decimals_allowed'])
             );
         }, $rawResults);
+    }
+
+    public function forCode(string $attributeCode): ?Attribute
+    {
+        $forCodes = $this->forCodes([$attributeCode]);
+
+        if ([] === $forCodes) {
+            return null;
+        }
+
+        return array_pop($forCodes);
     }
 }

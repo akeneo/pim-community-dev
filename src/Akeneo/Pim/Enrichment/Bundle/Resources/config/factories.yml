@@ -85,7 +85,7 @@ services:
             - '@pim_catalog.factory.value'
             - '@pim_catalog.repository.cached_attribute'
             - '@logger'
-            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.structure.query.lru_cached_get_attributes'
             - '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
             - '@akeneo.pim.enrichment.factory.empty_values_cleaner'
 
