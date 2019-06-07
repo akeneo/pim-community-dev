@@ -24,7 +24,7 @@ class EditPreviewTypeCommandFactory implements EditAttributeCommandFactoryInterf
 {
     public function supports(array $normalizedCommand): bool
     {
-        return array_key_exists('url_type', $normalizedCommand)
+        return array_key_exists('preview_type', $normalizedCommand)
             && array_key_exists('identifier', $normalizedCommand);
     }
 

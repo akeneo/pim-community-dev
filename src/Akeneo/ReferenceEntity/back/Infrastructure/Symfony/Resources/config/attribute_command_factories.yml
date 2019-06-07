@@ -108,16 +108,16 @@ services:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
 
     akeneo_referenceentity.application.factory.edit_url_prefix_command_factory:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditUrlPrefixCommandFactory
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPrefixCommandFactory
         tags:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
 
     akeneo_referenceentity.application.factory.edit_url_suffix_command_factory:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditUrlSuffixCommandFactory
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditSuffixCommandFactory
         tags:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
 
     akeneo_referenceentity.application.factory.edit_url_type_command_factory:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditUrlTypeCommandFactory
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPreviewTypeCommandFactory
         tags:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
