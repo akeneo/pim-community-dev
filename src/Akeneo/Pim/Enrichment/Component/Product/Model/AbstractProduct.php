@@ -127,7 +127,6 @@ abstract class AbstractProduct implements ProductInterface
 
             $this->values->remove($formerValue);
             $this->values->add($value);
-
             $this->events[] = new ValueEdited($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
         } else {
             $this->values->add($value);
@@ -186,7 +185,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function addValue(ValueInterface $value)
     {
-        $this->values->add($value);
+        if (true === $this->values->add($value)) {
+            $this->events[] = new ValueAdded($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        }
 
         return $this;
     }
@@ -439,24 +440,24 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setCategories(Collection $categories): void
     {
-        $previousCategoryCodes = array_map(function (CategoryInterface $category) {
-            return $category->getCode();
-        }, $this->categories->toArray());
-        $newCategoryCodes = array_map(function (CategoryInterface $category) {
-            return $category->getCode();
-        }, $categories->toArray());
+        $formerCategories = $this->getCategories();
+        $categoriesToAdd = $categories->filter(
+            function (CategoryInterface $category) use ($formerCategories) {
+                return !$formerCategories->contains($category);
+            }
+        );
+        $categoriesToRemove = $formerCategories->filter(
+            function (Categoryinterface $category) use ($categories) {
+                return !$categories->contains($category);
+            }
+        );
 
-        $uncategorizedCategoryCodes = array_diff($previousCategoryCodes, $newCategoryCodes);
-        $categorizedCategoryCodes = array_diff($newCategoryCodes, $previousCategoryCodes);
-
-        foreach ($uncategorizedCategoryCodes as $uncategorizedCategoryCode) {
-            $this->events[] = new ProductUncategorized($this->identifier, $uncategorizedCategoryCode);
+        foreach ($categoriesToRemove as $categoryToRemove) {
+            $this->removeCategory($categoryToRemove);
         }
-        foreach ($categorizedCategoryCodes as $categorizedCategoryCode) {
-            $this->events[] = new ProductCategorized($this->identifier, $categorizedCategoryCode);
+        foreach ($categoriesToAdd as $categoryToAdd) {
+            $this->addCategory($categoryToAdd);
         }
-
-        $this->categories = $categories;
     }
 
     /**

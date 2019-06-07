@@ -64,7 +64,6 @@ class ProductSpec extends ObjectBehavior
 
         $this->setFamily($family);
         $this->getFamily()->shouldReturn($family);
-        $this->getFamilyId()->shouldReturn(42);
         $this->popEvents()->shouldBeLike([new FamilyAddedToProduct('my_identifier', 'clothing')]);
     }
 
