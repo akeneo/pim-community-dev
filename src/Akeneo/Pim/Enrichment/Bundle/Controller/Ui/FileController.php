@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesserInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Liip\ImagineBundle\Controller\ImagineController;
@@ -76,23 +77,22 @@ class FileController
     public function showAction(Request $request, $filename, $filter = null)
     {
         $filename = urldecode($filename);
+        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename);
+        if (null === $fileInfo) {
+            return $this->renderDefaultImage(FileTypes::MISC, $filter);
+        }
 
-        $result = $this->renderDefaultImage(FileTypes::MISC, $filter);
+        $fileType = $this->fileTypeGuesser->guess($fileInfo->getMimeType());
 
-        if (self::DEFAULT_IMAGE_KEY !== $filename) {
-            $fileType = $this->fileTypeGuesser->guess($this->getMimeType($filename));
-
-            $result = $this->renderDefaultImage($fileType, $filter);
-            if (FileTypes::IMAGE === $fileType) {
-                try {
-                    $result = $this->imagineController->filterAction($request, $filename, $filter);
-                } catch (NotFoundHttpException $exception) {
-                    $result = $this->renderDefaultImage(FileTypes::IMAGE, $filter);
-                }
+        if (FileTypes::IMAGE === $fileType) {
+            try {
+                return $this->imagineController->filterAction($request, $filename, $filter);
+            } catch (\Exception $exception) {
+                return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
             }
         }
 
-        return $result;
+        return $this->renderDefaultImage($fileType, $filter);
     }
 
     /**

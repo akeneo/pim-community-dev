@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -29,7 +30,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
-        ProductModelAttributeFilter $attributeFilter
+        ProductModelAttributeFilter $attributeFilter,
+        MediaStorer $mediaStorer
     ) {
         $this->beConstructedWith(
             $productModelFactory,
@@ -39,6 +41,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $productModelFilter,
             $objectDetacher,
             $attributeFilter,
+            $mediaStorer,
             'root_product_model'
         );
     }
@@ -64,6 +67,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelRepository,
         $validator,
         $attributeFilter,
+        $mediaStorer,
         StepExecution $stepExecution,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
@@ -88,6 +92,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
         ];
 
         $attributeFilter->filter($productModelData)->willReturn($productModelData);
+
+        $mediaStorer->store($productModelData['values'])->willReturn($productModelData['values']);
 
         $this->setStepExecution($stepExecution);
 
@@ -127,6 +133,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelRepository,
         $validator,
         $attributeFilter,
+        $mediaStorer,
         StepExecution $stepExecution,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
@@ -190,6 +197,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
             ],
             'categories' => ['tshirt'],
         ])->willReturn($filteredData);
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
 
         $productModelUpdater->update($productModel, $filteredData);
 
@@ -326,6 +335,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelFilter,
         $objectDetacher,
         $attributeFilter,
+        $mediaStorer,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -336,6 +346,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $productModelFilter,
             $objectDetacher,
             $attributeFilter,
+            $mediaStorer,
             'root_product_model'
         );
 
@@ -358,6 +369,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelFilter,
         $objectDetacher,
         $attributeFilter,
+        $mediaStorer,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -368,6 +380,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $productModelFilter,
             $objectDetacher,
             $attributeFilter,
+            $mediaStorer,
             'sub_product_model'
         );
 

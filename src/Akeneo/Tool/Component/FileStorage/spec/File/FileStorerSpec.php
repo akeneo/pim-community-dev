@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -119,6 +120,13 @@ class FileStorerSpec extends ObjectBehavior
                 sprintf('Unable to move the file "%s" to the "destination" filesystem.', __FILE__)
             )
         )->during('store', [$rawFile, 'destination']);
+    }
+
+    function it_throws_an_exception_if_the_input_file_is_invalid()
+    {
+        $rawFile = new \SplFileInfo('/that/does/not/exist.jpg');
+
+        $this->shouldThrow(InvalidFile::class)->during('store', [$rawFile, 'destination']);
     }
 }
 

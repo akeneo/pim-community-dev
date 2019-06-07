@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
@@ -28,6 +29,7 @@ interface FileStorerInterface
      *
      * @throws FileTransferException
      * @throws FileRemovalException
+     * @throws InvalidFile
      * @throws \Exception
      *
      * @return FileInfoInterface

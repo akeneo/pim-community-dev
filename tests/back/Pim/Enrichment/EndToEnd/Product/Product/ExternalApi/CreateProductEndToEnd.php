@@ -238,9 +238,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $files = [
-            'akeneo_pdf' => $this->getFixturePath('akeneo.pdf'),
-            'akeneo_jpg' => $this->getFixturePath('akeneo.jpg'),
-            'ziggy_png'  => $this->getFixturePath('ziggy.png'),
+            'akeneo_pdf' => $this->getFileInfoKey($this->getFixturePath('akeneo.pdf')),
+            'akeneo_jpg' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
+            'ziggy_png'  => $this->getFileInfoKey($this->getFixturePath('ziggy.png')),
         ];
 
         $data =
