@@ -45,7 +45,10 @@
           "locale":null,
           "data": {
             "filePath": "/a/b/c/philou.png",
-            "originalFilename": "philou.png"
+            "originalFilename": "philou.png",
+            "size": 5396,
+            "mimeType": "image/png",
+            "extension": "png"
           }
         }
       ]

@@ -153,6 +153,9 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool\Component',
 
+        // TODO: imports should be decoupled
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer',
+
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
 

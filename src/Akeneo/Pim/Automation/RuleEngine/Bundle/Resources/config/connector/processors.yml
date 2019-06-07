@@ -15,6 +15,8 @@ services:
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '%akeneo_rule_engine.model.rule_definition.class%'
             - '%akeneo_rule_engine.model.rule.class%'
 

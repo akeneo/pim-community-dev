@@ -42,6 +42,9 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Akeneo\Pim\Enrichment\Component\FileStorage',
+        'Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException',
+        'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
 
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',

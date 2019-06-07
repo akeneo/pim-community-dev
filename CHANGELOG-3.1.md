@@ -1,5 +1,13 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8415: back-port #10002 to handle uploads on a multi-frontend saas instance
+
+## BC breaks
+
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor` to add `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` and `Akeneo\Tool\Component\FileStorage\File\FileStorerInterface`
+
 # 3.1.5 (2019-05-28)
 
 ## Bug fixes

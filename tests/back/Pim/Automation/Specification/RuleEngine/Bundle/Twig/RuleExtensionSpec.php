@@ -3,6 +3,8 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\Twig;
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
@@ -16,9 +18,16 @@ class RuleExtensionSpec extends ObjectBehavior
         PresenterRegistryInterface $presenterRegistry,
         LocaleResolver $localeResolver,
         AttributeRepository $attributeRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        FileInfoRepositoryInterface $fileInfoRepository
     ) {
-        $this->beConstructedWith($presenterRegistry, $localeResolver, $attributeRepository, $translator);
+        $this->beConstructedWith(
+            $presenterRegistry,
+            $localeResolver,
+            $attributeRepository,
+            $translator,
+            $fileInfoRepository
+        );
     }
 
     function it_is_a_twig_extension()
@@ -72,12 +81,17 @@ class RuleExtensionSpec extends ObjectBehavior
 
     function it_presents_rule_action_with_filepath_value(
         $presenterRegistry,
+        $fileInfoRepository,
         PresenterInterface $presenter,
-        AttributeRepository $attributeRepository
+        AttributeRepository $attributeRepository,
+        FileInfoInterface $fileInfo
     ) {
         $presenterRegistry->getPresenterByFieldCode('media_attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('media_attribute_code')->willReturn($presenter);
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
+
+        $fileInfoRepository->findOneByIdentifier('/tmp/akeneo.jpg')->willReturn($fileInfo);
+        $fileInfo->getOriginalFilename()->willReturn('akeneo.jpg');
 
         $this->presentRuleActionValue('/tmp/akeneo.jpg', 'media_attribute_code')
             ->shouldReturn(sprintf('<i class="icon-file"></i> %s', 'akeneo.jpg'));

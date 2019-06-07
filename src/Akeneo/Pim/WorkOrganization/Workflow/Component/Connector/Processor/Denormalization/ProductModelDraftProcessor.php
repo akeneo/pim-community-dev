@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
@@ -60,6 +61,9 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
     /** @var AttributeFilterInterface */
     private $productModelAttributeFilter;
 
+    /** @var MediaStorer */
+    private $mediaStorer;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
@@ -68,7 +72,8 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
         DraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         TokenStorageInterface $tokenStorage,
-        AttributeFilterInterface $productModelAttributeFilter
+        AttributeFilterInterface $productModelAttributeFilter,
+        MediaStorer $mediaStorer
     ) {
         parent::__construct($repository);
 
@@ -79,6 +84,7 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
         $this->productDraftRepo = $productDraftRepo;
         $this->tokenStorage = $tokenStorage;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
+        $this->mediaStorer = $mediaStorer;
     }
 
     /**
@@ -97,6 +103,8 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
 
         try {
             $item = $this->productModelAttributeFilter->filter($item);
+            $item['values'] = $this->mediaStorer->store($item['values']);
+
             $this->updater->update($productModel, $item);
         } catch (\Exception $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -60,6 +62,12 @@ class EditActionTest extends ControllerIntegrationTestCase
     /** @var WebClientHelper */
     private $webClientHelper;
 
+    /** @var InMemoryFileExists */
+    private $fileExists;
+
+    /** @var InMemoryFindFileDataByFileKey */
+    private $findFileData;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -68,6 +76,8 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->fileExists = $this->get('akeneo_referenceentity.infrastructure.persistence.query.file_exists');
+        $this->findFileData = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key');
     }
 
     /**
@@ -144,6 +154,15 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_file_value()
     {
+        $this->fileExists->save('/a/b/c/philou.png');
+        $fileData = [
+            'originalFilename' => 'philou.png',
+            'filePath' => '/a/b/c/philou.png',
+            'size' => 1000,
+            'mimeType' => 'image/png',
+            'extension' => 'png',
+        ];
+        $this->findFileData->save($fileData);
         $this->webClientHelper->assertRequest($this->client, 'Record/Edit/image_value_ok.json');
     }
 
@@ -229,8 +248,8 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $imageInfo = new FileInfo();
         $imageInfo
-            ->setOriginalFilename('image_1.jpg')
-            ->setKey('test/image_1.jpg');
+            ->setOriginalFilename('philou.png')
+            ->setKey('/a/b/c/philou.png');
         $image = Value::create(
             AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
             ChannelReference::noReference(),
