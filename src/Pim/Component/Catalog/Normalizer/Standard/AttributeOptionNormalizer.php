@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -12,6 +13,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeOptionNormalizer implements NormalizerInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $localeRepository;
+
+    public function __construct(IdentifiableObjectRepositoryInterface $localeRepository = null)
+    {
+        $this->localeRepository = $localeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -49,6 +58,14 @@ class AttributeOptionNormalizer implements NormalizerInterface
 
         foreach ($attributeOption->getOptionValues() as $translation) {
             if (empty($locales) || in_array($translation->getLocale(), $locales)) {
+                // TODO merge: remove null in master
+                if (null !== $this->localeRepository) {
+                    $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
+                    if (null === $locale || !$locale->isActivated()) {
+                        continue;
+                    }
+                }
+
                 $labels[$translation->getLocale()] = $translation->getValue();
             }
         }

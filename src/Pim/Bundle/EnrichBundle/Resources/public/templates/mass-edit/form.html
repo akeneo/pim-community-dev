@@ -65,7 +65,7 @@
 
     <div class="AknFullPage-bottom">
         <div class="AknSteps">
-            <div class="AknSteps-step<% if (currentStepNumber > 0) { %> AknSteps-step--checked<% } %>">
+            <div class="AknSteps-step AknSteps-step--checked">
                 <div class="AknSteps-stepCircle"></div>
                 Select action
             </div>
@@ -77,11 +77,11 @@
                 <div class="AknSteps-stepCircle"></div>
             </div>
             <% } else { %>
-            <div class="AknSteps-step<% if (currentStepNumber > 1) { %> AknSteps-step--checked<% } %>">
+            <div class="AknSteps-step<% if (currentStepNumber >= 1) { %> AknSteps-step--checked<% } %>">
                 <div class="AknSteps-stepCircle"></div>
                 <%- label %>
             </div>
-            <div class="AknSteps-step<% if (currentStepNumber > 2) { %> AknSteps-step--checked<% } %>">
+            <div class="AknSteps-step<% if (currentStepNumber >= 2) { %> AknSteps-step--checked<% } %>">
                 <div class="AknSteps-stepCircle"></div>
                 <%- confirmLabel %>
             </div>

@@ -2,18 +2,13 @@
 
 namespace spec\Akeneo\Bundle\BatchQueueBundle\Queue;
 
-use Akeneo\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
 use Akeneo\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue;
 use Akeneo\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 class DatabaseJobExecutionQueueSpec extends ObjectBehavior
 {
@@ -44,10 +39,22 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
         JobExecutionMessage $jobExecutionMessage
     ) {
         $jobExecutionMessageRepository->getAvailableJobExecutionMessage()->willReturn($jobExecutionMessage);
+        $jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes(Argument::any())->shouldNotBeCalled();
         $jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage)->willReturn(true);
 
         $jobExecutionMessage->consumedBy('consumer_name')->shouldBeCalled();
 
         $this->consume('consumer_name')->shouldReturn($jobExecutionMessage);
+    }
+
+    function it_filters_the_job_execution_to_consume(
+        $jobExecutionMessageRepository,
+        JobExecutionMessage $jobExecutionMessage
+    ) {
+        $jobExecutionMessageRepository->getAvailableJobExecutionMessage()->shouldNotBeCalled();
+        $jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes(['csv_export_product'])->willReturn($jobExecutionMessage);
+        $jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage)->willReturn(true);
+        $jobExecutionMessage->consumedBy('consumer_name')->shouldBeCalled();
+        $this->consume('consumer_name', ['csv_export_product'])->shouldReturn($jobExecutionMessage);
     }
 }
