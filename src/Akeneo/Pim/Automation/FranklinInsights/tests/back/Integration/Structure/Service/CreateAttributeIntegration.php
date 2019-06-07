@@ -40,15 +40,16 @@ class CreateAttributeIntegration extends TestCase
             new AttributeType($type)
         );
         $query = <<<SQL
-SELECT code FROM pim_catalog_attribute WHERE code = :CODE
+SELECT code, attribute_type FROM pim_catalog_attribute WHERE code = :code
 SQL;
         $statement = $this->dbal->executeQuery($query, [
-            'CODE' => $code
+            'code' => $code
         ]);
 
         $result = $statement->fetch();
 
         Assert::assertSame($expectedCode, $result['code']);
+        Assert::assertSame($type, $result['attribute_type']);
     }
 
     public function test_it_creates_an_attribute_when_attribute_code_already_exists(): void
