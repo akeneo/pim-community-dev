@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7942: Fix tooltip minimal width
+
 # 2.3.47 (2019-06-03)
 
 ## Technical improvement
