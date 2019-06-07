@@ -20,19 +20,23 @@ class State extends BaseState {
    * {@inheritdoc}
    */
   public hasModelChanged(): boolean {
-    if (this.state !== JSON.stringify(this.getFormData())) {
-      return true;
-    }
+    return JSON.stringify(this.emptyToNullValues(JSON.parse(this.state))) !==
+      JSON.stringify(this.emptyToNullValues(this.getFormData()));
+  }
 
-    const formData = this.getFormData();
-    for (let property in formData.mapping) {
-      const attributeMapping = formData.mapping[property];
-      if (attributeMapping.status === 0 && attributeMapping.attribute !== null) {
-        return true;
-      }
-    }
+  /**
+   * Transform '' values to null
+   *
+   * @param object: any
+   *
+   * @returns any
+   */
+  private emptyToNullValues(object: any): any {
+    return Object.keys(object).reduce((accumulator: any, identifier: string) => {
+      accumulator[identifier] = object[identifier] === '' ? null : object[identifier];
 
-    return false;
+      return accumulator;
+    }, {});
   }
 }
 

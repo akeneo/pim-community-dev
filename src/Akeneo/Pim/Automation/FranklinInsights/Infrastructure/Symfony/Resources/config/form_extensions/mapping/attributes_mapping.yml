@@ -40,7 +40,7 @@ extensions:
             url: akeneo_franklin_insights_attributes_mapping_update
 
     akeneo-franklin-insights-settings-attributes-mapping-index-state:
-        module: pim/form/common/state
+        module: akeneo/franklin-insights/view/settings/attributes-mapping/state
         parent: akeneo-franklin-insights-settings-attributes-mapping-edit
         targetZone: state
         position: 900
