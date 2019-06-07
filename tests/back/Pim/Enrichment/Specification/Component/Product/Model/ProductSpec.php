@@ -511,7 +511,6 @@ class ProductSpec extends ObjectBehavior
         $this->setId(42);
         $promotions->getCode()->willReturn('promotions');
 
-        $promotions->addProduct($this)->shouldBeCalled();
         $this->addGroup($promotions);
 
         $this->popEvents()->shouldBeLike([new ProductAddedToGroup('my_identifier', 'promotions')]);

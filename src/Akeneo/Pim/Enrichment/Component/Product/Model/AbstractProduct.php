@@ -608,7 +608,6 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
-            $group->addProduct($this);
             $this->events[] = new ProductAddedToGroup($this->identifier, $group->getCode());
         }
 
