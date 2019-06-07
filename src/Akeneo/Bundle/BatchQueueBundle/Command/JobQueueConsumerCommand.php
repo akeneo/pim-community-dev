@@ -49,7 +49,9 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
         $this
             ->setName(self::COMMAND_NAME)
             ->setDescription('Launch a daemon that will consume job execution messages and launch the associated job execution in backgrounds')
-            ->addOption('run-once', null, InputOption::VALUE_NONE, 'Launch only one job execution and stop the daemon once the job execution is finished');
+            ->addOption('run-once', null, InputOption::VALUE_NONE, 'Launch only one job execution and stop the daemon once the job execution is finished')
+            ->addOption('job', 'j', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Job instance codes that should be consumed')
+        ;
     }
 
     /**
@@ -57,6 +59,8 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $jobInstanceCodes = $input->getOption('job');
+
         $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
 
         $consumerName = Uuid::uuid4();
@@ -67,7 +71,7 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
 
         do {
             try {
-                $jobExecutionMessage = $this->getQueue()->consume($consumerName->toString());
+                $jobExecutionMessage = $this->getQueue()->consume($consumerName->toString(), $jobInstanceCodes);
 
                 $arguments = array_merge([$pathFinder->find(), $console, 'akeneo:batch:job' ], $this->getArguments($jobExecutionMessage));
                 $process = new Process($arguments);

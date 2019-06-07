@@ -9,7 +9,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
@@ -73,7 +72,7 @@ class ProductModelController
     /** @var NormalizerInterface */
     private $constraintViolationNormalizer;
 
-    /** @var EntityWithFamilyVariantNormalizer */
+    /** @var NormalizerInterface */
     private $entityWithFamilyVariantNormalizer;
 
     /** @var SimpleFactoryInterface */
@@ -103,7 +102,7 @@ class ProductModelController
      * @param ValidatorInterface                $validator
      * @param SaverInterface                    $productModelSaver
      * @param NormalizerInterface               $constraintViolationNormalizer
-     * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
+     * @param NormalizerInterface               $entityWithFamilyVariantNormalizer
      * @param SimpleFactoryInterface            $productModelFactory
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
@@ -122,7 +121,7 @@ class ProductModelController
         ValidatorInterface $validator,
         SaverInterface $productModelSaver,
         NormalizerInterface $constraintViolationNormalizer,
-        EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
+        NormalizerInterface $entityWithFamilyVariantNormalizer,
         SimpleFactoryInterface $productModelFactory,
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
