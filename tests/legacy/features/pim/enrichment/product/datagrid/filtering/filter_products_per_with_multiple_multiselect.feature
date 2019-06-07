@@ -19,14 +19,14 @@ Feature: Filter products with multiples multiselect filters
     And the following products:
       | sku    | family    | company   | color |
       | BOOK   | library   |           |       |
-      | MUG-1  | furniture | Canonical | Green |
-      | MUG-2  | furniture | Suze      | Green |
-      | MUG-3  | furniture | Suze      | Green |
-      | MUG-4  | furniture | Suze      | Green |
-      | MUG-5  | furniture |           | Green |
-      | POST-1 | furniture | Suze      |       |
-      | POST-2 | furniture | Suze      |       |
-      | POST-3 | furniture | RedHat    |       |
+      | MUG-1  | furniture | canonical | green |
+      | MUG-2  | furniture | suze      | green |
+      | MUG-3  | furniture | suze      | green |
+      | MUG-4  | furniture | suze      | green |
+      | MUG-5  | furniture |           | green |
+      | POST-1 | furniture | suze      |       |
+      | POST-2 | furniture | suze      |       |
+      | POST-3 | furniture | redHat    |       |
     And I am logged in as "Mary"
     And I am on the products grid
 
