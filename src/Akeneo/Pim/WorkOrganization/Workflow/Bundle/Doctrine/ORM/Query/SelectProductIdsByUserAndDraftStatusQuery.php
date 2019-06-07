@@ -45,7 +45,7 @@ SQL;
 
         $productIds = [];
         foreach ($resultRows as $resultRow) {
-            $productIds[] = $resultRow['product_id'];
+            $productIds[] = (int) $resultRow['product_id'];
         }
 
         return $productIds;
