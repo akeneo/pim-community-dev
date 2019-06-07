@@ -21,10 +21,10 @@ use Webmozart\Assert\Assert;
  */
 class Prefix
 {
-    /** @var string */
+    /** @var ?string */
     private $prefix;
 
-    private function __construct(string $prefix)
+    private function __construct(?string $prefix)
     {
         $this->prefix = $prefix;
     }
@@ -36,7 +36,7 @@ class Prefix
         return new self($prefix);
     }
 
-    public function normalize(): string
+    public function normalize(): ?string
     {
         return $this->prefix;
     }

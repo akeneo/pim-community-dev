@@ -21,10 +21,10 @@ use Webmozart\Assert\Assert;
  */
 class Suffix
 {
-    /** @var string */
+    /** @var ?string */
     private $suffix;
 
-    private function __construct(string $suffix)
+    private function __construct(?string $suffix)
     {
         $this->suffix = $suffix;
     }
@@ -36,7 +36,7 @@ class Suffix
         return new self($suffix);
     }
 
-    public function normalize(): string
+    public function normalize(): ?string
     {
         return $this->suffix;
     }
