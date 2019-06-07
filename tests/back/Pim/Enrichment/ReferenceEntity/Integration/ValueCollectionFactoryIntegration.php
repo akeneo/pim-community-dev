@@ -71,7 +71,6 @@ final class ValueCollectionFactoryIntegration extends TestCase
         PhpUnitAssert::assertEquals($valueCollection->getByKey('multipleColor-<all_channels>-<all_locales>')->getData(), ['Blue', 'Black']);
     }
 
-
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
