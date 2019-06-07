@@ -3,11 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductEvents;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
@@ -100,14 +97,6 @@ class ProductBuilder implements ProductBuilderInterface
         ?string $scopeCode,
         $data
     ) :ValueInterface {
-        // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType() && null !== $data && $entityWithValues instanceof ProductInterface) {
-            $identifierValue = ScalarValue::value($attribute->getCode(), $data);
-            $entityWithValues->setIdentifier($identifierValue);
-
-            return $identifierValue;
-        }
-
         return $this->entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
     }
 }
