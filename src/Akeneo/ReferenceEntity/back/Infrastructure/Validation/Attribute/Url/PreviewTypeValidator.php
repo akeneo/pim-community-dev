@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType as PreviewTypeModel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType as PreviewTypeModel;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
