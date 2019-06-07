@@ -514,16 +514,24 @@ abstract class AbstractProduct implements ProductInterface
             return $group->getCode();
         })->toArray();
 
-        $removedGroupCodes = array_diff($formerGroupCodes, $newGroupCodes);
-        $addedGroupCodes = array_diff($newGroupCodes, $formerGroupCodes);
-        foreach ($removedGroupCodes as $groupCode) {
-            $this->events[] = new ProductRemovedFromGroup($this->identifier, $groupCode);
-        }
-        foreach ($addedGroupCodes as $groupCode) {
-            $this->events[] = new ProductAddedToGroup($this->identifier, $groupCode);
-        }
+        $formerGroups = $this->getGroups();
+        $groupsToRemove = $formerGroups->filter(
+            function (GroupInterface $formerGroup) use ($groups) {
+                return !$groups->contains($formerGroup);
+            }
+        );
+        $groupsToAdd = $groups->filter(
+            function (GroupInterface $newGroup) use ($formerGroups) {
+                return !$formerGroups->contains($newGroup);
+            }
+        );
 
-        $this->groups = $groups;
+        foreach ($groupsToRemove as $groupToRemove) {
+            $this->removeGroup($groupToRemove);
+        }
+        foreach ($groupsToAdd as $groupToAdd) {
+            $this->addGroup($groupToAdd);
+        }
     }
 
     /**

@@ -2,11 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Sets the group field, for now, it handles groups
@@ -62,13 +64,21 @@ class GroupFieldSetter extends AbstractFieldSetter
             }
         }
 
-        $oldGroups = $product->getGroups();
-        foreach ($oldGroups as $group) {
-            $product->removeGroup($group);
-        }
+        $formerGroups = $product->getGroups();
+        $newGroups = new ArrayCollection($groups);
 
-        foreach ($groups as $group) {
-            $product->addGroup($group);
+        $groupsToRemove = $formerGroups->filter(function (GroupInterface $formerGroup) use ($newGroups) {
+            return !$newGroups->contains($formerGroup);
+        });
+        $groupsToAdd = $newGroups->filter(function (GroupInterface $newGroup) use ($formerGroups) {
+            return !$formerGroups->contains($newGroup);
+        });
+
+        foreach ($groupsToRemove as $groupToRemove) {
+            $product->removeGroup($groupToRemove);
+        }
+        foreach ($groupsToAdd as $groupToAdd) {
+            $product->addGroup($groupToAdd);
         }
     }
 
