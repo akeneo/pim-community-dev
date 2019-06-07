@@ -40,10 +40,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = array_values(array_intersect(
-                                $value,
-                                $optionCodes[$attributeCode] ?? []
-                            ));
+                            $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $optionCodes[$attributeCode] ?? []);
                         }
                     }
                 }
@@ -67,7 +64,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
         $caseInsensitiveOptionsCodes = [];
         foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
             foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
-                $caseInsensitiveOptionsCodes[$attributeCode][$optionCodeForThisAttribute] = $optionCodeForThisAttribute;
+                $caseInsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
             }
         }
 
@@ -98,5 +95,22 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
         }
 
         return $uniqueOptionCodes;
+    }
+
+    private function arrayIntersectCaseInsensitive(array $givenOptionCodes, array $existentOptionCodesIndexedInsensitive): array
+    {
+        $result = [];
+
+        if (empty($existentOptionCodesIndexedInsensitive)) {
+            return [];
+        }
+
+        foreach ($givenOptionCodes as $optionCode) {
+            if (isset($existentOptionCodesIndexedInsensitive[strtolower($optionCode ?? '')])) {
+                $result[] = $existentOptionCodesIndexedInsensitive[strtolower($optionCode)];
+            }
+        }
+
+        return $result;
     }
 }

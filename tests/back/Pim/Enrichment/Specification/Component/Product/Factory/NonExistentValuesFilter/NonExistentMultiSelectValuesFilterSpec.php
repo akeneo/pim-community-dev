@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentMultiSelectValuesFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentSimpleSelectValuesFilter;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionCodes;
@@ -76,7 +77,7 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
 
         $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->willReturn(
             [
-                'a_multi_select' => ['MiChel', 'fraises']
+                'a_multi_select' => ['michel', 'fraises']
             ]
         );
 
@@ -90,7 +91,7 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['MiChel'],
+                                    'en_US' => ['michel'],
                                 ],
                                 'tablet' => [
                                     'en_US' => [],
