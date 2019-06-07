@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductMod
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductNormalizer;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,14 +42,14 @@ class GetProductsLinkedToARecordAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var LinkedProductNormalizer */
+    /** @var LinkedProductsNormalizer */
     private $linkedProductNormalizer;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         FetchProductAndProductModelRows $fetchProductAndProductModelRows,
         ValidatorInterface $validator,
-        LinkedProductNormalizer $linkedProductNormalizer
+        LinkedProductsNormalizer $linkedProductNormalizer
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->fetchProductAndProductModelRows = $fetchProductAndProductModelRows;
@@ -63,7 +63,7 @@ class GetProductsLinkedToARecordAction
         $localeCode = $request->query->get('locale');
 
         $rows = $this->findProductAndProductModelsIdentifiers($recordCode, $attributeCode, $localeCode, $channelCode);
-        $normalizedProducts = $this->normalizeProducts($rows, $localeCode);
+        $normalizedProducts = $this->linkedProductNormalizer->normalize($rows, $localeCode);
 
         return new JsonResponse(['items' => $normalizedProducts, 'total_count' => $rows->totalCount()]);
     }
@@ -104,18 +104,5 @@ class GetProductsLinkedToARecordAction
                 'Invalid query parameters sent to fetch data in the product and product model datagrid.'
             );
         }
-    }
-
-    private function normalizeProducts(Rows $rows, string $localeCode): array
-    {
-        $normalizedProducts = [];
-        foreach ($rows->rows() as $index => $row) {
-            $normalizedProducts[] = $this->linkedProductNormalizer->normalize($row, $localeCode);
-            if (self::MAX_RESULTS === $index + 1) {
-                break;
-            }
-        }
-
-        return $normalizedProducts;
     }
 }

@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\Integration;
+namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\EndToEnd;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
@@ -21,7 +21,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -34,7 +33,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @author    Anael Chardan <anael.chardan@akeneo.com>
+ * @author    Samir Boulil
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
 final class GetProductsLinkedToARecordActionIntegration extends TestCase
@@ -54,6 +53,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
 
     /**
      * @test
+     * @group critical
      */
     public function it_finds_the_products_linked_to_a_specific_record_for_an_attribute()
     {
@@ -115,6 +115,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
             ->withProductFamily('accessories')
             ->withLinkedProductModel('model-braided-hat')
             ->withLinkedProduct('1111111304');
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     private function withReferenceEntity(string $identifier): self

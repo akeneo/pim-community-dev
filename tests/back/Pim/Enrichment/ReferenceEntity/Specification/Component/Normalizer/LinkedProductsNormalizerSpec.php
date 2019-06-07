@@ -6,12 +6,13 @@ namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normaliz
 
 use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductNormalizer;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer;
 use PhpSpec\ObjectBehavior;
 
 
-class LinkedProductNormalizerSpec extends ObjectBehavior
+class LinkedProductsNormalizerSpec extends ObjectBehavior
 {
     function let(ImageNormalizer $imageNormalizer)
     {
@@ -20,7 +21,7 @@ class LinkedProductNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(LinkedProductNormalizer::class);
+        $this->shouldBeAnInstanceOf(LinkedProductsNormalizer::class);
     }
 
     function it_normalizes_a_product_row(ImageNormalizer $imageNormalizer)
@@ -35,15 +36,17 @@ class LinkedProductNormalizerSpec extends ObjectBehavior
 
         $imageNormalizer->normalize($image, $localeCode)->willReturn(['image' => 'info']);
 
-        $this->normalize($row, $localeCode)->shouldReturn(
+        $this->normalize(new Rows([$row], 15), $localeCode)->shouldReturn(
             [
-                'id'                             => $technicalId,
-                'identifier'                     => $productIdentifier,
-                'label'                          => $label,
-                'document_type'                  => 'product',
-                'image'                          => ['image' => 'info'],
-                'completeness'                   => $completeness,
-                'variant_product_completenesses' => null
+                [
+                    'id'                             => $technicalId,
+                    'identifier'                     => $productIdentifier,
+                    'label'                          => $label,
+                    'document_type'                  => 'product',
+                    'image'                          => ['image' => 'info'],
+                    'completeness'                   => $completeness,
+                    'variant_product_completenesses' => null
+                ]
             ]
         );
     }
@@ -60,15 +63,17 @@ class LinkedProductNormalizerSpec extends ObjectBehavior
 
         $imageNormalizer->normalize($image, $localeCode)->willReturn(['image' => 'info']);
 
-        $this->normalize($row, $localeCode)->shouldReturn(
+        $this->normalize(new Rows([$row], 10), $localeCode)->shouldReturn(
             [
-                'id'                             => $technicalId,
-                'identifier'                     => $productIdentifier,
-                'label'                          => $label,
-                'document_type'                  => 'product_model',
-                'image'                          => ['image' => 'info'],
-                'completeness'                   => null,
-                'variant_product_completenesses' => ['completeChildren' => 1, 'totalChildren' => 2]
+                [
+                    'id'                             => $technicalId,
+                    'identifier'                     => $productIdentifier,
+                    'label'                          => $label,
+                    'document_type'                  => 'product_model',
+                    'image'                          => ['image' => 'info'],
+                    'completeness'                   => null,
+                    'variant_product_completenesses' => ['completeChildren' => 1, 'totalChildren' => 2]
+                ]
             ]
         );
     }

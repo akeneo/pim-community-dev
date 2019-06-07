@@ -19,6 +19,6 @@ services:
             - '@pimee.reference_entity.enrichment.productnormalizer.linked_product_normalizer'
 
     pimee.reference_entity.enrichment.productnormalizer.linked_product_normalizer:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductNormalizer
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer
         arguments:
             - '@pim_enrich.normalizer.image'

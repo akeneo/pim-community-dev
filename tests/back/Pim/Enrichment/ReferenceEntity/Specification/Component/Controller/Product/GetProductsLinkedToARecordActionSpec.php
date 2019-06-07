@@ -8,19 +8,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductMod
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Controller\Product\GetProductsLinkedToARecordAction;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductNormalizer;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
 {
@@ -28,7 +27,7 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         FetchProductAndProductModelRows $fetchProductAndProductModelRows,
         ValidatorInterface $validator,
-        LinkedProductNormalizer $linkedProductNormalizer
+        LinkedProductsNormalizer $linkedProductNormalizer
     ) {
         $this->beConstructedWith($pqbFactory, $fetchProductAndProductModelRows, $validator, $linkedProductNormalizer);
     }
@@ -43,7 +42,7 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
         ProductQueryBuilderInterface $pqb,
         FetchProductAndProductModelRows $fetchProductAndProductModelRows,
         ValidatorInterface $validator,
-        LinkedProductNormalizer $linkedProductNormalizer
+        LinkedProductsNormalizer $linkedProductNormalizer
     ) {
         $recordCode = 'kartell';
         $attributeCode = 'brand';
@@ -57,37 +56,12 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
         $validator->validate(Argument::type(FetchProductAndProductModelRowsParameters::class))
             ->willReturn(new ConstraintViolationList());
 
+        $rows = $this->get30Rows();
         $fetchProductAndProductModelRows->__invoke(Argument::type(FetchProductAndProductModelRowsParameters::class))
-            ->willReturn($this->get30Rows());
-        $linkedProductNormalizer->normalize(Argument::type(Row::class), $localeCode)->shouldBeCalledTimes(20)->willReturn(['product_info']);
+                                        ->willReturn($rows);
+        $linkedProductNormalizer->normalize($rows, $localeCode)->willReturn(['product_info']);
 
         $this->__invoke(new Request(['channel' => $channel, 'locale' => $localeCode]), $recordCode, $attributeCode);
-    }
-
-    function it_returns_no_products(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        ProductQueryBuilderInterface $pqb,
-        FetchProductAndProductModelRows $fetchProductAndProductModelRows,
-        ValidatorInterface $validator,
-        LinkedProductNormalizer $linkedProductNormalizer
-    ) {
-        $recordCode = 'kartell';
-        $attributeCode = 'brand';
-        $locale = 'en_US';
-        $channel = 'ecommerce';
-
-        $pqbFactory->create(['default_locale' => $locale, 'default_scope' => $channel, 'limit' => 20])->willReturn($pqb);
-        $pqb->addFilter($attributeCode, Operators::IN_LIST, [$recordCode]);
-        $pqb->addSorter('updated', 'DESC');
-
-        $validator->validate(Argument::type(FetchProductAndProductModelRowsParameters::class))
-                  ->willReturn(new ConstraintViolationList());
-
-        $fetchProductAndProductModelRows->__invoke(Argument::type(FetchProductAndProductModelRowsParameters::class))
-                                        ->willReturn($this->emptyResult());
-        $linkedProductNormalizer->normalize(Argument::type(Row::class), $locale)->shouldNotBeCalled();
-
-        $this->__invoke(new Request(['channel' => $channel, 'locale' => $locale]), $recordCode, $attributeCode);
     }
 
     function it_throws_if_the_query_is_invalid(
@@ -147,10 +121,5 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
     private function violation(): ConstraintViolationList
     {
         return new ConstraintViolationList([new ConstraintViolation('', '', [], '', '', '')]);
-    }
-
-    private function emptyResult()
-    {
-        return new Rows([], 30);
     }
 }

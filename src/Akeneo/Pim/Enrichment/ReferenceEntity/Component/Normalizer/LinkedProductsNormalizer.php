@@ -15,12 +15,13 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer;
 
 use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class LinkedProductNormalizer
+class LinkedProductsNormalizer
 {
     /** @var ImageNormalizer */
     private $imageNormalizer;
@@ -30,18 +31,22 @@ class LinkedProductNormalizer
         $this->imageNormalizer = $imageNormalizer;
     }
 
-    public function normalize(Row $row, string $localeCode): array
+    public function normalize(Rows $rows, string $localeCode): array
     {
-        $normalizedProducts = [];
-        $normalizedProducts['id'] = $row->technicalId();
-        $normalizedProducts['identifier'] = $row->identifier();
-        $normalizedProducts['label'] = $row->label();
-        $normalizedProducts['document_type'] = $row->documentType();
-        $normalizedProducts['image'] = $this->imageNormalizer->normalize($row->image(), $localeCode);
-        $normalizedProducts['completeness'] = $row->completeness();
-        $normalizedProducts['variant_product_completenesses'] = $this->getChildrenCompleteness($row);
-
-        return $normalizedProducts;
+        return array_map(
+            function (Row $row) use ($localeCode) {
+                return [
+                    'id'                             => $row->technicalId(),
+                    'identifier'                     => $row->identifier(),
+                    'label'                          => $row->label(),
+                    'document_type'                  => $row->documentType(),
+                    'image'                          => $this->imageNormalizer->normalize($row->image(), $localeCode),
+                    'completeness'                   => $row->completeness(),
+                    'variant_product_completenesses' => $this->getChildrenCompleteness($row),
+                ];
+            },
+            $rows->rows()
+        );
     }
 
     private function getChildrenCompleteness(Row $row): ?array
@@ -53,7 +58,7 @@ class LinkedProductNormalizer
         $childrenCompleteness = $row->childrenCompleteness();
         return [
             'completeChildren' => $childrenCompleteness['complete'],
-            'totalChildren' => $childrenCompleteness['total']
+            'totalChildren'    => $childrenCompleteness['total']
         ];
     }
 }
