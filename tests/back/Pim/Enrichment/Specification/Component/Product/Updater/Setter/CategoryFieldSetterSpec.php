@@ -2,15 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class CategoryFieldSetterSpec extends ObjectBehavior
 {
@@ -65,11 +66,39 @@ class CategoryFieldSetterSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('mug')->willReturn($mug);
         $categoryRepository->findOneByIdentifier('shirt')->willReturn($shirt);
 
-        $product->getCategories()->willReturn([$men]);
+        $product->getCategories()->willReturn(new ArrayCollection([$men->getWrappedObject()]));
 
         $product->removeCategory($men)->shouldBeCalled();
 
         $product->addCategory($mug)->shouldBeCalled();
+        $product->addCategory($shirt)->shouldBeCalled();
+
+        $this->setFieldData($product, 'categories', ['mug', 'shirt']);
+    }
+
+    function it_does_not_add_or_remove_categories_if_they_are_already_set(
+        $categoryRepository,
+        ProductInterface $product,
+        CategoryInterface $mug,
+        CategoryInterface $shirt,
+        CategoryInterface $men
+    ) {
+        $categoryRepository->findOneByIdentifier('mug')->willReturn($mug);
+        $categoryRepository->findOneByIdentifier('shirt')->willReturn($shirt);
+
+        $product->getCategories()->willReturn(
+            new ArrayCollection(
+                [
+                    $men->getWrappedObject(),
+                    $mug->getWrappedObject(),
+                ]
+            )
+        );
+
+        $product->removeCategory($men)->shouldBeCalled();
+        $product->removeCategory($mug)->shouldNotBeCalled();
+
+        $product->addCategory($mug)->shouldNotBeCalled();
         $product->addCategory($shirt)->shouldBeCalled();
 
         $this->setFieldData($product, 'categories', ['mug', 'shirt']);

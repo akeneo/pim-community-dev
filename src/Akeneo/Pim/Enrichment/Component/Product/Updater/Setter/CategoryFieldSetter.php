@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Sets the category field
@@ -47,7 +48,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
 
         $this->checkData($field, $data);
 
-        $categories = [];
+        $categories = new ArrayCollection();
         foreach ($data as $categoryCode) {
             $category = $this->getCategory($categoryCode);
 
@@ -60,16 +61,27 @@ class CategoryFieldSetter extends AbstractFieldSetter
                     $categoryCode
                 );
             }
-            $categories[] = $category;
+            $categories->add($category);
         }
 
-        $oldCategories = $entity->getCategories();
-        foreach ($oldCategories as $category) {
-            $entity->removeCategory($category);
-        }
+        $formerCategories = $entity->getCategories();
 
-        foreach ($categories as $category) {
-            $entity->addCategory($category);
+        $categoriesToAdd = $categories->filter(
+            function (CategoryInterface $category) use ($formerCategories) {
+                return !$formerCategories->contains($category);
+            }
+        );
+        $categoriesToRemove = $formerCategories->filter(
+            function (Categoryinterface $category) use ($categories) {
+                return !$categories->contains($category);
+            }
+        );
+
+        foreach ($categoriesToRemove as $categoryToRemove) {
+            $entity->removeCategory($categoryToRemove);
+        }
+        foreach ($categoriesToAdd as $categoryToAdd) {
+            $entity->addCategory($categoryToAdd);
         }
     }
 
