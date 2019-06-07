@@ -205,6 +205,19 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
+    function it_returns_an_error_when_preview_type_is_not_a_string()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'preview_type' => 10,
+        ];
+
+        $errors = $this->validate($attribute);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+
     function it_returns_an_error_when_prefix_is_not_a_string_or_null()
     {
         $attribute = [

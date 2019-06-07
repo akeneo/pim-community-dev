@@ -240,8 +240,22 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
             'preview_type' => null,
+        ];
+
+        $errors = $this->validate($attribute);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    function it_returns_an_error_when_preview_type_is_not_a_string()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'type' => 'url',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'preview_type' => 14,
         ];
 
         $errors = $this->validate($attribute);
