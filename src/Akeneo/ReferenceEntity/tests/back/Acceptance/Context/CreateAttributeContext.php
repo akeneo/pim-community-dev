@@ -549,8 +549,6 @@ class CreateAttributeContext implements Context
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['decimals_allowed'] = json_decode($attributeData['decimals_allowed']);
-        $attributeData['min_value'] = $attributeData['min_value'];
-        $attributeData['max_value'] = $attributeData['max_value'];
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
@@ -582,8 +580,66 @@ class CreateAttributeContext implements Context
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['decimals_allowed'] = json_decode($expected['decimals_allowed']);
-        $expected['min_value'] = $expected['min_value'];
-        $expected['max_value'] = $expected['max_value'];
+
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $actual = $attribute->normalize();
+        ksort($actual);
+        ksort($expected);
+
+        Assert::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @When /^the user creates an url attribute "([^"]*)" to the reference entity "([^"]*)" with:$/
+     */
+    public function theUserCreatesAnUrlAttributeToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    {
+        $attributeData = current($attributeData->getHash());
+
+        $attributeData['type'] = 'url';
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+        $attributeData['prefix'] = json_decode($attributeData['prefix']);
+        $attributeData['suffix'] = json_decode($attributeData['suffix']);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Then /^there is an url attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     */
+    public function thereIsAnUrlAttributeInTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $expected): void
+    {
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+
+        $expected = current($expected->getHash());
+        $expected['identifier'] = (string) $attributeIdentifier;
+        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['code'] = $attributeCode;
+        $expected['order'] = (int)$expected['order'];
+        $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
+        $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
+        $expected['labels'] = json_decode($expected['labels'], true);
+        $expected['prefix'] = json_decode($expected['prefix']);
+        $expected['suffix'] = json_decode($expected['suffix']);
 
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $actual = $attribute->normalize();
