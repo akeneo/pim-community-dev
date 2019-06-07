@@ -165,6 +165,8 @@ class DoctrineJobRepository implements JobRepositoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: to remove or mark as deprecated in 3.2x as it's not used anymore
      */
     public function findPurgeables($days)
     {
