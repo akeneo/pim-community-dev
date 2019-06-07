@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
  */
 class OptionAttribute extends AbstractAttribute
 {
-    private const ATTRIBUTE_TYPE = 'option';
+    public const ATTRIBUTE_TYPE = 'option';
 
     /** @var AttributeOption[] */
     private $attributeOptions = [];

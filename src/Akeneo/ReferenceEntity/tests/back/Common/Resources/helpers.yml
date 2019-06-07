@@ -19,3 +19,11 @@ services:
         class: Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchRecordIndexHelper
         arguments:
             - '@akeneo_referenceentity.client.record'
+
+    akeneoreference_entity.tests.helper.fixtures_loader:
+        class: Akeneo\ReferenceEntity\Common\Helper\FixturesLoader
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'
