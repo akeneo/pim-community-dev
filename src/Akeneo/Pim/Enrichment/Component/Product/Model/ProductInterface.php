@@ -80,8 +80,6 @@ interface ProductInterface extends
 
     /**
      * @param Collection $groups
-     *
-     * @deprecated use addGroup or removeGroup instead
      */
     public function setGroups(Collection $groups): void;
 
@@ -183,6 +181,13 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function setFamily(FamilyInterface $family = null);
+
+    /**
+     * Get family id
+     *
+     * @return int
+     */
+    public function getFamilyId();
 
     /**
      * @return ArrayCollection
