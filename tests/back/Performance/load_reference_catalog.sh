@@ -13,6 +13,8 @@ docker-compose exec -T fpm bin/console pim:install:db -e behat
 
 echo "Generates an API user for the benchmarks in test environment"
 
+docker-compose exec -T fpm bin/console pim:user:create -e behat -- admin admin test@example.com John Doe en_US
+
 CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
 export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
 export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
