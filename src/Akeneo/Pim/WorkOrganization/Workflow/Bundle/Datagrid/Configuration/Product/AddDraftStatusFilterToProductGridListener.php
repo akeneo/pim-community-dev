@@ -47,6 +47,5 @@ class AddDraftStatusFilterToProductGridListener
             ]
         ];
         $datagridConfiguration->offsetAddToArray(Configuration::FILTERS_KEY, $filters);
-
     }
 }
