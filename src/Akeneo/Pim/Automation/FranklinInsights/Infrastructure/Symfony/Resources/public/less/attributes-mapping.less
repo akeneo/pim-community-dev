@@ -66,15 +66,16 @@
             }
             .perfect-match {
                 &:before {
-                    content: url('/bundles/pimui/images/icon-checkwhite.svg');
+                    content: ' ';
                     width: 24px;
                     height: 24px;
-                    background-color: darken(@AknGreen, 5%);
                     border-radius: 12px;
                     margin-top: 8px;
                     position: absolute;
                     top: 0;
                     left: -30px;
+                    background: no-repeat url('/bundles/pimui/images/icon-checkwhite.svg') darken(@AknGreen, 5%) center center;
+                    background-size: 15px;
                 }
                 .select2-choice {
                     border: 1px solid darken(@AknGreen, 5%);
