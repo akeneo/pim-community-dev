@@ -170,6 +170,18 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
+    public function addOrReplaceValue(ValueInterface $value): void
+    {
+        $formerValue = $this->getValue($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+        if (null !== $formerValue) {
+            $this->removeValue($formerValue);
+        }
+        $this->addValue($value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addValue(ValueInterface $value): ProductModelInterface
     {
         $this->values->add($value);
