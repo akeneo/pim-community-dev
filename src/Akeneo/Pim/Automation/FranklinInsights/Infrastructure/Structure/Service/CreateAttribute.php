@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLa
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
@@ -69,6 +70,11 @@ class CreateAttribute implements CreateAttributeInterface
             'localizable' => false,
             'scopable' => false,
         ];
+
+        if (AttributeTypes::NUMBER === (string) $attributeType) {
+            $data['decimals_allowed'] = true;
+            $data['negative_allowed'] = true;
+        }
 
         /** @var AttributeInterface $attribute */
         $attribute = $this->factory->createAttribute((string) $attributeType);

@@ -29,24 +29,26 @@ class CreateAttributeIntegration extends TestCase
         $this->createAttributeService = $this->get('akeneo.pim.automation.franklin_insights.application.structure.service.create_attribute');
     }
 
-
-    public function test_it_creates_an_attribute(): void
+    /**
+     * @dataProvider provideAttributeCreation
+     */
+    public function test_it_creates_an_attribute($code, $label, $type, $expectedCode): void
     {
         $this->createAttributeService->create(
-            new AttributeCode('franklin_code'),
-            new AttributeLabel('franklin_label'),
-            new AttributeType(AttributeTypes::TEXT)
+            new AttributeCode($code),
+            new AttributeLabel($label),
+            new AttributeType($type)
         );
         $query = <<<SQL
 SELECT code FROM pim_catalog_attribute WHERE code = :CODE
 SQL;
         $statement = $this->dbal->executeQuery($query, [
-            'CODE' => 'franklin_code'
+            'CODE' => $code
         ]);
 
         $result = $statement->fetch();
 
-        Assert::assertSame('franklin_code', $result['code']);
+        Assert::assertSame($expectedCode, $result['code']);
     }
 
     public function test_it_creates_an_attribute_when_attribute_code_already_exists(): void
@@ -78,6 +80,18 @@ SQL;
         return $this->dbal->executeQuery($query, [
             'CODE' => $code
         ]);
+    }
+
+    public function provideAttributeCreation(): array
+    {
+        return [
+            ['franklin_code_text', 'franklin_label_text', AttributeTypes::TEXT, 'franklin_code_text'],
+            ['franklin_code_textarea', 'franklin_label_textarea', AttributeTypes::TEXTAREA, 'franklin_code_textarea'],
+            ['franklin_code_boolean', 'franklin_label_boolean', AttributeTypes::BOOLEAN, 'franklin_code_boolean'],
+            ['franklin_code_number', 'franklin_label_number', AttributeTypes::NUMBER, 'franklin_code_number'],
+            ['franklin_code_simple_select', 'franklin_label_simple_select', AttributeTypes::OPTION_SIMPLE_SELECT, 'franklin_code_simple_select'],
+            ['franklin_code_multi_select', 'franklin_label_multi_select', AttributeTypes::OPTION_MULTI_SELECT, 'franklin_code_multi_select'],
+        ];
     }
 
     /**
