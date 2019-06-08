@@ -14,18 +14,18 @@ pim_enrich:
     product:
       page_title: Produits
       page_subtitle: Édition en masse (1 produit)|Édition en masse (%count% produits)
-      title: Choisir une opération
+      title: Choisissez une opération
       subtitle: Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés
       confirm: Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir des produits
-        second: Choisir une opération
-        third: Configurer
-        fourth: Confirmer
+        second: Choisissez une opération
+        third: Configurez l'opération à effectuer
+        fourth: Confirmation
     change-status:
       label: Changer le statut
       description: Les produits sélectionnés vont être activés ou désactivés.
-      success_flash: Le statut des produits ont été changés
+      success_flash: Le statut du/des produit(s) a/ont été changé(s)
       launched_flash: L'action de masse "changement de statut" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     edit-common-attributes:
       label: Modifier des attributs
@@ -75,4 +75,4 @@ category:
   edit: Édition de la catégorie
   overview: Catégories
 tree:
-  edit: Editer l'arbre
+  edit: Modifier l'arboresence

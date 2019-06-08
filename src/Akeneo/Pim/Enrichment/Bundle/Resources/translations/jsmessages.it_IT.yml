@@ -14,17 +14,17 @@ flash:
       error: Si è verificato un errore durante la creazione della risposta.
 pim_enrich.entity.product:
   label: prodotto
-  uppercase_label: Prodotto
-  plural_label: Articoli
+  uppercase_label: Articolo
+  plural_label: Prodotti
   flash:
     update:
-      success: Prodotto aggiornato con successo.
+      success: Prodotto aggiornato correttamente.
       fail: Il prodotto non può essere aggiornato.
       fields_not_ready: "Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
       file_upload: Si è verificato un errore durante il caricamento del file
     delete:
-      success: Prodotto cancellato con successo.
+      success: Prodotto eliminato correttamente.
       fail: Il prodotto non può essere eliminato.
     create:
       success: Articolo creato con successo
@@ -41,7 +41,7 @@ pim_enrich.entity.product:
       common: In comune
     status:
       enabled: Attivato
-      disabled: Disabilitato
+      disabled: Disattivato
     download_pdf:
       label: PDF
     copy:
@@ -63,7 +63,7 @@ pim_enrich.entity.product:
     show_group:
       title: Gruppo {{ group }}
       view_group: Visualizzazione gruppo
-      more_products: '{{ count }} prodotti ulteriori...'
+      more_products: '{{ count }} altri prodotti...'
     attribute:
       remove_optional: Rimuovere l'attributo
       locale_specific_unavailable: Questo specifico campo relativo alle impostazioni internazionali non è disponibile in questa impostazione internazionale
@@ -75,7 +75,7 @@ pim_enrich.entity.product:
       title: Completamento
       complete: Completo
       no_family: Nessuna famiglia definita. Si prega di definire una famiglia per calcolare il livello di completamento di questo prodotto.
-      no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvarlo prima di calcolare il livello di completamento per la nuova famiglia.
+      no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvare prima di calcolare il livello di completamento per la nuova famiglia.
       missing_values: "{1}1 valore mancante|]1, Inf[{{ count }} valori mancanti"
     sequential_edit:
       item_limit: Sono visualizzati solo i primi 1000 articoli di questa modifica sequenziale ({{ count }} selezionati)
@@ -91,7 +91,7 @@ pim_enrich.entity.product:
       association_type_selector: Tipi di associazione
       target: Target
       manage: Aggiungi associazioni {{ associationType }}
-      manage_description: Seleziona i prodotti che vuoi associare al prodotto corrente
+      manage_description: Seleziona i prodotti che vuoi associare con il prodotto corrente
       add_associations: Aggiungi associazioni
     attribute_filter:
       display: Mostra
@@ -110,7 +110,7 @@ pim_enrich.entity.product:
     delete:
       confirm: Sei sicuro di voler eliminare questo prodotto?
     comment:
-      post: Aggiugni un nuovo commento
+      post: Aggiungi un nuovo commento
       reply: Rispondi
       title: Commenti
       empty: Non ci sono ancora commenti
@@ -131,7 +131,7 @@ pim_enrich.entity.product_model:
       fail: Il modello di prodotto non può essere aggiornato.
       fields_not_ready: "Il modello di prodotto non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
     delete:
-      success: Modello di prodotto eliminato con successo.
+      success: Modello di prodotto eliminato correttamente.
       fail: Non è possibile eliminare questo modello di prodotto
   choose: Scegli un modello di prodotto
   property:
@@ -203,7 +203,7 @@ pim_enrich.export.product:
       title: Famiglia
       help: "Seleziona i prodotti da esportare in base alla loro famiglia. Es: Esportare solo le scarpe e gli abiti."
       operators:
-        IN: Nell'elenco
+        IN: In elenco
         "NOT IN": Non in elenco
         EMPTY: I prodotti che non hanno una famiglia
         "NOT EMPTY": I prodotti che hanno una famiglia
@@ -214,22 +214,22 @@ pim_enrich.export.product:
         ALL: Nessuna condizione di data
         "SINCE LAST N DAYS": Prodotti aggiornati negli ultimi n giorni (es. 6)
         ">": Prodotti aggiornati da questa data
-        "SINCE LAST JOB": Prodotti aggiornati rispetto all'ultima esportazione
+        "SINCE LAST JOB": Prodotti aggiornati dall'ultima esportazione
     enabled:
       title: Stato
       help: "Selezionare i prodotti da esportare in base al loro stato. Es: Esportare prodotti qualunque sia lo stato."
       value:
         enabled: Attivato
-        disabled: Disabilitato
+        disabled: Disattivato
     completeness:
       title: Completamento
       help: Seleziona i prodotti da esportare in base alla loro completezza.
       operators:
         ALL: Nessuna condizione sulla completezza
-        ">=": Completa almeno una delle impostazioni internazionali selezionate
-        "GREATER OR EQUALS THAN ON ALL LOCALES": Completo su tutte le impostazione internazionali selezionate
-        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completa almeno una delle impostazioni internazionali selezionate
-        LOWER THAN ON ALL LOCALES: Non completo su tutte le impostazione internazionali selezionate
+        ">=": Completo in almeno una delle impostazioni internazionali selezionate
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Completo in tutte le impostazioni internazionali selezionate
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completo in almeno una delle impostazioni internazionali selezionate
+        LOWER THAN ON ALL LOCALES: Non completo in tutte le impostazioni internazionali selezionate
         AT LEAST COMPLETE: Almeno un prodotto figlio completo in una impostazione locale selezionata
         ALL COMPLETE: Tutti i prodotti figli completo in un'unica impostazione locale selezionata
       empty_selection: Seleziona una famiglia
@@ -241,10 +241,10 @@ pim_enrich.export.product:
       help: Utilizzare gli identificatori dei prodotti da esportare separati da virgole, spazi o interruzioni di riga
     string:
       operators:
-        ALL: Tutti
+        ALL: Tutto
     select:
       operators:
-        IN: Nell'elenco
+        IN: In elenco
     date:
       operators:
         BETWEEN: Compreso tra
@@ -280,6 +280,7 @@ pim_enrich.mass_edit.product:
       label: Modifica valori degli attributi
       label_count: "{1}Modifica valori attributo di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|]1, Inf[Modifica valori attributo di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
       description: Solo gli attributi appartenenti alle famiglie dei prodotti selezionati saranno modificati con i seguenti dati per le impostazioni internazionali {{ locale }} e il canale {{ scope }}.
+      no_update: Si prega di selezionare almeno un campo per aggiornare
     add_attribute_value:
       label: Aggiungi valori di attributi
       label_count: "{1}Aggiungi valori attributo per <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|]1, Inf[Aggiungi valori attributo per <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
@@ -391,17 +392,20 @@ batch_jobs:
     perform.label: Modificare gli attributi
     clean.label: Pulisci i file per gli attributi
     cleaner.label: Pulisci i file per gli attributi
+  compute_completeness_of_products_family:
+    label: Calcola completezza
+    perform.label: Calcola completezza
   move_to_category:
     label: Sposta a categoria
     perform.label: Sposta a categoria
   update_product_value:
-    label: Modifica un valore di prodotto
-    perform.label: Modifica un valore di prodotto
+    label: Aggiorna il valore di prodotto
+    perform.label: Aggiorna il valore di prodotto
   remove_from_category:
     label: Rimuovi dalla categoria
     perform.label: Rimuovi dalla categoria
   set_attribute_requirements:
-    label: Imposta i requisiti degli attributi
+    label: Impostare i requisiti degli attributi
     perform.label: Imposta i requisiti degli attributi
   xlsx_product_grid_context_quick_export:
     quick_export.label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia

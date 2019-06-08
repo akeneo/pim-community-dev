@@ -1,6 +1,6 @@
 batch_jobs:
   default_steps:
-    validation: Validación de archivo
+    validation: Validación de fichero
     import_associations: Importar asociaciones
     import_root_product_model: Importación del modelo del producto base
     import_sub_product_model: Importación del modelo del sub producto
@@ -11,25 +11,25 @@ batch_jobs:
     compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
     compute_completeness_of_products_family: Calcular la completitud de la familia de productos
   csv_product_export:
-    label: Exportar productos a CSV
-    export.label: Exportar productos
+    label: Importar productos en CSV
+    export.label: Exportar producto
   csv_product_model_export:
     label: Exportación de modelo de producto en CSV
     export.label: Exportación de modelo de producto
   csv_category_export:
-    label: Exportar categorías a CSV
+    label: Exportar categorías en CSV
     export.label: Exportar categorías
   csv_attribute_export:
-    label: Exportar atributos a CSV
+    label: Exportar atributos en CSV
     export.label: Exportar atributos
   csv_attribute_option_export:
-    label: Exportar opciones de atributos a CSV
+    label: Exportar opciones de atributos en CSV
     export.label: Exportar opciones de atributos
   csv_association_type_export:
-    label: Exportar tipos de asociaciones a CSV
-    export.label: Exportar tipos de asociaciones
+    label: Exportar tipos de asociociones en CSV
+    export.label: Exportar tipo de asociaciones
   csv_group_export:
-    label: Exportar grupos a CSV
+    label: Exportar grupos en CSV
     export.label: Exportar grupos
   csv_family_export:
     label: Exportar familias en CSV
@@ -38,22 +38,22 @@ batch_jobs:
     label: Exportación de variante familiar en CSV
     export.label: Exportación de variante familiar
   csv_product_import:
-    label: Importar productos desde CSV
+    label: Importar productos en CSV
     import.label: Importar productos
   csv_product_model_import:
     label: Importación de modelo de producto en CSV
     import_product_model_descendants.label: Calcular modelos del producto descendientes
   csv_category_import:
-    label: Importar categorías desde CSV
+    label: Importar categorías en CSV
     import.label: Importar categorías
   csv_attribute_import:
-    label: Importar atributos desde CSV
+    label: Importar atributos en CSV
     import.label: Importar atributos
   csv_attribute_option_import:
-    label: Importar opciones de atributos desde CSV
+    label: Importar opciones de atributos en CSV
     import.label: Importar opciones de atributos
   csv_association_type_import:
-    label: Importar tipos de asociaciones desde CSV
+    label: Importar tipos de asociaciones en CSV
     import.label: Importar tipos de asociaciones
   csv_family_import:
     label: Importar familias en CSV
@@ -63,7 +63,7 @@ batch_jobs:
     label: Importación de variante familiar en CSV
     import.label: Importación de variante familiar
   csv_group_import:
-    label: Importar grupos desde CSV
+    label: Importar grupos en CSV
     import.label: Importar grupos
   csv_attribute_group_export:
     label: Exportar grupo de atributos en CSV
@@ -97,7 +97,7 @@ batch_jobs:
     import.label: Importación de variante familiar
   xlsx_product_export:
     label: Exportar producto en XLSX
-    export.label: Exportar productos
+    export.label: Exportar producto
   xlsx_product_model_export:
     label: Exportación de modelo de producto en XLSX
     export.label: Exportación de modelo de producto

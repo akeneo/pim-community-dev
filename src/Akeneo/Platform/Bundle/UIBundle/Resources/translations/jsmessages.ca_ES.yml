@@ -1,4 +1,4 @@
-"Yes, I Agree": "Sí, Estic d'acord"
+"Yes, I Agree": "Sí, estic d'acord"
 "Yes, do it": "Sí, fes-ho"
 "Ok, got it.": "D'acord, ho entenc."
 "Edit": "Editar"
@@ -64,7 +64,7 @@ datetimepicker:
     February: Febrer
     March: Març
     April: Abril
-    May: Maig
+    May: Mai
     June: Juny
     July: Juliol
     August: Agost
@@ -77,7 +77,7 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Abr
-    May: Maig
+    May: Poder
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -116,7 +116,7 @@ pim_common:
   add: Afegir
   add_attributes: Afegir atributs
   after: Després
-  all: Tots
+  all: Tot
   and: i
   apply: Aplicar
   before: Abans
@@ -139,7 +139,7 @@ pim_common:
   label_translations: Traduccions d'etiquetes
   less_than: Menys de
   loading: Carregant...
-  media_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+  media_upload: Arrossegar i deixar per carrgar o feu clic aquí
   more_than: Més de
   next: Següent
   "no": "No"
@@ -312,7 +312,7 @@ pim_menu:
     user_account: El meu compte
 pim_notification:
   types:
-    import: Importar
-    export: Exportar
+    import: Importació
+    export: Exportació
     quick_export: Exportació ràpida
     mass_edit: Edició massiva

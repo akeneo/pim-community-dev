@@ -13,8 +13,8 @@ job_execution.summary:
   skip_products: productos omitidos
   displayed: primeras advertencias mostradas
   charset_validator:
-    title: 'Codificación de Archivo:'
-    skipped: omitido, extensión en lista blanca
+    title: 'Codificación del archivo:'
+    skipped: omitido, extensión en la lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)
   product_skipped_no_associations: Productos omitidos (asociaciones no detectadas)
   product_model_skipped_no_diff: modelo del producto omitido (no hay diferencias)
