@@ -1,5 +1,5 @@
 confirmation:
-  title: Confirmer
+  title: Confirmation
   remove:
     item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
     association_type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
@@ -60,9 +60,9 @@ flash:
     removed: Groupe supprimé avec succès
   group_type:
     removed: Le type de groupe a bien été supprimé
-  import profile:
+  import_profile:
     removed: Le profil d'import a bien été supprimé
-  export profile:
+  export_profile:
     removed: Le profil d'export a bien été supprimé
   user:
     removed: Utilisateur supprimé avec succès
@@ -196,13 +196,13 @@ pim_enrich:
       meta:
         created: Créé
         created_by: par
-        updated_by: par
+        updated_by: Par
         updated: Dernière mise à jour
         family:
           title: Famille
           none: Aucun
         family_variant:
-          title: Variante
+          title: Groupe de variantes
           none: Aucun
         groups:
           title: Groupes
@@ -219,7 +219,7 @@ pim_enrich:
         select: Sélectionner
         all: Tous
         all_visible: Tous les éléments visibles
-        none: Aucun
+        none: Aucune
         copy: Copier
       optional_attribute:
         remove: Supprimer cet attribut
@@ -261,7 +261,7 @@ pim_enrich:
       add_child:
         create: Créer
         cancel: Annuler
-        confirm: Confirmer
+        confirm: Confirmation
         create_label: "Créer un nouvel axe avec {{ axes }}"
         fields:
           required_label: (axe de variante)
@@ -462,7 +462,7 @@ pim_enrich:
       choose_variant: Choisissez une variante
       complete_variant_product: produit variant
       complete_variant_products: produits variants
-      family_variant: Variante
+      family_variant: Groupe de variantes
       product_model: Modèle de produit
       flash:
         product_model_added: Le modèle de produit a été correctement ajouté au modèle de produit
@@ -670,7 +670,7 @@ pim_enrich:
     job_instance:
       fail:
         launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous disposez des droits pour le lancer.
-        save: Impossible de sauvegarder le profil. Assurez-vous que vous disposez des droits pour l'éditer.
+        save: Impossible d'enregistrer le profil. Assurez-vous que vous disposez des droits pour l'éditer.
       title:
         import: Profil d'import
         export: Profil d'export
@@ -980,7 +980,7 @@ pim_enrich:
       create_popin:
         title: Créer
       message:
-        created: Le profil d'exportation a bien été créé
+        created: Le profil d'export a bien été créé
     export_history:
       title: Rapports d'export
     family:
@@ -1021,7 +1021,7 @@ pim_enrich:
     next: Suivant
     previous: Retour
     cancel: Annuler
-    confirm: Confirmer
+    confirm: Confirmation
     product:
       title: Action de masse sur les produits
       confirm: "{1}Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les renseignements suivants, merci de confirmer."
@@ -1032,9 +1032,9 @@ pim_enrich:
           title: Actions de masse sur les produits
           label_count: "] 0, Inf [Sélectionnez votre action"
         configure:
-          label: Configurer
+          label: Configurez l'opération à effectuer
         confirm:
-          label: Confirmer
+          label: Confirmation
         launch_error:
           label: Une erreur s’est produite lors du lancement de l'édition de masse
         launched:
@@ -1047,7 +1047,7 @@ pim_enrich:
           field: Pour activer
         edit_common:
           label: Modifier les valeurs d’attributs
-          label_count: "{1}Editer les valeurs d'attributs d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Editer les valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+          label_count: "{1}Modifier les valeurs d'attributs d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Modifier les valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal de {{ scope }}.
         add_attribute_value:
           label: Ajouter des valeurs d’attributs
@@ -1098,9 +1098,9 @@ pim_enrich:
           title: Actions de masse sur les familles
           label_count: "] 0, Inf [Sélectionnez votre action"
         configure:
-          label: Configurer
+          label: Configurez l'opération à effectuer
         confirm:
-          label: Confirmer
+          label: Confirmation
         launched:
           label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       operation:
@@ -1141,8 +1141,8 @@ page_title:
   pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Édition
   pim_enrich_grouptype_index: Types de groupe
   pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Édition
-  pim_enrich_mass_edit_action_choose: Édition en masse | Choisir
-  pim_enrich_mass_edit_action_configure: Édition en masse | Configurer
+  pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
+  pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
@@ -1357,7 +1357,7 @@ batch_jobs:
     label: Import de modèles de produit en XLSX
   xlsx_group_export:
     label: Export des groupes en XLSX
-    export.label: Export de groupes
+    export.label: Export des groupes
   xlsx_group_import:
     label: Import des groupes en XLSX
     validation.label: Validation du fichier

@@ -18,7 +18,7 @@ Channel list: Lista de canales
 Select file: Seleccionar archivo
 Change file: Cambiar archivo
 Remove file: Eliminar archivo
-Delete: Eliminar
+Delete: Borrar
 Save: Guardar
 Cancel: Cancelar
 Get help: Obtener ayuda
@@ -34,8 +34,8 @@ Favorites: Favoritos
 Most Viewed: Más visto
 "Add this page to favorites": "Agregar esta página a favoritos"
 "Minimize the window to the pinbar": "Minimizar la ventana al pinbar"
-"Loading ...": "Cargando ..."
-"Yes": "SÍ"
+"Loading ...": "Cargando..."
+"Yes": "Sí"
 "No": "No"
 required: (obligatorio)
 pim_ui.system_config:

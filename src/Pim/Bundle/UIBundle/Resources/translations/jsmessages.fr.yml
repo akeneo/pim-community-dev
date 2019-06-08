@@ -101,7 +101,7 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuration du système
+      title: Configuration système
       tab:
         system:
           title: Système

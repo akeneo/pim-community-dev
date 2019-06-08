@@ -9,8 +9,8 @@ pim_dashboard:
       details: Detalles
       warning_count: Advertencias
       job_type:
-        import: Importar
-        export: Exportar
+        import: Importación
+        export: Export
         mass_edit: Edición en masa
         quick_export: Exportación rápida
         compute_product_models_descendants: Calcular modelos de productos descendientes

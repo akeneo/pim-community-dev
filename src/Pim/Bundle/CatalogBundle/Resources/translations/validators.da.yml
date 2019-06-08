@@ -69,15 +69,13 @@ pim_catalog:
     106: Dette felt forventer en array-værdi.
     107: Dette felt forventer en matrix af matrixer som værdi.
     200: Der opstod en intern fejl.
-    201: Der opstod en intern fejl.
-    202: Dette felt forventer en numerisk værdi.
-    203: Dette felt forventer en strengværdi.
-    204: Dette felt forventer en strengværdi.
-    205: Der opstod en intern fejl.
+    201: An internal error occurred
+    202: This field expects a numeric value.
+    203: This field expects a string value.
+    204: This field expects a string value.
+    205: An internal error occurred
     300: Dette felt forventer en gyldig enhed kode.
     301: Dette felt forventer en gyldig anvendelsesområde og landestandard.
     302: Dette felt forventer et gyldigt område.
     303: Dette felt forventer en gyldig association format.
-    pim_immutable_product_validator: Den samme id er allerede indstillet på et andet produkt
-    pim_immutable_product_model_validator: Den samme id er allerede benyttet på et andet produkt
 

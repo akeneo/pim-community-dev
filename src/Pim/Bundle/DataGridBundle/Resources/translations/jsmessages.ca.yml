@@ -15,7 +15,7 @@ edit: editar
 copy: copiar
 remove: eliminar
 Status: Estat
-All: Tots
+All: Tot
 Per page: Per pàgina
 Mass Action Confirmation: Confirmació massiva de l'acció
 Mass action performed.: Acció massiva realitzada.
@@ -43,7 +43,7 @@ oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registres"
 oro.datagrid.pagination.limit_warning: "La grilla no pot mostrar més resultats {{ limit }}, prova a filtrar criteris de cerca addicionals."
 oro.datagrid.action.reset: "Reinicia"
 oro.datagrid.action.refresh: "Actualitza"
-oro_datagrid.select.all: "Tots"
+oro_datagrid.select.all: "Tot"
 oro_datagrid.select.visible: "Tot visible"
 oro_datagrid.select.none: "Cap"
 oro_datagrid.select.select: "Seleccionar"
@@ -76,7 +76,7 @@ pim_datagrid:
     clear: Restablir
     displayed_columns: Columnes seleccionades
     apply: Aplicar
-    cancel: Cancelar
+    cancel: Cancel·lar
     remove_column: Eliminar
     description: Seleccionar la informació que voleu mostrar com columna
     attribute_groups: Grups d'atribut
@@ -112,7 +112,7 @@ grid.display_selector:
   label: Mostrar
   gallery: Galeria
   list: Llista
-Client ID: ID de client
+Client ID: Identificador del client
 Secret: Secret
 grid.empty_results:
   associated_product:

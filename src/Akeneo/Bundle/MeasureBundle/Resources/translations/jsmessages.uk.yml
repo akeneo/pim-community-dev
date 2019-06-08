@@ -25,7 +25,6 @@ MEGABYTE: Мегабайт
 GIGABYTE: Гігабайт
 TERABYTE: Терабайт
 Decibel: Децибел
-DECIBEL: Децибел
 Frequency: Частота
 GIGAHERTZ: Гігагерц
 KILOHERTZ: Кілогерц
@@ -54,9 +53,7 @@ MEGAWATT: Мегават
 TERAWATT: Терават
 WATT: Ват
 Resistance: Опір
-MILLIOHM: Міліом
-CENTIOHM: Сантиом
-DECIOHM: Дециом
+MILLIOHM: Міліметр
 OHM: Ом
 DEKAOHM: Декаом
 HECTOHM: Гектоом
@@ -64,7 +61,7 @@ KILOHM: Кілоом
 MEGOHM: Мегаом
 Voltage: Напруга
 MILLIVOLT: Мілівольт
-CENTIVOLT: Сантивольт
+CENTIVOLT: Сантівольт
 DECIVOLT: Децивольт
 VOLT: Вольт
 DEKAVOLT: Декавольт
@@ -150,8 +147,8 @@ PSI: Фунт на квадратний дюйм
 TORR: Торр
 MMHG: Міліметр ртутного стовпа
 Energy: Енергія
-KILOCALORIE: Кілокалорія
-KILOJOULE: Кілоджоуль
+KILOCALORIE: кілокалорія
+KILOJOULE: кілоджоуль
 CaseBox: Упаковка
 PIECE: шт.
 DOZEN: Дюжина

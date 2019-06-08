@@ -8,8 +8,6 @@ pim_connector:
       selector:
         modal:
           title: Kategorier udvalg
-          cancel: Annuller
-          confirm: Bekræft
         label: "{0} alle produkter |{1} én kategori valgt |] 1, Inf [{{ count }} kategorier valgt"
         edit: Redigér
         title: Vælg kategorier
@@ -25,5 +23,4 @@ page_title:
   pim_importexport_import_profile_index: Importer profiler håndtering
   pim_importexport_import_profile_edit: Importere profil {{ job.label }} | Rediger
   pim_importexport_import_profile_show: Importere profil {{ job.label }} | Vis
-  pim_importexport_import_execution_index: Importer aktivitets historik
   pim_importexport_import_execution_show: Importer aktiviter | Detaljer
