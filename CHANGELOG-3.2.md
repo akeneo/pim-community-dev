@@ -7,6 +7,32 @@
 - DAPI-271: Always display suggested value and attribute type on the Franklin Insights mapping screen.
 - DAPI-270: Add a progress bar on the attribute mapping screen of Franklin Insights.
 
+
+
+
+
+- DAPI-137: Add possibility to filter by draft status in the product grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Bug fixes
 
 - GITHUB-10083: Fix proposal datagrid render when deleting values
