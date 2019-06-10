@@ -50,7 +50,7 @@ class RecordCollectionConnectorValueTransformer implements ConnectorValueTransfo
         return [
             'locale'  => $normalizedValue['locale'],
             'channel' => $normalizedValue['channel'],
-            'data'    => $existingRecordCodes,
+            'data'    => array_values($existingRecordCodes),
         ];
     }
 }

@@ -307,6 +307,8 @@ class FakeClient implements ClientInterface
             );
         }
 
+        $jsonContent = str_replace('__TRACKER_ID__', $options['form_params'][0]['tracker_id'], $jsonContent);
+
         return $jsonContent;
     }
 

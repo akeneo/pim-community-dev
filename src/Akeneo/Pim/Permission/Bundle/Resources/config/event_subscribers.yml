@@ -34,6 +34,7 @@ services:
             - '@pimee_security.manager.job_profile_access'
             - '@pimee_security.manager.category_access'
             - '@pimee_product_asset.manager.category_access'
+            - '@pimee_security.manager.locale_access'
         tags:
             - { name: kernel.event_subscriber }
 

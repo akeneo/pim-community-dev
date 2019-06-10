@@ -76,4 +76,9 @@ final class ProductSubscriptionException extends \Exception
     {
         return new static(sprintf(static::CONSTRAINT_KEY, 'variant_product'));
     }
+
+    public static function productSubscriptionWithSameIdentifierAlreadyExist(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'product_subscription_with_same_identifier_already_exist'));
+    }
 }
