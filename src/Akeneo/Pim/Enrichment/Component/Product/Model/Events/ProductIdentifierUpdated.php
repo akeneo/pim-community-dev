@@ -11,19 +11,19 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model\Events;
  */
 class ProductIdentifierUpdated
 {
-    /** @var string */
+    /** @var string|null */
     private $productIdentifier;
 
     /** @var string */
     private $previousProductIdentifier;
 
-    public function __construct(string $productIdentifier, string $previousProductIdentifier)
+    public function __construct(?string $productIdentifier, string $previousProductIdentifier)
     {
         $this->productIdentifier = $productIdentifier;
         $this->previousProductIdentifier = $previousProductIdentifier;
     }
 
-    public function productIdentifier(): string
+    public function productIdentifier(): ?string
     {
         return $this->productIdentifier;
     }
