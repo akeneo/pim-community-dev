@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql;
+namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;

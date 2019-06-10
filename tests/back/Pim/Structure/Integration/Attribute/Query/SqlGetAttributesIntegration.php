@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Attribute\Query;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql\SqlGetAttributes;
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql\LRUCachedGetAttributes;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributes;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\LRUCachedGetAttributes;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Test\Integration\Configuration;
