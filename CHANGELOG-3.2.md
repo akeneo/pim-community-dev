@@ -8,7 +8,7 @@
 
 
 
-
+ - DAPI-137: Fix the PQB to not aggregate results when there is a filter on id
 
 
 
