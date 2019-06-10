@@ -74,12 +74,12 @@ class UrlAttributeFactory implements AttributeFactoryInterface
     private function prefix(CreateUrlAttributeCommand $command): Prefix
     {
         return Prefix::EMPTY !== $command->prefix
-           ? Prefix::fromString($command->prefix) : Prefix::createEmpty();
+           ? Prefix::fromString($command->prefix) : Prefix::empty();
     }
 
     private function suffix(CreateUrlAttributeCommand $command): Suffix
     {
         return Suffix::EMPTY !== $command->suffix
-            ? Suffix::fromString($command->suffix) : Suffix::createEmpty();
+            ? Suffix::fromString($command->suffix) : Suffix::empty();
     }
 }

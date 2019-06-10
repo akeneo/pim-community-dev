@@ -25,14 +25,14 @@ class SuffixSpec extends ObjectBehavior
 
     function it_can_be_created_with_no_suffix()
     {
-        $noSuffix = $this::createEmpty();
+        $noSuffix = $this::empty();
         $noSuffix->normalize()->shouldReturn(null);
     }
 
     function it_says_if_it_holds_no_suffix()
     {
         $this->isEmpty()->shouldReturn(false);
-        $this::createEmpty()->isEmpty()->shouldReturn(true);
+        $this::empty()->isEmpty()->shouldReturn(true);
     }
 
     function it_normalizes_itself()

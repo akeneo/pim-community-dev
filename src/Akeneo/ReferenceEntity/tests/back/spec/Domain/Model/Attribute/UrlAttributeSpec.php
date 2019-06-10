@@ -88,8 +88,8 @@ class UrlAttributeSpec extends ObjectBehavior
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                Prefix::createEmpty(),
-                Suffix::createEmpty(),
+                Prefix::empty(),
+                Suffix::empty(),
                 PreviewType::fromString('image'),
             ]
         );

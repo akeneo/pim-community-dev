@@ -38,7 +38,7 @@ class Prefix
         return new self($prefix);
     }
 
-    public static function createEmpty(): self
+    public static function empty(): self
     {
         return new self(self::EMPTY);
     }
