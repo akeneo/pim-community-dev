@@ -29,24 +29,27 @@ class CreateAttributeIntegration extends TestCase
         $this->createAttributeService = $this->get('akeneo.pim.automation.franklin_insights.application.structure.service.create_attribute');
     }
 
-
-    public function test_it_creates_an_attribute(): void
+    /**
+     * @dataProvider provideAttributeCreation
+     */
+    public function test_it_creates_an_attribute($code, $label, $type, $expectedCode): void
     {
         $this->createAttributeService->create(
-            new AttributeCode('franklin_code'),
-            new AttributeLabel('franklin_label'),
-            new AttributeType(AttributeTypes::TEXT)
+            new AttributeCode($code),
+            new AttributeLabel($label),
+            new AttributeType($type)
         );
         $query = <<<SQL
-SELECT code FROM pim_catalog_attribute WHERE code = :CODE
+SELECT code, attribute_type FROM pim_catalog_attribute WHERE code = :code
 SQL;
         $statement = $this->dbal->executeQuery($query, [
-            'CODE' => 'franklin_code'
+            'code' => $code
         ]);
 
         $result = $statement->fetch();
 
-        Assert::assertSame('franklin_code', $result['code']);
+        Assert::assertSame($expectedCode, $result['code']);
+        Assert::assertSame($type, $result['attribute_type']);
     }
 
     public function test_it_creates_an_attribute_when_attribute_code_already_exists(): void
@@ -78,6 +81,14 @@ SQL;
         return $this->dbal->executeQuery($query, [
             'CODE' => $code
         ]);
+    }
+
+    public function provideAttributeCreation(): array
+    {
+        return [
+            ['franklin_code_text', 'franklin_label_text', AttributeTypes::TEXT, 'franklin_code_text'],
+            ['franklin_code_number', 'franklin_label_number', AttributeTypes::NUMBER, 'franklin_code_number'],
+        ];
     }
 
     /**

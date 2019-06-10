@@ -5,6 +5,7 @@
 - DAPI-138: Always display the button _Send for approval_ on the PEF as a shortcut to save and send a draft for approval
 - DAPI-262: Add a create attribute action on the Franklin Insights mapping screen.
 - DAPI-271: Always display suggested value and attribute type on the Franklin Insights mapping screen.
+- DAPI-270: Add a progress bar on the attribute mapping screen of Franklin Insights.
 
 ## Bug fixes
 

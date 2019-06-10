@@ -101,15 +101,12 @@ module.exports = async function(cucumber) {
   Given('the user should see the list of products linked to the record', async function() {
     const sidebar = await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('product');
-
     const products = await getElement(this.page, 'Product');
-    const product1 = await products.productExists('1111111292');
-    const product2 = await products.productExists('1111111304');
-    const product3 = await products.productExists('model-braided-hat');
+    const product1 = await products.productExists('1111111304');
+    const product2 = await products.productExists('model-braided-hat');
 
     assert.strictEqual(product1, true);
     assert.strictEqual(product2, true);
-    assert.strictEqual(product3, true);
   });
 
   Given('the user should not see any linked product', async function() {

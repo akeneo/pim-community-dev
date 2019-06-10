@@ -9,22 +9,23 @@
 
 import * as Backbone from 'backbone';
 import {EventsHash} from 'backbone';
-import * as _ from 'underscore';
 import * as $ from 'jquery';
-import NormalizedAttribute from 'pim/model/attribute';
+import * as _ from 'underscore';
 
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 
-import IAttributesMappingForFamily from '../../model/attributes-mapping-for-family';
-import IAttributesMapping from '../../model/attributes-mapping';
+import NormalizedAttribute from 'pim/model/attribute';
 import IAttributeMapping from '../../model/attribute-mapping';
-import AttributeMappingStatus from "../../model/attribute-mapping-status";
+import AttributeMappingStatus from '../../model/attribute-mapping-status';
+import IAttributesMapping from '../../model/attributes-mapping';
+import IAttributesMappingForFamily from '../../model/attributes-mapping-for-family';
 
-import CreateAttributeButton from './create-attribute-button';
-import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
-import SimpleSelectAttributeWithWarning from './simple-select-attribute-with-warning';
 import BaseView = require('pimui/js/view/base');
+import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
+import SimpleSelectAttribute from '../common/simple-select-attribute';
+import AttributeTypeMismatchWarning from './attribute-type-mismatch-warning';
+import CreateAttributeButton from './create-attribute-button';
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -44,9 +45,6 @@ interface Config {
     inactive: string;
     franklinAttribute: string;
     catalogAttribute: string;
-    attributeMappingStatus: string;
-    valuesSummary: string;
-    type: string;
   };
 }
 
@@ -73,9 +71,7 @@ const ALLOWED_CATALOG_TYPES: string[] = [
 
 const ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 
-const DISALLOWED_CREATE_ATTRIBUTE_FRANKLIN_TYPES: string[] = [
-  'metric',
-];
+const DISALLOWED_CREATE_ATTRIBUTE_FRANKLIN_TYPES: string[] = ['metric'];
 
 /**
  * This module will allow user to map the attributes from Franklin to the catalog attributes.
@@ -93,9 +89,6 @@ class AttributeMapping extends BaseView {
       inactive: '',
       franklinAttribute: '',
       catalogAttribute: '',
-      attributeMappingStatus: '',
-      valuesSummary: '',
-      type: '',
     },
   };
   private attributeOptionsMappingModal: any = null;
@@ -147,8 +140,7 @@ class AttributeMapping extends BaseView {
         statuses: this.getMappingStatuses(),
         franklinAttribute: __(this.config.labels.franklinAttribute),
         catalogAttribute: __(this.config.labels.catalogAttribute),
-        attributeMappingStatus: __(this.config.labels.attributeMappingStatus)
-      })
+      }),
     );
 
     FetcherRegistry.getFetcher('attribute')
@@ -163,29 +155,26 @@ class AttributeMapping extends BaseView {
           const type = undefined === attribute ? '' : attribute.type;
           const isAttributeOptionsButtonVisible = ATTRIBUTE_TYPES_BUTTONS_VISIBILITY.indexOf(type) >= 0;
 
-          const attributeSelector = this.appendAttributeSelector(
-              attributesMapping,
-              franklinAttributeCode,
-              isAttributeOptionsButtonVisible
-          );
+          this.appendAttributeSelector(attributesMapping, franklinAttributeCode, isAttributeOptionsButtonVisible);
 
           if (true === this.isAllowedToCreateAttribute(attributeMapping)) {
             const createAttributeButton = this.appendCreateAttributeButton(
               franklinAttributeCode,
               familyMapping.code,
               attributeMapping.franklinAttribute.label,
-              attributeMapping.franklinAttribute.type
+              attributeMapping.franklinAttribute.type,
             );
 
-            createAttributeButton.on(
-              'attribute_created',
-              (catalogAttributeCode: string) => {
-                createAttributeButton.remove();
+            createAttributeButton.on('attribute_created', (catalogAttributeCode: string) => {
+              createAttributeButton.remove();
 
-                this.suggestAttributeMapping(franklinAttributeCode, catalogAttributeCode);
-                attributeSelector.render();
-              }
-            );
+              this.suggestAttributeMapping(franklinAttributeCode, catalogAttributeCode);
+              this.render();
+            });
+          }
+
+          if (type !== '' && false === this.isTypeMappingValid(attributeMapping.franklinAttribute.type, type)) {
+            this.appendAttributeTypeMismatchWarning(franklinAttributeCode);
           }
         });
 
@@ -200,32 +189,30 @@ class AttributeMapping extends BaseView {
   }
 
   private getCatalogAttributeCodesFromAttibutesMapping(attributesMapping: IAttributesMapping) {
-    return Object.keys(attributesMapping).reduce(
-        (acc: string[], franklinAttributeCode: string) => {
-          const catalogAttribute = attributesMapping[franklinAttributeCode].attribute;
-          if ('' !== catalogAttribute && null !== catalogAttribute) {
-            acc.push(catalogAttribute);
-          }
+    return Object.keys(attributesMapping).reduce((acc: string[], franklinAttributeCode: string) => {
+      const catalogAttribute = attributesMapping[franklinAttributeCode].attribute;
+      if ('' !== catalogAttribute && null !== catalogAttribute) {
+        acc.push(catalogAttribute);
+      }
 
-          return acc;
-        },
-        []
-    );
+      return acc;
+    }, []);
   }
 
   private suggestAttributeMapping(franklinAttributeCode: string, catalogAttributeCode: string): void {
-    const familyMapping = (this.getFormData() as IAttributesMappingForFamily);
+    const familyMapping = this.getFormData() as IAttributesMappingForFamily;
 
-    const alreadyMappedAttributeMapping = Object.values(familyMapping.mapping)
-      .find((mapping) => mapping.attribute === catalogAttributeCode);
+    const alreadyMappedAttributeMapping = Object.values(familyMapping.mapping).find(
+      mapping => mapping.attribute === catalogAttributeCode,
+    );
 
     if (undefined !== alreadyMappedAttributeMapping) {
       Messenger.notify(
         'warning',
         __('akeneo_franklin_insights.entity.attributes_mapping.flash.suggest_attribute_mapping_error', {
-          catalogAttributeCode: catalogAttributeCode,
-          franklinAttributeLabel: alreadyMappedAttributeMapping.franklinAttribute.label
-        })
+          catalogAttributeCode,
+          franklinAttributeLabel: alreadyMappedAttributeMapping.franklinAttribute.label,
+        }),
       );
 
       return;
@@ -239,21 +226,20 @@ class AttributeMapping extends BaseView {
   private appendAttributeSelector(
     mapping: IAttributesMapping,
     franklinAttributeCode: string,
-    isAttributeOptionsButtonVisible: boolean
+    isAttributeOptionsButtonVisible: boolean,
   ) {
     let perfectMatchClass = '';
-    if (this.isPimAttributePreFilled(mapping[franklinAttributeCode])) {
+    if (null !== mapping[franklinAttributeCode].attribute && '' !== mapping[franklinAttributeCode].attribute) {
       perfectMatchClass = 'perfect-match';
     }
-    
+
     const $dom = this.$el.find('.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]');
-    const attributeSelector = new SimpleSelectAttributeWithWarning({
+    const attributeSelector = new SimpleSelectAttribute({
       config: {
         fieldName: Property.propertyPath(['mapping', franklinAttributeCode, 'attribute']),
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
         types: ALLOWED_CATALOG_TYPES,
-        perfectMappings: PERFECT_MAPPINGS[mapping[franklinAttributeCode].franklinAttribute.type],
         families: [this.getFamilyCode()],
       },
       className: `AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline ${perfectMatchClass}`,
@@ -269,7 +255,7 @@ class AttributeMapping extends BaseView {
           $('<div>')
             .addClass('AknIconButton AknIconButton--small AknIconButton--edit AknGrid-onHoverElement option-mapping')
             .attr('data-franklin-attribute-code', franklinAttributeCode)
-            .attr('title', __('pim_common.edit'))
+            .attr('title', __('pim_common.edit')),
         );
       }
 
@@ -279,22 +265,11 @@ class AttributeMapping extends BaseView {
     return attributeSelector;
   }
 
-  private isPimAttributePreFilled(franklinAttributeMapping: IAttributeMapping) {
-    if (AttributeMappingStatus.ATTRIBUTE_PENDING !== franklinAttributeMapping.status) {
-      return false;
-    }
-    if (null !== franklinAttributeMapping.attribute && '' !== franklinAttributeMapping.attribute) {
-      return true;
-    }
-
-    return false;
-  }
-
   private appendCreateAttributeButton(
     franklinAttributeCode: string,
     familyCode: string,
     franklinAttributeLabel: string,
-    franklinAttributeType: string
+    franklinAttributeType: string,
   ) {
     const createAttributeButton = new CreateAttributeButton(familyCode, franklinAttributeLabel, franklinAttributeType);
 
@@ -304,8 +279,26 @@ class AttributeMapping extends BaseView {
     return createAttributeButton;
   }
 
+  private isTypeMappingValid(franklinAttributeType: string, pimAttributeType: string) {
+    return PERFECT_MAPPINGS[franklinAttributeType].includes(pimAttributeType);
+  }
+
+  private appendAttributeTypeMismatchWarning(franklinAttributeCode: string) {
+    const attributeTypeMismatchWarning = new AttributeTypeMismatchWarning();
+
+    const $host = this.$el.find(
+      `.attribute-type-mismatch-warning[data-franklin-attribute-code="${franklinAttributeCode}"]`,
+    );
+    $host.append(attributeTypeMismatchWarning.render().el);
+
+    return attributeTypeMismatchWarning;
+  }
+
   private isAllowedToCreateAttribute(franklinAttributeMapping: IAttributeMapping): boolean {
-    if (this.isPimAttributePreFilled(franklinAttributeMapping)) {
+    if (null !== franklinAttributeMapping.attribute && '' !== franklinAttributeMapping.attribute) {
+      return false;
+    }
+    if (AttributeMappingStatus.ATTRIBUTE_PENDING !== franklinAttributeMapping.status) {
       return false;
     }
     if (true === DISALLOWED_CREATE_ATTRIBUTE_FRANKLIN_TYPES.includes(franklinAttributeMapping.franklinAttribute.type)) {
@@ -345,12 +338,12 @@ class AttributeMapping extends BaseView {
 
     $.when(
       FormBuilder.build('akeneo-franklin-insights-settings-attribute-options-mapping-edit'),
-      FetcherRegistry.getFetcher('family').fetch(familyCode)
+      FetcherRegistry.getFetcher('family').fetch(familyCode),
     ).then((form: BaseView, normalizedFamily: any) => {
       const familyLabel = i18n.getLabel(
         normalizedFamily.labels,
         UserContext.get('catalogLocale'),
-        normalizedFamily.code
+        normalizedFamily.code,
       );
 
       const formContent = form.getExtension('content') as AttributeOptionsMapping;
@@ -383,7 +376,7 @@ class AttributeMapping extends BaseView {
    * Prevents closing if there are unsaved changes
    */
   private closeOptionsMappingAfterCancel(): void {
-    let canLeaveEvent = {canLeave: true};
+    const canLeaveEvent = {canLeave: true};
 
     if (null !== this.attributeOptionsMappingForm) {
       this.attributeOptionsMappingForm.trigger('pim_enrich:form:can-leave', canLeaveEvent);

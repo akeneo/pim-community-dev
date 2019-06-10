@@ -101,6 +101,42 @@ class CreateAttributeSpec extends ObjectBehavior
         )->shouldReturn(null);
     }
 
+    public function it_creates_an_attribute_number(
+        $factory,
+        $updater,
+        $validator,
+        $saver,
+        $ensureFranklinAttributeGroupExists,
+        AttributeInterface $attribute,
+        ConstraintViolationListInterface $violations
+    ): void {
+        $attributeData = [
+            'code' => 'Foo_bar',
+            'group' => FranklinAttributeGroup::CODE,
+            'labels' => [
+                'en_US' => 'Foo bar'
+            ],
+            'localizable' => false,
+            'scopable' => false,
+            "decimals_allowed" => true,
+            "negative_allowed" => true
+        ];
+
+        $ensureFranklinAttributeGroupExists->ensureExistence()->shouldBeCalled();
+
+        $factory->createAttribute('pim_catalog_number')->willReturn($attribute);
+        $updater->update($attribute, $attributeData)->shouldBeCalled();
+        $validator->validate($attribute)->willReturn($violations->getWrappedObject());
+        $violations->count()->willReturn(0);
+        $saver->save($attribute)->shouldBeCalled();
+
+        $this->create(
+            AttributeCode::fromLabel('Foo bar'),
+            new AttributeLabel('Foo bar'),
+            new AttributeType('pim_catalog_number')
+        )->shouldReturn(null);
+    }
+
     public function it_throws_an_exception_when_there_are_some_violations(
         $factory,
         $updater,

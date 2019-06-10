@@ -9,17 +9,18 @@
 
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
+import AttributeMappingStatus from '../../model/attribute-mapping-status';
 import AttributesMapping from '../../model/attributes-mapping';
 import AttributesMappingForFamily from '../../model/attributes-mapping-for-family';
-import AttributeMappingStatus from "../../model/attribute-mapping-status";
+import FamilyMappingStatus from '../../model/family-mapping-status';
 
 const __ = require('oro/translator');
-const template = require('akeneo/franklin-insights/template/settings/attributes-mapping/family-selector-and-status');
+const template = require('akeneo/franklin-insights/template/settings/attributes-mapping/family-status');
 
 interface Config {
   labels: {
-    familyMappingPending: string,
-    familyMappingFull: string,
+    familyMappingPending: string;
+    familyMappingFull: string;
   };
 }
 
@@ -28,12 +29,7 @@ interface Config {
  *
  * @author Paul Chasle <paul.chasle@akeneo.com>
  */
-class FamilySelectorAndStatus extends BaseView {
-  /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\Family */
-  public static readonly FAMILY_MAPPING_PENDING: number = 0;
-  public static readonly FAMILY_MAPPING_FULL: number = 1;
-  public static readonly FAMILY_MAPPING_EMPTY: number = 2;
-
+class FamilyStatus extends BaseView {
   private readonly template = _.template(template);
 
   private readonly config: Config = {
@@ -46,10 +42,10 @@ class FamilySelectorAndStatus extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
+  constructor(options: {config: Config}) {
     super(options);
 
-    this.config = { ...this.config, ...options.config };
+    this.config = {...this.config, ...options.config};
   }
 
   public render(): BaseView {
@@ -58,10 +54,12 @@ class FamilySelectorAndStatus extends BaseView {
 
     const familyMappingStatus = this.getFamilyMappingStatus(mapping);
 
-    this.$el.html(this.template({
-      __,
-      familyMappingStatus: this.formatFamilyMappingStatus(familyMappingStatus),
-    }));
+    this.$el.html(
+      this.template({
+        __,
+        familyMappingStatus: this.formatFamilyMappingStatus(familyMappingStatus),
+      })
+    );
 
     return BaseView.prototype.render.apply(this, arguments);
   }
@@ -73,15 +71,15 @@ class FamilySelectorAndStatus extends BaseView {
    */
   private getFamilyMappingStatus(mapping: AttributesMapping): number {
     const franklinAttributes = Object.keys(mapping);
-    let status = FamilySelectorAndStatus.FAMILY_MAPPING_FULL;
+    let status = FamilyMappingStatus.MAPPING_FULL;
 
     if (0 === franklinAttributes.length) {
-      status = FamilySelectorAndStatus.FAMILY_MAPPING_EMPTY;
+      status = FamilyMappingStatus.MAPPING_EMPTY;
     }
 
     franklinAttributes.forEach((franklinAttribute: string) => {
       if (AttributeMappingStatus.ATTRIBUTE_PENDING === mapping[franklinAttribute].status) {
-        status = FamilySelectorAndStatus.FAMILY_MAPPING_PENDING;
+        status = FamilyMappingStatus.MAPPING_PENDING;
       }
     });
 
@@ -96,19 +94,19 @@ class FamilySelectorAndStatus extends BaseView {
    *
    * @return {object}
    */
-  private formatFamilyMappingStatus(familyMappingStatus: number): { className: string, label: string } {
+  private formatFamilyMappingStatus(familyMappingStatus: number): {className: string; label: string} {
     const formattedFamilyMappingStatus = {
       className: '',
       label: '',
     };
 
     switch (familyMappingStatus) {
-      case FamilySelectorAndStatus.FAMILY_MAPPING_PENDING:
-        formattedFamilyMappingStatus.className = 'AknFieldContainer-familyAttributeMapping--pending';
+      case FamilyMappingStatus.MAPPING_PENDING:
+        formattedFamilyMappingStatus.className = 'pending';
         formattedFamilyMappingStatus.label = this.config.labels.familyMappingPending;
         break;
-      case FamilySelectorAndStatus.FAMILY_MAPPING_FULL:
-        formattedFamilyMappingStatus.className = 'AknFieldContainer-familyAttributeMapping--full';
+      case FamilyMappingStatus.MAPPING_FULL:
+        formattedFamilyMappingStatus.className = 'full';
         formattedFamilyMappingStatus.label = this.config.labels.familyMappingFull;
         break;
     }
@@ -117,4 +115,4 @@ class FamilySelectorAndStatus extends BaseView {
   }
 }
 
-export = FamilySelectorAndStatus;
+export = FamilyStatus;

@@ -17,24 +17,7 @@ use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -46,7 +29,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
@@ -67,6 +49,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
 
+    /** @var array */
+    private $fixturesDesigner;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -77,7 +62,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->eventDispatcherMock->reset();
 
         $this->resetDB();
-        $this->loadReferenceEntityWithAttributes();
+        $this->loadFixtures();
     }
 
     /**
@@ -244,14 +229,14 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                     FileData::createFromFileinfo($imageInfo)
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_designer_fingerprint'),
-                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    $this->fixturesDesigner['attributes']['name']->getIdentifier(),
+                    ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Philippe Stark')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('main_image_designer_fingerprint'),
-                    ChannelReference::noReference(),
+                    $this->fixturesDesigner['attributes']['main_image']->getIdentifier(),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($fileInfo)
                 )
@@ -334,14 +319,14 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_designer_fingerprint'),
-                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    $this->fixturesDesigner['attributes']['name']->getIdentifier(),
+                    ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('An old description')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('main_image_designer_fingerprint'),
-                    ChannelReference::noReference(),
+                    $this->fixturesDesigner['attributes']['main_image']->getIdentifier(),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($fileInfo)
                 )
@@ -351,8 +336,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->eventDispatcherMock->reset();
 
         $valueToUpdate = Value::create(
-            AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            $this->fixturesDesigner['attributes']['name']->getIdentifier(),
+            ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('A completely new and updated description')
         );
@@ -404,13 +389,13 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('brand_designer_fingerprint'),
+                    $this->fixturesDesigner['attributes']['brand']->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     RecordData::createFromNormalize('ikea')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('brands_designer_fingerprint'),
+                    $this->fixturesDesigner['attributes']['brands']->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     RecordCollectionData::createFromNormalize(['ikea'])
@@ -468,14 +453,14 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->eventDispatcherMock->reset();
 
         $valueToUpdate = Value::create(
-            AttributeIdentifier::fromString('brand_designer_fingerprint'),
+            $this->fixturesDesigner['attributes']['brand']->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             RecordData::createFromNormalize('ikea')
         );
         $record->setValue($valueToUpdate);
         $valueToUpdate = Value::create(
-            AttributeIdentifier::fromString('brands_designer_fingerprint'),
+            $this->fixturesDesigner['attributes']['brands']->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             RecordCollectionData::createFromNormalize(['ikea'])
@@ -631,81 +616,16 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntityWithAttributes(): void
+    private function loadFixtures(): void
     {
-        $repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
-            [
-                'fr_FR' => 'Concepteur',
-                'en_US' => 'Designer'
-            ],
-            Image::createEmpty()
-        );
-        $repository->create($referenceEntity);
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
-            [
-                'fr_FR' => 'Marque',
-                'en_US' => 'Brand'
-            ],
-            Image::createEmpty()
-        );
-        $repository->create($referenceEntity);
+        $this->fixturesLoader
+            ->referenceEntity('brand')
+            ->load();
 
-        $name = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'name', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('name'),
-            LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        );
-        $image = ImageAttribute::create(
-            AttributeIdentifier::create('designer', 'main_image', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('main_image'),
-            LabelCollection::fromArray(['en_US' => 'Image']),
-            AttributeOrder::fromInteger(3),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxFileSize::fromString('250.2'),
-            AttributeAllowedExtensions::fromList(['png'])
-        );
-        $brand = RecordAttribute::create(
-            AttributeIdentifier::create('designer', 'brand', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('brand'),
-            LabelCollection::fromArray(['en_US' => 'Brand']),
-            AttributeOrder::fromInteger(4),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('brand')
-        );
-        $brands = RecordCollectionAttribute::create(
-            AttributeIdentifier::create('designer', 'brands', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('brands'),
-            LabelCollection::fromArray(['en_US' => 'Brands']),
-            AttributeOrder::fromInteger(5),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('brand')
-        );
-
-        $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        $attributesRepository->create($name);
-        $attributesRepository->create($image);
-        $attributesRepository->create($brand);
-        $attributesRepository->create($brands);
+        $this->fixturesDesigner = $this->fixturesLoader
+            ->referenceEntity('designer')
+            ->withAttributes(['name', 'main_image', 'brand', 'brands'])
+            ->load();
     }
 
     /**

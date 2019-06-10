@@ -10,7 +10,7 @@
 import * as $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
-import SimpleSelectAttribute = require('../common/simple-select-attribute');
+import SimpleSelectAttribute from '../common/simple-select-attribute';
 
 const FetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');

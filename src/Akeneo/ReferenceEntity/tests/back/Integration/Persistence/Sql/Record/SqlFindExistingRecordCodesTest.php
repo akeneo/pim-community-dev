@@ -13,18 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
@@ -47,8 +36,8 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
 
         $this->existingRecordCodes = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes');
         $this->resetDB();
-        $this->loadReferenceEntityDesigner();
-        $this->loadRecords();
+
+        $this->loadFixtures();
     }
 
     /**
@@ -68,59 +57,36 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntityDesigner(): void
+    private function loadFixtures(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
-            [
-                'fr_FR' => 'Concepteur',
-                'en_US' => 'Designer',
-            ],
-            Image::createEmpty()
-        );
-        $referenceEntityRepository->create($referenceEntity);
-    }
+        $this->fixturesLoader
+            ->referenceEntity('designer')
+            ->load();
 
-    public function loadRecords(): void
-    {
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $this->fixturesLoader
+            ->record('designer', 'starck')
+            ->withValues([
+                'label' => [
+                    [
+                        'channel' => null,
+                        'locale' => 'fr_FR',
+                        'data' => 'Philippe Starck',
+                    ]
+                ]
+            ])
+            ->load();
 
-        $starkCode = RecordCode::fromString('starck');
-        $starkIdentifier = RecordIdentifier::create('designer', 'stark', 'fingerprint');
-        $recordRepository->create(
-            Record::create(
-                $starkIdentifier,
-                $designerIdentifier,
-                $starkCode,
-                ValueCollection::fromValues([
-                    Value::create(
-                        AttributeIdentifier::fromString('label_designer_fingerprint'),
-                        ChannelReference::noReference(),
-                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                        TextData::fromString('Philippe Starck')
-                    ),
-                ])
-            )
-        );
-
-        $jacobsCode = RecordCode::fromString('jacobs');
-        $jacobsIdentifier = RecordIdentifier::create('designer', 'jacobs', 'fingerprint');
-        $recordRepository->create(
-            Record::create(
-                $jacobsIdentifier,
-                $designerIdentifier,
-                $jacobsCode,
-                ValueCollection::fromValues([
-                    Value::create(
-                        AttributeIdentifier::fromString('label_designer_fingerprint'),
-                        ChannelReference::noReference(),
-                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                        TextData::fromString('Marc Jacobs')
-                    ),
-                ])
-            )
-        );
+        $this->fixturesLoader
+            ->record('designer', 'jacobs')
+            ->withValues([
+                'label' => [
+                    [
+                        'channel' => null,
+                        'locale' => 'fr_FR',
+                        'data' => 'Marc Jacobs',
+                    ]
+                ]
+            ])
+            ->load();
     }
 }

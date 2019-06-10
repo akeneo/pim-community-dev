@@ -39,7 +39,7 @@ extensions:
         position: 0
 
     akeneo-franklin-insights-settings-identifiers-mapping-edit-state:
-        module: akeneo/franklin-insights/view/settings/attributes-mapping/state
+        module: akeneo/franklin-insights/view/settings/identifiers-mapping/state
         parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: state
         position: 900

@@ -5,58 +5,27 @@ import Product, {
 } from 'akeneoreferenceentity/domain/model/product/product';
 import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import ChannelReference, {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import {NormalizedCompleteness} from 'akeneoreferenceentity/domain/model/product/completeness';
 import {accessProperty} from 'akeneoreferenceentity/tools/property';
 
-const getProductCompleteness = (
-  normalizedProduct: any,
-  context: {
-    locale: LocaleReference;
-    channel: ChannelReference;
-  }
-): NormalizedCompleteness => {
-  const completenesses = accessProperty(normalizedProduct, `meta.completenesses`, []);
-  const channelCompleteness = completenesses.find((channelCompleteness: any) =>
-    context.channel.equals(createChannelReference(channelCompleteness.channel))
-  );
-
-  if (undefined === channelCompleteness) {
-    return {required: 0, complete: 0};
-  }
-
-  const localeCompleteness = accessProperty(
-    channelCompleteness,
-    `locales.${context.locale.stringValue()}.completeness`,
-    {
-      required: 0,
-      missing: 0,
-    }
-  );
+const getProductCompleteness = (normalizedProduct: any): NormalizedCompleteness => {
+  const completenessRatio = accessProperty(normalizedProduct, `completeness`, undefined);
 
   return {
-    complete: localeCompleteness.required - localeCompleteness.missing,
-    required: localeCompleteness.required,
+    completeChildren: 0,
+    totalChildren: 0,
+    ratio: completenessRatio,
   };
 };
 
-const getProductModelCompleteness = (
-  normalizedProduct: any,
-  context: {
-    locale: LocaleReference;
-    channel: ChannelReference;
-  }
-): NormalizedCompleteness => {
-  const complete = accessProperty(
-    normalizedProduct,
-    `meta.variant_product_completenesses.completenesses.${context.channel.stringValue()}.${context.locale.stringValue()}`,
-    0
-  );
-  const required = accessProperty(normalizedProduct, 'meta.variant_product_completenesses.total', 0);
+const getProductModelCompleteness = (normalizedProduct: any): NormalizedCompleteness => {
+  const completeChildren = accessProperty(normalizedProduct, `variant_product_completenesses.completeChildren`, 0);
+  const totalChildren = accessProperty(normalizedProduct, 'variant_product_completenesses.totalChildren', 0);
 
   return {
-    complete,
-    required,
+    completeChildren,
+    totalChildren,
+    ratio: 0,
   };
 };
 
@@ -64,24 +33,22 @@ export const hydrator = (denormalize: (denormalizeProduct: NormalizedProduct) =>
   normalizedProduct: any,
   context: {
     locale: LocaleReference;
-    channel: ChannelReference;
   }
 ): Product => {
-  const expectedKeys = ['meta'];
+  const expectedKeys = ['id', 'identifier', 'document_type', 'label', 'image'];
   validateKeys(normalizedProduct, expectedKeys, 'The provided raw product seems to be malformed.');
 
   const completeness =
-    PRODUCT_TYPE === normalizedProduct.meta.model_type
-      ? getProductCompleteness(normalizedProduct, context)
-      : getProductModelCompleteness(normalizedProduct, context);
+    PRODUCT_TYPE === normalizedProduct.document_type
+      ? getProductCompleteness(normalizedProduct)
+      : getProductModelCompleteness(normalizedProduct);
 
   return denormalize({
-    id: String(normalizedProduct.meta.id),
-    identifier:
-      PRODUCT_TYPE === normalizedProduct.meta.model_type ? normalizedProduct.identifier : normalizedProduct.code,
-    type: normalizedProduct.meta.model_type,
-    labels: normalizedProduct.meta.label,
-    image: normalizedProduct.meta.image,
+    id: String(normalizedProduct.id),
+    identifier: normalizedProduct.identifier,
+    type: normalizedProduct.document_type,
+    labels: {[context.locale.stringValue()]: normalizedProduct.label},
+    image: normalizedProduct.image,
     completeness,
   });
 };
