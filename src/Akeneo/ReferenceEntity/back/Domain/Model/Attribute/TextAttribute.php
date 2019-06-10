@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
  */
 class TextAttribute extends AbstractAttribute
 {
-    private const ATTRIBUTE_TYPE = 'text';
+    public const ATTRIBUTE_TYPE = 'text';
 
     /** @var AttributeMaxLength */
     private $maxLength;

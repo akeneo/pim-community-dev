@@ -58,9 +58,9 @@
     },
     {
       "from": {
-        "id": "name",
+        "id": "label",
         "label": {
-          "en_us": "Name"
+          "en_us": "Label"
         },
         "type": "text"
       },

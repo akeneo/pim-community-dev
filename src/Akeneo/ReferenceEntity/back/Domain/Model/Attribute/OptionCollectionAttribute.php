@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
  */
 class OptionCollectionAttribute extends AbstractAttribute
 {
-    private const ATTRIBUTE_TYPE = 'option_collection';
+    public const ATTRIBUTE_TYPE = 'option_collection';
     private const MAX_OPTIONS = 100;
 
     /** @var AttributeOption[] */

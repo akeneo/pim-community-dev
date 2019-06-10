@@ -1,42 +1,43 @@
-export type NormalizedCompleteness = {complete: number; required: number};
+export type NormalizedCompleteness = {completeChildren: number; totalChildren: number; ratio: number};
 
 class Completeness {
-  private constructor(private complete: number, private required: number) {
+  private constructor(private completeChildren: number, private totalChildren: number, private ratio: number) {
     Object.freeze(this);
   }
 
-  public static createFromNormalized({complete, required}: NormalizedCompleteness) {
-    return new Completeness(complete, required);
+  public static createFromNormalized({completeChildren, totalChildren, ratio}: NormalizedCompleteness) {
+    return new Completeness(completeChildren, totalChildren, ratio);
   }
 
-  public getCompleteCount() {
-    return this.complete;
+  public getCompleteChildren() {
+    return this.completeChildren;
   }
 
-  public getRequiredCount() {
-    return this.required;
+  public getTotalChildren() {
+    return this.totalChildren;
   }
 
   public isComplete() {
-    return this.complete === this.required;
+    if (this.completeChildren === 0 && this.totalChildren === 0) {
+      return this.ratio === 100;
+    }
+
+    return this.completeChildren === this.totalChildren;
   }
 
   public hasCompleteItems() {
-    return this.complete > 0;
+    return this.ratio > 0 || this.completeChildren > 0;
   }
 
   public getRatio() {
-    if (0 === this.required) {
-      return 0;
-    }
-
-    return Math.round((100 * this.complete) / this.required);
+    return this.ratio;
   }
 
   public normalize(): NormalizedCompleteness {
     return {
-      complete: this.complete,
-      required: this.required,
+      completeChildren: this.completeChildren,
+      totalChildren: this.totalChildren,
+      ratio: this.ratio,
     };
   }
 }

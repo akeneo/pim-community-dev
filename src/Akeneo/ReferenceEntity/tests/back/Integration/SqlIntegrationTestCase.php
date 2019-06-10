@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Integration;
 
 use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy;
+use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ResettableContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -31,6 +32,9 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     /** @var KernelInterface|null */
     protected $testKernel;
 
+    /** @var FixturesLoader */
+    protected $fixturesLoader;
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +43,8 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         if (null === $this->testKernel) {
             $this->bootTestKernel();
         }
+
+        $this->fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
     }
 
     protected function bootTestKernel(): void

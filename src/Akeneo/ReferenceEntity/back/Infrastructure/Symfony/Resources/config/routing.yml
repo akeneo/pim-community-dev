@@ -94,7 +94,7 @@ akeneo_reference_entities_reference_entity_permission_get_rest:
 
 akeneo_reference_entities_product_get_linked_product:
     path: '/rest/reference_entity/{referenceEntityIdentifier}/record/{recordCode}/product/{attributeCode}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.product.get_linked_product }
+    defaults: { _controller: pimee.reference_entity.enrichment.product.get_products_linked_to_a_record_action }
     methods: [GET]
 
 # API Connector

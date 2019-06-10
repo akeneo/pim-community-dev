@@ -148,4 +148,4 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   }
 }
 
-export = SimpleSelectAttribute;
+export default SimpleSelectAttribute;
