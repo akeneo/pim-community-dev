@@ -21,10 +21,12 @@ use Webmozart\Assert\Assert;
  */
 class Suffix
 {
-    /** @var string */
+    public const EMPTY = null;
+
+    /** @var ?string */
     private $suffix;
 
-    private function __construct(string $suffix)
+    private function __construct(?string $suffix)
     {
         $this->suffix = $suffix;
     }
@@ -36,7 +38,17 @@ class Suffix
         return new self($suffix);
     }
 
-    public function normalize(): string
+    public static function empty(): self
+    {
+        return new self(self::EMPTY);
+    }
+
+    public function isEmpty(): bool
+    {
+        return self::EMPTY === $this->suffix;
+    }
+
+    public function normalize(): ?string
     {
         return $this->suffix;
     }

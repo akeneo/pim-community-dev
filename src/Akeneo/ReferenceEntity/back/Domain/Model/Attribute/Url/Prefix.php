@@ -21,10 +21,12 @@ use Webmozart\Assert\Assert;
  */
 class Prefix
 {
-    /** @var string */
+    public const EMPTY = null;
+
+    /** @var ?string */
     private $prefix;
 
-    private function __construct(string $prefix)
+    private function __construct(?string $prefix)
     {
         $this->prefix = $prefix;
     }
@@ -36,7 +38,17 @@ class Prefix
         return new self($prefix);
     }
 
-    public function normalize(): string
+    public static function empty(): self
+    {
+        return new self(self::EMPTY);
+    }
+
+    public function isEmpty(): bool
+    {
+        return self::EMPTY === $this->prefix;
+    }
+
+    public function normalize(): ?string
     {
         return $this->prefix;
     }

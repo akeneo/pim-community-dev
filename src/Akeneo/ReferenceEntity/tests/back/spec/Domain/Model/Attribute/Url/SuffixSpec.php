@@ -23,6 +23,18 @@ class SuffixSpec extends ObjectBehavior
         $this->shouldHaveType(Suffix::class);
     }
 
+    function it_can_be_created_with_no_suffix()
+    {
+        $noSuffix = $this::empty();
+        $noSuffix->normalize()->shouldReturn(null);
+    }
+
+    function it_says_if_it_holds_no_suffix()
+    {
+        $this->isEmpty()->shouldReturn(false);
+        $this::empty()->isEmpty()->shouldReturn(true);
+    }
+
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn('/500x500');

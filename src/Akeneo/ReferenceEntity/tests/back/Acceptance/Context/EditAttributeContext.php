@@ -30,6 +30,10 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -1697,5 +1701,144 @@ class EditAttributeContext implements Context
             'max_value' => $maxValue
         ];
         $this->updateAttribute($updateMaxValue);
+    }
+
+    /**
+     * @Given /^a reference entity with an url attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     */
+    public function aReferenceEntityWithAnUrlAttributeAndTheLabelEqualTo(
+        string $attributeCode,
+        string $localeCode,
+        string $label
+    ): void {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode($localeCode));
+
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            UrlAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([$localeCode => $label]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                Prefix::fromString(null),
+                Suffix::fromString(null),
+                PreviewType::fromString('image')
+            )
+        );
+    }
+
+    /**
+     * @Given /^a reference entity with an url attribute \'([^\']*)\'$/
+     */
+    public function aReferenceEntityWithAnUrlAttribute(string $attributeCode): void
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            UrlAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                Prefix::fromString(null),
+                Suffix::fromString(null),
+                PreviewType::fromString('image')
+            )
+        );
+    }
+
+    /**
+     * @When /^the user sets the prefix value of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserSetsThePrefixValueOfTo(string $attributeCode, string $prefix): void
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $prefix = json_decode($prefix);
+
+        $updatePrefix = [
+            'identifier' => (string)$identifier,
+            'prefix' => $prefix,
+        ];
+        $this->updateAttribute($updatePrefix);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' prefix should be \'([^\']*)\'$/
+     */
+    public function prefixShouldBe(string $attributeCode, string $expectedPrefix): void
+    {
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $expectedPrefix = json_decode($expectedPrefix);
+
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals($expectedPrefix, $attribute->normalize()['prefix']);
+    }
+
+    /**
+     * @When /^the user sets the suffix value of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheSuffixValueOfTo(string $attributeCode, string $suffix): void
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $suffix = json_decode($suffix);
+
+        $updateSuffix = [
+            'identifier' => (string)$identifier,
+            'suffix' => $suffix,
+        ];
+        $this->updateAttribute($updateSuffix);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' suffix should be \'([^\']*)\'$/
+     */
+    public function suffixShouldBe(string $attributeCode, string $expectedSuffix): void
+    {
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $expectedSuffix = json_decode($expectedSuffix);
+
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals($expectedSuffix, $attribute->normalize()['suffix']);
+    }
+
+    /**
+     * @When /^the user sets the preview type value of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserSetsThePreviewTypeValueOfTo(string $attributeCode, string $previewType): void
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $previewType = json_decode($previewType);
+
+        $updatePreviewType = [
+            'identifier' => (string)$identifier,
+            'preview_type' => $previewType,
+        ];
+        $this->updateAttribute($updatePreviewType);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' preview type should be \'([^\']*)\'$/
+     */
+    public function previewTypeShouldBe(string $attributeCode, string $expectedPreviewType): void
+    {
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $expectedPreviewType = json_decode($expectedPreviewType);
+
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals($expectedPreviewType, $attribute->normalize()['preview_type']);
     }
 }
