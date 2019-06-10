@@ -70,6 +70,11 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
             return;
         }
 
+        // TODO: this probably should be moved in another subscriber with a higher priority
+        if ($entity instanceof BusinessEventsAwareInterface) {
+            $entity->initEvents();
+        }
+
         $rawValues = $entity->getRawValues();
 
         $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);

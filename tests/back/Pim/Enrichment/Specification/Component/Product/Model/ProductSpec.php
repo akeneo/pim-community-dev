@@ -33,6 +33,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 
 class ProductSpec extends ObjectBehavior
@@ -40,9 +41,9 @@ class ProductSpec extends ObjectBehavior
     function let()
     {
         $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
-        $this->popEvents()->shouldBeLike([
-            new ProductEnabled(null), // TODO: fix null
-            new ProductCreated('my_identifier'),
+        $this->shouldHaveEventsLike([
+            new ProductEnabled(),
+            new ProductCreated(),
         ]);
     }
 
@@ -51,8 +52,8 @@ class ProductSpec extends ObjectBehavior
         $this->setId(1);
 
         $this->setEnabled(false);
-        $this->popEvents()->shouldBeLike([
-            new ProductDisabled('my_identifier'),
+        $this->shouldHaveEventsLike([
+            new ProductDisabled(),
         ]);
     }
 
@@ -64,8 +65,7 @@ class ProductSpec extends ObjectBehavior
 
         $this->setFamily($family);
         $this->getFamily()->shouldReturn($family);
-        $this->getFamilyId()->shouldReturn(42);
-        $this->popEvents()->shouldBeLike([new FamilyAddedToProduct('my_identifier', 'clothing')]);
+        $this->shouldHaveEventsLike([new FamilyAddedToProduct('clothing')]);
     }
 
     function it_can_have_its_family_changed(FamilyInterface $family1, FamilyInterface $family2)
@@ -75,11 +75,11 @@ class ProductSpec extends ObjectBehavior
         $family2->getCode()->willReturn('accessories');
 
         $this->setFamily($family1);
-        $this->popEvents()->shouldBeLike([new FamilyAddedToProduct('my_identifier', 'clothing')]);
+        $this->shouldHaveEventsLike([new FamilyAddedToProduct('clothing')]);
         $this->setId(1);
 
         $this->setFamily($family2);
-        $this->popEvents()->shouldBeLike([new FamilyOfProductChanged('my_identifier', 'clothing', 'accessories')]);
+        $this->shouldHaveEventsLike([new FamilyOfProductChanged('clothing', 'accessories')]);
     }
 
     function it_can_have_its_family_removed(FamilyInterface $family)
@@ -88,10 +88,10 @@ class ProductSpec extends ObjectBehavior
         $family->getCode()->willreturn('clothing');
 
         $this->setFamily($family);
-        $this->popEvents()->shouldBeLike([new FamilyAddedToProduct('my_identifier', 'clothing')]);
+        $this->shouldHaveEventsLike([new FamilyAddedToProduct('clothing')]);
 
         $this->setFamily(null);
-        $this->popEvents()->shouldBeLike([new FamilyRemovedFromProduct('my_identifier', 'clothing')]);
+        $this->shouldHaveEventsLike([new FamilyRemovedFromProduct('clothing')]);
     }
 
     function it_purges_events_when_popping_them(CategoryInterface $category1)
@@ -118,9 +118,9 @@ class ProductSpec extends ObjectBehavior
         $this->addCategory($category2);
         $this->getCategories()->shouldHaveCount(2);
 
-        $this->popEvents()->shouldBeLike([
-            new ProductCategorized('my_identifier', 'category_1'),
-            new ProductCategorized('my_identifier', 'category_2'),
+        $this->shouldHaveEventsLike([
+            new ProductCategorized('category_1'),
+            new ProductCategorized('category_2'),
         ]);
     }
 
@@ -136,7 +136,7 @@ class ProductSpec extends ObjectBehavior
         $this->removeCategory($category1);
         $this->getCategories()->shouldHaveCount(0);
 
-        $this->popEvents()->shouldBeLike([new ProductUncategorized('my_identifier', 'category_1')]);
+        $this->shouldHaveEventsLike([new ProductUncategorized('category_1')]);
     }
 
     function it_is_categorized_or_uncategorized_the_product_by_replacing_all_categories(
@@ -155,9 +155,9 @@ class ProductSpec extends ObjectBehavior
         $this->popEvents();
 
         $this->setCategories(new ArrayCollection([$category2->getWrappedObject(), $category3->getWrappedObject()]));
-        $this->popEvents()->shouldBeLike([
-            new ProductUncategorized('my_identifier', 'category_1'),
-            new ProductCategorized('my_identifier', 'category_3'),
+        $this->shouldHaveEventsLike([
+            new ProductUncategorized('category_1'),
+            new ProductCategorized('category_3'),
         ]);
     }
 
@@ -415,8 +415,8 @@ class ProductSpec extends ObjectBehavior
         $parent->getCode()->willReturn('parent_code');
         $this->setParent($parent);
         $this->isVariant()->shouldReturn(true);
-        $this->popEvents()->shouldBeLike([
-            new ParentOfProductAdded('my_identifier', 'parent_code')
+        $this->shouldHaveEventsLike([
+            new ParentOfProductAdded('parent_code')
         ]);
     }
 
@@ -495,15 +495,15 @@ class ProductSpec extends ObjectBehavior
 
         $this->setGroups(new ArrayCollection([$groupA->getWrappedObject(), $groupB->getWrappedObject()]));
 
-        $this->popEvents()->shouldBeLike([
-            new ProductAddedToGroup('my_identifier', 'groupA'),
-            new ProductAddedToGroup('my_identifier', 'groupB'),
+        $this->shouldHaveEventsLike([
+            new ProductAddedToGroup('groupA'),
+            new ProductAddedToGroup('groupB'),
         ]);
 
         $this->setGroups(new ArrayCollection([$groupC->getWrappedObject(), $groupA->getWrappedObject()]));
-        $this->popEvents()->shouldBeLike([
-            new ProductRemovedFromGroup('my_identifier', 'groupB'),
-            new ProductAddedToGroup('my_identifier', 'groupC'),
+        $this->shouldHaveEventsLike([
+            new ProductRemovedFromGroup('groupB'),
+            new ProductAddedToGroup('groupC'),
         ]);
     }
 
@@ -512,10 +512,9 @@ class ProductSpec extends ObjectBehavior
         $this->setId(42);
         $promotions->getCode()->willReturn('promotions');
 
-        $promotions->addProduct($this)->shouldBeCalled();
         $this->addGroup($promotions);
 
-        $this->popEvents()->shouldBeLike([new ProductAddedToGroup('my_identifier', 'promotions')]);
+        $this->shouldHaveEventsLike([new ProductAddedToGroup('promotions')]);
     }
 
     function it_can_be_removed_from_a_group(GroupInterface $promotions)
@@ -526,16 +525,16 @@ class ProductSpec extends ObjectBehavior
         $this->popEvents()->shouldHaveCount(1);
 
         $this->removeGroup($promotions);
-        $this->popEvents()->shouldBeLike([
-            new ProductRemovedFromGroup('my_identifier', 'promotions'),
+        $this->shouldHaveEventsLike([
+            new ProductRemovedFromGroup('promotions'),
         ]);
     }
 
     function it_does_not_pop_event_if_this_is_a_new_object()
     {
         $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
-        $this->popEvents()->shouldBeLike([
-            new ProductCreated('my_identifier'),
+        $this->shouldHaveEventsLike([
+            new ProductCreated(),
         ]);
     }
 
@@ -544,9 +543,9 @@ class ProductSpec extends ObjectBehavior
         $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier'));
         $this->setIdentifier(ScalarValue::value('attribute_1', 'my_identifier_2'));
 
-        $this->popEvents()->shouldBeLike([
-            new ProductIdentifierUpdated('my_identifier_2', 'my_identifier'),
-            new ProductCreated('my_identifier_2'),
+        $this->shouldHaveEventsLike([
+            new ProductIdentifierUpdated('my_identifier'),
+            new ProductCreated(),
         ]);
     }
 
@@ -556,8 +555,8 @@ class ProductSpec extends ObjectBehavior
 
         $this->addOrReplaceValue(ScalarValue::value('attribute_code', 'data'));
 
-        $this->popEvents()->shouldBeLike([
-            new ValueAdded('my_identifier', 'attribute_code', null, null)
+        $this->shouldHaveEventsLike([
+            new ValueAdded('attribute_code', null, null)
         ]);
     }
 
@@ -569,7 +568,7 @@ class ProductSpec extends ObjectBehavior
 
         $this->addOrReplaceValue(ScalarValue::value('attribute_code', 'data'));
 
-        $this->popEvents()->shouldBeLike([]);
+        $this->shouldHaveEventsLike([]);
     }
 
     function it_replaces_a_value()
@@ -579,8 +578,8 @@ class ProductSpec extends ObjectBehavior
         $this->popEvents();
 
         $this->addOrReplaceValue(ScalarValue::value('attribute_code', 'data'));
-        $this->popEvents()->shouldBeLike([
-            new ValueEdited('my_identifier', 'attribute_code', null, null)
+        $this->shouldHaveEventsLike([
+            new ValueEdited('attribute_code', null, null)
         ]);
     }
 
@@ -593,8 +592,8 @@ class ProductSpec extends ObjectBehavior
         $this->popEvents();
 
         $this->removeValue($value);
-        $this->popEvents()->shouldBeLike([
-            new ValueDeleted('my_identifier', 'attribute_code', null, null)
+        $this->shouldHaveEventsLike([
+            new ValueDeleted('attribute_code', null, null)
         ]);
     }
 
@@ -605,7 +604,7 @@ class ProductSpec extends ObjectBehavior
         $this->popEvents();
 
         $this->removeValue(ScalarValue::value('attribute_code', 'former_data'));
-        $this->popEvents()->shouldBeLike([]);
+        $this->shouldHaveEventsLike([]);
     }
 
     function it_adds_several_values()
@@ -618,9 +617,9 @@ class ProductSpec extends ObjectBehavior
         ]);
 
         $this->setValues($values);
-        $this->popEvents()->shouldBeLike([
-            new ValueAdded('my_identifier', 'color', null, null),
-            new ValueAdded('my_identifier', 'name', null, null),
+        $this->shouldHaveEventsLike([
+            new ValueAdded('color', null, null),
+            new ValueAdded('name', null, null),
         ]);
     }
 
@@ -628,14 +627,14 @@ class ProductSpec extends ObjectBehavior
     {
         $this->setId(42);
         $this->setValues(new WriteValueCollection([
-            ScalarValue::value('name', 'saucisson'),
+            ScalarValue::scopableLocalizableValue('description', 'saucisson', 'mobile', 'fr_FR'),
         ]));
         $this->popEvents();
 
         $this->setValues(
             new WriteValueCollection(
                 [
-                    ScalarValue::value('name', 'saucisson'),
+                    ScalarValue::scopableLocalizableValue('description', 'saucisson', 'mobile', 'fr_FR'),
                 ]
             )
         );
@@ -664,10 +663,27 @@ class ProductSpec extends ObjectBehavior
                 ]
             ));
 
-        $this->popEvents()->shouldBeLike([
-            new ValueDeleted('my_identifier', 'color', 'en_US', null),
-            new ValueAdded('my_identifier', 'color', 'fr_FR', null),
-            new ValueEdited('my_identifier', 'name', null, null),
+        $this->shouldHaveEventsLike([
+            new ValueDeleted('color', 'en_US', null),
+            new ValueAdded('color', 'fr_FR', null),
+            new ValueEdited('name', null, null),
         ]);
+    }
+
+    public function getMatchers(): array
+    {
+        return [
+            'haveEventsLike' => function($subject, $expectedEvents) {
+                foreach ($expectedEvents as $event) {
+                    $event->setProductIdentifier($subject->getIdentifier());
+                }
+
+                if ($subject->popEvents() != $expectedEvents) {
+                    throw new FailureException('Expected events to not match actual ones');
+                }
+
+                return true;
+            }
+        ];
     }
 }

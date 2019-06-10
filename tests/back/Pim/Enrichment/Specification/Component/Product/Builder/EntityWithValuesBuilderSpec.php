@@ -2,14 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Builder;
 
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class EntityWithValuesBuilderSpec extends ObjectBehavior
@@ -21,35 +20,50 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($valuesResolver, $productValueFactory);
     }
 
-    function it_adds_a_product_value(
+    function it_adds_a_value(
         $productValueFactory,
         ProductInterface $product,
         AttributeInterface $size
     ) {
-        $size->getCode()->willReturn('size');
         $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $size->isLocalizable()->willReturn(false);
-        $size->isScopable()->willReturn(false);
+        $size->getCode()->willReturn('size');
 
         $product->getValue('size', null, null)->willReturn(null);
         $sizeValue = ScalarValue::value('size', 'XL');
         $productValueFactory->create($size, null, null, 'XL')->willReturn($sizeValue);
 
-        $product->removeValue(Argument::any())->shouldNotBeCalled();
-        $product->addValue($sizeValue)->shouldBeCalled();
+        $product->addOrReplaceValue($sizeValue)->shouldBeCalled();
 
         $this->addOrReplaceValue($product, $size, null, null, 'XL');
     }
 
-    function it_replaces_a_product_value(
+    function it_removes_an_existing_value_if_data_is_empty(
+        $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $size
+    ) {
+        $formerValue = ScalarValue::value('size', 'XL');
+
+        $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
+        $size->getCode()->willReturn('size');
+
+        $product->getValue('size', null, null)->willReturn($formerValue);
+        $sizeValue = ScalarValue::value('size', 'XL');
+        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
+
+        $product->removeValue($formerValue)->shouldBeCalled();
+        $product->addOrReplaceValue(Argument::any())->shouldNotBeCalled();
+
+        $this->addOrReplaceValue($product, $size, null, null, null);
+    }
+
+    function it_replaces_a_value(
         $productValueFactory,
         ProductInterface $product,
         AttributeInterface $color
     ) {
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $color->isLocalizable()->willReturn(true);
-        $color->isScopable()->willReturn(true);
 
         $formerColorValue = ScalarValue::scopableLocalizableValue('color', 'red', 'ecommerce', 'en_US');
         $product->getValue('color', 'en_US', 'ecommerce')->willReturn($formerColorValue);
@@ -57,31 +71,9 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $newColorValue = ScalarValue::scopableLocalizableValue('color', 'blue', 'ecommerce', 'en_US');
         $productValueFactory->create($color, 'ecommerce', 'en_US', 'blue')->willReturn($newColorValue);
 
-        $product->removeValue($formerColorValue)->shouldBeCalled();
-        $product->addValue($newColorValue)->shouldBeCalled();
+        $product->removeValue($formerColorValue)->shouldNotBeCalled();
+        $product->addOrReplaceValue($newColorValue)->shouldBeCalled();
 
         $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', 'blue');
-    }
-
-    function it_does_not_replace_identical_values(
-        $productValueFactory,
-        ProductInterface $product,
-        AttributeInterface $label
-    ) {
-        $label->getCode()->willReturn('label');
-        $label->getType()->willReturn(AttributeTypes::TEXT);
-        $label->isLocalizable()->willReturn(false);
-        $label->isScopable()->willReturn(false);
-
-        $formerLabelValue = ScalarValue::value('label', 'A label');
-        $product->getValue('label', null, null)->willReturn($formerLabelValue);
-
-        $newLabelValue = ScalarValue::value('label', 'A label');
-        $productValueFactory->create($label, null, null, 'A label')->willReturn($newLabelValue);
-
-        $product->removeValue(Argument::any())->shouldNotBeCalled();
-        $product->addValue(Argument::any())->shouldNotBeCalled();
-
-        $this->addOrReplaceValue($product, $label, null, null, 'A label');
     }
 }

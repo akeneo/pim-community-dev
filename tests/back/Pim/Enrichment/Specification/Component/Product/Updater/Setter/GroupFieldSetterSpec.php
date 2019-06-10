@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
@@ -61,20 +62,15 @@ class GroupFieldSetterSpec extends ObjectBehavior
         ProductInterface $product,
         GroupInterface $pack,
         GroupInterface $cross,
-        GroupInterface $up,
-        GroupTypeInterface $nonVariantType
+        GroupInterface $up
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
         $groupRepository->findOneByIdentifier('cross')->willReturn($cross);
 
-        $product->getGroups()->willReturn([$up]);
+        $product->getGroups()->willReturn(new ArrayCollection([$up->getWrappedObject(), $pack->getWrappedObject()]));
 
-        $up->getType()->willReturn($nonVariantType);
         $product->removeGroup($up)->shouldBeCalled();
-        $pack->getType()->willReturn($nonVariantType);
-        $cross->getType()->willReturn($nonVariantType);
-
-        $product->addGroup($pack)->shouldBeCalled();
+        $product->addGroup($pack)->shouldNotBeCalled();
         $product->addGroup($cross)->shouldBeCalled();
 
         $this->setFieldData($product, 'groups', ['pack', 'cross']);

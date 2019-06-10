@@ -61,6 +61,13 @@ interface EntityWithValuesInterface
     public function addValue(ValueInterface $value);
 
     /**
+     * Adds or replaces a value
+     *
+     * @param ValueInterface $value
+     */
+    public function addOrReplaceValue(ValueInterface $value): void;
+
+    /**
      * Remove value
      *
      * @param ValueInterface $value

@@ -14,7 +14,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeTestCase
 {
-    public function testCompleteBoolean()
+    public function test_that_boolean_values_are_always_complete()
     {
         $family = $this->createFamilyWithRequirement(
             'another_family',
@@ -23,7 +23,7 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             AttributeTypes::BOOLEAN
         );
 
-        $productComplete = $this->createProductWithStandardValues(
+        $productWithTrue = $this->createProductWithStandardValues(
             $family,
             'product_complete_true',
             [
@@ -38,9 +38,9 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
                 ],
             ]
         );
-        $this->assertComplete($productComplete);
+        $this->assertComplete($productWithTrue);
 
-        $productCompleteFalse = $this->createProductWithStandardValues(
+        $productWithFalse = $this->createProductWithStandardValues(
             $family,
             'product_complete_false',
             [
@@ -55,35 +55,25 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
                 ],
             ]
         );
-        $this->assertComplete($productCompleteFalse);
-    }
+        $this->assertComplete($productWithFalse);
 
-    public function testNotCompleteBoolean()
-    {
-        $family = $this->createFamilyWithRequirement(
-            'another_family',
-            'ecommerce',
-            'a_boolean',
-            AttributeTypes::BOOLEAN
-        );
-
-        $productDataNull = $this->createProductWithStandardValues(
+        $productWithNull = $this->createProductWithStandardValues(
             $family,
-            'product_data_null',
+            'product_complete_null',
             [
                 'values' => [
                     'a_boolean' => [
                         [
                             'locale' => null,
-                            'scope'  => null,
-                            'data'   => null,
+                            'scope' => null,
+                            'data' => null,
                         ],
                     ],
                 ],
             ]
         );
-        $this->assertNotComplete($productDataNull);
-        $this->assertMissingAttributeForProduct($productDataNull, ['a_boolean']);
+        $this->assertComplete($productWithNull);
+        $this->assertBooleanValueIsFalse($productWithNull, 'a_boolean');
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertComplete($productWithoutValues);
@@ -93,8 +83,6 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
     /**
      * For now, when creating an empty boolean product value, it is automatically
      * set to false by the product builder.
-     *
-     * @todo To remove once PIM-6056 is fixed.
      *
      * @param ProductInterface $product
      * @param string           $attributeCode

@@ -47,13 +47,14 @@ class LoadEntityWithValuesSubscriberSpec extends ObjectBehavior
             ->createFromStorageFormat(['an attribute' => 'a value', 'another attribute' => 'another value'])
             ->willReturn($values);
 
+        $product->initEvents()->shouldBeCalled();
         $product->setValues($values)->shouldBeCalled();
         $product->popEvents()->shouldBeCalled();
 
         $this->postLoad($event);
     }
 
-    function it_works_only_with_products($container, LifecycleEventArgs $event, \stdClass $object)
+    function it_only_with_entities_with_values($container, LifecycleEventArgs $event, \stdClass $object)
     {
         $event->getObject()->willReturn($object);
         $container->get(Argument::any())->shouldNotBeCalled();
