@@ -29,6 +29,7 @@ class PimUIExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('forms.yml');
         $loader->load('locale_provider.yml');
+        $loader->load('translator.yml');
         $loader->load('twig.yml');
         $loader->load('providers.yml');
         $loader->load('services.yml');

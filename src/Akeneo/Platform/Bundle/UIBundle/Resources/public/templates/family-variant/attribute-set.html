@@ -2,7 +2,7 @@
 <div class="AknFamilyVariant family-variant-levels">
     <div class="AknFamilyVariant-level">
         <div class="common-attribute AknFamilyVariant-column AknFamilyVariant-column--common">
-            <div class="AknFamilyVariant-axes AknVerticalList-item">
+            <div class="AknFamilyVariant-axes AknVerticalList-item" title="<%- __('pim_enrich.entity.family.variant.common.title') %>">
                 <%- __('pim_enrich.entity.family_variant.module.edit.common_attributes') %>
             </div>
             <div data-level="0" id="attribute-groups-column-level-0" class="attribute-list connected-group-sortable">
@@ -28,7 +28,11 @@
             <span class="AknFamilyVariant-levelPathLabel"><%- __('pim_enrich.entity.family_variant.module.edit.level_' + level.level) %></span>
         </div>
         <div class="family-variant-level AknFamilyVariant-column AknFamilyVariant-column--level<%- level.level %>" data-level="<%- level.level %>">
-            <div class="AknFamilyVariant-axes AknVerticalList-item">
+            <div class="AknFamilyVariant-axes AknVerticalList-item" title="
+                <%- level.axes.map(function (axis) {
+                    return i18n.getLabel(getAttribute(axis).labels, UserContext.get('catalogLocale'), getAttribute(axis).code);
+                }).join(', ') %>
+                (<%- __('pim_enrich.entity.family.variant.axis.label') %>)">
                 <%- level.axes.map(function (axis) {
                     return i18n.getLabel(getAttribute(axis).labels, UserContext.get('catalogLocale'), getAttribute(axis).code);
                 }).join(', ') %>

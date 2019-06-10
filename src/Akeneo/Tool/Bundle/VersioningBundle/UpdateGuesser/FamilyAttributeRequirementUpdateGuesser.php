@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
-use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 

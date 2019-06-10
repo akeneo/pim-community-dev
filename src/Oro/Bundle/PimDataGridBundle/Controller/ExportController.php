@@ -4,7 +4,6 @@ namespace Oro\Bundle\PimDataGridBundle\Controller;
 
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;

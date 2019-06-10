@@ -17,9 +17,23 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AttributeTypeForOptionValidator extends ConstraintValidator
 {
+    /** @var array */
+    protected $supportedAttributeTypes;
+
     /**
-     * @param object     $attributeOption
-     * @param Constraint $constraint
+     * AttributeTypeForOptionValidator constructor.
+     * @param array $supportedAttributeTypes
+     *
+     * TODO on merge 3.2, remove = null and add BC BREAK in changelog
+     */
+    public function __construct(array $supportedAttributeTypes = [])
+    {
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+    }
+
+    /**
+     * @param object                            $attributeOption
+     * @param AttributeTypeForOption|Constraint $constraint
      */
     public function validate($attributeOption, Constraint $constraint)
     {
@@ -27,10 +41,16 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, AttributeTypeForOption::class);
         }
 
+        /* TODO on merge 3.2, remove condition - replace $authorizedTypes by $this->supportedAttributeTypes */
+        if (!empty($this->supportedAttributeTypes)) {
+            $authorizedTypes = $this->supportedAttributeTypes;
+        } else {
+            $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
+        }
+
         /** @var AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();
-            $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
             if (null !== $attribute && !in_array($attribute->getType(), $authorizedTypes)) {
                 $this->addInvalidAttributeViolation($constraint, $attributeOption, $authorizedTypes);
             }

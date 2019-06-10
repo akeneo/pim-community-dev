@@ -26,6 +26,7 @@ class AkeneoElasticsearchExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('cursors.yml');
+        $loader->load('commands.yml');
         $loader->load('services.yml');
 
         $this->registerEsClientsFromConfiguration($configs, $container);

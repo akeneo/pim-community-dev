@@ -33,6 +33,8 @@ class QueryBuilderUtility
     }
 
     /**
+     * @deprecated Will be removed in 4.0
+     *
      * Replaces name of tables in DBAL queries
      *
      * @param EntityManager $em
@@ -70,6 +72,8 @@ class QueryBuilderUtility
     }
 
     /**
+     * @deprecated Will be removed in 4.0
+     *
      * Get metadata of product value table
      *
      * @param EntityManager $em

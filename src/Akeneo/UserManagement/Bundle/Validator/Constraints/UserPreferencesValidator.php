@@ -2,7 +2,6 @@
 
 namespace Akeneo\UserManagement\Bundle\Validator\Constraints;
 
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

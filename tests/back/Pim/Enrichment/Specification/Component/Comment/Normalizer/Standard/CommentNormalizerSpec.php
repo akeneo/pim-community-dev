@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard;
 
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CommentNormalizerSpec extends ObjectBehavior
@@ -107,5 +107,41 @@ class CommentNormalizerSpec extends ObjectBehavior
                 ]
            ],
         ]);
+    }
+
+    function it_normalizes_a_comment_whose_author_was_removed(
+        $serializer,
+        CommentInterface $comment
+    ) {
+        $dateTime = new \DateTime('2015-05-23 15:55:50');
+        $serializer
+            ->normalize($dateTime, 'standard', [])
+            ->willReturn('2015-05-23T15:55:50+01:00');
+        $serializer->normalize(null, 'standard', [])->willReturn(null);
+        $comment->getId()->willReturn(42);
+        $comment->getResourceName()->willReturn('Product');
+        $comment->getResourceId()->willReturn('100');
+        $comment->getAuthor()->willReturn(null);
+        $comment->getBody()->willReturn('Lorem ipsum dolor sit amet');
+        $comment->getCreatedAt()->willReturn($dateTime);
+        $comment->getRepliedAt()->willReturn(null);
+        $comment->getChildren()->willReturn(new ArrayCollection());
+
+        $this->normalize($comment)->shouldReturn(
+            [
+                'id' => 42,
+                'resourceName' => 'Product',
+                'resourceId' => '100',
+                'author' => [
+                    'username' => null,
+                    'fullName' => null,
+                    'avatar' => null,
+                ],
+                'body' => 'Lorem ipsum dolor sit amet',
+                'created' => '2015-05-23T15:55:50+01:00',
+                'replied' => null,
+                'replies' => [],
+            ]
+        );
     }
 }

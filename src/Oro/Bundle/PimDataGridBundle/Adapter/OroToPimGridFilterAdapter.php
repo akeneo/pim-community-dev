@@ -3,7 +3,6 @@
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Transform Oro filters into Akeneo PIM filters

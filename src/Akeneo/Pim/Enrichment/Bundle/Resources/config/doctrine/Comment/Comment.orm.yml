@@ -46,3 +46,5 @@ Akeneo\Pim\Enrichment\Component\Comment\Model\Comment:
             joinColumn:
                 name: author_id
                 referencedColumnName: id
+                #onDelete: SET NULL
+                # todo merge 3.2: uncomment the previous line, and provide a migration script

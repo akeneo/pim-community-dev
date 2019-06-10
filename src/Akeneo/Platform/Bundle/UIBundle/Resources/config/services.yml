@@ -48,3 +48,9 @@ services:
             - '@pim_user.context.user'
         tags:
             - { name: kernel.event_subscriber }
+
+    security.authentication.form_entry_point:
+        abstract: true
+        class: 'Akeneo\Platform\Bundle\UIBundle\Http\FormAuthenticationEntryPoint'
+        arguments:
+            - '@http_kernel'
