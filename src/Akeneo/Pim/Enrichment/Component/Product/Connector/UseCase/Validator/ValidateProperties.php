@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -25,6 +26,7 @@ final class ValidateProperties
         'updated',
         'enabled',
         'groups',
+        'parent',
     ];
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -43,10 +45,11 @@ final class ValidateProperties
     {
         foreach ($search as $propertyCode => $filters) {
             foreach ($filters as $filter) {
-                if (
-                    !in_array($propertyCode, self::$productFields) &&
-                    null === $this->attributeRepository->findOneByIdentifier($propertyCode)
-                ) {
+                if (!(
+                    in_array($propertyCode, self::$productFields) ||
+                    null !== $this->attributeRepository->findOneByIdentifier($propertyCode) ||
+                    ($propertyCode === 'parent' && $filter['operator'] !== Operators::EQUALS)
+                )) {
                     throw new InvalidQueryException(
                         sprintf(
                             'Filter on property "%s" is not supported or does not support operator "%s"',
