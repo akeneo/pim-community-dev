@@ -52,7 +52,7 @@ define(
                 NumberFilter.prototype.initialize.apply(this, arguments);
 
                 this.emptyValue = {
-                    currency: _.first(_.keys(this.currencies)),
+                    currency: this._firstCurrency(),
                     type: _.findWhere(this.choices, { label: '=' }).data,
                     value: ''
                 };
@@ -80,10 +80,16 @@ define(
                         updateLabel: __('pim_common.update'),
                         currencies: this.currencies,
                         currencyLabel: __('pim_datagrid.filters.price_filter.label'),
-                        selectedCurrency: this._getDisplayValue().currency,
+                        selectedCurrency: this._getDisplayValue().currency || this._firstCurrency(),
                         value: this._getDisplayValue().value
                     })
                 );
+
+                if (true === _.contains(['empty', 'not empty'], this._getDisplayValue().type)) {
+                    this._disableInput();
+                } else {
+                    this._enableInput();
+                }
 
                 return this;
             },
@@ -117,8 +123,8 @@ define(
              */
             _getCriteriaHint: function () {
                 var value = this._getDisplayValue();
-                if (_.contains(['empty', 'not empty'], value.type) && value.currency) {
-                    return this._getChoiceOption(value.type).label + ': ' + value.currency;
+                if (_.contains(['empty', 'not empty'], value.type)) {
+                    return this._getChoiceOption(value.type).label;
                 }
                 if (!value.value) {
                     return this.placeholder;
@@ -143,12 +149,6 @@ define(
              */
             _onValueUpdated: function(newValue, oldValue) {
                 this._highlightDropdown(newValue.currency, '.currency');
-                if (_.contains(['empty', 'not empty'], newValue.type)) {
-                    this._disableInput();
-                } else {
-                    this._enableInput();
-                }
-
                 this._triggerUpdate(newValue, oldValue);
                 this._updateCriteriaHint();
             },
@@ -166,20 +166,6 @@ define(
                 }
 
                 return this;
-            },
-
-            /**
-             * @inheritDoc
-             */
-            _onClickChoiceValue: function(e) {
-                NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
-                if ($(e.currentTarget).attr('data-input-toggle')) {
-                    if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
-                        this._disableInput();
-                    } else {
-                        this._enableInput();
-                    }
-                }
             },
 
             /**
@@ -205,22 +191,22 @@ define(
                 e.preventDefault();
             },
 
+            _firstCurrency() {
+                return _.first(_.keys(this.currencies));
+            },
+
             /**
              * {@inheritdoc}
              */
             _disableInput() {
-                this.$el.find(this.criteriaValueSelectors.value).hide();
-                this.$el.find('.AknFilterChoice-currency')
-                    .addClass('AknFilterChoice-currency--centered');
+                this.$el.find('.AknFilterChoice-inputContainer').hide();
             },
 
             /**
              * {@inheritdoc}
              */
             _enableInput() {
-                this.$el.find(this.criteriaValueSelectors.value).show();
-                this.$el.find('.AknFilterChoice-currency')
-                    .removeClass('AknFilterChoice-currency--centered');
+                this.$el.find('.AknFilterChoice-inputContainer').show();
             }
         });
     }

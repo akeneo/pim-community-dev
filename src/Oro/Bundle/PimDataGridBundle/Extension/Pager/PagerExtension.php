@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Extension\Pager;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;

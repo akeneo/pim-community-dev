@@ -2,7 +2,6 @@
 
 namespace Akeneo\Channel\Component\Model;
 
-use Akeneo\Channel\Component\Model\ChannelTranslationInterface;
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 
 /**

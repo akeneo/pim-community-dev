@@ -4,11 +4,11 @@ namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -70,26 +70,13 @@ class UserController
     /** @var Session */
     private $session;
 
-    /** @var ObjectManager */
-    private $objectManager;
-
     /** @var NumberFactory */
     private $numberFactory;
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param NormalizerInterface $normalizer
-     * @param ObjectRepository $repository
-     * @param ObjectUpdaterInterface $updater
-     * @param ValidatorInterface $validator
-     * @param SaverInterface $saver
-     * @param NormalizerInterface $constraintViolationNormalizer
-     * @param SimpleFactoryInterface $factory
-     * @param UserPasswordEncoderInterface $encoder
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Session $session
-     * @param ObjectManager $objectManager
-     */
+    /** @var RemoverInterface */
+    private $remover;
+
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
@@ -102,7 +89,7 @@ class UserController
         UserPasswordEncoderInterface $encoder,
         EventDispatcherInterface $eventDispatcher,
         Session $session,
-        ObjectManager $objectManager,
+        RemoverInterface $remover,
         NumberFactory $numberFactory
     ) {
         $this->tokenStorage = $tokenStorage;
@@ -116,7 +103,7 @@ class UserController
         $this->encoder = $encoder;
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
-        $this->objectManager = $objectManager;
+        $this->remover = $remover;
         $this->numberFactory = $numberFactory;
     }
 
@@ -281,8 +268,7 @@ class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        $this->objectManager->remove($user);
-        $this->objectManager->flush();
+        $this->remover->remove($user);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

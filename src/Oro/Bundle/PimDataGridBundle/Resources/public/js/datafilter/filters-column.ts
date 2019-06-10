@@ -31,6 +31,7 @@ class FiltersColumn extends BaseView {
   public page: number = 1;
   public timer: any;
   public searchSelector: string;
+  private searchedFilters?: GridFilter[];
 
   readonly config: FiltersConfig;
   readonly filterColumnTemplate = _.template(filterColumnTemplate);
@@ -168,15 +169,17 @@ class FiltersColumn extends BaseView {
       .val();
 
     if (searchValue.length === 0) {
+      this.searchedFilters = undefined;
+      
       return this.renderFilters();
     }
 
     return this.fetchFilters(searchValue, 1).then((loadedFilters: GridFilter[]) => {
       const defaultFilters: GridFilter[] = this.mergeAddedFilters(this.defaultFilters, loadedFilters)
       this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, defaultFilters);
-      const searchedFilters = this.filterBySearchTerm(defaultFilters, searchValue);
+      this.searchedFilters = this.filterBySearchTerm(defaultFilters, searchValue);
 
-      return this.renderFilters(searchedFilters);
+      return this.renderFilters();
     });
   }
 
@@ -200,7 +203,7 @@ class FiltersColumn extends BaseView {
     $(this.filterList).off('scroll');
   }
 
-  renderFilters(filters = this.loadedFilters): void {
+  renderFilters(filters = this.searchedFilters || this.loadedFilters): void {
     const groupedFilters: {[name: string]: GridFilter[]} = this.groupFilters(filters);
     const list = document.createDocumentFragment();
     const filterColumn = $(this.filterList).find('.filters-column');

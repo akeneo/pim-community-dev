@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
-use Akeneo\Tool\Component\FileStorage\FileInfoFactory;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

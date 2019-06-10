@@ -31,11 +31,7 @@ class CommentNormalizer implements NormalizerInterface, SerializerAwareInterface
             'id'           => $comment->getId(),
             'resourceName' => $comment->getResourceName(),
             'resourceId'   => $comment->getResourceId(),
-            'author'       => [
-                'username' => $comment->getAuthor()->getUsername(),
-                'fullName' => sprintf('%s %s', $comment->getAuthor()->getFirstName(), $comment->getAuthor()->getLastName()),
-                'avatar'   => $comment->getAuthor()->getImagePath(),
-            ],
+            'author'       => $this->normalizeAuthor($comment),
             'body'         => $comment->getBody(),
             'created'      => $this->serializer->normalize($comment->getCreatedAt(), 'standard', $context),
             'replied'      => $this->serializer->normalize($comment->getRepliedAt(), 'standard', $context),
@@ -69,5 +65,27 @@ class CommentNormalizer implements NormalizerInterface, SerializerAwareInterface
         }
 
         return $comments;
+    }
+
+    private function normalizeAuthor(Commentinterface $comment): array
+    {
+        if (null === $comment->getAuthor()) {
+            return [
+                'username' => null,
+                'fullName' => null,
+                'avatar' => null,
+            ];
+        }
+
+        return [
+
+            'username' => $comment->getAuthor()->getUsername(),
+            'fullName' => sprintf(
+                '%s %s',
+                $comment->getAuthor()->getFirstName(),
+                $comment->getAuthor()->getLastName()
+            ),
+            'avatar' => $comment->getAuthor()->getImagePath(),
+        ];
     }
 }

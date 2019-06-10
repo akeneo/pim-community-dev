@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Api\Normalizer\Exception;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
