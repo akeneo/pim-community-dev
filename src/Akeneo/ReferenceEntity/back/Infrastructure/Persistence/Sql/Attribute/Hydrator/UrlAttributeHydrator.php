@@ -18,7 +18,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -33,9 +32,9 @@ class UrlAttributeHydrator extends AbstractAttributeHydrator
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $row['preview_type'] = Type::getType(Type::STRING)->convertToPhpValue($row['additional_properties']['preview_type'], $platform);
-        $row['prefix'] = Type::getType(Type::STRING)->convertToPhpValue($row['additional_properties']['prefix'], $platform);
-        $row['suffix'] = Type::getType(Type::STRING)->convertToPhpValue($row['additional_properties']['suffix'], $platform);
+        $row['preview_type'] = $row['additional_properties']['preview_type'];
+        $row['prefix'] = $row['additional_properties']['prefix'];
+        $row['suffix'] = $row['additional_properties']['suffix'];
 
         return $row;
     }
