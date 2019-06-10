@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumberValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\NumberUpdater;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -33,10 +33,10 @@ class NumberUpdaterSpec extends ObjectBehavior
     }
 
     function it_only_supports_edit_number_value_command(
-        EditUploadedFileValueCommand $editUploadedFileValueCommand,
+        EditStoredFileValueCommand $editStoredFileValueCommand,
         EditNumberValueCommand $editNumberValueCommand
     ) {
-        $this->supports($editUploadedFileValueCommand)->shouldReturn(false);
+        $this->supports($editStoredFileValueCommand)->shouldReturn(false);
         $this->supports($editNumberValueCommand)->shouldReturn(true);
     }
 

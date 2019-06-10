@@ -291,6 +291,19 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
+     * @Given a subscription with same identifier already exist message should be sent
+     */
+    public function anAlreadyUsedIdentifierMessageShouldBeSent()
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            ProductSubscriptionException::productSubscriptionWithSameIdentifierAlreadyExist()->getMessage()
+        );
+    }
+
+    /**
      * @param string $identifier
      *
      * @return ProductInterface

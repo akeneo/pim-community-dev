@@ -70,11 +70,6 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValu
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditTextValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand:
-    constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditUploadedFileValueCommand: ~
-
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
@@ -159,11 +154,6 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByCompleteness: ~
 
 # Attributes
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\EditUploadedFileValueCommand:
-    constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditUploadedFileValueCommand: ~
-
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:
         - CreateImageAttributeCommand
