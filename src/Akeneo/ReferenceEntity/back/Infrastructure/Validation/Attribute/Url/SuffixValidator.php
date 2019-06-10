@@ -36,7 +36,7 @@ class SuffixValidator extends ConstraintValidator
             new Assert\Type('string'),
         ]);
 
-        if (null !== $suffix && '' === $suffix) {
+        if ('' === $suffix) {
             $this->context->buildViolation(Suffix::MESSAGE_NOT_EMPTY_STRING)
                 ->addViolation();
         }

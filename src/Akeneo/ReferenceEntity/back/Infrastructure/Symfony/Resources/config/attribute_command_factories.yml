@@ -122,7 +122,7 @@ services:
         tags:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
 
-    akeneo_referenceentity.application.factory.edit_url_type_command_factory:
+    akeneo_referenceentity.application.factory.edit_url_preview_type_command_factory:
         class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPreviewTypeCommandFactory
         tags:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }

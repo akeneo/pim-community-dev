@@ -65,9 +65,9 @@ class CreateUrlAttributeCommandFactory extends AbstractCreateAttributeCommandFac
         }
     }
 
-    private function stringOrNull(array $normalizedCommand, string $key)
+    private function stringOrNull(array $normalizedCommand, string $key): ?string
     {
         return isset($normalizedCommand[$key]) && '' !== $normalizedCommand[$key]
-            ? (string) $normalizedCommand[$key] : null;
+            ? (string)$normalizedCommand[$key] : null;
     }
 }

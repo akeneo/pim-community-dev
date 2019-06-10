@@ -36,7 +36,7 @@ class PrefixValidator extends ConstraintValidator
             new Assert\Type('string'),
         ]);
 
-        if (null !== $prefix && '' === $prefix) {
+        if ('' === $prefix) {
             $this->context->buildViolation(Prefix::MESSAGE_NOT_EMPTY_STRING)
                 ->addViolation();
         }

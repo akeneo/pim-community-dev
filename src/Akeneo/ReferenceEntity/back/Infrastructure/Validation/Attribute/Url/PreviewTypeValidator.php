@@ -40,7 +40,7 @@ class PreviewTypeValidator extends ConstraintValidator
         if (!in_array($previewType, PreviewTypeModel::PREVIEW_TYPES)) {
             $this->context->buildViolation(PreviewType::MESSAGE_NOT_EXPECTED_PREVIEW_TYPE)
                 ->setParameter(
-                    '%preview_types%',
+                    '%supported_preview_types%',
                     implode(', ', PreviewTypeModel::PREVIEW_TYPES)
                 )
                 ->addViolation();

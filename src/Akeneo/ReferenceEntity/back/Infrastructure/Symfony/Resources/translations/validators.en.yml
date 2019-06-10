@@ -85,8 +85,8 @@ pim_reference_entity:
                 is_required: 'You need to specify the reference entity type to create a Reference Entity link attribute'
                 reference_entity_should_exist: 'The reference entity "%reference_entity_code%" was not found.'
             prefix:
-                should_not_be_empty: 'The prefix cannot be empty.'
+                should_not_be_empty: 'The prefix cannot be an empty string.'
             suffix:
-                should_not_be_empty: 'The suffix cannot be empty.'
+                should_not_be_empty: 'The suffix cannot be an empty string.'
             preview_type:
-                not_expected: 'The preview type given is not corresponding to the expected ones (%preview_types%).'
+                not_expected: 'The preview type given is not corresponding to the expected ones (%supported_preview_types%).'
