@@ -66,7 +66,7 @@ services:
         class: '%pim_catalog.normalizer.standard.product.product_value.class%'
         arguments:
             - '@pim_standard_format_serializer'
-            - '@akeneo.pim.structure.query.lru_cached_get_attributes'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
         lazy: true
