@@ -362,6 +362,8 @@ final class EditRecordContext implements Context
         $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
         $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
 
+        $fileData = $this->initUploadedFileData();
+
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code' => self::RECORD_CODE,
@@ -371,10 +373,7 @@ final class EditRecordContext implements Context
                     'attribute' => $attributeAsImage->normalize(),
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::GOOD_EXTENSION_FILENAME,
-                        'filePath' => self::GOOD_EXTENSION_FILE_FILEPATH,
-                    ],
+                    'data'      => $fileData,
                 ],
             ]
         ]);
@@ -432,6 +431,7 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordTo()
     {
+        $fileData = $this->initUploadedFileData();
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -441,10 +441,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::UPDATED_DUMMY_FILENAME,
-                        'filePath'         => self::UPDATED_DUMMY_FILE_FILEPATH
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1497,6 +1494,9 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerUploadedFileThanTheLimit()
     {
+        $fileData = $this->initUploadedFileData([
+            'size' => intval(10e6),
+        ]);
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1506,10 +1506,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::FILE_TOO_BIG,
-                        'filePath'         => self::FILE_TOO_BIG_FILEPATH
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1553,6 +1550,9 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordWithASmallerFileThanTheLimit()
     {
+        $fileData = $this->initUploadedFileData([
+            'size' => 1,
+        ]);
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1562,10 +1562,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::GOOD_EXTENSION_FILENAME,
-                        'filePath'         => self::GOOD_EXTENSION_FILE_FILEPATH
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1602,6 +1599,9 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordWithAnUploadedFileHavingADeniedExtension()
     {
+        $fileData = $this->initUploadedFileData([
+            'extension' => current(self::INVALID_IMAGE_EXTENSION),
+        ]);
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1611,10 +1611,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::WRONG_EXTENSION_FILENAME,
-                        'filePath'         => self::WRONG_EXTENSION_FILE_FILEPATH
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1658,6 +1655,7 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordWithAnUploadedFileHavingAValidExtension()
     {
+        $fileData = $this->initUploadedFileData();
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1667,10 +1665,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::GOOD_EXTENSION_FILENAME,
-                        'filePath'         => self::GOOD_EXTENSION_FILE_FILEPATH
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -2546,6 +2541,21 @@ final class EditRecordContext implements Context
         }
 
         return $value['data'];
+    }
+
+    private function initUploadedFileData(array $override = []): array
+    {
+        $this->fileExists->save(self::UPDATED_DUMMY_FILE_FILEPATH);
+        $fileData = array_merge([
+            'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+            'filePath' => self::UPDATED_DUMMY_FILE_FILEPATH,
+            'size' => self::DUMMY_IMAGE_SIZE,
+            'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+            'extension' => self::DUMMY_IMAGE_EXTENSION,
+        ], $override);
+        $this->findFileData->save($fileData);
+
+        return $fileData;
     }
 
     /**

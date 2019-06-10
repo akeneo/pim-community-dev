@@ -145,7 +145,7 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(1);
-        $product->getFamilyId()->willReturn(null);
+        $product->getFamily()->willReturn(null);
         $selectProductFamilyIdQuery->execute(new ProductId(1))->willReturn(42);
 
         $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(new ProductId(1)))->shouldBeCalled();
@@ -160,7 +160,7 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(1);
-        $product->getFamilyId()->willReturn(null);
+        $product->getFamily()->willReturn(null);
         $selectProductFamilyIdQuery->execute(new ProductId(1))->willReturn(42);
 
         $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(new ProductId(1)))->willThrow(
@@ -175,10 +175,12 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $selectProductFamilyIdQuery,
         $unsubscribeProductHandler,
         $updateSubscriptionFamilyHandler,
-        ProductInterface $product
+        ProductInterface $product,
+        FamilyInterface $family
     ): void {
         $product->getId()->willReturn(42);
-        $product->getFamilyId()->willReturn(56);
+        $product->getFamily()->willReturn($family);
+        $family->getId()->willReturn(56);
         $selectProductFamilyIdQuery->execute(new ProductId(42))->willReturn(56);
 
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
@@ -196,8 +198,8 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyInterface $family
     ): void {
         $product->getId()->willReturn(42);
-        $product->getFamilyId()->willReturn(144);
         $product->getFamily()->willReturn($family);
+        $family->getId()->willReturn(144);
         $family->getCode()->willReturn('router');
         $selectProductFamilyIdQuery->execute(new ProductId(42))->willReturn(56);
 
@@ -218,8 +220,8 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyInterface $family
     ): void {
         $product->getId()->willReturn(42);
-        $product->getFamilyId()->willReturn(144);
         $product->getFamily()->willReturn($family);
+        $family->getId()->willReturn(144);
         $family->getCode()->willReturn('router');
         $selectProductFamilyIdQuery->execute(new ProductId(42))->willReturn(56);
 

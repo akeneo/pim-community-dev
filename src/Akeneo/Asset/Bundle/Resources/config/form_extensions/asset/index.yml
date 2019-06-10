@@ -77,13 +77,10 @@ extensions:
             localeParamName: dataLocale
 
     pimee-asset-index-category-tree:
-        module: pim/grid/category-tree
+        module: pimee/asset/grid/category-tree
         parent: pimee-asset-index
         targetZone: tree
         aclResourceId: pimee_product_asset_category_list
-        config:
-            gridName: asset-grid
-            categoryTreeName: pimee_asset_categorytree
 
     pimee-asset-index-category-tree-done:
         module: pim/grid/category-tree-done

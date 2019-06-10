@@ -120,3 +120,16 @@ Feature: Subscribe a product to Franklin
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And an invalid variant message should be sent
+
+  Scenario: Fail to subscribe a product that has an identical identifier to another subscribed product
+    Given Franklin is configured with a valid token
+    And the product "B00EYZY6AC" of the family "router"
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | asin          | asin           |
+      | upc           | pim_upc        |
+    And the product "B00EYZY6AC" is subscribed to Franklin
+    And the product "B00DWYW5ZD" that has the same ASIN that the product "B00EYZY6AC"
+    When I subscribe the product "B00DWYW5ZD" to Franklin
+    Then the product "B00DWYW5ZD" should not be subscribed
+    And a subscription with same identifier already exist message should be sent

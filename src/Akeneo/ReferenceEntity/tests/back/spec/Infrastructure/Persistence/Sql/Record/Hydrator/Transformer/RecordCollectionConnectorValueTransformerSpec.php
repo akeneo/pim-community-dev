@@ -48,7 +48,11 @@ class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
         $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
         $findCodesByIdentifiers
             ->find(['kartell', 'lexon', 'cogip'])
-            ->willReturn(['cogip', 'kartell', 'lexon']);
+            ->willReturn([
+                'cogip_79505e53-9694-47e1-aa5d-d8812c5ed699' => 'cogip',
+                'kartell_00fb9223-8636-4707-aa43-9058acfdfbe4' => 'kartell',
+                'lexon__076948af-6b73-4844-80f3-1a033998874b' => 'lexon',
+            ]);
 
         $this->transform([
             'data'      => ['kartell', 'lexon', 'cogip'],

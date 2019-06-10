@@ -58,9 +58,10 @@ define(
                 if (this._isAllowedToComment(action)) {
                     const modalParameters = {
                         title: __('pimee_enrich.entity.product_draft.module.proposal.reject'),
-                        okText: __('pimee_enrich.entity.product.module.approval.send'),
-                        cancelText: __('pim_common.cancel')
-                    };
+                        okText: __('pimee_enrich.entity.product_draft.module.proposal.confirm'),
+                        cancelText: __('pim_common.cancel'),
+                    illustrationClass: 'proposal'
+                };
 
                     const formModal = new FormModal(
                         'pimee-workflow-proposal-add-comment',

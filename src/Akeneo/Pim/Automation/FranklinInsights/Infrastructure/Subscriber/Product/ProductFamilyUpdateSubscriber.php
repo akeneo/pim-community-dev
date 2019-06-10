@@ -99,13 +99,13 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null === $product->getFamilyId()) {
+        if (null === $product->getFamily()) {
             $this->productsToUnsubscribe[] = $product->getId();
 
             return;
         }
 
-        if ($product->getFamilyId() !== $originalFamilyId) {
+        if ($product->getFamily()->getId() !== $originalFamilyId) {
             $this->productsToUpdateSubscriptionFamily[] = $product->getId();
         }
     }
