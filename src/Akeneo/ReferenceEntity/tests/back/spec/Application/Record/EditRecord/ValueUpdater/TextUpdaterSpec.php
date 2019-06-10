@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\TextUpdater;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -37,10 +37,10 @@ class TextUpdaterSpec extends ObjectBehavior
     }
 
     function it_only_supports_edit_text_value_command(
-        EditUploadedFileValueCommand $editUploadedFileValueCommand,
+        EditStoredFileValueCommand $editStoredFileValueCommand,
         EditTextValueCommand $editTextValueCommand
     ) {
-        $this->supports($editUploadedFileValueCommand)->shouldReturn(false);
+        $this->supports($editStoredFileValueCommand)->shouldReturn(false);
         $this->supports($editTextValueCommand)->shouldReturn(true);
     }
 
@@ -66,10 +66,10 @@ class TextUpdaterSpec extends ObjectBehavior
 
     function it_throws_if_it_does_not_support_the_command(
         Record $record,
-        EditUploadedFileValueCommand $editUploadedFileValueCommand
+        EditStoredFileValueCommand $editStoredFileValueCommand
     ) {
-        $this->supports($editUploadedFileValueCommand)->shouldReturn(false);
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $editUploadedFileValueCommand]);
+        $this->supports($editStoredFileValueCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $editStoredFileValueCommand]);
     }
 
     private function getAttribute(): TextAttribute

@@ -118,7 +118,14 @@ SQL;
             );
         }
 
-        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
+        $this->eventDispatcher->dispatch(
+            RecordUpdatedEvent::class,
+            new RecordUpdatedEvent(
+                $record->getIdentifier(),
+                $record->getCode(),
+                $record->getReferenceEntityIdentifier()
+            )
+        );
     }
 
     public function update(Record $record): void
@@ -150,7 +157,14 @@ SQL;
             );
         }
 
-        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
+        $this->eventDispatcher->dispatch(
+            RecordUpdatedEvent::class,
+            new RecordUpdatedEvent(
+                $record->getIdentifier(),
+                $record->getCode(),
+                $record->getReferenceEntityIdentifier()
+            )
+        );
     }
 
     public function getByReferenceEntityAndCode(
@@ -226,6 +240,8 @@ SQL;
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code
     ): void {
+        $identifiers = $this->findIdentifiersByReferenceEntityAndCodes->find($referenceEntityIdentifier, [$code]);
+
         $sql = <<<SQL
         DELETE FROM akeneo_reference_entity_record
         WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
@@ -244,7 +260,11 @@ SQL;
 
         $this->eventDispatcher->dispatch(
             RecordDeletedEvent::class,
-            new RecordDeletedEvent($code, $referenceEntityIdentifier)
+            new RecordDeletedEvent(
+                $identifiers[$code->normalize()],
+                $code,
+                $referenceEntityIdentifier
+            )
         );
     }
 

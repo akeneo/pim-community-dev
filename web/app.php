@@ -18,7 +18,8 @@ $request = Request::createFromGlobals();
 
 /* In case your app is running behind a reverse-proxy/load-balancer set an environment variable TRUSTED_PROXY_IPS
    defining IPs or IP ranges as a comma list (example : TRUSTED_PROXY_IPS="10.0.0.0/8")
-   to allow usage of X-Forwarded-* headers */
+   to allow usage of X-Forwarded-* headers
+   This also allows keeping the HTTPS protocol for any URL generated in the PIM */
 $loadBalancerTrustedIPs = getenv('TRUSTED_PROXY_IPS');
 if (!empty($loadBalancerTrustedIPs)){
     $ipsArray = explode(',', $loadBalancerTrustedIPs);

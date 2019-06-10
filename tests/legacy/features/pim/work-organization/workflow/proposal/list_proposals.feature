@@ -67,7 +67,7 @@ Feature: List proposals
       | identifier          | in list      | tshirt,jacket | 2     | tshirt, jacket          |
       | name                | is not empty |               | 3     | tshirt, sweater, jacket |
       | description         | is not empty |               | 1     | tshirt                  |
-      | price               | is not empty | USD           | 1     | jacket                  |
+      | price               | is not empty |               | 1     | jacket                  |
 
   Scenario: Successfully apply multiple filters on proposal grid
     Given I am logged in as "Peter"
@@ -82,7 +82,7 @@ Feature: List proposals
     And I show the filter "name"
     And I filter by "name" with operator "is not empty" and value ""
     And I show the filter "price"
-    And I filter by "price" with operator "is not empty" and value "USD"
+    And I filter by "price" with operator "is not empty" and value ""
     Then the grid should contain 1 element
     And I should see entities "jacket"
 

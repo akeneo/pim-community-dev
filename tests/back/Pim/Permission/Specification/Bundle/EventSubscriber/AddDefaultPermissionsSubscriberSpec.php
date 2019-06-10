@@ -3,18 +3,20 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
 use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -25,14 +27,16 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         AttributeGroupAccessManager $attributeGroupAccessManager,
         JobProfileAccessManager $jobInstanceAccessManager,
         CategoryAccessManager $productCategoryAccessManager,
-        CategoryAccessManager $assetCategoryAccessManager
+        CategoryAccessManager $assetCategoryAccessManager,
+        LocaleAccessManager $localeAccessManager
     ) {
         $this->beConstructedWith(
             $groupRepository,
             $attributeGroupAccessManager,
             $jobInstanceAccessManager,
             $productCategoryAccessManager,
-            $assetCategoryAccessManager
+            $assetCategoryAccessManager,
+            $localeAccessManager
         );
     }
 
@@ -165,5 +169,17 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->setDefaultPermissions($event);
+    }
+
+    function it_sets_default_permissions_on_new_locale(
+        $groupRepository,
+        $localeAccessManager,
+        Group $defaultGroup
+    ) {
+        $locale = new Locale();
+        $groupRepository->getDefaultUserGroup()->willReturn($defaultGroup);
+        $localeAccessManager->setAccess($locale, [$defaultGroup], [$defaultGroup])->shouldBeCalled();
+
+        $this->setDefaultPermissions(new GenericEvent($locale, ['is_new' => true]));
     }
 }

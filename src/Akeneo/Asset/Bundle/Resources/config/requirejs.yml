@@ -13,6 +13,9 @@ config:
         # Views
         pimee/picker/asset-collection: akeneoasset/js/picker/asset-collection
 
+        # Grid
+        pimee/asset/grid/category-tree: akeneoasset/js/grid/category-tree
+
         pimee/productasset/variations:  akeneoasset/js/form/variations
         pimee/productasset/uploader:    akeneoasset/js/form/uploader
         pimee/productasset/media-field: akeneoasset/js/form/media-field

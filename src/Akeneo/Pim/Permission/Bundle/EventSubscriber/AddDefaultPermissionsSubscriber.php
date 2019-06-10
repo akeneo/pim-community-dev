@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
 use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -28,7 +30,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Subscriber responsible for setting default permissions on creation for attribute groups, job instances,
- * product categories and product asset categories.
+ * product categories, product asset categories and locales.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
@@ -49,25 +51,26 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
     /** @var CategoryAccessManager */
     private $productAssetCategoryAccessManager;
 
+    /** @var LocaleAccessManager */
+    private $localeAccessManager;
+
     /**
-     * @param GroupRepository             $groupRepository
-     * @param AttributeGroupAccessManager $attributeGroupAccessManager
-     * @param JobProfileAccessManager     $jobInstanceAccessManager
-     * @param CategoryAccessManager       $productCategoryAccessManager
-     * @param CategoryAccessManager       $productAssetCategoryAccessManager
+     * @todo merge 3.2: the last argument ($localeAccessManager) must not be nullable anymore
      */
     public function __construct(
         GroupRepository $groupRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
         JobProfileAccessManager $jobInstanceAccessManager,
         CategoryAccessManager $productCategoryAccessManager,
-        CategoryAccessManager $productAssetCategoryAccessManager
+        CategoryAccessManager $productAssetCategoryAccessManager,
+        ?LocaleAccessManager $localeAccessManager = null
     ) {
         $this->groupRepository = $groupRepository;
         $this->attributeGroupAccessManager = $attributeGroupAccessManager;
         $this->jobInstanceAccessManager = $jobInstanceAccessManager;
         $this->productCategoryAccessManager = $productCategoryAccessManager;
         $this->productAssetCategoryAccessManager = $productAssetCategoryAccessManager;
+        $this->localeAccessManager = $localeAccessManager;
     }
 
     /**
@@ -112,6 +115,11 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
             $this->productCategoryAccessManager->setAccessLikeParent($subject, ['owner' => true]);
         } elseif ($subject instanceof ProductAssetCategoryInterface) {
             $this->productAssetCategoryAccessManager->setAccessLikeParent($subject, ['owner' => false]);
+        } elseif ($subject instanceof LocaleInterface) {
+            // @todo merge 3.2: remove condition
+            if (null !== $this->localeAccessManager) {
+                $this->localeAccessManager->setAccess($subject, [$defaultGroup], [$defaultGroup]);
+            }
         }
     }
 }
