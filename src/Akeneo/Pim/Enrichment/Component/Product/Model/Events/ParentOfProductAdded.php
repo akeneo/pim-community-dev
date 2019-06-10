@@ -4,23 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model\Events;
 
-class ParentOfProductAdded
+class ParentOfProductAdded implements ProductEvent
 {
-    /** @var string */
-    private $productIdentifier;
+    use ProductEventTrait;
 
     /** @var string */
     private $parentModelCode;
 
-    public function __construct(string $productIdentifier, string $parentModelCode)
+    public function __construct(string $parentModelCode)
     {
-        $this->productIdentifier = $productIdentifier;
         $this->parentModelCode = $parentModelCode;
-    }
-
-    public function productIdentifier(): string
-    {
-        return $this->productIdentifier;
     }
 
     public function parentModelCode(): string

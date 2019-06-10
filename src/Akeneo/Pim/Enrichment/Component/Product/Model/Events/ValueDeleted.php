@@ -8,10 +8,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model\Events;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValueDeleted
+class ValueDeleted implements ProductEvent
 {
-    /** @var null|string */
-    private $productIdentifier;
+    use ProductEventTrait;
 
     /** @var string */
     private $attributeCode;
@@ -22,17 +21,11 @@ class ValueDeleted
     /** @var string */
     private $channelCode;
 
-    public function __construct(?string $productIdentifier, string $attributeCode, ?string $localeCode, ?string $channelCode)
+    public function __construct(string $attributeCode, ?string $localeCode, ?string $channelCode)
     {
-        $this->productIdentifier = $productIdentifier;
         $this->attributeCode = $attributeCode;
         $this->localeCode = $localeCode;
         $this->channelCode = $channelCode;
-    }
-
-    public function productIdentifier(): ?string
-    {
-        return $this->productIdentifier;
     }
 
     public function attributeCode(): string

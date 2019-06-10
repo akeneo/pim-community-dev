@@ -8,20 +8,18 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model\Events;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUncategorized implements ProductEvent
+trait ProductEventTrait
 {
-    use ProductEventTrait;
-
     /** @var string */
-    private $categoryCode;
+    private $productIdentifier;
 
-    public function __construct(string $categoryCode)
+    public function productIdentifier(): string
     {
-        $this->categoryCode = $categoryCode;
+        return $this->productIdentifier;
     }
 
-    public function categoryCode(): string
+    public function setProductIdentifier(string $productIdentifier): void
     {
-        return $this->categoryCode;
+        $this->productIdentifier = $productIdentifier;
     }
 }

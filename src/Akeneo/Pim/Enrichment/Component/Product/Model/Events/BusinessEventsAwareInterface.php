@@ -10,5 +10,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model\Events;
  */
 interface BusinessEventsAwareInterface
 {
-    public function popEvents();
+    public function initEvents(): void;
+    public function popEvents(): array;
 }

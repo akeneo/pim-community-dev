@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\EventStore;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyAddedToProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyOfProductChanged;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyRemovedFromProduct;
@@ -92,8 +93,8 @@ abstract class AbstractProduct implements ProductInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
-    /** @var array */
-    protected $events = [];
+    /** @var EventStore */
+    protected $events;
 
     /**
      * Constructor
@@ -106,6 +107,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
+        $this->initEvents();
         $this->setEnabled(true);
     }
 
@@ -127,10 +129,10 @@ abstract class AbstractProduct implements ProductInterface
 
             $this->values->remove($formerValue);
             $this->values->add($value);
-            $this->events[] = new ValueEdited($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+            $this->events->add(new ValueEdited($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode()));
         } else {
             $this->values->add($value);
-            $this->events[] = new ValueAdded($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+            $this->events->add(new ValueAdded($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode()));
         }
     }
 
@@ -186,7 +188,7 @@ abstract class AbstractProduct implements ProductInterface
     public function addValue(ValueInterface $value)
     {
         if (true === $this->values->add($value)) {
-            $this->events[] = new ValueAdded($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+            $this->events->add(new ValueAdded($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode()));
         }
 
         return $this;
@@ -199,7 +201,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         $isRemoved = $this->values->remove($value);
         if (true === $isRemoved) {
-            $this->events[] = new ValueDeleted($this->identifier, $value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode());
+            $this->events->add(new ValueDeleted($value->getAttributeCode(), $value->getLocaleCode(), $value->getScopeCode()));
         }
 
         return $this;
@@ -273,11 +275,11 @@ abstract class AbstractProduct implements ProductInterface
         $newFamilyCode = null !== $family ? $family->getCode() : null;
 
         if (null === $formerFamilyCode && null !== $newFamilyCode) {
-            $this->events[] = new FamilyAddedToProduct($this->identifier, $newFamilyCode);
+            $this->events->add(new FamilyAddedToProduct($newFamilyCode));
         } elseif (null !== $formerFamilyCode && null === $newFamilyCode) {
-            $this->events[] = new FamilyRemovedFromProduct($this->identifier, $formerFamilyCode);
+            $this->events->add(new FamilyRemovedFromProduct($formerFamilyCode));
         } elseif ($formerFamilyCode !== $newFamilyCode) {
-            $this->events[] = new FamilyOfProductChanged($this->identifier, $formerFamilyCode, $newFamilyCode);
+            $this->events->add(new FamilyOfProductChanged($formerFamilyCode, $newFamilyCode));
         }
 
         $this->family = $family;
@@ -314,7 +316,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->values->add($identifier);
 
         if ($previousIdentifier !== null && $previousIdentifier !== $this->identifier) {
-            $this->events[] = new ProductIdentifierUpdated($this->identifier, $previousIdentifier);
+            $this->events->add(new ProductIdentifierUpdated($previousIdentifier));
         }
 
         return $this;
@@ -429,7 +431,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
-            $this->events[] = new ProductCategorized($this->identifier, $category->getCode());
+            $this->events->add(new ProductCategorized($category->getCode()));
         }
 
         return $this;
@@ -467,7 +469,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
-            $this->events[] = new ProductUncategorized($this->identifier, $category->getCode());
+            $this->events->add(new ProductUncategorized($category->getCode()));
         }
 
         return $this;
@@ -506,14 +508,6 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setGroups(Collection $groups): void
     {
-        $formerGroupCodes = $this->groups->map(function (GroupInterface $group) {
-            return $group->getCode();
-        })->toArray();
-
-        $newGroupCodes = $groups->map(function (GroupInterface $group) {
-            return $group->getCode();
-        })->toArray();
-
         $formerGroups = $this->getGroups();
         $groupsToRemove = $formerGroups->filter(
             function (GroupInterface $formerGroup) use ($groups) {
@@ -551,7 +545,7 @@ abstract class AbstractProduct implements ProductInterface
             return;
         }
 
-        $this->events[] = (true === $enabled) ? new ProductEnabled($this->identifier) : new ProductDisabled($this->identifier);
+        $this->events->add((true === $enabled) ? new ProductEnabled() : new ProductDisabled());
         $this->enabled = $enabled;
 
         return $this;
@@ -608,7 +602,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
-            $this->events[] = new ProductAddedToGroup($this->identifier, $group->getCode());
+            $this->events->add(new ProductAddedToGroup($group->getCode()));
         }
 
         return $this;
@@ -621,7 +615,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if ($this->groups->contains($group)) {
             $this->groups->removeElement($group);
-            $this->events[] = new ProductRemovedFromGroup($this->identifier, $group->getCode());
+            $this->events->add(new ProductRemovedFromGroup($group->getCode()));
         }
 
         return $this;
@@ -787,9 +781,9 @@ abstract class AbstractProduct implements ProductInterface
     public function setParent(ProductModelInterface $parent = null): void
     {
         if (null === $this->parent && null !== $parent) {
-            $this->events[] = new ParentOfProductAdded($this->identifier, $parent->getCode());
+            $this->events->add(new ParentOfProductAdded($parent->getCode()));
         } elseif (null !== $this->parent && null !== $parent) {
-            $this->events[] = new ParentOfProductChanged($this->identifier, $this->parent->getCode(), $parent->getCode());
+            $this->events->add(new ParentOfProductChanged($this->parent->getCode(), $parent->getCode()));
         }
 
         $this->parent = $parent;
@@ -843,20 +837,32 @@ abstract class AbstractProduct implements ProductInterface
         return null !== $this->getParent();
     }
 
+    // TODO: this is only used for
+    public function initEvents(): void
+    {
+        if (null === $this->events) {
+            $this->events = new EventStore();
+        }
+    }
+
     public function popEvents(): array
     {
         // as the id is generated by the database, there is no other way to detect it as there is no function called
         // to create a product
         if (null === $this->id) {
-            $this->events[] = new ProductCreated($this->identifier);
+            $this->events->add(new ProductCreated());
         }
 
-        $events = $this->events;
-        $this->events = [];
+        // TODO: fix this workaround; it is here because currently some business events can occur before the product gets an identifier:
+        // - it is possible to instantiate a product without identifier
+        // - it is possible to remove the identifier of a product
+        // - when using the ProductUpdater with a newly created product, some properties are usually set before the identifier
+        if (null === $this->identifier) {
+            throw new \LogicException('Cannot pop events without identifier');
+        }
 
-        return $events;
+        return $this->events->popEvents($this->identifier);
     }
-
 
     /**
      * @param EntityWithFamilyVariantInterface $entity
