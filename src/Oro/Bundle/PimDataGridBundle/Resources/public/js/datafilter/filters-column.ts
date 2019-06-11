@@ -170,7 +170,7 @@ class FiltersColumn extends BaseView {
 
     if (searchValue.length === 0) {
       this.searchedFilters = undefined;
-      
+
       return this.renderFilters();
     }
 

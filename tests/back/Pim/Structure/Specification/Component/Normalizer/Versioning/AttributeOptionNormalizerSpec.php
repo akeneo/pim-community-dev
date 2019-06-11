@@ -2,13 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
-use PhpSpec\ObjectBehavior;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
+use PhpSpec\ObjectBehavior;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $localeRepository)
+    {
+        $this->beConstructedWith($localeRepository);
+    }
+
     function it_is_a_normalizer()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
