@@ -119,6 +119,7 @@ DESC
 
         if ($this->isAdmin) {
             $this->addAdminRoleTo($user);
+            $this->addEveryGroupTo($user);
         }
 
         $this->getContainer()->get('pim_user.saver.user')->save($user);
@@ -329,6 +330,15 @@ DESC
 
         if (null !== $role) {
             $user->addRole($role);
+        }
+    }
+
+    private function addEveryGroupTo(UserInterface $user): void
+    {
+        $groups = $this->getContainer()->get('pim_user.repository.group')->findAll();
+
+        foreach ($groups as $group) {
+            $user->addGroup($group);
         }
     }
 
