@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ReferenceEntityValueNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
 {
-    private $supportedFormats = ['indexing_product', 'indexing_product_and_product_model'];
+    private $supportedFormats = ['indexing_product', 'indexing_product_and_product_model', 'indexing_product_model'];
 
     /**
      * {@inheritdoc}
