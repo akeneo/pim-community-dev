@@ -355,6 +355,8 @@ abstract class AbstractProduct implements ProductInterface
             $this->addOrReplaceValue($value);
         }
 
+        $this->values = $values;
+
         return $this;
     }
 
@@ -460,6 +462,8 @@ abstract class AbstractProduct implements ProductInterface
         foreach ($categoriesToAdd as $categoryToAdd) {
             $this->addCategory($categoryToAdd);
         }
+
+        $this->categories = $categories;
     }
 
     /**
@@ -526,6 +530,8 @@ abstract class AbstractProduct implements ProductInterface
         foreach ($groupsToAdd as $groupToAdd) {
             $this->addGroup($groupToAdd);
         }
+
+        $this->groups = $groups;
     }
 
     /**
