@@ -33,7 +33,7 @@ class UrlAttributeHydratorSpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)->during('hydrate', [['wrong_key' => 'wrong_value']]);
     }
 
-    function it_hydrates_an_url_attribute_with_no_max_file_size_and_no_extensions()
+    function it_hydrates_an_url_attribute()
     {
         $urlAttribute = $this->hydrate([
             'identifier' => 'shooting_ad_fingerprint',
