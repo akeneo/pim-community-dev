@@ -38,8 +38,8 @@ class MediaType
 
     public static function fromString(string $mediaType): self
     {
-        Assert::notEmpty($mediaType, 'The preview type cannot be an empty string');
-        Assert::oneOf($mediaType, self::MEDIA_TYPES, sprintf('Expected preview types are "%s", "%s" given', implode(', ', self::MEDIA_TYPES), $mediaType));
+        Assert::notEmpty($mediaType, 'The media type cannot be an empty string');
+        Assert::oneOf($mediaType, self::MEDIA_TYPES, sprintf('Expected media types are "%s", "%s" given', implode(', ', self::MEDIA_TYPES), $mediaType));
 
         return new self($mediaType);
     }

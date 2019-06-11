@@ -1815,7 +1815,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user sets the preview type value of \'([^\']*)\' to \'([^\']*)\'$/
+     * @When /^the user sets the media type value of \'([^\']*)\' to \'([^\']*)\'$/
      */
     public function theUserSetsTheMediaTypeValueOfTo(string $attributeCode, string $mediaType): void
     {
@@ -1830,7 +1830,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Then /^\'([^\']*)\' preview type should be \'([^\']*)\'$/
+     * @Then /^\'([^\']*)\' media type should be \'([^\']*)\'$/
      */
     public function mediaTypeShouldBe(string $attributeCode, string $expectedMediaType): void
     {

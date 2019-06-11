@@ -31,7 +31,7 @@ class EditMediaTypeCommandFactory implements EditAttributeCommandFactoryInterfac
     public function create(array $normalizedCommand): AbstractEditAttributeCommand
     {
         if (!$this->supports($normalizedCommand)) {
-            throw new \RuntimeException('Impossible to create an edit "preview type" property command.');
+            throw new \RuntimeException('Impossible to create an edit "media type" property command.');
         }
 
         $command = new EditMediaTypeCommand(

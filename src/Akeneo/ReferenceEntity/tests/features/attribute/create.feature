@@ -178,7 +178,7 @@ Feature: Create an attribute linked to a reference entity
     When the user creates an url attribute "dam_image" to the reference entity "city" with:
       | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | video        | null   | null   |
-    Then there should be a validation error with message 'The preview type given is not corresponding to the expected ones (image, other).'
+    Then there should be a validation error with message 'The media type given is not corresponding to the expected ones (image, other).'
 
   @acceptance-front
   Scenario: Create a simple valid text attribute

@@ -89,4 +89,4 @@ pim_reference_entity:
             suffix:
                 should_not_be_empty: 'The suffix cannot be an empty string.'
             media_type:
-                not_expected: 'The preview type given is not corresponding to the expected ones (%supported_media_types%).'
+                not_expected: 'The media type given is not corresponding to the expected ones (%supported_media_types%).'
