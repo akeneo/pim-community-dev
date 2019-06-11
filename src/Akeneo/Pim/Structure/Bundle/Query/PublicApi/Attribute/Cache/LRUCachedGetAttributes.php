@@ -36,10 +36,8 @@ final class LRUCachedGetAttributes implements GetAttributes
         }
 
         $fetchNonFoundAttributeCodes = function (array $attributesNotFound): array {
-            return $this->getAttributes->forCodes($attributesNotFound);
-        };
+            $attributes = $this->getAttributes->forCodes($attributesNotFound);
 
-        $indexAttributesByCode = function (array $attributes): array {
             $result = [];
             foreach ($attributes as $attribute) {
                 $result[$attribute->code()] = $attribute;
@@ -48,7 +46,7 @@ final class LRUCachedGetAttributes implements GetAttributes
             return $result;
         };
 
-        return array_filter($this->cache->getOrSave($attributeCodes, $fetchNonFoundAttributeCodes, $indexAttributesByCode, null));
+        return $this->cache->getForKeys($attributeCodes, $fetchNonFoundAttributeCodes);
     }
 
     /**
@@ -58,16 +56,19 @@ final class LRUCachedGetAttributes implements GetAttributes
      */
     public function forCode(string $attributeCode): ?Attribute
     {
-        $default = 'DEFAULT_VALUE';
+        $fetchNonFoundAttributeCodes = function (string $attributeCode): ?Attribute {
+            return $this->getAttributes->forCode($attributeCode);
+        };
 
-        $attribute = $this->cache->getOrElse($attributeCode, $default);
-        if ($attribute !== $default) {
-            return $attribute;
-        }
+        return $this->cache->getForKey($attributeCode, $fetchNonFoundAttributeCodes);
+    }
 
-        $attribute = $this->getAttributes->forCode($attributeCode);
-        $this->cache->put($attributeCode, $attribute);
+    public function forCodeWithArrayKeyExists(string $attributeCode): ?Attribute
+    {
+        $fetchNonFoundAttributeCodes = function (string $attributeCode): ?Attribute {
+            return $this->getAttributes->forCode($attributeCode);
+        };
 
-        return $attribute;
+        return $this->cache->getForKeyArrayKeyExists($attributeCode, $fetchNonFoundAttributeCodes);
     }
 }

@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Tool\Component\StorageUtils\Cursor;
+namespace spec\Akeneo\Tool\Component\StorageUtils\Cache;
 
 use PhpSpec\ObjectBehavior;
 
 /**
- * @author    Anael Chardan <anael.chardan@akeneo.com>
+ * Note: using a real in memory implementation for the query does not work properly with phpspec to use spy.
+ * We have to use an interface for it.
+ *
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class LRUCacheSpec extends ObjectBehavior
 {
-    private const DEFAULT_VALUE = "a_default_value";
-
     public function let()
     {
-        $this->beConstructedWith(4);
+        $this->beConstructedWith(2);
     }
 
     function it_cannot_be_instantiated_with_zero_or_negative_value()
@@ -25,43 +25,134 @@ final class LRUCacheSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', [-1]);
     }
 
-    function it_gets_the_right_result()
+    function it_gets_result_for_single_key_by_calling_the_callable(EntityObjectQuery $entityObjectQuery)
     {
-        $this->storeElements(4);
-        $this->getOrElse("10", self::DEFAULT_VALUE)->shouldBeLike(new \Specification\Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql\TestObject("10"));
-        $this->getOrElse("112", self::DEFAULT_VALUE)->shouldBe(self::DEFAULT_VALUE);
+        $entityObjectQuery->fromCode('entity_code_3')->willReturn(new EntityObject('entity_code_3'));
+        $this->getForKey('entity_code_3', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_3'));
     }
 
-    function it_removes_the_least_recently_used_element_when_maximum_size_is_reached()
+    function it_gets_result_from_single_key_from_the_cache_and_does_not_call_the_callable_query(EntityObjectQuery $entityObjectQuery)
     {
-        $this->storeElements(4);
-        $this->put("112", new TestObject("112"));
-        $this->getOrElse("10", self::DEFAULT_VALUE)->shouldBe(self::DEFAULT_VALUE);
+        $entityObjectQuery->fromCode('entity_code_1')->willReturn(new EntityObject('entity_code_1'))->shouldBeCalledOnce();
+        $this->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_1'));
+        $this->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_1'));
     }
 
-    function it_does_not_remove_the_least_recently_used_element_if_the_maximum_size_is_not_reached()
+    function it_removes_the_least_recently_used_element_when_maximum_size_is_reached(EntityObjectQuery $entityObjectQuery)
     {
-        $this->storeElements(3);
-        $this->put("112", new TestObject("1"));
-        $this->getOrElse("10", self::DEFAULT_VALUE)->shouldNotBeNull();
+        $entityObjectQuery->fromCode('entity_code_1')->willReturn(new EntityObject('entity_code_1'))->shouldBeCalledTimes(2);
+        $entityObjectQuery->fromCode('entity_code_2')->willReturn(new EntityObject('entity_code_2'))->shouldBeCalledOnce();
+        $entityObjectQuery->fromCode('entity_code_3')->willReturn(new EntityObject('entity_code_3'))->shouldBeCalledOnce();
+
+        $this->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_1'));
+        $this->getForKey('entity_code_2', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_2'));
+        $this->getForKey('entity_code_3', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_3'));
+        $this->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_1'));
     }
 
-    function it_is_able_to_store_null_value()
+    /**
+     * Test the correct use of array_key_exist instead of isset to handle null values.
+     */
+    function it_store_null_values_and_does_not_call_the_query_if_null_value_is_stored()
     {
-        $this->storeElements(2);
-        $this->put("1123", null);
-        $this->getOrElse("1123", self::DEFAULT_VALUE)->shouldBeNull();
+        $query = function(string $entityCode) {
+            return null;
+        };
+
+        $this->getForKey('entity_code_1', $query)->shouldBe(null);
+        $this->getForKey('entity_code_1', $query)->shouldBe(null);
     }
 
-    private function storeElements(int $numberOfElements)
+    function it_gets_multiple_keys_by_calling_the_callable(EntityObjectQuery $entityObjectQuery)
     {
-        for ($i = 10; $i <= $numberOfElements + 9; $i++) {
-            $this->put($i, new TestObject("$i"));
-        }
+        $entityObjectQuery
+            ->fromCodes(['entity_code_1', 'entity_code_2'])
+            ->willReturn(
+                [
+                    new EntityObject('entity_code_1'),
+                    new EntityObject('entity_code_2'),
+                ]
+            )
+            ->shouldBeCalledOnce();
+
+        $this
+            ->getForKeys(['entity_code_1', 'entity_code_2'], $this->queryToFetchEntitiesFromCodes($entityObjectQuery->getWrappedObject()))
+            ->shouldBeLike([
+                new EntityObject('entity_code_1'),
+                new EntityObject('entity_code_2'),
+            ]);
+    }
+
+    function it_does_not_store_all_entries_when_query_result_is_greater_than_cache_size(EntityObjectQuery $entityObjectQuery)
+    {
+        $entityObjectQuery
+            ->fromCodes(['entity_code_1', 'entity_code_2', 'entity_code_3'])
+            ->willReturn(
+                [
+                    'entity_code_1' => new EntityObject('entity_code_1'),
+                    'entity_code_2' => new EntityObject('entity_code_2'),
+                    'entity_code_3' => new EntityObject('entity_code_3'),
+                ]
+            )
+            ->shouldBeCalledOnce();
+
+        $this
+            ->getForKeys(['entity_code_1', 'entity_code_2', 'entity_code_3'], $this->queryToFetchEntitiesFromCodes($entityObjectQuery->getWrappedObject()))
+            ->shouldBeLike([
+                'entity_code_1' => new EntityObject('entity_code_1'),
+                'entity_code_2' => new EntityObject('entity_code_2'),
+                'entity_code_3' => new EntityObject('entity_code_3'),
+            ]);
+
+        $this
+            ->getForKey('entity_code_2', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))
+            ->shouldBeLike(new EntityObject('entity_code_2'));
+
+        $entityObjectQuery->fromCode('entity_code_1')->willReturn(new EntityObject('entity_code_1'))->shouldBeCalledOnce();
+        $this
+            ->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))
+            ->shouldBeLike(new EntityObject('entity_code_1'));
+    }
+
+    function it_call_the_callable_only_on_keys_that_are_not_in_the_cache(EntityObjectQuery $entityObjectQuery)
+    {
+        $entityObjectQuery->fromCode('entity_code_1')->willReturn(new EntityObject('entity_code_1'))->shouldBeCalledOnce();
+        $this->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()));
+
+        $entityObjectQuery
+            ->fromCodes(['entity_code_2'])
+            ->willReturn(['entity_code_2' => new EntityObject('entity_code_2')])
+            ->shouldBeCalledOnce();
+
+        $this
+            ->getForKeys(['entity_code_1', 'entity_code_2'], $this->queryToFetchEntitiesFromCodes($entityObjectQuery->getWrappedObject()))
+            ->shouldBeLike([
+                'entity_code_1' => new EntityObject('entity_code_1'),
+                'entity_code_2' => new EntityObject('entity_code_2'),
+            ]);
+    }
+
+    private function queryToFetchEntityFromCode(EntityObjectQuery $entityObjectQuery)
+    {
+        return function(string $entityCode)  use ($entityObjectQuery) {
+            return $entityObjectQuery->fromCode($entityCode);
+        };
+    }
+
+    private function queryToFetchEntitiesFromCodes(EntityObjectQuery $entityObjectQuery)
+    {
+        return function(array $entityCodes) use ($entityObjectQuery) {
+            return $entityObjectQuery->fromCodes($entityCodes);
+        };
     }
 }
 
-class TestObject {
+interface EntityObjectQuery {
+    public function fromCode(string $entityCode): EntityObject;
+    public function fromCodes(array $entityCodes): array;
+}
+
+class EntityObject {
     private $id;
 
     public function __construct(string $id)

@@ -26,6 +26,9 @@ final class LRUCache
     /** @var string */
     private $nullData;
 
+    /** @var string */
+    private $defaultValue;
+
     /**
      * Create a LRU Cache
      *
@@ -38,80 +41,100 @@ final class LRUCache
             throw new \InvalidArgumentException("The size has to be a positive int");
         }
         $this->nullData = sha1('NULL_DATA_ON_LRU_CACHE');
+        $this->defaultValue = sha1('DEFAULT_CACHED_VALUE');
+
         $this->maximumSize = $size;
     }
 
     /**
-     * This methods gets what is stored on cache, complete with values to fetch and save every key with values
-     * This methods is like that for performances reason
+     * This methods gets what is stored on cache.
+     * When an entry is not in the cache, it call the first callable in order to fetch the missing entries.
+     * These entries HAVE TO BE indexed by the key.
+     *
+     * The performance impact of the callable is non significant.
+     *
+     * @see the specification to have a concrete example of how to use it.
      */
-    public function getOrSave(array $keys, callable $fetchNonFoundKeys, callable $transformDataToKeyValues, $valueForNonExistentData): array
+    public function getForKeys(array $keys, callable $queryNotFoundKeys): array
     {
         $fromCacheIndexedByKey = [];
-        $keysToFetch = [];
-        $defaultValue = sha1('DEFAULT_CACHED_VALUE');
+        $valuesNotFoundKeysInCache = [];
 
         foreach ($keys as $key) {
-            $value = $this->getOrElse($key, $defaultValue);
-            if ($defaultValue === $value) {
-                $keysToFetch[] = $key;
+            $value = $this->get($key);
+            if ($this->defaultValue === $value) {
+                $valuesNotFoundKeysInCache[] = $key;
             } else {
                 $fromCacheIndexedByKey[$key] = $value;
             }
         }
 
-        $fetched = $fetchNonFoundKeys($keysToFetch);
-        $keyValuesDataFetched = $transformDataToKeyValues($fetched);
+        $resultFromQuery = $queryNotFoundKeys($valuesNotFoundKeysInCache);
 
-        foreach ($keyValuesDataFetched as $key => $value) {
+        foreach ($resultFromQuery as $key => $value) {
             $this->put((string) $key, $value);
         }
 
-        $nonExistentKeys = array_diff($keys, array_keys($keyValuesDataFetched), array_keys($fromCacheIndexedByKey));
-
-        foreach ($nonExistentKeys as $nonExistentKey) {
-            $this->put((string) $nonExistentKey, $valueForNonExistentData);
-        }
-
-        return array_values(array_merge($fetched, $fromCacheIndexedByKey));
+        return array_merge($resultFromQuery, $fromCacheIndexedByKey);
     }
 
     /**
-     * This methods is inspired by monadic option (in other languages) to get a default value and not let the language crashes
+     * Returns an entry from the cache or call the query to fetch the entry thanks to the callable.
+     *
+     * The performance impact of the callable and `array_key_exist` instead of `isset` are non significant.
+     * The time consuming tasks are call to `recordAccess` and reset + unset in `put` method.
      */
-    public function getOrElse(string $key, $default)
+    public function getForKey(string $key, callable $queryNotFoundKey)
     {
-        if (isset($this->data[$key])) {
+        if (array_key_exists($key, $this->data)) {
             $this->recordAccess($key);
-            if ($this->data[$key] === $this->nullData) {
-                return null;
-            }
 
             return $this->data[$key];
         }
 
-        return $default;
+        $resultFromQuery = $queryNotFoundKey($key);
+        $this->put((string) $key, $resultFromQuery);
+
+
+        return $resultFromQuery;
     }
 
-    public function put(string $key, $value): void
+    /**
+     * Get the value in the cache. If it does not found a value, it returns a default value.
+     * This is needed as we can store null in the cache for a given key.
+     */
+    private function get(string $key)
     {
-        if ($value === null) {
-            $value = $this->nullData;
-        }
-
-        if (isset($this->data[$key])) {
-            $this->data[$key] = $value;
+        if (array_key_exists($key, $this->data)) {
             $this->recordAccess($key);
-            return;
+
+            return $this->data[$key];
         }
 
+        return $this->defaultValue;
+    }
+
+    /**
+     * Put a value inside the cache.
+     * If the cache reached its max size, it will drop the least recently used value.
+     *
+     * In this implementation, only the values that are not set are put in the cache.
+     * It allows to avoid a check if the value exist in order to avoid a call to `recordAccess`.
+     */
+    private function put(string $key, $value): void
+    {
         $this->data[$key] = $value;
+
         if (count($this->data) > $this->maximumSize) {
             reset($this->data);
             unset($this->data[key($this->data)]);
         }
     }
 
+    /**
+     * Put at the end of the list the element.
+     * It uses PHP array behavior instead of a chained list as it's ~3x faster.
+     */
     private function recordAccess(string $key): void
     {
         $value = $this->data[$key];
