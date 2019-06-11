@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\EntityWithFamilyVariantNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -73,7 +72,7 @@ class ProductModelController
     /** @var NormalizerInterface */
     private $constraintViolationNormalizer;
 
-    /** @var EntityWithFamilyVariantNormalizer */
+    /** @var NormalizerInterface */
     private $entityWithFamilyVariantNormalizer;
 
     /** @var SimpleFactoryInterface */
@@ -101,7 +100,7 @@ class ProductModelController
      * @param ValidatorInterface                $validator
      * @param SaverInterface                    $productModelSaver
      * @param NormalizerInterface               $constraintViolationNormalizer
-     * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
+     * @param NormalizerInterface               $entityWithFamilyVariantNormalizer
      * @param SimpleFactoryInterface            $productModelFactory
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
@@ -120,7 +119,7 @@ class ProductModelController
         ValidatorInterface $validator,
         SaverInterface $productModelSaver,
         NormalizerInterface $constraintViolationNormalizer,
-        EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
+        NormalizerInterface $entityWithFamilyVariantNormalizer,
         SimpleFactoryInterface $productModelFactory,
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
