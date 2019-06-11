@@ -145,7 +145,7 @@ class EditUrlContext implements Context
     }
 
     /**
-     * @Given /^the record should have the url value for this attribute$/
+     * @Then /^the record should have the url value for this attribute$/
      */
     public function theRecordShouldHaveTheUrlValueForThisAttribute(): void
     {

@@ -26,7 +26,7 @@ class UrlData implements ValueDataInterface
     /**
      * @return string
      */
-    public function normalize()
+    public function normalize(): string
     {
         return $this->text;
     }
@@ -38,7 +38,7 @@ class UrlData implements ValueDataInterface
         return new self($normalizedData);
     }
 
-    public static function fromString(string $string)
+    public static function fromString(string $string): self
     {
         return new self($string);
     }
