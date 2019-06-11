@@ -7,8 +7,10 @@ namespace Akeneo\ReferenceEntity\Common\Helper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -17,6 +19,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
@@ -37,6 +41,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\DecimalsAllowed;
 
 class FixturesLoader
 {
@@ -368,6 +373,27 @@ class FixturesLoader
             );
         }
 
+        // DESIGNERS
+        if (in_array('designers', $this->loadedAttributes)) {
+            $attributes['designers'] = RecordCollectionAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $referenceEntityIdentifier,
+                    AttributeCode::fromString('designers')
+                ),
+                $referenceEntityIdentifier,
+                AttributeCode::fromString('designers'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Designers',
+                    'fr_FR' => 'Concepteurs',
+                ]),
+                $this->getOrderForAttribute('designers'),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(false),
+                ReferenceEntityIdentifier::fromString('designer')
+            );
+        }
+
         // MATERIALS
         if (in_array('materials', $this->loadedAttributes)) {
             $attributes['materials'] = OptionCollectionAttribute::create(
@@ -406,6 +432,47 @@ class FixturesLoader
                 AttributeMaxLength::fromInteger(100),
                 AttributeValidationRule::none(),
                 AttributeRegularExpression::createEmpty()
+            );
+        }
+
+        // YEAR
+        if (in_array('year', $this->loadedAttributes)) {
+            $attributes['year'] = NumberAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $referenceEntityIdentifier,
+                    AttributeCode::fromString('year')
+                ),
+                $referenceEntityIdentifier,
+                AttributeCode::fromString('year'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Year',
+                ]),
+                $this->getOrderForAttribute('year'),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeDecimalsAllowed::fromBoolean(false),
+                AttributeLimit::fromString('0'),
+                AttributeLimit::limitless()
+            );
+        }
+
+        // MAIN MATERIAL
+        if (in_array('main_material', $this->loadedAttributes)) {
+            $attributes['main_material'] = OptionAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $referenceEntityIdentifier,
+                    AttributeCode::fromString('main_material')
+                ),
+                $referenceEntityIdentifier,
+                AttributeCode::fromString('main_material'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Main material',
+                ]),
+                $this->getOrderForAttribute('main_material'),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false)
             );
         }
 

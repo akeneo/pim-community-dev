@@ -13,28 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Api\JsonSchema;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
@@ -66,14 +44,32 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $this->attributeOrder = 2;
 
         $this->resetDB();
-        $this->loadReferenceEntity();
-        $this->loadTextAttribute();
-        $this->loadRecordAttribute();
-        $this->loadRecordCollectionAttribute();
-        $this->loadImageAttribute();
-        $this->loadOptionAttribute();
-        $this->loadOptionCollectionAttribute();
-        $this->loadNumberAttribute();
+        $this->loadFixtures();
+    }
+
+    private function loadFixtures(): void
+    {
+        $this->fixturesLoader
+            ->referenceEntity('country')
+            ->load();
+
+        $this->fixturesLoader
+            ->referenceEntity('designer')
+            ->load();
+
+        $this->fixturesLoader
+            ->referenceEntity('brand')
+            ->withAttributes([
+                'long_description',     // text
+                'country',              // record
+                'designers',            // record collection
+                'main_image',           // image
+                'main_material',        // option
+                'materials',            // option collection
+                'year',                 // number
+                'website'               // url
+            ])
+            ->load();
     }
 
     /**
@@ -91,7 +87,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => 'Kartell english label'
                     ]
                 ],
-                'description' => [
+                'long_description' => [
                     [
                         'locale'  => 'en_US',
                         'channel' => 'ecommerce',
@@ -117,7 +113,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => ['starck', 'arad'],
                     ],
                 ],
-                'photo' => [
+                'main_image' => [
                     [
                         'locale'  => null,
                         'channel' => 'mobile',
@@ -136,14 +132,14 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => 'plastic',
                     ],
                 ],
-                'products' => [
+                'materials' => [
                     [
-                        'locale'  => null,
-                        'channel' => 'ecommerce',
+                        'locale'  => 'en_US',
+                        'channel' => null,
                         'data'    => [
-                            'furniture',
-                            'lighting',
-                            'home_accessories',
+                            'plastic',
+                            'wool',
+                            'wood',
                         ],
                     ],
                 ],
@@ -154,6 +150,13 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => '1949',
                     ],
                 ],
+                'website' => [
+                    [
+                        'locale' => null,
+                        'channel' => null,
+                        'data' => 'id-screenshot-website650'
+                    ]
+                ]
             ],
         ];
 
@@ -177,7 +180,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => 'Kartell english label'
                     ]
                 ],
-                'description' => [
+                'long_description' => [
                     [
                         'locale'  => 'en_US',
                         'channel' => 'ecommerce',
@@ -202,7 +205,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => 'starck',
                     ],
                 ],
-                'photo' => [
+                'main_image' => [
                     [
                         'channel' => 'mobile',
                         'data'    => 'images/kartell_small.jpg',
@@ -214,10 +217,10 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'   => 'plastic',
                     ],
                 ],
-                'products' => [
+                'materials' => [
                     [
-                        'locale'  => null,
-                        'channel' => 'ecommerce',
+                        'locale'  => 'en_US',
+                        'channel' => null,
                         'data'    => [
                             'lighting',
                             'home_accessories',
@@ -232,13 +235,20 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => 1949,
                     ],
                 ],
+                'website' => [
+                    [
+                        'locale' => null,
+                        'channel' => null,
+                        'data' => 250
+                    ]
+                ]
             ],
         ];
 
         $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
-        $this->assertCount(7, $errors);
+        $this->assertCount(8, $errors);
         $this->assertContains(
             [
                 'property' => 'values.country[0].data',
@@ -248,7 +258,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         );
         $this->assertContains(
             [
-                'property' => 'values.description[1].data',
+                'property' => 'values.long_description[1].data',
                 'message'  => 'The property data is required'
             ],
             $errors
@@ -269,14 +279,14 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         );
         $this->assertContains(
             [
-                'property' => 'values.photo[0].locale',
+                'property' => 'values.main_image[0].locale',
                 'message'  => 'The property locale is required'
             ],
             $errors
         );
         $this->assertContains(
             [
-                'property' => 'values.products[0].data[2]',
+                'property' => 'values.materials[0].data[2]',
                 'message'  => 'NULL value found, but a string is required'
             ],
             $errors
@@ -284,6 +294,13 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $this->assertContains(
             [
                 'property' => 'values.year[0].data',
+                'message'  => 'Integer value found, but a string or a null is required'
+            ],
+            $errors
+        );
+        $this->assertContains(
+            [
+                'property' => 'values.website[0].data',
                 'message'  => 'Integer value found, but a string or a null is required'
             ],
             $errors
@@ -329,140 +346,5 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     private function resetDB(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
-    }
-
-    private function loadReferenceEntity(): void
-    {
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
-            [
-                'fr_FR' => 'Marque',
-                'en_US' => 'Brand',
-            ],
-            Image::createEmpty()
-        );
-
-        $this->referenceEntityRepository->create($referenceEntity);
-    }
-
-    private function loadTextAttribute()
-    {
-        $attribute = TextAttribute::createTextarea(
-            AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            AttributeCode::fromString('description'),
-            LabelCollection::fromArray(['en_US' => 'Description']),
-            AttributeOrder::fromInteger($this->attributeOrder++),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(255),
-            AttributeIsRichTextEditor::fromBoolean(false)
-        );
-
-        $this->attributeRepository->create($attribute);
-    }
-
-    private function loadRecordAttribute()
-    {
-        $attribute = RecordAttribute::create(
-            AttributeIdentifier::create('brand', 'country', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            AttributeCode::fromString('country'),
-            LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
-            AttributeOrder::fromInteger($this->attributeOrder++),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('country')
-        );
-
-        $this->attributeRepository->create($attribute);
-    }
-
-    private function loadRecordCollectionAttribute()
-    {
-        $attribute = RecordCollectionAttribute::create(
-            AttributeIdentifier::create('brand', 'designers', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            AttributeCode::fromString('designers'),
-            LabelCollection::fromArray(['en_US' => 'Designers']),
-            AttributeOrder::fromInteger($this->attributeOrder++),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('designer')
-        );
-
-        $this->attributeRepository->create($attribute);
-    }
-
-    private function loadImageAttribute()
-    {
-        $attribute = ImageAttribute::create(
-            AttributeIdentifier::create('brand', 'photo', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            AttributeCode::fromString('photo'),
-            LabelCollection::fromArray(['en_US' => 'Cover Image']),
-            AttributeOrder::fromInteger($this->attributeOrder++),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxFileSize::fromString('250.2'),
-            AttributeAllowedExtensions::fromList(['jpg'])
-        );
-
-        $this->attributeRepository->create($attribute);
-    }
-
-    private function loadOptionAttribute()
-    {
-        $attribute = OptionAttribute::create(
-            AttributeIdentifier::create('brand', 'main_material', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            AttributeCode::fromString('main_material'),
-            LabelCollection::fromArray(['en_US' => 'Main material']),
-            AttributeOrder::fromInteger($this->attributeOrder++),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false)
-        );
-
-        $this->attributeRepository->create($attribute);
-    }
-
-    private function loadOptionCollectionAttribute()
-    {
-        $attribute = OptionCollectionAttribute::create(
-            AttributeIdentifier::create('brand', 'products', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            AttributeCode::fromString('products'),
-            LabelCollection::fromArray(['en_US' => 'Products']),
-            AttributeOrder::fromInteger($this->attributeOrder++),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false)
-        );
-
-        $this->attributeRepository->create($attribute);
-    }
-
-    private function loadNumberAttribute()
-    {
-        $attribute = NumberAttribute::create(
-            AttributeIdentifier::create('brand', 'year', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            AttributeCode::fromString('year'),
-            LabelCollection::fromArray(['en_US' => 'Year']),
-            AttributeOrder::fromInteger($this->attributeOrder++),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeDecimalsAllowed::fromBoolean(false),
-            AttributeLimit::fromString('0'),
-            AttributeLimit::limitless()
-        );
-
-        $this->attributeRepository->create($attribute);
     }
 }
