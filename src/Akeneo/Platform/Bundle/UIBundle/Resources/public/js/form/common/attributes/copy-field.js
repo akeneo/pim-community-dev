@@ -61,6 +61,7 @@ define([
                     .then(function (render) {
                         this.$('.field-input').html(render);
                         this.renderElements();
+                        this.field.postRender();
                     }.bind(this));
 
                 this.delegateEvents();
