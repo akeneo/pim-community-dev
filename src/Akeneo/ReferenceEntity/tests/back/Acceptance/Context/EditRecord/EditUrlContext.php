@@ -17,8 +17,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -85,7 +85,6 @@ class EditUrlContext implements Context
         RecordRepositoryInterface $recordRepository,
         EditRecordCommandFactory $editRecordCommandFactory,
         EditRecordHandler $editRecordHandler,
-        CreateReferenceEntityHandler $createReferenceEntityHandler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
         ConstraintViolationsContext $violationsContext
@@ -200,7 +199,7 @@ class EditUrlContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            PreviewType::fromString('image')
+            MediaType::fromString('image')
         );
         $this->attributeRepository->create($attribute);
     }
