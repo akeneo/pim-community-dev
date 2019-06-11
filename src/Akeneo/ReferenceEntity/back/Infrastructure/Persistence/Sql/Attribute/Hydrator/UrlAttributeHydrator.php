@@ -11,8 +11,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -32,7 +32,7 @@ class UrlAttributeHydrator extends AbstractAttributeHydrator
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $row['preview_type'] = $row['additional_properties']['preview_type'];
+        $row['media_type'] = $row['additional_properties']['media_type'];
         $row['prefix'] = $row['additional_properties']['prefix'];
         $row['suffix'] = $row['additional_properties']['suffix'];
 
@@ -52,7 +52,7 @@ class UrlAttributeHydrator extends AbstractAttributeHydrator
             AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
             Prefix::fromString($row['prefix']),
             Suffix::fromString($row['suffix']),
-            PreviewType::fromString($row['preview_type'])
+            MediaType::fromString($row['media_type'])
         );
     }
 
@@ -68,7 +68,7 @@ class UrlAttributeHydrator extends AbstractAttributeHydrator
             'value_per_locale',
             'value_per_channel',
             'attribute_type',
-            'preview_type',
+            'media_type',
             'prefix',
             'suffix',
         ];

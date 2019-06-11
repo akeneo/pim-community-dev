@@ -73,8 +73,8 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
 
-    akeneo_referenceentity.application.edit_attribute.attribute_updater.preview_type:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\Url\PreviewTypeUpdater
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.media_type:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\Url\MediaTypeUpdater
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
 

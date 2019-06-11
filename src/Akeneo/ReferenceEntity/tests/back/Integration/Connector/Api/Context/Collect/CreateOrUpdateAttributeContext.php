@@ -32,8 +32,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -310,9 +310,9 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::createEmpty(),
-            Suffix::createEmpty(),
-            PreviewType::fromString('image')
+            Prefix::empty(),
+            Suffix::empty(),
+            MediaType::fromString('image')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -586,9 +586,9 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::createEmpty(),
-            Suffix::createEmpty(),
-            PreviewType::fromString('image')
+            Prefix::empty(),
+            Suffix::empty(),
+            MediaType::fromString('image')
         );
         $this->attributeRepository->create($attribute);
 
@@ -599,7 +599,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
-            ['preview_type' => 'image']
+            ['media_type' => 'image']
         );
         $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
 
@@ -628,9 +628,9 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::createEmpty(),
-            Suffix::createEmpty(),
-            PreviewType::fromString('image')
+            Prefix::empty(),
+            Suffix::empty(),
+            MediaType::fromString('image')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);

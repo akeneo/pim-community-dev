@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute\Url;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use PhpSpec\ObjectBehavior;
 
 
@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class PreviewTypeSpec extends ObjectBehavior
+class MediaTypeSpec extends ObjectBehavior
 {
     function let()
     {
@@ -20,7 +20,7 @@ class PreviewTypeSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(PreviewType::class);
+        $this->shouldHaveType(MediaType::class);
     }
 
     function it_normalizes_itself()

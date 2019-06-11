@@ -42,18 +42,18 @@ Feature: Edit an URL attribute of a reference entity
       | ""             | The suffix cannot be an empty string. |
 
   @acceptance-back
-  Scenario: Updating preview type property
+  Scenario: Updating media type property
     Given a reference entity with an url attribute 'dam_image'
-    When the user sets the preview type value of 'dam_image' to '"other"'
-    Then 'dam_image' preview type should be '"other"'
+    When the user sets the media type value of 'dam_image' to '"other"'
+    Then 'dam_image' media type should be '"other"'
 
   @acceptance-back
-  Scenario Outline: Invalid preview type edit
+  Scenario Outline: Invalid media type edit
     Given  a reference entity with an url attribute 'dam_image'
-    When the user sets the preview type value of 'dam_image' to '<invalid_preview_type>'
+    When the user sets the media type value of 'dam_image' to '<invalid_media_type>'
     Then there should be a validation error on the property '<property_path>' with message '<message>'
 
     Examples:
-      | invalid_preview_type | property_path | message                                                                          |
-      | "video"              | previewType   | The preview type given is not corresponding to the expected ones (image, other). |
-      | ""                   | previewType   | The preview type given is not corresponding to the expected ones (image, other). |
+      | invalid_media_type | property_path | message                                                                          |
+      | "video"              | mediaType   | The media type given is not corresponding to the expected ones (image, other). |
+      | ""                   | mediaType   | The media type given is not corresponding to the expected ones (image, other). |

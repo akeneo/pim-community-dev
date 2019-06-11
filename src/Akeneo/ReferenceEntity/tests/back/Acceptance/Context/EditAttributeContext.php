@@ -30,8 +30,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -1728,7 +1728,7 @@ class EditAttributeContext implements Context
                 AttributeValuePerLocale::fromBoolean(true),
                 Prefix::fromString(null),
                 Suffix::fromString(null),
-                PreviewType::fromString('image')
+                MediaType::fromString('image')
             )
         );
     }
@@ -1753,7 +1753,7 @@ class EditAttributeContext implements Context
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString(null),
                 Suffix::fromString(null),
-                PreviewType::fromString('image')
+                MediaType::fromString('image')
             )
         );
     }
@@ -1815,30 +1815,30 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user sets the preview type value of \'([^\']*)\' to \'([^\']*)\'$/
+     * @When /^the user sets the media type value of \'([^\']*)\' to \'([^\']*)\'$/
      */
-    public function theUserSetsThePreviewTypeValueOfTo(string $attributeCode, string $previewType): void
+    public function theUserSetsTheMediaTypeValueOfTo(string $attributeCode, string $mediaType): void
     {
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
-        $previewType = json_decode($previewType);
+        $mediaType = json_decode($mediaType);
 
-        $updatePreviewType = [
+        $updateMediaType = [
             'identifier' => (string)$identifier,
-            'preview_type' => $previewType,
+            'media_type' => $mediaType,
         ];
-        $this->updateAttribute($updatePreviewType);
+        $this->updateAttribute($updateMediaType);
     }
 
     /**
-     * @Then /^\'([^\']*)\' preview type should be \'([^\']*)\'$/
+     * @Then /^\'([^\']*)\' media type should be \'([^\']*)\'$/
      */
-    public function previewTypeShouldBe(string $attributeCode, string $expectedPreviewType): void
+    public function mediaTypeShouldBe(string $attributeCode, string $expectedMediaType): void
     {
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
-        $expectedPreviewType = json_decode($expectedPreviewType);
+        $expectedMediaType = json_decode($expectedMediaType);
 
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
-        Assert::assertEquals($expectedPreviewType, $attribute->normalize()['preview_type']);
+        Assert::assertEquals($expectedMediaType, $attribute->normalize()['media_type']);
     }
 }

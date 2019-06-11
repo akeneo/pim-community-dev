@@ -19,33 +19,33 @@ use Webmozart\Assert\Assert;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class PreviewType
+class MediaType
 {
     private const IMAGE = 'image';
     private const OTHER = 'other';
-    public const PREVIEW_TYPES = [
+    public const MEDIA_TYPES = [
         self::IMAGE,
         self::OTHER
     ];
 
     /** @var string */
-    private $previewType;
+    private $mediaType;
 
-    private function __construct(string $previewType)
+    private function __construct(string $mediaType)
     {
-        $this->previewType = $previewType;
+        $this->mediaType = $mediaType;
     }
 
-    public static function fromString(string $previewType): self
+    public static function fromString(string $mediaType): self
     {
-        Assert::notEmpty($previewType, 'The preview type cannot be an empty string');
-        Assert::oneOf($previewType, self::PREVIEW_TYPES, sprintf('Expected preview types are "%s", "%s" given', implode(', ', self::PREVIEW_TYPES), $previewType));
+        Assert::notEmpty($mediaType, 'The media type cannot be an empty string');
+        Assert::oneOf($mediaType, self::MEDIA_TYPES, sprintf('Expected media types are "%s", "%s" given', implode(', ', self::MEDIA_TYPES), $mediaType));
 
-        return new self($previewType);
+        return new self($mediaType);
     }
 
     public function normalize(): string
     {
-        return $this->previewType;
+        return $this->mediaType;
     }
 }

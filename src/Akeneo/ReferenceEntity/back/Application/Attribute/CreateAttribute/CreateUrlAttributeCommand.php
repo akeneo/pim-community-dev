@@ -20,7 +20,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
 class CreateUrlAttributeCommand extends AbstractCreateAttributeCommand
 {
     /** @var string */
-    public $previewType;
+    public $mediaType;
 
     /** @var string|null */
     public $prefix;
@@ -35,7 +35,7 @@ class CreateUrlAttributeCommand extends AbstractCreateAttributeCommand
         bool $isRequired,
         bool $valuePerChannel,
         bool $valuePerLocale,
-        string $previewType,
+        string $mediaType,
         ?string $prefix,
         ?string $suffix
     ) {
@@ -48,7 +48,7 @@ class CreateUrlAttributeCommand extends AbstractCreateAttributeCommand
             $valuePerLocale
         );
 
-        $this->previewType = $previewType;
+        $this->mediaType = $mediaType;
         $this->prefix = $prefix;
         $this->suffix = $suffix;
     }

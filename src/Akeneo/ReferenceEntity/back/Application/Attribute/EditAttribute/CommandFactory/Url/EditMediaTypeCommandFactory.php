@@ -20,23 +20,23 @@ use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Ed
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class EditPreviewTypeCommandFactory implements EditAttributeCommandFactoryInterface
+class EditMediaTypeCommandFactory implements EditAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool
     {
-        return array_key_exists('preview_type', $normalizedCommand)
+        return array_key_exists('media_type', $normalizedCommand)
             && array_key_exists('identifier', $normalizedCommand);
     }
 
     public function create(array $normalizedCommand): AbstractEditAttributeCommand
     {
         if (!$this->supports($normalizedCommand)) {
-            throw new \RuntimeException('Impossible to create an edit "preview type" property command.');
+            throw new \RuntimeException('Impossible to create an edit "media type" property command.');
         }
 
-        $command = new EditPreviewTypeCommand(
+        $command = new EditMediaTypeCommand(
             $normalizedCommand['identifier'],
-            $normalizedCommand['preview_type']
+            $normalizedCommand['media_type']
         );
 
         return $command;

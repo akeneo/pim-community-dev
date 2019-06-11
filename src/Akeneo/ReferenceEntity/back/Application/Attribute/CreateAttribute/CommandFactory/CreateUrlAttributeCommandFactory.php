@@ -39,7 +39,7 @@ class CreateUrlAttributeCommandFactory extends AbstractCreateAttributeCommandFac
             $normalizedCommand['is_required'] ?? false,
             $normalizedCommand['value_per_channel'],
             $normalizedCommand['value_per_locale'],
-            $normalizedCommand['preview_type'],
+            $normalizedCommand['media_type'],
             $this->stringOrNull($normalizedCommand, 'prefix'),
             $this->stringOrNull($normalizedCommand, 'suffix')
         );
@@ -53,7 +53,7 @@ class CreateUrlAttributeCommandFactory extends AbstractCreateAttributeCommandFac
     private function checkAdditionalProperties(array $nomalizedCommand): void
     {
         $keysToCheck = [
-            'preview_type',
+            'media_type',
         ];
 
         foreach ($keysToCheck as $keyToCheck) {

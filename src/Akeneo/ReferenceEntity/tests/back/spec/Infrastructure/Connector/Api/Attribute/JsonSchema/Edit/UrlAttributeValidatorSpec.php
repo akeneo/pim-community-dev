@@ -20,7 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -54,7 +54,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString('http://mydam.com'),
             Suffix::fromString(null),
-            PreviewType::fromString('image')
+            MediaType::fromString('image')
         );
         $this->support($attribute)->shouldReturn(true);
     }
@@ -70,7 +70,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
                 'en_US' => 'Preview'
             ],
             'is_required_for_completeness' => false,
-            'preview_type' => 'image',
+            'media_type' => 'image',
             '_links' => [
                 'self' => [
                     'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/photo'
@@ -193,11 +193,11 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_preview_type_is_null()
+    function it_returns_an_error_when_media_type_is_null()
     {
         $attribute = [
             'code' => 'preview',
-            'preview_type' => null,
+            'media_type' => null,
         ];
 
         $errors = $this->validate($attribute);
@@ -205,11 +205,11 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_preview_type_is_not_a_string()
+    function it_returns_an_error_when_media_type_is_not_a_string()
     {
         $attribute = [
             'code' => 'preview',
-            'preview_type' => 10,
+            'media_type' => 10,
         ];
 
         $errors = $this->validate($attribute);
