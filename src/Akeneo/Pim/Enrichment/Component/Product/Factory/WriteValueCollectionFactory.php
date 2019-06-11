@@ -106,7 +106,7 @@ class WriteValueCollectionFactory
             }
         }
 
-        $attributes = $this->getAttributeByCodes->forCodes(array_values(array_unique($attributeCodes)));
+        $attributes = array_filter($this->getAttributeByCodes->forCodes(array_values(array_unique($attributeCodes))));
 
         if (empty($attributes)) {
             return [];
