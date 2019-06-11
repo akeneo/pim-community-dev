@@ -694,8 +694,6 @@ JSON;
 }
 JSON;
 
-        var_dump($client->getResponse());
-
         $this->assertListResponse($client->getResponse(), $expected);
     }
 

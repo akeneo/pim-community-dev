@@ -9,7 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInt
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
- * This class filters data with the ancestor code, i.e. the parent code.
+ * This class filters data with the ancestor code, i.e. the parent code. We cannot use ParentFilter as it this
+ * field is unfortunately not in product index. It is only in product and product model index.
  * This is temporary and is used into external API product list, and will be removed after TIP-1150.
  *
  * @see src/Akeneo/Pim/Enrichment/Component/Product/Connector/UseCase/ApplyProductSearchQueryParametersToPQB.php

@@ -46,9 +46,9 @@ final class ValidateProperties
         foreach ($search as $propertyCode => $filters) {
             foreach ($filters as $filter) {
                 if (!(
-                    in_array($propertyCode, self::$productFields) ||
-                    null !== $this->attributeRepository->findOneByIdentifier($propertyCode) ||
-                    ($propertyCode === 'parent' && $filter['operator'] !== Operators::EQUALS)
+                    $this->isProductField($propertyCode) ||
+                    $this->isExistingAttribute($propertyCode) ||
+                    $this->hasWrongOperatorForParentProperty($propertyCode, $filter['operator'])
                 )) {
                     throw new InvalidQueryException(
                         sprintf(
@@ -60,5 +60,20 @@ final class ValidateProperties
                 }
             }
         }
+    }
+
+    private function isProductField(string $propertyCode): bool
+    {
+        return in_array($propertyCode, self::$productFields);
+    }
+
+    private function isExistingAttribute(string $propertyCode): bool
+    {
+        return null !== $this->attributeRepository->findOneByIdentifier($propertyCode);
+    }
+
+    private function hasWrongOperatorForParentProperty(string $propertyCode, string $operator): bool
+    {
+        return ($propertyCode === 'parent' && $operator !== Operators::EQUALS);
     }
 }

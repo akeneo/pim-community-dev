@@ -2,11 +2,11 @@
 
 ## Bug fixes
 
- - PIM-8270: Update export jobs after a change on a channel category
+- PIM-8270: Update export jobs after a change on a channel category
 
+## BC Breaks
 
-
-
+- Rename `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorFilter` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorIdFilter` 
 
 
 
