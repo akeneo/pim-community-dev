@@ -74,9 +74,9 @@ akeneo_franklin_insights:
                         full: 'All Franklin attributes mapped'
                     types_mismatch_warning: 'Warning: attributes types mismatch.'
                     family_progress:
-                        title: 'Number of attribute mapped'
-                        description: "With this progress bar, you're able to know where you are on your attribute mapping."
-                        mapped_attribute_count: '{{ count }} attributes mapped'
+                        title: 'Number of mapped attributes'
+                        description: "Use this bar to see at a glance your work status"
+                        mapped_attribute_count: '{{ count }} mapped attributes'
 
             constraint:
                 missing_target_key: 'Missing target key for mapping'
