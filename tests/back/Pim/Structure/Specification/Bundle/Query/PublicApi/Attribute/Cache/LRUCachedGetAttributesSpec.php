@@ -24,31 +24,31 @@ final class LRUCachedGetAttributesSpec extends ObjectBehavior
         $aText = new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false);
         $aTextarea = new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false);
         $aBoolean = new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false);
-        $getAttributes->forCodes(['a_text', 'a_textarea', 'a_boolean'])->willReturn([$aText, $aTextarea, $aBoolean]);
-        $this->forCodes(['a_text', 'a_textarea', 'a_boolean'])->shouldReturn([$aText, $aTextarea, $aBoolean]);
+        $getAttributes->forCodes(['a_text', 'a_textarea', 'a_boolean'])->willReturn(['a_text' => $aText, 'a_textarea' => $aTextarea, 'a_boolean' => $aBoolean]);
+        $this->forCodes(['a_text', 'a_textarea', 'a_boolean'])->shouldReturn(['a_text' => $aText, 'a_textarea' => $aTextarea, 'a_boolean' => $aBoolean]);
     }
 
     public function it_gets_attributes_from_the_cache_when_the_cache_is_hit(GetAttributes $getAttributes) {
         $aText = new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false);
         $aTextarea = new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false);
         $aBoolean = new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false);
-        $getAttributes->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->willReturn([$aText, $aTextarea, $aBoolean]);
+        $getAttributes->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->willReturn(['a_text' => $aText, 'a_textarea' => $aTextarea, 'a_boolean' => $aBoolean, 'michel' => null]);
         $getAttributes->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->shouldBeCalled(1);
         $getAttributes->forCodes([])->willReturn([]);
 
-        $this->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->shouldReturn([$aText, $aTextarea, $aBoolean]);
-        $this->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->shouldReturn([$aText, $aTextarea, $aBoolean]);
+        $this->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->shouldReturn(['a_text' => $aText, 'a_textarea' => $aTextarea, 'a_boolean' => $aBoolean, 'michel' => null]);
+        $this->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->shouldReturn(['a_text' => $aText, 'a_textarea' => $aTextarea, 'a_boolean' => $aBoolean, 'michel' => null]);
     }
 
     public function it_mixes_the_call_between_the_cache_and_the_non_cached(GetAttributes $getAttributes) {
         $aText = new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false);
         $aTextarea = new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false);
         $aBoolean = new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false);
-        $getAttributes->forCodes(['a_text', 'a_textarea', 'a_boolean'])->willReturn([$aText, $aTextarea, $aBoolean]);
-        $getAttributes->forCodes(['michel'])->willReturn([]);
+        $getAttributes->forCodes(['a_text', 'a_textarea', 'a_boolean'])->willReturn(['a_text' => $aText, 'a_textarea' => $aTextarea, 'a_boolean' => $aBoolean]);
+        $getAttributes->forCodes(['michel'])->willReturn(['michel' => null]);
 
-        $this->forCodes(['a_text', 'a_textarea', 'a_boolean'])->shouldReturn([$aText, $aTextarea, $aBoolean]);
-        $this->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->shouldReturn([$aText, $aTextarea, $aBoolean]);
+        $this->forCodes(['a_text', 'a_textarea', 'a_boolean'])->shouldReturn(['a_text' => $aText, 'a_textarea' => $aTextarea, 'a_boolean' => $aBoolean]);
+        $this->forCodes(['a_text', 'a_textarea', 'a_boolean', 'michel'])->shouldReturn(['michel' => null, 'a_text' => $aText, 'a_textarea' => $aTextarea, 'a_boolean' => $aBoolean]);
     }
 
     public function it_can_gets_more_than_the_cache_size(GetAttributes $getAttributes) {
