@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.6 (2019-06-11)
+
 ## Bug fixes
 
 - PIM-8415: back-port #10002 to handle uploads on a multi-frontend saas instance
