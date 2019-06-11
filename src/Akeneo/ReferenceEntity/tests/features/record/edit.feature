@@ -467,6 +467,12 @@ Feature: Edit an record
     When the user updates the number value with an integer too long
     Then there should be a validation error on the number value with message "This integer is too big"
 
+  @acceptance-back
+  Scenario: Updating an url value
+    Given a reference entity with an url attribute and a record belonging to this reference entity
+    When the user updates the url value of the record
+    Then the record should have the url value for this attribute
+
   @acceptance-front
   Scenario: Updating a record details
     Given a valid record

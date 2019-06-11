@@ -857,7 +857,7 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveTheNewDefaultImage()
     {
         $this->violationsContext->assertThereIsNoViolations();
-        $this->exceptionContext->thereIsNoExceptionThrown();
+        $this->exceptionContext->assertThereIsNoExceptionThrown();
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
         $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
@@ -885,7 +885,7 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveAnEmptyImage()
     {
         $this->violationsContext->assertThereIsNoViolations();
-        $this->exceptionContext->thereIsNoExceptionThrown();
+        $this->exceptionContext->assertThereIsNoExceptionThrown();
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
         $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);

@@ -46,7 +46,7 @@ final class ExceptionContext implements Context
     /**
      * @Then /^there is no exception thrown$/
      */
-    public function thereIsNoExceptionThrown()
+    public function assertThereIsNoExceptionThrown()
     {
         Assert::null(
             $this->exceptionThrown,

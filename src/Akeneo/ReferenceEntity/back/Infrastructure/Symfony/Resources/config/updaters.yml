@@ -121,3 +121,8 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\NumberUpdater
         tags:
             - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.url_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\UrlUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
