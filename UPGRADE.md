@@ -176,7 +176,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
-    TODO: ADD THE SEDs
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorIdFilter/g'
 ```
 
 2. Adapt your custom codes to handle this breaking changes we introduced:

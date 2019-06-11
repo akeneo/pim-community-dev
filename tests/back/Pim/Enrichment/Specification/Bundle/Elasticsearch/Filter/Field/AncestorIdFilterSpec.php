@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorFilter;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorIdFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 
-class AncestorFilterSpec extends ObjectBehavior
+class AncestorIdFilterSpec extends ObjectBehavior
 {
     function let(
         ProductModelRepositoryInterface $productModelRepository
@@ -23,7 +23,7 @@ class AncestorFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AncestorFilter::class);
+        $this->shouldHaveType(AncestorIdFilter::class);
     }
 
     function it_is_a_filter()
@@ -122,7 +122,7 @@ class AncestorFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidOperatorException::notSupported(
                 'IN CHILDREN',
-                AncestorFilter::class
+                AncestorIdFilter::class
             )
         )->during('addFieldFilter', ['ancestor.id', Operators::IN_CHILDREN_LIST, null, null, null, []]);
     }
@@ -133,11 +133,11 @@ class AncestorFilterSpec extends ObjectBehavior
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
-            InvalidPropertyTypeException::arrayExpected('ancestors', AncestorFilter::class, 123)
+            InvalidPropertyTypeException::arrayExpected('ancestors', AncestorIdFilter::class, 123)
         )->during('addFieldFilter', ['parent', Operators::IN_LIST, 123, null, null, []]);
 
         $this->shouldThrow(
-            InvalidPropertyTypeException::arrayExpected('ancestors', AncestorFilter::class, 'wrong_value')
+            InvalidPropertyTypeException::arrayExpected('ancestors', AncestorIdFilter::class, 'wrong_value')
         )->during('addFieldFilter', ['parent', Operators::IN_LIST, 'wrong_value', null, null, []]);
     }
 

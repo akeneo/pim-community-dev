@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * Parent filter for an Elasticsearch query
@@ -38,6 +39,8 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws ObjectNotFoundException
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
     {
@@ -45,12 +48,9 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if ($operator === Operators::IN_LIST) {
-            $this->checkValue($field, $value);
-        }
-
         switch ($operator) {
             case Operators::IN_LIST:
+                $this->checkValue($field, $value);
                 $clause = [
                     'terms' => [
                         $field => $value,
@@ -90,6 +90,7 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
      * @param mixed  $values
      *
      * @throws ObjectNotFoundException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkValue($field, $values)
     {

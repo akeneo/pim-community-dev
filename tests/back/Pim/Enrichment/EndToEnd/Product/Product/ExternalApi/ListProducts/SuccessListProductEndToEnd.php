@@ -102,6 +102,47 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
             ]
         ]);
 
+        $this->createProductModel(
+            [
+                'code' => 'parent_prod_mod',
+                'family_variant' => 'familyVariantA1',
+                'values'  => [
+                    'a_price'  => [
+                        'data' => ['data' => [['amount' => '50', 'currency' => 'EUR']], 'locale' => null, 'scope' => null],
+                    ],
+                    'a_number_float'  => [['data' => '12.5', 'locale' => null, 'scope' => null]],
+                    'a_localized_and_scopable_text_area'  => [['data' => 'my pink tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce']],
+                ]
+            ]
+        );
+
+        $this->createProductModel(
+            [
+                'code' => 'prod_mod_optA',
+                'parent' => 'parent_prod_mod',
+                'family_variant' => 'familyVariantA1',
+                'values'  => [
+                    'a_simple_select' => [
+                        ['locale' => null, 'scope' => null, 'data' => 'optionA'],
+                    ]
+                ]
+            ]
+        );
+
+        $this->createVariantProduct('product_with_parent', [
+            'categories' => ['master'],
+            'parent' => 'prod_mod_optA',
+            'values' => [
+                'a_yes_no' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => true,
+                    ]
+                ]
+            ]
+        ]);
+
         $this->products = $this->get('pim_catalog.repository.product')->findAll();
     }
 
@@ -119,7 +160,7 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         "next"  : {"href": "http://localhost/api/rest/v1/products?page=2&with_count=true&pagination_type=page&limit=3"}
     },
     "current_page" : 1,
-    "items_count"  : 6,
+    "items_count"  : 7,
     "_embedded"    : {
 		"items": [
             {$standardizedProducts['simple']},
@@ -135,6 +176,7 @@ JSON;
 
     public function testOffsetPaginationListProductsWithChannelLocalesAndAttributesParams()
     {
+        $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area&pagination_type=page');
@@ -252,6 +294,26 @@ JSON;
                     "UPSELL": { "products" : [], "product_models": [], "groups": [] },
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
                 }
+            },
+            {
+                "_links": {
+                    "self": { "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent" }
+                },
+                "identifier": "product_with_parent",
+                "enabled": true,
+                "family": "familyA",
+                "categories": ["master"],
+                "groups": [],
+                "parent": "prod_mod_optA",
+                "values": { },
+                "created": "2019-06-10T12:37:47+02:00",
+                "updated": "2019-06-10T12:37:47+02:00",
+                "associations": {
+                    "PACK": { "products": [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products": [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products": [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -349,7 +411,8 @@ JSON;
             {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category']}
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['product_with_parent']}
         ]
     }
 }
@@ -385,7 +448,8 @@ JSON;
             {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category']}
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['product_with_parent']}
         ]
     }
 }
@@ -420,7 +484,8 @@ JSON;
             {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category']}
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['product_with_parent']}
         ]
     }
 }
@@ -451,7 +516,8 @@ JSON;
             {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category']}
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['product_with_parent']}
         ]
     }
 }
@@ -530,7 +596,8 @@ JSON;
             {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category']}
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['product_with_parent']}
         ]
     }
 }
@@ -583,18 +650,45 @@ JSON;
 
         $scopableEncryptedId = rawurlencode($this->getEncryptedId('scopable'));
 
-        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=4&search_after=%s' , $scopableEncryptedId));
+        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=5&search_after=%s' , $scopableEncryptedId));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=4&search_after={$scopableEncryptedId}"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=4"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=5&search_after={$scopableEncryptedId}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=5"}
     },
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category']}
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['product_with_parent']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithParent()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        $search = '{"parent":[{"operator":"=","value":"prod_mod_optA"}]}';
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = rawurlencode($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['product_with_parent']}
         ]
     }
 }
@@ -862,6 +956,37 @@ JSON;
         "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
         "UPSELL": { "products" : [], "product_models": [], "groups": [] },
         "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    }
+}
+JSON;
+
+        $standardizedProducts['product_with_parent'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent"
+        }
+	},
+    "identifier": "product_with_parent",
+    "enabled": true,
+    "family": "familyA",
+    "categories": ["master"],
+    "groups": [],
+    "parent": "prod_mod_optA",
+    "values": {
+        "a_simple_select": [{ "locale": null, "scope": null, "data": "optionA" }],
+        "a_price": [{ "locale": null, "scope": null, "data": [{ "amount": "50.00", "currency": "EUR" }] }],
+        "a_yes_no": [{ "locale": null, "scope": null, "data": true }],
+        "a_number_float": [{ "locale": null, "scope": null, "data": "12.5000" }],
+        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }]
+    },
+    "created": "2019-06-10T12:37:47+02:00",
+    "updated": "2019-06-10T12:37:47+02:00",
+    "associations": {
+        "PACK": { "products": [], "product_models": [], "groups": [] },
+        "UPSELL": { "products": [], "product_models": [], "groups": [] },
+        "X_SELL": { "products": [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
     }
 }
 JSON;

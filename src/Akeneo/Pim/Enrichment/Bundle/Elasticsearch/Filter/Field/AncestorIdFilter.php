@@ -31,7 +31,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AncestorFilter extends AbstractFieldFilter
+class AncestorIdFilter extends AbstractFieldFilter
 {
     private const ANCESTOR_ID_ES_FIELD = 'ancestors.ids';
 
@@ -63,7 +63,7 @@ class AncestorFilter extends AbstractFieldFilter
         }
 
         if (!$this->supportsOperator($operator)) {
-            throw InvalidOperatorException::notSupported($operator, AncestorFilter::class);
+            throw InvalidOperatorException::notSupported($operator, AncestorIdFilter::class);
         }
 
         $this->checkValues($values);

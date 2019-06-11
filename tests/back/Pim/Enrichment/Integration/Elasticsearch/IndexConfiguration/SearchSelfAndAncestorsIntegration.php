@@ -15,7 +15,7 @@ class SearchSelfAndAncestorsIntegration extends AbstractPimCatalogProductModel
      * Find all products and products models with Id + documents which are ancestors of this document
      * (a root product model with two levels)
      */
-    public function testFindAllProductsAndProductModelsWithIdAndAncestorsOf()
+    public function testFindAllProductsAndProductModelsWithIdAndAncestorIdsOf()
     {
         $query = [
             'query' => [
@@ -66,7 +66,7 @@ class SearchSelfAndAncestorsIntegration extends AbstractPimCatalogProductModel
      * Find all products and products models with Id + documents which are ancestors of this document
      * (a root product model with one level)
      */
-    public function testFindAllProductsAndProductModelsWithIdAndAncestorsOf1()
+    public function testFindAllProductsAndProductModelsWithIdAndAncestorIdsOf1()
     {
         $query = [
             'query' => [
@@ -107,7 +107,7 @@ class SearchSelfAndAncestorsIntegration extends AbstractPimCatalogProductModel
      * Find all products and products models with Id + documents which are ancestors of this document
      * (a sub product model)
      */
-    public function testFindAllProductsAndProductModelsWithIdAndAncestorsOf2()
+    public function testFindAllProductsAndProductModelsWithIdAndAncestorIdsOf2()
     {
         $query = [
             'query' => [
@@ -149,7 +149,7 @@ class SearchSelfAndAncestorsIntegration extends AbstractPimCatalogProductModel
      * Find all products and products models with Id + documents which have for ancestors the document with ids
      * (multiple product models and a product) model and a product model id)
      */
-    public function testFindAllProductsAndProductModelsWithIdAndAncestorsOf3()
+    public function testFindAllProductsAndProductModelsWithIdAndAncestorIdsOf3()
     {
         $query = [
             'query' => [
@@ -247,6 +247,41 @@ class SearchSelfAndAncestorsIntegration extends AbstractPimCatalogProductModel
                 'model-biker-jacket-polyester',
                 'watch',
                 'empty_product'
+            ]
+        );
+    }
+
+    /**
+     * Find all products which are ancestors of this document, using the code
+     */
+    public function testFindAllProductsAndProductModelsWithIdAndAncestorCodesOf()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'should' => [
+                                [
+                                    'terms' => [
+                                        'ancestors.codes' => ['model-running-shoes-l'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'running-shoes-l-blue',
+                'running-shoes-l-red',
+                'running-shoes-l-white'
             ]
         );
     }
