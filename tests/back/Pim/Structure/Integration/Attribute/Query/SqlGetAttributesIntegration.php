@@ -74,9 +74,9 @@ final class SqlGetAttributesIntegration extends TestCase
     public function getExpected(): array
     {
         return [
-            new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false),
-            new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false),
-            new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false),
+            'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false),
+            'a_textarea' => new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false),
+            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false),
         ];
     }
 
@@ -90,12 +90,12 @@ final class SqlGetAttributesIntegration extends TestCase
 
     private function getQuery(): SqlGetAttributes
     {
-        return $this->get('akeneo.pim.structure.query.get_attributes');
+        return $this->get('akeneo.pim.structure.query.sql_get_attributes');
     }
 
     private function getCachedQuery(): LRUCachedGetAttributes
     {
-        return $this->get('akeneo.pim.structure.query.lru_cached_get_attributes');
+        return $this->get('akeneo.pim.structure.query.get_attributes');
     }
 
     private function givenAttributes(array $attributes): void

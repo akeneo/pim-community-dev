@@ -39,19 +39,23 @@ SQL;
             ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
-        return array_map(function (array $attribute): Attribute {
-            $properties = unserialize($attribute['properties']);
+        $attributes = [];
 
-            return new Attribute(
-                $attribute['code'],
-                $attribute['attribute_type'],
+        foreach ($rawResults as $rawAttribute) {
+            $properties = unserialize($rawAttribute['properties']);
+
+            $attributes[$rawAttribute['code']] = new Attribute(
+                $rawAttribute['code'],
+                $rawAttribute['attribute_type'],
                 $properties,
-                boolval($attribute['is_localizable']),
-                boolval($attribute['is_scopable']),
-                $attribute['metric_family'],
-                boolval($attribute['decimals_allowed'])
+                boolval($rawAttribute['is_localizable']),
+                boolval($rawAttribute['is_scopable']),
+                $rawAttribute['metric_family'],
+                boolval($rawAttribute['decimals_allowed'])
             );
-        }, $rawResults);
+        }
+
+        return array_merge(array_fill_keys($attributeCodes, null), $attributes);
     }
 
     public function forCode(string $attributeCode): ?Attribute
