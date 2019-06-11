@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -33,8 +33,8 @@ class UrlAttribute extends AbstractAttribute
     /** @var Suffix  */
     private $suffix;
 
-    /** @var PreviewType  */
-    private $previewType;
+    /** @var MediaType  */
+    private $mediaType;
 
     private function __construct(
         AttributeIdentifier $identifier,
@@ -47,7 +47,7 @@ class UrlAttribute extends AbstractAttribute
         AttributeValuePerLocale $valuePerLocale,
         Prefix $prefix,
         Suffix $suffix,
-        PreviewType $previewType
+        MediaType $mediaType
     ) {
         parent::__construct(
             $identifier,
@@ -62,7 +62,7 @@ class UrlAttribute extends AbstractAttribute
 
         $this->prefix = $prefix;
         $this->suffix = $suffix;
-        $this->previewType = $previewType;
+        $this->mediaType = $mediaType;
     }
 
     public static function create(
@@ -76,7 +76,7 @@ class UrlAttribute extends AbstractAttribute
         AttributeValuePerLocale $valuePerLocale,
         Prefix $prefix,
         Suffix $suffix,
-        PreviewType $previewType
+        MediaType $mediaType
     ) {
         return new self(
             $identifier,
@@ -89,7 +89,7 @@ class UrlAttribute extends AbstractAttribute
             $valuePerLocale,
             $prefix,
             $suffix,
-            $previewType
+            $mediaType
         );
     }
 
@@ -98,7 +98,7 @@ class UrlAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'preview_type' => $this->previewType->normalize(),
+                'media_type' => $this->mediaType->normalize(),
                 'prefix' => $this->prefix->normalize(),
                 'suffix' => $this->suffix->normalize(),
             ]
@@ -120,8 +120,8 @@ class UrlAttribute extends AbstractAttribute
         $this->suffix = $suffix;
     }
     
-    public function setPreviewType(PreviewType $previewType): void
+    public function setMediaType(MediaType $mediaType): void
     {
-        $this->previewType = $previewType;
+        $this->mediaType = $mediaType;
     }
 }

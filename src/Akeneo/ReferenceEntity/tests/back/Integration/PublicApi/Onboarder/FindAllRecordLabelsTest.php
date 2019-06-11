@@ -65,24 +65,24 @@ class FindAllRecordLabelsTest extends SqlIntegrationTestCase
     {
         $records = $this->query->find();
         $records = iterator_to_array($records);
-        Assert::assertContains(new RecordLabels(
+        Assert::assertContainsEquals(new RecordLabels(
             (string) $this->michaelIdentifier,
             ['fr_FR' => null, 'en_US' => null, 'de_DE' => null],
             'michael',
             'designer'
-        ), $records, '', false, false);
-        Assert::assertContains(new RecordLabels(
+        ), $records);
+        Assert::assertContainsEquals(new RecordLabels(
            (string) $this->starckIdentifier,
            ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck US', 'de_DE' => null],
            'starck',
            'designer'
-        ), $records, '', false, false);
-        Assert::assertContains(new RecordLabels(
+        ), $records);
+        Assert::assertContainsEquals(new RecordLabels(
            (string) $this->dysonIdentifier,
            ['fr_FR' => 'Dyson', 'en_US' => null, 'de_DE' => null],
            'dyson',
            'designer'
-        ), $records, '', false, false);
+        ), $records);
     }
 
     private function resetDB(): void

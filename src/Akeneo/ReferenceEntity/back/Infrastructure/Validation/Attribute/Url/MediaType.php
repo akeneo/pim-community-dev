@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class PreviewType extends Constraint
+class MediaType extends Constraint
 {
-    public const MESSAGE_NOT_EXPECTED_PREVIEW_TYPE = 'pim_reference_entity.attribute.validation.preview_type.not_expected';
+    public const MESSAGE_NOT_EXPECTED_MEDIA_TYPE = 'pim_reference_entity.attribute.validation.media_type.not_expected';
 }

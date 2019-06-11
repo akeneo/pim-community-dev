@@ -5,9 +5,9 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUp
 
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterInterface;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPreviewTypeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditMediaTypeCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -15,26 +15,26 @@ use Doctrine\Common\Util\ClassUtils;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class PreviewTypeUpdater implements AttributeUpdaterInterface
+class MediaTypeUpdater implements AttributeUpdaterInterface
 {
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {
-        return $attribute instanceof UrlAttribute && $command instanceof EditPreviewTypeCommand;
+        return $attribute instanceof UrlAttribute && $command instanceof EditMediaTypeCommand;
     }
 
     public function __invoke(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): AbstractAttribute
     {
-        if (!$command instanceof EditPreviewTypeCommand) {
+        if (!$command instanceof EditMediaTypeCommand) {
             throw new \RuntimeException(
                 sprintf(
                     'Expected command of type "%s", "%s" given',
-                    EditPreviewTypeCommand::class,
+                    EditMediaTypeCommand::class,
                     ClassUtils::getClass($command)
                 )
             );
         }
 
-        $attribute->setPreviewType(PreviewType::fromString($command->previewType));
+        $attribute->setMediaType(MediaType::fromString($command->mediaType));
 
         return $attribute;
     }

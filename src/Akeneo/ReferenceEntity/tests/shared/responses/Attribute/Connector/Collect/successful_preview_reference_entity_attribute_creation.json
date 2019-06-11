@@ -15,7 +15,7 @@
             "value_per_locale": false,
             "value_per_channel": false,
             "is_required_for_completeness": true,
-            "preview_type": "image"
+            "media_type": "image"
         }
     },
     "response": {

@@ -45,7 +45,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
                 'en_US' => 'Preview'
             ],
             'is_required_for_completeness' => false,
-            'preview_type' => 'image',
+            'media_type' => 'image',
             'prefix' => 'http://mydam.com/pic/',
             'suffix' => null,
         ];
@@ -59,7 +59,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -73,7 +73,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'code' => 'preview',
             'type' => 'url',
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -87,7 +87,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'code' => 'preview',
             'type' => 'url',
             'value_per_channel' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -101,7 +101,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'code' => 'preview',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -109,7 +109,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_is_mandatory_to_provide_the_preview_type_of_the_attribute()
+    function it_is_mandatory_to_provide_the_media_type_of_the_attribute()
     {
         $attribute = [
             'code' => 'preview',
@@ -131,7 +131,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -146,7 +146,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -161,7 +161,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 1,
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -176,7 +176,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => 'oui',
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -191,7 +191,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => false,
             'value_per_locale' => 'mais tout à fait',
-            'preview_type' => 'image',
+            'media_type' => 'image',
         ];
 
         $errors = $this->validate($attribute);
@@ -206,7 +206,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => false,
             'value_per_locale' => false,
-            'preview_type' => 'image',
+            'media_type' => 'image',
             'labels' => [
                 'en_US' => []
             ]
@@ -224,7 +224,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
             'is_required_for_completeness' => 'foo',
         ];
 
@@ -233,14 +233,14 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_preview_type_is_null()
+    function it_returns_an_error_when_media_type_is_null()
     {
         $attribute = [
             'code' => 'preview',
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => null,
+            'media_type' => null,
         ];
 
         $errors = $this->validate($attribute);
@@ -248,14 +248,14 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_preview_type_is_not_a_string()
+    function it_returns_an_error_when_media_type_is_not_a_string()
     {
         $attribute = [
             'code' => 'preview',
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 14,
+            'media_type' => 14,
         ];
 
         $errors = $this->validate($attribute);
@@ -270,7 +270,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
             'prefix' => 42,
         ];
 
@@ -286,7 +286,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'type' => 'url',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'preview_type' => 'image',
+            'media_type' => 'image',
             'suffix' => 42,
         ];
 

@@ -50,10 +50,10 @@ Feature: Edit an URL attribute of a reference entity
   @acceptance-back
   Scenario Outline: Invalid preview type edit
     Given  a reference entity with an url attribute 'dam_image'
-    When the user sets the preview type value of 'dam_image' to '<invalid_preview_type>'
+    When the user sets the preview type value of 'dam_image' to '<invalid_media_type>'
     Then there should be a validation error on the property '<property_path>' with message '<message>'
 
     Examples:
-      | invalid_preview_type | property_path | message                                                                          |
-      | "video"              | previewType   | The preview type given is not corresponding to the expected ones (image, other). |
-      | ""                   | previewType   | The preview type given is not corresponding to the expected ones (image, other). |
+      | invalid_media_type | property_path | message                                                                          |
+      | "video"              | mediaType   | The preview type given is not corresponding to the expected ones (image, other). |
+      | ""                   | mediaType   | The preview type given is not corresponding to the expected ones (image, other). |

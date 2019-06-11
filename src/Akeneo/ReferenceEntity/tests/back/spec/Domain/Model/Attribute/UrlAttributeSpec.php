@@ -9,7 +9,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
@@ -39,7 +39,7 @@ class UrlAttributeSpec extends ObjectBehavior
                 AttributeValuePerLocale::fromBoolean(true),
                 Prefix::fromString('http:://www.binder.com'),
                 Suffix::fromString('/500x500'),
-                PreviewType::fromString('image'),
+                MediaType::fromString('image'),
             ]
         );
     }
@@ -70,7 +70,7 @@ class UrlAttributeSpec extends ObjectBehavior
                 AttributeValuePerLocale::fromBoolean(true),
                 Prefix::fromString('http:://www.binder.com'),
                 Suffix::fromString('/500'),
-                PreviewType::fromString('image'),
+                MediaType::fromString('image'),
             ]
         );
     }
@@ -90,7 +90,7 @@ class UrlAttributeSpec extends ObjectBehavior
                 AttributeValuePerLocale::fromBoolean(true),
                 Prefix::empty(),
                 Suffix::empty(),
-                PreviewType::fromString('image'),
+                MediaType::fromString('image'),
             ]
         );
     }
@@ -108,7 +108,7 @@ class UrlAttributeSpec extends ObjectBehavior
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
                 'type'                        => 'url',
-                'preview_type'                => 'image',
+                'media_type'                => 'image',
                 'prefix'                      => 'http:://www.binder.com',
                 'suffix'                      => '/500x500'
             ]

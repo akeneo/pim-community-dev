@@ -36,7 +36,7 @@ class UrlAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'preview_type'],
+            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'media_type'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -59,7 +59,7 @@ class UrlAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => ['boolean'],
                 ],
-                'preview_type' => [
+                'media_type' => [
                     'type' => ['string'],
                 ],
                 'prefix' => [

@@ -48,7 +48,7 @@ class UrlAttributeHydratorSpec extends ObjectBehavior
             'wrong_key' => '1',
             'additional_properties' => json_encode(
                 [
-                    'preview_type' => 'image',
+                    'media_type' => 'image',
                     'prefix' => 'http://mydam.com/ads/',
                     'suffix' => null,
                 ]
@@ -66,7 +66,7 @@ class UrlAttributeHydratorSpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => true,
             'type' => 'url',
-            'preview_type' => 'image',
+            'media_type' => 'image',
             'prefix' => 'http://mydam.com/ads/',
             'suffix' => null,
         ]);

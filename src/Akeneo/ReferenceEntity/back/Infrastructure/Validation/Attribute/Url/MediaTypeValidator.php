@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType as PreviewTypeModel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType as MediaTypeModel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -24,24 +24,24 @@ use Symfony\Component\Validator\Validation;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class PreviewTypeValidator extends ConstraintValidator
+class MediaTypeValidator extends ConstraintValidator
 {
-    public function validate($previewType, Constraint $constraint)
+    public function validate($mediaType, Constraint $constraint)
     {
-        if (!$constraint instanceof PreviewType) {
+        if (!$constraint instanceof MediaType) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($previewType, [
+        $violations = $validator->validate($mediaType, [
             new Assert\Type('string'),
         ]);
 
-        if (!in_array($previewType, PreviewTypeModel::PREVIEW_TYPES)) {
-            $this->context->buildViolation(PreviewType::MESSAGE_NOT_EXPECTED_PREVIEW_TYPE)
+        if (!in_array($mediaType, MediaTypeModel::MEDIA_TYPES)) {
+            $this->context->buildViolation(MediaType::MESSAGE_NOT_EXPECTED_MEDIA_TYPE)
                 ->setParameter(
-                    '%supported_preview_types%',
-                    implode(', ', PreviewTypeModel::PREVIEW_TYPES)
+                    '%supported_media_types%',
+                    implode(', ', MediaTypeModel::MEDIA_TYPES)
                 )
                 ->addViolation();
         }

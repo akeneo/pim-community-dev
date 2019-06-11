@@ -158,25 +158,25 @@ Feature: Create an attribute linked to a reference entity
   @acceptance-back
   Scenario: Create an url attribute to a reference entity
     When the user creates an url attribute "dam_image" to the reference entity "city" with:
-      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | preview_type | prefix | suffix |
+      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | image        | null   | null   |
     Then there is an url attribute "dam_image" in the reference entity "city" with:
-      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | type | preview_type | prefix | suffix |
+      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | type | media_type | prefix | suffix |
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | url  | image        | null   | null   |
 
   @acceptance-back
   Scenario: Create an url attribute to a reference entity
     When the user creates an url attribute "dam_image" to the reference entity "city" with:
-      | code  | labels                               | is_required | order | value_per_channel | value_per_locale | preview_type | prefix                | suffix   |
+      | code  | labels                               | is_required | order | value_per_channel | value_per_locale | media_type | prefix                | suffix   |
       | image | {"en_US": "Image", "fr_FR": "Image"} | true        | 0     | false             | false            | image        | http://my-prefix.com/ | /500x500 |
     Then there is an url attribute "dam_image" in the reference entity "city" with:
-      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | type | preview_type | prefix                | suffix   |
+      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | type | media_type | prefix                | suffix   |
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | url  | image        | http://my-prefix.com/ | /500x500 |
 
   @acceptance-back
   Scenario: Create an invalid url attribute on a reference entity
     When the user creates an url attribute "dam_image" to the reference entity "city" with:
-      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | preview_type | prefix | suffix |
+      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | video        | null   | null   |
     Then there should be a validation error with message 'The preview type given is not corresponding to the expected ones (image, other).'
 

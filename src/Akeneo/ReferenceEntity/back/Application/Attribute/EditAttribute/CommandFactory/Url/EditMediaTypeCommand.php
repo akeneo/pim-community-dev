@@ -19,15 +19,15 @@ use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Ab
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class EditPreviewTypeCommand extends AbstractEditAttributeCommand
+class EditMediaTypeCommand extends AbstractEditAttributeCommand
 {
     /** @var string */
-    public $previewType;
+    public $mediaType;
 
-    public function __construct(string $identifier, string $previewType)
+    public function __construct(string $identifier, string $mediaType)
     {
         parent::__construct($identifier);
 
-        $this->previewType = $previewType;
+        $this->mediaType = $mediaType;
     }
 }

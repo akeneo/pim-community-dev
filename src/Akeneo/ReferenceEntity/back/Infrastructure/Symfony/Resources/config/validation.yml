@@ -312,8 +312,8 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateUrlAttributeC
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
-        previewType:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\PreviewType: ~
+        mediaType:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\MediaType: ~
         prefix:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Prefix: ~
         suffix:
@@ -405,10 +405,10 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\Ed
         suffix:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Suffix: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPreviewTypeCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditMediaTypeCommand:
     properties:
-        previewType:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\PreviewType: ~
+        mediaType:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\MediaType: ~
 
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
     properties:

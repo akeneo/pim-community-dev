@@ -58,7 +58,7 @@ class UrlAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => ['boolean'],
                 ],
-                'preview_type' => [
+                'media_type' => [
                     'type' => ['string'],
                 ],
                 'prefix' => [
