@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8415: back-port #10002 to handle uploads on a multi-frontend saas instance
+- PIM-8419: Render wysiwig in compare/translate view
 
 ## BC breaks
 

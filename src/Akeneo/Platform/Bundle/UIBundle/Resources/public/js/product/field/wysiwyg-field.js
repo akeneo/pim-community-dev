@@ -39,7 +39,7 @@ define(
              * @inheritDoc
              */
             postRender: function () {
-                this.$('textarea').summernote({
+                this.$('textarea:not(.note-codable)').summernote({
                     disableResizeEditor: true,
                     height: 200,
                     iconPrefix: 'icon-',
