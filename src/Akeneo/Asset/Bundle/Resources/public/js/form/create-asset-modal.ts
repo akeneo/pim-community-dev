@@ -110,11 +110,11 @@ class CreateAssetModalView extends BaseView {
     })
   }
 
-  private loadFormContents(): Promise<string> {
+  private loadFormContents(): JQuery.jqXHR<string> {
     return $.get(Routing.generate('pimee_product_asset_create'));
   }
 
-  private submitForm(data: FormData): Promise<any> {
+  private submitForm(data: FormData): JQuery.jqXHR<any> {
     return $.ajax({
       url: Routing.generate('pimee_product_asset_create'),
       type: 'post',
@@ -160,7 +160,7 @@ class CreateAssetModalView extends BaseView {
     toggleSwitch.bootstrapSwitch()
   }
 
-  private getNextAvailableCode(code: string): Promise<string | undefined> {
+  private getNextAvailableCode(code: string): JQuery.Promise<string> {
     const nextCodeRoute = Routing.generate('pimee_product_asset_next_code', { code });
     return $.get(nextCodeRoute).then((data) => data.nextCode)
   }
