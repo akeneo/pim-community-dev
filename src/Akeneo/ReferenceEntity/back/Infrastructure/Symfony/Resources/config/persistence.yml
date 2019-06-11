@@ -396,6 +396,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.url_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\UrlDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
     # Record value transformers
     akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry

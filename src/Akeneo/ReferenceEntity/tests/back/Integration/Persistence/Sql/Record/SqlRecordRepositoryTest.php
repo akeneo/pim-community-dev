@@ -624,7 +624,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->fixturesDesigner = $this->fixturesLoader
             ->referenceEntity('designer')
-            ->withAttributes(['name', 'main_image', 'brand', 'brands'])
+            ->withAttributes(['name', 'main_image', 'brand', 'brands', 'website'])
             ->load();
     }
 

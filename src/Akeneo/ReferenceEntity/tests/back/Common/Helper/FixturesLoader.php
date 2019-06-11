@@ -21,6 +21,10 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\PreviewType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -402,6 +406,28 @@ class FixturesLoader
                 AttributeMaxLength::fromInteger(100),
                 AttributeValidationRule::none(),
                 AttributeRegularExpression::createEmpty()
+            );
+        }
+
+        // WEBSITE
+        if (in_array('website', $this->loadedAttributes)) {
+            $attributes['website'] = UrlAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $referenceEntityIdentifier,
+                    AttributeCode::fromString('website')
+                ),
+                $referenceEntityIdentifier,
+                AttributeCode::fromString('website'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Nickname',
+                ]),
+                $this->getOrderForAttribute('website'),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                Prefix::fromString('https://my-dam.com/'),
+                Suffix::fromString('/500x500'),
+                PreviewType::fromString('image')
             );
         }
 
