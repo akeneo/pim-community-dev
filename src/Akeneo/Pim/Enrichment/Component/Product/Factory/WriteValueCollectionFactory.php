@@ -108,26 +108,18 @@ class WriteValueCollectionFactory
 
         $attributes = array_filter($this->getAttributeByCodes->forCodes(array_values(array_unique($attributeCodes))));
 
-        if (empty($attributes)) {
-            return [];
-        }
-
-        $attributesIndexedByCodes = [];
-
-        foreach ($attributes as $attribute) {
-            $attributesIndexedByCodes[$attribute->code()]['type'] = $attribute->type();
-            $attributesIndexedByCodes[$attribute->code()]['properties'] = $attribute->properties();
-        }
-
         $typesToValues = [];
 
         foreach ($rawValueCollections as $productIdentifier => $rawValues) {
             foreach ($rawValues as $attributeCode => $values) {
-                if (isset($attributesIndexedByCodes[$attributeCode])) {
-                    $typesToValues[$attributesIndexedByCodes[$attributeCode]['type']][$attributeCode][] = [
+                if (isset($attributes[$attributeCode])) {
+                    $type = $attributes[$attributeCode]->type();
+                    $properties = $attributes[$attributeCode]->properties();
+
+                    $typesToValues[$type][$attributeCode][] = [
                         'identifier' => $productIdentifier,
                         'values' => $values,
-                        'properties' => $attributesIndexedByCodes[$attributeCode]['properties']
+                        'properties' => $properties
                     ];
                 }
             }

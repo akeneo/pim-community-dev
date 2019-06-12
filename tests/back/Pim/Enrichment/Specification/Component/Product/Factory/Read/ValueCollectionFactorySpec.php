@@ -83,7 +83,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ],
         ];
 
-        $getAttributeByCodes->forCodes(['sku', 'description'])->willReturn([$sku, $description]);
+        $getAttributeByCodes->forCodes(['sku', 'description'])->willReturn(['sku' => $sku, 'description' => $description]);
 
         $valuesIndexedByType = [
             AttributeTypes::IDENTIFIER => [
@@ -146,7 +146,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ]
         ];
 
-        $getAttributeByCodes->forCodes(['attribute_that_does_not_exists'])->willReturn([]);
+        $getAttributeByCodes->forCodes(['attribute_that_does_not_exists'])->willReturn(['attribute_that_does_not_exists' => null]);
 
         $this->createFromStorageFormat($rawValues)->shouldBeLike(new ReadValueCollection([]));
     }
@@ -173,7 +173,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $color = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false);
-        $getAttributeByCodes->forCodes(['unknown_attribute', 'color'])->willReturn([$color,]);
+        $getAttributeByCodes->forCodes(['unknown_attribute', 'color'])->willReturn(['color' => $color, 'unknown_attribute' => null]);
 
         $typesToCode = [
             AttributeTypes::OPTION_SIMPLE_SELECT => [
@@ -215,7 +215,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['color'])->willReturn([
-            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false)
+            'color' => new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false)
         ]);
 
         $rawValueCollectionIndexedByType = [
@@ -283,7 +283,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $number = new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false);
         $text = new Attribute('text', AttributeTypes::TEXTAREA, [], false, false, null, false);
         $yesNo = new Attribute('yes_no', AttributeTypes::BOOLEAN, [], false, false, null, false);
-        $getAttributeByCodes->forCodes(['number', 'text', 'yes_no'])->willReturn([$number, $text, $yesNo]);
+        $getAttributeByCodes->forCodes(['number', 'text', 'yes_no'])->willReturn(['number' => $number, 'text' => $text, 'yes_no' => $yesNo]);
 
         $typesToCode = [
             AttributeTypes::NUMBER => [

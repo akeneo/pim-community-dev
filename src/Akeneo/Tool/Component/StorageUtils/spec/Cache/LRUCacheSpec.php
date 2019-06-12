@@ -132,6 +132,24 @@ final class LRUCacheSpec extends ObjectBehavior
             ]);
     }
 
+    function it_handles_string_keys_that_are_numeric(EntityObjectQuery $entityObjectQuery)
+    {
+        $entityObjectQuery->fromCode('123')->willReturn(new EntityObject('123'))->shouldBeCalledOnce();
+        $this->getForKey('123', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()));
+
+        $entityObjectQuery
+            ->fromCodes(['entity_code_2'])
+            ->willReturn(['entity_code_2' => new EntityObject('entity_code_2')])
+            ->shouldBeCalledOnce();
+
+        $this
+            ->getForKeys(['123', 'entity_code_2'], $this->queryToFetchEntitiesFromCodes($entityObjectQuery->getWrappedObject()))
+            ->shouldBeLike([
+                '123' => new EntityObject('123'),
+                'entity_code_2' => new EntityObject('entity_code_2'),
+            ]);
+    }
+
     private function queryToFetchEntityFromCode(EntityObjectQuery $entityObjectQuery)
     {
         return function(string $entityCode)  use ($entityObjectQuery) {
