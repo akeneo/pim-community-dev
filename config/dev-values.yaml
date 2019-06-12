@@ -1,6 +1,7 @@
 image:
   pim:
     repository: eu.gcr.io/akeneo-ci/pim-enterprise-cloud
+    pullPolicy: Always
 
 backup:
   enabled: false

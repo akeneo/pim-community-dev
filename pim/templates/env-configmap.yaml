@@ -32,12 +32,8 @@ data:
   ONBOARDER_ENABLED: "1"
   GCP_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}
   GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/key.json
-  ONBOARDER_RETAILER_URL: https://{{ .Values.common.retailerDomain }}
-  ONBOARDER_PIMMASTER_URL: https://{{ .Values.common.pimMasterDomain }}
-  SIMPLESAMLPHP_CONFIG_DIR: /var/www/html/vendor/akeneo/pim-onboarder/src/Infrastructure/Authentication/SimpleSamlPhp/Configuration
-  ONBOARDER_SSO_IDP_PUBLIC_KEY: {{ .Values.onboarder.sso.idp.publicKey | quote }}
-  ONBOARDER_SSO_CERTS_PATH: "/var/secrets/pimmaster/"
-  ONBOARDER_TOPIC_NAME_FOR_PUBLICATION: {{ .Values.onboarder.pubsub.topicPub | quote }}
+  ONBOARDER_TOPIC_NAME_FOR_PUBLICATION_TO_MIDDLEWARE: {{ .Values.onboarder.pubsub.topicPubMiddleware | quote }}
+  ONBOARDER_TOPIC_NAME_FOR_PUBLICATION_TO_ONBOARDER: {{ .Values.onboarder.pubsub.topicPubOnboarder | quote }}
   ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION: {{ .Values.onboarder.pubsub.topicCon | quote }}
   ONBOARDER_QUEUE_NAME: {{ .Values.onboarder.pubsub.queueName | quote }}
   ONBOARDER_CLOUD_STORAGE_BUCKET_NAME: {{ .Values.common.aobGcsBucketName | quote }}

@@ -1,35 +1,45 @@
-{{- if .Values.pim.hook.upgradePim.enabled }}
+{{- if and .Values.onboarder.enabled .Values.onboarder.hook.setupOnboarderDatabase.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pim-upgrader
+  name: setup-onboarder-database
   labels:
     app: {{ template "pim.fullName" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ template "pim.fullName" . }}
-    {{ include "pim.extraLabels" . | indent 4 }}
+    {{- range $key, $value := .Values.global.extraLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- range $key, $value := .Values.common.extraLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": {{ .Values.pim.hook.upgradePim.hook | quote }}
-    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook": {{ .Values.onboarder.hook.setupOnboarderDatabase.hook | quote }}
+    "helm.sh/hook-weight": "10"
     "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
   template:
     metadata:
       labels:
         component: {{ template "pim.fullName" . }}
-        role: pim-upgrade
-        {{ include "pim.extraLabels" . | indent 8 }}
+        role: setup-onboarder-database
+        {{- range $key, $value := .Values.global.extraLabels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- range $key, $value := .Values.common.extraLabels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
     spec:
       restartPolicy: Never
       containers:
-        - name: pim-upgrade
-          image: {{ template "pim.imageNameAndTag" . }}
+        - name: setup-onboarder-database
+          image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "rm -rf var/cache && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction"']
+          command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "bin/console akeneo:onboarder:setup-database -vvv --no-interaction"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -44,9 +54,18 @@ spec:
             - name: fpm-data
               mountPath: /data
               readOnly: false
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
+              readOnly: true
       volumes:
         - name: fpm-data
           persistentVolumeClaim:
             claimName: pvc-data-pim-{{ .Values.global.extraLabels.instanceName }}
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
 {{- end }}
-

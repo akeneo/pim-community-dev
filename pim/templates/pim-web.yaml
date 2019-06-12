@@ -40,7 +40,7 @@ spec:
                   role: pim-web
       initContainers:
         - name: init-fpm
-          image:  "{{ .Values.image.pim.repository }}:{{ required "Value .image.pim.tag is required!" .Values.image.pim.tag }}"
+          image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/var/www/ && cp -p -r -f /var/www/html/web/* /var/www/html/web/.htaccess /web-src/. ']
           volumeMounts:
@@ -62,7 +62,7 @@ spec:
             - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
       containers:
         - name: fpm
-          image: "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
+          image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           resources:
 {{ toYaml .Values.pim.resources | indent 12 }}
@@ -79,14 +79,6 @@ spec:
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
               subPath: key.json
-              readOnly: true
-            - name: sso-onboarder-private
-              mountPath: /var/secrets/pimmaster/pimmaster.pem
-              subPath: pimmaster.pem
-              readOnly: true
-            - name: sso-onboarder-public
-              mountPath: /var/secrets/pimmaster/pimmaster.crt
-              subPath: pimmaster.crt
               readOnly: true
             {{- end }}
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
@@ -182,16 +174,4 @@ spec:
             items:
             - key: akobOnboarderKey
               path: key.json
-        - name: sso-onboarder-private
-          secret:
-            secretName: pim-secrets
-            items:
-            - key: akobPimmasterPem
-              path: pimmaster.pem
-        - name: sso-onboarder-public
-          secret:
-            secretName: pim-secrets
-            items:
-            - key: akobPimmasterCrt
-              path: pimmaster.crt
         {{- end }}

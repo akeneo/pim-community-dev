@@ -22,7 +22,7 @@ spec:
         spec:
           containers:
           - name: php
-            image: "{{ $tplCtx.Values.image.pim.repository }}:{{ $tplCtx.Values.image.pim.tag }}"
+            image: {{ template "pim.imageNameAndTag" $tplCtx }}
             imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
             command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console {{ $jobOptions.pimCommand }}"']
             resources:

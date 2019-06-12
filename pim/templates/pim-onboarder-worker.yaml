@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: fpm
-          image: "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
+          image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console akeneo:synchronization:message:consumer --ttl=-1"']
           resources:

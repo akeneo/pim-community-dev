@@ -25,7 +25,6 @@ backup:
 common:
   extraLabels: {}
   pimMasterDomain: nil # Generated with terraform template
-  retailerDomain: nil
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
@@ -166,17 +165,19 @@ pim:
 # Onboarder
 onboarder:
   enabled: false
+  hook:
+    setupOnboarderDatabase:
+      enabled: true
+      hook: "post-install"
+    importAdditionalOnboarderFixtures:
+      enabled: false
+      hook: "post-install"
   pubsub:
-    topicPub: nil
+    topicPubMiddleware: nil
+    topicPubOnboarder: nil
     topicCon: nil
     queueName: nil
   serviceAccount: nil
-  sso:
-    idp:
-      publicKey: nil
-    sp:
-      rawCrt: nil
-      rawPem: nil
 
 nfs:
   nameOverride: ""
@@ -200,8 +201,6 @@ mysql:
     dataDiskSize: 100Gi
     stateful:
       enabled: false
-  common:
-    class: ssd-retain
 
 memcached:
   fullnameOverride: memcached

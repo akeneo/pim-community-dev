@@ -15,7 +15,6 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s" .Release.Name $name | trunc 53 | trimSuffix "-" -}}
 {{- end -}}
 
-
 {{- define "pim.extraLabels" }}
 {{- range $key, $value := .Values.global.extraLabels }}
 {{ $key }}: {{ $value | quote }}
@@ -25,5 +24,17 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end }}
 {{- range $key, $value := .Values.pim.extraLabels }}
 {{ $key }}: {{ $value | quote }}
+{{- end }}
+{{- end }}
+
+{{/*
+Define the tag of the PIM Enterprise Cloud image
+Can be with or without the Onboarder bundle activated
+*/}}
+{{- define "pim.imageNameAndTag" }}
+{{- if .Values.onboarder.enabled }}
+{{- printf "%s:%s-onboarder" .Values.image.pim.repository .Values.image.pim.tag -}}
+{{- else }}
+{{- printf "%s:%s" .Values.image.pim.repository .Values.image.pim.tag -}}
 {{- end }}
 {{- end }}
