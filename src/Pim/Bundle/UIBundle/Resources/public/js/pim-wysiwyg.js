@@ -22,7 +22,8 @@ define(
                 ['para', ['ul', 'ol']],
                 ['insert', ['link']],
                 ['view', ['codeview']]
-            ]
+            ],
+            prettifyHtml: false
         };
 
         Backbone.Router.prototype.on('route', function () {
