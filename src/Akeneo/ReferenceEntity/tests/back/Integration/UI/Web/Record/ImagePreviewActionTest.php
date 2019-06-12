@@ -61,7 +61,7 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
             [
                 'data'                => 'house_355241',
                 'attributeIdentifier' => 'identifier',
-                'previewType'         => 'thumbnail'
+                'type'                => 'thumbnail'
             ]
         );
         $response = $this->client->getResponse();
