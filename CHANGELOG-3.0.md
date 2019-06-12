@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8427: Fix PDF export of product to expose all attributes
+
 # 3.0.23 (2019-06-11)
 
 ## Bug fixes
