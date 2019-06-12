@@ -67,6 +67,6 @@ final class ReadAssetCollectionValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::ASSETS_COLLECTION, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null);
+        return new Attribute('an_attribute', AttributeTypes::ASSETS_COLLECTION, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null, false);
     }
 }

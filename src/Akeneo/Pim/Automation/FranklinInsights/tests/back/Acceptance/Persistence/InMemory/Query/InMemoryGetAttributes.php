@@ -38,12 +38,13 @@ final class InMemoryGetAttributes implements GetAttributes
     {
         return array_map(function (FranklinAttribute $franklinAttribute) : Attribute {
             return new Attribute(
-                (string) $franklinAttribute->getCode(),
+                (string)$franklinAttribute->getCode(),
                 $franklinAttribute->getType(),
                 [],
                 $franklinAttribute->isLocalizable(),
                 $franklinAttribute->isScopable(),
-                $franklinAttribute->getMetricFamily()
+                $franklinAttribute->getMetricFamily(),
+                $franklinAttribute->isDecimalsAllowed()
             );
         }, $this->attributeRepository->findByCodes($attributeCodes));
     }
