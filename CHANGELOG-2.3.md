@@ -28,13 +28,13 @@
 - PIM-8374: Fix timeout when launching the completeness purge command
 - PIM-7596: Fix margins on datagrids under tabs
 - PIM-6829: Fix mass edit enabled steps
+- PIM-7321: Fix blinking grid elements in gallery mode
 
 # 2.3.45 (2019-05-23)
 
 ## Bug fixes
 
 - PIM-8351: Fix entity overriding priority
-- PIM-7321: Fix blinking grid elements in gallery mode
 
 # 2.3.44 (2019-05-20)
 
