@@ -1,10 +1,10 @@
 # 3.1.x
 
-# 3.1.5 (2019-05-28)
-
 ## Bug fixes
 
 - PIM-8428 PIM displays pim_common.code on grids
+
+# 3.1.5 (2019-05-28)
 
 # 3.1.4 (2019-05-27)
 
