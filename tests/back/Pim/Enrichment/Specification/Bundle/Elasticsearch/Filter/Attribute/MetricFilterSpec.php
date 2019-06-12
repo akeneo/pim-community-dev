@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -20,12 +21,14 @@ class MetricFilterSpec extends ObjectBehavior
     function let(
         AttributeValidatorHelper $attributeValidatorHelper,
         MeasureManager $measureManager,
-        MeasureConverter $measureConverter
+        MeasureConverter $measureConverter,
+        FamilyFilter $familyFilter
     ) {
         $this->beConstructedWith(
             $attributeValidatorHelper,
             $measureManager,
             $measureConverter,
+            $familyFilter,
             ['pim_catalog_metric'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -311,6 +314,7 @@ class MetricFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_empty(
         $attributeValidatorHelper,
+        FamilyFilter $familyFilter,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
@@ -327,6 +331,9 @@ class MetricFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
+
+        $familyFilter->setQueryBuilder($sqb)->shouldBeCalled();
+        $familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($metric, Operators::IS_EMPTY, [], 'en_US', 'ecommerce', []);

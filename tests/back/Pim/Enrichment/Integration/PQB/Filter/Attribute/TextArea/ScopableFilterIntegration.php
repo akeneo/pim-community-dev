@@ -27,7 +27,13 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'scopable'            => true,
         ]);
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_scopable_text_area']
+        ]);
+
         $this->createProduct('cat', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_text_area' => [
                     ['data' => 'black cat', 'locale' => null, 'scope' => 'ecommerce'],
@@ -37,6 +43,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('cattle', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_text_area' => [
                     ['data' => 'cattle', 'locale' => null, 'scope' => 'ecommerce'],
@@ -46,6 +53,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('dog', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_text_area' => [
                     ['data' => 'just a dog...', 'locale' => null, 'scope' => 'ecommerce'],
@@ -54,7 +62,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorStartsWith()

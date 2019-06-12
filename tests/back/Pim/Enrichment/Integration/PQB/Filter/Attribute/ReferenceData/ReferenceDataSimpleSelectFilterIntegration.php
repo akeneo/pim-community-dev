@@ -19,9 +19,15 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
     {
         parent::setUp();
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_ref_data_multi_select']
+        ]);
+
         $this->createProduct(
             'product_one',
             [
+                'family' => 'a_family',
                 'values' => [
                     'a_ref_data_simple_select' => [
                         ['data' => 'acid-green', 'scope' => null, 'locale' => null],
@@ -33,6 +39,7 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
         $this->createProduct(
             'product_two',
             [
+                'family' => 'a_family',
                 'values' => [
                     'a_ref_data_simple_select' => [
                         ['data' => 'aero-blue', 'scope' => null, 'locale' => null],
@@ -41,7 +48,7 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
             ]
         );
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorIn()

@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -19,12 +20,14 @@ class OptionFilterSpec extends ObjectBehavior
 {
     function let(
         AttributeValidatorHelper $attributeValidatorHelper,
-        AttributeOptionRepository $attributeOptionRepository
+        AttributeOptionRepository $attributeOptionRepository,
+        FamilyFilter $familyFilter
     ) {
         $operators = ['IN', 'EMPTY', 'NOT_EMPTY', 'NOT IN'];
         $this->beConstructedWith(
             $attributeValidatorHelper,
             $attributeOptionRepository,
+            $familyFilter,
             ['pim_catalog_simpleselect', 'pim_catalog_multiselect'],
             $operators
         );
@@ -71,6 +74,7 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_empty(
         $attributeValidatorHelper,
+        FamilyFilter $familyFilter,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
     ) {
@@ -87,6 +91,9 @@ class OptionFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
+
+        $familyFilter->setQueryBuilder($sqb)->shouldBeCalled();
+        $familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($color, Operators::IS_EMPTY, ['black'], 'en_US', 'ecommerce', []);

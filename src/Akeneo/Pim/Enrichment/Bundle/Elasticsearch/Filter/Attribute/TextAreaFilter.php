@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -19,17 +20,17 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
-     */
+    /** @var FamilyFilter */
+    private $familyFilter;
+
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
+        FamilyFilter $familyFilter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->familyFilter = $familyFilter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }
@@ -130,6 +131,9 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                     ],
                 ];
                 $this->searchQueryBuilder->addMustNot($clause);
+
+                $this->familyFilter->setQueryBuilder($this->searchQueryBuilder);
+                $this->familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value');
                 break;
 
             case Operators::IS_NOT_EMPTY:

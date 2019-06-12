@@ -19,7 +19,13 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_number_float_negative']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_number_float_negative' => [
                     ['data' => -15.5, 'locale' => null, 'scope' => null]
@@ -28,6 +34,7 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_number_float_negative' => [
                     ['data' => 19.0, 'locale' => null, 'scope' => null]
@@ -35,7 +42,7 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorInferior()

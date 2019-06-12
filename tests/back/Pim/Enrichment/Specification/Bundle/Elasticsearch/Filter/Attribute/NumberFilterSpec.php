@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -15,10 +16,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 class NumberFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper)
+    function let(AttributeValidatorHelper $attributeValidatorHelper, FamilyFilter $familyFilter)
     {
         $this->beConstructedWith(
             $attributeValidatorHelper,
+            $familyFilter,
             ['pim_catalog_number'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -215,6 +217,7 @@ class NumberFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_is_empty(
         $attributeValidatorHelper,
+        FamilyFilter $familyFilter,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
@@ -231,6 +234,9 @@ class NumberFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
+
+        $familyFilter->setQueryBuilder($sqb)->shouldBeCalled();
+        $familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($size, Operators::IS_EMPTY, null, 'en_US', 'ecommerce', []);

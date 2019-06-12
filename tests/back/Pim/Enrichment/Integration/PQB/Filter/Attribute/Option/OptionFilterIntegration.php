@@ -29,7 +29,13 @@ class OptionFilterIntegration extends AbstractProductQueryBuilderTestCase
             'code'      => 'black'
         ]);
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_simple_select']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_simple_select' => [
                     ['data' => 'orange', 'locale' => null, 'scope' => null]
@@ -38,6 +44,7 @@ class OptionFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_simple_select' => [
                     ['data' => 'black', 'locale' => null, 'scope' => null]
@@ -45,7 +52,7 @@ class OptionFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorIn()

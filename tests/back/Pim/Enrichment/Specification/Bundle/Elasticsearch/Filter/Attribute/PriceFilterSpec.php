@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -16,11 +17,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper, CurrencyRepositoryInterface $currencyRepository)
+    function let(AttributeValidatorHelper $attributeValidatorHelper, CurrencyRepositoryInterface $currencyRepository, FamilyFilter $familyFilter)
     {
         $this->beConstructedWith(
             $attributeValidatorHelper,
             $currencyRepository,
+            $familyFilter,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -271,6 +273,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_is_empty_on_all_currencies(
         $attributeValidatorHelper,
+        FamilyFilter $familyFilter,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -287,6 +290,9 @@ class PriceFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
+
+        $familyFilter->setQueryBuilder($sqb)->shouldBeCalled();
+        $familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($price, Operators::IS_EMPTY, [], 'en_US', 'ecommerce', []);

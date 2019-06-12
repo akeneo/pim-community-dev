@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
@@ -20,18 +21,18 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
 {
     const PATH_SUFFIX = 'original_filename';
 
-    /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
-     */
+    /** @var FamilyFilter */
+    private $familyFilter;
+
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
+        FamilyFilter $familyFilter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->familyFilter = $familyFilter;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -127,6 +128,9 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
                     ],
                 ];
                 $this->searchQueryBuilder->addMustNot($clause);
+
+                $this->familyFilter->setQueryBuilder($this->searchQueryBuilder);
+                $this->familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value');
                 break;
 
             case Operators::IS_NOT_EMPTY:
