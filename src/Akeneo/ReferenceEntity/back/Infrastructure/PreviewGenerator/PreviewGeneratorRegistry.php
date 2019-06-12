@@ -29,7 +29,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface, PreviewGene
         $this->previewGenerators[] = $previewGenerator;
     }
 
-    public function supports(string $value, UrlAttribute $attribute, string $type): bool
+    public function supports(string $data, UrlAttribute $attribute, string $type): bool
     {
         foreach ($this->previewGenerators as $previewGenerator) {
             if($previewGenerator->supports($value, $attribute, $type)) {
@@ -40,11 +40,11 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface, PreviewGene
         return false;
     }
 
-    public function generate(string $value, UrlAttribute $attribute, string $type): string
+    public function generate(string $data, UrlAttribute $attribute, string $type): string
     {
         foreach ($this->previewGenerators as $previewGenerator) {
-            if($previewGenerator->supports($value, $attribute, $type)) {
-                return $previewGenerator->generate($value, $attribute, $type);
+            if($previewGenerator->supports($data, $attribute, $type)) {
+                return $previewGenerator->generate($data, $attribute, $type);
             }
         }
 

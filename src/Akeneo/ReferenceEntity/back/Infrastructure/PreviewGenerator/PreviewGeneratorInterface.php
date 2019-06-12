@@ -21,7 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
  */
 interface PreviewGeneratorInterface
 {
-    public function supports(string $value, UrlAttribute $attribute, string $type): bool;
+    public function supports(string $data, UrlAttribute $attribute, string $type): bool;
 
-    public function generate(string $value, UrlAttribute $attribute, string $type): string;
+    public function generate(string $data, UrlAttribute $attribute, string $type): string;
 }
