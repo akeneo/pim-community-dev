@@ -98,7 +98,7 @@ akeneo_reference_entities_product_get_linked_product:
     methods: [GET]
 
 akeneo_reference_entities_image_preview:
-    path: '/rest/reference_entity/image_preview/{data}/{attributeIdentifier}/{previewType}'
+    path: '/rest/reference_entity/image_preview/{data}/{attributeIdentifier}/{type}'
     defaults: { _controller: akeneo_referenceentity.infrastructure.action.image_preview }
     methods: [GET]
 
