@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormali
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Routing\RouterInterface;

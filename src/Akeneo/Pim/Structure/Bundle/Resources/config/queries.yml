@@ -4,7 +4,12 @@ services:
         arguments:
             $connection: '@database_connection'
 
-    akeneo.pim.structure.query.get_attributes:
-        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql\SqlGetAttributes'
+    akeneo.pim.structure.query.sql_get_attributes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributes'
         arguments:
             $connection: '@database_connection'
+
+    akeneo.pim.structure.query.get_attributes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\LRUCachedGetAttributes'
+        arguments:
+            $getAttributes: '@akeneo.pim.structure.query.sql_get_attributes'

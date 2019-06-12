@@ -27,7 +27,7 @@ final class ReadValueFactorySpec extends ObjectBehavior
 
     public function it_calls_the_right_factory(ReadValueFactory $factory2, ValueInterface $value)
     {
-        $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null);
+        $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null, false);
         $factory2->create($attribute, null, null, 'data')->willReturn($value);
         $this->create($attribute, null, null, 'data')->shouldReturn($value);
     }
@@ -39,7 +39,7 @@ final class ReadValueFactorySpec extends ObjectBehavior
     ) {
         $writeAttribute = new WriteAttribute();
         $attributeRepository->findOneByIdentifier('an_attribute')->willReturn($writeAttribute);
-        $attribute = new Attribute('an_attribute', 'an_attribute_type3', [], false, false, null);
+        $attribute = new Attribute('an_attribute', 'an_attribute_type3', [], false, false, null, false);
         $writeValueFactory->create($writeAttribute, null, null, 'data')->willReturn($value);
         $this->create($attribute, null, null, 'data')->shouldReturn($value);
     }

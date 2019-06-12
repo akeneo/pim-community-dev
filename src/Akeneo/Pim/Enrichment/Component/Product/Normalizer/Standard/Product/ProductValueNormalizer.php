@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -25,13 +25,13 @@ class ProductValueNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $normalizer;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
-    public function __construct(NormalizerInterface $normalizer, IdentifiableObjectRepositoryInterface $attributeRepository)
+    public function __construct(NormalizerInterface $normalizer, GetAttributes $getAttributes)
     {
         $this->normalizer = $normalizer;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -63,20 +63,19 @@ class ProductValueNormalizer implements NormalizerInterface
 
     protected function getCollectionValue(ValueInterface $value, ?string $format = null, array $context = []): array
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-
+        $attribute = $this->getAttributes->forCode($value->getAttributeCode());
 
         if (null === $attribute) {
             return [];
         }
 
-        $attributeType = $attribute->getType();
+        $attributeType = $attribute->type();
         $context['is_decimals_allowed'] = $attribute->isDecimalsAllowed();
 
         $data = [];
         foreach ($value->getData() as $item) {
             if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType ||
-                $attribute->isBackendTypeReferenceData()) {
+                isset($attribute->properties()['reference_data_name'])) {
                 $data[] = $item;
             } else {
                 $data[] = $this->normalizer->normalize($item, $format, $context);
@@ -92,13 +91,13 @@ class ProductValueNormalizer implements NormalizerInterface
             return null;
         }
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+        $attribute = $this->getAttributes->forCode($value->getAttributeCode());
 
         if (null === $attribute) {
-            return null;
+            return [];
         }
 
-        $attributeType = $attribute->getType();
+        $attributeType = $attribute->type();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)

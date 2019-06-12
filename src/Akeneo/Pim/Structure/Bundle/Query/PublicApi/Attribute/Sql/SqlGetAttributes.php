@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql;
+namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -28,7 +28,7 @@ final class SqlGetAttributes implements GetAttributes
         }
 
         $query = <<<SQL
-        SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family
+        SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family, decimals_allowed
         FROM pim_catalog_attribute
         WHERE code IN (:attributeCodes)
 SQL;
@@ -39,17 +39,33 @@ SQL;
             ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
-        return array_map(function (array $attribute): Attribute {
-            $properties = unserialize($attribute['properties']);
+        $attributes = [];
 
-            return new Attribute(
-                $attribute['code'],
-                $attribute['attribute_type'],
+        foreach ($rawResults as $rawAttribute) {
+            $properties = unserialize($rawAttribute['properties']);
+
+            $attributes[$rawAttribute['code']] = new Attribute(
+                $rawAttribute['code'],
+                $rawAttribute['attribute_type'],
                 $properties,
-                boolval($attribute['is_localizable']),
-                boolval($attribute['is_scopable']),
-                $attribute['metric_family']
+                boolval($rawAttribute['is_localizable']),
+                boolval($rawAttribute['is_scopable']),
+                $rawAttribute['metric_family'],
+                boolval($rawAttribute['decimals_allowed'])
             );
-        }, $rawResults);
+        }
+
+        return array_merge(array_fill_keys($attributeCodes, null), $attributes);
+    }
+
+    public function forCode(string $attributeCode): ?Attribute
+    {
+        $forCodes = $this->forCodes([$attributeCode]);
+
+        if ([] === $forCodes) {
+            return null;
+        }
+
+        return array_pop($forCodes);
     }
 }
