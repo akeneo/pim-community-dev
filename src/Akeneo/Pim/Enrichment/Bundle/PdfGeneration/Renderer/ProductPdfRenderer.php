@@ -123,7 +123,7 @@ class ProductPdfRenderer implements RendererInterface
      */
     protected function getAttributeCodes(ProductInterface $product, $locale)
     {
-        return $product->getUsedAttributeCodes();
+        return $product->getValues()->getAttributeCodes();
     }
 
     /**
