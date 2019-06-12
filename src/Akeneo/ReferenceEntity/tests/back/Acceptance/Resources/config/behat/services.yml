@@ -139,6 +139,17 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
             - '@akeneo_referenceentity.infrastructure.persistence.query.file_exists'
 
+    akeneo_referenceentity.tests.back.acceptance.context.edit_record.edit_url:
+        class: Akeneo\ReferenceEntity\Acceptance\Context\EditRecord\EditUrlContext
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.application.factory.record.edit_record_command_factory'
+            - '@akeneo_referenceentity.application.record.edit_record_handler'
+            - '@validator'
+            - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
+            - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
 
     akeneo_referenceentity.tests.back.acceptance.context.delete_record_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\DeleteRecordContext

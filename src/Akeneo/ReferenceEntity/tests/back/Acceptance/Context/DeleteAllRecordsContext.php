@@ -133,7 +133,7 @@ final class DeleteAllRecordsContext implements Context
     public function thereIsStillTwoRecordsForTheOtherEntity(): void
     {
         $this->violationsContext->assertThereIsNoViolations();
-        $this->exceptionContext->thereIsNoExceptionThrown();
+        $this->exceptionContext->assertThereIsNoExceptionThrown();
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER_SECOND);
         Assert::assertEquals(2, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
@@ -145,7 +145,7 @@ final class DeleteAllRecordsContext implements Context
     public function thereIsStillTwoRecordsForEachEntity(): void
     {
         $this->violationsContext->assertThereIsNoViolations();
-        $this->exceptionContext->thereIsNoExceptionThrown();
+        $this->exceptionContext->assertThereIsNoExceptionThrown();
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER_FIRST);
         Assert::assertEquals(2, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));

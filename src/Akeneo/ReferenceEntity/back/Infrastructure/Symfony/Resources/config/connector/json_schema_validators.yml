@@ -32,6 +32,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.connector.api.record_value_validator }
 
+    akeneo_referenceentity.infrastructure.connector.api.record_value_url_type_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\UrlTypeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+
     akeneo_referenceentity.infrastructure.connector.api.record_value_image_type_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\ImageTypeValidator
         tags:
