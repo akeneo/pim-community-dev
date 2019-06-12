@@ -139,7 +139,7 @@ class ProductSpec extends ObjectBehavior
         $this->shouldHaveEventsLike([new ProductUncategorized('category_1')]);
     }
 
-    function it_is_categorized_or_uncategorized_the_product_by_replacing_all_categories(
+    function it_categorizes_or_uncategorizes_the_product_by_replacing_all_categories(
         CategoryInterface $category1,
         CategoryInterface $category2,
         CategoryInterface $category3
@@ -665,8 +665,8 @@ class ProductSpec extends ObjectBehavior
 
         $this->shouldHaveEventsLike([
             new ValueDeleted('color', 'en_US', null),
-            new ValueAdded('color', 'fr_FR', null),
             new ValueEdited('name', null, null),
+            new ValueAdded('color', 'fr_FR', null),
         ]);
     }
 
@@ -679,7 +679,7 @@ class ProductSpec extends ObjectBehavior
                 }
 
                 if ($subject->popEvents() != $expectedEvents) {
-                    throw new FailureException('Expected events to not match actual ones');
+                    throw new FailureException('Expected events do not match actual ones');
                 }
 
                 return true;

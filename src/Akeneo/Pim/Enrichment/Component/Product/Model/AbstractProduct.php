@@ -341,18 +341,49 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setValues(WriteValueCollection $values)
     {
-        if (null === $this->values) {
-            $this->values = new WriteValueCollection();
-        }
-        $formerValues = $this->values;
+        $formerValues = null === $this->values ?
+            new WriteValueCollection() :
+            WriteValueCollection::fromCollection($this->values);
+
         foreach ($formerValues as $formerValue) {
-            if (null === $values->getByCodes($formerValue->getAttributeCode(), $formerValue->getScopeCode(), $formerValue->getLocaleCode())) {
-                $this->removeValue($formerValue);
+            $matchingNewValue = $values->getByCodes(
+                $formerValue->getAttributeCode(),
+                $formerValue->getScopeCode(),
+                $formerValue->getLocaleCode()
+            );
+            if (null === $matchingNewValue) {
+                $this->events->add(
+                    new ValueDeleted(
+                        $formerValue->getAttributeCode(),
+                        $formerValue->getLocaleCode(),
+                        $formerValue->getScopeCode()
+                    )
+                );
+            } elseif (!$formerValue->isEqual($matchingNewValue)) {
+                $this->events->add(
+                    new ValueEdited(
+                        $formerValue->getAttributeCode(),
+                        $formerValue->getLocaleCode(),
+                        $formerValue->getScopeCode()
+                    )
+                );
             }
         }
 
-        foreach ($values as $value) {
-            $this->addOrReplaceValue($value);
+        foreach ($values as $newValue) {
+            if (null === $formerValues->getByCodes(
+                    $newValue->getAttributeCode(),
+                    $newValue->getScopeCode(),
+                    $newValue->getLocaleCode()
+                )) {
+                $this->events->add(
+                    new ValueAdded(
+                        $newValue->getAttributeCode(),
+                        $newValue->getLocaleCode(),
+                        $newValue->getScopeCode()
+                    )
+                );
+            }
         }
 
         $this->values = $values;
@@ -457,10 +488,10 @@ abstract class AbstractProduct implements ProductInterface
         );
 
         foreach ($categoriesToRemove as $categoryToRemove) {
-            $this->removeCategory($categoryToRemove);
+            $this->events->add(new ProductUncategorized($categoryToRemove->getCode()));
         }
         foreach ($categoriesToAdd as $categoryToAdd) {
-            $this->addCategory($categoryToAdd);
+            $this->events->add(new ProductCategorized($categoryToAdd->getCode()));
         }
 
         $this->categories = $categories;
@@ -525,10 +556,10 @@ abstract class AbstractProduct implements ProductInterface
         );
 
         foreach ($groupsToRemove as $groupToRemove) {
-            $this->removeGroup($groupToRemove);
+            $this->events->add(new ProductRemovedFromGroup($groupToRemove->getCode()));
         }
         foreach ($groupsToAdd as $groupToAdd) {
-            $this->addGroup($groupToAdd);
+            $this->events->add(new ProductAddedToGroup($groupToAdd->getCode()));
         }
 
         $this->groups = $groups;
@@ -1004,5 +1035,10 @@ abstract class AbstractProduct implements ProductInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
+    }
+
+    public function __clone()
+    {
+        $this->events = new EventStore();
     }
 }
