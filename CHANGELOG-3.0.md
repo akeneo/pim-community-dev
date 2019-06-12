@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8414: Fix the product variant breadcrumb size
+
 # 3.0.23 (2019-06-11)
 
 ## Bug fixes
