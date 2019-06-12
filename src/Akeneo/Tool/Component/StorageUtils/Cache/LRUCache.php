@@ -75,7 +75,7 @@ final class LRUCache
             $this->put((string) $key, $value);
         }
 
-        return array_merge($resultFromQuery, $fromCacheIndexedByKey);
+        return array_replace($resultFromQuery, $fromCacheIndexedByKey);
     }
 
     /**
