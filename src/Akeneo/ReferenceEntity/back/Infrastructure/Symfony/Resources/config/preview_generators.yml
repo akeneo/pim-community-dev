@@ -1,0 +1,14 @@
+services:
+    akeneo_referenceentity.application.registry.preview_generator:
+        class: Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorRegistry
+
+    akeneo_referenceentity.application.generator.image_generator:
+        class: Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\ImageGenerator
+        arguments:
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@pim_enrich.provider.default_image'
+            - '@liip_imagine.cache.resolver.prototype.flysystem'
+        tags:
+            - { name: akeneo_referenceentity.preview_generator }
