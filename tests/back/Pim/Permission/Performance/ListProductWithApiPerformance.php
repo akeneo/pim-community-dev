@@ -27,7 +27,14 @@ class ListProductWithApiPerformance extends WebTestCase
         $authenticator->createSystemUser();
     }
 
-    public function test_that_listing_the_products_with_api_is_performant()
+    /**
+     * We check SQL queries to avoid n+1 queries when filtering data.
+     * We have to check the wall time also.
+     *
+     * Blackfire adds a non-negligeable overhead, but the target is to have 50 products/sec on the reference catalog.
+     * As the overhead is constant, it's not a problem but we have to take it in account.
+     */
+    public function test_that_exporting_products_with_api_is_performant()
     {
         $clientConfiguration = $this->getBlackfireClientConfiguration();
         $clientConfiguration->setEnv('CI');
@@ -35,9 +42,9 @@ class ListProductWithApiPerformance extends WebTestCase
         $profileConfig = new Configuration();
         $profileConfig->setTitle('Export products with the API');
 
-        $profileConfig->assert('metrics.sql.queries.count < 1000', 'SQL queries');
-        $profileConfig->assert('main.wall_time < 15s', 'Total time');
-        $profileConfig->assert('main.peak_memory < 100mb', 'Memory');
+        $profileConfig->assert('metrics.sql.queries.count < 40', 'SQL queries');
+        $profileConfig->assert('main.wall_time < 9s', 'Total time');
+        $profileConfig->assert('main.peak_memory < 80mb', 'Memory');
 
         $client = $this->createAuthenticatedClient();
 
@@ -50,7 +57,7 @@ class ListProductWithApiPerformance extends WebTestCase
         $products = json_decode($response->getContent(), true)['_embedded']['items'];
         Assert::assertSame(100, count($products));
 
-        echo 'Profile complete: ' . $profile->getUrl();
+        echo PHP_EOL. 'Profile complete: ' . $profile->getUrl() . PHP_EOL;
     }
 
     protected function createAuthenticatedClient() {
