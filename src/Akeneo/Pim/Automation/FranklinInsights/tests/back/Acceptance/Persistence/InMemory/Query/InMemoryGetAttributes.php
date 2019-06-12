@@ -48,4 +48,20 @@ final class InMemoryGetAttributes implements GetAttributes
             );
         }, $this->attributeRepository->findByCodes($attributeCodes));
     }
+
+    public function forCode(string $attributeCode): ?Attribute
+    {
+        $franklinAttribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        if (null !== $franklinAttribute) {
+            return new Attribute(
+                (string)$franklinAttribute->getCode(),
+                $franklinAttribute->getType(),
+                [],
+                $franklinAttribute->isLocalizable(),
+                $franklinAttribute->isScopable(),
+                $franklinAttribute->getMetricFamily(),
+                $franklinAttribute->isDecimalsAllowed()
+            );
+        }
+    }
 }
