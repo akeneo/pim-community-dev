@@ -53,7 +53,7 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_fetches_the_binary_preview_for_a_value_an_attribute_and_preview_type(): void
+    public function it_fetches_the_binary_preview_for_a_value_an_attribute_and_type(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,

@@ -29,9 +29,8 @@ class ImagePreviewAction
         Request $request,
         string $data,
         string $attributeIdentifier,
-        string $previewType
+        string $type
     ): Response {
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
-
