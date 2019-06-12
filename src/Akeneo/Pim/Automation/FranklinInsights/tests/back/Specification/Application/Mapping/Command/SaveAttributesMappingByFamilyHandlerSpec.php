@@ -68,25 +68,6 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
 
-    public function it_throws_an_exception_if_all_attributes_are_unknown(
-        $familyRepository,
-        $attributeRepository,
-        FamilyInterface $family
-    ): void {
-        $command = new SaveAttributesMappingByFamilyCommand('router', [
-            'color' => [
-                'franklinAttribute' => ['type' => 'multiselect'],
-                'attribute' => 'tshirt_style',
-            ],
-        ]);
-
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['tshirt_style']);
-        $attributeRepository->findBy(['code' => ['tshirt_style']])->willReturn([]);
-
-        $this->shouldThrow(AttributeMappingException::emptyAttributesMapping())->during('handle', [$command]);
-    }
-
     public function it_maps_to_null_when_attribute_does_not_exist(
         $familyRepository,
         $attributeRepository,
