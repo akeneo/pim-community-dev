@@ -78,8 +78,8 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['sku', 'description'])->willReturn([
-            new Attribute('sku', AttributeTypes::IDENTIFIER, [], false, false, null, false),
-            new Attribute('description', AttributeTypes::TEXTAREA, [], false, false, null, false)
+            'sku' => new Attribute('sku', AttributeTypes::IDENTIFIER, [], false, false, null, false),
+            'description' => new Attribute('description', AttributeTypes::TEXTAREA, [], false, false, null, false)
         ]);
 
         $valuesIndexedByType = [
@@ -177,7 +177,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             ]
         ];
 
-        $getAttributeByCodes->forCodes(['attribute_that_does_not_exists'])->willReturn([]);
+        $getAttributeByCodes->forCodes(['attribute_that_does_not_exists'])->willReturn(['attribute_that_does_not_exists' => null]);
 
         $this->createFromStorageFormat($rawValues)->shouldBeLike(new WriteValueCollection([]));
     }
@@ -208,7 +208,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['unknown_attribute', 'color'])->willReturn([
-            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false),
+            'color' => new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false),
         ]);
 
         $typesToCode = [
@@ -257,7 +257,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['color'])->willReturn([
-            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false),
+            'color' => new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false),
         ]);
 
         $rawValueCollectionIndexedByType = [
@@ -317,7 +317,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['color'])->willReturn([
-           new Attribute('color', AttributeTypes::OPTION_MULTI_SELECT, [], false, false, null, false),
+           'color' => new Attribute('color', AttributeTypes::OPTION_MULTI_SELECT, [], false, false, null, false),
         ]);
 
         $typesToCode = [
@@ -370,7 +370,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['image'])->willReturn([
-            new Attribute('image', AttributeTypes::IMAGE, [], false, false, null, false),
+            'image' => new Attribute('image', AttributeTypes::IMAGE, [], false, false, null, false),
         ]);
 
         $typesToCode = [
@@ -427,7 +427,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['image'])->willReturn([
-            new Attribute('image', AttributeTypes::IMAGE, [], false, false, null, false),
+            'image' => new Attribute('image', AttributeTypes::IMAGE, [], false, false, null, false),
         ]);
 
         $typesToCode = [
@@ -504,9 +504,9 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['number', 'text', 'yes_no'])->willReturn([
-            new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false),
-            new Attribute('text', AttributeTypes::TEXTAREA, [], false, false, null, false),
-            new Attribute('yes_no', AttributeTypes::BOOLEAN, [], false, false, null, false),
+            'number' => new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false),
+            'text' => new Attribute('text', AttributeTypes::TEXTAREA, [], false, false, null, false),
+            'yes_no' => new Attribute('yes_no', AttributeTypes::BOOLEAN, [], false, false, null, false),
         ]);
 
         $typesToCode = [
@@ -653,9 +653,9 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
 
         $getAttributeByCodes->forCodes(['number', 'number2', 'number3'])->willReturn(
             [
-                new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false),
-                new Attribute('number2', AttributeTypes::NUMBER, [], false, false, null, false),
-                new Attribute('number3', AttributeTypes::NUMBER, [], false, false, null, false),
+                'number' => new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false),
+                'number2' => new Attribute('number2', AttributeTypes::NUMBER, [], false, false, null, false),
+                'number3' => new Attribute('number3', AttributeTypes::NUMBER, [], false, false, null, false),
             ]
         );
 

@@ -101,22 +101,18 @@ class ValueCollectionFactory
             return [];
         }
 
-        $attributesIndexedByCodes = [];
-
-        foreach ($attributes as $attribute) {
-            $attributesIndexedByCodes[$attribute->code()]['type'] = $attribute->type();
-            $attributesIndexedByCodes[$attribute->code()]['properties'] = $attribute->properties();
-        }
-
         $typesToValues = [];
 
         foreach ($rawValueCollections as $productIdentifier => $rawValues) {
             foreach ($rawValues as $attributeCode => $values) {
-                if (isset($attributesIndexedByCodes[$attributeCode])) {
-                    $typesToValues[$attributesIndexedByCodes[$attributeCode]['type']][$attributeCode][] = [
+                if (isset($attributes[$attributeCode])) {
+                    $type = $attributes[$attributeCode]->type();
+                    $properties = $attributes[$attributeCode]->properties();
+
+                    $typesToValues[$type][$attributeCode][] = [
                         'identifier' => $productIdentifier,
                         'values' => $values,
-                        'properties' => $attributesIndexedByCodes[$attributeCode]['properties']
+                        'properties' => $properties
                     ];
                 }
             }
@@ -129,16 +125,11 @@ class ValueCollectionFactory
     {
         $entities = [];
 
-        $attributesIndexedByCode = [];
-        foreach ($attributes as $attribute) {
-            $attributesIndexedByCode[$attribute->code()] = $attribute;
-        }
-
         foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
             $values = [];
 
             foreach ($valueCollection as $attributeCode => $channelRawValue) {
-                $attribute = $attributesIndexedByCode[$attributeCode];
+                $attribute = $attributes[$attributeCode];
 
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {
                     if ('<all_channels>' === $channelCode) {

@@ -55,7 +55,7 @@ SQL;
             );
         }
 
-        return array_merge(array_fill_keys($attributeCodes, null), $attributes);
+        return array_replace(array_fill_keys($attributeCodes, null), $attributes);
     }
 
     public function forCode(string $attributeCode): ?Attribute

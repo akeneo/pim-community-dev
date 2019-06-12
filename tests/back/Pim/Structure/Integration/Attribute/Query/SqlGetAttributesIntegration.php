@@ -52,6 +52,13 @@ final class SqlGetAttributesIntegration extends TestCase
                 'scopable' => false,
                 'group' => 'other'
             ],
+            [
+                'code' => '123',
+                'type' => AttributeTypes::TEXT,
+                'localizable' => false,
+                'scopable' => false,
+                'group' => 'other'
+            ],
         ]);
     }
 
@@ -59,7 +66,7 @@ final class SqlGetAttributesIntegration extends TestCase
     {
         $expected = $this->getExpected();
         $query = $this->getQuery();
-        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea']);
+        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123']);
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
@@ -67,7 +74,7 @@ final class SqlGetAttributesIntegration extends TestCase
     {
         $expected = $this->getExpected();
         $query = $this->getCachedQuery();
-        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea']);
+        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123']);
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
@@ -77,6 +84,8 @@ final class SqlGetAttributesIntegration extends TestCase
             'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false),
             'a_textarea' => new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false),
             'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false),
+            'unknown_attribute_code' => null,
+            '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, false)
         ];
     }
 
