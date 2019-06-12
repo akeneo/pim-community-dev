@@ -29,7 +29,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
 
         $fixturesLoader = new ProductGridFixturesLoader(
             static::$kernel->getContainer(),
-            $this->getFixturePath('akeneo.jpg')
+            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
         );
         [$rootProductModel, $subProductModel] = $fixturesLoader->createProductAndProductModels()['product_models'];
 
@@ -82,7 +82,10 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
 
-        $fixturesLoader = new ProductGridFixturesLoader(static::$kernel->getContainer(), $this->getFixturePath('akeneo.jpg'));
+        $fixturesLoader = new ProductGridFixturesLoader(
+            static::$kernel->getContainer(),
+            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
+        );
         $rootProductModelWithLabelInProduct = $fixturesLoader->createProductModelsWithLabelInProduct();
         $rootProductModelWithLabelInSubProductModel = $fixturesLoader->createProductModelsWithLabelInSubProductModel();
         $subProductModelWithLabelInParent = $fixturesLoader->createProductModelsWithLabelInParentProductModel();

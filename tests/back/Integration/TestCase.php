@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Test\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Akeneo\Tool\Component\FileStorage\FileInfoFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -126,6 +128,18 @@ abstract class TestCase extends KernelTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    protected function getFileInfoKey(string $path): string
+    {
+        if (!is_file($path)) {
+            throw new \Exception(sprintf('The path "%s" does not exist.', $path));
+        }
+
+        $fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
+        $fileInfo = $fileStorer->store(new \SplFileInfo($path), FileStorage::CATALOG_STORAGE_ALIAS);
+
+        return $fileInfo->getKey();
     }
 
     /**

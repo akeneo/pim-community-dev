@@ -40,8 +40,8 @@ class PartialUpdateProductEndToEnd extends AbstractProductTestCase
         $this->createProduct('localizable', [
             'values'     => [
                 'a_localizable_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
                 ]
             ]
         ]);
@@ -776,7 +776,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $akeneoJpgPath = $this->getFixturePath('akeneo.jpg');
+        $akeneoJpgPath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
 
         $data =
 <<<JSON
@@ -828,7 +828,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $ziggyPngPath = $this->getFixturePath('ziggy.png');
+        $ziggyPngPath = $this->getFileInfoKey($this->getFixturePath('ziggy.png'));
 
         $data =
 <<<JSON
@@ -928,9 +928,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $files = [
-            'akeneo_pdf' => $this->getFixturePath('akeneo.pdf'),
-            'akeneo_jpg' => $this->getFixturePath('akeneo.jpg'),
-            'ziggy_png'  => $this->getFixturePath('ziggy.png'),
+            'akeneo_pdf' => $this->getFileInfoKey($this->getFixturePath('akeneo.pdf')),
+            'akeneo_jpg' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
+            'ziggy_png'  => $this->getFileInfoKey($this->getFixturePath('ziggy.png')),
         ];
 
         $data =

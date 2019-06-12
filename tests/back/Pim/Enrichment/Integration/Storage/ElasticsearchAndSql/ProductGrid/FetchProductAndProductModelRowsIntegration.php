@@ -34,7 +34,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
 
         $fixturesLoader = new ProductGridFixturesLoader(
             static::$kernel->getContainer(),
-            $this->getFixturePath('akeneo.jpg')
+            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
         );
 
         $fixtures = $fixturesLoader->createProductAndProductModels();

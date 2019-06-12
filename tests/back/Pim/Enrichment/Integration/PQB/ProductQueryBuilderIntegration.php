@@ -110,7 +110,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => $this->getFixturePath('akeneo.txt'),
+                            'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')),
                         ],
                     ],
 
@@ -118,12 +118,12 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
                         [
                             'locale' => 'en_US',
                             'scope'  => null,
-                            'data'   => $this->getFixturePath('akeneo.jpg'),
+                            'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
                         ],
                         [
                             'locale' => 'fr_FR',
                             'scope'  => null,
-                            'data'   => $this->getFixturePath('akeneo.jpg'),
+                            'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
                         ],
                     ],
                     'a_regexp'                           => [

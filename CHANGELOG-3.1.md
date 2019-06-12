@@ -4,6 +4,19 @@
 
 - PIM-8428 PIM displays pim_common.code on grids
 
+# 3.1.6 (2019-06-11)
+
+## Bug fixes
+
+- PIM-8415: back-port #10002 to handle uploads on a multi-frontend saas instance
+- PIM-8419: Render wysiwig in compare/translate view
+
+## BC breaks
+
+ - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor` to add `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer`
+ - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelProcessor` to add `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer`
+ - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\MediaAttributeSetter` to remove `Akeneo\Tool\Component\FileStorage\File\FileStorerInterface`
+
 # 3.1.5 (2019-05-28)
 
 # 3.1.4 (2019-05-27)
