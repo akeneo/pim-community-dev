@@ -1,12 +1,15 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8427: Fix PDF export of product to expose all attributes
+
 # 3.0.23 (2019-06-11)
 
 ## Bug fixes
 
 - PIM-8412: Fix wrong display of too long attribute group labels when filtering in the datagrid
 - PIM-8424: Fix memory leak executing "akeneo:batch:purge-job-execution" command
-- PIM-8427: Fix PDF export of product to expose all attributes
 
 # 3.0.22 (2019-06-04)
 
