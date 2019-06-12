@@ -124,4 +124,19 @@ class UrlAttribute extends AbstractAttribute
     {
         $this->mediaType = $mediaType;
     }
+
+    public function getPrefix(): Prefix
+    {
+        return $this->prefix;
+    }
+
+    public function getSuffix(): Suffix
+    {
+        return $this->suffix;
+    }
+
+    public function getMediaType(): MediaType
+    {
+        return $this->mediaType;
+    }
 }

@@ -9,6 +9,5 @@ services:
             - '@liip_imagine.cache.manager'
             - '@liip_imagine.filter.manager'
             - '@pim_enrich.provider.default_image'
-            - '@liip_imagine.cache.resolver.prototype.flysystem'
         tags:
             - { name: akeneo_referenceentity.preview_generator }

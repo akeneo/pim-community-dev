@@ -42,21 +42,16 @@ class ImageGenerator implements PreviewGeneratorInterface
     /** @var DefaultImageProviderInterface  */
     private $defaultImageProvider;
 
-    /** @var ResolverInterface  */
-    private $resolver;
-
     public function __construct(
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
-        DefaultImageProviderInterface $defaultImageProvider,
-        ResolverInterface $resolver
+        DefaultImageProviderInterface $defaultImageProvider
     ) {
         $this->dataManager = $dataManager;
         $this->cacheManager = $cacheManager;
         $this->filterManager = $filterManager;
         $this->defaultImageProvider = $defaultImageProvider;
-        $this->resolver = $resolver;
     }
 
     public function supports(string $data, UrlAttribute $attribute, string $type): bool
@@ -67,40 +62,24 @@ class ImageGenerator implements PreviewGeneratorInterface
     public function generate(string $data, UrlAttribute $attribute, string $type): string
     {
         $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
-        $httpCode = $this->getHttpStatusCode($url);
 
-        if (404 === $httpCode) {
-            return $this->defaultImageProvider->getImageUrl(FileTypes::MISC, $type);
-        }
 
 //        return $this->imagineController->filterAction($request, $filename, $filter);
 
-        if (!$this->cacheManager->isStored($url, $type, $this->resolver)) {
+        if (!$this->cacheManager->isStored($url, $type)) {
             try {
                 $binary = $this->dataManager->find($type, $url);
             } catch (NotLoadableException $e) {
-                throw new NotFoundHttpException('Source image could not be found', $e);
+                return $this->defaultImageProvider->getImageUrl(FileTypes::MISC, $type);
             }
 
             $this->cacheManager->store(
                 $this->filterManager->applyFilter($binary, $type),
                 $url,
-                $type,
-                $this->resolver
+                $type
             );
         }
 
         return $this->cacheManager->resolve($url, $type);
-    }
-
-    private function getHttpStatusCode($url): string
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        return $httpCode;
     }
 }
