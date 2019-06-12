@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- GITHUB-9557: Fix yarn product dependencies requirements, cheers @AngelVazquezArroyo!
+
 # 2.3.48 (2019-06-12)
 
 ## Bug fixes
