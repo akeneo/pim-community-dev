@@ -59,8 +59,8 @@ class ConfigurationController
         $data = [];
 
         foreach ($this->options as $option) {
-            $viewKey = $option['section'].ConfigManager::SECTION_VIEW_SEPARATOR.$option['name'];
-            $modelKey = $option['section'].ConfigManager::SECTION_MODEL_SEPARATOR.$option['name'];
+            $viewKey = $option['section'] . ConfigManager::SECTION_VIEW_SEPARATOR . $option['name'];
+            $modelKey = $option['section'] . ConfigManager::SECTION_MODEL_SEPARATOR . $option['name'];
             $value = $this->configManager->get($modelKey);
 
             if ($option['name'] === 'loading_messages' && $value === null) {
@@ -68,9 +68,9 @@ class ConfigurationController
             }
 
             $data[$viewKey] = [
-                'value' => $value,
-                'scope' => 'app',
-                'use_parent_scope_value' => false,
+                'value'                  => $value,
+                'scope'                  => 'app',
+                'use_parent_scope_value' => false
             ];
         }
 

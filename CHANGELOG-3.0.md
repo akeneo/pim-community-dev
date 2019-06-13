@@ -6,6 +6,10 @@
 - PIM-8427: Fix PDF export of product to expose all attributes
 - PIM-8439: Fix mass edit translation for "remove from categories" operation
 
+## Improvements
+
+- PIM-8433: Save loading messages in the database and display them randomly on the main loading screen.
+
 # 3.0.23 (2019-06-11)
 
 ## Bug fixes

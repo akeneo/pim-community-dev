@@ -19,6 +19,11 @@
                     Loading ...
                 </h3>
                 <img src="{{ asset('bundles/pimui/images/main-loader.gif') }}"/>
+                {% if true == oro_config_value('pim_ui.loading_message_enabled') %}
+                <h4 class="AknDefault-progressContainer--loadingMessages">
+                    {{ random(oro_config_value('pim_ui.loading_messages')|split('\n')) }}
+                </h4>
+                {% endif %}
             </div>
         </div>
         <div class="hash-loading-mask"></div>
