@@ -146,6 +146,7 @@ class AttributeMapping extends BaseView {
     FetcherRegistry.getFetcher('attribute')
       .fetchByIdentifiers(this.getCatalogAttributeCodesFromAttibutesMapping(attributesMapping))
       .then((attributes: NormalizedAttribute[]) => {
+        let hasDuplicatedMappedAttribute = false;
         Object.keys(attributesMapping).forEach((franklinAttributeCode: string) => {
           const attributeMapping: IAttributeMapping = attributesMapping[franklinAttributeCode];
 
@@ -155,7 +156,12 @@ class AttributeMapping extends BaseView {
           const type = undefined === attribute ? '' : attribute.type;
           const isAttributeOptionsButtonVisible = ATTRIBUTE_TYPES_BUTTONS_VISIBILITY.indexOf(type) >= 0;
 
-          this.appendAttributeSelector(attributesMapping, franklinAttributeCode, isAttributeOptionsButtonVisible);
+          const isDuplicatedAttribute = this.isPimAttributeAlreadyMapped(attributeMapping.attribute);
+          if (true === isDuplicatedAttribute) {
+            hasDuplicatedMappedAttribute = true;
+          }
+
+          this.appendAttributeSelector(attributesMapping, franklinAttributeCode, isAttributeOptionsButtonVisible, isDuplicatedAttribute);
 
           if (true === this.isAllowedToCreateAttribute(attributeMapping)) {
             const createAttributeButton = this.appendCreateAttributeButton(
@@ -164,7 +170,6 @@ class AttributeMapping extends BaseView {
               attributeMapping.franklinAttribute.label,
               attributeMapping.franklinAttribute.type,
             );
-
             createAttributeButton.on('attribute_created', (catalogAttributeCode: string) => {
               createAttributeButton.remove();
 
@@ -177,6 +182,12 @@ class AttributeMapping extends BaseView {
             this.appendAttributeTypeMismatchWarning(franklinAttributeCode);
           }
         });
+        if (false !== hasDuplicatedMappedAttribute) {
+          Messenger.notify(
+            'error',
+            __('akeneo_franklin_insights.entity.attributes_mapping.constraint.duplicated_pim_attribute'),
+          );
+        }
 
         Filterable.afterRender(this, __(this.config.labels.franklinAttribute));
 
@@ -186,6 +197,20 @@ class AttributeMapping extends BaseView {
       });
 
     return this;
+  }
+
+  private isPimAttributeAlreadyMapped(pimAttributeCode: string | null): boolean {
+    if (null === pimAttributeCode) {
+      return false;
+    }
+
+    const familyMapping = this.getFormData() as IAttributesMappingForFamily;
+
+    const duplicatedPimAttributeCount = Object.values(familyMapping.mapping).filter((attributeMapping: IAttributeMapping) => {
+      return attributeMapping.attribute === pimAttributeCode;
+    }).length;
+
+    return duplicatedPimAttributeCount > 1;
   }
 
   private getCatalogAttributeCodesFromAttibutesMapping(attributesMapping: IAttributesMapping) {
@@ -227,10 +252,16 @@ class AttributeMapping extends BaseView {
     mapping: IAttributesMapping,
     franklinAttributeCode: string,
     isAttributeOptionsButtonVisible: boolean,
+    duplicateMappedAttribute: boolean
   ) {
     let perfectMatchClass = '';
     if (null !== mapping[franklinAttributeCode].attribute && '' !== mapping[franklinAttributeCode].attribute) {
       perfectMatchClass = 'perfect-match';
+    }
+
+    let duplicatedErrorClass = '';
+    if (true === duplicateMappedAttribute) {
+      duplicatedErrorClass = 'error';
     }
 
     const $dom = this.$el.find('.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]');
@@ -242,7 +273,7 @@ class AttributeMapping extends BaseView {
         types: ALLOWED_CATALOG_TYPES,
         families: [this.getFamilyCode()],
       },
-      className: `AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline ${perfectMatchClass}`,
+      className: `AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline ${perfectMatchClass} ${duplicatedErrorClass}`,
     });
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
