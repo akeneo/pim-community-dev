@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -36,7 +35,6 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
 
     /**
      * @param NormalizerInterface $normalizer
-     * @param Client              $productClient
      * @param Client              $productAndProductModelClient
      * @param string              $indexType
      */

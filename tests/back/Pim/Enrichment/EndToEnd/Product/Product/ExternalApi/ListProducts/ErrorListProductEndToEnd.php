@@ -240,7 +240,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
 
         $this->getFromTestContainer('pim_versioning.manager.version')->setRealTimeVersioning(false);
         $this->getFromTestContainer('pim_catalog.saver.product')->saveAll($products);
-        $this->getFromTestContainer('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $client->request('GET', 'api/rest/v1/products?page=101&limit=100');
 

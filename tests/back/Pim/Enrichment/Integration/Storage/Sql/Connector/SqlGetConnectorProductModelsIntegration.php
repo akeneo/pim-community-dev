@@ -508,7 +508,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
             ]
         );
 
-        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     protected function getConfiguration()
