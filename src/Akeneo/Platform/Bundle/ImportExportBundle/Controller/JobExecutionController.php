@@ -7,6 +7,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutio
 use Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Component\Connector\LogKey;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
@@ -106,7 +107,7 @@ class JobExecutionController
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
-        $logFileContent = $this->logFileSystem->read($jobExecution->getLogFile());
+        $logFileContent = $this->logFileSystem->read(new LogKey($jobExecution));
 
         $response = new Response($logFileContent);
         $disposition = $response->headers->makeDisposition(
