@@ -11,7 +11,6 @@ css:
     lib_customization:
         - bundles/pimui/less/lib/bootstrap.switch.less
         - bundles/pimui/less/lib/bootstrap.dropdown.less
-        - bundles/pimui/less/lib/bootstrap.tooltip.less
         - bundles/pimui/less/lib/dialog.less
         - bundles/pimui/less/lib/dropdown.less
         - bundles/pimui/less/lib/flags.less
