@@ -29,9 +29,6 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
     private $normalizer;
 
     /** @var Client */
-    private $productClient;
-
-    /** @var Client */
     private $productAndProductModelClient;
 
     /** @var string */
@@ -45,12 +42,10 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      */
     public function __construct(
         NormalizerInterface $normalizer,
-        Client $productClient,
         Client $productAndProductModelClient,
         string $indexType
     ) {
         $this->normalizer = $normalizer;
-        $this->productClient = $productClient;
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->indexType = $indexType;
     }
@@ -62,10 +57,6 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      */
     public function index($object, array $options = []) : void
     {
-        $normalizedObject = $this->normalizer->normalize($object, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
-        $this->validateObjectNormalization($normalizedObject);
-        $this->productClient->index($this->indexType, $normalizedObject['id'], $normalizedObject);
-
         $normalizedObject = $this->normalizer->normalize(
             $object,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
@@ -90,16 +81,8 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $normalizedProducts = [];
         $normalizedProductModels = [];
         foreach ($objects as $object) {
-            $normalizedProduct = $this->normalizer->normalize(
-                $object,
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
-            );
-            $this->validateObjectNormalization($normalizedProduct);
-            $normalizedProducts[] = $normalizedProduct;
-
             $normalizedProductModel = $this->normalizer->normalize(
                 $object,
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
@@ -108,7 +91,6 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
             $normalizedProductModels[] = $normalizedProductModel;
         }
 
-        $this->productClient->bulkIndexes($this->indexType, $normalizedProducts, 'id', $indexRefresh);
         $this->productAndProductModelClient->bulkIndexes(
             $this->indexType,
             $normalizedProductModels,
@@ -124,7 +106,6 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      */
     public function remove($objectId, array $options = []) : void
     {
-        $this->productClient->delete($this->indexType, $objectId);
         $this->productAndProductModelClient->delete(
             $this->indexType,
             self::PRODUCT_IDENTIFIER_PREFIX . (string) $objectId
@@ -138,7 +119,6 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      */
     public function removeAll(array $objects, array $options = []) : void
     {
-        $this->productClient->bulkDelete($this->indexType, $objects);
         $objectIds = [];
         foreach ($objects as $objectId) {
             $objectIds[]  = self::PRODUCT_IDENTIFIER_PREFIX . (string) $objectId;

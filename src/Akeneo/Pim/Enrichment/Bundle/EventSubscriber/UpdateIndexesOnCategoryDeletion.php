@@ -31,12 +31,6 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
     private $getDescendentCategoryCodes;
 
     /** @var Client */
-    private $productClient;
-
-    /** @var Client */
-    private $productModelClient;
-
-    /** @var Client */
     private $productAndProductModelClient;
 
     /** @var string[] */
@@ -44,13 +38,9 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
 
     public function __construct(
         GetDescendentCategoryCodes $getDescendentCategoryCodes,
-        Client $productClient,
-        Client $productModelClient,
         Client $productAndProductModelClient
     ) {
         $this->getDescendentCategoryCodes = $getDescendentCategoryCodes;
-        $this->productClient = $productClient;
-        $this->productModelClient = $productModelClient;
         $this->productAndProductModelClient = $productAndProductModelClient;
     }
 
@@ -96,8 +86,6 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
             ],
         ];
 
-        $this->productClient->updateByQuery($body);
-        $this->productModelClient->updateByQuery($body);
         $this->productAndProductModelClient->updateByQuery($body);
     }
 }

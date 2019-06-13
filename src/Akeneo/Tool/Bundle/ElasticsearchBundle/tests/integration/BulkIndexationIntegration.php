@@ -55,7 +55,7 @@ class BulkIndexationIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product');
+        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
         $products = [
             [
                 'identifier'           => 'product_1',

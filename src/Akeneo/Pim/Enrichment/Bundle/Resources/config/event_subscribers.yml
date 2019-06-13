@@ -124,8 +124,6 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\UpdateIndexesOnCategoryDeletion'
         arguments:
             - '@pim_catalog.query.get_descendent_category_codes'
-            - '@akeneo_elasticsearch.client.product'
-            - '@akeneo_elasticsearch.client.product_model'
             - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }

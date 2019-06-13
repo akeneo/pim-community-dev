@@ -187,16 +187,6 @@ class IndexProductCommand extends ContainerAwareCommand
      */
     private function checkIndexesExist()
     {
-        $productClient = $this->getContainer()->get('akeneo_elasticsearch.client.product');
-        if (!$productClient->hasIndex()) {
-            throw new \RuntimeException(
-                sprintf(
-                    'The index "%s" does not exist in Elasticsearch.',
-                    $this->getContainer()->getParameter('product_index_name')
-                )
-            );
-        }
-
         $productAndProductModelClient = $this->getContainer()->get(
             'akeneo_elasticsearch.client.product_and_product_model'
         );
