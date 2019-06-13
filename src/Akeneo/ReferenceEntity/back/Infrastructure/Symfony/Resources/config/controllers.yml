@@ -146,6 +146,10 @@ services:
             - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
 
+    akeneo_referenceentity.infrastructure.action.image_preview:
+        class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\ImagePreviewAction
+
+    # Connector
     akeneo_referenceentity.infrastructure.connector.action.record.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\GetConnectorRecordAction
         arguments:
