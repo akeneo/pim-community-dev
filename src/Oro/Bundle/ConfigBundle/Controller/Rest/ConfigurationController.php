@@ -59,16 +59,18 @@ class ConfigurationController
         $data = [];
 
         foreach ($this->options as $option) {
-            $viewKey = $option['section'] . ConfigManager::SECTION_VIEW_SEPARATOR . $option['name'];
-            $modelKey = $option['section'] . ConfigManager::SECTION_MODEL_SEPARATOR . $option['name'];
-            $value    = $option['name'] === 'loading_messages' ?
-                        file_get_contents($this->getMessagesFilePath()) :
-                        $this->configManager->get($modelKey);
+            $viewKey = $option['section'].ConfigManager::SECTION_VIEW_SEPARATOR.$option['name'];
+            $modelKey = $option['section'].ConfigManager::SECTION_MODEL_SEPARATOR.$option['name'];
+            $value = $this->configManager->get($modelKey);
+
+            if ($option['name'] === 'loading_messages' && $value === null) {
+                $value = file_get_contents($this->getMessagesFilePath());
+            }
 
             $data[$viewKey] = [
-                'value'                  => $value,
-                'scope'                  => 'app',
-                'use_parent_scope_value' => false
+                'value' => $value,
+                'scope' => 'app',
+                'use_parent_scope_value' => false,
             ];
         }
 
@@ -85,9 +87,6 @@ class ConfigurationController
     public function postAction(Request $request)
     {
         $this->configManager->save(json_decode($request->getContent(), true));
-
-        $data = json_decode($request->getContent(), true);
-        file_put_contents($this->getMessagesFilePath(), $data['pim_ui___loading_messages']['value']);
 
         return $this->getAction();
     }
