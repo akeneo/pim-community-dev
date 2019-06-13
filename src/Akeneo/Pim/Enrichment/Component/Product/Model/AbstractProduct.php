@@ -874,12 +874,13 @@ abstract class AbstractProduct implements ProductInterface
         return null !== $this->getParent();
     }
 
-    // TODO: this is only used for
+    // used for reseting events:
+    // - after settingValues in LoadEntityWithValuesSubscriber
+    // - in EE, when cloning a product (this happens in read mode when filtering unauthorized data from a product,
+    //   and in write mode when merging back unauthorized data in a filtered product)
     public function initEvents(): void
     {
-        if (null === $this->events) {
-            $this->events = new EventStore();
-        }
+        $this->events = new EventStore();
     }
 
     public function popEvents(): array
@@ -1039,6 +1040,6 @@ abstract class AbstractProduct implements ProductInterface
 
     public function __clone()
     {
-        $this->events = new EventStore();
+        $this->initEvents();
     }
 }

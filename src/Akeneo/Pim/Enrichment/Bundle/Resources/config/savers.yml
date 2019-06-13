@@ -21,6 +21,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
             - '@pim_catalog.synchronizer.product_unique_data'
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.saver.product_model:
         class: '%pim_catalog.saver.base.class%'

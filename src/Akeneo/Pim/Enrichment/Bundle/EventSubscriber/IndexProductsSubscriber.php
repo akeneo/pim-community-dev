@@ -77,6 +77,10 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (!$event->hasArgument('products_to_index') || !array_key_exists($product->getIdentifier(), $event->getArgument('products_to_index'))) {
+            return;
+        }
+
         $this->productIndexer->index($product);
     }
 
@@ -96,7 +100,13 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productBulkIndexer->indexAll($products);
+        if (!$event->hasArgument('products_to_index')) {
+            return;
+        }
+        $productIdentifiersToIndex = $event->getArgument('products_to_index');
+        $this->productBulkIndexer->indexAll(array_filter($products, function (ProductInterface $product) use ($productIdentifiersToIndex) {
+            return array_key_exists($product->getIdentifier(), $productIdentifiersToIndex);
+        }));
     }
 
     /**
