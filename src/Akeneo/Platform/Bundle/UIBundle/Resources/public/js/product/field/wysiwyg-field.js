@@ -49,7 +49,7 @@ define(
                         ['insert', ['link']],
                         ['view', ['codeview']]
                     ],
-                    callbacks: {}
+                    prettifyHtml: false
                 })
                 .on('summernote.blur', this.updateModel.bind(this))
                 .on('summernote.keyup', this.removeEmptyTags.bind(this));

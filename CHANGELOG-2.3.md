@@ -1,5 +1,16 @@
 # 2.3.x
 
+## Bug fixes
+
+- GITHUB-9557: Fix yarn product dependencies requirements, cheers @AngelVazquezArroyo!
+
+# 2.3.48 (2019-06-12)
+
+## Bug fixes
+
+- PIM-7942: Fix tooltip minimal width
+- PIM-8417: Fix inconsistent behavior in WYSIWYG editor by disabling HTML prettify
+
 # 2.3.47 (2019-06-03)
 
 ## Technical improvement
@@ -21,13 +32,13 @@
 - PIM-8374: Fix timeout when launching the completeness purge command
 - PIM-7596: Fix margins on datagrids under tabs
 - PIM-6829: Fix mass edit enabled steps
+- PIM-7321: Fix blinking grid elements in gallery mode
 
 # 2.3.45 (2019-05-23)
 
 ## Bug fixes
 
 - PIM-8351: Fix entity overriding priority
-- PIM-7321: Fix blinking grid elements in gallery mode
 
 # 2.3.44 (2019-05-20)
 
