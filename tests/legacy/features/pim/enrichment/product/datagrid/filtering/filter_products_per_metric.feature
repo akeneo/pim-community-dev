@@ -35,5 +35,5 @@ Feature: Filter products per metric
       | weight | <=           | 120 Gram      | postit          |
       | weight | <=           | 0.25 Kilogram | postit and book |
       | weight | >            | 4 Kilogram    |                 |
-      | weight | is empty     |               | mug             |
+      | weight | is empty     |               |                 |
       | weight | is not empty |               | postit and book |

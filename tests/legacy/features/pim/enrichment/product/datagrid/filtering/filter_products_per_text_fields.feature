@@ -54,9 +54,9 @@ Feature: Filter products by text field
     And I should see products postit, book and mug
     And I should be able to use the following filters:
       | filter      | operator     | value | result |
-      | name        | is empty     |       | book   |
+      | name        | is empty     |       |        |
       | name        | is not empty |       | postit |
-      | description | is empty     |       | postit |
+      | description | is empty     |       |        |
       | description | is not empty |       | mug    |
 
   Scenario: Successfully filter products by empty value for localizable text attribute
@@ -73,7 +73,7 @@ Feature: Filter products by text field
     And I should see products postit, book and mug
     And I should be able to use the following filters:
       | filter | operator     | value | result |
-      | name   | is empty     |       | book   |
+      | name   | is empty     |       |        |
       | name   | is not empty |       | postit |
 
   Scenario: Successfully filter products by empty value for scopable text attribute
@@ -90,7 +90,7 @@ Feature: Filter products by text field
     And I should see products postit, book and mug
     And I should be able to use the following filters:
       | filter | operator     | value | result |
-      | name   | is empty     |       | book   |
+      | name   | is empty     |       |        |
       | name   | is not empty |       | postit |
 
   Scenario: Successfully filter products by empty value for scopable and localizable text attribute
@@ -108,5 +108,5 @@ Feature: Filter products by text field
     And I should see products postit, book and mug
     And I should be able to use the following filters:
       | filter | operator     | value | result |
-      | name   | is empty     |       | book   |
+      | name   | is empty     |       |        |
       | name   | is not empty |       | postit |

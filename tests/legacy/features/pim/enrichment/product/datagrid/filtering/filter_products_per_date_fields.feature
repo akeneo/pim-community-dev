@@ -9,31 +9,33 @@ Feature: Filter products by date field
     And the following attributes:
       | label-en_US | code    | type             | localizable | scopable | useable_as_grid_filter | group |
       | release     | release | pim_catalog_date | 0           | 0        | 1                      | other |
+    And the following families:
+      | code     | label-en_US | attributes  |
+      | a_family | Family      | sku,release |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by empty value for date attribute
     Given the following products:
-      | sku    | release    |
-      | postit | 2014-05-01 |
-      | book   |            |
-      | mug    |            |
-    And the "book" product has the "release" attribute
+      | sku    | family   |release    |
+      | postit | a_family |2014-05-01 |
+      | book   | a_family |           |
+      | mug    | a_family |           |
     And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter  | operator     | value | result |
-      | release | is empty     |       | book   |
-      | release | is not empty |       | postit |
+      | filter  | operator     | value | result         |
+      | release | is empty     |       | book and mug   |
+      | release | is not empty |       | postit         |
 
   Scenario: Successfully filter products by date attributes
     Given the following products:
-      | sku    | release    |
-      | postit | 2014-05-01 |
-      | book   | 2014-05-02 |
-      | mug    | 2014-05-03 |
-      | tshirt | 2014-05-03 |
-      | pen    | 2014-05-06 |
+      | sku    | family   | release    |
+      | postit | a_family |2014-05-01 |
+      | book   | a_family |2014-05-02 |
+      | mug    | a_family |2014-05-03 |
+      | tshirt | a_family |2014-05-03 |
+      | pen    | a_family |2014-05-06 |
     When I am on the products grid
     Then the grid should contain 5 elements
     And I should see products postit, book, mug, tshirt and pen
@@ -46,9 +48,9 @@ Feature: Filter products by date field
 
   Scenario: Filter products by date attributes and keep the appropriate default filter values
     Given the following products:
-      | sku  | release    |
-      | book | 2014-05-02 |
-      | pen  | 2014-05-06 |
+      | sku  | family   | release    |
+      | book | a_family | 2014-05-02 |
+      | pen  | a_family | 2014-05-06 |
     And I am on the products grid
     And I show the filter "release"
     When I filter by "release" with operator "between" and value "05/01/2014 and 05/03/2014"

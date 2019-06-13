@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -23,10 +24,6 @@ class CountImpactedProducts
     /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;
 
-    /**
-     * @param ProductQueryBuilderFactoryInterface $productAndProductModelQueryBuilderFactory
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $productAndProductModelQueryBuilderFactory,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
@@ -157,6 +154,27 @@ class CountImpactedProducts
 
         $pqb = $this->productAndProductModelQueryBuilderFactory->create(['filters' => $filters]);
 
+        $attributeCodesWithIsEmptyOperator = $this->getAttributeCodesWithIsEmptyOperator($pqb->getRawFilters());
+        if (!empty($attributeCodesWithIsEmptyOperator)) {
+            $pqb->getQueryBuilder()->addFilter([
+                    'bool' => [
+                        'should' => [
+                            [
+                                'terms' => [
+                                    'attributes_for_this_level' => $attributeCodesWithIsEmptyOperator
+                                ],
+                            ],
+                            [
+                                'terms' => [
+                                    'attributes_of_ancestors' => $attributeCodesWithIsEmptyOperator
+                                ],
+                            ]
+                        ]
+                    ]
+                ]
+            );
+        }
+
         return $pqb->execute()->count();
     }
 
@@ -260,5 +278,32 @@ class CountImpactedProducts
         }
 
         return $filters;
+    }
+
+    /**
+     * Returns the attribute codes for which there is a filter on with operator IsEmpty
+     *
+     * @param string[] $rawFilters
+     *
+     * @return string[]
+     */
+    private function getAttributeCodesWithIsEmptyOperator(array $rawFilters): array
+    {
+        $attributeFilters = array_filter(
+            $rawFilters,
+            function ($filter) {
+                $operator = $filter['operator'];
+
+                return
+                    'attribute' === $filter['type'] &&
+                    (
+                        Operators::IS_EMPTY === $operator ||
+                        Operators::IS_EMPTY_FOR_CURRENCY === $operator ||
+                        Operators::IS_EMPTY_ON_ALL_CURRENCIES === $operator
+                    );
+            }
+        );
+
+        return array_column($attributeFilters, 'field');
     }
 }
