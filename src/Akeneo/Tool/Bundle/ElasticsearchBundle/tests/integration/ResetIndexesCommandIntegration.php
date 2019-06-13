@@ -71,8 +71,6 @@ class ResetIndexesCommandIntegration extends TestCase
     private function getEsClients(): array
     {
         return [
-            $this->get('akeneo_elasticsearch.client.product'),
-            $this->get('akeneo_elasticsearch.client.product_model'),
             $this->get('akeneo_elasticsearch.client.product_and_product_model'),
         ];
     }

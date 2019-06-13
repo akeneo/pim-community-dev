@@ -50,7 +50,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
         ];
 
         $container = $this->getContainer();
-        $container->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $pqb = $container->get('pim_catalog.query.product_query_builder_factory')->create($options);
         $products = $pqb->execute();
