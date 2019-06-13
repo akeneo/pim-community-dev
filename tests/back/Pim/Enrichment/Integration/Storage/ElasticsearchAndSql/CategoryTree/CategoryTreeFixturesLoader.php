@@ -55,6 +55,6 @@ class CategoryTreeFixturesLoader
             $this->container->get('pim_catalog.saver.product')->save($product);
         }
 
-        $this->container->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 }

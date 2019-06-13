@@ -36,7 +36,7 @@ class CalculateCompletenessCommandIntegration extends AbstractCompletenessTestCa
             ]
         );
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $commandLauncher = new CommandLauncher(static::$kernel);
 

@@ -71,7 +71,7 @@ class QueryTestCase extends TestCase
         Assert::assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $product;
     }
@@ -89,7 +89,7 @@ class QueryTestCase extends TestCase
         Assert::assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $productModel;
     }
@@ -106,7 +106,7 @@ class QueryTestCase extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $product;
     }

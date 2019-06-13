@@ -17,9 +17,6 @@ class RemovingProductIntegration extends TestCase
     private const DOCUMENT_TYPE = 'pim_catalog_product';
 
     /** @var Client */
-    private $esProductClient;
-
-    /** @var Client */
     private $esProductAndProductModelClient;
 
     /**
@@ -29,7 +26,6 @@ class RemovingProductIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product');
         $this->esProductAndProductModelClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
     }
 
@@ -43,7 +39,6 @@ class RemovingProductIntegration extends TestCase
 
         $this->get('pim_catalog.remover.product')->remove($product);
 
-        $this->assertNotFoundInProductIndex($productId);
         $this->assertNotFoundInProductAndProductModelIndex($productId);
     }
 
@@ -65,10 +60,6 @@ class RemovingProductIntegration extends TestCase
 
         $this->get('pim_catalog.remover.product')->removeAll([$productFoo, $productBar, $productBaz]);
 
-        $this->assertNotFoundInProductIndex($productFooId);
-        $this->assertNotFoundInProductIndex($productBarId);
-        $this->assertNotFoundInProductIndex($productBazId);
-
         $this->assertNotFoundInProductAndProductModelIndex($productFooId);
         $this->assertNotFoundInProductAndProductModelIndex($productBarId);
         $this->assertNotFoundInProductAndProductModelIndex($productBazId);
@@ -80,22 +71,6 @@ class RemovingProductIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
-    }
-
-    /**
-     * Asserts the productId does not exists in the product index
-     *
-     * @param string $productId
-     */
-    private function assertNotFoundInProductIndex(string $productId)
-    {
-        $found = true;
-        try {
-            $this->esProductClient->get(self::DOCUMENT_TYPE, $productId);
-        } catch (Missing404Exception $e) {
-            $found = false;
-        }
-        $this->assertFalse($found);
     }
 
     /**

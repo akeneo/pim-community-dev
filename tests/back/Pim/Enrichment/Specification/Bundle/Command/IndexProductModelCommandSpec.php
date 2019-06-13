@@ -22,12 +22,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IndexProductModelCommandSpec extends ObjectBehavior
 {
-    function let(ContainerInterface $container, Client $productClient, Client $productAndProductModelClient)
+    function let(ContainerInterface $container, Client $productAndProductModelClient)
     {
-        $container->get('akeneo_elasticsearch.client.product_model')->willReturn($productClient);
         $container->get('akeneo_elasticsearch.client.product_and_product_model')->willReturn($productAndProductModelClient);
 
-        $productClient->hasIndex()->willReturn(true);
         $productAndProductModelClient->hasIndex()->willReturn(true);
     }
 
@@ -343,46 +341,6 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $input->getArgument('codes')->willReturn([]);
         $input->getOption('all')->willReturn(false);
         $this->run($input, $output);
-    }
-
-    function it_throws_an_exception_when_the_product_index_does_not_exist(
-        $container,
-        $productClient,
-        Application $application,
-        InputInterface $input,
-        OutputInterface $output,
-        HelperSet $helperSet,
-        InputDefinition $definition,
-        OutputFormatter $formatter
-    ) {
-        $output->isDecorated()->willReturn(true);
-        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
-        $output->getFormatter()->willReturn($formatter);
-
-        $productClient->hasIndex()->willReturn(false);
-        $container->getParameter('product_index_name')->willReturn('foo');
-
-        $commandInput = new ArrayInput([
-            'command'    => 'pim:product:index',
-            '--no-debug' => true,
-        ]);
-        $application->run($commandInput, $output)->willReturn(0);
-
-        $definition->getOptions()->willReturn([]);
-        $definition->getArguments()->willReturn([]);
-
-        $application->getHelperSet()->willReturn($helperSet);
-        $application->getDefinition()->willReturn($definition);
-        $this->setApplication($application);
-        $this->setContainer($container);
-        $input->bind(Argument::any())->shouldBeCalled();
-        $input->isInteractive()->shouldBeCalled();
-        $input->hasArgument(Argument::any())->shouldBeCalled();
-        $input->validate()->shouldBeCalled();
-        $input->getArgument('identifiers')->willReturn([]);
-        $input->getOption('all')->willReturn(true);
-
-        $this->shouldThrow(\RuntimeException::class)->during('run', [$input, $output]);
     }
 
     function it_throws_an_exception_when_the_product_and_product_model_index_does_not_exist(

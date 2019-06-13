@@ -235,8 +235,7 @@ JSON;
                 'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
             ]
         ]);
-        $this->getFromTestContainer('akeneo_elasticsearch.client.product_model')->refreshIndex();
-        $this->getFromTestContainer('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->getFromTestContainer('doctrine.orm.default_entity_manager')->clear();
     }
 

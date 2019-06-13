@@ -930,7 +930,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertEmpty($response->getContent());
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $client->request('GET', '/api/rest/v1/products/foo');
         $response = $client->getResponse();
