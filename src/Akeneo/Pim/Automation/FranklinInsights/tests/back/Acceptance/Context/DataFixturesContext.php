@@ -19,9 +19,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\Subsc
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -58,9 +57,6 @@ class DataFixturesContext implements Context
 
     /** @var ProductBuilderInterface */
     private $productBuilder;
-
-    /** @var WriteValueCollectionFactory */
-    private $valueCollectionFactory;
 
     /** @var EntityBuilder */
     private $attributeBuilder;
@@ -99,7 +95,6 @@ class DataFixturesContext implements Context
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $productUpdater,
-        WriteValueCollectionFactory $valueCollectionFactory,
         InMemoryFamilyRepository $familyRepository,
         FamilyFactory $familyFactory,
         InMemoryAttributeRepository $attributeRepository,
@@ -116,7 +111,6 @@ class DataFixturesContext implements Context
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
-        $this->valueCollectionFactory = $valueCollectionFactory;
         $this->familyRepository = $familyRepository;
         $this->familyFactory = $familyFactory;
         $this->attributeRepository = $attributeRepository;
@@ -270,33 +264,6 @@ class DataFixturesContext implements Context
         $subscription->setSuggestedData(new SuggestedData($suggestedData));
 
         $this->subscriptionRepository->save($subscription);
-    }
-
-    /**
-     * @Given the following product:
-     *
-     * @param TableNode $table
-     */
-    public function theFollowingProduct(TableNode $table): void
-    {
-        foreach ($table->getHash() as $productRow) {
-            $product = $this->productBuilder->createProduct($productRow['identifier'], $productRow['family']);
-            unset($productRow['identifier'], $productRow['family']);
-
-            $rawValues = [];
-            foreach ($productRow as $attrCode => $value) {
-                $rawValues[$attrCode] = [
-                    '<all_channels>' => [
-                        '<all_locales>' => $value,
-                    ],
-                ];
-            }
-
-            $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
-            $product->setValues($values);
-
-            $this->productRepository->save($product);
-        }
     }
 
     /**
@@ -455,7 +422,9 @@ class DataFixturesContext implements Context
         }
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
-        $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+        foreach ($normalizedProduct['values'] as $attrCode => $value) {
+            $product->addValue(ScalarValue::value($attrCode, $value[0]['data']));
+        }
 
         if (isset($normalizedProduct['id'])) {
             $product->setId(intval($normalizedProduct['id']));
@@ -481,8 +450,11 @@ class DataFixturesContext implements Context
         $this->loadFamily($familyCode);
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
-        $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+        foreach ($normalizedProduct['values'] as $attrCode => $value) {
+            $product->addValue(ScalarValue::value($attrCode, $value[0]['data']));
+        }
         $product->setParent(new ProductModel());
+
 
         $this->productRepository->save($product);
     }
@@ -496,27 +468,6 @@ class DataFixturesContext implements Context
     {
         $attributeCodes = array_keys($normalizedProduct['values']);
         $this->loadAttributes(array_merge(['sku'], $attributeCodes));
-    }
-
-    /**
-     * Converts raw data (storage format) into an array of values, and set the values to a product.
-     *
-     * @param ProductInterface $product
-     * @param array $normalizedProduct
-     */
-    private function setValuesFromRawDataToProduct(ProductInterface $product, array $normalizedProduct): void
-    {
-        $rawValues = [];
-        foreach ($normalizedProduct['values'] as $attrCode => $value) {
-            $rawValues[$attrCode] = [
-                '<all_channels>' => [
-                    '<all_locales>' => $value[0]['data'],
-                ],
-            ];
-        }
-
-        $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
-        $product->setValues($values);
     }
 
     /**
