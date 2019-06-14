@@ -21,7 +21,5 @@ if [ ! -f ./app/config/parameters_test.yml ]; then
     cp ./app/config/parameters_test.yml.dist ./app/config/parameters_test.yml
     sed -i "s/database_host:.*localhost/database_host: mysql-behat/g" ./app/config/parameters_test.yml
     sed -i "s/localhost: 9200/elasticsearch:9200/g" ./app/config/parameters_test.yml
-    sed -i "s/product_index_name:.*akeneo_pim_product/product_index_name: test_akeneo_pim_product/g" ./app/config/parameters_test.yml
-    sed -i "s/product_model_index_name:.*akeneo_pim_product_model/product_model_index_name: test_akeneo_pim_product_model/g" ./app/config/parameters_test.yml
     sed -i "s/product_and_product_model_index_name:.*akeneo_pim_product_and_product_model/product_and_product_model_index_name: test_akeneo_pim_product_and_product_model/g" ./app/config/parameters_test.yml
 fi
