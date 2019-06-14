@@ -67,10 +67,6 @@ class ReferenceDataCollectionValue extends AbstractValue implements
             return false;
         }
 
-        $comparedRefDataCollection = $value->getData();
-        $thisRefDataCollection = $this->getData();
-
-        return count(array_diff($thisRefDataCollection, $comparedRefDataCollection)) === 0 &&
-            count(array_diff($comparedRefDataCollection, $thisRefDataCollection)) === 0;
+        return $value->getData() === $this->getData();
     }
 }
