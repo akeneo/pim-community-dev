@@ -124,3 +124,4 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.structure.service.create_attribute'
             - '@akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family'
+            - '@event_dispatcher'
