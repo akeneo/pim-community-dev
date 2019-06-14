@@ -3,3 +3,10 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\EventSubscriber\InitFranklinInsightsFixturesSubscriber'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    akeneo.pim.automation.franklin_insights.event_subscriber.init_franklin_insights_db_schema:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\EventSubscriber\InitFranklinInsightsDbSchemaSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
