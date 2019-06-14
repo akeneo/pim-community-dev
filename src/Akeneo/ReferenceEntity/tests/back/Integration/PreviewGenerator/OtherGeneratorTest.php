@@ -25,25 +25,17 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\ImageGenerator;
 use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorRegistry;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Akeneo\ReferenceEntity\Integration\PreviewGeneratorIntegrationTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class OtherGeneratorTest extends KernelTestCase
+final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
-    private const Url = 'https://akeneodemo.getbynder.com/m/1e567bef001b08fa/';
-    private const filename = 'Akeneo-DSC_2109-2.jpg';
-
-    /** @var KernelInterface|null */
-    protected $testKernel;
-
     /** @var PreviewGeneratorInterface */
     private $otherGenerator;
 
@@ -55,17 +47,9 @@ class OtherGeneratorTest extends KernelTestCase
 
     public function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestKernel();
-        }
-        $this->resetDB();
-        $this->otherGenerator = $this->get('akeneo_referenceentity.application.generator.other_generator');
-    }
+        parent::setUp();
 
-    protected function bootTestKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
+        $this->otherGenerator = $this->get('akeneo_referenceentity.application.generator.other_generator');
     }
 
     /**
@@ -79,7 +63,7 @@ class OtherGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $isSupported = $this->otherGenerator->supports(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::FILENAME, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
@@ -91,7 +75,7 @@ class OtherGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $isSupported = $this->otherGenerator->supports(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::FILENAME, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertFalse($isSupported);
     }
@@ -107,11 +91,11 @@ class OtherGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $isSupported = $this->otherGenerator->supports(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::FILENAME, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::filename, $attribute, 'preview');
+        $isSupported = $this->otherGenerator->supports(self::FILENAME, $attribute, 'preview');
 
         $this->assertFalse($isSupported);
     }
@@ -161,7 +145,7 @@ class OtherGeneratorTest extends KernelTestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString(self::Url),
+            Prefix::fromString(self::DAM_URL),
             Suffix::empty(),
             MediaType::fromString($mediaType)
         );
@@ -185,18 +169,5 @@ class OtherGeneratorTest extends KernelTestCase
         );
 
         $recordRepository->create($record);
-    }
-
-    /*
-     * @return mixed
-     */
-    protected function get(string $service)
-    {
-        return $this->testKernel->getContainer()->get($service);
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 }

@@ -29,12 +29,13 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
  */
-class ImagePreviewActionTest extends ControllerIntegrationTestCase
+final class ImagePreviewActionTest extends ControllerIntegrationTestCase
 {
     private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_reference_entities_image_preview';
     private const DAM_URL = 'https://akeneodemo.getbynder.com/m/1e567bef001b08fa/';
@@ -49,6 +50,9 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var CacheManager */
+    private $cacheManager;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -59,6 +63,12 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
         $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
 
         $this->loadFixtures();
+    }
+
+    public function tearDown(): void
+    {
+        $this->cacheManager = $this->get('liip_imagine.cache.manager');
+        $this->cacheManager->remove();
     }
 
     /**

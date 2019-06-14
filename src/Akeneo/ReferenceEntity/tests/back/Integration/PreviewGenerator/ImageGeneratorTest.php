@@ -27,22 +27,15 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorRegistry;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Akeneo\ReferenceEntity\Integration\PreviewGeneratorIntegrationTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class ImageGeneratorTest extends KernelTestCase
+final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
-    private const DAM_URL = 'https://akeneodemo.getbynder.com/m/1e567bef001b08fa/';
-    private const FILENAME = 'Akeneo-DSC_2109-2.jpg';
-
-    /** @var KernelInterface|null */
-    protected $testKernel;
-
     /** @var PreviewGeneratorInterface */
     private $imageGenerator;
 
@@ -52,24 +45,11 @@ class ImageGeneratorTest extends KernelTestCase
     /** @var AttributeIdentifier */
     private $attributeIdentifier;
 
-    /** @var CacheManager */
-    private $cacheManager;
-
     public function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestKernel();
-        }
-        $this->resetDB();
-        $this->imageGenerator = $this->get('akeneo_referenceentity.application.generator.image_generator');
-        $this->cacheManager = $this->get('liip_imagine.cache.manager');
-        $this->cacheManager->remove();
-    }
+        parent::setUp();
 
-    protected function bootTestKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
+        $this->imageGenerator = $this->get('akeneo_referenceentity.application.generator.image_generator');
     }
 
     /**
@@ -227,18 +207,5 @@ class ImageGeneratorTest extends KernelTestCase
         );
 
         $recordRepository->create($record);
-    }
-
-    /*
-     * @return mixed
-     */
-    protected function get(string $service)
-    {
-        return $this->testKernel->getContainer()->get($service);
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 }
