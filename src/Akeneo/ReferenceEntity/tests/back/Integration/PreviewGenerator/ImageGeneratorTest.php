@@ -25,8 +25,10 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\ImageGenerator;
 use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -53,6 +55,7 @@ class ImageGeneratorTest extends KernelTestCase
         }
         $this->resetDB();
         $this->imageGenerator = $this->get('akeneo_referenceentity.application.generator.image_generator');
+        $this->flysystem = $this->get('oneup_flysystem.filesystem');
     }
 
     protected function bootTestKernel(): void
@@ -64,15 +67,104 @@ class ImageGeneratorTest extends KernelTestCase
     /**
      * @test
      */
-    public function it_get_the_thumbnail_of_image_url_attribute()
+    public function it_can_support_only_media_type_image_of_an_url_attribute()
     {
         $this->loadReferenceEntity();
-        $this->loadUrlAttribute();
+        $this->loadUrlAttribute(MediaType::IMAGE, 'https://ressources.blogdumoderateur.com/2013/10/');
         $this->loadRecord();
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $this->imageGenerator->generate('google-logo', $attribute, 'dam_thumbnail');
+        $isSupported = $this->imageGenerator->supports('google-logo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+
+        $this->assertTrue($isSupported);
+
+        $this->resetDB();
+
+        $this->loadReferenceEntity();
+        $this->loadUrlAttribute(MediaType::OTHER, 'https://ressources.blogdumoderateur.com/2013/10/');
+        $this->loadRecord();
+
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
+        $isSupported = $this->imageGenerator->supports('google-logo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+
+        $this->assertFalse($isSupported);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_support_only_supported_type_image_of_an_url_attribute()
+    {
+        $this->loadReferenceEntity();
+        $this->loadUrlAttribute(MediaType::IMAGE, 'https://ressources.blogdumoderateur.com/2013/10/');
+        $this->loadRecord();
+
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
+        $isSupported = $this->imageGenerator->supports('google-logo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+
+        $this->assertTrue($isSupported);
+
+        $isSupported = $this->imageGenerator->supports('google-logo.png', $attribute, 'preview');
+
+        $this->assertFalse($isSupported);
+    }
+
+    /**
+     * @test
+     */
+    public function it_get_a_preview_for_an_image_url_attribute()
+    {
+        $this->loadReferenceEntity();
+        $this->loadUrlAttribute(MediaType::IMAGE, 'https://ressources.blogdumoderateur.com/2013/10/');
+        $this->loadRecord();
+
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
+        $this->imageGenerator->supports('google-logo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $previewImage = $this->imageGenerator->generate('google-logo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        
+        $this->assertStringContainsString('media/cache/', $previewImage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_get_a_preview_for_an_image_url_attribute_from_the_cache()
+    {
+        $this->loadReferenceEntity();
+        $this->loadUrlAttribute(MediaType::IMAGE, 'https://www.akeneo.com/wp-content/uploads/2015/12/');
+        $this->loadRecord();
+
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
+        $this->imageGenerator->supports('akeneo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $previewImage = $this->imageGenerator->generate('akeneo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+
+        $this->assertStringContainsString('media/cache/', $previewImage);
+
+        $previewImage = $this->imageGenerator->generate('akeneo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+
+        $this->assertStringContainsString('media/cache/', $previewImage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_get_a_default_preview_for_an_unknown_image_url()
+    {
+        $this->loadReferenceEntity();
+        $this->loadUrlAttribute(MediaType::IMAGE,'https://www.akeneo.com/wp-content/uploads/2015/12/');
+        $this->loadRecord();
+
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
+        $this->imageGenerator->supports('test', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $previewImage = $this->imageGenerator->generate('test', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+
+        $this->assertStringContainsString(sprintf('media/cache/%s/pim_enrich_file_misc_default_image', ImageGenerator::THUMBNAIL_TYPE), $previewImage);
     }
 
     private function loadReferenceEntity(): void
@@ -90,7 +182,7 @@ class ImageGeneratorTest extends KernelTestCase
         $referenceEntityRepository->create($referenceEntity);
     }
 
-    private function loadUrlAttribute()
+    private function loadUrlAttribute(string $mediaType, string $prefix)
     {
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $this->attributeIdentifier = AttributeIdentifier::fromString('dam_image_designer_fingerprint');
@@ -103,9 +195,9 @@ class ImageGeneratorTest extends KernelTestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString('https://ressources.blogdumoderateur.com/2013/10/'),
+            Prefix::fromString($prefix),
             Suffix::empty(),
-            MediaType::fromString(MediaType::IMAGE)
+            MediaType::fromString($mediaType)
         );
         $attributeRepository->create($attribute);
     }

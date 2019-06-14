@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\R
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterCreateAttributeCommandFactoryPass;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAttributeCommandFactoryPass;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditRecordValueCommandFactoryPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterPreviewGeneratorPass;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterRecordItemValueHydratorPass;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterReferenceEntityAxisLabelPass;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterSerializerPass;
@@ -45,6 +46,7 @@ class AkeneoReferenceEntityBundle extends Bundle
         $container->addCompilerPass(new RegisterAttributeUpdaterPass());
         $container->addCompilerPass(new RegisterAttributeHydratorPass());
         $container->addCompilerPass(new RegisterEditRecordValueCommandFactoryPass());
+        $container->addCompilerPass(new RegisterPreviewGeneratorPass());
         $container->addCompilerPass(new RegisterValueDataHydratorPass());
         $container->addCompilerPass(new RegisterRecordItemValueHydratorPass());
         $container->addCompilerPass(new RegisterValueUpdaterPass());

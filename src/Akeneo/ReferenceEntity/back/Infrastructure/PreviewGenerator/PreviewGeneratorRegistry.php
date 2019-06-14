@@ -24,7 +24,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface, PreviewGene
     /** @var PreviewGeneratorInterface[] */
     private $previewGenerators;
 
-    public function registry(PreviewGeneratorInterface $previewGenerator): void
+    public function register(PreviewGeneratorInterface $previewGenerator): void
     {
         $this->previewGenerators[] = $previewGenerator;
     }
@@ -32,7 +32,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface, PreviewGene
     public function supports(string $data, UrlAttribute $attribute, string $type): bool
     {
         foreach ($this->previewGenerators as $previewGenerator) {
-            if($previewGenerator->supports($value, $attribute, $type)) {
+            if($previewGenerator->supports($data, $attribute, $type)) {
                 return true;
             }
         }

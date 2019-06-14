@@ -15,18 +15,21 @@ namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
-use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
@@ -41,6 +44,9 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
     /** @var WebClientHelper */
     private $webClientHelper;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -48,6 +54,9 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+
+        $this->loadFixtures();
     }
 
     /**
@@ -55,16 +64,36 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
      */
     public function it_fetches_the_binary_preview_for_a_value_an_attribute_and_type(): void
     {
+        $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
             self::URL_VALUE_PREVIEW_ROUTE,
             [
-                'data'                => 'house_355241',
-                'attributeIdentifier' => 'identifier',
-                'type'                => 'thumbnail'
+                'data'                => 'google-logo.png',
+                'attributeIdentifier' => 'dam_image_designer_fingerprint',
+                'type'                => 'dam_thumbnail'
             ]
         );
         $response = $this->client->getResponse();
-        $this->webClientHelper->assertResponse($response, 204, '');
+        $this->webClientHelper->assertResponse($response, 301, '');
+    }
+
+    private function loadFixtures(): void
+    {
+        $attributeIdentifier = AttributeIdentifier::fromString('dam_image_designer_fingerprint');
+        $attribute = UrlAttribute::create(
+            $attributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('dam_image'),
+            LabelCollection::fromArray(['fr_FR' => 'DAM Image']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            Prefix::fromString('https://ressources.blogdumoderateur.com/2013/10/'),
+            Suffix::empty(),
+            MediaType::fromString(MediaType::IMAGE)
+        );
+        $this->attributeRepository->create($attribute);
     }
 }

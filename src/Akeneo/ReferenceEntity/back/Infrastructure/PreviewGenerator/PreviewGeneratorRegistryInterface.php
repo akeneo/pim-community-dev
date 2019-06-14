@@ -19,5 +19,5 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator;
  */
 interface PreviewGeneratorRegistryInterface
 {
-    public function registry(PreviewGeneratorInterface $previewGenerator): void;
+    public function register(PreviewGeneratorInterface $previewGenerator): void;
 }

@@ -30,6 +30,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ImageGenerator implements PreviewGeneratorInterface
 {
+    public const THUMBNAIL_TYPE = 'dam_thumbnail';
+    public const SUPPORTED_TYPE = [
+        self::THUMBNAIL_TYPE
+    ];
+
     /** @var DataManager  */
     private $dataManager;
 
@@ -56,15 +61,13 @@ class ImageGenerator implements PreviewGeneratorInterface
 
     public function supports(string $data, UrlAttribute $attribute, string $type): bool
     {
-        return MediaType::IMAGE === $attribute->getMediaType()->normalize();
+        return MediaType::IMAGE === $attribute->getMediaType()->normalize()
+            && in_array($type,self::SUPPORTED_TYPE);
     }
 
     public function generate(string $data, UrlAttribute $attribute, string $type): string
     {
         $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
-
-
-//        return $this->imagineController->filterAction($request, $filename, $filter);
 
         if (!$this->cacheManager->isStored($url, $type)) {
             try {

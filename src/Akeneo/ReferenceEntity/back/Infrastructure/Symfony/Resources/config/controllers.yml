@@ -148,6 +148,9 @@ services:
 
     akeneo_referenceentity.infrastructure.action.image_preview:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\ImagePreviewAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.application.registry.preview_generator'
 
     # Connector
     akeneo_referenceentity.infrastructure.connector.action.record.get:

@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,12 +29,29 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ImagePreviewAction
 {
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var PreviewGeneratorInterface  */
+    private $previewGenerator;
+
+    public function __construct(AttributeRepositoryInterface $attributeRepository, PreviewGeneratorInterface $previewGenerator)
+    {
+        $this->attributeRepository = $attributeRepository;
+        $this->previewGenerator = $previewGenerator;
+    }
+
     public function __invoke(
-        Request $request,
         string $data,
         string $attributeIdentifier,
         string $type
     ): Response {
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        /** @var UrlAttribute $attribute */
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
+        $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
+
+        return new RedirectResponse($imagePreview, Response::HTTP_MOVED_PERMANENTLY);
+
+//        return new JsonResponse($imagePreview, Response::HTTP_MOVED_PERMANENTLY);
     }
 }
