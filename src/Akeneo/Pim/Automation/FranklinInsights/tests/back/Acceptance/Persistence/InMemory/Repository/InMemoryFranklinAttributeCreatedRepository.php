@@ -11,14 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository;
+namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface FranklinAttributeCreatedRepositoryInterface
+class InMemoryFranklinAttributeCreatedRepository implements FranklinAttributeCreatedRepositoryInterface
 {
-    public function save(FranklinAttributeCreated $franklinAttributeCreated): void;
+    public function save(FranklinAttributeCreated $franklinAttributeCreated): void
+    {
+    }
 }

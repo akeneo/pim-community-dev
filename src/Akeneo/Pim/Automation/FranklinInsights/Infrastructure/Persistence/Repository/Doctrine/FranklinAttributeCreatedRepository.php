@@ -29,7 +29,7 @@ class FranklinAttributeCreatedRepository implements FranklinAttributeCreatedRepo
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function save(FranklinAttributeCreated $franklinAttributeCreated)
+    public function save(FranklinAttributeCreated $franklinAttributeCreated): void
     {
         $sqlQuery = <<<'SQL'
 INSERT INTO pimee_franklin_insights_attribute_created
@@ -38,8 +38,8 @@ VALUES (:attribute_code, :attribute_type)
 SQL;
 
         $bindParams = [
-            'attribute_code' => $franklinAttributeCreated->getAttributeCode(),
-            'attribute_type' => $franklinAttributeCreated->getAttributeType(),
+            'attribute_code' => (string) $franklinAttributeCreated->getAttributeCode(),
+            'attribute_type' => (string) $franklinAttributeCreated->getAttributeType(),
         ];
 
         $this->dbalConnection->executeUpdate($sqlQuery, $bindParams);
