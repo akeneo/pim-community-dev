@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Structure;
+namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
-use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

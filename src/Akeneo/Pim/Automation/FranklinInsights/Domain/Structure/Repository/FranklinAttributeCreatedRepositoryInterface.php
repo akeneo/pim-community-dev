@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository;
 
-
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

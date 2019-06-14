@@ -48,6 +48,5 @@ CREATE TABLE IF NOT EXISTS pimee_franklin_insights_attribute_created(
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
         $this->dbalConnection->executeQuery($sqlQuery);
-
     }
 }

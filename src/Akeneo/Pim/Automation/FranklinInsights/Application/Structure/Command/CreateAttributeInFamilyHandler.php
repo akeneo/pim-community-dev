@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttr
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
