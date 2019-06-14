@@ -22,24 +22,16 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
 
         $rootNode = $treeBuilder
-            ->root('pim_ui')
-                ->children()
-                    ->booleanNode('loading_message_enabled')
-                        ->defaultTrue()
-                    ->end()
-                    ->arrayNode('language')
-                        ->children()
-                            ->scalarNode('value')->defaultValue('en_US')->end()
-                            ->scalarNode('scope')->defaultValue('app')->end()
-                        ->end()
-                    ->end()
-                ->end();
+            ->root('pim_ui');
 
         SettingsBuilder::append(
             $rootNode,
             [
+                'language' => ['value' => 'en_US'],
                 'loading_message_enabled' => ['value' => false],
-                'language' => ['value' => 'en_US']
+                'loading_messages' => [
+                    'value' => null,
+                ],
             ]
         );
 
