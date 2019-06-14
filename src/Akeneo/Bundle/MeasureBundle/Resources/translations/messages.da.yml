@@ -47,7 +47,7 @@ MIL: Mil
 MILE: Mil
 MILLIMETER: Millimeter
 YARD: Yard
-Power: Strøm
+Power: Effekt
 GIGAWATT: Gigawatt
 KILOWATT: Kilowatt
 MEGAWATT: Megawatt
@@ -90,10 +90,6 @@ DEKACOULOMB: Dekacoulomb
 HECTOCOULOMB: Hectocoulomb
 KILOCOULOMB: Kilocoulomb
 Duration: Varighed
-MILLISECOND: Millisekund
-SECOND: Sekund
-MINUTE: Minut
-HOUR: Time
 DAY: Dag
 WEEK: Uge
 MONTH: Måned

@@ -1,7 +1,6 @@
 Job: Робота
-Connector: Коннектор
+Connector: З'єднувач
 pim_import_export:
-  job: Робота
   connector: Коннектор
   status:
     0: Готовий
@@ -19,7 +18,6 @@ pim_import_export:
     output: скачати згенерований файл | скачати згенеровані файли
     input: скачати файл читання | скачати файли читання
     invalid_xlsx: скачати неприпустимі дані
-    invalid_csv: скачати неприпустимі дані
   notification:
     export:
       error: Не вдалося експортувати <strong>%label%</strong>
@@ -32,8 +30,6 @@ pim_import_export:
   list: Оберіть завдання
   job_profile:
     tab:
-      property.title: Загальні властивості
-      history.title: Історія
       job_content.title: Вміст
 pim_title.export_profile.index: Керування профілями експорту
 pim_title.export_profile.edit: Профіль експорту %job.label% | Редагувати
@@ -86,10 +82,6 @@ pim_importexport:
   acl_group:
     export: Профілі експорту
     import: Профілі імпорту
-btn:
-  create:
-    export profile: створити профіль експорту
-    import profile: створити профіль імпорту
 Upload and import now: Завантажити та імпортувати зараз
 import now: Імпортувати зараз
 export now: Експортувати зараз
@@ -108,16 +100,13 @@ flash:
     removed: Імпорт було видалено
     updated: Імпорт було успішно оновлено
     running: Виконується імпорт
-General properties: Загальні властивості
 History: Історія
 pane.accordion:
-  properties: Властивості
   global_settings: Глобальні налаштування
   filters: Фільтри
 popin.create:
   export_profile.title: Створити новий профіль експорту
   import_profile.title: Створити новий профіль імпорту
-'Display item': Показати елемент
 'Hide item': Приховати елемент
 'Collecting data about job execution...': Збирання даних про виконання роботи...
 'You must select a file to upload': Необхідно вибрати файл для завантаження
@@ -137,7 +126,6 @@ job_execution.summary:
     title: 'Кодування файлу:'
     skipped: пропущено, розширення з білого списку
 Step: Етап
-Status: Статус
 Warnings: Попередження
 Summary: Зведення
 Start: Початок

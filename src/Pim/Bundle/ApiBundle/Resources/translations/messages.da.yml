@@ -12,7 +12,6 @@ pim_api:
       list: List attributgrupper
     category:
       edit: Opret og Opdater kategorier
-      list: Kategoriliste
     family:
       edit: Opret og Opdater familier
       list: Liste over familier
@@ -26,17 +25,12 @@ pim_api:
     currency.list: Liste over valutaer
     association_type:
       edit: Opret og Opdater association typer
-      list: List sammenhængstyper
   acl_group:
     overall_access: Samlede Web API-adgang
-    attribute: Egenskaber
+    attribute: Attributter
     attribute_option: Attribut valg
     attribute_group: Attributgrupper
-    category: Kategorier
-    family: Familier
     family_variant: Familie varianter
     channel: Kanaler
     locale: Landestandarder
     currency: Valutaer
-    association_type: Sammenhængstyper
-rights.api: Web API tilladelser

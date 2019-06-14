@@ -1,5 +1,4 @@
 confirmation:
-  title: Bekræft
   remove:
     item: Er du sikker på at du vil slette dette emne?
     association_type: Er du sikker på du vil slette denne associations type?
@@ -32,11 +31,8 @@ pim_datagrid:
       success: Udvalgte produkter blev slettet.
       error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
   view_selector:
-    view: Visninger
     create_view_modal:
       create: Opret
-      confirm: OK
-      cancel: Annuller
 flash:
   item:
     removed: Vare fjernet succesfuldt
@@ -60,9 +56,9 @@ flash:
     removed: Gruppen blev slettet
   group_type:
     removed: Gruppetypen fjernet
-  import profile:
+  import_profile:
     removed: Importer profil blev slettet
-  export profile:
+  export_profile:
     removed: Eksport profil blev slettet
   user:
     removed: Brugeren blev fjernet
@@ -128,13 +124,11 @@ pim:
       category_edit: Flytte produkter i kategorier
       sequential_edit: Sekventiel redigering
 jstree.create: Opret
-jstree.done: Udført
 switch_on: "Ja"
 switch_off: "Nej"
 pim_enrich:
   item:
     list:
-      delete.label: Slet
       delete.error: Fejl under sletning af elementet
     delete:
       confirm.content: Er du sikker på du vil slette denne {{ itemName }}? Det er ikke muligt at fortryde denne handling
@@ -154,18 +148,15 @@ pim_enrich:
       label: Etiket
       labels:
         save: Gem
-        cancel: Annuller
     product:
       navigation: Produkt navigation
       infos: Produkt info
       index_title: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
       title: produkt
-      locale: Landestandard
       category: Kategori
       create: Opret
       subTitle: Opret produkt
       modalTitle: Vælg en handling
-      filters: Filtre
       selected: udvalgte resultater
       common: Almindelig
       btn:
@@ -173,8 +164,6 @@ pim_enrich:
         disabled: Deaktiveret
         download_pdf: PDF
         compare_translate: Sammenlign / oversætte
-        delete: Slet
-        save: Gem
       history:
         version: Version
         author: Forfatter
@@ -202,7 +191,6 @@ pim_enrich:
           title: Familie
           none: Ingen
         family_variant:
-          title: Variant
           none: Ingen
         groups:
           title: Grupper
@@ -214,7 +202,6 @@ pim_enrich:
             close: Luk
         status: Status
         scope: Kanal
-        locale: Landestandard
       copy:
         select: Vælg
         all: Alle
@@ -230,16 +217,10 @@ pim_enrich:
       media:
         upload: Træk og slip for at uploade eller klik her
       create_popin:
-        type: Produkt
         title: Opret
         labels:
           family: Vælg familie
           family_variant: Vælg en familie variant
-          save: Gem
-          cancel: Annuller
-      message:
-        created: Produktet blev oprettet
-      completeness: Fuldført
       sequential_edit:
         item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
         empty: Dit valg er tom, skal du ændre dine søgekriterier
@@ -260,8 +241,6 @@ pim_enrich:
       title: Produktmodeller
       add_child:
         create: Tilføj ny
-        cancel: Annuller
-        confirm: Bekræft
         create_label: "Tilføje en ny {{ axes }}"
         fields:
           required_label: (variant akse)
@@ -274,17 +253,11 @@ pim_enrich:
         update_failed: Sammenhængs type kunne ikke opdateres.
         field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
-        created: Oprettet
         created_by: Oprettet af
-        updated: Opdateret
         updated_by: opdateret af
-      btn:
-        save: Gem
       title: sammenhængstype
       create_popin:
         title: Opret
-      message:
-        created: Sammenhængstype oprettet
     group_type:
       info:
         deletion_successful: Gruppen type slettet.
@@ -302,8 +275,6 @@ pim_enrich:
       title: gruppetype
       create_popin:
         title: Opret
-      message:
-        created: Gruppetypen oprettet
     channel:
       title: kanal
       info:
@@ -315,30 +286,21 @@ pim_enrich:
         create_failed: Kanalen kunne ikke opdateres.
         field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
-        created: Oprettet
         created_by: Oprettet af
-        updated: Opdateret
         updated_by: opdateret af
-      btn:
-        save: Gem
     family:
       title: familie
       selected: udvalgte familier
       info:
         update_successful: Familien opdateret
-        create_successful: Kanal oprettet.
         update_failed: Der opstod en fejl under opdatering af familie.
         cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
         cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
         attribute_edit_permission_is_not_granted: Du har ingen rettigheder til at redigere denne families attributter
         cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
       meta:
-        created: Oprettet
         created_by: Oprettet af
-        updated: Opdateret
         updated_by: opdateret af
-      btn:
-        save: Gem
       create_popin:
         title: Opret
       message:
@@ -347,7 +309,6 @@ pim_enrich:
         common:
           title: Fælles attributter
           empty: Der er ingen fælles attributter
-        axis.label: Variant akse
         level_1.label: Variant attributter niveau 1
         level_2.label: Variant attributter niveau to
         add_variant: Tilføje variant
@@ -356,7 +317,6 @@ pim_enrich:
         update_description: Træk & slip attributter til det valgte variant niveau for at få disse attributter håndteret på den variant niveau.
         update_translation: Oversætte familie variant etiket
         create: Opret
-        cancel: Annuller
         code: Kode
         label: Etiket
         levels: Variant niveauer
@@ -369,9 +329,7 @@ pim_enrich:
       info:
         update_successful: Familie variant opdateret. Produkter med varianter vil blive opdateret med ændringerne.
     attribute_option:
-      code: Kode
       label: Etiket
-      actions: Aktioner
     group:
       title: Gruppe
       info:
@@ -380,13 +338,9 @@ pim_enrich:
         update_successful: Gruppe opdateret
         update_failed: Gruppen kunne ikke opdateres.
         field_not_ready: "Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
-      btn:
-        save: Gem
       meta:
         product_count: Produkter
-        created: Oprettet
         created_by: Oprettet af
-        updated: Opdateret
         updated_by: opdateret af
       create_popin:
         title: Opret
@@ -409,24 +363,6 @@ pim_enrich:
       scopable: Omfangbar
       type:
         pim_catalog_identifier: Id
-        pim_catalog_text: Tekst
-        pim_catalog_textarea: Tekstområde
-        pim_catalog_number: Tal
-        pim_catalog_price_collection: Pris
-        pim_catalog_multiselect: Multi Select
-        pim_catalog_simpleselect: Simpel valg
-        pim_catalog_file: Fil
-        pim_catalog_image: Billede
-        pim_catalog_boolean: "Ja / Nej"
-        pim_catalog_date: Dato
-        pim_catalog_metric: Metrisk
-        pim_reference_data_simpleselect: Referencedata simpel Vælg
-        pim_reference_data_multiselect: Reference data multi Vælg
-      validation_rule:
-        email: E-mail
-        regexp: Regulære udtryk
-        url: URL
-      title: attribut
     attribute_group:
       info:
         update_failed: Attributgruppe kunne ikke opdateres
@@ -441,7 +377,6 @@ pim_enrich:
     discard_changes: Du vil miste ændringer til %entity%, hvis du forlader siden.
     delete_item: Bekræft sletning
     remove_item: Bekræft fjernelse af
-    remove: Fjern
     delete:
       attribute: Er du sikker på du vil slette denne attribut fra produktet?
       attribute_group: Vil du fjerne attributten {{ attribute }} fra denne attributgruppe?
@@ -462,8 +397,6 @@ pim_enrich:
       choose_variant: Vælg en variant
       complete_variant_product: variant produkt
       complete_variant_products: variant produkter
-      family_variant: Variant
-      product_model: Produktmodel
       flash:
         product_model_added: Produktmodellen føjet til produktmodellen
         variant_product_added: Variant produkt føjet til produktmodellen
@@ -473,7 +406,6 @@ pim_enrich:
           title: Tilknytninger
           info:
             none_exist: Der findes ingen sammenhængstype.
-            show_products: Display-produkter
             show_groups: Visningsgrupper
             number_of_associations: "{{ productCount }} produkt(er), {{ productModelCount }} produkt model(er) og {{ groupCount }} gruppe(r)"
           association_type_selector: Sammenhængstyper
@@ -492,7 +424,6 @@ pim_enrich:
             attributes_selected: "{{ itemsCount }} attribut(ter) valgt"
             no_match: Ingen fundet
             load_more: Indlæser flere resultater...
-          attribute_group_selector: Attributgruppe
           attribute_group_all: Alle
           attribute_group.to_fill_count: "{1}1 tom kræved attribut |] 1, Inf [{{ count }} tomme krævede attributter"
           attribute_filter:
@@ -511,9 +442,6 @@ pim_enrich:
           missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
         history:
           title: Historik
-      switch:
-        "no": "Nej"
-        "yes": "Ja"
       sequential_edit:
         info:
           products: produkter
@@ -528,7 +456,6 @@ pim_enrich:
           merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
           keep_attributes: Ingen attributter vil blive fjernet.
           change_family_to: Ændre familien til
-          empty_selection: Vælg familie
       flash:
         attribute_deletion_error: Der opstod en fejl under attribut sletning
       mass_edit:
@@ -537,9 +464,6 @@ pim_enrich:
     association_type:
       tab:
         properties:
-          title: Egenskaber
-          general: Generelle egenskaber
-          code: Kode
           label_translations: Etiket oversættelser
         history:
           title: Historik
@@ -557,9 +481,6 @@ pim_enrich:
         history:
           title: Historik
         properties:
-          title: Egenskaber
-          general: Generelt
-          code: Kode
           currencies: Valutaer
           locales: Landestandarder
           category_tree: Kategoritræstrukturen
@@ -570,20 +491,15 @@ pim_enrich:
     family:
       tab:
         properties:
-          title: Egenskaber
-          general: Generelt
-          code: Kode
           attribute_as_label: Attributten anvendes som etiket
           attribute_as_image: Attributten anvendes som det primære billede
-          empty_attribute_as_image: Ikke valgte
           label_translations: Etiket oversættelser
         attributes:
           title: Egenskaber
           label_label: Etiket
           toolbox:
             select_attributes_by_groups: Tilføj efter gruppe
-            select_attributes: Tilføj egenskab
-            add: Tilføj
+            select_attributes: Tilføj attributter
             attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
           not_required_label: Ikke påkrævet
           required_label: Påkrævet
@@ -605,18 +521,9 @@ pim_enrich:
         error_creating_option: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
       add_option_modal:
         title: Tilføj attribut tilvalg
-        confirm: Tilføj
-        cancel: Annuller
-    entity:
-      switch:
-        "no": "Nej"
-        "yes": "Ja"
     group:
       tab:
         properties:
-          title: Egenskaber
-          general: Generelle egenskaber
-          code: Kode
           type: Type
           label_translations: Etiket oversættelser
         history:
@@ -635,27 +542,22 @@ pim_enrich:
           table:
             name: Navn
             type: Type
-            scopable: Omfangbar
-            localizable: Oversættelige
+            localizable: Kan oversættes
         history.title: Historik
     common:
       tab:
         attributes:
           btn:
-            add: Tilføj
             add_attributes: Tilføj egenskab
           info:
             search_attributes: Søg...
             no_available_attributes: Der er ikke flere attributter at tilføje
     job_execution:
-      loading: Indlæser...
       title.details: udførelse detaljer
-      refreshBtn.title: Opdatér
       meta:
         status.title: Status
       button:
         show_profile.title: Vis profil
-        download_log.title: Download log
         download_file.title: Download genererede fil
         download_archive.title: Download genereret Arkiv
       summary:
@@ -663,7 +565,6 @@ pim_enrich:
         warning: Advarsel
         header.step: Trin
         header.status: Status
-        header.warnings: Advarsler
         header.summary: Opsummering
         header.start: Start
         header.end: Slut
@@ -680,9 +581,6 @@ pim_enrich:
         import.launch: Importer nu
         import.upload: Indlæs og importer nu
         import.upload_file: Overfør en fil
-      meta:
-        job: Job
-        connector: Connector
       subsection:
         last_executions: Sidste kørsel
       tab:
@@ -690,8 +588,6 @@ pim_enrich:
           title: Indhold
         properties:
           title: Egenskaber
-          code:
-            title: Kode
           label:
             title: Etiket
           decimal_separator:
@@ -757,45 +653,20 @@ pim_enrich:
         properties:
           title: Egenskaber
           section:
-            common: Generelle parametre
             type_specific: Specifik type parametre
-            validation: Valideringsparametre
           label:
-            allowed_extensions: Tilladte filendelser
             auto_option_sorting: Sorter automatisk indstillinger efter alfabetisk rækkefølge
-            available_locales: Tilgængelige landestandarder
             code: Kode
-            date_max: Maks. dato
-            date_min: Min. dato
             decimals_allowed: Decimal værdier tilladt
-            default_metric_unit: Standard metriske enhed
-            group: Attributgruppe
-            is_locale_specific: Landestandard specifik
-            localizable: Værdi pr. landestandard
-            max_characters: Maks. tegn
-            max_file_size: Maks. filstørrelse (MB)
-            metric_family: Metriske familie
             minimum_input_length: Minimumlængde for autokomplettering
             negative_allowed: Negative værdier tilladt
-            number_max: Maks. antal
-            number_min: Min. antal
             reference_data_name: Reference data type
-            scopable: Værdi pr. kanal
             type: Type
-            unique: Unik værdi
-            useable_as_grid_filter: Brugbare i gitter
-            validation_regexp: Regulære udtryk
-            validation_rule: Valideringsregel
             wysiwyg_enabled: RTF-editoren aktiveret
           default_label:
-            default_metric_unit: Vælg enhed
-            group: Vælg attributgruppe
             metric_family: Vælg familie
-            reference_data_name: Vælg reference datatype
         labels:
           title: Etiket oversættelser
-        choices:
-          title: Muligheder
         history:
           title: Historik
     mass_edit:
@@ -805,7 +676,6 @@ pim_enrich:
           toolbox:
             select_attributes_by_groups: Tilføj efter gruppe
             select_attributes: Tilføj egenskab
-            add: Tilføj
             attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
     basket:
       title: Indkøbskurv
@@ -835,7 +705,6 @@ pim_enrich:
           empty: Alle attributter vil blive eksporteret
           modal:
             apply: Anvend
-            cancel: Annuller
             title: Valg af batchattributter
         attributes_selector:
           attribute_group: Attributgrupper
@@ -847,7 +716,6 @@ pim_enrich:
           title: Egenskaber
           description: Vælg fabrikat oplysningerne eksportere
         family:
-          title: Familie
           help: "Vælg produkterne, der eksporteres af deres familie. Ex: Eksport kun de sko og kjoler."
           operators:
             IN: I listen
@@ -866,7 +734,6 @@ pim_enrich:
           title: Status
           help: "Vælg produkterne, der eksporteres af deres status. Ex: Eksportere produkter overhovedet deres status."
           value:
-            all: Alle
             enabled: Aktiveret
             disabled: Deaktiveret
         completeness:
@@ -898,13 +765,11 @@ pim_enrich:
             NOT EMPTY: er ikke tom
         string:
           operators:
-            ALL: Alle
             CONTAINS: Indeholder
             DOES NOT CONTAIN: Indeholder ikke
             "=": er lig med
             STARTS WITH: Starter med
             ENDS WITH: Ender med
-            EMPTY: Er tom
             NOT EMPTY: er ikke tom
         price-collection:
           operators:
@@ -914,12 +779,9 @@ pim_enrich:
             ">": større end
             "<=": Mindre end eller lig med
             "<": Mindre end
-            EMPTY: Er tom
             NOT EMPTY: er ikke tom
         multi_select:
           operators:
-            IN: I listen
-            EMPTY: Er tom
             NOT EMPTY: er ikke tom
         media:
           operators:
@@ -928,17 +790,15 @@ pim_enrich:
             "=": er lig med
             STARTS WITH: Starter med
             ENDS WITH: Ender med
-            EMPTY: Er tom
             NOT EMPTY: er ikke tom
         date:
           operators:
-            ">": større end
+            ">": Højere end
             "<": Mindre end
             "=": er lig med
             "!=": Er ikke lig med
             BETWEEN: Mellem
             NOT BETWEEN: ikke mellem
-            EMPTY: Er tom
             NOT EMPTY: er ikke tom
         number:
           operators:
@@ -948,10 +808,7 @@ pim_enrich:
             ">": større end
             "<=": Mindre end eller lig med
             "<": Mindre end
-            EMPTY: Er tom
             NOT EMPTY: er ikke tom
-      properties:
-        title: Egenskaber
       global_settings:
         title: Globale indstillinger
   mass_edit_action:
@@ -964,7 +821,6 @@ pim_enrich:
     import_profiles:
       title: "] -Inf, 1] {{ count }} import profil |] 1, Inf [{{ count }} import profiler"
       create_btn: opret import profil
-      list: Vælg et job
       create_popin:
         title: Opret
       message:
@@ -973,7 +829,6 @@ pim_enrich:
       title: importer rapporter
     group:
       title: "] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
-      create_btn: Opret gruppe
     export_profiles:
       title: "] -Inf, 1] {{ count }} eksportprofil |] 1, Inf [{{ count }} export profiler"
       create_btn: opret eksportprofil
@@ -995,13 +850,8 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} locale |] 1, Inf [{{ count }} landestandarder"
     user:
       title: "] -Inf, 1] {{ count }} brugeren |] 1, Inf [{{ count }} brugere"
-      create_btn: Opret bruger
     user_role:
       title: "] -Inf, 1] {{ count }} rolle |] 1, Inf [{{ count }} roller"
-      create_btn: Opret rolle
-    user_group:
-      title: "] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
-      create_btn: Opret gruppe
     process_tracker:
       title: "] -Inf, 1] {{ count }} operation |] 1, Inf [{{ count }} operationer"
     channel:
@@ -1018,10 +868,7 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} API forbindelse |] 1, Inf [{{ count }} API forbindelser"
       create_btn: Opret
   mass_edit:
-    next: Næste
     previous: Tilbage
-    cancel: Annuller
-    confirm: Bekræft
     product:
       title: Produkter bulk handling
       confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
@@ -1031,10 +878,6 @@ pim_enrich:
         choose:
           title: Produkter bulk handling
           label_count: "] 0, Inf [Vælg din handling"
-        configure:
-          label: Konfigurér
-        confirm:
-          label: Bekræft
         launch_error:
           label: Der opstod en fejl under opstart af handlingen masse Rediger
         launched:
@@ -1043,8 +886,6 @@ pim_enrich:
         change_status:
           label: Skift status
           label_count: "{1}Change <span class=\"AknFullPage-title--highlight\"> 1</span> produkt |] 1, Inf [Skift status af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
-          description: De valgte produkter vil blive aktiveret eller deaktiveret.
-          field: At aktivere
         edit_common:
           label: Redigere attributter værdier
           label_count: "{1}Ret fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
@@ -1056,12 +897,9 @@ pim_enrich:
         change_family:
           label: Ændre familie
           label_count: "{1}Change familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
-          description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
           field: Familie
         add_to_group:
-          label: Tilføj til grupper
           label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
-          description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
           field: Grupper
         add_to_category:
           label: Tilføje til kategorier
@@ -1074,7 +912,6 @@ pim_enrich:
         remove_from_category:
           label: Fjern fra kategorier
           label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
-          description: Produkterne vil blive fjernet fra følgende kategorier.
         add_to_existing_product_model:
           label: Føj til en eksisterende produktmodel
           label_count: "{1}Add <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til en eksisterende produktmodel |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til en eksisterende produktmodel"
@@ -1092,17 +929,8 @@ pim_enrich:
       title: Familier massehandling
       confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
       step:
-        select:
-          label: Vælg familier
         choose:
           title: Familier massehandling
-          label_count: "] 0, Inf [Vælg din handling"
-        configure:
-          label: Konfigurér
-        confirm:
-          label: Bekræft
-        launched:
-          label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
       operation:
         set_requirements:
           label: Indstil attribut krav
@@ -1111,7 +939,7 @@ pim_enrich:
 pim_enrich.error:
   exception.title: Oh snap! Der opstod en {{ status_code }}...
   http:
-    403: Du har ikke adgang til denne side
+    403: Forbudt. Du har ikke adgang til denne side
 page_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
@@ -1128,7 +956,6 @@ page_title:
   pim_enrich_product_index: Produkter
   pim_enrich_product_edit: Produkt {{ product.label }} | Rediger
   pim_enrich_product_model_edit: Produkt model {{ product.label }} | Rediger
-  pim_enrich_family_index: Familier
   pim_enrich_family_edit: Familie {{ family.label }} | Rediger
   pim_enrich_channel_index: Kanaler
   pim_enrich_channel_create: Kanaler | Oprette
@@ -1141,15 +968,11 @@ page_title:
   pim_enrich_associationtype_edit: Sammenhængstype {{ association type.label }} | Rediger
   pim_enrich_grouptype_index: Gruppetyper
   pim_enrich_grouptype_edit: Gruppe type {{ group type.label }} | Rediger
-  pim_enrich_mass_edit_action_choose: Masse Rediger | Vælg
-  pim_enrich_mass_edit_action_configure: Masse Rediger | Konfigurere
   pim_enrich_mass_edit_action_perform: Masse Rediger | Udføre
-  pim_enrich_job_tracker_index: Processen overvågning
+  pim_enrich_job_tracker_index: Process overvågning
   pim_enrich_job_tracker_show: Process overvågning | Vis job
   pim_enrich_api_connection_index: API-forbindelser
   pim_enrich_api_connection_create: API forbindelser | Oprette
-  pim_enrich_mass_edit_action: Masse Rediger
-  pim_analytics_system_info_index: Systemoplysninger
 batch_jobs:
   add_product_value:
     label: Tilføj produktværdi
@@ -1164,9 +987,6 @@ batch_jobs:
     perform:
       label: Tilføj til gruppe
   edit_common_attributes:
-    label: Rediger attributter
-    perform:
-      label: Rediger attributter
     cleaner:
       label: Rens filer til fælles attributter
   add_to_category:
@@ -1181,104 +1001,35 @@ batch_jobs:
     label: Fjern fra kategori
     perform:
       label: Fjern fra kategori
-  add_association:
-    label: Associeret
-    perform:
-      label: Associeret
-  add_to_existing_product_model:
-    label: Føj til en eksisterende produktmodel
-    perform:
-      label: Føj til en eksisterende produktmodel
   set_attribute_requirements:
     label: Indstil attribut krav
-    perform:
-      label: Indstil attribut krav
   csv_product_quick_export:
     quick_export.label: CSV-produkt hurtig eksport
     quick_export_product_model.label: CSV-produkt hurtig eksport
-    perform:
-      label: CSV-produkt hurtig eksport
   csv_product_grid_context_quick_export:
     quick_export.label: CSV-produkt gitter sammenhæng hurtig eksport
     quick_export_product_model.label: CSV-produkt gitter sammenhæng hurtig eksport
-    perform:
-      label: CSV-produkt gitter sammenhæng hurtig eksport
   xlsx_product_quick_export:
     quick_export.label: XSLX produkt hurtig eksport
     quick_export_product_model.label: XSLX produkt model hurtig eksport
-    perform:
-      label: XSLX produkt hurtig eksport
   xlsx_product_grid_context_quick_export:
     quick_export.label: Xlsx-produkt gitter sammenhæng hurtig eksport
     quick_export_product_model.label: XSLX produkt model gitter sammenhæng hurtig eksport
-    perform:
-      label: Xlsx-produkt gitter sammenhæng hurtig eksport
-  csv_product_export:
-    label: Produkt eksport til CSV
-    export.label: Produkt eksport
   csv_product_model_export:
     label: Produkt model eksport i CSV-
-    export.label: Produkt eksport
-  csv_category_export:
-    label: Kategori eksport til CSV
-    export.label: Kategori eksport
-  csv_attribute_export:
-    label: Attributten udførsel til CSV
-    export.label: Attribut eksport
-  csv_attribute_option_export:
-    label: Attribut options eksport til CSV
-    export.label: Attribut option eksport
-  csv_association_type_export:
-    label: Association type export in CSV
-    export.label: Association type export
-  csv_group_export:
-    label: Gruppen eksport til CSV
-    export.label: Gruppe eksport
-  csv_family_export:
-    label: Familie eksport i CSV
-    export.label: Familie eksport
   csv_family_variant_export:
     label: Familie variant eksport i CSV
     export.label: Familie variant eksport
-  csv_product_import:
-    label: Produkt eksport fra CSV-fil
-    validation.label: Filvalidering
-    import.label: Produkt import
-    import_associations.label: Association import
   csv_product_model_import:
     label: Produkt model import i CSV-
-  csv_category_import:
-    label: Kategori eksport fra CSV
-    validation.label: Filvalidering
-    import.label: Kategori import
-  csv_attribute_import:
-    label: Attributten udførsel fra CSV
-    validation.label: Filvalidering
-    import.label: Attribut import
-  csv_attribute_option_import:
-    label: Attribut indstillinger -  import fra CSV
-    validation.label: Filvalidering
-    import.label: Attribut indstilling import
-  csv_association_type_import:
-    label: Association type import fra CSV
-    validation.label: Filvalidering
-    import.label: Association type import
   csv_family_import:
-    label: Familie import i CSV
-    validation.label: Filvalidering
-    import.label: Familie import
     compute_data_related_to_family_variants.label: Beregn produkt model data
     compute_data_related_to_family_root_product_models.label: Beregn rod produkt model data
     compute_data_related_to_family_sub_product_models.label: Beregn under produkt model data
     compute_data_related_to_family_products.label: Beregn produkt model data
   csv_family_variant_import:
     label: Familie variant import i CSV
-    validation.label: Filvalidering
     import.label: Familie variant import
-  csv_group_import:
-    label: Gruppe import fra CSV
-    validation.label: Filvalidering
-    import.label: Gruppe import
   csv_channel_export:
     label: Kanal eksportet til CSV
     export.label: Kanal eksport
@@ -1296,132 +1047,57 @@ batch_jobs:
     export.label: Grupp type eksport
   csv_channel_import:
     label: Kanal import fra CSV
-    validation.label: Filvalidering
     import.label: Kanal import
   csv_locale_import:
     label: Landestandard import fra CSV
-    validation.label: Filvalidering
     import.label: Landestandard import
   csv_attribute_group_import:
     label: Attribut gruppe import fra CSV
-    validation.label: Filvalidering
     import.label: Attribut gruppe import
   csv_currency_import:
     label: Valuta import fra CSV
-    validation.label: Filvalidering
     import.label: Valuta import
   csv_group_type_import:
     label: Gruppe type import fra CSV
-    validation.label: Filvalidering
     import.label: Gruppe type import
-  xlsx_category_import:
-    label: Kategori import fra XLSX
-    validation.label: Filvalidering
-    import.label: Kategori import
-  xlsx_association_type_import:
-    label: Sammenkædningstype import fra CSV
-    validation.label: Filvalidering
-    import.label: Association type import
-  xlsx_attribute_import:
-    label: Attribut import fra XLSX
-    validation.label: Filvalidering
-    import.label: Attribut import
-  xlsx_attribute_option_import:
-    label: Attribut tilvalg import fra XLSX
-    validation.label: Filvalidering
-    import.label: Attribut indstilling import
   xlsx_family_import:
-    label: Familie import i XLSX
-    validation.label: Filvalidering
-    import.label: Familie import
-    compute_data_related_to_family_variants.label: Beregn produkt model data
     compute_data_related_to_family_root_product_models.label: Beregn rod produkt model data
     compute_data_related_to_family_sub_product_models.label: Beregn under produkt model data
-    compute_data_related_to_family_products.label: Beregn produkt model data
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
-    validation.label: Filvalidering
-    import.label: Familie variant import
-  xlsx_product_export:
-    label: Produkt eksport til XLSX
-    export.label: Produkt eksport
   xlsx_product_model_export:
     label: Produkt model eksport i XLSX
     export.label: Produkt model eksport
-  xlsx_product_import:
-    label: Produkt import fra XLSX
-    validation.label: Filvalidering
-    import.label: Produkt import
-    import_associations.label: Association import
   xlsx_product_model_import:
     label: Produkt model import i XSLX
-  xlsx_group_export:
-    label: Gruppe eksport til XLSX
-    export.label: Gruppe eksport
-  xlsx_group_import:
-    label: Gruppe import fra XLSX
-    validation.label: Filvalidering
-    import.label: Gruppe import
-  xlsx_family_export:
-    label: Familie eksport til XLSX
-    export.label: Familie eksport
   xlsx_family_variant_export:
     label: Familie variant eksport i XLSX
-    export.label: Familie variant eksport
-  xlsx_category_export:
-    label: Kategori eksport til XLSX
-    export.label: Kategori eksport
-  xlsx_attribute_export:
-    label: Attribut eksport til XLSX
-    export.label: Attribut eksport til XLSX
-  xlsx_attribute_option_export:
-    label: Attribut tilvalg eksport til XLSX
-    export.label: Attribut tilvalg eksport til XLSX
-  xlsx_association_type_export:
-    label: Sammenkædningstype eksport til CSV
-    export.label: Sammenkædningstype eksport til CSV
   xlsx_channel_export:
     label: Kanal eksport til XLSX
-    export.label: Kanal eksport
   xlsx_locale_export:
     label: Landestandard eksport til XLSX
-    export.label: Landestandard eksport
   xlsx_attribute_group_export:
     label: Attribut gruppe eksport til CSV
-    export.label: Attribut gruppe eksport
   xlsx_currency_export:
     label: Valuta eksport til XLSX
-    export.label: Valuta eksport
   xlsx_group_type_export:
     label: Gruppe type eksport til XLSX
-    export.label: Grupp type eksport
   xlsx_channel_import:
     label: Kanal import fra XLSX
-    validation.label: Filvalidering
-    import.label: Kanal import
   xlsx_locale_import:
     label: Landestandard import fra XLSX
-    validation.label: Filvalidering
-    import.label: Landestandard import
   xlsx_attribute_group_import:
     label: Attribut gruppe import fra CSV
-    validation.label: Filvalidering
-    import.label: Attribut gruppe import
   xlsx_currency_import:
     label: Valuta import fra XLSX
-    validation.label: Filvalidering
-    import.label: Valuta import
   xlsx_group_type_import:
     label: Gruppen type import fra XLSX
-    validation.label: Filvalidering
-    import.label: Gruppe type import
 job_tracker:
   download_archive:
     archive: Download genereret Arkiv
     output: Download genererede fil
     input: Download læse filer
     invalid_xlsx: download ugyldige data
-    invalid_csv: download ugyldige data
 pim_menu:
   tab:
     activity: Aktivitet
@@ -1440,45 +1116,29 @@ pim_menu:
     category: Kategorier
     channel: Kanaler
     currency: Valutaer
-    dashboard: Kontrolpanel
-    family: Familier
     group: Grupper
     group_type: Gruppetyper
     locale: Landestandarder
     product: Produkter
     product_model: Produktmodeller
-    published_product: Offentliggjorte produkter
     export_history: Eksport historik
     export_profile: Eksport profiler
     import_history: Import historik
     import_profile: Import profiler
-    configuration: Konfiguration
-    catalog_volume: Katalog volumen overvågning
-    user_management: Bruger administration
-    user: Brugere
     user_group: Grupper
-    user_role: Roller
-    info: Systemoplysninger
-    job_tracker: Processen overvågning
-    api_connection: API-forbindelser
+    job_tracker: Process overvågning
   navigation:
     activity: Aktivitet navigation
     system: System navigation
     user: Brugere håndtering navigation
     settings: Indstillinger for navigation
-  user:
-    logout: Log ud
-    user_account: Min konto
 pim_notification:
   mark_all_as_read: Markér alle som læst
   no_notifications: Ingen notifikation
-  loading: Indlæser...
 catalog_volume:
   axis:
     count_products: Produkter
     count_channels: Kanaler
-    count_families: Familier
     count_attributes: Egenskaber
     count_categories: Kategorier
     count_category_trees: Kategoritræstrukturen
-    count_product_models: Produktmodeller

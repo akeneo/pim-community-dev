@@ -12,7 +12,7 @@ pim_api:
       list: Elenco attributi di gruppo
     category:
       edit: Crea e aggiorna categorie
-      list: Lista Categorie
+      list: Elenco categorie
     family:
       edit: Crea e aggiorna famiglie
       list: Elenco famiglie
@@ -39,4 +39,4 @@ pim_api:
     locale: Impostazioni locali
     currency: Valute
     association_type: Tipi di associazione
-rights.api: Permessi Web API
+rights.api: Permessi delle API Web

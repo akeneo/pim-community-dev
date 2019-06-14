@@ -16,7 +16,6 @@ pim_dashboard:
       title: Seneste handlinger
       empty: Ingen, handlinger fundet
       status: Status
-      date: Dato
       type: Type
       "profile name": Profilnavn
       details: Detaljer
