@@ -358,7 +358,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $output->getFormatter()->willReturn($formatter);
 
         $productAndProductModelClient->hasIndex()->willReturn(false);
-        $container->getParameter('product_index_name')->willReturn('foo');
+        $container->getParameter('product_and_product_model_index_name')->willReturn('foo');
 
         $commandInput = new ArrayInput([
             'command'    => 'pim:product:index',
