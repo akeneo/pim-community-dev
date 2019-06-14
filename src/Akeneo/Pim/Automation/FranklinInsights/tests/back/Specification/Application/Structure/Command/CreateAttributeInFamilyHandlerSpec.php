@@ -24,6 +24,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -38,9 +39,9 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
     public function let(
         CreateAttributeInterface $createAttribute,
         AddAttributeToFamilyInterface $addAttributeToFamily,
-        EventDispatcherInterface $eventDispatcher
+        FranklinAttributeCreatedRepositoryInterface $attributeCreatedRepository
     ) {
-        $this->beConstructedWith($createAttribute, $addAttributeToFamily, $eventDispatcher);
+        $this->beConstructedWith($createAttribute, $addAttributeToFamily, $attributeCreatedRepository);
     }
 
     public function it_is_a_create_attribute_in_family_handler()
@@ -51,7 +52,7 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
     public function it_creates_an_attribute_and_adds_it_to_the_family(
         $createAttribute,
         $addAttributeToFamily,
-        $eventDispatcher
+        $attributeCreatedRepository
     ) {
         $pimAttrCode = AttributeCode::fromLabel('Franklin attr label');
         $pimFamilyCode = new FamilyCode('my_family_code');
@@ -64,10 +65,7 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
             new AttributeType(AttributeTypes::TEXT)
         )->shouldBeCalled();
 
-        $eventDispatcher->dispatch(
-            FranklinAttributeCreated::EVENT_NAME,
-            Argument::type(FranklinAttributeCreated::class)
-        );
+        $attributeCreatedRepository->save(Argument::type(FranklinAttributeCreated::class));
 
         $addAttributeToFamily->addAttributeToFamily($pimAttrCode, $pimFamilyCode)->shouldBeCalled();
 

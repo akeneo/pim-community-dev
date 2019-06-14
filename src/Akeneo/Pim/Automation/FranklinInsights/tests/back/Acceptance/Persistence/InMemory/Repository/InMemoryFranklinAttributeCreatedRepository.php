@@ -21,7 +21,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinA
  */
 class InMemoryFranklinAttributeCreatedRepository implements FranklinAttributeCreatedRepositoryInterface
 {
+    private $events = [];
+
     public function save(FranklinAttributeCreated $franklinAttributeCreated): void
     {
+        $this->events[] = $franklinAttributeCreated;
     }
 }

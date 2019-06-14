@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateA
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -31,16 +31,16 @@ class CreateAttributeInFamilyHandler
     /** @var AddAttributeToFamilyInterface */
     private $updateFamily;
 
-    private $eventDispatcher;
+    private $franklinAttributeCreatedRepository;
 
     public function __construct(
         CreateAttributeInterface $createAttribute,
         AddAttributeToFamilyInterface $updateFamily,
-        EventDispatcherInterface $eventDispatcher
+        FranklinAttributeCreatedRepositoryInterface $franklinAttributeCreatedRepository
     ) {
         $this->createAttribute = $createAttribute;
         $this->updateFamily = $updateFamily;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->franklinAttributeCreatedRepository = $franklinAttributeCreatedRepository;
     }
 
     public function handle(CreateAttributeInFamilyCommand $command): void
@@ -53,8 +53,7 @@ class CreateAttributeInFamilyHandler
             new AttributeLabel((string) $command->getFranklinAttributeLabel()),
              $pimAttributeType
         );
-        $this->eventDispatcher->dispatch(
-            FranklinAttributeCreated::EVENT_NAME,
+        $this->franklinAttributeCreatedRepository->save(
             new FranklinAttributeCreated($command->getPimAttributeCode(), $pimAttributeType)
         );
 
