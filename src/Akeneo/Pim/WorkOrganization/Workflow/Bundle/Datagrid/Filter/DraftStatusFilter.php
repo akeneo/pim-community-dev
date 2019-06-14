@@ -20,21 +20,17 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
-use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class DraftStatusFilter implements FilterInterface
+class DraftStatusFilter extends ChoiceFilter
 {
     const WORKING_COPY = 0;
     const IN_PROGRESS = 1;
     const WAITING_FOR_APPROVAL = 2;
-
-    private $choiceFilter;
-
-    private $filterUtility;
 
     private $selectProductIdsByUserAndDraftStatusQuery;
 
@@ -43,14 +39,14 @@ class DraftStatusFilter implements FilterInterface
     private $userContext;
 
     public function __construct(
-        ChoiceFilter $choiceFilter,
+        FormFactoryInterface $formFactory,
         ProductFilterUtility $filterUtility,
         SelectProductIdsByUserAndDraftStatusQueryInterface $selectProductIdsByUserAndDraftStatusQuery,
         SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
         UserContext $userContext
     ) {
-        $this->choiceFilter = $choiceFilter;
-        $this->filterUtility = $filterUtility;
+        parent::__construct($formFactory, $filterUtility);
+
         $this->selectProductIdsByUserAndDraftStatusQuery = $selectProductIdsByUserAndDraftStatusQuery;
         $this->selectProductModelIdsByUserAndDraftStatusQuery = $selectProductModelIdsByUserAndDraftStatusQuery;
         $this->userContext = $userContext;
@@ -93,7 +89,7 @@ class DraftStatusFilter implements FilterInterface
         $esIds = $this->prepareIdsForEsFilter($productIds, $productModelIds);
         $esIds = empty($esIds) ? ['null'] : $esIds;
 
-        $this->filterUtility->applyFilter($filterDatasource, 'id', $operator, $esIds);
+        $this->util->applyFilter($filterDatasource, 'id', $operator, $esIds);
 
         return true;
     }
@@ -102,44 +98,12 @@ class DraftStatusFilter implements FilterInterface
     {
         $esValueIds = [];
         foreach ($productIds as $productId) {
-            $esValueIds[] = 'product_'. $productId;
+            $esValueIds[] = 'product_' . $productId;
         }
         foreach ($productModelIds as $productModelId) {
-            $esValueIds[] = 'product_model_'. $productModelId;
+            $esValueIds[] = 'product_model_' . $productModelId;
         }
 
         return $esValueIds;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function init($name, array $params): void
-    {
-        $this->choiceFilter->init($name, $params);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->choiceFilter->getName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getForm()
-    {
-        return $this->choiceFilter->getForm();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMetadata()
-    {
-        return $this->choiceFilter->getMetadata();
     }
 }

@@ -14,22 +14,24 @@ use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class DraftStatusFilterSpec extends ObjectBehavior
 {
     function let(
-        ChoiceFilter $choiceFilter,
+        FormFactoryInterface $formFactory,
         ProductFilterUtility $filterUtility,
         SelectProductIdsByUserAndDraftStatusQueryInterface $selectProductIdsByUserAndDraftStatusQuery,
         SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
         UserContext $userContext
     ) {
-        $this->beConstructedWith($choiceFilter, $filterUtility, $selectProductIdsByUserAndDraftStatusQuery, $selectProductModelIdsByUserAndDraftStatusQuery, $userContext);
+        $this->beConstructedWith($formFactory, $filterUtility, $selectProductIdsByUserAndDraftStatusQuery, $selectProductModelIdsByUserAndDraftStatusQuery, $userContext);
     }
 
-    function it_is_a_filter()
+    function it_is_a_choice_filter()
     {
-       $this->shouldImplement(FilterInterface::class);
+        $this->shouldImplement(FilterInterface::class);
+        $this->shouldHaveType(ChoiceFilter::class);
     }
 
     function it_is_the_draft_status_filter()

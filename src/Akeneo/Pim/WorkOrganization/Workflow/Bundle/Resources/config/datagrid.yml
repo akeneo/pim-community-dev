@@ -317,7 +317,7 @@ services:
     pimee_workflow.datagrid.product.filter.draft_status:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\DraftStatusFilter
         arguments:
-            - '@oro_filter.choice_filter'
+            - '@form.factory'
             - '@pim_filter.product_utility'
             - '@pimee_workflow.query.select_product_ids_by_user_and_draft_status'
             - '@pimee_workflow.query.select_product_model_ids_by_user_and_draft_status'

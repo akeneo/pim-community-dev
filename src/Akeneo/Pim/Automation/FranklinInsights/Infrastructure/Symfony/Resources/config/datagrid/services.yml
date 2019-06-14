@@ -9,7 +9,7 @@ services:
     akeneo.pim.automation.franklin_insights.datagrid.product_subscription_filter:
         class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid\FranklinSubscriptionFilter
         arguments:
-            - '@oro_filter.choice_filter'
+            - '@form.factory'
             - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: franklin_subscription }

@@ -13,23 +13,31 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid;
 
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid\FranklinSubscriptionFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class FranklinSubscriptionFilterSpec extends ObjectBehavior
 {
-    public function let(FilterInterface $baseFilter, ProductFilterUtility $filterUtility): void
+    public function let(FormFactoryInterface $formFactory, ProductFilterUtility $filterUtility): void
     {
-        $this->beConstructedWith($baseFilter, $filterUtility);
+        $this->beConstructedWith($formFactory, $filterUtility);
     }
 
-    public function it_is_a_filter(): void
+    public function it_is_a_choice_filter(): void
     {
         $this->shouldImplement(FilterInterface::class);
+        $this->shouldHaveType(ChoiceFilter::class);
+    }
+
+    public function it_is_the_franklin_subscription_filter()
+    {
+        $this->shouldHaveType(FranklinSubscriptionFilter::class);
     }
 
     public function it_applies_a_franklin_subscription_filter(
@@ -51,33 +59,5 @@ class FranklinSubscriptionFilterSpec extends ObjectBehavior
 
         $this->apply($filterDatasource, ['value' => null])->shouldReturn(false);
         $this->apply($filterDatasource, ['foo' => 1])->shouldReturn(false);
-    }
-
-    public function it_initializes_the_filter(FilterInterface $baseFilter): void
-    {
-        $baseFilter->init('franklin_subscription', ['type' => 'franklin_subscription'])->shouldBeCalled();
-
-        $this->init('franklin_subscription', ['type' => 'franklin_subscription']);
-    }
-
-    public function it_returns_the_name_of_the_filter(FilterInterface $baseFilter): void
-    {
-        $baseFilter->getName()->willReturn('franklin_subscription');
-
-        $this->getName()->shouldReturn('franklin_subscription');
-    }
-
-    public function it_returns_the_form_of_the_filter(FilterInterface $baseFilter, Form $form): void
-    {
-        $baseFilter->getForm()->willReturn($form);
-
-        $this->getForm()->shouldReturn($form);
-    }
-
-    public function it_returns_the_metadata_of_the_filter(FilterInterface $baseFilter): void
-    {
-        $baseFilter->getMetadata()->willReturn(['name' => 'franklin_subscription']);
-
-        $this->getMetadata()->shouldReturn(['name' => 'franklin_subscription']);
     }
 }

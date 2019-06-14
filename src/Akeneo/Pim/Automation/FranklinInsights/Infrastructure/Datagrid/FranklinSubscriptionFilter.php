@@ -14,31 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FilterBundle\Filter\FilterInterface;
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
+use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 
 /**
  * Allows to apply a Franklin subscription filter on the Query builder.
  */
-class FranklinSubscriptionFilter implements FilterInterface
+class FranklinSubscriptionFilter extends ChoiceFilter
 {
-    /** @var FilterInterface */
-    private $baseFilter;
-
-    /** @var ProductFilterUtility */
-    private $filterUtility;
-
-    /**
-     * @param FilterInterface $baseFilter
-     * @param ProductFilterUtility $filterUtility
-     */
-    public function __construct(FilterInterface $baseFilter, ProductFilterUtility $filterUtility)
-    {
-        $this->baseFilter = $baseFilter;
-        $this->filterUtility = $filterUtility;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -50,40 +32,8 @@ class FranklinSubscriptionFilter implements FilterInterface
             return false;
         }
 
-        $this->filterUtility->applyFilter($filterDatasource, 'franklin_subscription', '=', $filterValue);
+        $this->util->applyFilter($filterDatasource, 'franklin_subscription', '=', $filterValue);
 
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function init($name, array $params): void
-    {
-        $this->baseFilter->init($name, $params);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->baseFilter->getName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getForm()
-    {
-        return $this->baseFilter->getForm();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMetadata()
-    {
-        return $this->baseFilter->getMetadata();
     }
 }
