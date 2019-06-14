@@ -51,7 +51,5 @@ class ImagePreviewAction
         $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
 
         return new RedirectResponse($imagePreview, Response::HTTP_MOVED_PERMANENTLY);
-
-//        return new JsonResponse($imagePreview, Response::HTTP_MOVED_PERMANENTLY);
     }
 }

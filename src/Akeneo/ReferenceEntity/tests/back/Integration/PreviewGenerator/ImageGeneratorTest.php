@@ -27,6 +27,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\ImageGenerator;
 use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorInterface;
+use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorRegistry;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -83,7 +84,7 @@ class ImageGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $isSupported = $this->imageGenerator->supports(self::filename, $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $isSupported = $this->imageGenerator->supports(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
@@ -95,7 +96,7 @@ class ImageGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $isSupported = $this->imageGenerator->supports(self::filename, $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $isSupported = $this->imageGenerator->supports(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertFalse($isSupported);
     }
@@ -111,7 +112,7 @@ class ImageGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $isSupported = $this->imageGenerator->supports(self::filename, $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $isSupported = $this->imageGenerator->supports(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
@@ -131,8 +132,8 @@ class ImageGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $this->imageGenerator->supports('google-logo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
-        $previewImage = $this->imageGenerator->generate(self::filename, $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $this->imageGenerator->supports('google-logo.png', $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->imageGenerator->generate(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -148,12 +149,12 @@ class ImageGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $this->imageGenerator->supports('akeneo.png', $attribute, ImageGenerator::THUMBNAIL_TYPE);
-        $previewImage = $this->imageGenerator->generate(self::filename, $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $this->imageGenerator->supports('akeneo.png', $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->imageGenerator->generate(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
 
-        $previewImage = $this->imageGenerator->generate(self::filename, $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $previewImage = $this->imageGenerator->generate(self::filename, $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -169,10 +170,10 @@ class ImageGeneratorTest extends KernelTestCase
 
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attribute = $attributeRepository->getByIdentifier($this->attributeIdentifier);
-        $this->imageGenerator->supports('test', $attribute, ImageGenerator::THUMBNAIL_TYPE);
-        $previewImage = $this->imageGenerator->generate('test', $attribute, ImageGenerator::THUMBNAIL_TYPE);
+        $this->imageGenerator->supports('test', $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->imageGenerator->generate('test', $attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString(sprintf('media/cache/%s/pim_enrich_file_misc_default_image', ImageGenerator::THUMBNAIL_TYPE), $previewImage);
+        $this->assertStringContainsString(sprintf('media/cache/%s/pim_enrich_file_misc_default_image', PreviewGeneratorRegistry::THUMBNAIL_TYPE), $previewImage);
     }
 
     private function loadReferenceEntity(): void

@@ -25,7 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class UrlAttribute extends AbstractAttribute
 {
-    private const ATTRIBUTE_TYPE = 'url';
+    public const ATTRIBUTE_TYPE = 'url';
 
     /** @var Prefix  */
     private $prefix;

@@ -15,14 +15,13 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator;
 
 use Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Cache\Resolver\ResolverInterface;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -30,11 +29,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ImageGenerator implements PreviewGeneratorInterface
 {
-    public const THUMBNAIL_TYPE = 'dam_thumbnail';
-    public const SUPPORTED_TYPE = [
-        self::THUMBNAIL_TYPE
-    ];
-
     /** @var DataManager  */
     private $dataManager;
 
@@ -59,13 +53,14 @@ class ImageGenerator implements PreviewGeneratorInterface
         $this->defaultImageProvider = $defaultImageProvider;
     }
 
-    public function supports(string $data, UrlAttribute $attribute, string $type): bool
+    public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
-        return MediaType::IMAGE === $attribute->getMediaType()->normalize()
+        return UrlAttribute::ATTRIBUTE_TYPE === $attribute->getType()
+            && MediaType::IMAGE === $attribute->getMediaType()->normalize()
             && in_array($type,self::SUPPORTED_TYPE);
     }
 
-    public function generate(string $data, UrlAttribute $attribute, string $type): string
+    public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
         $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
 

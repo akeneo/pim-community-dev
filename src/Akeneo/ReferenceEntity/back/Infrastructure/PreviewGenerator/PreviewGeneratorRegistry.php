@@ -13,14 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class PreviewGeneratorRegistry implements PreviewGeneratorInterface, PreviewGeneratorRegistryInterface
+class PreviewGeneratorRegistry implements PreviewGeneratorInterface
 {
+    public const THUMBNAIL_TYPE = 'dam_thumbnail';
+    public const SUPPORTED_TYPES = [
+        self::THUMBNAIL_TYPE
+    ];
+
     /** @var PreviewGeneratorInterface[] */
     private $previewGenerators;
 
@@ -29,7 +34,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface, PreviewGene
         $this->previewGenerators[] = $previewGenerator;
     }
 
-    public function supports(string $data, UrlAttribute $attribute, string $type): bool
+    public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         foreach ($this->previewGenerators as $previewGenerator) {
             if($previewGenerator->supports($data, $attribute, $type)) {
@@ -40,7 +45,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface, PreviewGene
         return false;
     }
 
-    public function generate(string $data, UrlAttribute $attribute, string $type): string
+    public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
         foreach ($this->previewGenerators as $previewGenerator) {
             if($previewGenerator->supports($data, $attribute, $type)) {
@@ -50,8 +55,9 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface, PreviewGene
 
         throw new \RuntimeException(
             sprintf(
-                'There was no generator found to get the preview of attribute "%s"',
-                $attribute->getCode()
+                'There was no generator found to get the preview of attribute "%s" with type "%s"',
+                $attribute->getCode(),
+                $type
             )
         );
     }

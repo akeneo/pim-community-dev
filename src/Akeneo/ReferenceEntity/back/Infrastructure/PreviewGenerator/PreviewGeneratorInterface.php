@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -21,7 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
  */
 interface PreviewGeneratorInterface
 {
-    public function supports(string $data, UrlAttribute $attribute, string $type): bool;
+    public function supports(string $data, AbstractAttribute $attribute, string $type): bool;
 
-    public function generate(string $data, UrlAttribute $attribute, string $type): string;
+    public function generate(string $data, AbstractAttribute $attribute, string $type): string;
 }
