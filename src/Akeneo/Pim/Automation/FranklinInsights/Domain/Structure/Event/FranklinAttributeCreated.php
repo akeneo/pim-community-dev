@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class FranklinAttributeCreated extends Event
+final class FranklinAttributeCreated extends Event
 {
     public const EVENT_NAME = 'franklin_insights.attribute_created';
 
