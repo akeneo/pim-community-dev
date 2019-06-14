@@ -16,6 +16,7 @@
 
 - PIM-8412: Fix wrong display of too long attribute group labels when filtering in the datagrid
 - PIM-8424: Fix memory leak executing "akeneo:batch:purge-job-execution" command
+- PIM-8426: Fix user password validation 
 
 # 3.0.22 (2019-06-04)
 
