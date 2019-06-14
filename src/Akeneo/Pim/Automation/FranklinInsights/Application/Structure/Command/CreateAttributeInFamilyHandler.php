@@ -51,7 +51,7 @@ class CreateAttributeInFamilyHandler
         $this->createAttribute->create(
             $command->getPimAttributeCode(),
             new AttributeLabel((string) $command->getFranklinAttributeLabel()),
-            $command->getFranklinAttributeType()->convertToPimAttributeType()
+             $pimAttributeType
         );
         $this->eventDispatcher->dispatch(
             FranklinAttributeCreated::EVENT_NAME,
