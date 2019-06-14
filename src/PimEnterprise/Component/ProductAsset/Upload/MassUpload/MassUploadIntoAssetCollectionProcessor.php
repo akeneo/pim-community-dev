@@ -91,10 +91,13 @@ class MassUploadIntoAssetCollectionProcessor
      *
      * @return ProcessedItemList
      */
-    public function applyMassUpload(UploadContext $uploadContext, EntityToAddAssetsInto $addAssetsTo): ProcessedItemList
+    public function applyMassUpload(UploadContext $uploadContext, EntityToAddAssetsInto $addAssetsTo, array $importedFileNames): ProcessedItemList
     {
         $processedItems = new ProcessedItemList();
-        $importedFiles = $this->importer->getImportedFiles($uploadContext);
+
+        $importedFiles = array_map(function ($filename) use ($uploadContext) {
+            return new \SplFileInfo($uploadContext->getTemporaryImportDirectory() . DIRECTORY_SEPARATOR . $filename);
+        }, $importedFileNames);
 
         $importedAssetCodes = [];
         foreach ($importedFiles as $file) {

@@ -265,7 +265,10 @@ class MassUploadController
             'entity_type' => $entityType,
             'entity_identifier' => $entityIdentifier,
             'attribute_code' => $attributeCode,
-            'is_user_authenticated' => true
+            'is_user_authenticated' => true,
+            'imported_file_names' => array_map(function ($data) {
+                return $data['file'];
+            }, $result)
         ];
 
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);
