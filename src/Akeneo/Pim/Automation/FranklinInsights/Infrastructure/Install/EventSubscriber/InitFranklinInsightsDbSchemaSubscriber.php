@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\EventSubscriber;
 
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,14 +37,14 @@ class InitFranklinInsightsDbSchemaSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function initDbSchema(InstallerEvents $event): void
+    public function initDbSchema(InstallerEvent $event): void
     {
         $sqlQuery = <<<'SQL'
 CREATE TABLE IF NOT EXISTS pimee_franklin_insights_attribute_created(
     attribute_code VARCHAR(100) NOT NULL,
     attribute_type VARCHAR(255) NOT NULL,
     created DATETIME NOT NULL COMMENT '(DC2Type:datetime)', 
-    INDEX (attribute_code),
+    INDEX (attribute_code)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
         $this->dbalConnection->executeQuery($sqlQuery);
