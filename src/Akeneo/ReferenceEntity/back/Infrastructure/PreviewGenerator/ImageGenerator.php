@@ -57,7 +57,7 @@ class ImageGenerator implements PreviewGeneratorInterface
     {
         return UrlAttribute::ATTRIBUTE_TYPE === $attribute->getType()
             && MediaType::IMAGE === $attribute->getMediaType()->normalize()
-            && in_array($type,self::SUPPORTED_TYPE);
+            && in_array($type, PreviewGeneratorRegistry::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string

@@ -37,6 +37,8 @@ use Symfony\Bundle\FrameworkBundle\Client;
 class ImagePreviewActionTest extends ControllerIntegrationTestCase
 {
     private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_reference_entities_image_preview';
+    private const DAM_URL = 'https://akeneodemo.getbynder.com/m/1e567bef001b08fa/';
+    private const FILENAME = 'Akeneo-DSC_2109-2.jpg';
 
     /* @var Client */
     private $client;
@@ -69,9 +71,9 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::URL_VALUE_PREVIEW_ROUTE,
             [
-                'data'                => 'google-logo.png',
+                'data'                => self::FILENAME,
                 'attributeIdentifier' => 'dam_image_designer_fingerprint',
-                'type'                => 'dam_thumbnail'
+                'type'                => 'dam_thumbnail_small'
             ]
         );
         $response = $this->client->getResponse();
@@ -90,7 +92,7 @@ class ImagePreviewActionTest extends ControllerIntegrationTestCase
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString('https://ressources.blogdumoderateur.com/2013/10/'),
+            Prefix::fromString(self::DAM_URL),
             Suffix::empty(),
             MediaType::fromString(MediaType::IMAGE)
         );

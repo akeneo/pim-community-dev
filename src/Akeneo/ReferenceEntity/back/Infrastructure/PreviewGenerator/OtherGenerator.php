@@ -37,7 +37,7 @@ class OtherGenerator implements PreviewGeneratorInterface
     {
         return UrlAttribute::ATTRIBUTE_TYPE === $attribute->getType()
             && MediaType::OTHER === $attribute->getMediaType()->normalize()
-            && in_array($type,PreviewGeneratorRegistry::SUPPORTED_TYPES);
+            && in_array($type, PreviewGeneratorRegistry::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string

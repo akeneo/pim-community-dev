@@ -21,9 +21,11 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  */
 class PreviewGeneratorRegistry implements PreviewGeneratorInterface
 {
-    public const THUMBNAIL_TYPE = 'dam_thumbnail';
+    public const THUMBNAIL_TYPE = 'dam_thumbnail_small';
+    public const PREVIEW_TYPE = 'dam_preview';
     public const SUPPORTED_TYPES = [
-        self::THUMBNAIL_TYPE
+        self::THUMBNAIL_TYPE,
+        self::PREVIEW_TYPE
     ];
 
     /** @var PreviewGeneratorInterface[] */
@@ -37,7 +39,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         foreach ($this->previewGenerators as $previewGenerator) {
-            if($previewGenerator->supports($data, $attribute, $type)) {
+            if ($previewGenerator->supports($data, $attribute, $type)) {
                 return true;
             }
         }
@@ -48,7 +50,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
         foreach ($this->previewGenerators as $previewGenerator) {
-            if($previewGenerator->supports($data, $attribute, $type)) {
+            if ($previewGenerator->supports($data, $attribute, $type)) {
                 return $previewGenerator->generate($data, $attribute, $type);
             }
         }
