@@ -11,3 +11,10 @@ services:
             - '@pim_enrich.provider.default_image'
         tags:
             - { name: akeneo_referenceentity.preview_generator }
+
+    akeneo_referenceentity.application.generator.other_generator:
+        class: Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\OtherGenerator
+        arguments:
+            - '@pim_enrich.provider.default_image'
+        tags:
+            - { name: akeneo_referenceentity.preview_generator }
