@@ -25,13 +25,13 @@ batch_jobs:
     import.label: Importació de configuració regional
   csv_channel_export:
     label: Canal d'exportació en CSV
-    export.label: Canal d'exportació
+    export.label: Exportació de canal
   csv_channel_import:
     label: Importació de canal en CSV
     import.label: Importació de canal
   xlsx_channel_export:
     label: Exportació de canal en XLSX
-    export.label: Canal d'exportació
+    export.label: Exportació de canal
   xlsx_channel_import:
     label: Importació de canal de XLSX
     import.label: Importació de canal
