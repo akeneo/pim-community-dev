@@ -1,6 +1,6 @@
 pim_title:
   pim_user_index: Usuários
-  pim_user_role_index: Funções
+  pim_user_role_index: Papeis
   pim_user_group_index: Grupo de usuários
   oro_config_configuration_system: Configuração
   pim_user_edit: 'Usuário {{ username }} | Editar'
@@ -68,7 +68,7 @@ pim_user_management:
         proposals_state_notifications: Quando a proposta é aceita ou rejeitada
       module:
         create:
-          button: Criar usuário
+          button: Criar Usuário
         delete:
           confirm: Tem certeza de que deseja exvluir este usuário?
         update:
@@ -78,7 +78,7 @@ pim_user_management:
           interfaces: Interfaces
           notifications: Notificações
     role:
-      plural_label: Funções
+      plural_label: Papeis
       page_title:
         index: "]-Inf, 1] {{ count }} papel|]1, Inf [{{ count }} papéis"
       module:
@@ -92,4 +92,4 @@ pim_user_management:
         index: "]-Inf, 1] {{ count }} grupo|]1, Inf [{{ count }} grupos"
       module:
         create:
-          button: Criar grupo
+          button: Criar Grupo
