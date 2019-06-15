@@ -3,7 +3,7 @@ pim_enrich:
     tab:
       parameter.title: Parámetros
       value.title: Valores
-      history.title: Histórico
+      history.title: Historial
   family:
     info:
       cant_remove_attribute_used_as_axis: No se puede quitar este atributo utilizado como eje variante en una variante familiar
@@ -14,14 +14,14 @@ pim_enrich:
     family:
       page_title: Familias
       page_subtitle: Edición masiva (1 familia) |Edición masiva (%count% familias)
-      title: Elegir operación
+      title: Seleccione una operación
       subtitle: Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas
       confirm: Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.
       steps:
-        first: Elija familias
-        second: Elegir operación
-        third: Configurar
-        fourth: Confirmar
+        first: Elija las familias
+        second: Seleccione una operación
+        third: Configuración
+        fourth: Confirmación
 pim_enrich_attribute_form:
   code: Código
   type: Tipo de atributo
