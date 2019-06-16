@@ -35,7 +35,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.automation.franklin_insights.repository.attribute_created:
+    akeneo.pim.automation.franklin_insights.repository.franklin_attribute_created:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FranklinAttributeCreatedRepository'
         arguments:
             - '@database_connection'
