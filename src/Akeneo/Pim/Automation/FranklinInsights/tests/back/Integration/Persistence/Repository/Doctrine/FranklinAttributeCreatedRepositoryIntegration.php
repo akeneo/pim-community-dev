@@ -50,7 +50,7 @@ SQL;
 
     private function getRepository(): FranklinAttributeCreatedRepository
     {
-        return $this->get('akeneo.pim.automation.franklin_insights.repository.attribute_created');
+        return $this->get('akeneo.pim.automation.franklin_insights.repository.franklin_attribute_created');
     }
 
     private function getDbConnection(): Connection
