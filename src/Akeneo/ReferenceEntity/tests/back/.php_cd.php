@@ -38,9 +38,7 @@ $rules = [
         'Liip\ImagineBundle',
 
         // TODO: reference entities should not depend on PIM
-        'Akeneo\Pim\Enrichment\ReferenceEntity\Component',
-        'Akeneo\Pim\Enrichment\Bundle\File\FileTypes',
-        'Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProvider',
+        'Akeneo\Pim\Enrichment\ReferenceEntity\Component'
     ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 

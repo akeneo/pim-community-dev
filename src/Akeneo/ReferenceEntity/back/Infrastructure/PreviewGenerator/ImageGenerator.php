@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator;
 
-use Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface;
-use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
@@ -29,6 +27,8 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  */
 class ImageGenerator implements PreviewGeneratorInterface
 {
+    private const DEFAULT_IMAGE = 'pim_asset_file_image';
+
     /** @var DataManager  */
     private $dataManager;
 
@@ -68,7 +68,7 @@ class ImageGenerator implements PreviewGeneratorInterface
             try {
                 $binary = $this->dataManager->find($type, $url);
             } catch (NotLoadableException $e) {
-                return $this->defaultImageProvider->getImageUrl(FileTypes::MISC, $type);
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $type);
             }
 
             $this->cacheManager->store(

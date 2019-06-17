@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator;
 
-use Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface;
-use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
@@ -25,6 +23,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
  */
 class OtherGenerator implements PreviewGeneratorInterface
 {
+    private const DEFAULT_OTHER = 'pim_asset_file_other';
+
     /** @var DefaultImageProviderInterface  */
     private $defaultImageProvider;
 
@@ -42,6 +42,6 @@ class OtherGenerator implements PreviewGeneratorInterface
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
-        return $this->defaultImageProvider->getImageUrl(FileTypes::MISC, $type);
+        return $this->defaultImageProvider->getImageUrl(self::DEFAULT_OTHER, $type);
     }
 }

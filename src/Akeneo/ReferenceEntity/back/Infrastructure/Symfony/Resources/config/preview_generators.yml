@@ -8,13 +8,13 @@ services:
             - '@liip_imagine.data.manager'
             - '@liip_imagine.cache.manager'
             - '@liip_imagine.filter.manager'
-            - '@pim_enrich.provider.default_image'
+            - '@pim_asset.provider.default_image'
         tags:
             - { name: akeneo_referenceentity.preview_generator }
 
     akeneo_referenceentity.application.generator.other_generator:
         class: Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\OtherGenerator
         arguments:
-            - '@pim_enrich.provider.default_image'
+            - '@pim_asset.provider.default_image'
         tags:
             - { name: akeneo_referenceentity.preview_generator }
