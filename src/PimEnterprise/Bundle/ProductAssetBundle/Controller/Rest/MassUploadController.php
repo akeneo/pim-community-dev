@@ -258,7 +258,19 @@ class MassUploadController
 
         $result = $this->importer->import($this->getUploadContext());
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload_into_asset_collection');
-        $user =  $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        $importedFileNames = [];
+        foreach ($result as $import) {
+            if (isset($import['error']) && !empty($import['error'])) {
+                continue;
+            }
+            $importedFileNames[] = $import['file'];
+        }
+
+        if (empty($importedFileNames)) {
+            return new JsonResponse(['result' => $result], 500);
+        }
 
         $configuration = [
             'user_to_notify' => $user->getUsername(),
@@ -266,9 +278,7 @@ class MassUploadController
             'entity_identifier' => $entityIdentifier,
             'attribute_code' => $attributeCode,
             'is_user_authenticated' => true,
-            'imported_file_names' => array_map(function ($data) {
-                return $data['file'];
-            }, $result)
+            'imported_file_names' => $importedFileNames,
         ];
 
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);

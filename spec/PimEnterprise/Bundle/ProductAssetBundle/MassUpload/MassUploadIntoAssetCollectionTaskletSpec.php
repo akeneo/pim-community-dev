@@ -55,7 +55,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $this->shouldImplement(TaskletInterface::class);
     }
 
-    function it_mass_upload_files_into_a_product(
+    function it_mass_uploads_files_into_a_product(
         $stepExecution,
         $massUploadToProductProcessor,
         $massUploadToProductModelProcessor,
@@ -76,10 +76,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_type')->willReturn('product');
         $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
+        $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto('foobar', 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection'),
+            ['car.png']
         )->willReturn($processedItemList);
         $massUploadToProductModelProcessor->applyMassUpload(Argument::cetera())->shouldNotBeCalled();
 
@@ -89,7 +91,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $this->execute();
     }
 
-    function it_mass_upload_files_into_a_product_model(
+    function it_mass_uploads_files_into_a_product_model(
         $stepExecution,
         $massUploadToProductProcessor,
         $massUploadToProductModelProcessor,
@@ -110,11 +112,13 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_type')->willReturn('product_model');
         $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
+        $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(Argument::cetera())->shouldNotBeCalled();
         $massUploadToProductModelProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto('foobar', 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection'),
+            ['car.png']
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -143,10 +147,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_type')->willReturn('product');
         $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
+        $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto('foobar', 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection'),
+            ['car.png']
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -181,10 +187,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_type')->willReturn('product');
         $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
+        $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto('foobar', 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection'),
+            ['car.png']
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -215,10 +223,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_type')->willReturn('product');
         $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
+        $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto('foobar', 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection'),
+            ['car.png']
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -244,10 +254,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_type')->willReturn('product');
         $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
+        $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto('foobar', 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection'),
+            ['car.png']
         )->willReturn($processedItemList);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
