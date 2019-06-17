@@ -23,6 +23,13 @@ services:
             - '@pim_catalog.synchronizer.product_unique_data'
             - '@pim_catalog.repository.cached_attribute'
 
+    pim_catalog.saver.completeness:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\BulkCompletenessSaver
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.completeness'
+            - '@event_dispatcher'
+
     pim_catalog.saver.product_model:
         class: '%pim_catalog.saver.base.class%'
         arguments:

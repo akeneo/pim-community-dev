@@ -73,7 +73,7 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.completeness'
             - '@pim_connector.doctrine.cache_clearer'
         public: false
 
