@@ -19,6 +19,8 @@ pim_reference_entity:
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'The record code already exists for reference entity "%reference_entity_identifier%" and record code "%code%"'
+                # TODO: PIM-8405 this translation key should be removed from reference entity context
+                should_be_really_unique: 'A record already exists with code "%code%"'
                 should_exist: 'The record was not found'
             text:
                 incompatible_with_regular_expression: 'The text is incompatible with the regular expression "%regular_expression%"'

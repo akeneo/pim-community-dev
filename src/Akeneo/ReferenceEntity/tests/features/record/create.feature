@@ -40,6 +40,17 @@ Feature: Create a record
       | {"en_US": "Starck"} |
     Then there should be a validation error with message 'You cannot create the record "Starck" because you have reached the limit of 1000 records for this reference entity'
 
+# TODO: PIM-8405 this test should be removed from reference entity context
+#  @acceptance-back
+#  Scenario: Cannot create an asset if code already exists
+#    When the user creates a record "my_code" for entity "designer" with:
+#      | labels |
+#      | {}     |
+#    And the user creates a record "my_code" for entity "designer" with:
+#      | labels |
+#      | {}     |
+#    Then there should be a validation error with message 'A record already exists with code "my_code"'
+
   @acceptance-front
   Scenario: Creating a record
     When the user asks for the reference entity "designer"
