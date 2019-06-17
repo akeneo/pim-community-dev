@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration;
 
+use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -25,11 +26,13 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 {
-    protected const DAM_URL = 'https://akeneodemo.getbynder.com/m/1e567bef001b08fa/';
     protected const FILENAME = 'Akeneo-DSC_2109-2.jpg';
 
     /** @var KernelInterface|null */
     protected $testKernel;
+
+    /** @var FixturesLoader */
+    protected $fixturesLoader;
 
     /** @var CacheManager */
     private $cacheManager;
@@ -39,6 +42,7 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
         if (null === $this->testKernel) {
             $this->bootTestKernel();
         }
+        $this->fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
         $this->resetDB();
     }
 

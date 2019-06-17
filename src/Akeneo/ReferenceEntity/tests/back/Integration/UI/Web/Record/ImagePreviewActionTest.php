@@ -14,20 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -38,7 +27,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 final class ImagePreviewActionTest extends ControllerIntegrationTestCase
 {
     private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_reference_entities_image_preview';
-    private const DAM_URL = 'https://akeneodemo.getbynder.com/m/1e567bef001b08fa/';
     private const FILENAME = 'Akeneo-DSC_2109-2.jpg';
 
     /* @var Client */
@@ -47,8 +35,11 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var FixturesLoader */
+    private $fixturesLoader;
+
+    /** @var UrlAttribute */
+    private $attribute;
 
     /** @var CacheManager */
     private $cacheManager;
@@ -60,7 +51,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
 
         $this->loadFixtures();
     }
@@ -82,7 +73,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             self::URL_VALUE_PREVIEW_ROUTE,
             [
                 'data'                => self::FILENAME,
-                'attributeIdentifier' => 'dam_image_designer_fingerprint',
+                'attributeIdentifier' => $this->attribute->getIdentifier(),
                 'type'                => 'dam_thumbnail_small'
             ]
         );
@@ -92,20 +83,12 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $attributeIdentifier = AttributeIdentifier::fromString('dam_image_designer_fingerprint');
-        $attribute = UrlAttribute::create(
-            $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('dam_image'),
-            LabelCollection::fromArray(['fr_FR' => 'DAM Image']),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString(self::DAM_URL),
-            Suffix::empty(),
-            MediaType::fromString(MediaType::IMAGE)
-        );
-        $this->attributeRepository->create($attribute);
+        $fixtures = $this->fixturesLoader
+            ->referenceEntity('designer')
+            ->withAttributes([
+                 'website'
+             ])
+            ->load();
+        $this->attribute = $fixtures['attributes']['website'];
     }
 }

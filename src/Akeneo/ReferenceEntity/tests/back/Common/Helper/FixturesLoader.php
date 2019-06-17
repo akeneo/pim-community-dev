@@ -492,9 +492,31 @@ class FixturesLoader
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                Prefix::fromString('https://my-dam.com/'),
-                Suffix::fromString('/500x500'),
-                MediaType::fromString('image')
+                Prefix::fromString('https://akeneodemo.getbynder.com/m/1e567bef001b08fa/'),
+                Suffix::empty(),
+                MediaType::fromString(MediaType::IMAGE)
+            );
+        }
+
+        // VIDEO
+        if (in_array('video', $this->loadedAttributes)) {
+            $attributes['video'] = UrlAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $referenceEntityIdentifier,
+                    AttributeCode::fromString('video')
+                ),
+                $referenceEntityIdentifier,
+                AttributeCode::fromString('video'),
+                LabelCollection::fromArray([
+                   'en_US' => 'Video',
+                ]),
+                $this->getOrderForAttribute('video'),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                Prefix::fromString('https://my-stream.com'),
+                Suffix::empty(),
+                MediaType::fromString(MediaType::OTHER)
             );
         }
 
