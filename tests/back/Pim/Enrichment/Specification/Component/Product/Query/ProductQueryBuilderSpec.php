@@ -263,8 +263,11 @@ class ProductQueryBuilderSpec extends ObjectBehavior
     function it_executes_the_query(
         $searchQb,
         CursorFactoryInterface $cursorFactory,
-        CursorInterface $cursor
+        CursorInterface $cursor,
+        FieldFilterInterface $filterField,
+        $filterRegistry
     ) {
+        $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
 
