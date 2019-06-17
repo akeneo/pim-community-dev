@@ -5,6 +5,7 @@
 - PIM-8414: Fix the product variant breadcrumb size
 - PIM-8427: Fix PDF export of product to expose all attributes
 - PIM-8439: Fix mass edit translation for "remove from categories" operation
+- PIM-8426: Fix user password validation
 
 ## Improvements
 
