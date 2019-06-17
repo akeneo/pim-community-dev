@@ -29,7 +29,13 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'decimals_allowed'    => true,
         ]);
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_localizable_number']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_number' => [
                     ['data' => -15, 'locale' => 'en_US', 'scope' => null],
@@ -39,6 +45,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_number' => [
                     ['data' => 19, 'locale' => 'en_US', 'scope' => null]
@@ -46,7 +53,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorInferior()

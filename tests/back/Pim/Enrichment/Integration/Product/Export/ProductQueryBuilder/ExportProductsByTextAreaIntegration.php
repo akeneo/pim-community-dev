@@ -11,7 +11,13 @@ class ExportProductsByTextAreaIntegration extends AbstractExportTestCase
      */
     protected function loadFixtures() : void
     {
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_text_area']
+        ]);
+
         $this->createProduct('product_1', [
+            'family' => 'a_family',
             'values'     => [
                 'a_text_area' => [
                     ['data' => 'Awesome', 'locale' => null, 'scope' => null]
@@ -20,6 +26,7 @@ class ExportProductsByTextAreaIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_2', [
+            'family' => 'a_family',
             'values'     => [
                 'a_text_area' => [
                     ['data' => 'Awesome product', 'locale' => null, 'scope' => null]
@@ -28,6 +35,7 @@ class ExportProductsByTextAreaIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_3', [
+            'family' => 'a_family',
             'values'     => [
                 'a_text_area' => [
                     ['data' => 'This is nice', 'locale' => null, 'scope' => null]
@@ -35,14 +43,14 @@ class ExportProductsByTextAreaIntegration extends AbstractExportTestCase
             ]
         ]);
 
-        $this->createProduct('product_4');
+        $this->createProduct('product_4', ['family' => 'a_family']);
     }
 
     public function testProductExportByFilteringWithEqualsOperatorOnTextArea()
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_text_area
-product_1;;1;;;Awesome
+product_1;;1;a_family;;Awesome
 
 CSV;
 
@@ -69,8 +77,8 @@ CSV;
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_text_area
-product_1;;1;;;Awesome
-product_2;;1;;;"Awesome product"
+product_1;;1;a_family;;Awesome
+product_2;;1;a_family;;"Awesome product"
 
 CSV;
 
@@ -97,8 +105,8 @@ CSV;
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_text_area
-product_1;;1;;;Awesome
-product_2;;1;;;"Awesome product"
+product_1;;1;a_family;;Awesome
+product_2;;1;a_family;;"Awesome product"
 
 CSV;
 
@@ -124,8 +132,8 @@ CSV;
     public function testProductExportByFilteringWithIsEmptyOperatorOnTextArea()
     {
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups
-product_4;;1;;
+sku;categories;enabled;family;groups;a_text_area
+product_4;;1;a_family;;
 
 CSV;
 

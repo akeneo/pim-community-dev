@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
@@ -240,6 +241,18 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $filter->setQueryBuilder($this->getQueryBuilder());
         $filter->addAttributeFilter($attribute, $operator, $value, $locale, $scope, $context);
 
+        // when filtering on an empty value, we do not want products witthout family to be returned by the query
+        if (in_array(
+                $operator,
+                [
+                    Operators::IS_EMPTY,
+                    Operators::IS_EMPTY_FOR_CURRENCY,
+                    Operators::IS_EMPTY_ON_ALL_CURRENCIES
+                ]
+            ) && false === $this->hasNotEmptyFamilyFilter()) {
+            $this->addFilter('family', Operators::IS_NOT_EMPTY, null);
+        }
+
         return $this;
     }
 
@@ -297,5 +310,17 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected function getFinalContext(array $context)
     {
         return array_merge($this->defaultContext, $context);
+    }
+
+    private function hasNotEmptyFamilyFilter(): bool
+    {
+        foreach ($this->rawFilters as $rawFilter) {
+            if ('field' === $rawFilter['type'] && 'family' === $rawFilter['field']
+                && Operators::IS_NOT_EMPTY === $rawFilter['operator']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

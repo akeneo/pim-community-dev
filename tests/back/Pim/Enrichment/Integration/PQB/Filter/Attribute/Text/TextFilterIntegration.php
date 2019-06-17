@@ -19,25 +19,34 @@ class TextFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_text']
+        ]);
+
         $this->createProduct('cat', [
+            'family' => 'a_family',
             'values' => [
                 'a_text' => [['data' => 'cat', 'locale' => null, 'scope' => null]],
             ],
         ]);
 
         $this->createProduct('cattle', [
+            'family' => 'a_family',
             'values' => [
                 'a_text' => [['data' => 'cattle', 'locale' => null, 'scope' => null]],
             ],
         ]);
 
         $this->createProduct('dog', [
+            'family' => 'a_family',
             'values' => [
                 'a_text' => [['data' => 'dog', 'locale' => null, 'scope' => null]],
             ],
         ]);
 
         $this->createProduct('best_dog', [
+            'family' => 'a_family',
             'values' => [
                 'a_text' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]],
             ],
@@ -46,6 +55,7 @@ class TextFilterIntegration extends AbstractProductQueryBuilderTestCase
         // There is no html tags in TEXT attributes usually set in the PIM.
         // This tests shows that if it's the case they are stored as is and not stripped.
         $this->createProduct('best_cat', [
+            'family' => 'a_family',
             'values' => [
                 'a_text' => [
                     [
@@ -57,7 +67,7 @@ class TextFilterIntegration extends AbstractProductQueryBuilderTestCase
             ],
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorStartsWith()

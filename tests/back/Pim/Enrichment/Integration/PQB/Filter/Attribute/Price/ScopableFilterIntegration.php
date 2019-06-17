@@ -19,7 +19,13 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_scopable_price']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_price' => [
                     [
@@ -33,6 +39,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_price' => [
                     [
@@ -48,7 +55,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             ],
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorInferior()
