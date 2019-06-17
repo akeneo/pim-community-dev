@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator;
+namespace Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator;
 
 /**
  * Todo: It needs to be moved in Tools/Platform instead of duplicate Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface

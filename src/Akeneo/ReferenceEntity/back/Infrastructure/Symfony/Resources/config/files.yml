@@ -5,7 +5,7 @@ parameters:
 
 services:
     pim_asset.provider.default_image:
-        class: 'Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\DefaultImageProvider'
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\DefaultImageProvider'
         arguments:
             - '@liip_imagine.filter.manager'
             - '@liip_imagine.cache.manager'

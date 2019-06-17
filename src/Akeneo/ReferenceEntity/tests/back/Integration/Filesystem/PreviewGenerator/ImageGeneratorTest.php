@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\PreviewGenerator;
+namespace Akeneo\ReferenceEntity\Integration\Filesystem\PreviewGenerator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorRegistry;
+use Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
 use Akeneo\ReferenceEntity\Integration\PreviewGeneratorIntegrationTestCase;
 
 /**

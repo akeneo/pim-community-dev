@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator;
+namespace Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
@@ -23,5 +23,12 @@ interface PreviewGeneratorInterface
 {
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool;
 
+    /**
+     * @param string $data The filename of the external image we want to generate (ex : akeneo.jpg)
+     * @param AbstractAttribute $attribute The attribute which need to have a preview
+     * @param string $type The format type used to generate the image (ex : dam_thumbnail, dam_preview)
+     *
+     * @return string Return the URL of the preview generated
+     */
     public function generate(string $data, AbstractAttribute $attribute, string $type): string;
 }

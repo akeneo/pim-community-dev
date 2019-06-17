@@ -1,9 +1,9 @@
 services:
     akeneo_referenceentity.application.registry.preview_generator:
-        class: Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\PreviewGeneratorRegistry
+        class: Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry
 
     akeneo_referenceentity.application.generator.image_generator:
-        class: Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\ImageGenerator
+        class: Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\ImageGenerator
         arguments:
             - '@liip_imagine.data.manager'
             - '@liip_imagine.cache.manager'
@@ -13,7 +13,7 @@ services:
             - { name: akeneo_referenceentity.preview_generator }
 
     akeneo_referenceentity.application.generator.other_generator:
-        class: Akeneo\ReferenceEntity\Infrastructure\PreviewGenerator\OtherGenerator
+        class: Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\OtherGenerator
         arguments:
             - '@pim_asset.provider.default_image'
         tags:
