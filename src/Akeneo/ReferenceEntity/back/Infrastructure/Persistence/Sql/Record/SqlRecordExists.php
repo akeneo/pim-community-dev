@@ -69,6 +69,25 @@ SQL;
         return $this->isIdentifierExisting($statement);
     }
 
+    /**
+     * TODO: PIM-8405 This method should be removed from the Reference Entity bounded context after split
+     */
+    public function withCode(RecordCode $code): bool
+    {
+        $query = <<<SQL
+        SELECT EXISTS (
+            SELECT 1
+            FROM akeneo_reference_entity_record
+            WHERE code = :code
+        ) as is_existing
+SQL;
+        $statement = $this->sqlConnection->executeQuery($query, [
+            'code' => (string) $code
+        ]);
+
+        return $this->isIdentifierExisting($statement);
+    }
+
     private function isIdentifierExisting(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
