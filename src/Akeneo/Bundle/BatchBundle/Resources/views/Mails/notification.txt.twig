@@ -8,5 +8,11 @@ Results:
   - {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
 {% endfor %}
 
+{% if base_url is not empty %}
+You can view full summary page at :
+{{ base_url }}/{{ path('pim_enrich_job_tracker_show', {'id': jobExecution.id}) }}
+{% endif %}
+
+
 --
 Akeneo Batch

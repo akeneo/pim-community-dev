@@ -38,6 +38,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         uservoice_key: "%uservoice_key%"
+        base_url: '%env(BASE_URL)%'
 
 # Assetic Configuration
 assetic:

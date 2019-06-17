@@ -7,6 +7,10 @@
 - GITHUB-9557: Fix yarn product dependencies requirements, cheers @AngelVazquezArroyo!
 - PIM-8450: Fix assets search with underscore in the code
 
+## Technical improvement
+
+- PIM-8449: Improve job notification by adding a link to the job.
+
 # 2.3.48 (2019-06-12)
 
 ## Bug fixes
