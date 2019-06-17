@@ -32,14 +32,14 @@ liip_imagine:
             filters:
                 downscale: { max: [320, 240] }
                 strip:        ~
-        dam_preview:
+        am_preview:
             quality:          95
             format:           jpg
             data_loader:      stream_data_loader
             filters:
                 background:
                     color: "#ffffff"
-        dam_thumbnail_small:
+        am_thumbnail_small:
             quality:          95
             format:           png
             data_loader:      stream_data_loader
