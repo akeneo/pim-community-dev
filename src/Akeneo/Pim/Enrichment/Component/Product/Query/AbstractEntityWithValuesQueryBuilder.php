@@ -3,7 +3,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
-
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
