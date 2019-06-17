@@ -75,7 +75,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      *
      * @return Binary
      */
-    protected function getImageBinary($fileType)
+    private function getImageBinary($fileType)
     {
         if (isset($this->defaultImages[$fileType])) {
             $image = $this->defaultImages[$fileType];
@@ -91,7 +91,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      *
      * @param OptionsResolver $resolver
      */
-    protected function configureDefaultImagesOptions(OptionsResolver $resolver)
+    private function configureDefaultImagesOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['path', 'mime_type', 'extension']);
     }
