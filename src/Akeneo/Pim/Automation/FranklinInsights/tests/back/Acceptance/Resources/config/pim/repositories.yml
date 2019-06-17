@@ -30,3 +30,6 @@ services:
         class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryAttributeRepository'
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    akeneo.pim.automation.franklin_insights.repository.franklin_attribute_created:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryFranklinAttributeCreatedRepository'

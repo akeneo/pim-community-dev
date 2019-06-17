@@ -17,6 +17,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttr
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -29,26 +31,30 @@ class CreateAttributeInFamilyHandler
     /** @var AddAttributeToFamilyInterface */
     private $updateFamily;
 
-    /**
-     * @param CreateAttributeInterface $createAttribute
-     * @param AddAttributeToFamilyInterface $updateFamily
-     */
+    private $franklinAttributeCreatedRepository;
+
     public function __construct(
         CreateAttributeInterface $createAttribute,
-        AddAttributeToFamilyInterface $updateFamily
+        AddAttributeToFamilyInterface $updateFamily,
+        FranklinAttributeCreatedRepositoryInterface $franklinAttributeCreatedRepository
     ) {
         $this->createAttribute = $createAttribute;
         $this->updateFamily = $updateFamily;
+        $this->franklinAttributeCreatedRepository = $franklinAttributeCreatedRepository;
     }
 
     public function handle(CreateAttributeInFamilyCommand $command): void
     {
         $this->validate($command);
 
+        $pimAttributeType = $command->getFranklinAttributeType()->convertToPimAttributeType();
         $this->createAttribute->create(
             $command->getPimAttributeCode(),
             new AttributeLabel((string) $command->getFranklinAttributeLabel()),
-            $command->getFranklinAttributeType()->convertToPimAttributeType()
+             $pimAttributeType
+        );
+        $this->franklinAttributeCreatedRepository->save(
+            new FranklinAttributeCreated($command->getPimAttributeCode(), $pimAttributeType)
         );
 
         $this->updateFamily->addAttributeToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode());

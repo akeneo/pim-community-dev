@@ -91,6 +91,7 @@ $rules = [
 
             // External dependencies
             'Symfony\Component\EventDispatcher',
+            'Doctrine\DBAL\Connection',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install'),
 
