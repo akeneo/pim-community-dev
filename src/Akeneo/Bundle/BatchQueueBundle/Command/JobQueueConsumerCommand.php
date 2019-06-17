@@ -41,6 +41,9 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
     /** Interval in microseconds before checking if the process is still running. */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
+    /** Flag used to stop the daemon */
+    private $shouldStop = false;
+
     /**
      * {@inheritdoc}
      */
@@ -68,6 +71,8 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
 
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->getContainer()->getParameter('kernel.project_dir'), DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+
+        $this->setupSignalHandler($output);
 
         do {
             try {
@@ -118,7 +123,32 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
 
                 sleep(self::EXCEPTION_WAIT_INTERVAL);
             }
-        } while (false === $input->getOption('run-once'));
+        } while (false === $input->getOption('run-once') && !$this->shouldStop);
+    }
+
+    /**
+     * Set a flag to allow the daemon to gracefully stop
+     */
+    public function gracefulShutdown()
+    {
+        $this->shouldStop = true;
+    }
+
+    /**
+     * Register a signal handler for SIGQUIT to allow graceful stops
+     *
+     * @param OutputInterface $output
+     *
+     * @return bool
+     */
+    protected function setupSignalHandler(OutputInterface $output)
+    {
+        pcntl_async_signals(true);
+
+        return pcntl_signal(SIGQUIT, function() use ($output) {
+            $output->writeln('Recieved SIGQUIT signal, will shutdown after jobs execution');
+            $this->gracefulShutdown();
+        });
     }
 
     /**
