@@ -21,8 +21,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  */
 class PreviewGeneratorRegistry implements PreviewGeneratorInterface
 {
-    public const THUMBNAIL_TYPE = 'dam_thumbnail_small';
-    public const PREVIEW_TYPE = 'dam_preview';
+    public const THUMBNAIL_TYPE = 'am_thumbnail_small';
+    public const PREVIEW_TYPE = 'am_preview';
     public const SUPPORTED_TYPES = [
         self::THUMBNAIL_TYPE,
         self::PREVIEW_TYPE

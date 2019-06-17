@@ -17,8 +17,6 @@ use Liip\ImagineBundle\Model\Binary;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Todo: It needs to be moved in Tools/Platform instead of duplicate Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProvider
- *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */

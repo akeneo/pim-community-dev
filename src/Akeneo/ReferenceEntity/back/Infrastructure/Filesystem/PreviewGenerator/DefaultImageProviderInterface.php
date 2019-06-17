@@ -12,8 +12,6 @@
 namespace Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator;
 
 /**
- * Todo: It needs to be moved in Tools/Platform instead of duplicate Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface
- *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
