@@ -5,6 +5,7 @@
 - PIM-8414: Fix the product variant breadcrumb size
 - PIM-8427: Fix PDF export of product to expose all attributes
 - PIM-8439: Fix mass edit translation for "remove from categories" operation
+- PIM-8426: Fix user password validation
 
 ## Improvements
 
@@ -16,7 +17,6 @@
 
 - PIM-8412: Fix wrong display of too long attribute group labels when filtering in the datagrid
 - PIM-8424: Fix memory leak executing "akeneo:batch:purge-job-execution" command
-- PIM-8426: Fix user password validation 
 
 # 3.0.22 (2019-06-04)
 
