@@ -46,12 +46,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /**
-     * @param ObjectManager $objectManager
-     * @param CompletenessManager $completenessManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ProductUniqueDataSynchronizer $uniqueDataSynchronizer
-     */
     public function __construct(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
@@ -74,6 +68,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->validateProduct($product);
 
         $options['unitary'] = true;
+        if (!isset($options['products_to_index'])) {
+            $options['products_to_index'] = [];
+        }
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
         $productEvents = $product->popEvents();
@@ -89,8 +86,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         if ($this->doesProductNeedReindexing($productEvents)) {
-            $options['products_to_index'][$product->getIdentifier()] = true;
+            $options['products_to_index'][] = $product->getIdentifier();
         }
+
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
     }
 
@@ -110,24 +108,25 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options['unitary'] = false;
+        if (!isset($options['products_to_index'])) {
+            $options['products_to_index'] = [];
+        }
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
-
-        $productsToIndex = [];
 
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
             $productEvents = $product->popEvents();
 
-            if ($this->doesProductNeedCompletenessCalculation($productEvents)) {
+            if ($this->doesProductNeedCompletenessCalculation($productEvents, $product->getFamily())) {
                 $this->completenessManager->generateMissingForProduct($product);
             }
             if ($this->doesProductNeedUniqueDataSynchro($productEvents)) {
                 $this->uniqueDataSynchronizer->synchronize($product);
             }
             if ($this->doesProductNeedReindexing($productEvents)) {
-                $options['products_to_index'][$product->getIdentifier()];
+                $options['products_to_index'][] = $product->getIdentifier();
             }
 
             $this->objectManager->persist($product);
@@ -188,7 +187,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return false;
         }
         foreach ($family->getAttributeRequirements() as $requirement) {
-            if ($requirement->isRequired() && $requirement->getAttributeCode() === $atributeCode &&
+            if ($requirement->isRequired() && $requirement->getAttributeCode() === $attributeCode &&
                 (null === $channelCode || $channelCode === $requirement->getChannelCode())) {
                 return true;
             }

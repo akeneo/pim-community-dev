@@ -77,7 +77,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$event->hasArgument('products_to_index') || !array_key_exists($product->getIdentifier(), $event->getArgument('products_to_index'))) {
+        if (!($event->hasArgument('products_to_index') && in_array($product->getIdentifier(), $event->getArgument('products_to_index')))) {
             return;
         }
 
@@ -105,7 +105,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         }
         $productIdentifiersToIndex = $event->getArgument('products_to_index');
         $this->productBulkIndexer->indexAll(array_filter($products, function (ProductInterface $product) use ($productIdentifiersToIndex) {
-            return array_key_exists($product->getIdentifier(), $productIdentifiersToIndex);
+            return in_array($product->getIdentifier(), $productIdentifiersToIndex);
         }));
     }
 

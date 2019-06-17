@@ -39,10 +39,27 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($product);
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(true);
+        $event->hasArgument('products_to_index')->willReturn(true);
+        $event->getArgument('products_to_index')->willReturn(['identifier']);
 
         $product->getIdentifier()->willReturn('identifier');
 
         $indexer->index($product)->shouldBeCalled();
+
+        $this->indexProduct($event);
+    }
+
+    function it_does_not_index($indexer, GenericEvent $event, ProductInterface $product)
+    {
+        $event->getSubject()->willReturn($product);
+        $event->hasArgument('unitary')->willReturn(true);
+        $event->getArgument('unitary')->willReturn(true);
+        $event->hasArgument('products_to_index')->willReturn(true);
+        $event->getArgument('products_to_index')->willReturn([]);
+
+        $product->getIdentifier()->willReturn('identifier');
+
+        $indexer->index($product)->shouldNotBeCalled();
 
         $this->indexProduct($event);
     }
@@ -54,6 +71,8 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         ProductInterface $product2
     ) {
         $event->getSubject()->willReturn([$product1, $product2]);
+        $event->hasArgument('products_to_index')->willReturn(true);
+        $event->getArgument('products_to_index')->willReturn(['identifier1', 'identifier2']);
 
         $product1->getIdentifier()->willReturn('identifier1');
         $product2->getIdentifier()->willReturn('identifier2');
