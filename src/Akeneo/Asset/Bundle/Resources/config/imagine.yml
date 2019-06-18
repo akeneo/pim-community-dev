@@ -6,3 +6,9 @@ services:
             - ['catalogStorage', 'assetStorage']
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
+    pim_enrich.imagine.loader.stream:
+            class: 'Liip\ImagineBundle\Binary\Loader\StreamLoader'
+            arguments:
+                - ''
+            tags:
+                - { name: liip_imagine.binary.loader, loader: stream_data_loader }

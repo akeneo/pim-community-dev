@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class MediaType
 {
-    private const IMAGE = 'image';
-    private const OTHER = 'other';
+    public const IMAGE = 'image';
+    public const OTHER = 'other';
     public const MEDIA_TYPES = [
         self::IMAGE,
         self::OTHER

@@ -25,7 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class UrlAttribute extends AbstractAttribute
 {
-    private const ATTRIBUTE_TYPE = 'url';
+    public const ATTRIBUTE_TYPE = 'url';
 
     /** @var Prefix  */
     private $prefix;
@@ -123,5 +123,20 @@ class UrlAttribute extends AbstractAttribute
     public function setMediaType(MediaType $mediaType): void
     {
         $this->mediaType = $mediaType;
+    }
+
+    public function getPrefix(): Prefix
+    {
+        return $this->prefix;
+    }
+
+    public function getSuffix(): Suffix
+    {
+        return $this->suffix;
+    }
+
+    public function getMediaType(): MediaType
+    {
+        return $this->mediaType;
     }
 }

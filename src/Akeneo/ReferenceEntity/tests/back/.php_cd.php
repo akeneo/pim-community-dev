@@ -35,9 +35,10 @@ $rules = [
         'JsonSchema\Validator',
         'PDO',
         'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
+        'Liip\ImagineBundle',
 
         // TODO: reference entities should not depend on PIM
-        'Akeneo\Pim\Enrichment\ReferenceEntity\Component',
+        'Akeneo\Pim\Enrichment\ReferenceEntity\Component'
     ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 
