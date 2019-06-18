@@ -255,6 +255,7 @@ jobs:
         - run:
             name: Front acceptance tests
             command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+
   back_performance:
     machine:
         enabled: true
@@ -267,7 +268,9 @@ jobs:
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
-          command: docker-compose up -d
+          command:
+            export ES_JAVA_OPTS='-Xms2g -Xmx2g'
+            docker-compose up -d
       - run:
           name: Run performance tests
           command: |
