@@ -4,3 +4,14 @@ services:
         arguments:
             - 'Akeneo\Tool\Component\StorageUtils\Cursor\Paginator'
             - '%pim_job_product_batch_size%'
+
+    pim_enrich.command.calculate_completeness:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand'
+        arguments:
+            - '@akeneo_elasticsearch.client.product'
+            - '%pim_job_product_batch_size%'
+            - '@pim_catalog.saver.completeness'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_catalog.query.product_query_builder_factory'
+        tags:
+            - { name: console.command }
