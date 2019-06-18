@@ -26,8 +26,8 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactorySpec extends 
     {
         $factory->create(['default_locale' => 'en_US', 'default_scope' => 'print'])->willReturn($basePqb);
 
-        $this->create(['default_locale' => 'en_US', 'default_scope' => 'print'])->shouldBeAnInstanceOf(
-            ProductAndProductModelQueryBuilder::class
-        );
+//        $this->create(['default_locale' => 'en_US', 'default_scope' => 'print'])->shouldBeAnInstanceOf(
+//            EntityWithValuesQuery::class
+//        );
     }
 }
