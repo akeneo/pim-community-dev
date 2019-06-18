@@ -75,7 +75,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
         $productEvents = $product->popEvents();
 
-        if ($this->doesProductNeedCompletenessCalculation($productEvents, $product->getFamily())) {
+        if ($this->isPublishedProductTempForPoc($product) ||
+            $this->doesProductNeedCompletenessCalculation($productEvents, $product->getFamily())) {
             $this->completenessManager->generateMissingForProduct($product);
         }
         if ($this->doesProductNeedUniqueDataSynchro($productEvents)) {
@@ -212,5 +213,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     private function doesProductNeedReindexing(array $events): bool
     {
         return count($events) > 0;
+    }
+
+    private function isPublishedProductTempForPoc($product)
+    {
+        return get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
     }
 }
