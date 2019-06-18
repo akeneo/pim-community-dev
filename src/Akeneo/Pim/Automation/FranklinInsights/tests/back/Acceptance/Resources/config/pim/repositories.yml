@@ -33,3 +33,6 @@ services:
 
     akeneo.pim.automation.franklin_insights.repository.franklin_attribute_created:
         class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryFranklinAttributeCreatedRepository'
+
+    akeneo.pim.automation.franklin_insights.repository.franklin_attribute_added_to_family:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryFranklinAttributeAddedToFamilyRepository'
