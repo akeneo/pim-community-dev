@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -16,11 +15,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 class TextAreaFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper, FamilyFilter $familyFilter)
+    function let(AttributeValidatorHelper $attributeValidatorHelper)
     {
         $this->beConstructedWith(
             $attributeValidatorHelper,
-            $familyFilter,
             ['pim_catalog_textarea'],
             ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -108,7 +106,6 @@ class TextAreaFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_empty(
         $attributeValidatorHelper,
-        FamilyFilter $familyFilter,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
@@ -125,9 +122,7 @@ class TextAreaFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
-
-        $familyFilter->setQueryBuilder($sqb->getWrappedObject())->shouldBeCalled();
-        $familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value')->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($description, Operators::IS_EMPTY, null, 'en_US', 'ecommerce', []);

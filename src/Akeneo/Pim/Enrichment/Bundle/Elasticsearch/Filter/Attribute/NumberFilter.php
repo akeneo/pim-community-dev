@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -21,18 +20,18 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var FamilyFilter */
-    private $familyFilter;
-
+    /**
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array $supportedAttributeTypes
+     * @param array $supportedOperators
+     */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        FamilyFilter $familyFilter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->familyFilter = $familyFilter;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -122,8 +121,10 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 ];
                 $this->searchQueryBuilder->addMustNot($clause);
 
-                $this->familyFilter->setQueryBuilder($this->searchQueryBuilder);
-                $this->familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value');
+                $familyExistsClause = [
+                    'exists' => ['field' => 'family.code']
+                ];
+                $this->searchQueryBuilder->addFilter($familyExistsClause);
                 break;
             case Operators::IS_NOT_EMPTY:
                 $clause = [

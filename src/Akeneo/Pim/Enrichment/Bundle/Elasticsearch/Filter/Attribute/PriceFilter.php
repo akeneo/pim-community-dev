@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -45,19 +44,20 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
-    /** @var FamilyFilter */
-    private $familyFilter;
-
+    /**
+     * @param AttributeValidatorHelper    $attrValidatorHelper
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param array                       $supportedAttributeTypes
+     * @param array                       $supportedOperators
+     */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
-        FamilyFilter $familyFilter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->currencyRepository = $currencyRepository;
-        $this->familyFilter = $familyFilter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }
@@ -170,8 +170,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
                 ];
                 $this->searchQueryBuilder->addMustNot($clause);
 
-                $this->familyFilter->setQueryBuilder($this->searchQueryBuilder);
-                $this->familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value');
+            $familyExistsClause = [
+                'exists' => ['field' => 'family.code']
+            ];
+            $this->searchQueryBuilder->addFilter($familyExistsClause);
                 break;
 
             case Operators::IS_EMPTY_FOR_CURRENCY:

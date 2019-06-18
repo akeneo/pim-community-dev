@@ -72,6 +72,22 @@ class CountImpactedProductsIntegration extends TestCase
         $this->assertProductsCountInSelection($pqbFilters, 242);
     }
 
+    public function testUserSelectedAllEntitiesWithEmptyAttributeFilter()
+    {
+        // top_composition only belongs of the 'Shoes' family, so the query should only return shoes products
+        $pqbFilters = [
+            [
+                'field' => 'top_composition',
+                'operator' => 'EMPTY',
+                'value' => null,
+                'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+            ],
+        ];
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        $this->assertProductsCountInSelection($pqbFilters, 65);
+    }
+
     public function testUserSelectedAllEntitiesAndFilteredByLabel()
     {
         $pqbFilters = [

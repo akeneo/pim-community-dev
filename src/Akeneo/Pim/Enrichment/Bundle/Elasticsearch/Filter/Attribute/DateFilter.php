@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
@@ -23,18 +22,18 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
 {
     const DATETIME_FORMAT = 'Y-m-d';
     const HUMAN_DATETIME_FORMAT = "yyyy-mm-dd";
-    
-    /** @var FamilyFilter */
-    private $familyFilter;
-    
+
+    /**
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array $supportedAttributeTypes
+     * @param array $supportedOperators
+     */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        FamilyFilter $familyFilter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->familyFilter = $familyFilter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }
@@ -133,10 +132,12 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 $existsClause = [
                     'exists' => ['field' => $attributePath]
                 ];
-
                 $this->searchQueryBuilder->addMustNot($existsClause);
-                $this->familyFilter->setQueryBuilder($this->searchQueryBuilder);
-                $this->familyFilter->addFieldFilter('family', Operators::IS_NOT_EMPTY, 'not_used_value');
+
+                $familyExistsClause = [
+                    'exists' => ['field' => 'family.code']
+                ];
+                $this->searchQueryBuilder->addFilter($familyExistsClause);
 
                 break;
             case Operators::IS_NOT_EMPTY:

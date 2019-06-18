@@ -2,15 +2,14 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Behat\Testwork\Argument\Exception\ArgumentException;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class CountImpactedProductsSpec extends ObjectBehavior
@@ -460,7 +459,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
         $this->count($pqbFilters)->shouldReturn(12);
     }
 
-    public function it_adds_a_filter_on_attributes_level_when_we_use_is_empty(
+    public function it_adds_a_filter_on_attributes_level_when_there_are_empty_attribute_filters(
         $productAndProductModelQueryBuilderFactory,
         SearchQueryBuilder $sqb,
         ProductQueryBuilderInterface $pqb,
