@@ -208,6 +208,7 @@ define(
                                 operationView.setReadOnly(true);
                                 this.currentStep = 'confirm';
                                 this.render();
+                                this.getRoot().trigger('mass-edit:action:confirm');
                             }
                         })
                         .always(() => {
