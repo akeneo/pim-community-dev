@@ -28,6 +28,10 @@ include make-file/*.mk
 clean:
 	rm -rf var/cache
 
+.PHONY: clean-asset
+clean-asset:
+	rm -rf web/bundles web/dist web/js web/css
+
 ##
 ## PIM configuration
 ##
@@ -70,6 +74,11 @@ reset-conf:
 ##
 ## PIM installation
 ##
+web/css:
+	mkdir web/css
+
+web/js:
+	mkdir web/js
 
 composer.lock: composer.json
 	$(PHP_RUN) /usr/local/bin/composer update
@@ -80,21 +89,21 @@ vendor: composer.lock
 node_modules: package.json
 	$(YARN_EXEC) install
 
-web/css/pim.css: $(LESS_FILES)
+web/css/pim.css: web/css $(LESS_FILES)
 	$(YARN_EXEC) run less
 
-web/js/require-paths.js: $(REQUIRE_JS_FILES)
+web/js/require-paths.js: web/js $(REQUIRE_JS_FILES)
 	$(PHP_EXEC) bin/console pim:installer:dump-require-paths
 
 web/bundles: $(ASSET_FILES)
 	$(PHP_EXEC) bin/console assets:install --relative --symlink
 
-web/js/translation:
+web/js/translation: web/js
 	$(PHP_EXEC) bin/console oro:translation:dump 'en_US, ca_ES, da_DK, de_DE, es_ES, fi_FI, fr_FR, hr_HR, it_IT, ja_JP, nl_NL, pl_PL, pt_BR, pt_PT, ru_RU, sv_SE, tl_PH, zh_CN, sv_SE, en_NZ'
 
 ## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
 .PHONY: install-asset
-install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-paths.js  web/js/translation
+install-asset: vendor node_modules web/bundles web/js/require-paths.js web/css/pim.css web/js/translation
 	for locale in $(LOCALE_TO_REFRESH) ; do \
 		$(PHP_EXEC) bin/console oro:translation:dump $$locale ; \
 	done
@@ -112,17 +121,27 @@ install-database-prod: docker-compose.override.yml app/config/parameters.yml ven
 	$(PHP_EXEC) bin/console --env=prod pim:installer:db
 
 ## Initialize the PIM frontend depending on an environment
-.PHONY: build-front-dev install-asset
-build-front-dev: docker-compose.override.yml node_modules
+.PHONY: build-front-prod
+build-front-prod: docker-compose.override.yml node_modules install-asset
+	$(YARN_EXEC) run webpack
+
+.PHONY: build-front-dev
+build-front-dev: docker-compose.override.yml node_modules install-asset
 	$(YARN_EXEC) run webpack-dev
 
-.PHONY: build-front-test install-asset
-build-front-test: docker-compose.override.yml node_modules
+.PHONY: build-front-test
+build-front-test: docker-compose.override.yml node_modules install-asset
 	$(YARN_EXEC) run webpack-test
 
 ## Initialize the PIM: install database (behat/prod) and run webpack
+.PHONY: install-pim-test
+install-pim-test: app/config/parameters_test.yml vendor node_modules clean install-asset build-front-dev build-front-test install-database-test
+
+.PHONY: install-pim-prod
+install-pim-prod: app/config/parameters.yml vendor node_modules clean install-asset build-front-prod install-database-prod
+
 .PHONY: install-pim
-install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor node_modules clean install-asset build-front-dev build-front-test install-database-test install-database-prod
+install-pim: install-pim-prod install-pim-test
 
 ##
 ## Docker
@@ -156,7 +175,7 @@ xdebug-off: docker-compose.override.yml
 ## Run tests suite
 ##
 
-.PHONY: coupling ## Run the coupling-detector on Everything
+.PHONY: coupling
 coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling
 
 .PHONY: phpspec
