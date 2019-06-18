@@ -4,6 +4,8 @@
 
 - AOB-556: Fix SSO SP certificate expiration date
 
+# 3.0.25 (2019-06-18)
+
 # 3.0.24 (2019-06-17)
 
 # 3.0.23 (2019-06-11)
