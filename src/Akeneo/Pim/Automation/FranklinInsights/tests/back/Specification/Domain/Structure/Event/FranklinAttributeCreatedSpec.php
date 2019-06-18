@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\Event;
 
 class FranklinAttributeCreatedSpec extends ObjectBehavior
 {
@@ -32,11 +31,6 @@ class FranklinAttributeCreatedSpec extends ObjectBehavior
     public function it_is_an_event(): void
     {
         $this->shouldHaveType(FranklinAttributeCreated::class);
-    }
-
-    public function it_is_a_an_event(): void
-    {
-        $this->shouldImplement(Event::class);
     }
 
     public function it_returns_attribute_code(): void

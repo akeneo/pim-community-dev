@@ -15,15 +15,12 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class FranklinAttributeCreated extends Event
+final class FranklinAttributeCreated
 {
-    public const EVENT_NAME = 'franklin_insights.attribute_created';
-
     private $attributeCode;
     private $attributeType;
 
