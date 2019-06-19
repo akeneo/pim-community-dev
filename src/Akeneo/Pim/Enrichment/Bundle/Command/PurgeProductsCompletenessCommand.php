@@ -45,7 +45,7 @@ class PurgeProductsCompletenessCommand extends ContainerAwareCommand
         $identifiers = $input->getArgument('identifiers');
 
         $pqb = $pqbFactory->create();
-        $pqb->addFilter('id', Operators::IN_LIST, explode(',', $identifiers));
+        $pqb->addFilter('product_id', Operators::IN_LIST, explode(',', $identifiers));
         $products = $pqb->execute();
 
         foreach ($products as $product) {
