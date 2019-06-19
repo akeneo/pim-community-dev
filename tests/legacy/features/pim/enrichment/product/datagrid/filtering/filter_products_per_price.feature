@@ -28,20 +28,17 @@ Feature: Filter products per price
     And the grid should contain 4 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator | value    | result          |
-      | price  | >=       | 20 EUR   | book            |
-      | price  | >        | 22.5 EUR |                 |
-      | price  | >=       | 22.5 EUR | book            |
-      | price  | >        | 12.5 EUR | book            |
-      | price  | >=       | 12.5 EUR | book, postit    |
-      | price  | =        | 12.5 EUR | postit          |
-      | price  | <        | 20 EUR   | postit          |
-      | price  | <        | 10.5 EUR |                 |
-      | price  | <=       | 13 EUR   | postit          |
-      | price  | <=       | 23 EUR   | postit and book |
-      | price  | >        | 40.5 EUR |                 |
-    When I show the filter "price"
-    And I filter by "price" with operator "is empty" and value ""
-    And I should see product mug
-    And I filter by "price" with operator "is not empty" and value ""
-    And I should see product postit
+      | filter | operator     | value    | result          |
+      | price  | >=           | 20 EUR   | book            |
+      | price  | >            | 22.5 EUR |                 |
+      | price  | >=           | 22.5 EUR | book            |
+      | price  | >            | 12.5 EUR | book            |
+      | price  | >=           | 12.5 EUR | book, postit    |
+      | price  | =            | 12.5 EUR | postit          |
+      | price  | <            | 20 EUR   | postit          |
+      | price  | <            | 10.5 EUR |                 |
+      | price  | <=           | 13 EUR   | postit          |
+      | price  | <=           | 23 EUR   | postit and book |
+      | price  | >            | 40.5 EUR |                 |
+      | price  | is empty     |          |                 |
+      | price  | is not empty |          | postit and book |

@@ -287,6 +287,7 @@ class PriceFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($price, Operators::IS_EMPTY, [], 'en_US', 'ecommerce', []);
