@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- DAPI-9: Fix use of the database name in a SQL query
+
 # 3.1.6 (2019-06-11)
 
 ## Bug fixes

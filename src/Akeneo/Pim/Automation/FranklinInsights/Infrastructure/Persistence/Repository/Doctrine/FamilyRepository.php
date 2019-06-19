@@ -61,7 +61,7 @@ SELECT
     family.code,
     ANY_VALUE(JSON_OBJECTAGG(IFNULL(fam_label.locale, 0), fam_label.label)) as labels
 FROM pim_catalog_family family
-LEFT JOIN akeneo_pim.pim_catalog_family_translation fam_label ON family.id = fam_label.foreign_key
+LEFT JOIN pim_catalog_family_translation fam_label ON family.id = fam_label.foreign_key
 WHERE family.code = :family_code
 GROUP BY family.code
 SQL;
