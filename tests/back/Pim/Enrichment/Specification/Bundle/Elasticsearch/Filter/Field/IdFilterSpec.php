@@ -17,7 +17,8 @@ class IdFilterSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             ['id'],
-            ['IN', 'NOT IN', '=', '!=']
+            ['IN', 'NOT IN', '=', '!='],
+            ''
         );
     }
 
