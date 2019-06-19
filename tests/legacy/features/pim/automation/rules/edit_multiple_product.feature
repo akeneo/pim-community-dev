@@ -93,15 +93,9 @@ Feature: Update multiple product by applying rules
     When I am on the "boot" product page
     And I switch the locale to "fr_FR"
     Then the product [name] should be "Boots"
-    When I am on the "fork" product page
-    And I switch the locale to "fr_FR"
-    Then the product [name] should be "Fork"
     When I am on the "rangers" product page
     And I switch the locale to "fr_FR"
     Then the product [name] should be "Rangers"
-    When I am on the "mug" product page
-    And I switch the locale to "fr_FR"
-    Then the product [name] should be "Mug"
 
   Scenario: Successfully execute a rule with a setter action and a NOT EMPTY condition on multiple products
     Given the following products:
