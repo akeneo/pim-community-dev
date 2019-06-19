@@ -258,14 +258,23 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
-
-    pim_catalog.query.elasticsearch.filter.id:
+    pim_catalog.query.elasticsearch.product.filter.id:
         class: '%pim_catalog.query.elasticsearch.filter.id.class%'
         arguments:
-            - ['id']
+            - ['product_id']
             - ['IN', 'NOT IN', '=', '!=']
+            - 'product_'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.product_model.filter.id:
+        class: '%pim_catalog.query.elasticsearch.filter.id.class%'
+        arguments:
+            - ['product_model_id']
+            - ['IN', 'NOT IN', '=', '!=']
+            - 'product_model_'
+        tags:
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
