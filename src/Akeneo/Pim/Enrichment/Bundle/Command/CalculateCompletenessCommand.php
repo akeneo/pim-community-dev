@@ -50,6 +50,7 @@ class CalculateCompletenessCommand extends Command
         $this->client = $client;
         $this->batchSize = $batchSize;
         $this->bulkSaver = $bulkSaver;
+        $this->clearer = $clearer;
         $this->pqbFactory = $pqbFactory;
 
         parent::__construct(self::$defaultName);

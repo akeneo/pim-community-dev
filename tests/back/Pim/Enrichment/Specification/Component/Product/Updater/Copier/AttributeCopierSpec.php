@@ -79,7 +79,8 @@ class AttributeCopierSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ScalarValue $fromValue,
-        ScalarValue $toValue
+        ScalarValue $toValue1,
+        ScalarValue $toValue2
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -99,15 +100,17 @@ class AttributeCopierSpec extends ObjectBehavior
                 'data' => true
             ]);
 
+        $normalizer->normalize(null, 'standard')->willReturn(null);
+
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, true)
-            ->willReturn($toValue);
+            ->willReturn($toValue1);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->willReturn($toValue2);
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
@@ -135,7 +138,8 @@ class AttributeCopierSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ScalarValue $fromValue,
-        ScalarValue $toValue
+        ScalarValue $toValue1,
+        ScalarValue $toValue2
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -154,15 +158,17 @@ class AttributeCopierSpec extends ObjectBehavior
             'data' => '1970-01-01'
         ]);
 
+        $normalizer->normalize(null, 'standard')->willReturn(null);
+
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, '1970-01-01')
-            ->willReturn($toValue);
+            ->willReturn($toValue1);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->willReturn($toValue2);
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
@@ -190,7 +196,8 @@ class AttributeCopierSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ScalarValue $fromValue,
-        ScalarValue $toValue
+        ScalarValue $toValue1,
+        ScalarValue $toValue2
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -209,15 +216,17 @@ class AttributeCopierSpec extends ObjectBehavior
             'data' => 123
         ]);
 
+        $normalizer->normalize(null, 'standard')->willReturn(null);
+
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, 123)
-            ->willReturn($toValue);
+            ->willReturn($toValue1);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
@@ -245,7 +254,8 @@ class AttributeCopierSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ScalarValue $fromValue,
-        ScalarValue $toValue
+        ScalarValue $toValue1,
+        ScalarValue $toValue2
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -259,20 +269,22 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $normalizer->normalize($fromValue, 'standard')->willReturn([
-                'locale' => 'fr_FR',
-                'scope' => 'mobile',
-                'data' => 'data'
-            ]);
+            'locale' => 'fr_FR',
+            'scope' => 'mobile',
+            'data' => 'data'
+        ]);
+
+        $normalizer->normalize(null, 'standard')->willReturn(null);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, 'data')
-            ->willReturn($toValue);
+            ->willReturn($toValue1);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {

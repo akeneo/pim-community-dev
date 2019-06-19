@@ -83,6 +83,8 @@ class MetricAttributeCopierSpec extends ObjectBehavior
                 'data'   => ['amount' => 123, 'unit' => 'GRAM'],
             ]);
 
+        $normalizer->normalize(null, 'standard')->willReturn(null);
+
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
@@ -91,7 +93,7 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
