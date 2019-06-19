@@ -20,15 +20,15 @@ export class EscapeHtml {
    * @return { string }
    */
   public static escapeHtml(source: string) {
-    return String(source).replace(/[&<>"'\/]/g, (s) => EscapeHtml.entityMap[s]);
+    return String(source).replace(/[&<>"'\/]/g, s => EscapeHtml.entityMap[s]);
   }
 
-  private static entityMap: { [key: string]: string } = {
+  private static entityMap: {[key: string]: string} = {
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    '\'': '&#39;',
-    '/': '&#x2F;',
+    "'": '&#39;',
+    '/': '&#x2F;'
   };
 }

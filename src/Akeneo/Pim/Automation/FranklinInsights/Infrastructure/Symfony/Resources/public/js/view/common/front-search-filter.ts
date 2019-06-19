@@ -35,8 +35,8 @@ class FrontSearchFilter extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
-    super({...options, ...{ className: 'AknFilterBox-searchContainer' }});
+  constructor(options: {config: Config}) {
+    super({...options, ...{className: 'AknFilterBox-searchContainer'}});
 
     this.config = options.config;
 
@@ -51,7 +51,7 @@ class FrontSearchFilter extends BaseForm {
   public events(): EventsHash {
     return {
       'keydown input[name="value"]': this.runTimeout,
-      'keypress input[name="value"]': this.runTimeout,
+      'keypress input[name="value"]': this.runTimeout
     };
   }
 
@@ -59,12 +59,14 @@ class FrontSearchFilter extends BaseForm {
    * {@inheritdoc}
    */
   public render(): BaseForm {
-    this.$el.html(this.template({
-      label: __('pim_datagrid.search', {
-        label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_attribute'),
-      }),
-      value: this.value,
-    }));
+    this.$el.html(
+      this.template({
+        label: __('pim_datagrid.search', {
+          label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_attribute')
+        }),
+        value: this.value
+      })
+    );
     this.delegateEvents();
 
     this.doSearch();
@@ -83,7 +85,8 @@ class FrontSearchFilter extends BaseForm {
       clearTimeout(this.timer);
     }
 
-    if (13 === event.keyCode) { // Enter key
+    if (13 === event.keyCode) {
+      // Enter key
       this.storeValueAndDoSearch();
     } else {
       this.timer = setTimeout(this.storeValueAndDoSearch.bind(this), TIMEOUT_DELAY);
@@ -91,7 +94,7 @@ class FrontSearchFilter extends BaseForm {
   }
 
   private storeValueAndDoSearch() {
-    this.value = (this.$el.find('input').val() as string);
+    this.value = this.$el.find('input').val() as string;
 
     this.doSearch();
   }
@@ -103,7 +106,7 @@ class FrontSearchFilter extends BaseForm {
     const filter: Filter = {
       value: this.value,
       type: FilterValue.Search,
-      field: this.config.fieldName,
+      field: this.config.fieldName
     };
     this.trigger('pim_datagrid:filter-front', filter);
   }

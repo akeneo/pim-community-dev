@@ -25,13 +25,14 @@ class ConnectionController extends BaseIndexController {
    * {@inheritdoc}
    */
   public renderForm(): object {
-    return FetcherRegistry.getFetcher('locale').fetchActivated().then((locales: Locale[]) => {
-      const formToBuild = this.containsAnEnglishLocale(locales)
-        ? 'akeneo-franklin-insights-franklin-connection-index'
-        : 'akeneo-franklin-insights-franklin-connection-index-no-active-english-locale';
+    return FetcherRegistry.getFetcher('locale')
+      .fetchActivated()
+      .then((locales: Locale[]) => {
+        const formToBuild = this.containsAnEnglishLocale(locales)
+          ? 'akeneo-franklin-insights-franklin-connection-index'
+          : 'akeneo-franklin-insights-franklin-connection-index-no-active-english-locale';
 
-      return FormBuilder.build(formToBuild)
-        .then((form: any) => {
+        return FormBuilder.build(formToBuild).then((form: any) => {
           this.on('pim:controller:can-leave', (event: any) => {
             form.trigger('pim_enrich:form:can-leave', event);
           });
@@ -39,7 +40,7 @@ class ConnectionController extends BaseIndexController {
 
           return form;
         });
-    });
+      });
   }
 
   /**

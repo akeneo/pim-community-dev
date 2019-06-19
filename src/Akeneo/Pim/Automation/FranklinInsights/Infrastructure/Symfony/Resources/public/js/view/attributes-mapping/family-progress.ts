@@ -36,7 +36,7 @@ class FamilyProgress extends View {
 
   private getMappingProgress = (mappings: AttributesMapping): [number, number] => [
     Object.keys(mappings).length,
-    Object.values(mappings).filter(mapping => null !== mapping.attribute && '' !== mapping.attribute).length,
+    Object.values(mappings).filter(mapping => null !== mapping.attribute && '' !== mapping.attribute).length
   ];
 }
 

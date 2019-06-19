@@ -11,7 +11,7 @@
 enum FamilyMappingStatus {
   MAPPING_PENDING = 0,
   MAPPING_FULL = 1,
-  MAPPING_EMPTY = 2,
+  MAPPING_EMPTY = 2
 }
 
 export default FamilyMappingStatus;

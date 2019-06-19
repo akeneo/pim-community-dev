@@ -30,12 +30,12 @@ class AttributeDelete extends BaseAttributeDelete {
           __(
             'pim_enrich.entity.attribute.module.save.warning',
             {count: connectionStatus.productSubscriptionCount},
-            connectionStatus.productSubscriptionCount,
+            connectionStatus.productSubscriptionCount
           ),
           __('pim_enrich.entity.attribute.module.save.title'),
           this.doDelete.bind(this),
           __(this.config.trans.subTitle),
-          __(this.config.trans.buttonText),
+          __(this.config.trans.buttonText)
         );
       } else {
         BaseAttributeDelete.prototype.delete.apply(this);

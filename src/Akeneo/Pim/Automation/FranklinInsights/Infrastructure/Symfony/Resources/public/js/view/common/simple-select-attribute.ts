@@ -25,14 +25,15 @@ const LineTemplate = require('pim/template/attribute/attribute-line');
  */
 class SimpleSelectAttribute extends BaseSimpleSelect {
   private readonly lineView = _.template(LineTemplate);
-  private attributeGroups: { [pimAttributeGroupCode: string]: NormalizedAttributeGroup } = {};
+  private attributeGroups: {[pimAttributeGroupCode: string]: NormalizedAttributeGroup} = {};
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: object, className: string }) {
+  constructor(options: {config: object; className: string}) {
     super({
-      ...{ className: 'AknFieldContainer AknFieldContainer--withoutMargin' }, ...options,
+      ...{className: 'AknFieldContainer AknFieldContainer--withoutMargin'},
+      ...options
     });
   }
 
@@ -42,12 +43,11 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   public configure(): JQueryPromise<any> {
     return $.when(
       BaseSimpleSelect.prototype.configure.apply(this, arguments),
-      FetcherRegistry
-        .getFetcher('attribute-group')
+      FetcherRegistry.getFetcher('attribute-group')
         .fetchAll()
-        .then((attributeGroups: { [pimAttributeGroupCode: string]: NormalizedAttributeGroup }) => {
+        .then((attributeGroups: {[pimAttributeGroupCode: string]: NormalizedAttributeGroup}) => {
           this.attributeGroups = attributeGroups;
-        }),
+        })
     );
   }
 
@@ -81,11 +81,11 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
       group: {
         text: this.getAttributeGroupLabel(
-            item.group,
-            this.attributeGroups[item.group] && this.attributeGroups[item.group].labels
+          item.group,
+          this.attributeGroups[item.group] && this.attributeGroups[item.group].labels
         )
       },
-      type: item.type,
+      type: item.type
     };
   }
 
@@ -104,8 +104,8 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       options: {
         limit: this.resultsPerPage,
         page,
-        locale: UserContext.get('catalogLocale'),
-      },
+        locale: UserContext.get('catalogLocale')
+      }
     };
 
     if (this.config.families) {
@@ -121,8 +121,8 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
    * Has been overrode because translations should be handle front side.
    * Translates messages.
    */
-  protected getFieldErrors(errors: { [index: string]: { message: string, messageParams: any } }) {
-    Object.keys(errors).map((index) => {
+  protected getFieldErrors(errors: {[index: string]: {message: string; messageParams: any}}) {
+    Object.keys(errors).map(index => {
       errors[index].message = __(errors[index].message, errors[index].messageParams);
     });
     return BaseSimpleSelect.prototype.getFieldErrors.apply(this, arguments);
@@ -135,16 +135,12 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
    *
    * @return {string}
    */
-  private onGetResult(item: { text: string, group: { text: string } }): string {
+  private onGetResult(item: {text: string; group: {text: string}}): string {
     return this.lineView({item});
   }
 
-  private getAttributeGroupLabel(group: string = '', labels: { [locale: string]: string } = {}): string {
-    return i18n.getLabel(
-        labels,
-        UserContext.get('catalogLocale'),
-        group,
-    );
+  private getAttributeGroupLabel(group: string = '', labels: {[locale: string]: string} = {}): string {
+    return i18n.getLabel(labels, UserContext.get('catalogLocale'), group);
   }
 }
 

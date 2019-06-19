@@ -23,13 +23,12 @@ class SaverForm extends BaseSaverForm {
    * {@inheritdoc}
    */
   public save(): JQueryPromise<any> {
-    const entity = this.getFormData()  as NormalizedAttributeOptionsMapping;
+    const entity = this.getFormData() as NormalizedAttributeOptionsMapping;
 
     this.showLoadingMask();
     this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
-    return AttributeOptionsMappingSaver
-      .setFamilyCode(entity.family)
+    return AttributeOptionsMappingSaver.setFamilyCode(entity.family)
       .setFranklinAttributeCode(entity.franklinAttributeCode)
       .setUrl(this.config.url)
       .save(null, entity, this.config.method || 'POST')

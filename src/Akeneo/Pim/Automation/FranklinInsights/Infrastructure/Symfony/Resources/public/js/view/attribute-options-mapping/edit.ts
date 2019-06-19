@@ -13,7 +13,7 @@ import * as _ from 'underscore';
 import {Filterable} from '../../common/filterable';
 import {
   AttributeOptionStatus,
-  NormalizedAttributeOptionsMapping,
+  NormalizedAttributeOptionsMapping
 } from '../../model/normalized-attribute-options-mapping';
 
 const __ = require('oro/translator');
@@ -48,8 +48,8 @@ class AttributeOptionsMapping extends BaseForm {
       inactive: '',
       franklinAttributeOption: '',
       catalogAttributeOption: '',
-      attributeOptionStatus: '',
-    },
+      attributeOptionStatus: ''
+    }
   };
   private familyCode: string;
   private catalogAttributeCode: string;
@@ -58,7 +58,7 @@ class AttributeOptionsMapping extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
+  constructor(options: {config: Config}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -102,13 +102,15 @@ class AttributeOptionsMapping extends BaseForm {
    */
   public render(): BaseForm {
     const mapping = this.getFormData().mapping as NormalizedAttributeOptionsMapping;
-    this.$el.html(this.template({
-      mapping,
-      franklinAttributeOption: __(this.config.labels.franklinAttributeOption),
-      catalogAttributeOption: __(this.config.labels.catalogAttributeOption),
-      attributeOptionStatus: __(this.config.labels.attributeOptionStatus),
-      statuses: this.getMappingStatuses(),
-    }));
+    this.$el.html(
+      this.template({
+        mapping,
+        franklinAttributeOption: __(this.config.labels.franklinAttributeOption),
+        catalogAttributeOption: __(this.config.labels.catalogAttributeOption),
+        attributeOptionStatus: __(this.config.labels.attributeOptionStatus),
+        statuses: this.getMappingStatuses()
+      })
+    );
 
     $.when(
       Object.keys(mapping).forEach((franklinAttributeOptionCode: string) => {
@@ -127,7 +129,7 @@ class AttributeOptionsMapping extends BaseForm {
    * @returns {{ [ status: number ]: string }}
    */
   private getMappingStatuses() {
-    const statuses: { [status: number]: string } = {};
+    const statuses: {[status: number]: string} = {};
     statuses[AttributeOptionStatus.Pending] = __(this.config.labels.pending);
     statuses[AttributeOptionStatus.Active] = __(this.config.labels.active);
     statuses[AttributeOptionStatus.Inactive] = __(this.config.labels.inactive);
@@ -142,12 +144,11 @@ class AttributeOptionsMapping extends BaseForm {
    */
   private fetchMapping(): JQueryPromise<NormalizedAttributeOptionsMapping> {
     return $.when(
-      FetcherRegistry
-        .getFetcher('attribute-options-mapping')
+      FetcherRegistry.getFetcher('attribute-options-mapping')
         .fetch(this.familyCode, {franklinAttributeCode: this.franklinAttributeCode, cached: false})
         .then((attributeOptionMapping: NormalizedAttributeOptionsMapping) => {
           return attributeOptionMapping;
-        }),
+        })
     );
   }
 
@@ -156,18 +157,18 @@ class AttributeOptionsMapping extends BaseForm {
    */
   private appendAttributeOptionSelector(franklinAttributeOptionCode: string) {
     const $dom = this.$el.find(
-      '.attribute-selector[data-franklin-attribute-code="' + franklinAttributeOptionCode + '"]',
+      '.attribute-selector[data-franklin-attribute-code="' + franklinAttributeOptionCode + '"]'
     );
     const attributeSelector = new SimpleSelectAsync({
       config: {
         fieldName: Property.propertyPath(['mapping', franklinAttributeOptionCode, 'catalogAttributeOptionCode']),
-        label: '',
+        label: ''
       },
-      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
+      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
     });
     attributeSelector.allowClear = true;
     attributeSelector.setChoiceUrl(
-      Routing.generate('pim_enrich_attributeoption_get', {identifier: this.catalogAttributeCode}),
+      Routing.generate('pim_enrich_attributeoption_get', {identifier: this.catalogAttributeCode})
     );
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);

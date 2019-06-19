@@ -42,7 +42,7 @@ class SubscriptionStatusSwitcher extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
+  constructor(options: {config: Config}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -62,7 +62,7 @@ class SubscriptionStatusSwitcher extends BaseView {
    */
   public events(): EventsHash {
     return {
-      'click .AknDropdown-menuLink': 'updateStatus',
+      'click .AknDropdown-menuLink': 'updateStatus'
     };
   }
 
@@ -73,59 +73,64 @@ class SubscriptionStatusSwitcher extends BaseView {
     const productId = this.getFormData().meta.id;
 
     // TODO: must use product identifier and not id
-    return getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatus): Promise<BaseView> => {
-      this.currentStatus = subscriptionStatus.isSubscribed;
-      let isReadOnlyMode = false;
-      let errorMessage = '';
+    return getSubscriptionStatus(productId).then(
+      (subscriptionStatus: SubscriptionStatus): Promise<BaseView> => {
+        this.currentStatus = subscriptionStatus.isSubscribed;
+        let isReadOnlyMode = false;
+        let errorMessage = '';
 
-      if (!subscriptionStatus.isConnectionActive) {
-        return BaseView.prototype.render.apply(this);
-      }
+        if (!subscriptionStatus.isConnectionActive) {
+          return BaseView.prototype.render.apply(this);
+        }
 
-      if (subscriptionStatus.isProductVariant) {
-        return BaseView.prototype.render.apply(this);
-      }
+        if (subscriptionStatus.isProductVariant) {
+          return BaseView.prototype.render.apply(this);
+        }
 
-      if (!subscriptionStatus.isIdentifiersMappingValid) {
-        isReadOnlyMode = true;
-        errorMessage = 'akeneo_franklin_insights.entity.product_subscription.module.product_edit_form.invalid_mapping';
-      } else if (!subscriptionStatus.hasFamily) {
-        isReadOnlyMode = true;
-        errorMessage = 'akeneo_franklin_insights.entity.product_subscription.module.product_edit_form.family_required';
-      } else if (!subscriptionStatus.isMappingFilled) {
-        isReadOnlyMode = true;
-        errorMessage = 'akeneo_franklin_insights.entity.product_subscription.module.product_edit_form.no_identifier_filled';
-      }
+        if (!subscriptionStatus.isIdentifiersMappingValid) {
+          isReadOnlyMode = true;
+          errorMessage =
+            'akeneo_franklin_insights.entity.product_subscription.module.product_edit_form.invalid_mapping';
+        } else if (!subscriptionStatus.hasFamily) {
+          isReadOnlyMode = true;
+          errorMessage =
+            'akeneo_franklin_insights.entity.product_subscription.module.product_edit_form.family_required';
+        } else if (!subscriptionStatus.isMappingFilled) {
+          isReadOnlyMode = true;
+          errorMessage =
+            'akeneo_franklin_insights.entity.product_subscription.module.product_edit_form.no_identifier_filled';
+        }
 
-      if (isReadOnlyMode) {
+        if (isReadOnlyMode) {
+          this.$el.html(
+            this.templateReadOnly({
+              subscriptionStatusTitle: 'akeneo_franklin_insights.product.edit.subscription_status_title',
+              status: this.currentStatus ? 'enabled' : 'disabled',
+              statusLabel: this.currentStatus ? 'Enabled' : 'Disabled',
+              errorMessage,
+              __
+            })
+          );
+          this.delegateEvents();
+
+          return BaseView.prototype.render.apply(this);
+        }
+
         this.$el.html(
-          this.templateReadOnly({
+          this.template({
             subscriptionStatusTitle: 'akeneo_franklin_insights.product.edit.subscription_status_title',
-            status: this.currentStatus ? 'enabled' : 'disabled',
-            statusLabel: this.currentStatus ? 'Enabled' : 'Disabled',
-            errorMessage,
-            __,
-          }),
+            hasSubscribed: this.currentStatus,
+            enabledLabel: 'Enabled',
+            disabledLabel: 'Disabled',
+            isSwitchEnabled: true,
+            __
+          })
         );
         this.delegateEvents();
 
         return BaseView.prototype.render.apply(this);
       }
-
-      this.$el.html(
-        this.template({
-          subscriptionStatusTitle: 'akeneo_franklin_insights.product.edit.subscription_status_title',
-          hasSubscribed: this.currentStatus,
-          enabledLabel: 'Enabled',
-          disabledLabel: 'Disabled',
-          isSwitchEnabled: true,
-          __,
-        }),
-      );
-      this.delegateEvents();
-
-      return BaseView.prototype.render.apply(this);
-    });
+    );
   }
 
   /**
@@ -133,7 +138,7 @@ class SubscriptionStatusSwitcher extends BaseView {
    *
    * @param {Event} event
    */
-  public updateStatus(event: { [key: string]: any }): void {
+  public updateStatus(event: {[key: string]: any}): void {
     const newStatus = event.currentTarget.dataset.status === 'enabled';
 
     if (true === newStatus && false === this.currentStatus) {
@@ -152,24 +157,24 @@ class SubscriptionStatusSwitcher extends BaseView {
     // TODO: must use product identifier and not id
     $.ajax({
       method: 'POST',
-      url: Routing.generate('akeneo_franklin_insights_subscribe', {productId: this.getFormData().meta.id}),
-    }).done(() => {
-      Messenger.notify(
-        'success',
-        __(this.config.createProductSubscriptionSuccessMessage),
-      );
-    }).fail((xhr: any) => {
-      const response = xhr.responseJSON;
-      let errorMessage = this.config.createProductSubscriptionFailMessage;
+      url: Routing.generate('akeneo_franklin_insights_subscribe', {productId: this.getFormData().meta.id})
+    })
+      .done(() => {
+        Messenger.notify('success', __(this.config.createProductSubscriptionSuccessMessage));
+      })
+      .fail((xhr: any) => {
+        const response = xhr.responseJSON;
+        let errorMessage = this.config.createProductSubscriptionFailMessage;
 
-      if (undefined !== response && undefined !== response.errors) {
-        errorMessage = response.errors;
-      }
+        if (undefined !== response && undefined !== response.errors) {
+          errorMessage = response.errors;
+        }
 
-      Messenger.notify('error', __(errorMessage));
-    }).always(() => {
-      this.render();
-    });
+        Messenger.notify('error', __(errorMessage));
+      })
+      .always(() => {
+        this.render();
+      });
   }
 
   /**
@@ -178,24 +183,24 @@ class SubscriptionStatusSwitcher extends BaseView {
   private unsubscribeProduct(): void {
     $.ajax({
       method: 'DELETE',
-      url: Routing.generate('akeneo_franklin_insights_unsubscribe', {productId: this.getFormData().meta.id}),
-    }).done(() => {
-      Messenger.notify(
-        'success',
-        __(this.config.deleteProductSubscriptionSuccessMessage),
-      );
-    }).fail((xhr: any) => {
-      const response = xhr.responseJSON;
-      let errorMessage = this.config.deleteProductSubscriptionFailMessage;
+      url: Routing.generate('akeneo_franklin_insights_unsubscribe', {productId: this.getFormData().meta.id})
+    })
+      .done(() => {
+        Messenger.notify('success', __(this.config.deleteProductSubscriptionSuccessMessage));
+      })
+      .fail((xhr: any) => {
+        const response = xhr.responseJSON;
+        let errorMessage = this.config.deleteProductSubscriptionFailMessage;
 
-      if (undefined !== response && undefined !== response.errors) {
-        errorMessage = response.errors;
-      }
+        if (undefined !== response && undefined !== response.errors) {
+          errorMessage = response.errors;
+        }
 
-      Messenger.notify('error', __(errorMessage));
-    }).always(() => {
-      this.render();
-    });
+        Messenger.notify('error', __(errorMessage));
+      })
+      .always(() => {
+        this.render();
+      });
   }
 }
 

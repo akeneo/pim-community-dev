@@ -37,7 +37,7 @@ class StatusFilter extends BaseForm {
       {value: '', label: __('pim_common.all')},
       {value: 0, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending')},
       {value: 1, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.active')},
-      {value: 2, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive')},
+      {value: 2, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive')}
     ];
   }
 
@@ -46,7 +46,7 @@ class StatusFilter extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: object }) {
+  constructor(options: {config: object}) {
     super({...options, ...{className: 'AknDropdown AknFilterBox-filterContainer'}});
   }
 
@@ -55,7 +55,7 @@ class StatusFilter extends BaseForm {
    */
   public events(): EventsHash {
     return {
-      'click .option': this.filter.bind(this),
+      'click .option': this.filter.bind(this)
     };
   }
 
@@ -63,11 +63,13 @@ class StatusFilter extends BaseForm {
    * {@inheritdoc}
    */
   public render(): BaseForm {
-    this.$el.html(this.template({
-      label: __('pim_common.status'),
-      currentValue: '',
-      filters: StatusFilter.getFilters(),
-    }));
+    this.$el.html(
+      this.template({
+        label: __('pim_common.status'),
+        currentValue: '',
+        filters: StatusFilter.getFilters()
+      })
+    );
 
     return this;
   }
@@ -77,19 +79,19 @@ class StatusFilter extends BaseForm {
    *
    * @param {{currentTarget: any}} event
    */
-  private filter(event: { currentTarget: any }): void {
+  private filter(event: {currentTarget: any}): void {
     const value = $(event.currentTarget).data('value') as string;
     const filter: Filter = {
       value,
       type: FilterValue.Equals,
-      field: 'status',
+      field: 'status'
     };
     this.trigger('pim_datagrid:filter-front', filter);
 
     this.$el.find('.filter-criteria-hint').html(
       (StatusFilter.getFilters().find((filterLabel: FilterLabel) => {
         return filterLabel.value === value;
-      }) as FilterLabel).label,
+      }) as FilterLabel).label
     );
   }
 }

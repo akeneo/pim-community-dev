@@ -19,8 +19,8 @@ class AttributeTypeMismatchWarning extends View<Model> {
   public render() {
     this.$el.html(
       this.template({
-        message: __('akeneo_franklin_insights.entity.attributes_mapping.module.index.types_mismatch_warning'),
-      }),
+        message: __('akeneo_franklin_insights.entity.attributes_mapping.module.index.types_mismatch_warning')
+      })
     );
 
     return this;

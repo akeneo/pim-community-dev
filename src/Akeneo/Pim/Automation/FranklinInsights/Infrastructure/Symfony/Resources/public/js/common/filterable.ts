@@ -15,7 +15,7 @@ import BaseForm = require('pimui/js/view/base');
 
 export enum FilterValue {
   Equals = 'equals',
-  Search = 'search',
+  Search = 'search'
 }
 
 export interface Filter {
@@ -41,7 +41,7 @@ export class Filterable {
     return $.when(
       baseForm.onExtensions('pim_datagrid:filter-front', (filter: Filter) => {
         return this.filter(baseForm, filter);
-      }),
+      })
     );
   }
 
@@ -56,8 +56,8 @@ export class Filterable {
     const noDataHtml = template({
       __,
       imageClass: '',
-      hint: __('pim_datagrid.no_results', { entityHint }),
-      subHint: 'pim_datagrid.no_results_subtitle',
+      hint: __('pim_datagrid.no_results', {entityHint}),
+      subHint: 'pim_datagrid.no_results_subtitle'
     });
 
     baseForm.$el.append(noDataHtml);
@@ -80,17 +80,21 @@ export class Filterable {
       let filteredByThisFilter = false;
 
       switch (filter.type) {
-        case FilterValue.Equals: filteredByThisFilter = !this.filterEquals(filter.value, value); break;
-        case FilterValue.Search: filteredByThisFilter = !this.filterSearch(filter.value, value); break;
+        case FilterValue.Equals:
+          filteredByThisFilter = !this.filterEquals(filter.value, value);
+          break;
+        case FilterValue.Search:
+          filteredByThisFilter = !this.filterSearch(filter.value, value);
+          break;
       }
 
       let filters = $(row).data('active-filters');
       if (undefined === filters) {
         filters = [];
       }
-      if ((filters.indexOf(filter.field) < 0) && filteredByThisFilter) {
+      if (filters.indexOf(filter.field) < 0 && filteredByThisFilter) {
         filters.push(filter.field);
-      } else if ((filters.indexOf(filter.field) >= 0) && !filteredByThisFilter) {
+      } else if (filters.indexOf(filter.field) >= 0 && !filteredByThisFilter) {
         filters.splice(filters.indexOf(filter.field), 1);
       }
       $(row).data('active-filters', filters);
@@ -107,9 +111,9 @@ export class Filterable {
    * @param { BaseForm } baseForm
    */
   private static toggleNoDataMessage(baseForm: BaseForm): void {
-    baseForm.$el.find('.searchable-row:visible').length ?
-      baseForm.$el.find('.no-data-inner').hide() :
-      baseForm.$el.find('.no-data-inner').show();
+    baseForm.$el.find('.searchable-row:visible').length
+      ? baseForm.$el.find('.no-data-inner').hide()
+      : baseForm.$el.find('.no-data-inner').show();
   }
 
   /**

@@ -17,7 +17,7 @@ const Router = require('pim/router');
 const template = require('akeneo/franklin-insights/template/common/tabs');
 
 interface Config {
-  tabs: Array<{ label: string, route: string, checkAllowed: boolean }>;
+  tabs: Array<{label: string; route: string; checkAllowed: boolean}>;
   selected: number | null;
   sticky: boolean;
 }
@@ -33,14 +33,14 @@ class Tabs extends BaseView {
   private readonly config: Config = {
     tabs: [],
     selected: null,
-    sticky: false,
+    sticky: false
   };
   private stateFullAllowed: boolean[];
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
+  constructor(options: {config: Config}) {
     super(options);
     this.stateFullAllowed = [];
 
@@ -52,13 +52,13 @@ class Tabs extends BaseView {
    */
   public events(): EventsHash {
     return {
-      'click .tab-link': (event: { currentTarget: any }) => {
+      'click .tab-link': (event: {currentTarget: any}) => {
         const index = parseInt($(event.currentTarget).data('index') + '');
         if (this.checkAllowed(index)) {
           const tabConfig = this.config.tabs[index];
           Router.redirectToRoute(tabConfig.route);
         }
-      },
+      }
     };
   }
 
@@ -66,17 +66,11 @@ class Tabs extends BaseView {
    * {@inheritdoc}
    */
   public configure(): JQueryPromise<any> {
-    return $.when(
-      BaseView.prototype.configure.apply(this, arguments),
-    ).then(() => {
-      this.listenTo(
-        this.getRoot(),
-        'pim_enrich:form:entity:post_save',
-        () => {
-          this.stateFullAllowed = [];
-          this.render();
-        },
-      );
+    return $.when(BaseView.prototype.configure.apply(this, arguments)).then(() => {
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', () => {
+        this.stateFullAllowed = [];
+        this.render();
+      });
     });
   }
 
@@ -101,13 +95,15 @@ class Tabs extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    this.$el.html(this.template({
-      sticky: this.config.sticky,
-      tabs: this.config.tabs,
-      selected: this.config.selected,
-      checkAllowed: this.checkAllowed.bind(this),
-      __,
-    }));
+    this.$el.html(
+      this.template({
+        sticky: this.config.sticky,
+        tabs: this.config.tabs,
+        selected: this.config.selected,
+        checkAllowed: this.checkAllowed.bind(this),
+        __
+      })
+    );
     this.delegateEvents();
 
     return BaseView.prototype.render.apply(this, arguments);
@@ -124,8 +120,7 @@ class Tabs extends BaseView {
 
     const formData = this.getFormData();
     for (let i = 0; i < Object.keys(formData).length; i++) {
-      if (formData[Object.keys(formData)[i]] !== null
-        && formData[Object.keys(formData)[i]] !== '') {
+      if (formData[Object.keys(formData)[i]] !== null && formData[Object.keys(formData)[i]] !== '') {
         return true;
       }
     }

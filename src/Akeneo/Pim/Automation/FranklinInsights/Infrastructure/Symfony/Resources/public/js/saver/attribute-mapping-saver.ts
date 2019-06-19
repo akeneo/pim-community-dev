@@ -17,19 +17,15 @@ class AttributeMappingSaver extends BaseSaver {
 
     switch (response.status) {
       case 400:
-        this.getRoot().trigger(
-          'pim_enrich:form:entity:bad_request',
-          {'sentData': this.getFormData(), 'response': response.responseJSON}
-        );
+        this.getRoot().trigger('pim_enrich:form:entity:bad_request', {
+          sentData: this.getFormData(),
+          response: response.responseJSON
+        });
 
-        errorFlashMessage = response.responseJSON
-          .map((message:any) => __(message))
-          .join('. ');
+        errorFlashMessage = response.responseJSON.map((message: any) => __(message)).join('. ');
         break;
       case 500:
         const message = response.responseJSON ? response.responseJSON : response;
-
-        console.error('Errors:', message);
         this.getRoot().trigger('pim_enrich:form:entity:error:save', message);
 
         errorFlashMessage = __('pim_enrich.entity.fallback.flash.update.fail');
@@ -37,10 +33,7 @@ class AttributeMappingSaver extends BaseSaver {
       default:
     }
 
-    Messenger.notify(
-      'error',
-      errorFlashMessage
-    );
+    Messenger.notify('error', errorFlashMessage);
   }
 }
 

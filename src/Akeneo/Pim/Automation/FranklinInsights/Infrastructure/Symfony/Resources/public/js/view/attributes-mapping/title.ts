@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import Family from '../../model/family';
 import BaseView = require('pimui/js/view/base');
+import Family from '../../model/family';
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');

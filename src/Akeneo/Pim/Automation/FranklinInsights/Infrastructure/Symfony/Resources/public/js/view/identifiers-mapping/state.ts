@@ -20,8 +20,10 @@ class State extends BaseState {
    * {@inheritdoc}
    */
   public hasModelChanged(): boolean {
-    return JSON.stringify(this.emptyToNullValues(JSON.parse(this.state))) !==
-      JSON.stringify(this.emptyToNullValues(this.getFormData()));
+    return (
+      JSON.stringify(this.emptyToNullValues(JSON.parse(this.state))) !==
+      JSON.stringify(this.emptyToNullValues(this.getFormData()))
+    );
   }
 
   /**

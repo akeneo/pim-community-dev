@@ -27,9 +27,11 @@ class State extends BaseState {
 
     const formData = this.getFormData();
     for (let property in formData.mapping) {
-      const attributeMapping = formData.mapping[property];
-      if (attributeMapping.status === AttributeMappingStatus.ATTRIBUTE_PENDING && attributeMapping.attribute !== null) {
-        return true;
+      if (formData.mapping.hasOwnProperty(property)) {
+        const attributeMapping = formData.mapping[property];
+        if (attributeMapping.status === AttributeMappingStatus.ATTRIBUTE_PENDING && attributeMapping.attribute !== null) {
+          return true;
+        }
       }
     }
 

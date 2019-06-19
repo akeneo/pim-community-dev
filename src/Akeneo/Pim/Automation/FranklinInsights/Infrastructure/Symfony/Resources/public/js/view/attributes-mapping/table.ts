@@ -56,7 +56,7 @@ const PERFECT_MAPPINGS: {
   select: ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_simpleselect', 'pim_catalog_multiselect'],
   multiselect: ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_multiselect', 'pim_catalog_simpleselect'],
   number: ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number'],
-  text: ['pim_catalog_text', 'pim_catalog_textarea'],
+  text: ['pim_catalog_text', 'pim_catalog_textarea']
 };
 
 const ALLOWED_CATALOG_TYPES: string[] = [
@@ -66,7 +66,7 @@ const ALLOWED_CATALOG_TYPES: string[] = [
   'pim_catalog_number',
   'pim_catalog_text',
   'pim_catalog_textarea',
-  'pim_catalog_boolean',
+  'pim_catalog_boolean'
 ];
 
 const ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
@@ -88,8 +88,8 @@ class AttributeMapping extends BaseView {
       active: '',
       inactive: '',
       franklinAttribute: '',
-      catalogAttribute: '',
-    },
+      catalogAttribute: ''
+    }
   };
   private attributeOptionsMappingModal: any = null;
   private attributeOptionsMappingForm: BaseView | null = null;
@@ -109,7 +109,7 @@ class AttributeMapping extends BaseView {
    */
   public events(): EventsHash {
     return {
-      'click .option-mapping': this.openAttributeOptionsMappingModal,
+      'click .option-mapping': this.openAttributeOptionsMappingModal
     };
   }
 
@@ -138,8 +138,8 @@ class AttributeMapping extends BaseView {
         mapping: attributesMapping,
         escapeHtml: EscapeHtml.escapeHtml,
         franklinAttribute: __(this.config.labels.franklinAttribute),
-        catalogAttribute: __(this.config.labels.catalogAttribute),
-      }),
+        catalogAttribute: __(this.config.labels.catalogAttribute)
+      })
     );
 
     FetcherRegistry.getFetcher('attribute')
@@ -160,14 +160,19 @@ class AttributeMapping extends BaseView {
             hasDuplicatedMappedAttribute = true;
           }
 
-          this.appendAttributeSelector(attributesMapping, franklinAttributeCode, isAttributeOptionsButtonVisible, isDuplicatedAttribute);
+          this.appendAttributeSelector(
+            attributesMapping,
+            franklinAttributeCode,
+            isAttributeOptionsButtonVisible,
+            isDuplicatedAttribute
+          );
 
           if (true === this.isAllowedToCreateAttribute(attributeMapping)) {
             const createAttributeButton = this.appendCreateAttributeButton(
               franklinAttributeCode,
               familyMapping.code,
               attributeMapping.franklinAttribute.label,
-              attributeMapping.franklinAttribute.type,
+              attributeMapping.franklinAttribute.type
             );
             createAttributeButton.on('attribute_created', (catalogAttributeCode: string) => {
               createAttributeButton.remove();
@@ -184,7 +189,7 @@ class AttributeMapping extends BaseView {
         if (false !== hasDuplicatedMappedAttribute) {
           Messenger.notify(
             'error',
-            __('akeneo_franklin_insights.entity.attributes_mapping.constraint.duplicated_pim_attribute'),
+            __('akeneo_franklin_insights.entity.attributes_mapping.constraint.duplicated_pim_attribute')
           );
         }
 
@@ -205,9 +210,11 @@ class AttributeMapping extends BaseView {
 
     const familyMapping = this.getFormData() as IAttributesMappingForFamily;
 
-    const duplicatedPimAttributeCount = Object.values(familyMapping.mapping).filter((attributeMapping: IAttributeMapping) => {
-      return attributeMapping.attribute === pimAttributeCode;
-    }).length;
+    const duplicatedPimAttributeCount = Object.values(familyMapping.mapping).filter(
+      (attributeMapping: IAttributeMapping) => {
+        return attributeMapping.attribute === pimAttributeCode;
+      }
+    ).length;
 
     return duplicatedPimAttributeCount > 1;
   }
@@ -227,7 +234,7 @@ class AttributeMapping extends BaseView {
     const familyMapping = this.getFormData() as IAttributesMappingForFamily;
 
     const alreadyMappedAttributeMapping = Object.values(familyMapping.mapping).find(
-      mapping => mapping.attribute === catalogAttributeCode,
+      mapping => mapping.attribute === catalogAttributeCode
     );
 
     if (undefined !== alreadyMappedAttributeMapping) {
@@ -235,8 +242,8 @@ class AttributeMapping extends BaseView {
         'warning',
         __('akeneo_franklin_insights.entity.attributes_mapping.flash.suggest_attribute_mapping_error', {
           catalogAttributeCode,
-          franklinAttributeLabel: alreadyMappedAttributeMapping.franklinAttribute.label,
-        }),
+          franklinAttributeLabel: alreadyMappedAttributeMapping.franklinAttribute.label
+        })
       );
 
       return;
@@ -270,9 +277,9 @@ class AttributeMapping extends BaseView {
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
         types: ALLOWED_CATALOG_TYPES,
-        families: [this.getFamilyCode()],
+        families: [this.getFamilyCode()]
       },
-      className: `AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline ${perfectMatchClass} ${duplicatedErrorClass}`,
+      className: `AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline ${perfectMatchClass} ${duplicatedErrorClass}`
     });
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
@@ -285,7 +292,7 @@ class AttributeMapping extends BaseView {
           $('<div>')
             .addClass('AknIconButton AknIconButton--small AknIconButton--edit AknGrid-onHoverElement option-mapping')
             .attr('data-franklin-attribute-code', franklinAttributeCode)
-            .attr('title', __('pim_common.edit')),
+            .attr('title', __('pim_common.edit'))
         );
       }
 
@@ -299,7 +306,7 @@ class AttributeMapping extends BaseView {
     franklinAttributeCode: string,
     familyCode: string,
     franklinAttributeLabel: string,
-    franklinAttributeType: string,
+    franklinAttributeType: string
   ) {
     const createAttributeButton = new CreateAttributeButton(familyCode, franklinAttributeLabel, franklinAttributeType);
 
@@ -317,7 +324,7 @@ class AttributeMapping extends BaseView {
     const attributeTypeMismatchWarning = new AttributeTypeMismatchWarning();
 
     const $host = this.$el.find(
-      `.attribute-type-mismatch-warning[data-franklin-attribute-code="${franklinAttributeCode}"]`,
+      `.attribute-type-mismatch-warning[data-franklin-attribute-code="${franklinAttributeCode}"]`
     );
     $host.append(attributeTypeMismatchWarning.render().el);
 
@@ -359,12 +366,12 @@ class AttributeMapping extends BaseView {
 
     $.when(
       FormBuilder.build('akeneo-franklin-insights-settings-attribute-options-mapping-edit'),
-      FetcherRegistry.getFetcher('family').fetch(familyCode),
+      FetcherRegistry.getFetcher('family').fetch(familyCode)
     ).then((form: BaseView, normalizedFamily: any) => {
       const familyLabel = i18n.getLabel(
         normalizedFamily.labels,
         UserContext.get('catalogLocale'),
-        normalizedFamily.code,
+        normalizedFamily.code
       );
 
       const formContent = form.getExtension('content') as AttributeOptionsMapping;
@@ -372,17 +379,17 @@ class AttributeMapping extends BaseView {
         this.attributeOptionsMappingModal = new (Backbone as any).BootstrapModal({
           modalOptions: {
             backdrop: 'static',
-            keyboard: false,
+            keyboard: false
           },
           okCloses: false,
           title: __('akeneo_franklin_insights.entity.attribute_options_mapping.module.edit.title', {
             familyLabel,
-            franklinAttributeLabel,
+            franklinAttributeLabel
           }),
           content: form,
           template: this.modalTemplate,
           innerClassName: 'AknFullPage--full AknFullPage--fixedWidth',
-          okText: '',
+          okText: ''
         });
         this.attributeOptionsMappingModal.on('cancel', this.closeOptionsMappingAfterCancel.bind(this));
         this.attributeOptionsMappingModal.open();

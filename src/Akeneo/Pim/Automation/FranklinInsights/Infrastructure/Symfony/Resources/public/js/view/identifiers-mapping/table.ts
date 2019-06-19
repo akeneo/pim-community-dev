@@ -25,10 +25,7 @@ const template = require('akeneo/franklin-insights/template/settings/identifiers
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class EditIdentifiersMappingView extends BaseView {
-  private static readonly VALID_MAPPING: string[] = [
-    'pim_catalog_identifier',
-    'pim_catalog_text',
-  ];
+  private static readonly VALID_MAPPING: string[] = ['pim_catalog_identifier', 'pim_catalog_text'];
 
   /**
    * Returns the class for a row depending of the identifier mapping status
@@ -50,20 +47,21 @@ class EditIdentifiersMappingView extends BaseView {
   public readonly headers = {
     identifiersLabel: __('akeneo_franklin_insights.entity.identifier_mapping.fields.identifier_label.label'),
     attributeLabel: __('akeneo_franklin_insights.entity.identifier_mapping.fields.catalog_attribute'),
-    franklinInsightsLabel: __('akeneo_franklin_insights.entity.identifier_mapping.fields.franklin_insights'),
+    franklinInsightsLabel: __('akeneo_franklin_insights.entity.identifier_mapping.fields.franklin_insights')
   };
-  private identifiersStatuses: { [franklinIdentifier: string]: string } = {};
+  private identifiersStatuses: {[franklinIdentifier: string]: string} = {};
   private scroll: number = 0;
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: object }) {
+  constructor(options: {config: object}) {
     super({
-      ...options, ...{
+      ...options,
+      ...{
         className: 'AknGrid AknGrid--unclickable AknFormContainer--withPadding AknGrid--stretched',
-        tagName: 'table',
-      },
+        tagName: 'table'
+      }
     });
 
     this.config = {...this.config, ...options.config};
@@ -75,22 +73,16 @@ class EditIdentifiersMappingView extends BaseView {
   public configure(): JQueryPromise<any> {
     this.listenTo(this.getRoot(), 'pim_enrich:form:render:before', this.saveScroll);
     this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.setScroll);
-    this.listenTo(
-      this.getRoot(),
-      'pim_enrich:form:entity:post_save',
-      this.triggerUpdateIdentifierStatuses.bind(this),
-    );
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.triggerUpdateIdentifierStatuses.bind(this));
 
     const identifiersMappingFetcher = FetcherRegistry.getFetcher('identifiers-mapping');
     identifiersMappingFetcher.clear();
 
     return $.when(
-      identifiersMappingFetcher
-        .fetchAll()
-        .then((identifiersMapping: { [franklinIdentifier: string]: (string | null) }) => {
-          this.setData(identifiersMapping);
-          this.updateIdentifierStatuses();
-        }),
+      identifiersMappingFetcher.fetchAll().then((identifiersMapping: {[franklinIdentifier: string]: string | null}) => {
+        this.setData(identifiersMapping);
+        this.updateIdentifierStatuses();
+      })
     );
   }
 
@@ -98,15 +90,17 @@ class EditIdentifiersMappingView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    const identifiersMapping: { [franklinIdentifier: string]: string } = this.getFormData();
+    const identifiersMapping: {[franklinIdentifier: string]: string} = this.getFormData();
 
-    this.$el.html(this.template({
-      headers: this.headers,
-      identifiers: identifiersMapping,
-      identifiersStatuses: this.identifiersStatuses,
-      getRowClass: EditIdentifiersMappingView.getRowClass,
-      __,
-    }));
+    this.$el.html(
+      this.template({
+        headers: this.headers,
+        identifiers: identifiersMapping,
+        identifiersStatuses: this.identifiersStatuses,
+        getRowClass: EditIdentifiersMappingView.getRowClass,
+        __
+      })
+    );
 
     this.renderAttributeSelectors(identifiersMapping);
     this.setScroll();
@@ -119,7 +113,7 @@ class EditIdentifiersMappingView extends BaseView {
    *
    * @param identifiersMapping
    */
-  private renderAttributeSelectors(identifiersMapping: { [franklinIdentifier: string]: string }): void {
+  private renderAttributeSelectors(identifiersMapping: {[franklinIdentifier: string]: string}): void {
     Object.keys(identifiersMapping).forEach((franklinAttributeCode: string) => {
       const attributeSelector = new SimpleSelectAttribute({
         className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
@@ -127,8 +121,8 @@ class EditIdentifiersMappingView extends BaseView {
           choiceRoute: 'pim_enrich_attribute_rest_index',
           fieldName: franklinAttributeCode,
           label: '',
-          types: EditIdentifiersMappingView.VALID_MAPPING,
-        },
+          types: EditIdentifiersMappingView.VALID_MAPPING
+        }
       });
       attributeSelector.setParent(this);
 
@@ -151,12 +145,12 @@ class EditIdentifiersMappingView extends BaseView {
    * Updates the mapping status of each identifiers: active or inactive.
    */
   private updateIdentifierStatuses(): void {
-    const identifiersMapping: { [franklinIdentifier: string]: string } = this.getFormData();
+    const identifiersMapping: {[franklinIdentifier: string]: string} = this.getFormData();
 
     Object.keys(identifiersMapping).forEach((franklinAttributeCode: string) => {
       null === identifiersMapping[franklinAttributeCode] || '' === identifiersMapping[franklinAttributeCode]
-        ? this.identifiersStatuses[franklinAttributeCode] = 'inactive'
-        : this.identifiersStatuses[franklinAttributeCode] = 'active';
+        ? (this.identifiersStatuses[franklinAttributeCode] = 'inactive')
+        : (this.identifiersStatuses[franklinAttributeCode] = 'active');
     });
   }
 

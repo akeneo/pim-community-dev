@@ -47,7 +47,7 @@ class Saver extends BaseSaver {
    * {@inheritdoc}
    */
   protected static getUrl(): string {
-    return Routing.generate(this.url, { identifier: this.familyCode, attributeCode: this.franklinAttributeCode });
+    return Routing.generate(this.url, {identifier: this.familyCode, attributeCode: this.franklinAttributeCode});
   }
   private static familyCode: string;
   private static franklinAttributeCode: string;

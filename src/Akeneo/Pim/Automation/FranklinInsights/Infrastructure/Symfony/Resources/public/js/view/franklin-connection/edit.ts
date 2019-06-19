@@ -40,7 +40,7 @@ class EditView extends BaseView {
     tokenFieldPlaceholder: '',
     tokenSavePreActivationTitle: '',
     tokenSavePostActivationTitle: '',
-    saveConnectionFailMessage: '',
+    saveConnectionFailMessage: ''
   };
 
   private storedToken: string = '';
@@ -49,7 +49,7 @@ class EditView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
+  constructor(options: {config: Config}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -61,7 +61,7 @@ class EditView extends BaseView {
   public events(): EventsHash {
     return {
       'click .activate-connection': 'activate',
-      'keyup input': 'updateModel',
+      'keyup input': 'updateModel'
     };
   }
 
@@ -79,7 +79,7 @@ class EditView extends BaseView {
         this.setData(data);
         this.storedToken = data.token;
       }),
-      BaseView.prototype.configure.apply(this, arguments),
+      BaseView.prototype.configure.apply(this, arguments)
     );
   }
 
@@ -105,18 +105,17 @@ class EditView extends BaseView {
   public activate(): void {
     const data = this.getFormData();
 
-    ConnectionSaver
-      .save(null, data)
+    ConnectionSaver.save(null, data)
       .fail((xhr: any) => {
-          const response = xhr.responseJSON;
-          let errorMessage = this.config.saveConnectionFailMessage;
+        const response = xhr.responseJSON;
+        let errorMessage = this.config.saveConnectionFailMessage;
 
-          if (undefined !== response && undefined !== response.message) {
-              errorMessage = response.message;
-          }
+        if (undefined !== response && undefined !== response.message) {
+          errorMessage = response.message;
+        }
 
-          Messenger.notify('error', __(errorMessage));
-          this.renderUnactivatedConnection(data.token);
+        Messenger.notify('error', __(errorMessage));
+        this.renderUnactivatedConnection(data.token);
       })
       .done((response: any) => {
         Messenger.notify('success', __(response.message));
@@ -159,8 +158,8 @@ class EditView extends BaseView {
         token,
         activationLabel: __(this.config.tokenSavePreActivationTitle),
         buttonStyle: 'AknButton--slateGrey',
-        connectionStatus: 'activate-connection',
-      }),
+        connectionStatus: 'activate-connection'
+      })
     );
   }
 
@@ -178,8 +177,8 @@ class EditView extends BaseView {
         token,
         activationLabel: __(this.config.tokenSavePostActivationTitle),
         buttonStyle: 'AknButton--apply AknButton--disabled',
-        connectionStatus: 'connection-activated',
-      }),
+        connectionStatus: 'connection-activated'
+      })
     );
   }
 

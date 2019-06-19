@@ -18,7 +18,7 @@ const Messenger = require('oro/messenger');
 const Dialog = require('pim/dialog');
 
 interface Mapping {
-  [franklinAttribute: string]: (string | null);
+  [franklinAttribute: string]: string | null;
 }
 
 /**
@@ -27,8 +27,12 @@ interface Mapping {
  * @author Willy MESNAGE <willy.mesnage@akeneo.com>
  */
 class MappingSave extends BaseSave {
-  public readonly updateFailureMessage: string = __('akeneo_franklin_insights.entity.identifier_mapping.flash.update.fail');
-  protected updateSuccessMessage: string = __('akeneo_franklin_insights.entity.identifier_mapping.flash.update.success');
+  public readonly updateFailureMessage: string = __(
+    'akeneo_franklin_insights.entity.identifier_mapping.flash.update.fail'
+  );
+  protected updateSuccessMessage: string = __(
+    'akeneo_franklin_insights.entity.identifier_mapping.flash.update.success'
+  );
   protected isFlash: boolean = true;
 
   /**
@@ -38,15 +42,15 @@ class MappingSave extends BaseSave {
    */
   public configure() {
     return $.when(
-      FetcherRegistry.getFetcher('identifiers-mapping').fetchAll().then(
-        (identifiersMapping: Mapping) => {
+      FetcherRegistry.getFetcher('identifiers-mapping')
+        .fetchAll()
+        .then((identifiersMapping: Mapping) => {
           if (this.isMappingEmpty(identifiersMapping)) {
             this.updateSuccessMessage = __('akeneo_franklin_insights.entity.identifier_mapping.flash.update.first');
             this.isFlash = false;
           }
-        },
-      ),
-      BaseSave.prototype.configure.apply(this, arguments),
+        }),
+      BaseSave.prototype.configure.apply(this, arguments)
     );
   }
 
@@ -61,15 +65,15 @@ class MappingSave extends BaseSave {
         Dialog.confirm(
           __(
             'akeneo_franklin_insights.settings.module.save.warning',
-            { count: connectionStatus.productSubscriptionCount },
-            connectionStatus.productSubscriptionCount,
+            {count: connectionStatus.productSubscriptionCount},
+            connectionStatus.productSubscriptionCount
           ),
           __('akeneo_franklin_insights.settings.module.save.title'),
           this.executeSave.bind(this),
           null,
           null,
           null,
-          'robot',
+          'robot'
         );
       } else {
         this.executeSave();
@@ -82,28 +86,21 @@ class MappingSave extends BaseSave {
 
     switch (response.status) {
       case 400:
-        this.getRoot().trigger(
-          'pim_enrich:form:entity:bad_request',
-          {'sentData': this.getFormData(), 'response': response.responseJSON}
-        );
+        this.getRoot().trigger('pim_enrich:form:entity:bad_request', {
+          sentData: this.getFormData(),
+          response: response.responseJSON
+        });
 
-        errorFlashMessage = response.responseJSON
-          .map((message:any) => __(message.message))
-          .join('. ');
+        errorFlashMessage = response.responseJSON.map((message: any) => __(message.message)).join('. ');
         break;
       case 500:
         const message = response.responseJSON ? response.responseJSON : response;
-
-        console.error('Errors:', message);
         this.getRoot().trigger('pim_enrich:form:entity:error:save', message);
         break;
       default:
     }
 
-    Messenger.notify(
-      'error',
-      errorFlashMessage
-    );
+    Messenger.notify('error', errorFlashMessage);
   }
 
   /**
@@ -115,8 +112,7 @@ class MappingSave extends BaseSave {
     this.getRoot().trigger('pim_enrich:form:entity:pre_save');
     identifiersMapping = this.cleanMapping(identifiersMapping);
 
-    return MappingSaver
-      .save(null, identifiersMapping, 'POST')
+    return MappingSaver.save(null, identifiersMapping, 'POST')
       .then((savedMapping: string) => {
         this.postSave();
         this.setData(JSON.parse(savedMapping));
@@ -137,7 +133,7 @@ class MappingSave extends BaseSave {
    */
   private isMappingEmpty(identifiersMapping: Mapping): boolean {
     const mappedAttributes = Object.keys(identifiersMapping).filter(
-      (franklinIdentifier: string) => null !== identifiersMapping[franklinIdentifier],
+      (franklinIdentifier: string) => null !== identifiersMapping[franklinIdentifier]
     );
 
     return $.isEmptyObject(mappedAttributes);
@@ -151,7 +147,7 @@ class MappingSave extends BaseSave {
    *
    * @return {Mapping}
    */
-  private cleanMapping(identifiersMapping: { [franklinAttribute: string]: string }): Mapping {
+  private cleanMapping(identifiersMapping: {[franklinAttribute: string]: string}): Mapping {
     return Object.keys(identifiersMapping).reduce((accumulator: Mapping, index: string) => {
       accumulator[index] = '' !== identifiersMapping[index] ? identifiersMapping[index] : null;
 

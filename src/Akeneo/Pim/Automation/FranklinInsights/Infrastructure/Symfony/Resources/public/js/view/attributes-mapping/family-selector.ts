@@ -38,7 +38,7 @@ class FamilySelector extends BaseSelect {
           .fetch(this.getFieldValue(event.target), {cached: false})
           .then((family: {code: string}) => {
             const hasRedirected = Router.redirectToRoute('akeneo_franklin_insights_attributes_mapping_edit', {
-              familyCode: family.code,
+              familyCode: family.code
             });
             if (false === hasRedirected) {
               this.render();
@@ -46,7 +46,7 @@ class FamilySelector extends BaseSelect {
               return hasRedirected;
             }
           });
-      },
+      }
     };
   }
 

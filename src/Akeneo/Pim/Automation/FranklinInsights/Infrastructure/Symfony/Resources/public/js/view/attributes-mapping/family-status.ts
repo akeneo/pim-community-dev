@@ -35,8 +35,8 @@ class FamilyStatus extends BaseView {
   private readonly config: Config = {
     labels: {
       familyMappingPending: '',
-      familyMappingFull: '',
-    },
+      familyMappingFull: ''
+    }
   };
 
   /**
@@ -57,7 +57,7 @@ class FamilyStatus extends BaseView {
     this.$el.html(
       this.template({
         __,
-        familyMappingStatus: this.formatFamilyMappingStatus(familyMappingStatus),
+        familyMappingStatus: this.formatFamilyMappingStatus(familyMappingStatus)
       })
     );
 
@@ -97,7 +97,7 @@ class FamilyStatus extends BaseView {
   private formatFamilyMappingStatus(familyMappingStatus: number): {className: string; label: string} {
     const formattedFamilyMappingStatus = {
       className: '',
-      label: '',
+      label: ''
     };
 
     switch (familyMappingStatus) {
