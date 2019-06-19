@@ -39,3 +39,8 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FranklinAttributeCreatedRepository'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.repository.franklin_attribute_added_to_family:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FranklinAttributeAddedToFamilyRepository'
+        arguments:
+            - '@database_connection'

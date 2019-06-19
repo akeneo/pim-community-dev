@@ -17,7 +17,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttr
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeAddedToFamily;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeAddedToFamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 
 /**
@@ -25,22 +27,24 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinA
  */
 class CreateAttributeInFamilyHandler
 {
-    /** @var CreateAttributeInterface */
     private $createAttribute;
 
-    /** @var AddAttributeToFamilyInterface */
     private $updateFamily;
 
     private $franklinAttributeCreatedRepository;
 
+    private $franklinAttributeAddedToFamilyRepository;
+
     public function __construct(
         CreateAttributeInterface $createAttribute,
         AddAttributeToFamilyInterface $updateFamily,
-        FranklinAttributeCreatedRepositoryInterface $franklinAttributeCreatedRepository
+        FranklinAttributeCreatedRepositoryInterface $franklinAttributeCreatedRepository,
+        FranklinAttributeAddedToFamilyRepositoryInterface $franklinAttributeAddedToFamilyRepository
     ) {
         $this->createAttribute = $createAttribute;
         $this->updateFamily = $updateFamily;
         $this->franklinAttributeCreatedRepository = $franklinAttributeCreatedRepository;
+        $this->franklinAttributeAddedToFamilyRepository = $franklinAttributeAddedToFamilyRepository;
     }
 
     public function handle(CreateAttributeInFamilyCommand $command): void
@@ -58,6 +62,9 @@ class CreateAttributeInFamilyHandler
         );
 
         $this->updateFamily->addAttributeToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode());
+        $this->franklinAttributeAddedToFamilyRepository->save(
+            new FranklinAttributeAddedToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode())
+        );
     }
 
     private function validate(CreateAttributeInFamilyCommand $command): void

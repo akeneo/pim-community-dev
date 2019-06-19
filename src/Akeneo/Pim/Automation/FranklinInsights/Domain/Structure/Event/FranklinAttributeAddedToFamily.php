@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class FranklinAttributeCreated
+final class FranklinAttributeAddedToFamily
 {
     private $attributeCode;
-    private $attributeType;
+    private $familyCode;
 
-    public function __construct(AttributeCode $attributeCode, AttributeType $attributeType)
+    public function __construct(AttributeCode $attributeCode, FamilyCode $familyCode)
     {
         $this->attributeCode = $attributeCode;
-        $this->attributeType = $attributeType;
+        $this->familyCode = $familyCode;
     }
 
     public function getAttributeCode(): AttributeCode
@@ -35,8 +35,8 @@ final class FranklinAttributeCreated
         return $this->attributeCode;
     }
 
-    public function getAttributeType(): AttributeType
+    public function getFamilyCode(): FamilyCode
     {
-        return $this->attributeType;
+        return $this->familyCode;
     }
 }
