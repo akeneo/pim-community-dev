@@ -88,13 +88,18 @@ class MassUploadIntoAssetCollectionProcessor
      *
      * @param UploadContext         $uploadContext
      * @param EntityToAddAssetsInto $addAssetsTo
+     * @param array                 $importedFileNames
      *
      * @return ProcessedItemList
      */
-    public function applyMassUpload(UploadContext $uploadContext, EntityToAddAssetsInto $addAssetsTo): ProcessedItemList
-    {
+    public function applyMassUpload(
+        UploadContext $uploadContext,
+        EntityToAddAssetsInto $addAssetsTo,
+        array $importedFileNames = []
+    ): ProcessedItemList {
         $processedItems = new ProcessedItemList();
-        $importedFiles = $this->importer->getImportedFiles($uploadContext);
+
+        $importedFiles = $this->importer->getImportedFilesFromNames($uploadContext, $importedFileNames);
 
         $importedAssetCodes = [];
         foreach ($importedFiles as $file) {
