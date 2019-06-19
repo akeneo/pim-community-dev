@@ -1,8 +1,8 @@
-# UPGRADE FROM 3.0 TO 3.1
+# UPGRADE FROM 3.1 TO 3.2
 
 ## Disclaimer
 
-> Please check that you're using Akeneo PIM v3.0.
+> Please check that you're using Akeneo PIM v3.1.
 
 > We're assuming that you created your project from the standard distribution.
 
@@ -16,9 +16,9 @@
 
 ## Requirements
 
-Please, see the complete [list of requirements](https://docs.akeneo.com/3.1/install_pim/manual/system_requirements/system_requirements.html) for PIM v3.1. The requirements are exactly the same that PIM v3.0.
+Please, see the complete [list of requirements](https://docs.akeneo.com/3.2/install_pim/manual/system_requirements/system_requirements.html) for PIM v3.2. The requirements are exactly the same that PIM v3.1.
 
-Please provide a server with the following requirements before proceeding to the PIM 3.1 migration. To install those requirements, you can follow the official documentations or our installation documentation on [Debian 9](https://docs.akeneo.com/3.1/install_pim/manual/system_requirements/manual_system_installation_debian9.html) or [Ubuntu 16.04](https://docs.akeneo.com/3.1/install_pim/manual/system_requirements/system_install_ubuntu_1604.html).
+Please provide a server with the following requirements before proceeding to the PIM 3.2 migration. To install those requirements, you can follow the official documentations or our installation documentation on [Debian 9](https://docs.akeneo.com/3.2/install_pim/manual/system_requirements/manual_system_installation_debian9.html) or [Ubuntu 16.04](https://docs.akeneo.com/3.2/install_pim/manual/system_requirements/system_install_ubuntu_1604.html).
 
 ## Migrate your standard project
 
@@ -80,110 +80,6 @@ Otherwise, kill your daemon:
 
     Or you can follow the detailed list of changes:
 
-    * The variable `DOCKER_PORT_HTTP_SSO_IDP=8082` has been added to the files `.env` and `.env.dist`.
-    
-    * The `docker-compose.override.yml.dist` and `docker-compose.yml` files now are in version `3`:
-
-        v3.0.x:
-        ```yaml
-        version: '2'
-        ```
-        
-        v3.1:
-        ```yaml
-        version: '3'
-        ```
-        
-    * The `sso-idp-server` in the file `docker-compose.yml` had some changes:
-
-        v3.0.x:
-        ```yaml
-        sso-idp-server:
-           image: 'kristophjunge/test-saml-idp'
-       ```
-        
-        v3.1:
-        ```yaml  
-        sso-idp-server:
-           image: 'kristophjunge/test-saml-idp'
-           ports:
-             - '${DOCKER_PORT_HTTP_SSO_IDP:-8088}:8088'
-        ```
-
-    * The configuration file `app/config/security.yml` had some changes:
-
-        - The `use_forward` property was set to `true` for the `main` firewall
-
-        v3.0.x:
-        ```yaml
-        main:
-            pattern:                        ^/
-            provider:                       chain_provider
-            form_login:
-                csrf_token_generator:       security.csrf.token_manager
-                check_path:                 pim_user_security_check
-                login_path:                 pim_user_security_login
-        ```
-
-        v3.1:
-        ```yaml
-        main:
-            pattern:                        ^/
-            provider:                       chain_provider
-            form_login:
-                csrf_token_generator:       security.csrf.token_manager
-                check_path:                 pim_user_security_check
-                login_path:                 pim_user_security_login
-                use_forward:                true
-        ```
-
-    * The configuration file `app/config/pim_parameters.yml` had some changes:
-
-        - A new Elasticsearch mapping configuration has been added:
-
-        v3.0.x:
-        ```yaml
-         elasticsearch_index_configuration_files:
-            - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
-            - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
-        ```
-
-        v3.1:
-        ```yaml
-         elasticsearch_index_configuration_files:
-            - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
-            - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
-            - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/config/elasticsearch/product_mapping.yml'
-        ```
-        - Some volume monitoring parameters have changed:
-        
-        
-        v3.0.x:
-        ```yaml
-        average_max_attributes_per_family_limit: 100
-        average_max_options_per_attribute_limit: -1
-        average_max_categories_in_one_category_limit: -1
-        average_max_category_levels_limit: -1
-        count_attributes_limit: 500
-        count_category_trees_limit: -1
-        count_families_limit: 100
-        count_locales_limit: 5
-        count_products_limit: 130000
-        ```
-
-        v3.1:
-        ```yaml
-        average_max_attributes_per_family_limit: 125
-        average_max_options_per_attribute_limit: 145
-        average_max_categories_in_one_category_limit: 120
-        average_max_category_levels_limit: 5
-        count_attributes_limit: 600
-        count_category_trees_limit: 4
-        count_families_limit: 120
-        count_locales_limit: 9
-        count_products_limit: 180000
-        ```
-
 4. Update your **app/config/config.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
@@ -194,17 +90,6 @@ Otherwise, kill your daemon:
     ```
 
     Or you can update the file with the following changes:
-
-    * The configuration for `assetic` has been completely removed:
-
-        v3.0.x:
-        ```yaml
-        assetic:
-            debug:          "%kernel.debug%"
-            use_controller: false
-            filters:
-                cssrewrite: ~
-        ```
 
 5. Update your **app/config/config_dev.yml**
 
@@ -217,15 +102,6 @@ Otherwise, kill your daemon:
 
     Or you can update the file with the following changes:
 
-    * The configuration for `oro_assetic` has been completely removed:
-
-        v3.0.x:
-        ```yaml
-        oro_assetic:
-            css_debug:      ~
-            css_debug_all:  false
-        ```
-
 6. Update your **app/config/config_behat.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
@@ -237,14 +113,6 @@ Otherwise, kill your daemon:
 
     Or you can update the file with the following changes:
 
-    * The configuration for `assetic` has been completely removed:
-
-        v3.0.x:
-        ```yaml
-        assetic:
-            use_controller: false
-        ```
-
 7. Update your **app/config/config_prod.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
@@ -255,30 +123,7 @@ Otherwise, kill your daemon:
     ```
 
     Or you can update the file with the following changes:
-    
-    * We changed the `main` handler:
-
-        v3.0.x:
-        ```yaml
-        monolog:
-            handlers:
-                main:
-                    type:         fingers_crossed
-                    action_level: warning
-                    handler:      nested
-        ```
-        
-        v3.1:
-        ```yaml
-        monolog:
-            handlers:
-                main:
-                    type:         fingers_crossed
-                    action_level: warning
-                    handler:      nested
-                    channels: ['!pimai']
-        ```
-        
+            
 8. Update your **app/AppKernel.php**:
     
     An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
@@ -287,15 +132,6 @@ Otherwise, kill your daemon:
     cp app/AppKernel.php $PIM_DIR/app/
     # then add your own bundles
     ```
-    
-    Or you can follow the detailed list of changes:
-    
-    * The following bundles have been removed:
-        - `Symfony\Bundle\AsseticBundle\AsseticBundle`
-        - `JMS\SerializerBundle\JMSSerializerBundle`
-        - `Knp\Bundle\MenuBundle\KnpMenuBundle`
-        - `Oro\Bundle\AsseticBundle\OroAsseticBundle`
-        
         
 9. Deactivate your custom code
 
@@ -355,57 +191,12 @@ Before updating the dependencies and migrating your data, please deactivate all 
 
 13. Migrate your Elasticsearch indices:
 
-    In case you updated the settings of Elasticsearch (like normalizers, filters and analyzers), please make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.0/app/config/pim_parameters.yml#L58-L68).
+    In case you updated the settings of Elasticsearch (like normalizers, filters and analyzers), please make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.1/app/config/pim_parameters.yml#L58-L68).
 
-    Same in case you have a big catalog and increased the [index.mapping.total_fields.limit](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/mapping.html#mapping-limit-settings). Make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.0/app/config/pim_parameters.yml#L58-L68).
+    Same in case you have a big catalog and increased the [index.mapping.total_fields.limit](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/mapping.html#mapping-limit-settings). Make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.1/app/config/pim_parameters.yml#L58-L68).
 
     ```bash
-    php upgrades/schema/es_20190228000000_ee_add_franklin_subscription_to_product_index_mapping.php
-    php upgrades/schema/es_20190228140000_ee_update_franklin_subscriptions.php
-    ```
-
-14. Migrate your .less assets
-
-    If you have defined a `Resources/config/assets.yml` file in any of your bundles to import `.less` files, you must move these imports to a new file at `Resources/public/less/index.less` to import your styles instead.
-
-    For example
-
-    v3.0.x in `Resources/config/assets.yml`
-    ```yml
-        css:
-            lib:
-                - bundles/yourbundle/assets/less/styles.css
-                - bundles/yourbundle/assets/less/bundle.less
-    ```
-
-    v3.1 in `Resources/public/less/index.less`
-    ```less
-        @import (less) "./web/bundles/yourbundle/assets/less/styles.css";
-        @import "./web/bundles/yourbundle/assets/less/bundle.less";
-    ```
-
-    If you are importing a `.css` file, you must add `(less)` after the import, as above. If you only have `.less` files in your bundle's `assets.yml`, you can remove it.
-
-15. Re-generate the PIM assets:
-
-    Please, execute the restart of php-fpm as **root** user:
-    
-    ```bash
-    service php7.2-fpm restart
-    ```
-    
-    For Akeneo Cloud environments, use the command `partners_clear_cache` that is at your [disposal]((https://docs.akeneo.com/3.0/cloud_edition/flexibility_mode/docs/partners.html)):
-    
-    ```bash
-    partners_clear_cache
-    ```
-    
-    Then re-generate the PIM assets:
-    
-    ```bash
-    bin/console pim:installer:assets --clean --env=prod
-    yarn run less
-    yarn run webpack
+    php bin/console akeneo:elasticsearch:update-mapping --all
     ```
 
 ## Migrate your custom code
@@ -415,15 +206,6 @@ Before updating the dependencies and migrating your data, please deactivate all 
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Platform\\Bundle\\DashboardBundle\\Widget\\LastOperationsWidget/Akeneo\\Platform\\Bundle\\ImportExportBundle\\Widget\\LastOperationsWidget/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\ElasticsearchAndSql\\ProductGrid\\FromSizeIdentifierResultCursorFactory/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\FromSizeIdentifierResultCursorFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\ElasticsearchAndSql\\ProductGrid\\IdentifierResultCursor/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\IdentifierResultCursor/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\ElasticsearchAndSql\\ProductGrid\\SearchAfterSizeIdentifierResultCursorFactory/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\SearchAfterSizeIdentifierResultCursorFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Router\\ProxyProductRouter/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Router\\ProxyRouter/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/pimee_security.product_grid.query.fetch_user_rights_on_product/akeneo.pim.permission.product.query.fetch_user_rights_on_product/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\Sql\\DatagridProductRight\\FetchUserRightsOnProduct/Akeneo\\Pim\\Permission\\Bundle\\Enrichment\\Storage\\Sql\\Product\\FetchUserRightsOnProduct/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/pimee_security.product_grid.query.fetch_user_rights_on_product_model/akeneo.pim.permission.product.query.fetch_user_rights_on_product_model/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\Sql\\DatagridProductRight\\FetchUserRightsOnProductModel/Akeneo\\Pim\\Permission\\Bundle\\Enrichment\\Storage\\Sql\\ProductModel\\FetchUserRightsOnProductModel/g'
 ```
 
 2. Reactivate your custom code
