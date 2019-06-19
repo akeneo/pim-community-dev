@@ -38,43 +38,43 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorEquals()
     {
-        $result = $this->executeFilter([['id', Operators::EQUALS, self::$ids['baz']]]);
+        $result = $this->executeFilter([['product_id', Operators::EQUALS, self::$ids['baz']]]);
         $this->assert($result, ['baz']);
 
-        $result = $this->executeFilter([['id', Operators::EQUALS, $this->getUnknowRandomId()]]);
+        $result = $this->executeFilter([['product_id', Operators::EQUALS, $this->getUnknowRandomId()]]);
         $this->assert($result, []);
     }
 
     public function testOperatorNotEquals()
     {
-        $result = $this->executeFilter([['id', Operators::NOT_EQUAL, $this->getUnknowRandomId()]]);
+        $result = $this->executeFilter([['product_id', Operators::NOT_EQUAL, $this->getUnknowRandomId()]]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->executeFilter([['id', Operators::NOT_EQUAL, self::$ids['baz']]]);
+        $result = $this->executeFilter([['product_id', Operators::NOT_EQUAL, self::$ids['baz']]]);
         $this->assert($result, ['foo', 'bar', 'BARISTA', 'BAZAR']);
     }
 
     public function testOperatorInList()
     {
-        $result = $this->executeFilter([['id', Operators::IN_LIST, [self::$ids['baz'], self::$ids['foo']]]]);
+        $result = $this->executeFilter([['product_id', Operators::IN_LIST, [self::$ids['baz'], self::$ids['foo']]]]);
         $this->assert($result, ['foo', 'baz']);
 
-        $result = $this->executeFilter([['id', Operators::IN_LIST, [self::$ids['baz'], $this->getUnknowRandomId()]]]);
+        $result = $this->executeFilter([['product_id', Operators::IN_LIST, [self::$ids['baz'], $this->getUnknowRandomId()]]]);
         $this->assert($result, ['baz']);
 
-        $result = $this->executeFilter([['id', Operators::IN_LIST, [$this->getUnknowRandomId(), $this->getUnknowRandomId()]]]);
+        $result = $this->executeFilter([['product_id', Operators::IN_LIST, [$this->getUnknowRandomId(), $this->getUnknowRandomId()]]]);
         $this->assert($result, []);
     }
 
     public function testOperatorNotInList()
     {
-        $result = $this->executeFilter([['id', Operators::NOT_IN_LIST, [self::$ids['baz'], self::$ids['foo']]]]);
+        $result = $this->executeFilter([['product_id', Operators::NOT_IN_LIST, [self::$ids['baz'], self::$ids['foo']]]]);
         $this->assert($result, ['bar', 'BARISTA', 'BAZAR']);
 
-        $result = $this->executeFilter([['id', Operators::NOT_IN_LIST, [self::$ids['baz'], $this->getUnknowRandomId()]]]);
+        $result = $this->executeFilter([['product_id', Operators::NOT_IN_LIST, [self::$ids['baz'], $this->getUnknowRandomId()]]]);
         $this->assert($result, ['bar', 'BARISTA', 'BAZAR', 'foo']);
 
-        $result = $this->executeFilter([['id', Operators::NOT_IN_LIST, [$this->getUnknowRandomId(), $this->getUnknowRandomId()]]]);
+        $result = $this->executeFilter([['product_id', Operators::NOT_IN_LIST, [$this->getUnknowRandomId(), $this->getUnknowRandomId()]]]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
     }
 
@@ -83,15 +83,15 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectException(InvalidPropertyTypeException::class);
         $this->expectExceptionMessage('Property "id" expects a string as data, "array" given.');
 
-        $this->executeFilter([['id', Operators::EQUALS, ['string']]]);
+        $this->executeFilter([['product_id', Operators::EQUALS, ['string']]]);
     }
 
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(UnsupportedFilterException::class);
-        $this->expectExceptionMessage('Filter on property "id" is not supported or does not support operator "BETWEEN"');
+        $this->expectExceptionMessage('Filter on property "product_id" is not supported or does not support operator "BETWEEN"');
 
-        $this->executeFilter([['id', Operators::BETWEEN, 'foo']]);
+        $this->executeFilter([['product_id', Operators::BETWEEN, 'foo']]);
     }
 
     public function testDataIsMalformedForOperatorInList()
@@ -99,7 +99,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectException(InvalidPropertyTypeException::class);
         $this->expectExceptionMessage('Property "id" expects an array as data, "string" given.');
 
-        $this->executeFilter([['id', Operators::IN_LIST, 'foo']]);
+        $this->executeFilter([['product_id', Operators::IN_LIST, 'foo']]);
     }
 
     public function testDataIsNotAListOfStringForOperatorInList()
@@ -107,7 +107,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectException(InvalidPropertyTypeException::class);
         $this->expectExceptionMessage('Property "id" expects an array with valid data, one of the value is not string.');
 
-        $this->executeFilter([['id', Operators::IN_LIST, [12, 'foo']]]);
+        $this->executeFilter([['product_id', Operators::IN_LIST, [12, 'foo']]]);
     }
 
     public function testDataIsMalformedForOperatorNotInList()
@@ -115,7 +115,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectException(InvalidPropertyTypeException::class);
         $this->expectExceptionMessage('Property "id" expects an array as data, "string" given.');
 
-        $this->executeFilter([['id', Operators::NOT_IN_LIST, 'foo']]);
+        $this->executeFilter([['product_id', Operators::NOT_IN_LIST, 'foo']]);
     }
 
     public function testDataIsNotAListOfStringForOperatorNotInList()
@@ -123,7 +123,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectException(InvalidPropertyTypeException::class);
         $this->expectExceptionMessage('Property "id" expects an array with valid data, one of the value is not string.');
 
-        $this->executeFilter([['id', Operators::NOT_IN_LIST, [12, 'foo']]]);
+        $this->executeFilter([['product_id', Operators::NOT_IN_LIST, [12, 'foo']]]);
     }
 
     /**
