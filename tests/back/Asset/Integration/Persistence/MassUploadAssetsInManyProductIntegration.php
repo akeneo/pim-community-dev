@@ -15,12 +15,10 @@ namespace AkeneoTestEnterprise\Asset\Integration\Persistence;
 
 use Akeneo\Asset\Component\Model\ChannelVariationsConfiguration;
 use Akeneo\Asset\Component\Upload\UploadContext;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\Batch\Model\Warning;
 use PHPUnit\Framework\Assert;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfiguration;
 use Symfony\Component\Filesystem\Filesystem;
 
 class MassUploadAssetsInManyProductIntegration extends TestCase
