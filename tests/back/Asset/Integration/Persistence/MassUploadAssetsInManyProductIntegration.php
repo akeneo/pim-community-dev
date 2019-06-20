@@ -33,8 +33,8 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
     public function testToUploadSeveralFilesThenLaunchAllImport()
     {
         $uploadContext = new UploadContext($this->getParameter('tmp_storage_dir'), 'admin');
-        $originDir = $this->getParameter('kernel.root_dir') .
-            '/../src/PimEnterprise/Bundle/ProductAssetBundle/tests/Common/images/%s';
+        $originDir = __DIR__ . '/../../Common/images/%s';
+
         $importer = $this->get('pimee_product_asset.upload_importer');
         $queueLauncher = new JobLauncher(static::$kernel);
         $jobPublisher = $this->get('akeneo_batch_queue.launcher.queue_job_launcher');
