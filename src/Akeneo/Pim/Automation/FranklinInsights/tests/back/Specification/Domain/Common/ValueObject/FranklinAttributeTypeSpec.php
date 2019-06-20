@@ -91,7 +91,7 @@ class FranklinAttributeTypeSpec extends ObjectBehavior
     public function it_converts_metric_to_pim_attribute_type()
     {
         $this->beConstructedWith('metric');
-        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType('pim_catalog_metric'));
+        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType('pim_catalog_text'));
     }
 
     public function it_converts_select_to_pim_attribute_type()

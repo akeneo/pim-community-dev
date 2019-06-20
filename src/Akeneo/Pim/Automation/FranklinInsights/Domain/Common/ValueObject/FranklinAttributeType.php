@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -61,6 +62,10 @@ class FranklinAttributeType
 
     public function convertToPimAttributeType(): AttributeType
     {
+        if (self::METRIC_TYPE === $this->type) {
+            return new AttributeType(AttributeTypes::TEXT);
+        }
+
         return new AttributeType(
             array_search($this->type, AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS)
         );

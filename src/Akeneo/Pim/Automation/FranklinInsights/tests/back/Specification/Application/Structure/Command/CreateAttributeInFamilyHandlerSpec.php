@@ -85,23 +85,4 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
         );
         $this->handle($command)->shouldReturn(null);
     }
-
-    public function it_throws_exception_on_attribute_creation_when_type_is_metric()
-    {
-        $pimAttrCode = AttributeCode::fromLabel('Franklin attr label');
-        $pimFamilyCode = new FamilyCode('my_family_code');
-        $franklinAttrLabel = new FranklinAttributeLabel('Franklin attr label');
-        $franklinAttrType = new FranklinAttributeType('metric');
-
-        $exception = new \InvalidArgumentException('Can not create attribute. Attribute of type "metric" is not allowed');
-
-        $command = new CreateAttributeInFamilyCommand(
-            $pimFamilyCode,
-            $pimAttrCode,
-            $franklinAttrLabel,
-            $franklinAttrType
-        );
-
-        $this->shouldThrow($exception)->during('handle', [$command]);
-    }
 }

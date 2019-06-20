@@ -71,8 +71,6 @@ const ALLOWED_CATALOG_TYPES: string[] = [
 
 const ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 
-const DISALLOWED_CREATE_ATTRIBUTE_FRANKLIN_TYPES: string[] = ['metric'];
-
 /**
  * This module will allow user to map the attributes from Franklin to the catalog attributes.
  * It displays a grid with all the attributes to map.
@@ -330,9 +328,6 @@ class AttributeMapping extends BaseView {
       return false;
     }
     if (AttributeMappingStatus.ATTRIBUTE_PENDING !== franklinAttributeMapping.status) {
-      return false;
-    }
-    if (true === DISALLOWED_CREATE_ATTRIBUTE_FRANKLIN_TYPES.includes(franklinAttributeMapping.franklinAttribute.type)) {
       return false;
     }
 
