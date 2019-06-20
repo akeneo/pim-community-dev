@@ -46,7 +46,7 @@ function collectBundleImports(bundlePaths) {
     // Make each path relative
     const indexFiles = bundlePaths.map(bundlePath => {
         return `${bundlePath}/${BUNDLE_LESS_INDEX_PATH}`
-                .replace(/(^.+)((?<=src).*[^vendor])(?=\/src|\/vendor)\//gm, '')
+                .replace(/(^.+)((?<=src).*[^vendor])(?=\/src)\//gm, '')
     })
 
     const bundleImports = []
