@@ -1,8 +1,11 @@
 # 2.3.x
 
+# 2.3.49 (2019-06-19)
+
 ## Bug fixes
 
 - GITHUB-9557: Fix yarn product dependencies requirements, cheers @AngelVazquezArroyo!
+- PIM-8450: Fix assets search with underscore in the code
 
 # 2.3.48 (2019-06-12)
 
