@@ -1,0 +1,6 @@
+services:
+    akeneo_referenceentity.infrastructure.rule.rule_compiler:
+        class: Akeneo\ReferenceEntity\Infrastructure\Rule\RuleCompiler
+        arguments:
+            - '@pimee_catalog_rule.denormalizer.product_rule.chained'
+            - '%akeneo_rule_engine.model.rule.class%'
