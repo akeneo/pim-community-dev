@@ -3,7 +3,11 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,9 +19,42 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CalculateCompletenessCommand extends ContainerAwareCommand
+class CalculateCompletenessCommand extends Command
 {
     use LockableTrait;
+
+    protected static $defaultName = 'pim:completeness:calculate';
+
+    /** @var Client */
+    private $client;
+
+    /** @var int */
+    private $batchSize;
+
+    /** @var BulkSaverInterface */
+    private $bulkSaver;
+
+    /** @var EntityManagerClearerInterface */
+    private $clearer;
+
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $pqbFactory;
+
+    public function __construct(
+        Client $client,
+        int $batchSize,
+        BulkSaverInterface $bulkSaver,
+        EntityManagerClearerInterface $clearer,
+        ProductQueryBuilderFactoryInterface $pqbFactory
+    ) {
+        $this->client = $client;
+        $this->batchSize = $batchSize;
+        $this->bulkSaver = $bulkSaver;
+        $this->clearer = $clearer;
+        $this->pqbFactory = $pqbFactory;
+
+        parent::__construct(self::$defaultName);
+    }
 
     /**
      * {@inheritdoc}
@@ -25,7 +62,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:completeness:calculate')
+            ->setName(self::$defaultName)
             ->setDescription('Launch the product completeness calculation');
     }
 
@@ -49,26 +86,23 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
             ]
         ];
 
-        $container = $this->getContainer();
-        $container->get('akeneo_elasticsearch.client.product')->refreshIndex();
-
-        $pqb = $container->get('pim_catalog.query.product_query_builder_factory')->create($options);
+        $this->client->refreshIndex();
+        $pqb = $this->pqbFactory->create($options);
         $products = $pqb->execute();
 
         $productsToSave = [];
         foreach ($products as $product) {
             $productsToSave[] = $product;
 
-            if (count($productsToSave) === $container->getParameter('pim_job_product_batch_size')) {
-                $container->get('pim_catalog.saver.product')->saveAll($productsToSave);
-                $container->get('pim_connector.doctrine.cache_clearer')->clear();
-
+            if (count($productsToSave) === $this->batchSize) {
+                $this->bulkSaver->saveAll($productsToSave);
+                $this->clearer->clear();
                 $productsToSave = [];
             }
         }
 
         if (!empty($productsToSave)) {
-            $container->get('pim_catalog.saver.product')->saveAll($productsToSave);
+            $this->bulkSaver->saveAll($productsToSave);
         }
 
         $output->writeln("<info>Missing completenesses generated.</info>");

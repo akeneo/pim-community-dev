@@ -37,7 +37,7 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     private $productQueryBuilderFactory;
 
     /** @var BulkSaverInterface */
-    private $bulkProductSaver;
+    private $bulkCompletenessSaver;
 
     /** @var EntityManagerClearerInterface */
     private $cacheClearer;
@@ -45,18 +45,18 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     /**
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
-     * @param BulkSaverInterface                    $bulkProductSaver
+     * @param BulkSaverInterface                    $bulkCompletenessSaver
      * @param EntityManagerClearerInterface|null    $cacheClearer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        BulkSaverInterface $bulkProductSaver,
+        BulkSaverInterface $bulkCompletenessSaver,
         EntityManagerClearerInterface $cacheClearer = null
     ) {
         $this->familyRepository = $familyRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->bulkProductSaver = $bulkProductSaver;
+        $this->bulkCompletenessSaver = $bulkCompletenessSaver;
         $this->cacheClearer = $cacheClearer;
     }
 
@@ -113,13 +113,13 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
             $productBatch[] = $product;
 
             if (self::BATCH_SIZE === count($productBatch)) {
-                $this->bulkProductSaver->saveAll($productBatch);
+                $this->bulkCompletenessSaver->saveAll($productBatch);
                 $this->cacheClearer->clear();
                 $productBatch = [];
             }
         }
 
-        $this->bulkProductSaver->saveAll($productBatch);
+        $this->bulkCompletenessSaver->saveAll($productBatch);
         $this->cacheClearer->clear();
     }
 
