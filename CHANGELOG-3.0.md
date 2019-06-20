@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8383: Do not take products without family into account when filtering on empty values
+- PIM-8460: Do not display Save button if user does not have ACL edit permissions on product models.
 
 # 3.0.25 (2019-06-18)
 
