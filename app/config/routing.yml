@@ -48,6 +48,9 @@ pimee_product_asset:
 pimee_reference_entity:
     resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
 
+pimee_asset_manager:
+    resource: "@AkeneoAssetManagerBundle/Resources/config/routing.yml"
+
 pim_security:
     resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"
 
