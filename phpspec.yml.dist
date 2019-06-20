@@ -45,6 +45,13 @@ suites:
         src_path: src/Akeneo/Pim/Enrichment/ReferenceEntity
         spec_prefix: Specification
 
+    AssetManagerExtension:
+        namespace: Akeneo\Pim\Enrichment\AssetManager
+        psr4_prefix: Akeneo\Pim\Enrichment\AssetManager
+        spec_path: tests/back/Pim/Enrichment/AssetManager
+        src_path: src/Akeneo/Pim/Enrichment/AssetManager
+        spec_prefix: Specification
+
     AssetExtension:
         namespace: Akeneo\Pim\Enrichment\Asset
         psr4_prefix: Akeneo\Pim\Enrichment\Asset

@@ -145,6 +145,8 @@ legacy:
                     - '@doctrine.orm.entity_manager'
                 - Context\EnterpriseReferenceEntityContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseAssetManagerContext:
+                    - 'Context\EnterpriseFeatureContext'
         franklin-insights:
             paths:
                 - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
