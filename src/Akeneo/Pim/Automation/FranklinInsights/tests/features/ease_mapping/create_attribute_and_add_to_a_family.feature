@@ -39,8 +39,8 @@ Feature: Create an attribute and add it to the family
   Scenario: Successfully create a metric attribute as a text attribute and add it to a family
     Given the family "router"
     And the attribute group "franklin"
-    When I create the metric attribute "ports count" in the family "router"
-    Then the family "router" should have the text attribute "ports_count"
+    When I create the metric attribute "product size" in the family "router"
+    Then the family "router" should have the text attribute "product_size"
 
   Scenario: Successfully create an attribute in an unexisting group
     Given the family "router"

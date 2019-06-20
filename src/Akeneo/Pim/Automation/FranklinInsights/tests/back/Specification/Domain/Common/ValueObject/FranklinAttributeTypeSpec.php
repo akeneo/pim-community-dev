@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 use PhpSpec\ObjectBehavior;
 
@@ -74,42 +73,6 @@ class FranklinAttributeTypeSpec extends ObjectBehavior
     {
         $this->beConstructedWith('text');
         $this->shouldBeAnInstanceOf(FranklinAttributeType::class);
-    }
-
-    public function it_converts_text_to_pim_attribute_type()
-    {
-        $this->beConstructedWith('text');
-        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType('pim_catalog_text'));
-    }
-
-    public function it_converts_number_to_pim_attribute_type()
-    {
-        $this->beConstructedWith('number');
-        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType('pim_catalog_number'));
-    }
-
-    public function it_converts_metric_to_pim_attribute_type()
-    {
-        $this->beConstructedWith('metric');
-        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType('pim_catalog_text'));
-    }
-
-    public function it_converts_select_to_pim_attribute_type()
-    {
-        $this->beConstructedWith('select');
-        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType('pim_catalog_simpleselect'));
-    }
-
-    public function it_converts_multiselect_to_pim_attribute_type()
-    {
-        $this->beConstructedWith('multiselect');
-        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType('pim_catalog_multiselect'));
-    }
-
-    public function it_converts_boolean_to_pim_attribute_type()
-    {
-        $this->beConstructedWith('boolean');
-        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType('pim_catalog_boolean'));
     }
 
     public function it_returns_the_type(): void
