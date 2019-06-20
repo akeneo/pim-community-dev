@@ -1,0 +1,51 @@
+default:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/../features'
+            contexts:
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_reference_entity_context
+                - akeneo_referenceentity.tests.back.acceptance.context.delete_reference_entity_context
+                - akeneo_referenceentity.tests.back.acceptance.context.create_reference_entity_context
+                - akeneo_referenceentity.tests.back.acceptance.context.create_record_context
+                - akeneo_referenceentity.tests.back.acceptance.context.list_record_context
+                - akeneo_referenceentity.tests.back.acceptance.context.delete_record_context
+                - akeneo_referenceentity.tests.back.acceptance.context.delete_all_records_context
+                - akeneo_referenceentity.tests.back.acceptance.context.create_attribute_context
+                - akeneo_referenceentity.tests.back.acceptance.context.append_attribute_option_context
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_option_context
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_context
+                - akeneo_referenceentity.tests.back.acceptance.context.delete_attribute_context
+                - akeneo_referenceentity.tests.back.acceptance.context.exception_context
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_context
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_record_context
+                - akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context
+                - akeneo_referenceentity.tests.back.acceptance.context.index_records_context
+                - akeneo_referenceentity.tests.back.acceptance.context.set_reference_entity_permission_context
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_record.edit_url
+            filters:
+                tags: '@acceptance-back'
+        integration:
+            paths:
+                - '%paths.base%/../features'
+            contexts:
+                - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_record_context
+                - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_reference_entity_context
+                - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_attribute_context
+                - akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_attribute_option_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_record_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_records_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.not_found_reference_entity_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_reference_entity_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_reference_entities_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attributes_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_option_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_options_context
+            filters:
+                tags: '@integration-back'
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                environment: test_fake
+                debug: false

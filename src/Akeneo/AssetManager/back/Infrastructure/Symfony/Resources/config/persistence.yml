@@ -1,0 +1,534 @@
+services:
+    # Repositories
+    akeneo_referenceentity.infrastructure.persistence.repository.reference_entity:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityRepository
+        arguments:
+            - '@database_connection'
+            - '@event_dispatcher'
+
+    akeneo_referenceentity.infrastructure.persistence.repository.attribute:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@event_dispatcher'
+
+    akeneo_referenceentity.infrastructure.persistence.repository.record:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@event_dispatcher'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+
+    akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlReferenceEntityPermissionRepository
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.repository.media_file:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\MediaFile\SqlMediaFileRepository
+        arguments:
+            - '@pim_api.repository.media_file'
+
+    # Reference entities query functions
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_items:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindReferenceEntityItems
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindReferenceEntityDetails
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForIdentifiersAndQuery
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.bulk_record_item'
+
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityHasRecords
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_product_attribute:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityIsLinkedToAtLeastOneProductAttribute
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_reference_entity_attribute:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindReferenceEntityAttributeAsLabel
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_image:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindReferenceEntityAttributeAsImage
+        arguments:
+            - '@database_connection'
+
+    # Record query functions
+    akeneo_referenceentity.infrastructure.persistence.query.record_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.records_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_details:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordDetails
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_details'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.generate_empty_values'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindExistingRecordCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordByReferenceEntityAndCode
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindConnectorReferenceEntityByReferenceEntityIdentifier
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.reference_entity.hydrator.connector_reference_entity'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindConnectorReferenceEntityItems
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.reference_entity.hydrator.connector_reference_entity'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributesByReferenceEntityIdentifier
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeByIdentifierAndCode
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOption
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOptions
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiers
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLabelsByCodes
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLabelsByIdentifiers
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindIdentifiersByReferenceEntityAndCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindCodesByIdentifiers
+        arguments:
+            - '@database_connection'
+
+    # Attributes query functions
+    akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributeNextOrder
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesDetails
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollection
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocales
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.generate_empty_values:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGenerateEmptyValues
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindImageAttributeCodes
+        arguments:
+             - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysByAttributeType
+        arguments:
+            - '@database_connection'
+
+    # attribute hydrators
+    akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.text_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\TextAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.image_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.record_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\RecordAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.record_collection_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\RecordCollectionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.option_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.option_collection_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionCollectionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.number_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\NumberAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.url_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\UrlAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    # Record value hydrators
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.data_hydrator_registry:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.record:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_details:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.bulk_record_item:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\BulkRecordItemHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers'
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItemHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item_value_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item_value_hydrator_registry:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ValueHydratorRegistry
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.reference_entity.hydrator.connector_reference_entity:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.record_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\RecordValueHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes'
+        tags:
+            - { name: akeneo_referenceentity.record_item_value_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.data_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.text_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\TextDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.url_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\UrlDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.file_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\FileDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDataHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_collection_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordCollectionDataHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.option_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\OptionDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.option_collection_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\OptionCollectionDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.number_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\NumberDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    # Record value transformers
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry
+        arguments:
+            - !tagged akeneo_referenceentity.connector_value_transformer
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.text_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\TextConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.number_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\NumberConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.image_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ImageConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.record_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordConnectorValueTransformer
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.record_collection_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordCollectionConnectorValueTransformer
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.option_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\OptionConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.option_collection_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\OptionCollectionConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    # Structure query functions
+    akeneo_referenceentity.infrastructure.persistence.query.channel_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlChannelExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.cache.query.channel_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheChannelExists
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocalesByIdentifiers
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales:
+            class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocales
+            arguments:
+                - '@database_connection'
+
+    akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+
+    akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+
+    akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\UserGroup\SqlFindUserGroupsForSecurityIdentifier
+        arguments:
+            - '@database_connection'
+            -
+    akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGetAttributeIdentifier
+        arguments:
+            - '@database_connection'
+
+    # Reference entities permissions queries
+    akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityPermissionsDetails
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.domain.persistence.query.attribute_supports_options:
+        class: Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeSupportsOptions
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_where_user_group_is_last_to_have_edit_right:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
+        arguments:
+            - '@database_connection'
+
+    # File query functions
+    akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\File\SqlFindFileDataByFileKey
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.file_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\File\SqlFileExists
+        arguments:
+            - '@database_connection'
+
+    # CLI
+    akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    # Commands
+    akeneo_referenceentity.infrastructure.persistence.records.refresh_all_records:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record'

@@ -1,0 +1,49 @@
+- See if it's possible to have the routing declared only in our bundle (we will see later with black hawks how to do it)
+- Application/ReferenceEntity/Show/ShowReferenceEntityHandler should handle only one command it should maybe return only a ReadModel
+- Discuss about Domain/Model/ReferenceEntity/ReferenceEntity getters: they break the tell don't ask principle.
+- rename Domain/Model/ReferenceEntity/ReferenceEntityIdentifier:fromString to create: we cannot create them another way
+- Move the InMemory repository in the business code
+- Create builders for entities in the backend
+- Create LabelCollection from outside the domain object ReferenceEntity
+- What to do in a show command handler if the entity is not found? Throw an exception? null?
+- Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
+- add normalizer for reference entity
+- test integration controller edit
+- add pqb filter, grid filter and peb filter for the reference entity value
+- Add remaining ACLs
+- Change read models to enforce properties are coherent (front)
+- switch the rest of entities to models for the views (like attribute edit) (front)
+- switch from image to files (rework on the attribute model)
+- split create and edit model in files
+- add acceptance test for attribute edit validation (front)
+- for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
+  (See validation of "Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
+- rework constructors to receive domain models (label collection)
+- fix the reference entity field on the pef to be able to search when the search will work (front)
+- PIM-7677: Better storage management. https://akeneo.atlassian.net/browse/PIM-7677
+- Add builder for our backend tests
+
+DONE:
+
+- rename "I get a reference entity" acceptance step [DONE]
+- manage breadcrumb [DONE]
+- add loading placeholder [DONE]
+- rename hidrate -> hydrate [DONE]
+- rework form.tsx to not remove labels [DONE]
+- remove `back` from the php namespace [DONE]
+- use decorator for acceptance tests front [DONE]
+- clean classes on form [DONE]
+- fix validation error display [DONE]
+- enforce getState type [DONE]
+- enforce html event type [DONE]
+- locale switcher to be able to edit all locales [DONE]
+- open quick edit after attribute create [DONE]
+- Rename "AttributeRequired" by "AttributeIsRequired" [DONE]
+- add keyboard shortcuts [DONE]
+- rework acceptance tests when the locale switcher will work [DONE]
+- add session storage for tab situation [FIXED BY URL]
+- remove index in error throw by the model constructor (front) [DONE]
+- switch to view models [DONE]
+- Extract the buttons of the edit reference entity view so it comes from each of the tabs [DONE]
+- fix the form to take into account what the backend answered [DONE]
+- create a read model for the read cases [DONE]

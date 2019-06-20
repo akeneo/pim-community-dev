@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_records_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "brand",
+      "search": "{\"updated\":[{\"operator\":\">\",\"value\":\"abc123\"}]}"
+    }
+  },
+  "response": {
+    "status": 422,
+    "body": {
+      "code": 422,
+      "message": "The search filters have an invalid format.",
+      "errors": [
+        {
+          "property": "updated[0].value",
+          "message": "Invalid date-time \"abc123\", expected format YYYY-MM-DDThh:mm:ssZ or YYYY-MM-DDThh:mm:ss+hh:mm"
+        }
+      ]
+    }
+  }
+}

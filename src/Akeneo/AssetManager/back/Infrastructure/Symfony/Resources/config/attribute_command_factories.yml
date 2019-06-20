@@ -1,0 +1,128 @@
+services:
+    # Create attribute command factory
+    akeneo_referenceentity.application.registry.create_attribute_command_factory_registry:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistry
+
+    akeneo_referenceentity.application.factory.create_text_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateTextAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
+    akeneo_referenceentity.application.factory.create_image_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
+    akeneo_referenceentity.application.factory.create_record_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateRecordAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
+    akeneo_referenceentity.application.factory.create_record_collection_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateRecordCollectionAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
+    akeneo_referenceentity.application.factory.create_option_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateOptionAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
+    akeneo_referenceentity.application.factory.create_option_collection_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateOptionCollectionAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
+    akeneo_referenceentity.application.factory.create_number_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateNumberAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
+    akeneo_referenceentity.application.factory.create_url_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateUrlAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
+    # Edit attribute command factory
+    akeneo_referenceentity.application.registry.edit_attribute_command_factory_registry:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistry
+
+    akeneo_referenceentity.application.factory.edit_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactory
+        arguments:
+            - '@akeneo_referenceentity.application.registry.edit_attribute_command_factory_registry'
+
+    akeneo_referenceentity.application.factory.edit_is_required_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_labels_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_max_length_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_max_file_size_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_allowed_extensions_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_is_textarea_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_is_rich_text_editor_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 110 }
+
+    akeneo_referenceentity.application.factory.edit_validation_rule_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 110 }
+
+    akeneo_referenceentity.application.factory.edit_regular_expression_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 100 }
+
+    akeneo_referenceentity.application.factory.edit_options_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 100 }
+
+    akeneo_referenceentity.application.factory.edit_decimals_allowed_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_min_max_value_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_url_prefix_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPrefixCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_url_suffix_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditSuffixCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_referenceentity.application.factory.edit_url_media_type_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditMediaTypeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }

@@ -1,0 +1,134 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                akeneo_reference_entities_reference_entity_index:
+                    module: pim/controller/reference-entity/list
+                akeneo_reference_entities_reference_entity_edit:
+                    module: pim/controller/reference-entity/edit
+                akeneo_reference_entities_record_edit:
+                    module: pim/controller/record/edit
+
+        akeneoreferenceentity/application/configuration/value:
+            image:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/file'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/file.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/image.tsx'
+            text:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/text'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/text.tsx'
+            number:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/number'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/number.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/number.tsx'
+            record:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/record'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/record.tsx'
+                filter: '@akeneoreferenceentity/application/component/record/index/filter/record.tsx'
+            record_collection:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/record-collection'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record-collection.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/record-collection.tsx'
+                filter: '@akeneoreferenceentity/application/component/record/index/filter/record.tsx'
+            option:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/option'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/option.tsx'
+                filter: '@akeneoreferenceentity/application/component/record/index/filter/option.tsx'
+            option_collection:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/option-collection'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option-collection.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/option-collection.tsx'
+                filter: '@akeneoreferenceentity/application/component/record/index/filter/option.tsx'
+
+        akeneoreferenceentity/application/configuration/attribute:
+            image:
+                icon: bundles/pimui/images/attribute/icon-image.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/image'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/image'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/image.tsx'
+            text:
+                icon: bundles/pimui/images/attribute/icon-text.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
+            number:
+                icon: bundles/pimui/images/attribute/icon-number.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/number'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/number'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/number.tsx'
+            record:
+                icon: bundles/pimui/images/attribute/icon-reference-entity.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
+            record_collection:
+                icon: bundles/pimui/images/attribute/icon-reference-entity-multiple.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record-collection'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
+            option:
+                icon: bundles/pimui/images/attribute/icon-select.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
+            option_collection:
+                icon: bundles/pimui/images/attribute/icon-multiselect.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option-collection'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
+
+        akeneoreferenceentity/application/configuration/sidebar:
+            akeneo_reference_entities_reference_entity_edit:
+                tabs:
+                    record:
+                        label: '@akeneoreferenceentity/application/component/reference-entity/edit/record'
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/record'
+                    attribute:
+                        label: pim_reference_entity.reference_entity.tab.attribute
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/attribute'
+                    property:
+                        label: pim_reference_entity.reference_entity.tab.properties
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/properties'
+                    permission:
+                        label: pim_reference_entity.reference_entity.tab.permission
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/permission'
+            akeneo_reference_entities_record_edit:
+                tabs:
+                    enrich:
+                        label: pim_reference_entity.record.tab.enrich
+                        view: '@akeneoreferenceentity/application/component/record/edit/enrich'
+                    product:
+                        label: pim_reference_entity.record.tab.product
+                        view: '@akeneoreferenceentity/application/component/record/edit/product'
+                        acl: akeneo_referenceentity_record_list_product
+
+        pim/attribute-edit-form/type-specific-form-registry:
+            formNames:
+                akeneo_reference_entity_collection:
+                    create: pim-attribute-form-reference-entity
+                    edit:   pim-attribute-form-reference-entity
+                akeneo_reference_entity:
+                    create: pim-attribute-form-reference-entity
+                    edit:   pim-attribute-form-reference-entity
+        pim/form/common/attributes/create-button:
+            attribute_icons:
+                akeneo_reference_entity_collection: reference-entity-multiple
+                akeneo_reference_entity: reference-entity
+
+    paths:
+        pim/controller/reference-entity/list: akeneoreferenceentity/infrastructure/controller/reference-entity/list.tsx
+        pim/controller/reference-entity/edit: akeneoreferenceentity/infrastructure/controller/reference-entity/edit.tsx
+        pim/controller/record/edit: akeneoreferenceentity/infrastructure/controller/record/edit.tsx
+
+        pim/attribute-edit-form/properties/reference-entity: akeneoreferenceentity/infrastructure/attribute/reference-entity-field.ts
+        pim/reference-entity-collection-field: akeneoreferenceentity/infrastructure/product/reference-entity-collection-field.tsx
+        pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.tsx
+
+        oro/datafilter/reference-entity-collection-filter: akeneoreferenceentity/infrastructure/product-grid/filter/attribute/reference-entity-collection
+
+        pim/form/common/fields/values/reference-entity: akeneoreferenceentity/infrastructure/product/axis/reference-entity.js
+
+        pimee/filter/attribute/reference-entity-collection: pimenterpriseui/js/filter/attribute/reference-entity-collection

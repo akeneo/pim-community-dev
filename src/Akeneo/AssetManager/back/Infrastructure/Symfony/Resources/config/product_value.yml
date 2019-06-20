@@ -1,0 +1,174 @@
+services:
+    akeneo_referenceentity.attribute_type.reference_entity_collection:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType
+        arguments:
+            - 'reference_data_options'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity_collection, entity: '%pim_catalog.entity.product.class%' }
+
+    akeneo_referenceentity.attribute_type.reference_entity:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType
+        arguments:
+            - 'reference_data_options'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity, entity: '%pim_catalog.entity.product.class%' }
+
+    akeneo_referenceentity.enrich.provider.reference_entity_collection_provider:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Provider\ReferenceEntityCollectionProvider
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }
+            - { name: pim_enrich.provider.empty_value, priority: 80 }
+
+    akeneo_referenceentity.enrich.provider.reference_entity_provider:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Provider\ReferenceEntityProvider
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }
+            - { name: pim_enrich.provider.empty_value, priority: 80 }
+
+    akeneo_referenceentity.factory.product_value.reference_entity_collection:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\ReferenceEntityCollectionValueFactory
+        public: false
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+        tags:
+            - { name: pim_catalog.factory.value }
+
+    akeneo_referenceentity.factory.product_value.reference_entity:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\ReferenceEntityValueFactory
+        public: false
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+        tags:
+            - { name: pim_catalog.factory.value }
+
+    akeneo_referenceentity.comparator.attribute.reference_entity_collection:
+        class: '%pim_catalog.comparator.attribute.options.class%'
+        arguments:
+            - ['akeneo_reference_entity_collection']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    akeneo_referenceentity.comparator.attribute.reference_entity:
+        class: '%pim_catalog.comparator.attribute.option.class%'
+        arguments:
+            - ['akeneo_reference_entity']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    akeneo_referenceentity.updater.setter.product_reference_entity_value:
+        class: Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetter
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['akeneo_reference_entity_collection', 'akeneo_reference_entity']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    akeneo_referenceentity.array_converter.standard_to_flat.product.value_converter.reference_entity_collection:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MultiSelectConverter
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['akeneo_reference_entity_collection']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    akeneo_referenceentity.array_converter.standard_to_flat.product.value_converter.reference_entity:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\SimpleSelectConverter
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['akeneo_reference_entity']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    akeneo_referenceentity.array_converter.flat_to_standard.product.value_converter.reference_entity_collection:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\MultiSelectConverter
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['akeneo_reference_entity_collection']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    akeneo_referenceentity.array_converter.flat_to_standard.product.value_converter.reference_entity:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\SimpleSelectConverter
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['akeneo_reference_entity']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    akeneo_referenceentity.validator.constraint.is_reference_entity_configured:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfiguredValidator
+        arguments:
+            - ['akeneo_reference_entity_collection', 'akeneo_reference_entity']
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_is_reference_entity_configured_validator }
+
+    akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_collection_value:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityCollectionValueNormalizer
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_value:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityValueNormalizer
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    akeneo_referenceentity.infrastructure.catalog.normalizer.record_code:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\RecordCodeNormalizer
+        tags:
+        - { name: pim_serializer.normalizer, priority: 90 }
+        - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+        - { name: pim_storage_serializer.normalizer, priority: 90 }
+        - { name: pim_versioning.serializer.normalizer, priority: 100 }
+
+    akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_axis_label_normalizer:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityAxisLabelNormalizer
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
+
+    pimee_datagrid.normalizer.product.reference_entity_value:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Normalizer\ReferenceEntityValueNormalizer
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee.reference_entity.datagrid.query.get_record_information'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pimee_datagrid.normalizer.product.reference_entity_collection_value:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Normalizer\ReferenceEntityCollectionValueNormalizer
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee.reference_entity.datagrid.query.get_record_information'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    akeneo_referenceentity.factory.non_existent_values_filter.reference_entities_multi_select_filter:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\NonExistentValuesFilter\NonExistingReferenceEntitiesMultiSelectFilter'
+        arguments:
+            - '@pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo_referenceentity.factory.non_existent_values_filter.reference_entities_simple_select_filter:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\NonExistentValuesFilter\NonExistingReferenceEntitiesSimpleSelectFilter'
+        arguments:
+            - '@pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo_referenceentity.factory.read.product_value.reference_entity_collection:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value\ReferenceEntityCollectionValueFactory
+        public: false
+        tags:
+            - { name: akeneo.pim.enrichment.factory.read.product_value }
+
+    akeneo_referenceentity.factory.read.product_value.reference_entity:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value\ReferenceEntityValueFactory
+        public: false
+        tags:
+            - { name: akeneo.pim.enrichment.factory.read.product_value }

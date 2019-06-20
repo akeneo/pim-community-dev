@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_reference_entities_reference_entity_attribute_option_rest_connector_create_or_update",
+    "query": {
+      "referenceEntityIdentifier": "brand_4",
+      "attributeCode": "sales_area",
+      "optionCode": "usa"
+    },
+    "body": {
+      "code":  "usa",
+      "labels":  {
+        "en_US":  "USA",
+        "fr_FR":  "Aux Etats-Unis"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": "",
+    "headers": {
+      "location": "http://localhost/api/rest/v1/reference-entities/brand_4/attributes/sales_area/options/usa"
+    }
+  }
+}

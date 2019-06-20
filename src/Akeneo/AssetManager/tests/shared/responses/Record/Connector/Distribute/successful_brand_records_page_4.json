@@ -1,0 +1,26 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "search_after": "brand_7"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_7"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records"
+                }
+            },
+            "_embedded": {
+                "items": []
+            }
+        }
+    }
+}

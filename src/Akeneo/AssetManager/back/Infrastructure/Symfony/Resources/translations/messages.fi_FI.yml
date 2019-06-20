@@ -1,0 +1,21 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: Viitetiedot
+  acl:
+    reference_entity:
+      create: Luo uusi viitetieto
+      edit: Muokkaa viitetiedon ominaisuuksia
+      delete: Poista viitetieto
+      manage_permission: Määritä viitetiedon käyttöoikeudet
+    record:
+      create: Luo tietue
+      edit: Muokkaa tietueita
+      delete: Poista tietue
+      delete_all: Poista kaikki tietueet
+    attribute:
+      create: Lisää attribuutti viitetiedolle
+      edit: Muokkaa viitetiedon attribuuttia
+      delete: Poista viitetiedon attribuutti
+    option:
+      edit: Muokkaa valintoja
+      delete: Poista valinta

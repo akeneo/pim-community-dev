@@ -1,0 +1,24 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "search": "{\"complete\":{\"operator\":\"=\",\"value\":true,\"channel\":\"unknown_channel\",\"locales\":[\"en_US\",\"fr_FR\"]}}"
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "Invalid query parameters",
+            "errors": [
+                {
+                    "property": "complete.channel",
+                    "message":"Channel \"unknown_channel\" does not exist."
+                }
+            ]
+
+        }
+    }
+}

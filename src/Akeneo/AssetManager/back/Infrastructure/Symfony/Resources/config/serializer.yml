@@ -1,0 +1,15 @@
+services:
+    reference_entity_serializer:
+        class: Symfony\Component\Serializer\Serializer
+
+    akeneo_reference_entities_serializer.encoder.json:
+        public: false
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
+        tags:
+            - { name: reference_entity_serializer.encoder }
+
+    akeneo_reference_entities.normalizer.exception.violation:
+        public: false
+        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+        tags:
+            - { name: reference_entity_serializer.normalizer }

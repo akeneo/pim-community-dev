@@ -1,0 +1,57 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_attribute_create_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
+    },
+    "body": {
+      "reference_entity_identifier": "designer",
+      "code": "not so nice attribute",
+      "type": "text",
+      "labels": {
+        "en_US": "Nice attribute"
+      },
+      "value_per_locale": false,
+      "value_per_channel": true
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": [
+      {
+        "messageTemplate": "pim_reference_entity.attribute.validation.code.pattern",
+        "parameters": {
+          "{{ value }}": "\"not so nice attribute\""
+        },
+        "plural": null,
+        "message": "This field may only contain letters, numbers and underscores.",
+        "root": {
+          "maxLength": null,
+          "isTextarea": false,
+          "isRichTextEditor": false,
+          "validationRule": "none",
+          "regularExpression": null,
+          "referenceEntityIdentifier": "designer",
+          "code": "not so nice attribute",
+          "labels": {
+            "en_US": "Nice attribute"
+          },
+          "isRequired": false,
+          "valuePerChannel": true,
+          "valuePerLocale": false
+        },
+        "propertyPath": "code",
+        "invalidValue": "not so nice attribute",
+        "constraint": {
+          "defaultOption": null,
+          "requiredOptions": [],
+          "targets": "property",
+          "payload": null
+        },
+        "cause": null,
+        "code": null
+      }
+    ]
+  }
+}

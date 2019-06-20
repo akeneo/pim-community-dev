@@ -1,0 +1,112 @@
+services:
+    # Reference entities
+    akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.file_exists'
+
+    akeneo_referenceentity.application.reference_entity.create_reference_entity_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    akeneo_referenceentity.application.reference_entity.delete_reference_entity_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
+            - '@akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier'
+
+    akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
+
+    # Attributes
+    akeneo_referenceentity.application.attribute.create_attribute_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler
+        arguments:
+            - '@akeneo_referenceentity.application.registry.attribute_factory'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
+
+    akeneo_referenceentity.application.attribute.delete_attribute_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_image'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.application.attribute.edit_attribute_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler
+        arguments:
+            - '@akeneo_referenceentity.application.edit_attribute.attribute_updater.attribute_updater_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    # Attribute options
+    akeneo_referenceentity.application.attribute.append_attribute_option_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.application.attribute.edit_attribute_option_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.application.attribute.append_attribute_option_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    # Records
+    akeneo_referenceentity.application.record.create_record_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+
+    akeneo_referenceentity.application.record.edit_record_handler:
+            class: Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler
+            arguments:
+                - '@akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry'
+                - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+                - '@akeneo_file_storage.file_storage.file.file_storer'
+
+    akeneo_referenceentity.application.record.delete_record_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.application.record.search_record:
+        class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records'
+
+    akeneo_referenceentity.application.record.search_connector_record:
+        class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers'
+
+    akeneo_referenceentity.application.record.index_records_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+

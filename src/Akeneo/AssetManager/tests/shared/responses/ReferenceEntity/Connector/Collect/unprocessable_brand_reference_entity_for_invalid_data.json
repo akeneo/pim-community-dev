@@ -1,0 +1,29 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_reference_entity_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "brand"
+        },
+        "body": {
+            "code": "brand",
+            "labels": {
+                "de_DE": "Label for an activated locale",
+                "de_AU": "Label for an activated locale that is not activated"
+            }
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The reference entity has data that does not comply with the business rules.",
+            "errors": [
+                {
+                    "property": "labels",
+                    "message": "The locale \"de_AU\" is not activated."
+                }
+            ]
+        }
+    }
+}

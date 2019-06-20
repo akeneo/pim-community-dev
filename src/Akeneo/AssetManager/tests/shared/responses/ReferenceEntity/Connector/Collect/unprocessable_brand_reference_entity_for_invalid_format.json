@@ -1,0 +1,33 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_reference_entity_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "brand"
+        },
+        "body": {
+            "code": "brand",
+            "labels": [
+                "Wrong label format"
+            ],
+            "unknown_property": "michel"
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The reference entity has an invalid format.",
+            "errors": [
+                {
+                    "property": "labels",
+                    "message": "Array value found, but an object is required"
+                },
+                {
+                    "property": "",
+                    "message": "The property unknown_property is not defined and the definition does not allow additional properties"
+                }
+            ]
+        }
+    }
+}

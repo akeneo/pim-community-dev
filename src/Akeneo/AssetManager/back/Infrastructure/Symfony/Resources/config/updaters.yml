@@ -1,0 +1,128 @@
+services:
+    # Attributes
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.attribute_updater_registry:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterRegistry
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.labels_updater:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\LabelsUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.is_required_updater:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRequiredUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.max_length_updater:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.is_textarea:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsTextareaUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.validation_rule:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\ValidationRuleUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.regular_expression:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\RegularExpressionUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 100 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.is_rich_text_editor:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRichTextEditorUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.max_file_size_updater:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxFileSizeUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.allowed_extensions_updater:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\AllowedExtensionsUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.options_updater:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\OptionsUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.decimals_allowed:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\DecimalsAllowedUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.min_max_value:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MinMaxValueUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.prefix:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\Url\PrefixUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.suffix:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\Url\SuffixUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.media_type:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\Url\MediaTypeUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
+    # Records
+    akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistry
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.text_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\TextUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.stored_file_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\StoredFileUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.empty_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\EmptyUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.record_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.record_collection_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordCollectionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.option_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\OptionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.option_collection_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\OptionCollectionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.number_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\NumberUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.url_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\UrlUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }

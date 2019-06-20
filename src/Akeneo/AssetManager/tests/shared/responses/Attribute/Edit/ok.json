@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_attribute_edit_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer",
+      "attributeIdentifier": "name_designer_52609e00b7ee307e79eb100099b9a8bf"
+    },
+    "body": {
+      "identifier": "name_designer_52609e00b7ee307e79eb100099b9a8bf",
+      "reference_entity_identifier": "designer",
+      "code": "A magic name",
+      "labels": {
+        "fr_FR": "LABEL UPDATED",
+        "en_US": "Name"
+      },
+      "order": 10,
+      "is_required": false,
+      "value_per_channel": false,
+      "value_per_locale": false,
+      "type": "wrong_type",
+      "max_length": 200
+    }
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}

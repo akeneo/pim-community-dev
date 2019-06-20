@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_reference_entity_create_rest",
+    "query": {},
+    "body": {
+      "identifier": "brand",
+      "code": "brand",
+      "labels": {
+        "en_US": "Brand"
+      },
+      "image": null
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": []
+  }
+}

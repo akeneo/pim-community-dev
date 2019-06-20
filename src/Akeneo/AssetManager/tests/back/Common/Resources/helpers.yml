@@ -1,0 +1,29 @@
+services:
+    akeneoreference_entity.tests.helper.oauth_authenticated_client_factory:
+        class: Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory
+        arguments:
+        - '@pim_user.repository.user'
+        - '@kernel'
+
+    akeneoreference_entity.tests.helper.web_client_helper:
+        class: Akeneo\ReferenceEntity\Common\Helper\WebClientHelper
+        arguments:
+            - '@router'
+
+    akeneoreference_entity.tests.helper.database_helper:
+        class: Akeneo\ReferenceEntity\Integration\Persistence\Helper\DatabaseHelper
+        arguments:
+            - '@database_connection'
+
+    akeneoreference_entity.tests.helper.search_index_helper:
+        class: Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchRecordIndexHelper
+        arguments:
+            - '@akeneo_referenceentity.client.record'
+
+    akeneoreference_entity.tests.helper.fixtures_loader:
+        class: Akeneo\ReferenceEntity\Common\Helper\FixturesLoader
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'

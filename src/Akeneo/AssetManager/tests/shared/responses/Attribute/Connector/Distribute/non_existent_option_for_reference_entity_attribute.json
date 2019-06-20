@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "brand_2",
+      "attributeCode": "nationality",
+      "optionCode": "lebanese"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Attribute option \"lebanese\" does not exist for the attribute \"nationality\"."
+    }
+  }
+}

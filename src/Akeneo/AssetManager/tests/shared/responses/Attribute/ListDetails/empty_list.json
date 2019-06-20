@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_attribute_index_rest",
+    "query": {
+      "referenceEntityIdentifier": "brand"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": []
+  }
+}

@@ -1,0 +1,14 @@
+services:
+    pimee_reference_entity.filter.reference_entity:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Filter\ProductValue\ReferenceEntityRecordFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: reference_entity_collection }
+            - { name: oro_filter.extension.orm_filter.filter, type: reference_entity }

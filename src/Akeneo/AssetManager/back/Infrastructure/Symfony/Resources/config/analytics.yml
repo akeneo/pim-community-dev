@@ -1,0 +1,76 @@
+services:
+    # System info
+    pimee.reference_entity.analytics.reference_entity_statistics_collector:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Analytics\ReferenceEntityStatisticsCollector
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_values_per_record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.localizable_only'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only_and_localizable'
+        tags:
+            - { name: pim_analytics.data_collector, type: update_checker }
+            - { name: pim_analytics.data_collector, type: system_info_report }
+
+    # Catalog volume monitoring
+    pimee.reference_entity.catalog_volume_monitoring.count_reference_entities:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\CatalogVolumeMonitoring\CountReferenceEntities
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities'
+            - '%reference_entity_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee.reference_entity.catalog_volume_monitoring.average_max_number_of_records_per_reference_entity:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfRecordsPerReferenceEntity
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity'
+            - '%reference_entity_record_limit_per_reference_entity%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pimee.reference_entity.catalog_volume_monitoring.average_max_number_of_attributes_per_reference_entity:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAttributesPerReferenceEntity
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity'
+            - '%reference_entity_maximum_attribute%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    # Query functions
+    akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlCountReferenceEntities
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfRecordsPerReferenceEntity
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_values_per_record:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerRecord
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerReferenceEntity
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.localizable_only:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only_and_localizable:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableAndLocalizable
+        arguments:
+            - '@database_connection'

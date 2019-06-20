@@ -1,0 +1,43 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_record_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "code": "kartell"
+        },
+        "body": {
+            "code": "kartell",
+            "values": {
+                "name": [
+                    {
+                        "locale": 42,
+                        "channel": null,
+                        "data": null
+                    },
+                    {
+                        "locale": "en_AU",
+                        "data": "Kartell french description."
+                    }
+                ]
+            }
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The record has an invalid format.",
+            "errors": [
+                {
+                    "property": "values.name[0].locale",
+                    "message": "Integer value found, but a string or a null is required"
+                },
+                {
+                    "property": "values.name[1].channel",
+                    "message": "The property channel is required"
+                }
+            ]
+        }
+    }
+}

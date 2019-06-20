@@ -1,0 +1,28 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "designer",
+            "attributeCode": "birthdate"
+        },
+        "body": {
+            "code":  "birthdate",
+            "labels":  {
+                "en_US": "Birth date",
+                "fr_FR": "Date de naissance"
+            },
+            "type": "single_option",
+            "value_per_locale": false,
+            "value_per_channel": false,
+            "is_required_for_completeness": false
+        }
+    },
+    "response": {
+        "status": 204,
+        "body": "",
+        "headers": {
+            "location": "http://localhost/api/rest/v1/reference-entities/designer/attributes/birthdate"
+        }
+    }
+}

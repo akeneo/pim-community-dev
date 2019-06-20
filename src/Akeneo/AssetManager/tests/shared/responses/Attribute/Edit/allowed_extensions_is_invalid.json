@@ -1,0 +1,83 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_attribute_edit_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer",
+      "attributeIdentifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf"
+    },
+    "body": {
+      "identifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf",
+      "reference_entity_identifier": "designer",
+      "code": "portrait",
+      "labels": {
+        "fr_FR": "Image autobiographique",
+        "en_US": "Name"
+      },
+      "order": 1,
+      "type": "image",
+      "is_required": true,
+      "value_per_channel": false,
+      "value_per_locale": false,
+      "max_file_size": "200.10",
+      "allowed_extensions": [
+        150,
+        122
+      ]
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": [
+      {
+        "messageTemplate": "This value should be of type string.",
+        "parameters": {
+          "{{ value }}": "122",
+          "{{ type }}": "string"
+        },
+        "plural": null,
+        "message": "This value should be of type string.",
+        "root": {
+          "editCommands": [
+            {
+              "isRequired": true,
+              "identifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf"
+            },
+            {
+              "labels": {
+                "fr_FR": "Image autobiographique",
+                "en_US": "Name"
+              },
+              "identifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf"
+            },
+            {
+              "maxFileSize": "200.10",
+              "identifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf"
+            },
+            {
+              "allowedExtensions": [
+                150,
+                122
+              ],
+              "identifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf"
+            }
+          ],
+          "identifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf"
+        },
+        "propertyPath": "allowedExtensions",
+        "invalidValue": [
+          150,
+          122
+        ],
+        "constraint": {
+          "targets": "class",
+          "defaultOption": null,
+          "requiredOptions": [],
+          "payload": null
+        },
+        "cause": null,
+        "code": null
+      }
+    ]
+  }
+}

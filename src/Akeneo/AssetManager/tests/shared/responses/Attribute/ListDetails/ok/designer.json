@@ -1,0 +1,125 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_attribute_index_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "type": "text",
+        "identifier": "name_designer_52609e00b7ee307e79eb100099b9a8bf",
+        "reference_entity_identifier": "designer",
+        "code": "name",
+        "labels": {
+          "en_US": "Name"
+        },
+        "is_required": true,
+        "order": 0,
+        "value_per_locale": true,
+        "value_per_channel": true,
+        "max_length": 155,
+        "is_textarea": true,
+        "is_rich_text_editor": true,
+        "validation_rule": "none",
+        "regular_expression": null
+      },
+      {
+        "type": "text",
+        "identifier": "email_designer_52609e00b7ee307e79eb100099b9a8bf",
+        "reference_entity_identifier": "designer",
+        "code": "email",
+        "labels": {
+          "en_US": "Email"
+        },
+        "is_required": true,
+        "order": 0,
+        "value_per_locale": true,
+        "value_per_channel": true,
+        "max_length": 155,
+        "is_textarea": false,
+        "is_rich_text_editor": false,
+        "validation_rule": "email",
+        "regular_expression": null
+      },
+      {
+        "type": "image",
+        "identifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf",
+        "reference_entity_identifier": "designer",
+        "code": "portrait",
+        "labels": {
+          "en_US": "Portrait"
+        },
+        "is_required": true,
+        "order": 1,
+        "value_per_locale": true,
+        "value_per_channel": true,
+        "max_file_size": "1000",
+        "allowed_extensions": [
+          "pdf"
+        ]
+      },
+      {
+        "type": "option",
+        "identifier": "favorite_color_designer_52609e00b7ee307e79eb100099b9a8bf",
+        "reference_entity_identifier": "designer",
+        "code": "favorite_color",
+        "labels": {
+          "en_US": "Favorite color"
+        },
+        "is_required": true,
+        "order": 2,
+        "value_per_locale": true,
+        "value_per_channel": true,
+        "options": [
+          {
+            "code": "red",
+            "labels": {
+              "en_US": "Red",
+              "fr_FR": "Rouge"
+            }
+          },
+          {
+            "code": "green",
+            "labels": {
+              "en_US": "Green",
+              "fr_FR": "Vert"
+            }
+          }
+        ]
+      },
+      {
+        "type": "option_collection",
+        "identifier": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
+        "reference_entity_identifier": "designer",
+        "code": "colors",
+        "labels": {
+          "en_US": "Colors"
+        },
+        "is_required": true,
+        "order": 3,
+        "value_per_locale": true,
+        "value_per_channel": true,
+        "options": [
+          {
+            "code": "red",
+            "labels": {
+              "en_US": "Red",
+              "fr_FR": "Rouge"
+            }
+          },
+          {
+            "code": "blue",
+            "labels": {
+              "en_US": "Blue",
+              "fr_FR": "Bleu"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

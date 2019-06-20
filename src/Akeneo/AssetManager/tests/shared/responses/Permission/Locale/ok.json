@@ -1,0 +1,27 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "pimee_security_locales_permissions_rest",
+    "query": {}
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "code": "de_DE",
+        "edit": true,
+        "view": true
+      },
+      {
+        "code": "en_US",
+        "edit": true,
+        "view": true
+      },
+      {
+        "code": "fr_FR",
+        "edit": true,
+        "view": true
+      }
+    ]
+  }
+}

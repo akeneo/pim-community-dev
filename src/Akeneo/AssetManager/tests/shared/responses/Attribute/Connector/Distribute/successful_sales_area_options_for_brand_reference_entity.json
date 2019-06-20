@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_attribute_options_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "brand_3",
+      "attributeCode": "sales_area"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "code": "china",
+        "labels": {
+          "en_US": "China"
+        }
+      },
+      {
+        "code": "australia",
+        "labels": {
+          "en_US": "Australia"
+        }
+      },
+      {
+        "code": "lebanon",
+        "labels": {
+          "en_US": "Lebanon"
+        }
+      },
+      {
+        "code": "denmark",
+        "labels": {
+          "en_US": "Denmark"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_record_get_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer",
+      "recordCode": "starck"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "reference_entity_identifier": "designer",
+      "code": "starck",
+      "labels": {
+        "fr_FR": "Philippe Starck"
+      },
+      "image": null,
+      "values": [
+        {
+          "attribute": {
+            "identifier": "option_collection_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "option_collection",
+            "labels": {
+              "fr_FR": "Couleur",
+              "en_US": "Color"
+            },
+            "order": 0,
+            "is_required": true,
+            "value_per_channel": false,
+            "value_per_locale": true,
+            "type": "option_collection",
+            "options": [
+              {
+                "code": "red",
+                "labels": {
+                  "en_US": "Red"
+                }
+              },
+              {
+                "code": "blue",
+                "labels": {
+                  "en_US": "Blue"
+                }
+              }
+            ]
+          },
+          "channel": null,
+          "locale": "en_US",
+          "data": ["blue"]
+        },
+        {
+          "attribute": {
+            "identifier": "option_collection_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "option_collection",
+            "labels": {
+              "fr_FR": "Couleur",
+              "en_US": "Color"
+            },
+            "order": 0,
+            "is_required": true,
+            "value_per_channel": false,
+            "value_per_locale": true,
+            "type": "option_collection",
+            "options": [
+              {
+                "code": "red",
+                "labels": {
+                  "en_US": "Red"
+                }
+              },
+              {
+                "code": "blue",
+                "labels": {
+                  "en_US": "Blue"
+                }
+              }
+            ]
+          },
+          "channel": null,
+          "locale": "fr_FR",
+          "data": ["green", "red"]
+        }
+      ],
+      "permission": {
+        "edit": true
+      }
+    }
+  }
+}

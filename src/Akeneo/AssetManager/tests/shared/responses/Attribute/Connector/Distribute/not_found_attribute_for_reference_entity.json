@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "brand_test",
+      "code": "nonexistent"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Attribute \"nonexistent\" does not exist for the reference entity \"brand_test\"."
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_records_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "brand"
+        },
+        "body": [
+            {
+                "code": "record_1"
+            },
+            {
+                "code": "record_2"
+            },
+            {
+                "code": "record_3"
+            },
+            {
+                "code": "record_4"
+            },
+            {
+                "code": "record_5"
+            },
+            {
+                "code": "record_6"
+            },
+            {
+                "code": "record_7"
+            },
+            {
+                "code": "record_8"
+            },
+            {
+                "code": "record_9"
+            },
+            {
+                "code": "record_10"
+            },
+            {
+                "code": "record_11"
+            }
+        ]
+    },
+    "response": {
+        "status": 413,
+        "body": {
+            "code": 413,
+            "message": "Too many resources to process, 10 is the maximum allowed."
+        }
+    }
+}

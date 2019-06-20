@@ -1,0 +1,74 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entities_rest_connector_get",
+    "query": {
+      "search_after": "reference_entity_3"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "_links": {
+        "self": {
+          "href": "http://localhost/api/rest/v1/reference-entities?search_after=reference_entity_3"
+        },
+        "first": {
+          "href": "http://localhost/api/rest/v1/reference-entities"
+        },
+        "next": {
+          "href": "http://localhost/api/rest/v1/reference-entities?search_after=reference_entity_6"
+        }
+      },
+      "_embedded": {
+        "items": [
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/reference-entities/reference_entity_4"
+              },
+              "image_download": {
+                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/image_reference_entity_4.jpg"
+              }
+            },
+            "code": "reference_entity_4",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "image": "test/image_reference_entity_4.jpg"
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/reference-entities/reference_entity_5"
+              },
+              "image_download": {
+                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/image_reference_entity_5.jpg"
+              }
+            },
+            "code": "reference_entity_5",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "image": "test/image_reference_entity_5.jpg"
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/reference-entities/reference_entity_6"
+              },
+              "image_download": {
+                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/image_reference_entity_6.jpg"
+              }
+            },
+            "code": "reference_entity_6",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "image": "test/image_reference_entity_6.jpg"
+          }
+        ]
+      }
+    }
+  }
+}

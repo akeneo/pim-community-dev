@@ -1,0 +1,276 @@
+parameters:
+    reference_entity_connector_records_limit_per_page: 3
+    reference_entity_connector_reference_entities_limit_per_page: 3
+    reference_entity_connector_maximum_records_to_process_per_request: 10
+
+services:
+    # Repositories
+    akeneo_referenceentity.infrastructure.persistence.repository.reference_entity:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository
+        arguments:
+            - '@event_dispatcher'
+
+    akeneo_referenceentity.infrastructure.persistence.repository.record:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository
+
+    akeneo_referenceentity.infrastructure.persistence.repository.attribute:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository
+        arguments:
+            - '@event_dispatcher'
+
+    akeneo_referenceentity.infrastructure.persistence.repository.date:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryDateRepository
+
+    pim_user.repository.user:
+        class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
+
+    akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityPermissionRepository
+
+    akeneo_referenceentity.infrastructure.persistence.repository.media_file:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryMediaFileRepository
+
+    # Query functions
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_items:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityItems
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityDetails
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_details:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordDetails
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindExistingRecordCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordByReferenceEntityAndCode
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityItems
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributesByReferenceEntityIdentifier
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeByIdentifierAndCode
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeOption
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeOptions
+
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    akeneo_referenceentity.infrastructure.persistence.query.record_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordExists
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.records_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordsExists
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeExists
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributeNextOrder
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales'
+
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityHasRecords
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_product_attribute:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_reference_entity_attribute:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindValueKeyCollection
+
+    akeneo_referenceentity.infrastructure.persistence.query.generate_empty_values:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGenerateEmptyValues
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesIndexedByIdentifier
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiersAndQuery
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.bulk_record_item'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery
+        arguments:
+            - '@request_stack'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryCountRecords
+
+    akeneo_referenceentity.infrastructure.persistence.query.channel_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales:
+            class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocales
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels
+
+    akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindUserGroupsForSecurityIdentifier
+
+    akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler:
+        class: Akeneo\ReferenceEntity\Common\Fake\CanEditReferenceEntityQueryHandlerStub
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
+            - '@akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier'
+
+    akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityPermissionsDetails
+
+    akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGetAttributeIdentifier
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey
+
+    akeneo_referenceentity.infrastructure.persistence.query.file_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityAttributeAsLabel
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_image:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityAttributeAsImage
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes:
+            class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordLabelsByCodes
+            arguments:
+                - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+                - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+
+    akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGetValueKeyForAttributeChannelAndLocale
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindValueKeysByAttributeType
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersByReferenceEntityAndCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindCodesByIdentifiers
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordLabelsByIdentifiers
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    # Indexers
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
+        class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindImageAttributeCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    # Third party services
+    oro_security.security_facade:
+        class: Akeneo\ReferenceEntity\Common\Fake\SecurityFacadeStub
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.acl.object_identity_factory'
+            - '@logger'
+
+    fos_oauth_server.security.authentication.listener:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
+
+    security.access_listener:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
+
+    cache.adapter.array:
+        class: Symfony\Component\Cache\Adapter\ArrayAdapter
+
+    # Subscribers
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:
+        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.remove_record_from_index:
+        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_locale.locale_subscriber:
+        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # File system
+    akeneo_file_storage.file_storage.filesystem_provider:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub
+        arguments:
+            - '@oneup_flysystem.mount_manager'
+
+    akeneo_file_storage.file_storage.file.file_storer:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer

@@ -1,0 +1,24 @@
+services:
+    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_all_existent_records_for_reference_entity_identifiers_public_api:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\SqlFindAllExistentRecordsForReferenceEntityIdentifiers'
+        arguments:
+            $connection: '@database_connection'
+
+    pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\FindAllExistentRecordsForReferenceEntityIdentifiers'
+        arguments:
+            $allExistentRecordForReferenceEntityIdentifiers: '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_all_existent_records_for_reference_entity_identifiers_public_api'
+
+    # Enrichment > Reference entities
+    pimee.reference_entity.enrichment.product.get_products_linked_to_a_record_action:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Controller\Product\GetProductsLinkedToARecordAction
+        arguments:
+            - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor'
+            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows'
+            - '@validator'
+            - '@pimee.reference_entity.enrichment.productnormalizer.linked_product_normalizer'
+
+    pimee.reference_entity.enrichment.productnormalizer.linked_product_normalizer:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer
+        arguments:
+            - '@pim_enrich.normalizer.image'

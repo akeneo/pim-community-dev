@@ -1,0 +1,32 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: Entités référentielles
+  acl:
+    reference_entity:
+      create: Créer une entité
+      edit: Modifier les propriétés de l'entité
+      delete: Supprimer une entité
+      manage_permission: Gérer les permissions d’entité référentielle
+    record:
+      create: Créer un enregistrement
+      edit: Modifier les enregistrements
+      delete: Supprimer un enregistrement
+      delete_all: Supprimer tous les enregistrement de l'entité
+    attribute:
+      create: Ajouter un attribut à une entité référentielle
+      edit: Modifier un attribut d'une entité référentielle
+      delete: Supprimer un attribut d'une entité référentielle
+    option:
+      edit: Modifier les options
+      delete: Supprimer une option
+pim_analytics:
+  info_type:
+    nb_reference_entities: Nombre d'entités de référence
+    max_number_of_records_per_reference_entity: Nombre maximum d'enregistrements par entité de référence
+    average_number_of_values_per_records: Nombre moyen de valeurs par enregistrement sur toutes les entités de référence
+    average_number_of_records_per_reference_entity: Nombre moyen d'enregistrements par entité de référence
+    max_number_of_attributes_per_reference_entity: Nombre maximum d’attributs par entité de référence
+    average_number_of_attributes_per_reference_entity: Nombre moyen d’attributs par entité de référence
+    average_percentage_localizable_only_attributes: Pourcentage moyen d’attributs uniquement localisables par entité de référence
+    average_percentage_scopable_only_attributes: Pourcentage moyen d’attributs uniquement scopables par entité de référence
+    average_percentage_scopable_and_localizable_attributes: Pourcentage moyen d’attributs scopables et localisables par entité de référence

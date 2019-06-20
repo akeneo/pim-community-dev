@@ -1,0 +1,159 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "search_after": "brand_3"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_3"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records"
+                },
+                "next": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_6"
+                }
+            },
+            "_embedded": {
+                "items": [
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_4"
+                            }
+                        },
+                        "code": "brand_4",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 4"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 4"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_4_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_4_image.jpg"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_5"
+                            }
+                        },
+                        "code": "brand_5",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 5"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 5"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_5_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_5_image.jpg"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_6"
+                            }
+                        },
+                        "code": "brand_6",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 6"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 6"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_6_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_6_image.jpg"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
