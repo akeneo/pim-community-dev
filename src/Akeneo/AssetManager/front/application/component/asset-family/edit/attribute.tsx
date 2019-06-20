@@ -7,9 +7,7 @@ import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/crea
 import CreateAttributeModal from 'akeneoassetmanager/application/component/attribute/create';
 import ManageOptionsView from 'akeneoassetmanager/application/component/attribute/edit/option';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamily, {
-  denormalizeAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {attributeEditionStartByIdentifier} from 'akeneoassetmanager/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoassetmanager/application/component/attribute/edit';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';

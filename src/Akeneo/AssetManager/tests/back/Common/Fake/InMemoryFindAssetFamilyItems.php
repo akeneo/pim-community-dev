@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyItem;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>

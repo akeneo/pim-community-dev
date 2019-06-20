@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamilyPermission;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
 use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
 use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
 use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\DBALException;

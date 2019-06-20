@@ -4,11 +4,7 @@ import AssetFamilyIdentifier, {
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {
-  Attribute,
-  ConcreteAttribute,
-  NormalizedAttribute,
-} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {AttributeWithOptions} from './option';
 

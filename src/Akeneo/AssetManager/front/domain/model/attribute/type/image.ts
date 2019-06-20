@@ -4,15 +4,8 @@ import AssetFamilyIdentifier, {
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {
-  NormalizedAttribute,
-  Attribute,
-  ConcreteAttribute,
-} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {
-  NormalizedMaxFileSize,
-  MaxFileSize,
-} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
+import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {NormalizedMaxFileSize, MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 import {NormalizedAllowedExtensions, AllowedExtensions} from './image/allowed-extensions';
 
 export interface NormalizedImageAttribute extends NormalizedAttribute {

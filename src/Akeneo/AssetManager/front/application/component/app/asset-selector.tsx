@@ -120,9 +120,9 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
       const containerCssClass = `asset-selector ${this.props.readOnly ? 'asset-selector--disabled' : ''} ${
         this.props.compact ? 'asset-selector--compact' : ''
       }`;
-      const dropdownCssClass = `${
-        this.props.multiple ? 'asset-selector-multi-dropdown' : 'asset-selector-dropdown'
-      } ${this.props.compact ? 'asset-selector-dropdown--compact' : ''}`;
+      const dropdownCssClass = `${this.props.multiple ? 'asset-selector-multi-dropdown' : 'asset-selector-dropdown'} ${
+        this.props.compact ? 'asset-selector-dropdown--compact' : ''
+      }`;
 
       this.el.select2({
         allowClear: true,

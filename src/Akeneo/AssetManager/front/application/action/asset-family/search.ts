@@ -14,7 +14,4 @@ const stateToQuery = async (state: IndexState): Promise<Query> => {
   };
 };
 
-export const updateAssetFamilyResults = updateResultsWithFetcher<AssetFamilyListItem>(
-  AssetFamilyFetcher,
-  stateToQuery
-);
+export const updateAssetFamilyResults = updateResultsWithFetcher<AssetFamilyListItem>(AssetFamilyFetcher, stateToQuery);

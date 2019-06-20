@@ -8,9 +8,7 @@ import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler'
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
-import AssetFamilyListItem, {
-  denormalizeAssetFamilyListItem,
-} from 'akeneoassetmanager/domain/model/asset-family/list';
+import AssetFamilyListItem, {denormalizeAssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
 
 const routing = require('routing');
 
@@ -47,21 +45,19 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
   }
 
   async fetchAll(): Promise<AssetFamilyListItem[]> {
-    const backendAssetFamilies = await getJSON(
-      routing.generate('akeneo_asset_manager_asset_family_index_rest')
-    ).catch(errorHandler);
+    const backendAssetFamilies = await getJSON(routing.generate('akeneo_asset_manager_asset_family_index_rest')).catch(
+      errorHandler
+    );
 
     return hydrateAll<AssetFamilyListItem>(denormalizeAssetFamilyListItem)(backendAssetFamilies.items);
   }
 
   async search(): Promise<SearchResult<AssetFamilyListItem>> {
-    const backendAssetFamilies = await getJSON(
-      routing.generate('akeneo_asset_manager_asset_family_index_rest')
-    ).catch(errorHandler);
-
-    const items = hydrateAll<AssetFamilyListItem>(denormalizeAssetFamilyListItem)(
-      backendAssetFamilies.items
+    const backendAssetFamilies = await getJSON(routing.generate('akeneo_asset_manager_asset_family_index_rest')).catch(
+      errorHandler
     );
+
+    const items = hydrateAll<AssetFamilyListItem>(denormalizeAssetFamilyListItem)(backendAssetFamilies.items);
 
     return {
       items,

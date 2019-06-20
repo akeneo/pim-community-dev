@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

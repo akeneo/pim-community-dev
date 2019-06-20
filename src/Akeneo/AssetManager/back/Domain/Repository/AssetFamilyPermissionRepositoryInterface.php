@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Repository;
 
-use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

@@ -52,9 +52,7 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
     );
   }
 
-  public static createFromNormalized(
-    normalizedAssetFamily: NormalizedAssetFamilyListItem
-  ): AssetFamilyListItem {
+  public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamilyListItem): AssetFamilyListItem {
     const identifier = createIdentifier(normalizedAssetFamily.identifier);
     const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
     const image = denormalizeFile(normalizedAssetFamily.image);

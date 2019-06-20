@@ -1,6 +1,6 @@
 const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
   const isLoaded = async () => {
-    await page.waitFor(".AknDefault-mainContent .QuickEdit");
+    await page.waitFor('.AknDefault-mainContent .QuickEdit');
 
     return true;
   };
@@ -12,7 +12,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await page.evaluate(properties => {
       return (properties.querySelector(
         '.AknFieldContainer[data-code="label"] .AknTextField'
-      ).value = "");
+      ).value = '');
     }, nodeElement);
 
     await label.type(value);
@@ -34,7 +34,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     const required = await nodeElement.$(
       '.AknFieldContainer[data-code="isRequired"] .AknCheckbox'
     );
-    const currentValue = await required.getProperty("data-checked");
+    const currentValue = await required.getProperty('data-checked');
 
     if (value != currentValue._remoteObject.value) {
       await required.click();
@@ -57,7 +57,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     const required = await nodeElement.$(
       '.AknFieldContainer[data-code="isTextarea"] .AknCheckbox'
     );
-    const currentValue = await required.getProperty("data-checked");
+    const currentValue = await required.getProperty('data-checked');
 
     if (value != currentValue._remoteObject.value) {
       await required.click();
@@ -80,7 +80,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     const required = await nodeElement.$(
       '.AknFieldContainer[data-code="isRichTextEditor"] .AknCheckbox'
     );
-    const currentValue = await required.getProperty("data-checked");
+    const currentValue = await required.getProperty('data-checked');
 
     if (value != currentValue._remoteObject.value) {
       await required.click();
@@ -115,7 +115,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await page.evaluate(properties => {
       return (properties.querySelector(
         '.AknFieldContainer[data-code="regularExpression"] .AknTextField'
-      ).value = "");
+      ).value = '');
     }, nodeElement);
 
     await regularExpression.type(value);
@@ -128,7 +128,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await page.evaluate(properties => {
       return (properties.querySelector(
         '.AknFieldContainer[data-code="maxLength"] .AknTextField'
-      ).value = "");
+      ).value = '');
     }, nodeElement);
 
     await maxLength.type(value);
@@ -153,7 +153,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await page.evaluate(properties => {
       return (properties.querySelector(
         '.AknFieldContainer[data-code="maxFileSize"] .AknTextField'
-      ).value = "");
+      ).value = '');
     }, nodeElement);
 
     await maxFileSize.type(value);
@@ -188,7 +188,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
           );
       },
       nodeElement,
-      value.split(",")
+      value.split(',')
     );
 
     await allowedExtensions.type(value);
@@ -210,7 +210,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     const decimalsAllowed = await nodeElement.$(
       '.AknFieldContainer[data-code="decimalsAllowed"] .AknCheckbox'
     );
-    const currentValue = await decimalsAllowed.getProperty("data-checked");
+    const currentValue = await decimalsAllowed.getProperty('data-checked');
 
     if (value != currentValue._remoteObject.value) {
       await decimalsAllowed.click();
@@ -224,7 +224,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await page.evaluate(properties => {
       return (properties.querySelector(
         '.AknFieldContainer[data-code="minValue"] .AknTextField'
-      ).value = "");
+      ).value = '');
     }, nodeElement);
 
     await minValue.type(value);
@@ -237,7 +237,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await page.evaluate(properties => {
       return (properties.querySelector(
         '.AknFieldContainer[data-code="maxValue"] .AknTextField'
-      ).value = "");
+      ).value = '');
     }, nodeElement);
 
     await maxValue.type(value);
@@ -260,18 +260,18 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await page.evaluate(edit => {
       const button = edit.querySelector('.AknButton[data-code="manageOption"]');
 
-      button.style.width = "100px";
-      button.style.height = "100px";
+      button.style.width = '100px';
+      button.style.height = '100px';
     }, nodeElement);
 
     const button = await nodeElement.$('.AknButton[data-code="manageOption"]');
     await button.click();
-    await page.waitForSelector(".modal");
+    await page.waitForSelector('.modal');
   };
 
   const hasSuccessNotification = async () => {
     try {
-      await page.waitForSelector(".AknFlash--success", { timeout: 2000 });
+      await page.waitForSelector('.AknFlash--success', { timeout: 2000 });
     } catch (error) {
       return false;
     }

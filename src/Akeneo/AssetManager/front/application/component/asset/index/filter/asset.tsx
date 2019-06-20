@@ -68,9 +68,7 @@ const AssetFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, c
   const hint =
     0 === value.length
       ? __('pim_asset_manager.asset.grid.filter.option.all')
-      : hydratedAssets
-          .map((asset: NormalizedAsset) => getLabel(asset.labels, context.locale, asset.code))
-          .join(', ');
+      : hydratedAssets.map((asset: NormalizedAsset) => getLabel(asset.labels, context.locale, asset.code)).join(', ');
 
   return (
     <React.Fragment>

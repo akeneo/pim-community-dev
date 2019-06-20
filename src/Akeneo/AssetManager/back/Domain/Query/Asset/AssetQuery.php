@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 
 /**
  * Object representing a asset query

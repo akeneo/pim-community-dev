@@ -41,9 +41,7 @@ class AssetFamilyField extends (Field as {new (config: any): any}) {
         placeholder={__('pim_asset_manager.asset.selector.no_value')}
         onChange={(assetCode: AssetCode) => {
           this.errors = [];
-          this.setCurrentValue(
-            null !== assetCode && '' !== assetCode.stringValue() ? assetCode.stringValue() : null
-          );
+          this.setCurrentValue(null !== assetCode && '' !== assetCode.stringValue() ? assetCode.stringValue() : null);
           this.render();
         }}
       />,

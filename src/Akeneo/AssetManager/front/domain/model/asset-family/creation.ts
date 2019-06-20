@@ -38,9 +38,7 @@ class AssetFamilyCreationImplementation implements AssetFamilyCreation {
     return new AssetFamilyCreationImplementation(createCode(''), createLabelCollection({}));
   }
 
-  public static createFromNormalized(
-    normalizedAssetFamily: NormalizedAssetFamilyCreation
-  ): AssetFamilyCreation {
+  public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamilyCreation): AssetFamilyCreation {
     const code = createCode(normalizedAssetFamily.code);
     const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
 

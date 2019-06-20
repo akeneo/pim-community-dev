@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily;
 
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlLocalizableOnly;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;

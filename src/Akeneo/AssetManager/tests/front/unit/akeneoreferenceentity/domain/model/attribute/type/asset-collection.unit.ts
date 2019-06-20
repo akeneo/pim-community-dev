@@ -20,9 +20,7 @@ const normalizedBrand = {
 
 describe('akeneo > attribute > domain > model > attribute > type --- AssetCollectionAttribute', () => {
   test('I can create a ConcreteAssetCollectionAttribute from normalized', () => {
-    expect(ConcreteAssetCollectionAttribute.createFromNormalized(normalizedBrand).normalize()).toEqual(
-      normalizedBrand
-    );
+    expect(ConcreteAssetCollectionAttribute.createFromNormalized(normalizedBrand).normalize()).toEqual(normalizedBrand);
   });
   test('I can create get a asset type', () => {
     expect(ConcreteAssetCollectionAttribute.createFromNormalized(normalizedBrand).getAssetType()).toEqual(

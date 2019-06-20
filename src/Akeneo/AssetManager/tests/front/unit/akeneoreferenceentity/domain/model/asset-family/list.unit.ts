@@ -64,9 +64,9 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
     expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR')).toBe(
       '[michel]'
     );
-    expect(
-      createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR', false)
-    ).toBe('');
+    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR', false)).toBe(
+      ''
+    );
   });
 
   test('I can get the collection of labels', () => {

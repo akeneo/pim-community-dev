@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Product value interface for a collection of asset family

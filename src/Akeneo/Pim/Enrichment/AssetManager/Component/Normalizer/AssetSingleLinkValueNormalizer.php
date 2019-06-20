@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer;
 
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetSingleLinkValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetSingleLinkValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

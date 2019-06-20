@@ -7,9 +7,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import AssetFamilyView from 'akeneoassetmanager/application/component/asset-family/edit';
 import createStore from 'akeneoassetmanager/infrastructure/store';
 import assetFamilyReducer from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import assetFamilyFetcher, {
-  AssetFamilyResult,
-} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import permissionFetcher from 'akeneoassetmanager/infrastructure/fetcher/permission';
 import {
   assetFamilyEditionReceived,

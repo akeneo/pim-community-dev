@@ -15,8 +15,8 @@ namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocales;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindAttributesDetails;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use PHPUnit\Framework\TestCase;
 

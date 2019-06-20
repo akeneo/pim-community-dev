@@ -23,7 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
  */
 class OtherGenerator implements PreviewGeneratorInterface
 {
-    private const DEFAULT_OTHER = 'pim_asset_file_other';
+    private const DEFAULT_OTHER = 'pim_reference_entity.file_other';
 
     /** @var DefaultImageProviderInterface  */
     private $defaultImageProvider;

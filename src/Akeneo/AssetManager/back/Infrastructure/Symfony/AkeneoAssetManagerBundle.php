@@ -12,15 +12,15 @@ declare(strict_types=1);
  */
 namespace Akeneo\AssetManager\Infrastructure\Symfony;
 
+use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAssetFamilyAxisLabelPass;
+use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAssetItemValueHydratorPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeFactoryPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeHydratorPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeUpdaterPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterCreateAttributeCommandFactoryPass;
-use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAttributeCommandFactoryPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAssetValueCommandFactoryPass;
+use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAttributeCommandFactoryPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterPreviewGeneratorPass;
-use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAssetItemValueHydratorPass;
-use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAssetFamilyAxisLabelPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueDataHydratorPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueUpdaterPass;

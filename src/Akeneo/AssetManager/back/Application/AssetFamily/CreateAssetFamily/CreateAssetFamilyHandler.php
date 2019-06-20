@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily;
 
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 
 /**

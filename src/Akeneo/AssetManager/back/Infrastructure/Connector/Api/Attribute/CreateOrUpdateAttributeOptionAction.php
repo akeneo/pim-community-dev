@@ -6,13 +6,13 @@ use Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttrib
 use Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler;
 use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeSupportsOptions;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;

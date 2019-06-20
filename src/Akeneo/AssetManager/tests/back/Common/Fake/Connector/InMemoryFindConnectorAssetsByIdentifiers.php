@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Fake\Connector;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetsByIdentifiersInterface;
-use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>

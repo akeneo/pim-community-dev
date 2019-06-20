@@ -1,9 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import {
-  NormalizedAssetFamily,
-  denormalizeAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {NormalizedAssetFamily, denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';

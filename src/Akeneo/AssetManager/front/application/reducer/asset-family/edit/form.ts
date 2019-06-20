@@ -10,11 +10,7 @@ export interface EditionFormState {
   errors: ValidationError[];
 }
 
-const stateReducer = formState(
-  'assetFamily',
-  'ASSET_FAMILY_EDITION_UPDATED',
-  'ASSET_FAMILY_EDITION_RECEIVED'
-);
+const stateReducer = formState('assetFamily', 'ASSET_FAMILY_EDITION_UPDATED', 'ASSET_FAMILY_EDITION_RECEIVED');
 
 const dataReducer = (
   state: NormalizedAssetFamily = {

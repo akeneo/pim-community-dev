@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
 use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
 use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
 use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;

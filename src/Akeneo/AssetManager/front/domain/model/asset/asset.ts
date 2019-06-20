@@ -65,9 +65,7 @@ class AssetImplementation implements Asset {
       throw new InvalidArgumentError('Asset expects a AssetIdentifier as identifier argument');
     }
     if (!(assetFamilyIdentifier instanceof AssetFamilyIdentifier)) {
-      throw new InvalidArgumentError(
-        'Asset expects an AssetFamilyIdentifier as assetFamilyIdentifier argument'
-      );
+      throw new InvalidArgumentError('Asset expects an AssetFamilyIdentifier as assetFamilyIdentifier argument');
     }
     if (!(code instanceof AssetCode)) {
       throw new InvalidArgumentError('Asset expects a AssetCode as code argument');

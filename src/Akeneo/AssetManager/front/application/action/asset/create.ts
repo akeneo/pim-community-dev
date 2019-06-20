@@ -1,7 +1,4 @@
-import {
-  notifyAssetCreateFailed,
-  notifyAssetWellCreated,
-} from 'akeneoassetmanager/application/action/asset/notify';
+import {notifyAssetCreateFailed, notifyAssetWellCreated} from 'akeneoassetmanager/application/action/asset/notify';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   assetCreationErrorOccured,

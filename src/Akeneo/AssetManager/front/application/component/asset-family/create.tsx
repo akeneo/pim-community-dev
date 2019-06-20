@@ -69,9 +69,7 @@ class Create extends React.Component<CreateProps> {
               </div>
               <div>
                 <div className="AknFullPage-titleContainer">
-                  <div className="AknFullPage-subTitle">
-                    {__('pim_asset_manager.asset_family.create.subtitle')}
-                  </div>
+                  <div className="AknFullPage-subTitle">{__('pim_asset_manager.asset_family.create.subtitle')}</div>
                   <div className="AknFullPage-title">{__('pim_asset_manager.asset_family.create.title')}</div>
                 </div>
                 <div className="AknFormContainer">

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Search\Elasticsearch\Asset;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -17,12 +21,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
 use Akeneo\AssetManager\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 

@@ -176,9 +176,7 @@ class Create extends React.Component<CreateProps> {
                 <div className="AknFullPage-titleContainer">
                   <div className="AknFullPage-subTitle">{__('pim_asset_manager.attribute.create.subtitle')}</div>
                   <div className="AknFullPage-title">{__('pim_asset_manager.attribute.create.title')}</div>
-                  <div className="AknFullPage-description">
-                    {__('pim_asset_manager.attribute.create.description')}
-                  </div>
+                  <div className="AknFullPage-description">{__('pim_asset_manager.attribute.create.description')}</div>
                 </div>
                 <div className="AknFormContainer">
                   <div className="AknFieldContainer" data-code="label">

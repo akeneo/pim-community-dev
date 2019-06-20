@@ -7,8 +7,7 @@ import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler'
 
 const routing = require('routing');
 
-export class AttributeRemoverImplementation
-  implements AttributeRemover<AssetFamilyIdentifier, AttributeIdentifier> {
+export class AttributeRemoverImplementation implements AttributeRemover<AssetFamilyIdentifier, AttributeIdentifier> {
   constructor() {
     Object.freeze(this);
   }

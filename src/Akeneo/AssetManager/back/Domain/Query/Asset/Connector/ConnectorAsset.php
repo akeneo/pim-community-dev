@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Query\Asset\Connector;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 
 /**
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>

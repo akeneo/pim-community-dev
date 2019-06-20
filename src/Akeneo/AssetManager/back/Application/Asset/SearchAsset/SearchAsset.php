@@ -13,11 +13,11 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\SearchAsset;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
-use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
-use Akeneo\AssetManager\Domain\Query\Asset\FindAssetItemsForIdentifiersAndQueryInterface;
-use Akeneo\AssetManager\Domain\Query\Asset\IdentifiersForQueryResult;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetItemsForIdentifiersAndQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\IdentifiersForQueryResult;
 use Akeneo\AssetManager\Domain\Query\Asset\SearchAssetResult;
 
 /**

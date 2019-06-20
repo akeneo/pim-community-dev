@@ -9,11 +9,7 @@ import Image from 'akeneoassetmanager/application/component/app/image';
 import __ from 'akeneoassetmanager/tools/translator';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import Asset, {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
-import {
-  saveAsset,
-  assetImageUpdated,
-  backToAssetFamily,
-} from 'akeneoassetmanager/application/action/asset/edit';
+import {saveAsset, assetImageUpdated, backToAssetFamily} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import File from 'akeneoassetmanager/domain/model/file';

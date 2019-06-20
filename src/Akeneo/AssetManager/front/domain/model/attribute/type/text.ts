@@ -4,11 +4,7 @@ import AssetFamilyIdentifier, {
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {
-  NormalizedAttribute,
-  Attribute,
-  ConcreteAttribute,
-} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {MaxLength, NormalizedMaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
 import {IsTextarea, NormalizedIsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
 import {

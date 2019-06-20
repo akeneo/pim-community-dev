@@ -10,9 +10,7 @@ import {
 import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-family/delete';
 import __ from 'akeneoassetmanager/tools/translator';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import AssetFamily, {
-  denormalizeAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import File from 'akeneoassetmanager/domain/model/file';

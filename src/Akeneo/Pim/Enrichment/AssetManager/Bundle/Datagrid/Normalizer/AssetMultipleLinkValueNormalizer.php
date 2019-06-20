@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Normalizer;
 
-use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Query\AssetInformation;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

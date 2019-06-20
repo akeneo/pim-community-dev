@@ -15,8 +15,8 @@ namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

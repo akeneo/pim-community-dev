@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueDataInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\Attribute;
 
-use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
-use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;

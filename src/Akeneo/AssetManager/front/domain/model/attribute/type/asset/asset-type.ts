@@ -48,9 +48,7 @@ export class AssetType implements NormalizableAdditionalProperty {
   public equals(assetType: AssetType) {
     return (
       (undefined === this.assetType && undefined === assetType.assetType) ||
-      (undefined !== this.assetType &&
-        undefined !== assetType.assetType &&
-        this.assetType.equals(assetType.assetType))
+      (undefined !== this.assetType && undefined !== assetType.assetType && this.assetType.equals(assetType.assetType))
     );
   }
 

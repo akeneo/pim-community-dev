@@ -9,7 +9,10 @@ import {
   Attribute,
   ConcreteAttribute,
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {DecimalsAllowed, NormalizedDecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
+import {
+  DecimalsAllowed,
+  NormalizedDecimalsAllowed,
+} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
 import {MinValue, NormalizedMinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
 import {MaxValue, NormalizedMaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
 

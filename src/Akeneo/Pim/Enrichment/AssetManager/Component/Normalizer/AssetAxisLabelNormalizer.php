@@ -15,12 +15,12 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer;
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>

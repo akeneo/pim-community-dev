@@ -27,7 +27,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  */
 class ImageGenerator implements PreviewGeneratorInterface
 {
-    private const DEFAULT_IMAGE = 'pim_asset_file_image';
+    private const DEFAULT_IMAGE = 'pim_reference_entity.file_image';
 
     /** @var DataManager  */
     private $dataManager;

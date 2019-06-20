@@ -25,9 +25,7 @@ import {getAttributeView} from 'akeneoassetmanager/application/configuration/att
 import Key from 'akeneoassetmanager/tools/key';
 import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
-import AssetFamily, {
-  denormalizeAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 interface OwnProps {
   rights: {

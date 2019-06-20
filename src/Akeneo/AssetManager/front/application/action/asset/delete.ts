@@ -42,9 +42,7 @@ export const deleteAsset = (
   }
 };
 
-export const deleteAllAssetFamilyAssets = (assetFamily: AssetFamily) => async (
-  dispatch: any
-): Promise<void> => {
+export const deleteAllAssetFamilyAssets = (assetFamily: AssetFamily) => async (dispatch: any): Promise<void> => {
   try {
     const errors = await assetRemover.removeAll(assetFamily.getIdentifier());
 

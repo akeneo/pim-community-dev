@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\Attribute;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

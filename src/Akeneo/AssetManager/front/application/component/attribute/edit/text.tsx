@@ -176,10 +176,7 @@ const TextView = ({
       {!attribute.isTextarea.booleanValue() && (
         <div className="AknFieldContainer" data-code="validationRule">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
-            <label
-              className="AknFieldContainer-label"
-              htmlFor="pim_asset_manager.attribute.edit.input.validation_rule"
-            >
+            <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.validation_rule">
               {__('pim_asset_manager.attribute.edit.input.validation_rule')}
             </label>
           </div>

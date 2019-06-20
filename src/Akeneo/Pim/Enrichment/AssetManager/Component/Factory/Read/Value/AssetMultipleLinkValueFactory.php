@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Factory\Read\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>

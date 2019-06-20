@@ -49,10 +49,7 @@ class AssetEditController extends BaseController {
     const assetFamilyIdentifier = createAssetFamilyIdentifier(route.params.assetFamilyIdentifier);
 
     assetFetcher
-      .fetch(
-        createAssetFamilyIdentifier(route.params.assetFamilyIdentifier),
-        createCode(route.params.assetCode)
-      )
+      .fetch(createAssetFamilyIdentifier(route.params.assetFamilyIdentifier), createCode(route.params.assetCode))
       .then(async (assetResult: AssetResult) => {
         this.store = createStore(true)(assetReducer);
         await this.store.dispatch(updateChannels() as any);

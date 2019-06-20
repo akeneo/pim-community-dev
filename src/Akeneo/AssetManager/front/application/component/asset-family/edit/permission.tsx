@@ -2,10 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import __ from 'akeneoassetmanager/tools/translator';
-import {
-  denormalizeAssetFamily,
-  NormalizedAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {denormalizeAssetFamily, NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permission';
@@ -95,9 +92,7 @@ class Permission extends React.Component<StateProps & DispatchProps> {
             ) : (
               <div className="AknGridContainer-noData">
                 <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--user-group" />
-                <div className="AknGridContainer-noDataTitle">
-                  {__('pim_asset_manager.permission.no_data.title')}
-                </div>
+                <div className="AknGridContainer-noDataTitle">{__('pim_asset_manager.permission.no_data.title')}</div>
                 <div className="AknGridContainer-noDataSubtitle">
                   {__('pim_asset_manager.permission.no_data.subtitle')}{' '}
                   {this.props.rights.userGroup.create ? (

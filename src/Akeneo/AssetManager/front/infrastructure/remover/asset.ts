@@ -12,10 +12,7 @@ export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdent
     Object.freeze(this);
   }
 
-  async remove(
-    assetFamilyIdentifier: AssetFamilyIdentifier,
-    assetCode: AssetCode
-  ): Promise<ValidationError[] | null> {
+  async remove(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<ValidationError[] | null> {
     return await deleteJSON(
       routing.generate('akeneo_asset_manager_asset_delete_rest', {
         assetCode: assetCode.stringValue(),

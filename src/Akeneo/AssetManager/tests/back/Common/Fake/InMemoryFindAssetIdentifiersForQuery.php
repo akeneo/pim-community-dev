@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\IdentifiersForQueryResult;
-use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 

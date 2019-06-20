@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Normalizer;
 
-use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Query\AssetInformation;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetSingleLinkValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

@@ -16,8 +16,8 @@ namespace Akeneo\AssetManager\Acceptance\Context;
 use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Behat\Behat\Context\Context;
 

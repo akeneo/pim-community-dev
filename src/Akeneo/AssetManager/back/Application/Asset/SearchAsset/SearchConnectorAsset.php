@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\SearchAsset;
 
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetsByIdentifiersInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
-use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
  * This service takes a asset search query and will return a list of connector-assets.

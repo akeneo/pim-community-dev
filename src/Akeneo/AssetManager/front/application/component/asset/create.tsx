@@ -11,9 +11,7 @@ import {
 } from 'akeneoassetmanager/domain/event/asset/create';
 import {createAsset} from 'akeneoassetmanager/application/action/asset/create';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
-import AssetFamily, {
-  denormalizeAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import Key from 'akeneoassetmanager/tools/key';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
@@ -93,10 +91,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                   </div>
                   <div className="AknFieldContainer" data-code="label">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_asset_manager.asset.create.input.label"
-                      >
+                      <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.asset.create.input.label">
                         {__('pim_asset_manager.asset.create.input.label')}
                       </label>
                     </div>
@@ -126,10 +121,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                   </div>
                   <div className="AknFieldContainer" data-code="code">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_asset_manager.asset.create.input.code"
-                      >
+                      <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.asset.create.input.code">
                         {__('pim_asset_manager.asset.create.input.code')}
                       </label>
                     </div>

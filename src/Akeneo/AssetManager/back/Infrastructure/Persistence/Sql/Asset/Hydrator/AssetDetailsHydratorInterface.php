@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

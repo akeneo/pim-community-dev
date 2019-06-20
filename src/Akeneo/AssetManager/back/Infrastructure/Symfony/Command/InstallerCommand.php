@@ -11,9 +11,9 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Symfony\Command;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\AssetsInstaller;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

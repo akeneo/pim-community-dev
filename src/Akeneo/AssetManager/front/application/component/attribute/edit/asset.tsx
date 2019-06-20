@@ -25,9 +25,7 @@ class AssetView extends React.Component<Props, {assetFamily: AssetFamily | null}
   }
 
   async updateAssetFamily() {
-    const assetFamilyResult = await assetFamilyFetcher.fetch(
-      this.props.attribute.assetType.getAssetFamilyIdentifier()
-    );
+    const assetFamilyResult = await assetFamilyFetcher.fetch(this.props.attribute.assetType.getAssetFamilyIdentifier());
     this.setState({assetFamily: assetFamilyResult.assetFamily});
   }
 

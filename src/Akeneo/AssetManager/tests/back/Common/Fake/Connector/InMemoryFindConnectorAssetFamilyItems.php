@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Fake\Connector;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyItemsInterface;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
 
 class InMemoryFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyItemsInterface
 {

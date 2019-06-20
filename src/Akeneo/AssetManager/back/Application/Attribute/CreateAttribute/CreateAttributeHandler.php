@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 

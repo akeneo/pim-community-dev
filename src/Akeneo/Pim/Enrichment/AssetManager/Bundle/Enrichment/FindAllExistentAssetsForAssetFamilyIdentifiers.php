@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Enrichment;
 
-use Akeneo\Pim\Enrichment\AssetManager\Component\Query\FindAllExistentAssetsForAssetFamilyIdentifiers as QueryInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlFindAllExistentAssetsForAssetFamilyIdentifiers;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Query\FindAllExistentAssetsForAssetFamilyIdentifiers as QueryInterface;
 
 /**
  * This class is an adapter to the implementation of the same query in another Bounded context

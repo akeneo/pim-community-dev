@@ -6,9 +6,7 @@ import {
   productListAttributeSelected,
 } from 'akeneoassetmanager/domain/event/asset/product';
 import productFetcher from 'akeneoassetmanager/infrastructure/fetcher/product';
-import AssetFamilyIdentifier, {
-  createIdentifier,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {createCode as createAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
@@ -23,15 +21,11 @@ export const updateAttributeList = (assetFamilyIdentifier: AssetFamilyIdentifier
   dispatch: any
 ): Promise<void> => {
   const attributes = await promisify(
-    fetcherRegistry
-      .getFetcher('attribute')
-      .fetchByTypes(['akeneo_asset_multiple_link', 'akeneo_asset'], false)
+    fetcherRegistry.getFetcher('attribute').fetchByTypes(['akeneo_asset_multiple_link', 'akeneo_asset'], false)
   );
 
   const linkedAttributes = attributes
-    .filter(
-      (attribute: NormalizedAttribute) => assetFamilyIdentifier.stringValue() === attribute.reference_data_name
-    )
+    .filter((attribute: NormalizedAttribute) => assetFamilyIdentifier.stringValue() === attribute.reference_data_name)
     .map(hydrate);
 
   dispatch(productListAttributeListUpdated(linkedAttributes));

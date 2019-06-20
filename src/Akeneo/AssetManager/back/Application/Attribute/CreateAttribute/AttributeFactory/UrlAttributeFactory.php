@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFac
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateUrlAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -27,7 +28,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Doctrine\Common\Util\ClassUtils;
 
 /**

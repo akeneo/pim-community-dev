@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Value;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 
 /**
  * Product value for asset family

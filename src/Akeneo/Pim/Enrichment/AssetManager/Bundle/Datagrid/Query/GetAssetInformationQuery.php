@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Query;
 
-use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Query\AssetInformation;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Query\AssetInformation;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
 
 /**
  * This query acts as an anti corruption layer.

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Analytics;
 
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\CountVolume as AssetFamilyCountVolume;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlCountAssetFamilies;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

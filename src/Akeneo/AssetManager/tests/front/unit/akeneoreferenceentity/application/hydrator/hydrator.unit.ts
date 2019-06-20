@@ -43,14 +43,9 @@ describe('akeneo > asset family > application > hydrator --- hydrator', () => {
 
   test('I can throw InvalidRawObjectError', () => {
     expect(() => {
-      throw new InvalidRawObjectError(
-        'The provided raw asset family seems to be malformed.',
-        ['name'],
-        ['height'],
-        {
-          age: 12,
-        }
-      );
+      throw new InvalidRawObjectError('The provided raw asset family seems to be malformed.', ['name'], ['height'], {
+        age: 12,
+      });
     }).toThrow();
   });
 });

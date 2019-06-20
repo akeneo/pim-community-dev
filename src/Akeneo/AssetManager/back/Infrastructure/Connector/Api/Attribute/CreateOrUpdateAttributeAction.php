@@ -8,12 +8,12 @@ use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\Cre
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactory;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;

@@ -37,14 +37,10 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
   test('I can compare two asset families', () => {
     const michelLabels = createLabelCollection({en_US: 'Michel'});
     expect(
-      createAssetFamilyCreation(didierCode, didierLabels).equals(
-        createAssetFamilyCreation(didierCode, didierLabels)
-      )
+      createAssetFamilyCreation(didierCode, didierLabels).equals(createAssetFamilyCreation(didierCode, didierLabels))
     ).toBe(true);
     expect(
-      createAssetFamilyCreation(didierCode, didierLabels).equals(
-        createAssetFamilyCreation(michelCode, michelLabels)
-      )
+      createAssetFamilyCreation(didierCode, didierLabels).equals(createAssetFamilyCreation(michelCode, michelLabels))
     ).toBe(false);
   });
 

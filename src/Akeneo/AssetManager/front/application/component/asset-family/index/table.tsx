@@ -1,8 +1,6 @@
 import * as React from 'react';
 import ItemView from 'akeneoassetmanager/application/component/asset-family/index/item';
-import AssetFamily, {
-  createAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetFamily, {createAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {createIdentifier as createAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';

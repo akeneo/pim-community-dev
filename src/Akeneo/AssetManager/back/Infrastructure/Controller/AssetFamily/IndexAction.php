@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
-use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyItem;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

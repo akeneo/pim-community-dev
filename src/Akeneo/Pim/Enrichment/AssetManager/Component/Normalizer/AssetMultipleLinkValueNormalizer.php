@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

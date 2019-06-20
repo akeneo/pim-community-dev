@@ -54,10 +54,7 @@ class AssetFamilyEditView extends React.Component<EditProps> {
   );
 
   render(): JSX.Element | JSX.Element[] {
-    const TabView = sidebarProvider.getView(
-      'akeneo_asset_manager_asset_family_edit',
-      this.props.sidebar.currentTab
-    );
+    const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_family_edit', this.props.sidebar.currentTab);
 
     return (
       <div className="AknDefault-contentWithColumn">

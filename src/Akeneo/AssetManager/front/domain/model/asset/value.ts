@@ -1,11 +1,7 @@
 import ChannelReference, {NormalizedChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference, {NormalizedLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import Data from 'akeneoassetmanager/domain/model/asset/data';
-import {
-  ConcreteAttribute,
-  Attribute,
-  NormalizedAttribute,
-} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {ConcreteAttribute, Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 type NormalizedContext = {

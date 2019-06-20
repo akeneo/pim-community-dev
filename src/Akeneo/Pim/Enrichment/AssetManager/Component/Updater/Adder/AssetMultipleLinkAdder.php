@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractAttributeAdder;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 

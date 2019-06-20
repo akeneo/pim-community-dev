@@ -60,7 +60,7 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
         $this->otherGenerator->supports('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->otherGenerator->generate('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString(sprintf('media/cache/%s/pim_asset_file_other_default_image', PreviewGeneratorRegistry::THUMBNAIL_TYPE), $previewImage);
+        $this->assertStringContainsString(sprintf('media/cache/%s/pim_reference_entity.file_other_default_image', PreviewGeneratorRegistry::THUMBNAIL_TYPE), $previewImage);
     }
 
     private function loadFixtures(): void

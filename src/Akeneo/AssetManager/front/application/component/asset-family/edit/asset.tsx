@@ -5,9 +5,7 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {redirectToAsset} from 'akeneoassetmanager/application/action/asset/router';
 import __ from 'akeneoassetmanager/tools/translator';
-import AssetFamily, {
-  denormalizeAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {assetCreationStart} from 'akeneoassetmanager/domain/event/asset/create';
 import {deleteAllAssetFamilyAssets, deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
@@ -253,10 +251,7 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
             })}
             title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={() => {
-              events.onDeleteAsset(
-                assetFamily.getIdentifier(),
-                createAssetCode(confirmDelete.identifier as string)
-              );
+              events.onDeleteAsset(assetFamily.getIdentifier(), createAssetCode(confirmDelete.identifier as string));
             }}
             onCancel={events.onCancelDeleteModal}
           />
@@ -323,10 +318,7 @@ export default connect(
       events: {
         onRedirectToAsset: (asset: NormalizedAsset) => {
           dispatch(
-            redirectToAsset(
-              createReferenceIdentifier(asset.asset_family_identifier),
-              createAssetCode(asset.code)
-            )
+            redirectToAsset(createReferenceIdentifier(asset.asset_family_identifier), createAssetCode(asset.code))
           );
         },
         onDeleteAsset: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {

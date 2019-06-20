@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 
 class InMemoryFindAssetLabelsByIdentifiers implements FindAssetLabelsByIdentifiersInterface
 {

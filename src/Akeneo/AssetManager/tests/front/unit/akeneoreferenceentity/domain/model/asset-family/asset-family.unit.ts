@@ -1,7 +1,4 @@
-import {
-  createAssetFamily,
-  denormalizeAssetFamily,
-} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {createAssetFamily, denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {createIdentifier as createAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';

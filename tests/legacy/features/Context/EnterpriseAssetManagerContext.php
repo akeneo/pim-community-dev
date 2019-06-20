@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Context;
 
-use Akeneo\Pim\Structure\Component\Model\Family;
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Pim\Behat\Context\PimContext;
 
 class EnterpriseAssetManagerContext extends PimContext

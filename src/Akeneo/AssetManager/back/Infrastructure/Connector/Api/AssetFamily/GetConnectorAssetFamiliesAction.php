@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\Limit;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyItemsInterface;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
+use Akeneo\AssetManager\Domain\Query\Limit;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

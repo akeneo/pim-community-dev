@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Subscribers;
 
-use Akeneo\AssetManager\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\CLI\RefreshAssetsCommand;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -15,10 +15,10 @@ namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\BeforeAttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

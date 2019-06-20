@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Event;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

@@ -1,7 +1,4 @@
-import Attribute, {
-  NormalizedAttribute,
-  denormalizeAttribute,
-} from 'akeneoassetmanager/domain/model/product/attribute';
+import Attribute, {NormalizedAttribute, denormalizeAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {validateKeys} from 'akeneoassetmanager/application/hydrator/hydrator';
 
 export const hydrator = (denormalize: (denormalizeAttribute: NormalizedAttribute) => Attribute) => (
