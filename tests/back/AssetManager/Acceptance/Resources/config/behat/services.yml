@@ -1,0 +1,24 @@
+services:
+    test.catalog_volume_limits.asset_family_context:
+        class: 'AkeneoTestEnterprise\AssetFamily\Acceptance\Context\AssetFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pimee.asset_manager.catalog_volume_monitoring.count_asset_families'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.avg_max_assets_per_asset_family_context:
+        class: 'AkeneoTestEnterprise\AssetFamily\Acceptance\Context\AvgMaxAssetsPerAssetFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pimee.asset_manager.catalog_volume_monitoring.average_max_number_of_assets_per_asset_family'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.avg_max_attributes_per_asset_family_context:
+        class: 'AkeneoTestEnterprise\AssetFamily\Acceptance\Context\AvgMaxAttributesPerAssetFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pimee.asset_manager.catalog_volume_monitoring.average_max_number_of_attributes_per_asset_family'
+        tags:
+            - { name: fob.context_service }
