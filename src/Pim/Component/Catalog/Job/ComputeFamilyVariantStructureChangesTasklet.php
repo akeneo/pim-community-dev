@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Job;
 
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -27,14 +31,11 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var EntityRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $familyVariantRepository;
 
-    /** @var ObjectRepository */
-    private $variantProductRepository;
-
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $productQueryBuilderFactory;
 
     /** @var BulkSaverInterface */
     private $productSaver;
@@ -51,34 +52,37 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /** @var int */
     private $batchSize;
 
+    /** @var EntityManagerClearerInterface */
+    private $cacheClearer;
+
     /**
-     * @param EntityRepository                               $familyVariantRepository
-     * @param ObjectRepository                               $variantProductRepository
-     * @param ProductModelRepositoryInterface                $productModelRepository
-     * @param BulkSaverInterface                             $productSaver
-     * @param BulkSaverInterface                             $productModelSaver
-     * @param KeepOnlyValuesForVariation                     $keepOnlyValuesForVariation
-     * @param ValidatorInterface                             $validator
-     * @param int                                            $batchSize
+     * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
+     * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
+     * @param BulkSaverInterface                    $productSaver
+     * @param BulkSaverInterface                    $productModelSaver
+     * @param KeepOnlyValuesForVariation            $keepOnlyValuesForVariation
+     * @param ValidatorInterface                    $validator
+     * @param EntityManagerClearerInterface         $cacheClearer
+     * @param int                                   $batchSize
      */
     public function __construct(
-        EntityRepository $familyVariantRepository,
-        ObjectRepository $variantProductRepository,
-        ProductModelRepositoryInterface $productModelRepository,
+        IdentifiableObjectRepositoryInterface $familyVariantRepository,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         ValidatorInterface $validator,
+        EntityManagerClearerInterface $cacheClearer,
         int $batchSize = 100
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
-        $this->variantProductRepository = $variantProductRepository;
-        $this->productModelRepository = $productModelRepository;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->productSaver = $productSaver;
         $this->productModelSaver = $productModelSaver;
         $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
         $this->validator = $validator;
         $this->batchSize = $batchSize;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -96,68 +100,106 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $familyVariantCodes = $jobParameters->get('family_variant_codes');
-        $familyVariants = $this->familyVariantRepository->findBy(['code' => $familyVariantCodes]);
+//        $familyVariants = $this->familyVariantRepository->findBy(['code' => $familyVariantCodes]);
 
-        foreach ($familyVariants as $familyVariant) {
+        foreach ($familyVariantCodes as $familyVariantCode) {
+            $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
             $levelNumber = $familyVariant->getNumberOfLevel();
 
             while ($levelNumber >= ProductModel::ROOT_VARIATION_LEVEL) {
                 if (ProductModel::ROOT_VARIATION_LEVEL === $levelNumber) {
-                    $entitiesWithFamilyVariant = $this->productModelRepository->findRootProductModels($familyVariant);
+                    $this->updateRootProductModels($familyVariantCode);
                 } elseif ($levelNumber === $familyVariant->getNumberOfLevel()) {
-                    $entitiesWithFamilyVariant = $this->variantProductRepository->findBy([
-                        'familyVariant' => $familyVariant
-                    ]);
+                    $this->updateVariantProducts($familyVariantCode);
                 } else {
-                    $entitiesWithFamilyVariant = $this->productModelRepository->findSubProductModels($familyVariant);
+                    $this->updateSubProductModels($familyVariantCode);
                 }
 
-                $this->updateValuesOfEntities($entitiesWithFamilyVariant);
                 $levelNumber--;
             }
         }
     }
 
-    /**
-     * @param EntityWithFamilyVariantInterface[] $entities
-     */
-    private function updateValuesOfEntities(array $entities): void
+    private function updateRootProductModels(string $familyVariant)
     {
-        $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant($entities);
+        $pmqb = $this->productQueryBuilderFactory->create([
+            'filters' => [
+                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
+                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => [$familyVariant]],
+                ['field' => 'parent', 'operator' => Operators::IS_EMPTY, 'value' => null]
+            ]
+        ]);
 
-        $productModels = $this->filterProductModels($entities);
-        $products = $this->filterProducts($entities);
+        $this->updateValuesOfEntities($pmqb->execute());
+    }
+
+    private function updateVariantProducts(string $familyVariant)
+    {
+        $pmqb = $this->productQueryBuilderFactory->create([
+            'filters' => [
+                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductInterface::class],
+                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => [$familyVariant]],
+                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ]
+        ]);
+
+        $this->updateValuesOfEntities($pmqb->execute());
+    }
+
+    private function updateSubProductModels(string $familyVariant)
+    {
+        $pmqb = $this->productQueryBuilderFactory->create([
+            'filters' => [
+                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
+                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => [$familyVariant]],
+                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ]
+        ]);
+
+        $this->updateValuesOfEntities($pmqb->execute());
+    }
+
+    /**
+     * @param CursorInterface $entities
+     */
+    private function updateValuesOfEntities(CursorInterface $entities): void
+    {
+        $products = [];
+        $productModels = [];
+        foreach ($entities as $entity) {
+            $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$entity]);
+
+            if ($entity instanceof ProductModelInterface) {
+                $productModels[] = $entity;
+            } else {
+                $products[] = $entity;
+            }
+
+            if (count($productModels) >= $this->batchSize) {
+                $this->validateProductModels($productModels);
+                $this->productModelSaver->saveAll($productModels);
+                $this->cacheClearer->clear();
+                $productModels = [];
+            }
+
+            if (count($products) >= $this->batchSize) {
+                $this->validateProducts($products);
+                $this->productSaver->saveAll($products);
+                $this->cacheClearer->clear();
+                $products = [];
+            }
+        }
 
         if (!empty($productModels)) {
             $this->validateProductModels($productModels);
-            $this->saveAllProductModels($productModels);
+            $this->productModelSaver->saveAll($productModels);
+            $this->cacheClearer->clear();
         }
 
         if (!empty($products)) {
             $this->validateProducts($products);
-            $this->saveAllProducts($products);
-        }
-    }
-
-    private function saveAllProductModels($productModels)
-    {
-        if (count($productModels) > $this->batchSize) {
-            while (count($productModels) > 0) {
-                $this->productModelSaver->saveAll(array_splice($productModels, 0, $this->batchSize));
-            }
-        } else {
-            $this->productModelSaver->saveAll($productModels);
-        }
-    }
-
-    private function saveAllProducts($products)
-    {
-        if (count($products) > $this->batchSize) {
-            while (count($products) > 0) {
-                $this->productSaver->saveAll(array_splice($products, 0, $this->batchSize));
-            }
-        } else {
             $this->productSaver->saveAll($products);
+            $this->cacheClearer->clear();
         }
     }
 
@@ -201,37 +243,5 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
                 );
             }
         }
-    }
-
-    /**
-     * Returns only product models from the given array.
-     *
-     * @param array $entities
-     *
-     * @return ProductModelInterface[]
-     */
-    private function filterProductModels(array $entities): array
-    {
-        return array_values(
-            array_filter($entities, function ($item) {
-                return $item instanceof ProductModelInterface;
-            })
-        );
-    }
-
-    /**
-     * Returns only products from the given array.
-     *
-     * @param array $entities
-     *
-     * @return ProductInterface[]
-     */
-    private function filterProducts(array $entities): array
-    {
-        return array_values(
-            array_filter($entities, function ($item) {
-                return $item instanceof ProductInterface;
-            })
-        );
     }
 }
