@@ -84,10 +84,7 @@ class AttributeMapping
         return $this->targetAttributeCode;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatus(): int
+    public function getStatus(): string
     {
         return $this->status;
     }

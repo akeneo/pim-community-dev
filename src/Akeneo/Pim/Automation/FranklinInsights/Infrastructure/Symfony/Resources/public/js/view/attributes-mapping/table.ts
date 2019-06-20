@@ -137,7 +137,6 @@ class AttributeMapping extends BaseView {
         __,
         mapping: attributesMapping,
         escapeHtml: EscapeHtml.escapeHtml,
-        statuses: this.getMappingStatuses(),
         franklinAttribute: __(this.config.labels.franklinAttribute),
         catalogAttribute: __(this.config.labels.catalogAttribute),
       }),
@@ -344,15 +343,6 @@ class AttributeMapping extends BaseView {
    */
   private getFamilyCode() {
     return Router.match(window.location.hash).params.familyCode;
-  }
-
-  private getMappingStatuses(): {[status: number]: string} {
-    const statuses: {[status: number]: string} = {};
-    statuses[AttributeMappingStatus.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
-    statuses[AttributeMappingStatus.ATTRIBUTE_ACTIVE] = __(this.config.labels.active);
-    statuses[AttributeMappingStatus.ATTRIBUTE_INACTIVE] = __(this.config.labels.inactive);
-
-    return statuses;
   }
 
   /**

@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -58,9 +59,9 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     ): void {
         $franklinResponse = new AttributesMappingResponse();
         $franklinResponse
-            ->addAttribute(new AttributeMapping('franklin_size', null, 'text', 'pim_size', 1, null))
-            ->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null))
-            ->addAttribute(new AttributeMapping('franklin_weight', null, 'text', 'pim_weight', 1, null));
+            ->addAttribute(new AttributeMapping('franklin_size', null, 'text', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null))
+            ->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null))
+            ->addAttribute(new AttributeMapping('franklin_weight', null, 'text', 'pim_weight', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null));
 
         $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
             ->willReturn($franklinResponse);
@@ -88,7 +89,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
         $saveAttributesMappingHandler
     ): void {
         $franklinResponse = new AttributesMappingResponse();
-        $franklinResponse->addAttribute(new AttributeMapping('franklin_weight', null, 'text', 'pim_weight', 1, null));
+        $franklinResponse->addAttribute(new AttributeMapping('franklin_weight', null, 'text', 'pim_weight', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null));
 
         $getAttributesMappingHandler
             ->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))

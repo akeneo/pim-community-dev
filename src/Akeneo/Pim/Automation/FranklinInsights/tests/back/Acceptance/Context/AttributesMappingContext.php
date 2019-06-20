@@ -285,7 +285,7 @@ final class AttributesMappingContext implements Context
                     Assert::eq($attributeMapping->getTargetAttributeLabel(), $expectedAttribute['target_attribute_label']);
                     Assert::eq($attributeMapping->getTargetAttributeType(), $expectedAttribute['target_attribute_type']);
                     Assert::eq($attributeMapping->getPimAttributeCode(), $expectedAttribute['pim_attribute_code']);
-                    Assert::eq($attributeMapping->getStatus(), $this->getAttributeMappingStatus($expectedAttribute['status']));
+                    Assert::eq($attributeMapping->getStatus(), $expectedAttribute['status']);
                     break;
                 }
             }
@@ -469,23 +469,6 @@ final class AttributesMappingContext implements Context
             $thrownException->getMessage(),
             'Can not create attribute. Attribute of type "metric" is not allowed'
         );
-    }
-
-    /**
-     * @param mixed $franklinStatus
-     *
-     * @return int
-     */
-    private function getAttributeMappingStatus($franklinStatus): int
-    {
-        switch ($franklinStatus) {
-            case 'pending':
-                return AttributeMappingStatus::ATTRIBUTE_PENDING;
-            case 'active':
-                return AttributeMappingStatus::ATTRIBUTE_ACTIVE;
-            case 'inactive':
-                return AttributeMappingStatus::ATTRIBUTE_INACTIVE;
-        }
     }
 
     /**

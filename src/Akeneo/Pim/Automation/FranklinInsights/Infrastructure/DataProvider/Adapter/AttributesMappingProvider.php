@@ -73,7 +73,7 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
                 $attribute->getTargetAttributeLabel(),
                 $attribute->getTargetAttributeType(),
                 $attribute->getPimAttributeCode(),
-                $this->mapAttributeMappingStatus($attribute->getStatus()),
+                $attribute->getStatus(),
                 $attribute->getSummary()
             );
             $attributesMapping->addAttribute($attribute);
@@ -100,27 +100,5 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }
-    }
-
-    /**
-     * @param string $status
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return int
-     */
-    private function mapAttributeMappingStatus(string $status): int
-    {
-        $mapping = [
-            AttributeMapping::STATUS_PENDING => AttributeMappingStatus::ATTRIBUTE_PENDING,
-            AttributeMapping::STATUS_INACTIVE => AttributeMappingStatus::ATTRIBUTE_INACTIVE,
-            AttributeMapping::STATUS_ACTIVE => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
-        ];
-
-        if (!array_key_exists($status, $mapping)) {
-            throw new \InvalidArgumentException(sprintf('Unknown mapping attribute status "%s"', $status));
-        }
-
-        return $mapping[$status];
     }
 }

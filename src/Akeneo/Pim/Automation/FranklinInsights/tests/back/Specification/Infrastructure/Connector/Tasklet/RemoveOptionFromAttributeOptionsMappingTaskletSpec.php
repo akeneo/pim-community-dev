@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
@@ -79,7 +80,7 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
         $familyCode = new FamilyCode('router');
 
         $attributesMapping = new AttributesMappingResponse();
-        $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null));
+        $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null));
 
         $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
             ->willReturn($attributesMapping);
@@ -156,7 +157,7 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
         $familyCode = new FamilyCode('router');
 
         $attributesMapping = new AttributesMappingResponse();
-        $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null));
+        $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null));
 
         $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
             ->willReturn($attributesMapping);

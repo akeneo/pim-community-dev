@@ -9,9 +9,9 @@
 
 /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus */
 enum AttributeMappingStatus {
-  ATTRIBUTE_PENDING = 0,
-  ATTRIBUTE_ACTIVE = 1,
-  ATTRIBUTE_INACTIVE = 2,
+  ATTRIBUTE_PENDING = 'pending',
+  ATTRIBUTE_ACTIVE = 'active',
+  ATTRIBUTE_INACTIVE = 'inactive',
 }
 
 export default AttributeMappingStatus;
