@@ -1,6 +1,6 @@
-import reducer from 'akeneoreferenceentity/application/reducer/record/edit/products';
+import reducer from 'akeneoassetmanager/application/reducer/asset/edit/products';
 
-describe('akeneo > reference entity > application > reducer > record > edit --- product', () => {
+describe('akeneo > asset family > application > reducer > asset > edit --- product', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
@@ -34,7 +34,7 @@ describe('akeneo > reference entity > application > reducer > record > edit --- 
       attributes: [
         {
           code: 'front_view',
-          type: 'akeneo_reference_entity',
+          type: 'akeneo_asset',
           labels: {en_US: 'Nice front view'},
           reference_data_name: 'brand',
         },
@@ -46,7 +46,7 @@ describe('akeneo > reference entity > application > reducer > record > edit --- 
       attributes: [
         {
           code: 'front_view',
-          type: 'akeneo_reference_entity',
+          type: 'akeneo_asset',
           labels: {en_US: 'Nice front view'},
           reference_data_name: 'brand',
         },
@@ -95,7 +95,7 @@ describe('akeneo > reference entity > application > reducer > record > edit --- 
       attributes: [
         {
           code: 'front_view',
-          type: 'akeneo_reference_entity',
+          type: 'akeneo_asset',
           labels: {en_US: 'Nice front view'},
           reference_data_name: 'brand',
         },
@@ -114,12 +114,12 @@ describe('akeneo > reference entity > application > reducer > record > edit --- 
           en_US: 'Nice front view',
         },
         reference_data_name: 'brand',
-        type: 'akeneo_reference_entity',
+        type: 'akeneo_asset',
       },
       attributes: [
         {
           code: 'front_view',
-          type: 'akeneo_reference_entity',
+          type: 'akeneo_asset',
           labels: {en_US: 'Nice front view'},
           reference_data_name: 'brand',
         },

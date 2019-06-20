@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Doctrine\DBAL\Connection;
 
 class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
@@ -31,15 +31,15 @@ class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeOrder
+    public function withAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeOrder
     {
         $query = <<<SQL
         SELECT MAX(attribute_order)
-        FROM akeneo_reference_entity_attribute
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        FROM akeneo_asset_manager_attribute
+        WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'reference_entity_identifier' => $referenceEntityIdentifier,
+            'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
         $result = $statement->fetchColumn();
         $statement->closeCursor();

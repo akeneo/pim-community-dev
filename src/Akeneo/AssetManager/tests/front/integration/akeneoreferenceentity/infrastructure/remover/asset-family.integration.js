@@ -1,16 +1,16 @@
 const timeout = 5000;
 
-describe('Akeneoreferenceentity > infrastructure > remover > reference-entity', () => {
+describe('Akeneoassetfamily > infrastructure > remover > asset-family', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
     await page.reload();
   }, timeout);
 
-  it('It deletes a reference entity', async () => {
+  it('It deletes an asset family', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity/designer' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager/designer' === interceptedRequest.url() &&
         'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -20,9 +20,9 @@ describe('Akeneoreferenceentity > infrastructure > remover > reference-entity', 
     });
 
     await page.evaluate(async () => {
-      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+      const createIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
         .createIdentifier;
-      const remover = require('akeneoreferenceentity/infrastructure/remover/reference-entity').default;
+      const remover = require('akeneoassetmanager/infrastructure/remover/asset-family').default;
 
       const identifierToDelete = createIdentifier('designer');
 

@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordByReferenceEntityAndCodeInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetByAssetFamilyAndCodeInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ConnectorAssetHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -27,7 +27,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRecordByReferenceEntityAndCodeInterface
+class SqlFindConnectorAssetByAssetFamilyAndCode implements FindConnectorAssetByAssetFamilyAndCodeInterface
 {
     /** @var Connection */
     private $connection;
@@ -38,39 +38,39 @@ class SqlFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRec
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
 
-    /** @var ConnectorRecordHydrator */
-    private $recordHydrator;
+    /** @var ConnectorAssetHydrator */
+    private $assetHydrator;
 
     public function __construct(
         Connection $connection,
-        ConnectorRecordHydrator $hydrator,
+        ConnectorAssetHydrator $hydrator,
         FindValueKeyCollectionInterface $findValueKeyCollection,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
         $this->connection = $connection;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->recordHydrator = $hydrator;
+        $this->assetHydrator = $hydrator;
     }
 
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?ConnectorRecord
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?ConnectorAsset
     {
         $sql = <<<SQL
             SELECT 
                 identifier, 
                 code, 
-                reference_entity_identifier, 
+                asset_family_identifier, 
                 value_collection
-            FROM akeneo_reference_entity_record
+            FROM akeneo_asset_manager_asset
             WHERE 
-                code = :code AND reference_entity_identifier = :reference_entity_identifier;
+                code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
 
         $statement = $this->connection->executeQuery(
             $sql,
             [
-                'code' => (string) $recordCode,
-                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+                'code' => (string) $assetCode,
+                'asset_family_identifier' => (string) $assetFamilyIdentifier,
             ]
         );
         $result = $statement->fetch();
@@ -79,28 +79,28 @@ SQL;
             return null;
         }
 
-        return $this->hydrateRecord($result);
+        return $this->hydrateAsset($result);
     }
 
-    private function hydrateRecord(array $result): ConnectorRecord
+    private function hydrateAsset(array $result): ConnectorAsset
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
-        $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
-        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifier($result);
+        $valueKeyCollection = $this->findValueKeyCollection->find($assetFamilyIdentifier);
+        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
 
-        return $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+        return $this->assetHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
     }
 
-    private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier
     {
-        if (!isset($result['reference_entity_identifier'])) {
-            throw new \LogicException('The record should have a reference entity identifier');
+        if (!isset($result['asset_family_identifier'])) {
+            throw new \LogicException('The asset should have an asset family identifier');
         }
-        $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
-            $result['reference_entity_identifier'],
+        $normalizedAssetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+            $result['asset_family_identifier'],
             $this->connection->getDatabasePlatform()
         );
 
-        return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
+        return AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
     }
 }

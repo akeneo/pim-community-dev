@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query;
+namespace spec\Akeneo\AssetManager\Domain\Query;
 
-use Akeneo\ReferenceEntity\Domain\Query\Limit;
+use Akeneo\AssetManager\Domain\Query\Limit;
 use PhpSpec\ObjectBehavior;
 
 class LimitSpec extends ObjectBehavior

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 
 class InMemoryFindAttributeNextOrder implements FindAttributeNextOrderInterface
 {
@@ -28,10 +28,10 @@ class InMemoryFindAttributeNextOrder implements FindAttributeNextOrderInterface
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeOrder
+    public function withAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeOrder
     {
         /** @var AbstractAttribute[] $attributes */
-        $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
+        $attributes = $this->attributeRepository->findByAssetFamily($assetFamilyIdentifier);
 
         $maxOrder = 0;
         foreach ($attributes as $attribute) {

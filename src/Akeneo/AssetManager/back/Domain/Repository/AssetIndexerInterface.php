@@ -1,36 +1,36 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Repository;
+namespace Akeneo\AssetManager\Domain\Repository;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
-interface RecordIndexerInterface
+interface AssetIndexerInterface
 {
     /**
-     * Indexes multiple records
+     * Indexes multiple assets
      *
-     * @param RecordIdentifier $recordIdentifier
+     * @param AssetIdentifier $assetIdentifier
      */
-    public function index(RecordIdentifier $recordIdentifier);
+    public function index(AssetIdentifier $assetIdentifier);
 
     /**
-     * Indexes all records belonging to the given reference entity.
+     * Indexes all assets belonging to the given asset family.
      */
-    public function indexByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void;
+    public function indexByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void;
 
     /**
-     * Remove all records belonging to a reference entity
+     * Remove all assets belonging to an asset family
      */
-    public function removeByReferenceEntityIdentifier(string $referenceEntityIdentifier);
+    public function removeByAssetFamilyIdentifier(string $assetFamilyIdentifier);
 
     /**
-     * Remove a record from the index
+     * Remove a asset from the index
      */
-    public function removeRecordByReferenceEntityIdentifierAndCode(
-        string $referenceEntityIdentifier,
-        string $recordCode
+    public function removeAssetByAssetFamilyIdentifierAndCode(
+        string $assetFamilyIdentifier,
+        string $assetCode
     );
 
     public function refresh();

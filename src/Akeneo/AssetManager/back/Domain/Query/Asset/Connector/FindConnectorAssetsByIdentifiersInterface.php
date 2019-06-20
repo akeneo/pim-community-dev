@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
+namespace Akeneo\AssetManager\Domain\Query\Asset\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
- * Find connector records by identifiers.
- * The record values will be filtered by the filters defined in the search query.
+ * Find connector assets by identifiers.
+ * The asset values will be filtered by the filters defined in the search query.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindConnectorRecordsByIdentifiersInterface
+interface FindConnectorAssetsByIdentifiersInterface
 {
     /**
      * @param string[]    $identifiers
-     * @param RecordQuery $recordQuery
+     * @param AssetQuery $assetQuery
      *
-     * @return ConnectorRecord[]
+     * @return ConnectorAsset[]
      */
-    public function find(array $identifiers, RecordQuery $recordQuery): array;
+    public function find(array $identifiers, AssetQuery $assetQuery): array;
 }

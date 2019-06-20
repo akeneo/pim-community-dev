@@ -11,28 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Repository;
+namespace Akeneo\AssetManager\Domain\Repository;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
-interface ReferenceEntityRepositoryInterface
+interface AssetFamilyRepositoryInterface
 {
-    public function create(ReferenceEntity $referenceEntity): void;
+    public function create(AssetFamily $assetFamily): void;
 
-    public function update(ReferenceEntity $referenceEntity): void;
+    public function update(AssetFamily $assetFamily): void;
 
     /**
-     * @throws ReferenceEntityNotFoundException
+     * @throws AssetFamilyNotFoundException
      */
-    public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity;
+    public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily;
 
     public function all(): \Iterator;
 
     /**
-     * @throws ReferenceEntityNotFoundException
+     * @throws AssetFamilyNotFoundException
      */
-    public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void;
+    public function deleteByIdentifier(AssetFamilyIdentifier $identifier): void;
 
     public function count(): int;
 }

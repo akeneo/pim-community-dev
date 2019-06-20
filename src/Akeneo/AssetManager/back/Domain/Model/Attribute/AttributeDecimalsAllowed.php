@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace Akeneo\AssetManager\Domain\Model\Attribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

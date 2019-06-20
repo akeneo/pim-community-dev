@@ -1,5 +1,5 @@
-import Channel from 'akeneoreferenceentity/domain/model/channel';
-import Locale from 'akeneoreferenceentity/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
 export interface UserState {
   defaultCatalogLocale: string;

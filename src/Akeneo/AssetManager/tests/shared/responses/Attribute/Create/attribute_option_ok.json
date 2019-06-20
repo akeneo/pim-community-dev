@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_reference_entities_attribute_create_rest",
+    "route": "akeneo_asset_manager_attribute_create_rest",
     "query": {
-      "referenceEntityIdentifier": "designer"
+      "assetFamilyIdentifier": "designer"
     },
     "body": {
-      "reference_entity_identifier": "designer",
+      "asset_family_identifier": "designer",
       "code": "favorite_color",
       "type": "option",
       "labels": {

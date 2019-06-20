@@ -10,17 +10,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Find all the records of a reference entity for codes
+ * Find all the assets of an asset family for codes
  *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindExistingRecordCodesInterface
+interface FindExistingAssetCodesInterface
 {
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array;
 }

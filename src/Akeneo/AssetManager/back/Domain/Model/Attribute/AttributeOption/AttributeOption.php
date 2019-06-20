@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption;
+namespace Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption;
 
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

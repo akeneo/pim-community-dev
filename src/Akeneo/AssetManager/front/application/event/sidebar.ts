@@ -1,4 +1,4 @@
-import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
+import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 
 export const toggleSidebar = (isCollapsed: boolean) => {
   return {type: 'TOGGLE_SIDEBAR', isCollapsed};

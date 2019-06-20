@@ -1,10 +1,10 @@
-import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
 
 export default interface Fetcher {
-  fetch: (referenceEntityIdentifier: ReferenceEntityIdentifier, identifier: RecordCode) => Promise<RecordResult>;
-  search: (query: Query) => Promise<{items: NormalizedRecord[]; matchesCount: number}>;
+  fetch: (assetFamilyIdentifier: AssetFamilyIdentifier, identifier: AssetCode) => Promise<AssetResult>;
+  search: (query: Query) => Promise<{items: NormalizedAsset[]; matchesCount: number}>;
 }

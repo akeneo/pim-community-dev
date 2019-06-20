@@ -10,23 +10,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordValueCommand extends AbstractEditValueCommand
+class EditAssetValueCommand extends AbstractEditValueCommand
 {
     /** @var string */
-    public $recordCode;
+    public $assetCode;
 
-    public function __construct(RecordAttribute $attribute, ?string $channel, ?string $locale, string $recordCode)
+    public function __construct(AssetAttribute $attribute, ?string $channel, ?string $locale, string $assetCode)
     {
         parent::__construct($attribute, $channel, $locale);
 
-        $this->recordCode = $recordCode;
+        $this->assetCode = $assetCode;
     }
 }

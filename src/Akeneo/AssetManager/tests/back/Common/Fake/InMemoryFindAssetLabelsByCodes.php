@@ -2,46 +2,46 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByCodesInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class InMemoryFindRecordLabelsByCodes implements FindRecordLabelsByCodesInterface
+class InMemoryFindAssetLabelsByCodes implements FindAssetLabelsByCodesInterface
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    /** @var InMemoryFindReferenceEntityAttributeAsLabel */
-    private $findReferenceEntityAttributeAsLabel;
+    /** @var InMemoryFindAssetFamilyAttributeAsLabel */
+    private $findAssetFamilyAttributeAsLabel;
 
     public function __construct(
-        InMemoryRecordRepository $recordRepository,
-        InMemoryFindReferenceEntityAttributeAsLabel $findReferenceEntityAttributeAsLabel
+        InMemoryAssetRepository $assetRepository,
+        InMemoryFindAssetFamilyAttributeAsLabel $findAssetFamilyAttributeAsLabel
     ) {
-        $this->recordRepository = $recordRepository;
-        $this->findReferenceEntityAttributeAsLabel = $findReferenceEntityAttributeAsLabel;
+        $this->assetRepository = $assetRepository;
+        $this->findAssetFamilyAttributeAsLabel = $findAssetFamilyAttributeAsLabel;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array
     {
-        $attributeAsLabel = $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier)->normalize();
-        $records = $this->recordRepository->getByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
+        $attributeAsLabel = $this->findAssetFamilyAttributeAsLabel->find($assetFamilyIdentifier)->normalize();
+        $assets = $this->assetRepository->getByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodes);
 
-        $labelCollectionPerRecord = [];
-        /** @var Record $record */
-        foreach ($records as $record) {
-            $values = $record->getValues()->normalize();
-            $recordCode = $record->getCode()->normalize();
+        $labelCollectionPerAsset = [];
+        /** @var Asset $asset */
+        foreach ($assets as $asset) {
+            $values = $asset->getValues()->normalize();
+            $assetCode = $asset->getCode()->normalize();
 
             $labelsIndexedPerLocale = [];
             foreach ($values as $value) {
@@ -50,9 +50,9 @@ class InMemoryFindRecordLabelsByCodes implements FindRecordLabelsByCodesInterfac
                 }
             }
 
-            $labelCollectionPerRecord[$recordCode] = LabelCollection::fromArray($labelsIndexedPerLocale);
+            $labelCollectionPerAsset[$assetCode] = LabelCollection::fromArray($labelsIndexedPerLocale);
         }
 
-        return $labelCollectionPerRecord;
+        return $labelCollectionPerAsset;
     }
 }

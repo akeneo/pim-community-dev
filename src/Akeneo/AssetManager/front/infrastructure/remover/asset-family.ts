@@ -1,25 +1,25 @@
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {deleteJSON} from 'akeneoreferenceentity/tools/fetch';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import Remover from 'akeneoreferenceentity/domain/remover/remover';
-import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import Remover from 'akeneoassetmanager/domain/remover/remover';
+import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
-export interface ReferenceEntityRemover extends Remover<ReferenceEntityIdentifier> {}
+export interface AssetFamilyRemover extends Remover<AssetFamilyIdentifier> {}
 
-export class ReferenceEntityRemoverImplementation implements ReferenceEntityRemover {
+export class AssetFamilyRemoverImplementation implements AssetFamilyRemover {
   constructor() {
     Object.freeze(this);
   }
 
-  async remove(attributeIdentifier: ReferenceEntityIdentifier): Promise<ValidationError[] | null> {
+  async remove(attributeIdentifier: AssetFamilyIdentifier): Promise<ValidationError[] | null> {
     return await deleteJSON(
-      routing.generate('akeneo_reference_entities_reference_entity_delete_rest', {
+      routing.generate('akeneo_asset_manager_asset_family_delete_rest', {
         identifier: attributeIdentifier.stringValue(),
       })
     ).catch(errorHandler);
   }
 }
 
-export default new ReferenceEntityRemoverImplementation();
+export default new AssetFamilyRemoverImplementation();

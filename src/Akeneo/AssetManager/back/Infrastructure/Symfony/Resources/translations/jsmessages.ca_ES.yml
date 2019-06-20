@@ -1,8 +1,8 @@
 pim_title:
-  akeneo_reference_entities_reference_entity_index: Crear una nova entitat
-  akeneo_reference_entities_reference_entity_edit: Editar una entitat de referència
-  akeneo_reference_entities_record_edit: Editar un registre
-pim_reference_entity:
+  akeneo_asset_manager_asset_family_index: Crear una nova entitat
+  akeneo_asset_manager_asset_family_edit: Editar una entitat de referència
+  akeneo_asset_manager_asset_edit: Editar un registre
+pim_asset_manager:
   app:
     image:
       wide:
@@ -13,12 +13,12 @@ pim_reference_entity:
         remove: Eliminar
         download: Descarregar
         upload: Arrossegar i deixar anar per carregar
-  reference_entity:
+  asset_family:
     validation:
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'Aquest codi ja existeix per a aquesta entitat.'
-        limit_reached: 'Vostè no pot crear l''entitat de referència "{{ %reference_entity_label% }}" perquè vostè ha arribat al límit d''entitats de referència {{ %limit% }}'
+        limit_reached: 'Vostè no pot crear l''entitat de referència "{{ %asset_family_label% }}" perquè vostè ha arribat al límit d''entitats de referència {{ %limit% }}'
     button:
       save: Desar
       save_permission: Desar
@@ -29,7 +29,7 @@ pim_reference_entity:
     breadcrumb: Entitats de referència
     img: La imatge principal de l'entitat de referència designada "{{ label }}"
     tab:
-      records: Registres
+      assets: Registres
       attribute: Atributs
       properties: Propietats
       permission: Permisos
@@ -64,7 +64,7 @@ pim_reference_entity:
         code: Codi (requerit)
       confirm: Desar
     delete:
-      message: Esteu segur que voleu suprimir l'entitat "{{ referenceEntityLabel }}"?
+      message: Esteu segur que voleu suprimir l'entitat "{{ assetFamilyLabel }}"?
       title: Atribut
     notification:
       save:
@@ -80,9 +80,9 @@ pim_reference_entity:
     no_data:
       title: No teniu cap grup d'usuaris
       link: Clic aquí per afegir el teu primer grup usuari
-  record:
+  asset:
     validation:
-      limit_reached: 'Vostè no pot crear el registre "{{ %record_label% }}" perquè vostè ha arribat al límit de registres {{ %limit% }} per a aquesta entitat de referència'
+      limit_reached: 'Vostè no pot crear el registre "{{ %asset_label% }}" perquè vostè ha arribat al límit de registres {{ %limit% }} per a aquesta entitat de referència'
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'Aquest codi ja existeix per a aquesta entitat.'
@@ -118,7 +118,7 @@ pim_reference_entity:
         create_another: Crear un altre registre
       confirm: Desar
     delete:
-      message: Esteu segur que voleu suprimir el registre "{{ recordLabel }}"? Si està vinculat a productes o registres se suprimiran els enllaços.
+      message: Esteu segur que voleu suprimir el registre "{{ assetLabel }}"? Si està vinculat a productes o registres se suprimiran els enllaços.
       title: Registre
     delete_all:
       confirm: Esteu segur que voleu suprimir tots els registres "{{ entityIdentifier }}"? Si està vinculat a productes, es suprimiran els enllaços dels productes.
@@ -177,8 +177,8 @@ pim_reference_entity:
     type:
       text: Texte
       image: Imatge
-      record: Enllaç simple de l'entitat de referència
-      record_collection: Enllaç múltiple d'entitat de referència
+      asset: Enllaç simple de l'entitat de referència
+      asset_collection: Enllaç múltiple d'entitat de referència
       option: Única opció
       option_collection: Múltiples opcions
     is_required: necessaris per a la integritat
@@ -196,7 +196,7 @@ pim_reference_entity:
         code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
-        record_type: Entitat de referència per enllaçar (obligatori)
+        asset_type: Entitat de referència per enllaçar (obligatori)
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
       confirm: Desar
@@ -209,7 +209,7 @@ pim_reference_entity:
         code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
-        record_type: Entitats de referència relacionades (obligatori)
+        asset_type: Entitats de referència relacionades (obligatori)
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
         is_required: Necessaris per a la integritat
@@ -269,15 +269,15 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Enllaç múltiple d'entitat de referència
-          akeneo_reference_entity: Enllaç simple de l'entitat de referència
+          akeneo_asset_multiple_link: Enllaç múltiple d'entitat de referència
+          akeneo_asset_single_link: Enllaç simple de l'entitat de referència
         section:
           type_specific: Escriu els paràmetres específics
-        reference_entity:
+        asset_family:
           identifier: Entitats de referència relacionades (obligatori)
           default_label: Si us plau, selecciona una entitat de referència
 permission:
   mass_action: Aplicar {{ rightLevel }} regles en tots els grups
 pim_catalog_volume:
   axis:
-    count_reference_entity: Entitats de referència
+    count_asset_family: Entitats de referència

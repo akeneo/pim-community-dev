@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\RecordAttributeValidator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AssetAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
-class RecordAttributeValidatorSpec extends ObjectBehavior
+class AssetAttributeValidatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordAttributeValidator::class);
+        $this->shouldHaveType(AssetAttributeValidator::class);
     }
 
     function it_is_an_attribute_validator()
@@ -39,35 +39,35 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
         $this->shouldImplement(AttributeValidatorInterface::class);
     }
 
-    function it_is_json_schema_of_record_attribute()
+    function it_is_json_schema_of_asset_attribute()
     {
-        $attribute = RecordAttribute::create(
+        $attribute = AssetAttribute::create(
             AttributeIdentifier::create('brand', 'country', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('country'),
             LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('country')
+            AssetFamilyIdentifier::fromString('country')
         );
 
         $this->support($attribute)->shouldReturn(true);
     }
 
-    function it_is_json_schema_of_record_collection_attribute()
+    function it_is_json_schema_of_asset_collection_attribute()
     {
-        $attribute = RecordCollectionAttribute::create(
+        $attribute = AssetCollectionAttribute::create(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            ReferenceEntityIdentifier::fromString('brand')
+            AssetFamilyIdentifier::fromString('brand')
         );
 
         $this->support($attribute)->shouldReturn(true);
@@ -77,17 +77,17 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'country',
-            'type' => 'record',
+            'type' => 'asset',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'labels' => [
                 'en_US' => 'Country'
             ],
             'is_required_for_completeness' => false,
-            'reference_entity_code' => 'country',
+            'asset_family_code' => 'country',
             '_links' => [
                 'self' => [
-                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/country'
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/country'
                 ]
             ],
         ];
@@ -110,7 +110,7 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'reference_entity_code' => 'brand',
+            'asset_family_code' => 'brand',
         ];
 
         $errors = $this->validate($attribute);
@@ -126,7 +126,7 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'reference_entity_code' => 'foo',
+            'asset_family_code' => 'foo',
         ];
 
         $errors = $this->validate($attribute);
@@ -141,7 +141,7 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'reference_entity_code' => 'foo',
+            'asset_family_code' => 'foo',
         ];
 
         $errors = $this->validate($attribute);
@@ -156,7 +156,7 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
             'type' => 1,
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'reference_entity_code' => 'foo',
+            'asset_family_code' => 'foo',
         ];
 
         $errors = $this->validate($attribute);
@@ -171,7 +171,7 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
             'type' => 'text',
             'value_per_channel' => 'foo',
             'value_per_locale' => true,
-            'reference_entity_code' => 'foo',
+            'asset_family_code' => 'foo',
         ];
 
         $errors = $this->validate($attribute);
@@ -186,7 +186,7 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
             'type' => 'text',
             'value_per_channel' => false,
             'value_per_locale' => 'foo',
-            'reference_entity_code' => 'foo',
+            'asset_family_code' => 'foo',
         ];
 
         $errors = $this->validate($attribute);
@@ -201,7 +201,7 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
             'type' => 'text',
             'value_per_channel' => false,
             'value_per_locale' => false,
-            'reference_entity_code' => 'foo',
+            'asset_family_code' => 'foo',
             'labels' => [
                 'en_US' => []
             ]
@@ -212,14 +212,14 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_reference_entity_code_is_not_a_string()
+    function it_returns_an_error_when_asset_family_code_is_not_a_string()
     {
         $attribute = [
             'code' => 'starck',
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'reference_entity_code' => 1,
+            'asset_family_code' => 1,
         ];
 
         $errors = $this->validate($attribute);

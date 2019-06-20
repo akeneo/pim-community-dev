@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_records_rest_connector_get",
+    "route": "akeneo_asset_manager_assets_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "brand_test",
+      "assetFamilyIdentifier": "brand_test",
       "search": "{\"updated\":[{\"operator\":\">\",\"value\":\"2018-10-14T10:00:00+00:00\"}]}"
     }
   },
@@ -12,13 +12,13 @@
     "body": {
       "_links": {
         "self": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D"
+          "href": "http://localhost/api/rest/v1/asset-families/brand_test/assets?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D"
         },
         "first": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D"
+          "href": "http://localhost/api/rest/v1/asset-families/brand_test/assets?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D"
         },
         "next": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D&search_after=brand_2"
+          "href": "http://localhost/api/rest/v1/asset-families/brand_test/assets?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D&search_after=brand_2"
         }
       },
       "_embedded": {
@@ -26,7 +26,7 @@
           {
             "_links": {
               "self": {
-                "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records/brand_0"
+                "href": "http://localhost/api/rest/v1/asset-families/brand_test/assets/brand_0"
               }
             },
             "code": "brand_0",
@@ -35,7 +35,7 @@
           {
             "_links": {
               "self": {
-                "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records/brand_1"
+                "href": "http://localhost/api/rest/v1/asset-families/brand_test/assets/brand_1"
               }
             },
             "code": "brand_1",
@@ -44,7 +44,7 @@
           {
             "_links": {
               "self": {
-                "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records/brand_2"
+                "href": "http://localhost/api/rest/v1/asset-families/brand_test/assets/brand_2"
               }
             },
             "code": "brand_2",

@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
 /**
- * Find labels for given record identifiers
+ * Find labels for given asset identifiers
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-interface FindRecordLabelsByIdentifiersInterface
+interface FindAssetLabelsByIdentifiersInterface
 {
     /**
-     * Find records by their $recordIdentifiers then returns their labels by their record identifier:
+     * Find assets by their $assetIdentifiers then returns their labels by their asset identifier:
      * [
      *      'designer_starck_abcdef123456789' => [
      *          'labels' => [
@@ -40,5 +40,5 @@ interface FindRecordLabelsByIdentifiersInterface
      *      ],
      * ]
      */
-    public function find(array $recordIdentifiers): array;
+    public function find(array $assetIdentifiers): array;
 }

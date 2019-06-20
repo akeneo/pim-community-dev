@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 
 /**
- * Create a {@see Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionCollectionValueCommand}
+ * Create a {@see Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollectionValueCommand}
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)

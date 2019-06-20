@@ -1,37 +1,37 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\DeleteRecord;
+namespace spec\Akeneo\AssetManager\Application\Asset\DeleteAsset;
 
-use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetCommand;
+use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
-class DeleteRecordHandlerSpec extends ObjectBehavior
+class DeleteAssetHandlerSpec extends ObjectBehavior
 {
-    public function let(RecordRepositoryInterface $repository)
+    public function let(AssetRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(DeleteRecordHandler::class);
+        $this->shouldHaveType(DeleteAssetHandler::class);
     }
 
-    function it_deletes_a_record_by_its_code_and_entity_identifier(RecordRepositoryInterface $repository)
+    function it_deletes_a_asset_by_its_code_and_entity_identifier(AssetRepositoryInterface $repository)
     {
-        $command = new DeleteRecordCommand(
-            'record_code',
+        $command = new DeleteAssetCommand(
+            'asset_code',
             'entity_identifier'
         );
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('entity_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
 
-        $repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode)->shouldBeCalled();
+        $repository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode)->shouldBeCalled();
 
         $this->__invoke($command);
     }

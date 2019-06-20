@@ -1,7 +1,7 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import {ProductType, PRODUCT_TYPE} from 'akeneoreferenceentity/domain/model/product/product';
-import Completeness from 'akeneoreferenceentity/domain/model/product/completeness';
+import __ from 'akeneoassetmanager/tools/translator';
+import {ProductType, PRODUCT_TYPE} from 'akeneoassetmanager/domain/model/product/product';
+import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 
 const memo = (React as any).memo;
 

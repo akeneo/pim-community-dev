@@ -51,13 +51,13 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  const fillRecordSelectField = async (id, value) => {
-    const field = await nodeElement.$(`.record-selector[id="${id}"]`);
-    await page.waitForSelector(`.record-selector[id="${id}"]:not(.record-selector--disabled)`);
+  const fillAssetSelectField = async (id, value) => {
+    const field = await nodeElement.$(`.asset-selector[id="${id}"]`);
+    await page.waitForSelector(`.asset-selector[id="${id}"]:not(.asset-selector--disabled)`);
 
     await page.evaluate(
       (properties, id) => {
-        return (properties.querySelector(`.record-selector[id="${id}"]`).value = '');
+        return (properties.querySelector(`.asset-selector[id="${id}"]`).value = '');
       },
       nodeElement,
       id
@@ -66,9 +66,9 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     await field.type(value);
   };
 
-  const isDisabledRecordSelectField = async id => {
+  const isDisabledAssetSelectField = async id => {
     try {
-      await page.waitForSelector(`.record-selector[id="${id}"]:disabled`, {timeout: 2000});
+      await page.waitForSelector(`.asset-selector[id="${id}"]:disabled`, {timeout: 2000});
     } catch (error) {
       return false;
     }
@@ -150,8 +150,8 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     fillUploadField,
     fillSelectField,
     isDisabledSelectField,
-    fillRecordSelectField,
-    isDisabledRecordSelectField,
+    fillAssetSelectField,
+    isDisabledAssetSelectField,
     clickOnDeleteButton,
     hasDeleteButton,
     isFilled,

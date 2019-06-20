@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -29,7 +29,7 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
     public $maxValue;
 
     public function __construct(
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         string $code,
         array $labels,
         bool $isRequired,
@@ -40,7 +40,7 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
         ?string $maxValue
     ) {
         parent::__construct(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labels,
             $isRequired,

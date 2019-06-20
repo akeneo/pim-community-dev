@@ -1,25 +1,25 @@
-import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
-import {createIdentifier as createRecordIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
-import {createRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
-import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
-import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import ValueData from 'akeneoreferenceentity/domain/model/record/data';
-import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
+import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {createIdentifier as createAssetIdentifier} from 'akeneoassetmanager/domain/model/asset/identifier';
+import {createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
+import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import ValueData from 'akeneoassetmanager/domain/model/asset/data';
+import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
+import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 
-const michelIdentifier = createRecordIdentifier('michel');
-const designerIdentifier = createReferenceEntityIdentifier('designer');
+const michelIdentifier = createAssetIdentifier('michel');
+const designerIdentifier = createAssetFamilyIdentifier('designer');
 const michelCode = createCode('michel');
 const michelLabels = createLabelCollection({en_US: 'Michel'});
-const sofaIdentifier = createReferenceEntityIdentifier('sofa');
-const didierIdentifier = createRecordIdentifier('designer_didier_1');
+const sofaIdentifier = createAssetFamilyIdentifier('sofa');
+const didierIdentifier = createAssetIdentifier('designer_didier_1');
 const didierCode = createCode('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 const emptyFile = createEmptyFile();
@@ -27,7 +27,7 @@ const channelEcommerce = createChannelReference('ecommerce');
 const localeFr = createLocaleReference('en_US');
 const normalizedDescription = {
   identifier: 'description_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -44,7 +44,7 @@ const normalizedDescription = {
 const description = denormalizeTextAttribute(normalizedDescription);
 const normalizedWebsite = {
   identifier: 'website_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'website',
   labels: {en_US: 'Website'},
   type: 'text',
@@ -75,10 +75,10 @@ const websiteValue = createValue(
 );
 const valueCollection = createValueCollection([descriptionValue, websiteValue]);
 
-describe('akeneo > record > domain > model --- record', () => {
-  test('I can create a new record with a identifier and labels', () => {
+describe('akeneo > asset > domain > model --- asset', () => {
+  test('I can create a new asset with a identifier and labels', () => {
     expect(
-      createRecord(
+      createAsset(
         michelIdentifier,
         designerIdentifier,
         michelCode,
@@ -89,37 +89,37 @@ describe('akeneo > record > domain > model --- record', () => {
     ).toBe(michelIdentifier);
   });
 
-  test('I cannot create a malformed record', () => {
+  test('I cannot create a malformed asset', () => {
     expect(() => {
-      createRecord(michelIdentifier, designerIdentifier, didierCode);
-    }).toThrow('Record expects a LabelCollection as labelCollection argument');
+      createAsset(michelIdentifier, designerIdentifier, didierCode);
+    }).toThrow('Asset expects a LabelCollection as labelCollection argument');
     expect(() => {
-      createRecord(michelIdentifier);
-    }).toThrow('Record expects an ReferenceEntityIdentifier as referenceEntityIdentifier argument');
+      createAsset(michelIdentifier);
+    }).toThrow('Asset expects an AssetFamilyIdentifier as assetFamilyIdentifier argument');
     expect(() => {
-      createRecord();
-    }).toThrow('Record expects a RecordIdentifier as identifier argument');
+      createAsset();
+    }).toThrow('Asset expects a AssetIdentifier as identifier argument');
     expect(() => {
-      createRecord(12);
-    }).toThrow('Record expects a RecordIdentifier as identifier argument');
+      createAsset(12);
+    }).toThrow('Asset expects a AssetIdentifier as identifier argument');
     expect(() => {
-      createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Record expects a LabelCollection as labelCollection argument');
+      createAsset(michelIdentifier, designerIdentifier, didierCode, 52);
+    }).toThrow('Asset expects a LabelCollection as labelCollection argument');
     expect(() => {
-      createRecord(michelIdentifier, designerIdentifier, didierCode, didierLabels);
-    }).toThrow('Record expects a File as image argument');
+      createAsset(michelIdentifier, designerIdentifier, didierCode, didierLabels);
+    }).toThrow('Asset expects a File as image argument');
     expect(() => {
-      createRecord(michelIdentifier, sofaIdentifier, '12', michelLabels, emptyFile);
-    }).toThrow('Record expects a RecordCode as code argument');
+      createAsset(michelIdentifier, sofaIdentifier, '12', michelLabels, emptyFile);
+    }).toThrow('Asset expects a AssetCode as code argument');
     expect(() => {
-      createRecord(michelIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile, '');
-    }).toThrow('Record expects a ValueCollection as valueCollection argument');
+      createAsset(michelIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile, '');
+    }).toThrow('Asset expects a ValueCollection as valueCollection argument');
   });
 
-  test('I can compare two record', () => {
+  test('I can compare two asset', () => {
     const michelLabels = createLabelCollection({en_US: 'Michel'});
     expect(
-      createRecord(
+      createAsset(
         didierIdentifier,
         designerIdentifier,
         didierCode,
@@ -127,7 +127,7 @@ describe('akeneo > record > domain > model --- record', () => {
         emptyFile,
         createValueCollection([])
       ).equals(
-        createRecord(
+        createAsset(
           didierIdentifier,
           designerIdentifier,
           didierCode,
@@ -138,7 +138,7 @@ describe('akeneo > record > domain > model --- record', () => {
       )
     ).toBe(true);
     expect(
-      createRecord(
+      createAsset(
         didierIdentifier,
         designerIdentifier,
         didierCode,
@@ -146,7 +146,7 @@ describe('akeneo > record > domain > model --- record', () => {
         emptyFile,
         createValueCollection([])
       ).equals(
-        createRecord(
+        createAsset(
           michelIdentifier,
           designerIdentifier,
           michelCode,
@@ -160,7 +160,7 @@ describe('akeneo > record > domain > model --- record', () => {
 
   test('I can get the collection of labels', () => {
     expect(
-      createRecord(
+      createAsset(
         didierIdentifier,
         designerIdentifier,
         didierCode,
@@ -171,9 +171,9 @@ describe('akeneo > record > domain > model --- record', () => {
     ).toBe(didierLabels);
   });
 
-  test('I can get the code of the record', () => {
+  test('I can get the code of the asset', () => {
     expect(
-      createRecord(
+      createAsset(
         didierIdentifier,
         designerIdentifier,
         didierCode,
@@ -184,8 +184,8 @@ describe('akeneo > record > domain > model --- record', () => {
     ).toBe(didierCode);
   });
 
-  test('I can normalize an record', () => {
-    const michelRecord = createRecord(
+  test('I can normalize an asset', () => {
+    const michelAsset = createAsset(
       didierIdentifier,
       designerIdentifier,
       didierCode,
@@ -194,18 +194,18 @@ describe('akeneo > record > domain > model --- record', () => {
       createValueCollection([])
     );
 
-    expect(michelRecord.normalize()).toEqual({
+    expect(michelAsset.normalize()).toEqual({
       identifier: 'designer_didier_1',
-      reference_entity_identifier: 'designer',
+      asset_family_identifier: 'designer',
       image: null,
       code: 'didier',
       labels: {en_US: 'Didier'},
       values: [],
     });
 
-    expect(michelRecord.normalizeMinimal()).toEqual({
+    expect(michelAsset.normalizeMinimal()).toEqual({
       identifier: 'designer_didier_1',
-      reference_entity_identifier: 'designer',
+      asset_family_identifier: 'designer',
       image: null,
       code: 'didier',
       labels: {en_US: 'Didier'},
@@ -215,7 +215,7 @@ describe('akeneo > record > domain > model --- record', () => {
 
   test('I can get a label for the given locale', () => {
     expect(
-      createRecord(
+      createAsset(
         michelIdentifier,
         designerIdentifier,
         michelCode,
@@ -225,7 +225,7 @@ describe('akeneo > record > domain > model --- record', () => {
       ).getLabel('en_US')
     ).toBe('Michel');
     expect(
-      createRecord(
+      createAsset(
         michelIdentifier,
         designerIdentifier,
         michelCode,
@@ -235,7 +235,7 @@ describe('akeneo > record > domain > model --- record', () => {
       ).getLabel('fr_FR')
     ).toBe('[michel]');
     expect(
-      createRecord(
+      createAsset(
         michelIdentifier,
         designerIdentifier,
         michelCode,
@@ -246,17 +246,17 @@ describe('akeneo > record > domain > model --- record', () => {
     ).toBe('');
   });
 
-  test('I can get the value collection of the record', () => {
+  test('I can get the value collection of the asset', () => {
     expect(
-      createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile, createValueCollection([]))
+      createAsset(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile, createValueCollection([]))
         .getValueCollection()
         .normalize()
     ).toEqual([]);
   });
 
-  test('I can get the completeness of the record', () => {
+  test('I can get the completeness of the asset', () => {
     expect(
-      createRecord(
+      createAsset(
         michelIdentifier,
         designerIdentifier,
         michelCode,

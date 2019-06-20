@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace spec\Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindSearchableAssets;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -23,34 +23,34 @@ use Prophecy\Argument;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordNormalizerSpec extends ObjectBehavior
+class AssetNormalizerSpec extends ObjectBehavior
 {
     function let(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
-        SqlFindSearchableRecords $findSearchableRecords,
+        SqlFindSearchableAssets $findSearchableAssets,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
     ) {
         $this->beConstructedWith(
             $findValueKeysToIndexForAllChannelsAndLocales,
-            $findSearchableRecords,
+            $findSearchableAssets,
             $findValueKeysByAttributeType
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordNormalizer::class);
+        $this->shouldHaveType(AssetNormalizer::class);
     }
 
-    function it_normalizes_a_searchable_record_by_record_identifier(
+    function it_normalizes_a_searchable_asset_by_asset_identifier(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
-        SqlFindSearchableRecords $findSearchableRecords,
+        SqlFindSearchableAssets $findSearchableAssets,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
     ) {
-        $recordIdentifier = RecordIdentifier::fromString('stark');
-        $stark = new SearchableRecordItem();
+        $assetIdentifier = AssetIdentifier::fromString('stark');
+        $stark = new SearchableAssetItem();
         $stark->identifier = 'designer_stark_fingerprint';
-        $stark->referenceEntityIdentifier = 'designer';
+        $stark->assetFamilyIdentifier = 'designer';
         $stark->code = 'stark';
         $stark->labels = ['fr_FR' => 'Philippe Stark'];
         $stark->values = [
@@ -61,11 +61,11 @@ class RecordNormalizerSpec extends ObjectBehavior
                 'data' => 'Bio',
             ],
         ];
-        $findSearchableRecords
-            ->byRecordIdentifier($recordIdentifier)
+        $findSearchableAssets
+            ->byAssetIdentifier($assetIdentifier)
             ->willReturn($stark);
 
-        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(ReferenceEntityIdentifier::class))
+        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn(
                 [
                     'ecommerce' => [
@@ -78,16 +78,16 @@ class RecordNormalizerSpec extends ObjectBehavior
             );
         $findValueKeysByAttributeType
             ->find(
-                ReferenceEntityIdentifier::fromString($stark->referenceEntityIdentifier),
-                ['option', 'option_collection', 'record', 'record_collection']
+                AssetFamilyIdentifier::fromString($stark->assetFamilyIdentifier),
+                ['option', 'option_collection', 'asset', 'asset_collection']
             )
-            ->willReturn([$stark->referenceEntityIdentifier]);
+            ->willReturn([$stark->assetFamilyIdentifier]);
 
-        $normalizedRecord = $this->normalizeRecord($recordIdentifier);
-        $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
-        $normalizedRecord['code']->shouldBeEqualTo('stark');
-        $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
-        $normalizedRecord['record_full_text_search']->shouldBeEqualTo([
+        $normalizedAsset = $this->normalizeAsset($assetIdentifier);
+        $normalizedAsset['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
+        $normalizedAsset['code']->shouldBeEqualTo('stark');
+        $normalizedAsset['asset_family_code']->shouldBeEqualTo('designer');
+        $normalizedAsset['asset_full_text_search']->shouldBeEqualTo([
                 'ecommerce' => [
                     'fr_FR' => "stark Bio",
                 ],
@@ -96,23 +96,23 @@ class RecordNormalizerSpec extends ObjectBehavior
                 ],
             ]
         );
-        $normalizedRecord['complete_value_keys']->shouldBeEqualTo([
+        $normalizedAsset['complete_value_keys']->shouldBeEqualTo([
                 'name'                     => true,
                 'description_mobile_en_US' => true,
             ]
         );
-        $normalizedRecord['updated_at']->shouldBeInt();
+        $normalizedAsset['updated_at']->shouldBeInt();
     }
 
-    function it_normalizes_a_searchable_records_by_reference_entity(
+    function it_normalizes_a_searchable_assets_by_asset_family(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
-        SqlFindSearchableRecords $findSearchableRecords,
-        \Iterator $searchableRecordItemIterator
+        SqlFindSearchableAssets $findSearchableAssets,
+        \Iterator $searchableAssetItemIterator
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $stark = new SearchableRecordItem();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $stark = new SearchableAssetItem();
         $stark->identifier = 'designer_stark_fingerprint';
-        $stark->referenceEntityIdentifier = 'designer';
+        $stark->assetFamilyIdentifier = 'designer';
         $stark->code = 'stark';
         $stark->labels = ['fr_FR' => 'Philippe Stark'];
         $stark->values = [
@@ -124,9 +124,9 @@ class RecordNormalizerSpec extends ObjectBehavior
             ],
         ];
 
-        $coco = new SearchableRecordItem();
+        $coco = new SearchableAssetItem();
         $coco->identifier = 'designer_coco_fingerprint';
-        $coco->referenceEntityIdentifier = 'designer';
+        $coco->assetFamilyIdentifier = 'designer';
         $coco->code = 'coco';
         $coco->labels = ['fr_FR' => 'Coco Chanel'];
         $coco->values = [
@@ -137,13 +137,13 @@ class RecordNormalizerSpec extends ObjectBehavior
                 'data' => 'bio',
             ],
         ];
-        $findSearchableRecords
-            ->byReferenceEntityIdentifier($referenceEntityIdentifier)
-            ->willReturn($searchableRecordItemIterator);
-        $searchableRecordItemIterator->valid()->willReturn(true, true, false);
-        $searchableRecordItemIterator->current()->willReturn($stark, $coco);
+        $findSearchableAssets
+            ->byAssetFamilyIdentifier($assetFamilyIdentifier)
+            ->willReturn($searchableAssetItemIterator);
+        $searchableAssetItemIterator->valid()->willReturn(true, true, false);
+        $searchableAssetItemIterator->current()->willReturn($stark, $coco);
 
-        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(ReferenceEntityIdentifier::class))
+        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn(
                 [
                     'ecommerce' => [
@@ -155,6 +155,6 @@ class RecordNormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $this->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);
+        $this->normalizeAssetsByAssetFamily($assetFamilyIdentifier);
     }
 }

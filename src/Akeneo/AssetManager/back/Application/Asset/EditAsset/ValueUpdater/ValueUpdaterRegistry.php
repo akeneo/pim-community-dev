@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

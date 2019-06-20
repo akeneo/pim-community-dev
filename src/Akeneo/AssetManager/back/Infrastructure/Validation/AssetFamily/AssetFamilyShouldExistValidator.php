@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\AssetManager\Application\Asset\IndexAssets\IndexAssetsByAssetFamilyCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Checks whether a given reference_entity already exists in the data referential
+ * Checks whether a given asset_family already exists in the data referential
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityShouldExistValidator extends ConstraintValidator
+class AssetFamilyShouldExistValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
-    public function __construct(ReferenceEntityExistsInterface $recordExists)
+    public function __construct(AssetFamilyExistsInterface $assetExists)
     {
-        $this->referenceEntityExists = $recordExists;
+        $this->assetFamilyExists = $assetExists;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -47,18 +47,18 @@ class ReferenceEntityShouldExistValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof ReferenceEntityShouldExist) {
+        if (!$constraint instanceof AssetFamilyShouldExist) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(IndexRecordsByReferenceEntityCommand $command): void
+    private function validateCommand(IndexAssetsByAssetFamilyCommand $command): void
     {
-        $referenceEntityIdentifier = $command->referenceEntityIdentifier;
-        $alreadyExists = $this->referenceEntityExists->withIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
+        $assetFamilyIdentifier = $command->assetFamilyIdentifier;
+        $alreadyExists = $this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString($assetFamilyIdentifier));
         if (!$alreadyExists) {
-            $this->context->buildViolation(ReferenceEntityShouldExist::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_code%', $referenceEntityIdentifier)
+            $this->context->buildViolation(AssetFamilyShouldExist::ERROR_MESSAGE)
+                ->setParameter('%asset_family_code%', $assetFamilyIdentifier)
                 ->atPath('code')
                 ->addViolation();
         }

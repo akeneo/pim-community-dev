@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;

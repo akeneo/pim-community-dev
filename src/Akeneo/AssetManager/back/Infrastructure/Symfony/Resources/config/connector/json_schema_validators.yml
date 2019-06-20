@@ -1,146 +1,146 @@
 services:
-    akeneo_referenceentity.infrastructure.connector.api.record_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator
         arguments:
-            - '@akeneo_referenceentity.infrastructure.connector.api.record_properties_validator'
-            - '@akeneo_referenceentity.infrastructure.connector.api.record_values_validator'
+            - '@akeneo_assetmanager.infrastructure.connector.api.asset_properties_validator'
+            - '@akeneo_assetmanager.infrastructure.connector.api.asset_values_validator'
 
-    akeneo_referenceentity.infrastructure.connector.api.record_list_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordListValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_list_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetListValidator
 
-    akeneo_referenceentity.infrastructure.connector.api.record_values_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValuesValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_values_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValuesValidator
         arguments:
-            - '@akeneo_referenceentity.infrastructure.connector.api.record_value_validator_registry'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@akeneo_assetmanager.infrastructure.connector.api.asset_value_validator_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
 
-    akeneo_referenceentity.infrastructure.connector.api.record_properties_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordPropertiesValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_properties_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetPropertiesValidator
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_validator_registry:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorRegistry
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_validator_registry:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorRegistry
         arguments:
-            - !tagged akeneo_referenceentity.connector.api.record_value_validator
+            - !tagged akeneo_assetmanager.connector.api.asset_value_validator
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_text_type_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\TextTypeValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_text_type_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\TextTypeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_number_type_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\NumberTypeValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_number_type_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\NumberTypeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_url_type_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\UrlTypeValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_url_type_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\UrlTypeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_image_type_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\ImageTypeValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_image_type_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\ImageTypeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_record_type_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\RecordTypeValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_asset_type_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\AssetTypeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_option_type_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\OptionTypeValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_option_type_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\OptionTypeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_record_collection_type_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\RecordCollectionTypeValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_asset_collection_type_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\AssetCollectionTypeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.record_value_option_collection_type_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\OptionCollectionTypeValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_option_collection_type_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\OptionCollectionTypeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.reference_entity_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema\ReferenceEntityValidator
+    akeneo_assetmanager.infrastructure.connector.api.asset_family_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema\AssetFamilyValidator
 
-    akeneo_referenceentity.infrastructure.connector.api.create.attribute_creation_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator
+    akeneo_assetmanager.infrastructure.connector.api.create.attribute_creation_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator
         arguments:
-            - !tagged akeneo_referenceentity.connector.api.create.attribute_validator
+            - !tagged akeneo_assetmanager.connector.api.create.attribute_validator
 
-    akeneo_referenceentity.infrastructure.connector.api.create.image_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\ImageAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.create.image_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\ImageAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.create.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.create.option_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\OptionAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.create.option_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\OptionAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.create.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.create.record_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\RecordAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.create.asset_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AssetAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.create.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.create.text_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\TextAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.create.text_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\TextAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.create.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.create.number_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\NumberAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.create.number_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\NumberAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.create.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.create.url_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\UrlAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.create.url_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\UrlAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.create.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.edit.attribute_edition_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator
+    akeneo_assetmanager.infrastructure.connector.api.edit.attribute_edition_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-            - !tagged akeneo_referenceentity.connector.api.edit.attribute_validator
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - !tagged akeneo_assetmanager.connector.api.edit.attribute_validator
 
-    akeneo_referenceentity.infrastructure.connector.api.attribute_option_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator
+    akeneo_assetmanager.infrastructure.connector.api.attribute_option_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator
         arguments:
-            - !tagged akeneo_referenceentity.connector.api.attribute_option_validator
+            - !tagged akeneo_assetmanager.connector.api.attribute_option_validator
 
-    akeneo_referenceentity.infrastructure.connector.api.edit.image_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.edit.image_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.edit.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.edit.option_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.edit.option_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.edit.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.edit.record_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\RecordAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.edit.asset_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AssetAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.edit.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.edit.text_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\TextAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.edit.text_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\TextAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.edit.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.edit.number_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\NumberAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.edit.number_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\NumberAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.edit.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.edit.url_attribute_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\UrlAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.edit.url_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\UrlAttributeValidator
         tags:
-            - { name: akeneo_referenceentity.connector.api.edit.attribute_validator }
+            - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
-    akeneo_referenceentity.infrastructure.connector.api.search_filters_validator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\SearchFiltersValidator
+    akeneo_assetmanager.infrastructure.connector.api.search_filters_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\SearchFiltersValidator

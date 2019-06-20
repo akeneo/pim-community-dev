@@ -1,4 +1,4 @@
-import {DecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
+import {DecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
 
 describe('akeneo > attribute > domain > model > attribute > type > number --- DecimalsAllowed', () => {
   test('I can create a DecimalsAllowed from normalized', () => {

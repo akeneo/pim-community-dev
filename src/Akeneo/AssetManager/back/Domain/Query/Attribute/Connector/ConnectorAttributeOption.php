@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector;
+namespace Akeneo\AssetManager\Domain\Query\Attribute\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
 class ConnectorAttributeOption
 {

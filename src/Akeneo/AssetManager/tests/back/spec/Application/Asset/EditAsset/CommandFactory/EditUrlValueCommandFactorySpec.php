@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUrlValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUrlValueCommandFactory;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditUrlValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditUrlValueCommandFactory;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use PhpSpec\ObjectBehavior;
 
 class EditUrlValueCommandFactorySpec extends ObjectBehavior

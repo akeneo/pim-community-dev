@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url;
+namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Url;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

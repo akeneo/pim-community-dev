@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
 use JsonSchema\Validator;
 
@@ -25,9 +25,9 @@ class NumberAttributeValidator implements AttributeValidatorInterface
 
     public function validate(array $normalizedAttribute): array
     {
-        $record = Validator::arrayToObjectRecursive($normalizedAttribute);
+        $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
-        $validator->validate($record, $this->getJsonSchema());
+        $validator->validate($asset, $this->getJsonSchema());
 
         return $validator->getErrors();
     }

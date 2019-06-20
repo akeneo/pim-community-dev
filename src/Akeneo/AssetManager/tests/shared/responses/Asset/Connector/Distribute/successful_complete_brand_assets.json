@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "GET",
-        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
         "query": {
-            "referenceEntityIdentifier": "brand",
+            "assetFamilyIdentifier": "brand",
             "search": "{\"complete\":{\"operator\":\"=\",\"value\":true,\"channel\":\"ecommerce\",\"locales\":[\"en_US\",\"fr_FR\"]}}"
         }
     },
@@ -12,10 +12,10 @@
         "body": {
             "_links": {
                 "self": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search=%7B%22complete%22%3A%7B%22operator%22%3A%22%3D%22%2C%22value%22%3Atrue%2C%22channel%22%3A%22ecommerce%22%2C%22locales%22%3A%5B%22en_US%22%2C%22fr_FR%22%5D%7D%7D"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22complete%22%3A%7B%22operator%22%3A%22%3D%22%2C%22value%22%3Atrue%2C%22channel%22%3A%22ecommerce%22%2C%22locales%22%3A%5B%22en_US%22%2C%22fr_FR%22%5D%7D%7D"
                 },
                 "first": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search=%7B%22complete%22%3A%7B%22operator%22%3A%22%3D%22%2C%22value%22%3Atrue%2C%22channel%22%3A%22ecommerce%22%2C%22locales%22%3A%5B%22en_US%22%2C%22fr_FR%22%5D%7D%7D"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22complete%22%3A%7B%22operator%22%3A%22%3D%22%2C%22value%22%3Atrue%2C%22channel%22%3A%22ecommerce%22%2C%22locales%22%3A%5B%22en_US%22%2C%22fr_FR%22%5D%7D%7D"
                 }
             },
             "_embedded": {
@@ -23,16 +23,16 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/complete_brand_record_1"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/complete_brand_asset_1"
                             }
                         },
-                        "code": "complete_brand_record_1",
+                        "code": "complete_brand_asset_1",
                         "values": {
                             "label": [
                                 {
                                     "channel": null,
                                     "locale": "en_US",
-                                    "value": "Complete Brand record number 1"
+                                    "value": "Complete Brand asset number 1"
                                 }
                             ],
                             "required_attribute": [
@@ -64,16 +64,16 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/complete_brand_record_2"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/complete_brand_asset_2"
                             }
                         },
-                        "code": "complete_brand_record_2",
+                        "code": "complete_brand_asset_2",
                         "values": {
                             "label": [
                                 {
                                     "channel": null,
                                     "locale": "en_US",
-                                    "value": "Complete Brand record number 2"
+                                    "value": "Complete Brand asset number 2"
                                 }
                             ],
                             "required_attribute": [

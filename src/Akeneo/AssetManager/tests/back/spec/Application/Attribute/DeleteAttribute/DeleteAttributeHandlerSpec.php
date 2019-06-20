@@ -1,41 +1,41 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute;
+namespace spec\Akeneo\AssetManager\Application\Attribute\DeleteAttribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsImageInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsImageInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class DeleteAttributeHandlerSpec extends ObjectBehavior
 {
     public function let(
-        FindReferenceEntityAttributeAsLabelInterface $findReferenceEntityAttributeAsLabel,
-        FindReferenceEntityAttributeAsImageInterface $findReferenceEntityAttributeAsImage,
+        FindAssetFamilyAttributeAsLabelInterface $findAssetFamilyAttributeAsLabel,
+        FindAssetFamilyAttributeAsImageInterface $findAssetFamilyAttributeAsImage,
         AttributeRepositoryInterface $repository
     ) {
         $nameDesignerTest = TextAttribute::createText(
             AttributeIdentifier::fromString('name_designer_test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name_designer_test'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -49,7 +49,7 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
 
         $labelAttribute = TextAttribute::createText(
             AttributeIdentifier::fromString('label'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('label'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -63,7 +63,7 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
 
         $mainImageAttribute = ImageAttribute::create(
             AttributeIdentifier::fromString('image'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
@@ -79,14 +79,14 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
         $repository->getByIdentifier(AttributeIdentifier::fromString('name_designer_test'))->willReturn($nameDesignerTest);
         $repository->getByIdentifier(AttributeIdentifier::fromString('image'))->willReturn($mainImageAttribute);
 
-        $findReferenceEntityAttributeAsLabel
-            ->find(ReferenceEntityIdentifier::fromString('designer'))
+        $findAssetFamilyAttributeAsLabel
+            ->find(AssetFamilyIdentifier::fromString('designer'))
             ->willReturn(AttributeAsLabelReference::fromAttributeIdentifier(AttributeIdentifier::fromString('label')));
-        $findReferenceEntityAttributeAsImage
-            ->find(ReferenceEntityIdentifier::fromString('designer'))
+        $findAssetFamilyAttributeAsImage
+            ->find(AssetFamilyIdentifier::fromString('designer'))
             ->willReturn(AttributeAsImageReference::fromAttributeIdentifier(AttributeIdentifier::fromString('image')));
 
-        $this->beConstructedWith($findReferenceEntityAttributeAsLabel, $findReferenceEntityAttributeAsImage, $repository);
+        $this->beConstructedWith($findAssetFamilyAttributeAsLabel, $findAssetFamilyAttributeAsImage, $repository);
     }
 
     function it_is_initializable()
@@ -107,7 +107,7 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    function it_cannot_delete_an_attribute_when_used_as_attribute_as_label_of_the_reference_entity(
+    function it_cannot_delete_an_attribute_when_used_as_attribute_as_label_of_the_asset_family(
         AttributeRepositoryInterface $repository
     ) {
         $command = new DeleteAttributeCommand(
@@ -121,7 +121,7 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\LogicException::class)->during('__invoke', [$command]);
     }
 
-    function it_cannot_delete_an_attribute_when_used_as_attribute_as_image_of_the_reference_entity(
+    function it_cannot_delete_an_attribute_when_used_as_attribute_as_image_of_the_asset_family(
         AttributeRepositoryInterface $repository
     ) {
         $command = new DeleteAttributeCommand(

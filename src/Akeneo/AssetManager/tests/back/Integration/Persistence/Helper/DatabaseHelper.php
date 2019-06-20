@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Helper;
+namespace Akeneo\AssetManager\Integration\Persistence\Helper;
 
 use Doctrine\DBAL\Connection;
 
@@ -47,10 +47,10 @@ class DatabaseHelper
         $resetQuery = <<<SQL
             SET foreign_key_checks = 0;
             
-            DELETE FROM akeneo_reference_entity_attribute;
-            DELETE FROM akeneo_reference_entity_record;
-            DELETE FROM akeneo_reference_entity_reference_entity;
-            DELETE FROM akeneo_reference_entity_reference_entity_permissions;
+            DELETE FROM akeneo_asset_manager_attribute;
+            DELETE FROM akeneo_asset_manager_asset;
+            DELETE FROM akeneo_asset_manager_asset_family;
+            DELETE FROM akeneo_asset_manager_asset_family_permissions;
             DELETE FROM pim_catalog_attribute_group;
             DELETE FROM pim_catalog_attribute;
             DELETE FROM oro_user;
@@ -114,7 +114,7 @@ SQL;
         $resetAssetTree = <<<SQL
         INSERT INTO `pimee_product_asset_category` (`id`, `parent_id`, `code`, `created`, `root`, `lvl`, `lft`, `rgt`)
         VALUES
-          (1,	NULL,	'asset_main_catalog',	'2018-09-05 22:45:32',	1,	0,	1,	2);
+          (1,  NULL,  'asset_main_catalog',  '2018-09-05 22:45:32',  1,  0,  1,  2);
 SQL;
         $this->sqlConnection->executeQuery($resetAssetTree);
     }

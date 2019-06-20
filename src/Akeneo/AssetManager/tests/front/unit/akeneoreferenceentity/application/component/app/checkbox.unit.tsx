@@ -1,4 +1,4 @@
-import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
+import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import * as React from 'react';
 import {mount} from 'enzyme';
 

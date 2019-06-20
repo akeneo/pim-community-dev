@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -27,7 +27,7 @@ class OptionAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             AttributeIdentifier::create('designer', 'color', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray(['fr_FR' => 'Couleur', 'en_US' => 'Color']),
             AttributeOrder::fromInteger(0),
@@ -46,7 +46,7 @@ class OptionAttributeSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
                 'identifier'                  => 'color_designer_test',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code'                        => 'color',
                 'labels'                      => ['fr_FR' => 'Couleur', 'en_US' => 'Color'],
                 'order'                       => 0,
@@ -70,7 +70,7 @@ class OptionAttributeSpec extends ObjectBehavior
         );
         $this->normalize()->shouldReturn([
             'identifier'                  => 'color_designer_test',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code'                        => 'color',
             'labels'                      => ['fr_FR' => 'Couleur', 'en_US' => 'Color'],
             'order'                       => 0,

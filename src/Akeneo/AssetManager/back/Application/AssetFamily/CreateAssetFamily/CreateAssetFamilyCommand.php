@@ -10,13 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity;
+namespace Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CreateReferenceEntityCommand
+class CreateAssetFamilyCommand
 {
     /** @var string */
     public $code;

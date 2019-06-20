@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
 use JsonSchema\Validator;
 
 /**
- * Validate the first level properties of a record using JSON Schema.
+ * Validate the first level properties of a asset using JSON Schema.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordPropertiesValidator
+class AssetPropertiesValidator
 {
-    public function validate(array $normalizedRecord): array
+    public function validate(array $normalizedAsset): array
     {
         $validator = new Validator();
-        $normalizedRecordObject = Validator::arrayToObjectRecursive($normalizedRecord);
-        $validator->validate($normalizedRecordObject, $this->getJsonSchema());
+        $normalizedAssetObject = Validator::arrayToObjectRecursive($normalizedAsset);
+        $validator->validate($normalizedAssetObject, $this->getJsonSchema());
 
         return $validator->getErrors();
     }

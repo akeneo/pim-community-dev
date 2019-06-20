@@ -11,36 +11,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyByAssetFamilyIdentifierInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorAssetFamilyHydrator;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindConnectorReferenceEntityByReferenceEntityIdentifier implements FindConnectorReferenceEntityByReferenceEntityIdentifierInterface
+class SqlFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnectorAssetFamilyByAssetFamilyIdentifierInterface
 {
     /** @var Connection */
     private $connection;
 
-    /** @var ConnectorReferenceEntityHydrator */
-    private $referenceEntityHydrator;
+    /** @var ConnectorAssetFamilyHydrator */
+    private $assetFamilyHydrator;
 
     public function __construct(
         Connection $connection,
-        ConnectorReferenceEntityHydrator $hydrator
+        ConnectorAssetFamilyHydrator $hydrator
     ) {
         $this->connection = $connection;
-        $this->referenceEntityHydrator = $hydrator;
+        $this->assetFamilyHydrator = $hydrator;
     }
 
-    public function find(ReferenceEntityIdentifier $identifier): ?ConnectorReferenceEntity
+    public function find(AssetFamilyIdentifier $identifier): ?ConnectorAssetFamily
     {
         $sql = <<<SQL
         SELECT
@@ -48,7 +48,7 @@ class SqlFindConnectorReferenceEntityByReferenceEntityIdentifier implements Find
             re.labels,
             fi.file_key as image_file_key,
             fi.original_filename as image_original_filename
-        FROM akeneo_reference_entity_reference_entity as re
+        FROM akeneo_asset_manager_asset_family as re
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
         WHERE re.identifier = :identifier;
 SQL;
@@ -66,6 +66,6 @@ SQL;
             return null;
         }
 
-        return $this->referenceEntityHydrator->hydrate($result);
+        return $this->assetFamilyHydrator->hydrate($result);
     }
 }

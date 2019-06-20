@@ -11,55 +11,55 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecordsInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyHasAssetsInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
+class SqlAssetFamilyHasAssetsTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityHasRecordsInterface */
-    private $referenceEntityHasRecords;
+    /** @var AssetFamilyHasAssetsInterface */
+    private $assetFamilyHasAssets;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->referenceEntityHasRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records');
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
-        $this->loadReferenceEntityAndRecords();
+        $this->assetFamilyHasAssets = $this->get('akeneo_assetmanager.infrastructure.persistence.query.asset_family_has_assets');
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
+        $this->loadAssetFamilyAndAssets();
     }
 
     /**
      * @test
      */
-    public function it_tells_if_a_reference_entity_has_records()
+    public function it_tells_if_an_asset_family_has_assets()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('designer');
-        $hasRecords = $this->referenceEntityHasRecords->hasRecords($identifier);
-        $this->assertTrue($hasRecords);
+        $identifier = AssetFamilyIdentifier::fromString('designer');
+        $hasAssets = $this->assetFamilyHasAssets->hasAssets($identifier);
+        $this->assertTrue($hasAssets);
 
-        $identifier = ReferenceEntityIdentifier::fromString('brand');
-        $hasRecords = $this->referenceEntityHasRecords->hasRecords($identifier);
-        $this->assertFalse($hasRecords);
+        $identifier = AssetFamilyIdentifier::fromString('brand');
+        $hasAssets = $this->assetFamilyHasAssets->hasAssets($identifier);
+        $this->assertFalse($hasAssets);
     }
 
-    private function loadReferenceEntityAndRecords(): void
+    private function loadAssetFamilyAndAssets(): void
     {
         $this->loadDesigners();
         $this->loadBrands();
@@ -67,28 +67,28 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
 
     private function loadDesigners(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('stark');
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('stark');
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
-        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $recordRepository->create(
-            Record::create(
-                $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode),
-                $referenceEntityIdentifier,
-                $recordCode,
+        $assetFamilyRepository->create($assetFamily);
+        $assetFamily = $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $assetRepository->create(
+            Asset::create(
+                $assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode),
+                $assetFamilyIdentifier,
+                $assetCode,
                 ValueCollection::fromValues([
                     Value::create(
-                        $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                        $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                         ChannelReference::noReference(),
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                         TextData::fromString('Philippe Starck')
@@ -100,15 +100,15 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
 
     private function loadBrands(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
     }
 }

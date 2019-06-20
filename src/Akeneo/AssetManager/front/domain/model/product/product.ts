@@ -1,13 +1,13 @@
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/product/identifier';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/product/identifier';
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
-} from 'akeneoreferenceentity/domain/model/label-collection';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+} from 'akeneoassetmanager/domain/model/label-collection';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 import Completeness, {
   NormalizedCompleteness,
   denormalizeCompleteness,
-} from 'akeneoreferenceentity/domain/model/product/completeness';
+} from 'akeneoassetmanager/domain/model/product/completeness';
 
 export const PRODUCT_TYPE = 'product';
 export const PRODUCT_MODEL_TYPE = 'product_model';

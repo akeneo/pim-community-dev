@@ -1,7 +1,7 @@
 import {
   ValidationRule,
   ValidationRuleOption,
-} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
+} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
 
 const options = Object.values(ValidationRuleOption);
 

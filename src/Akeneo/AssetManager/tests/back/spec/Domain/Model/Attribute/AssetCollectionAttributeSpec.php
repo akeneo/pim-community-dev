@@ -2,39 +2,39 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
-class RecordCollectionAttributeSpec extends ObjectBehavior
+class AssetCollectionAttributeSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beConstructedThrough('create', [
             AttributeIdentifier::create('designer', 'brands', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('brands'),
             LabelCollection::fromArray(['fr_FR' => 'Marques', 'en_US' => 'Brands']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('brand')
+            AssetFamilyIdentifier::fromString('brand')
         ]);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordCollectionAttribute::class);
+        $this->shouldHaveType(AssetCollectionAttribute::class);
     }
 
     function it_determines_if_it_has_a_given_order()
@@ -47,15 +47,15 @@ class RecordCollectionAttributeSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
                 'identifier' => 'brands_designer_fingerprint',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code' => 'brands',
                 'labels' => ['fr_FR' => 'Marques', 'en_US' => 'Brands'],
                 'order' => 0,
                 'is_required' => true,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
-                'type' => 'record_collection',
-                'record_type' => 'brand',
+                'type' => 'asset_collection',
+                'asset_type' => 'brand',
             ]
         );
     }
@@ -65,36 +65,36 @@ class RecordCollectionAttributeSpec extends ObjectBehavior
         $this->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Anciennes Marques', 'en_US' => 'Old Brands']));
         $this->normalize()->shouldBe([
                 'identifier' => 'brands_designer_fingerprint',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code' => 'brands',
                 'labels' => ['fr_FR' => 'Anciennes Marques', 'en_US' => 'Old Brands'],
                 'order' => 0,
                 'is_required' => true,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
-                'type' => 'record_collection',
-                'record_type' => 'brand',
+                'type' => 'asset_collection',
+                'asset_type' => 'brand',
             ]
         );
     }
 
-    function it_updates_its_record_type()
+    function it_updates_its_asset_type()
     {
-        $this->setRecordType(
-            ReferenceEntityIdentifier::fromString('color')
+        $this->setAssetType(
+            AssetFamilyIdentifier::fromString('color')
         );
 
         $this->normalize()->shouldBe([
                 'identifier' => 'brands_designer_fingerprint',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code' => 'brands',
                 'labels' => ['fr_FR' => 'Marques', 'en_US' => 'Brands'],
                 'order' => 0,
                 'is_required' => true,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
-                'type' => 'record_collection',
-                'record_type' => 'color',
+                'type' => 'asset_collection',
+                'asset_type' => 'color',
             ]
         );
     }

@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamilyPermission;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupPermission;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission\SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRightTest extends SqlIntegrationTestCase
+class SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRightTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight */
+    /** @var SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight */
     private $query;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_where_user_group_is_last_to_have_edit_right');
+        $this->query = $this->get('akeneoassetmanager.infrastructure.persistence.query.find_asset_family_where_user_group_is_last_to_have_edit_right');
         $this->resetDB();
         $this->loadFixtures();
     }
@@ -31,37 +31,37 @@ class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRightTest extends SqlI
     /**
      * @test
      */
-    public function it_finds_the_reference_entities_the_user_group_is_the_last_to_have_edit_permission_on()
+    public function it_finds_the_asset_families_the_user_group_is_the_last_to_have_edit_permission_on()
     {
-        $referenceEntityIdentifiers = $this->query->find(10);
-        $this->assertEquals(['color'], $referenceEntityIdentifiers);
+        $assetFamilyIdentifiers = $this->query->find(10);
+        $this->assertEquals(['color'], $assetFamilyIdentifiers);
 
-        $referenceEntityIdentifiers = $this->query->find(11);
-        $this->assertEquals([], $referenceEntityIdentifiers);
+        $assetFamilyIdentifiers = $this->query->find(11);
+        $this->assertEquals([], $assetFamilyIdentifiers);
 
-        $referenceEntityIdentifiers = $this->query->find(12);
-        $this->assertEquals(['city'], $referenceEntityIdentifiers);
+        $assetFamilyIdentifiers = $this->query->find(12);
+        $this->assertEquals(['city'], $assetFamilyIdentifiers);
 
-        $referenceEntityIdentifiers = $this->query->find(13);
-        $this->assertEquals([], $referenceEntityIdentifiers);
+        $assetFamilyIdentifiers = $this->query->find(13);
+        $this->assertEquals([], $assetFamilyIdentifiers);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadFixtures(): void
     {
-        $designer = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('designer'), [], Image::createEmpty());
-        $color = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('color'), [], Image::createEmpty());
-        $brand = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('brand'), [], Image::createEmpty());
-        $city = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('city'), [], Image::createEmpty());
+        $designer = AssetFamily::create(AssetFamilyIdentifier::fromString('designer'), [], Image::createEmpty());
+        $color = AssetFamily::create(AssetFamilyIdentifier::fromString('color'), [], Image::createEmpty());
+        $brand = AssetFamily::create(AssetFamilyIdentifier::fromString('brand'), [], Image::createEmpty());
+        $city = AssetFamily::create(AssetFamilyIdentifier::fromString('city'), [], Image::createEmpty());
 
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')->create($designer);
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')->create($color);
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')->create($brand);
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')->create($city);
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')->create($designer);
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')->create($color);
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')->create($brand);
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')->create($city);
 
         $insertFakeUserGroups = <<<SQL
  INSERT INTO oro_access_group (id, name)
@@ -89,8 +89,8 @@ SQL;
          *          no permission set
          */
 
-        $referenceEntityPermission = ReferenceEntityPermission::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyPermission = AssetFamilyPermission::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(10),
@@ -110,11 +110,11 @@ SQL;
                 ),
             ]
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission')
-            ->save($referenceEntityPermission);
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission')
+            ->save($assetFamilyPermission);
 
-        $referenceEntityPermission = ReferenceEntityPermission::create(
-            ReferenceEntityIdentifier::fromString('color'),
+        $assetFamilyPermission = AssetFamilyPermission::create(
+            AssetFamilyIdentifier::fromString('color'),
             [
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(10),
@@ -134,11 +134,11 @@ SQL;
                 ),
             ]
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission')
-            ->save($referenceEntityPermission);
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission')
+            ->save($assetFamilyPermission);
 
-        $referenceEntityPermission = ReferenceEntityPermission::create(
-            ReferenceEntityIdentifier::fromString('city'),
+        $assetFamilyPermission = AssetFamilyPermission::create(
+            AssetFamilyIdentifier::fromString('city'),
             [
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(10),
@@ -158,7 +158,7 @@ SQL;
                 ),
             ]
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission')
-            ->save($referenceEntityPermission);
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission')
+            ->save($assetFamilyPermission);
     }
 }

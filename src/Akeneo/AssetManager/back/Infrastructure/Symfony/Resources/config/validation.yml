@@ -1,455 +1,455 @@
-# Reference entity
-Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand:
+# Asset family
+Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand:
     properties:
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         image:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Image: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Image: ~
 
-Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand:
+Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand:
     group_sequence:
-        - CreateReferenceEntityCommand
+        - CreateAssetFamilyCommand
         - other_constraints
     properties:
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityCodeShouldBeUnique: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ThereShouldBeLessReferenceEntityThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyCodeShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessAssetFamilyThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand:
+Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand:
     group_sequence:
-        - DeleteReferenceEntityCommand
+        - DeleteAssetFamilyCommand
         - other_constraints
     properties: []
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldHaveNoRecord: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldHaveNoAsset: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldNotBeLinkedToAnyAssetFamilyAttribute: { groups: [other_constraints] }
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
-        - Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfigured:
+        - Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\IsAssetFamilyConfigured:
             groups:
-                - akeneo_reference_entity_collection
-                - akeneo_reference_entity
+                - akeneo_asset_multiple_link
+                - akeneo_asset
 
-# Records
-Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
+# Assets
+Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand:
     group_sequence:
-        - CreateRecordCommand
+        - CreateAssetCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Asset\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\ThereShouldBeLessRecordsThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetCodeShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\ThereShouldBeLessAssetsThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand:
     properties:
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\Code: ~
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Asset\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         image:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Image: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Image: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommands: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditTextValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTextValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditStoredFileValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditStoredFileValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCollectionValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCollectionValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordCollectionValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetCollectionValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditOptionValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionCollectionValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollectionValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditOptionCollectionValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionCollectionValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumberValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditNumberValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditNumberValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:
         - CreateTextAttributeCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         maxLength:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxLength: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MaxLength: ~
         isTextarea:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsTextarea: ~
         isRichTextEditor:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
         validationRule:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValidationRule: ~
         regularExpression:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\RegularExpression: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityCommand:
+Akeneo\AssetManager\Application\Asset\IndexAssets\IndexAssetsByAssetFamilyCommand:
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldExist: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldExist: ~
 
-Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
+Akeneo\AssetManager\Domain\Query\Asset\AssetQuery:
     properties:
         channelReferenceValuesFilter:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Channel\ChannelShouldExist:
+            - Akeneo\AssetManager\Infrastructure\Validation\Channel\ChannelShouldExist:
                   payload:
                       standardPropertyName: channel
         localeIdentifiersValuesFilter:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Locale\LocalesShouldBeActivated:
+            - Akeneo\AssetManager\Infrastructure\Validation\Locale\LocalesShouldBeActivated:
                   payload:
                       standardPropertyName: locales
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByCompleteness: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\FilterAssetsByCompleteness: ~
 
 # Attributes
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:
         - CreateImageAttributeCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         maxFileSize:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MaxFileSize: ~
         allowedExtensions:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AllowedExtensions: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetAttributeCommand:
     group_sequence:
-        - CreateRecordAttributeCommand
+        - CreateAssetAttributeCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
-        recordType:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        assetType:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeIsRequired: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeReferenceEntityShouldExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeAssetTypeIsRequired: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeAssetTypeAssetFamilyShouldExist: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollectionAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetCollectionAttributeCommand:
     group_sequence:
-        - CreateRecordCollectionAttributeCommand
+        - CreateAssetCollectionAttributeCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
-        recordType:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        assetType:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeIsRequired: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeReferenceEntityShouldExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeAssetTypeIsRequired: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeAssetTypeAssetFamilyShouldExist: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand:
     group_sequence:
         - CreateOptionAttributeCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionCollectionAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionCollectionAttributeCommand:
     group_sequence:
         - CreateOptionCollectionAttributeCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand:
     group_sequence:
         - CreateNumberAttributeCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         decimalsAllowed:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\DecimalsAllowed: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\DecimalsAllowed: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MinMaxValue: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MinMaxValue: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateUrlAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateUrlAttributeCommand:
     group_sequence:
         - CreateUrlAttributeCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         mediaType:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\MediaType: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\MediaType: ~
         prefix:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Prefix: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\Prefix: ~
         suffix:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Suffix: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\Suffix: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
     group_sequence:
         - EditAttributeCommand
         - primary_constraints
         - secondary_constraints
     properties: []
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldExist: { groups: [primary_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\EditCommands: { groups: [primary_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherent: { groups: [secondary_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldExist: { groups: [primary_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\EditCommands: { groups: [primary_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherent: { groups: [secondary_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand:
     properties:
         isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRequired: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand:
     properties:
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand:
     properties:
         maxLength:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxLength: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MaxLength: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand:
     properties:
         maxFileSize:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MaxFileSize: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand:
     properties:
         allowedExtensions:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AllowedExtensions: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand:
     properties:
         isTextarea:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsTextarea: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand:
     properties:
         validationRule:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValidationRule: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand:
     properties:
         regularExpression:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\RegularExpression: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand:
     properties:
         isRichTextEditor:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommand:
     properties:
         decimalsAllowed:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\DecimalsAllowed: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\DecimalsAllowed: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MinMaxValue: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MinMaxValue: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MinValue: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MinValue: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxValueCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxValue: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MaxValue: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPrefixCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Url\EditPrefixCommand:
     properties:
         prefix:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Prefix: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\Prefix: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditSuffixCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Url\EditSuffixCommand:
     properties:
         suffix:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Suffix: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\Suffix: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditMediaTypeCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Url\EditMediaTypeCommand:
     properties:
         mediaType:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\MediaType: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\MediaType: ~
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
     properties:
         options:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptions: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptions: ~
 
-Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsCommand:
+Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntityPermission\AtLeastOneUserGroupShouldHaveEditPermission: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamilyPermission\AtLeastOneUserGroupShouldHaveEditPermission: ~
 
 # Attribute options
-Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand:
+Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand:
     group_sequence:
         - AppendAttributeOptionCommand
         - primary_constraints
         - secondary_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         attributeCode:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         optionCode:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionCode: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionCode: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionShouldNotExist: { groups: [primary_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributeOptionsThanLimit: { groups: [secondary_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionShouldNotExist: { groups: [primary_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributeOptionsThanLimit: { groups: [secondary_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand:
     group_sequence:
         - EditAttributeOptionCommand
         - other_constraints
     properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         attributeCode:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         optionCode:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionCode: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionCode: ~
         labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionShouldExist: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionShouldExist: { groups: [other_constraints] }

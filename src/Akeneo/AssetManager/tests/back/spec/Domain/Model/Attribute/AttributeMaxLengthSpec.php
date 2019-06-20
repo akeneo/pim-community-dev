@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use PhpSpec\ObjectBehavior;
 
 class AttributeMaxLengthSpec extends ObjectBehavior

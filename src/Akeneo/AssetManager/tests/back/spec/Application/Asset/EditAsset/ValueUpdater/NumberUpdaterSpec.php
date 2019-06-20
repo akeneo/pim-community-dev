@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumberValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\NumberUpdater;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\NumberData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\NumberUpdater;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\NumberData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class NumberUpdaterSpec extends ObjectBehavior
@@ -40,7 +40,7 @@ class NumberUpdaterSpec extends ObjectBehavior
         $this->supports($editNumberValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_number_value_of_a_record(Record $record) {
+    function it_edits_the_number_value_of_a_asset(Asset $asset) {
         $numberAttribute = $this->getAttribute();
 
         $editNumberValueCommand = new EditNumberValueCommand(
@@ -56,15 +56,15 @@ class NumberUpdaterSpec extends ObjectBehavior
             NumberData::createFromNormalize($editNumberValueCommand->number)
         );
 
-        $this->__invoke($record, $editNumberValueCommand);
-        $record->setValue($value)->shouldBeCalled();
+        $this->__invoke($asset, $editNumberValueCommand);
+        $asset->setValue($value)->shouldBeCalled();
     }
 
     private function getAttribute(): NumberAttribute
     {
         return NumberAttribute::create(
             AttributeIdentifier::create('designer', 'age', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('age'),
             LabelCollection::fromArray(['fr_FR' => 'Age', 'en_US' => 'Age']),
             AttributeOrder::fromInteger(0),

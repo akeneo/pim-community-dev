@@ -1,12 +1,12 @@
 import * as React from 'react';
-import Tick from 'akeneoreferenceentity/application/component/app/icon/tick';
+import Tick from 'akeneoassetmanager/application/component/app/icon/tick';
 import Permission, {
   RightLevel,
   PermissionCollection,
   lowerLevel,
-} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
-import __ from 'akeneoreferenceentity/tools/translator';
-import Key from 'akeneoreferenceentity/tools/key';
+} from 'akeneoassetmanager/domain/model/asset-family/permission';
+import __ from 'akeneoassetmanager/tools/translator';
+import Key from 'akeneoassetmanager/tools/key';
 
 type GroupName = string;
 

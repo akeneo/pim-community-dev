@@ -11,34 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindExistingAssetCodesInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindExistingRecordCodes implements FindExistingRecordCodesInterface
+class InMemoryFindExistingAssetCodes implements FindExistingAssetCodesInterface
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    public function __construct(InMemoryRecordRepository $recordRepository)
+    public function __construct(InMemoryAssetRepository $assetRepository)
     {
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
     }
 
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array
     {
-        $existingRecords = $this->recordRepository->getByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
-        $existingCodes = array_map(function (Record $record) {
-            return $record->getCode();
-        }, $existingRecords);
+        $existingAssets = $this->assetRepository->getByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodes);
+        $existingCodes = array_map(function (Asset $asset) {
+            return $asset->getCode();
+        }, $existingAssets);
 
-        return array_filter($recordCodes, function ($code) use ($existingCodes) {
+        return array_filter($assetCodes, function ($code) use ($existingCodes) {
             return in_array($code, $existingCodes);
         });
     }

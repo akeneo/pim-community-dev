@@ -11,7 +11,7 @@ declare(strict_types=1);
 * file that was distributed with this source code.
 */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\Hal;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\Hal;
 
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,12 +28,12 @@ class AddHalSelfLinkToNormalizedConnectorAttribute
         $this->router = $router;
     }
 
-    public function __invoke(string $referenceEntityIdentifier, array $normalizedAttribute): array
+    public function __invoke(string $assetFamilyIdentifier, array $normalizedAttribute): array
     {
         $selfUrl = $this->router->generate(
-            'akeneo_reference_entities_reference_entity_attribute_rest_connector_get',
+            'akeneo_asset_manager_asset_family_attribute_rest_connector_get',
             [
-                'referenceEntityIdentifier' => $referenceEntityIdentifier,
+                'assetFamilyIdentifier' => $assetFamilyIdentifier,
                 'code' => $normalizedAttribute['code']
             ],
             UrlGeneratorInterface::ABSOLUTE_URL

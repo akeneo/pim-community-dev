@@ -1,4 +1,4 @@
-import {IsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
+import {IsRichTextEditor} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
 
 describe('akeneo > attribute > domain > model > attribute > type > text --- IsRichTextEditor', () => {
   test('I can create a IsRichTextEditor from normalized', () => {

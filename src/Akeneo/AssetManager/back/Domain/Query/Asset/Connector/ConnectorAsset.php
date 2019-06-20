@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
+namespace Akeneo\AssetManager\Domain\Query\Asset\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 
 /**
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ConnectorRecord
+class ConnectorAsset
 {
-    /** @var RecordCode */
+    /** @var AssetCode */
     private $code;
 
     /** @var array */
     private $normalizedValues;
 
-    public function __construct(RecordCode $code, array $normalizedValues)
+    public function __construct(AssetCode $code, array $normalizedValues)
     {
         $this->code = $code;
         $this->normalizedValues = $normalizedValues;
@@ -43,7 +43,7 @@ class ConnectorRecord
         ];
     }
 
-    public function getRecordWithValuesFilteredOnChannel(ChannelIdentifier $channelIdentifier): ConnectorRecord
+    public function getAssetWithValuesFilteredOnChannel(ChannelIdentifier $channelIdentifier): ConnectorAsset
     {
         $filteredValues = [];
         foreach ($this->normalizedValues as $key => $normalizedValue) {
@@ -60,7 +60,7 @@ class ConnectorRecord
         return new self($this->code, $filteredValues);
     }
 
-    public function getRecordWithValuesFilteredOnLocales(LocaleIdentifierCollection $localeIdentifiers): ConnectorRecord
+    public function getAssetWithValuesFilteredOnLocales(LocaleIdentifierCollection $localeIdentifiers): ConnectorAsset
     {
         $localeCodes = $localeIdentifiers->normalize();
 

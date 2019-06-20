@@ -1,6 +1,6 @@
-import reducer from 'akeneoreferenceentity/application/reducer/confirmDelete';
+import reducer from 'akeneoassetmanager/application/reducer/confirmDelete';
 
-describe('akeneo > reference entity > application > reducer --- confirmDelete', () => {
+describe('akeneo > asset family > application > reducer --- confirmDelete', () => {
   test('I ignore other commands', () => {
     const state = {isActive: false, identifier: undefined, label: undefined};
     const newState = reducer(undefined, {

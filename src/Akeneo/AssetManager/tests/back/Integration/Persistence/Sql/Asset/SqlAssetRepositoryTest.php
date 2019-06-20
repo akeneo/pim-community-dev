@@ -11,44 +11,44 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\UrlData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Common\Fake\EventDispatcherMock;
+use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetCollectionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\UrlData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 
-class SqlRecordRepositoryTest extends SqlIntegrationTestCase
+class SqlAssetRepositoryTest extends SqlIntegrationTestCase
 {
     /** @var EventDispatcherMock */
     private $eventDispatcherMock;
 
-    /** @var RecordRepositoryInterface */
+    /** @var AssetRepositoryInterface */
     private $repository;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var array */
     private $fixturesDesigner;
@@ -57,8 +57,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $this->repository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $this->eventDispatcherMock = $this->get('event_dispatcher');
         $this->eventDispatcherMock->reset();
 
@@ -69,47 +69,47 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_a_record_with_no_values_and_returns_it()
+    public function it_creates_a_asset_with_no_values_and_returns_it()
     {
-        $recordCode = RecordCode::fromString('starck');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetCode = AssetCode::fromString('starck');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
 
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
-        $this->eventDispatcherMock->assertEventDispatched(RecordUpdatedEvent::class);
-        $recordFound = $this->repository->getByIdentifier($identifier);
-        $this->assertSame($record->normalize(), $recordFound->normalize());
+        $this->eventDispatcherMock->assertEventDispatched(AssetUpdatedEvent::class);
+        $assetFound = $this->repository->getByIdentifier($identifier);
+        $this->assertSame($asset->normalize(), $assetFound->normalize());
     }
 
     /**
      * @test
      */
-    public function it_throws_when_creating_an_existing_record_with_same_entity_identifier_and_same_code()
+    public function it_throws_when_creating_an_existing_asset_with_same_entity_identifier_and_same_code()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
@@ -117,25 +117,25 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ])
         );
 
-        $this->repository->create($record);
+        $this->repository->create($asset);
         $this->eventDispatcherMock->reset();
 
-        $recordCode = RecordCode::fromString('starck');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetCode = AssetCode::fromString('starck');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
@@ -144,32 +144,32 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->expectException(DBALException::class);
-        $this->repository->create($record);
+        $this->repository->create($asset);
         $this->eventDispatcherMock->assertNoEventDispatched();
     }
 
     /**
      * @test
      */
-    public function it_creates_a_record_with_no_values_and_finds_it_by_reference_entity_and_record_code()
+    public function it_creates_a_asset_with_no_values_and_finds_it_by_asset_family_and_asset_code()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
@@ -177,21 +177,21 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ])
         );
 
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
-        $recordFound = $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
-        $this->assertSame($record->normalize(), $recordFound->normalize());
+        $assetFound = $this->repository->getByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
+        $this->assertSame($asset->normalize(), $assetFound->normalize());
     }
 
     /**
      * @test
      */
-    public function it_creates_a_record_with_values_and_returns_it()
+    public function it_creates_a_asset_with_values_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
         $fileInfo = new FileInfo();
         $fileInfo
@@ -206,25 +206,25 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ->setOriginalFilename('image_2.jpg')
             ->setKey('test/image_2.jpg');
 
-        $record = Record::create(
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsImageReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsImageReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($imageInfo)
@@ -244,77 +244,77 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ])
         );
 
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
-        $recordFound = $this->repository->getByIdentifier($identifier);
-        $this->assertEquals($record->normalize(), $recordFound->normalize());
+        $assetFound = $this->repository->getByIdentifier($identifier);
+        $this->assertEquals($asset->normalize(), $assetFound->normalize());
 
-        $recordFound = $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
-        $this->assertEquals($record->normalize(), $recordFound->normalize());
+        $assetFound = $this->repository->getByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
+        $this->assertEquals($asset->normalize(), $assetFound->normalize());
     }
 
     /**
      * @test
      */
-    public function it_throws_when_creating_a_record_with_the_same_identifier()
+    public function it_throws_when_creating_a_asset_with_the_same_identifier()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
                 ),
             ])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
         $this->expectException(DBALException::class);
-        $this->repository->create($record);
+        $this->repository->create($asset);
     }
 
     /**
      * @test
      */
-    public function it_updates_a_record_and_returns_it()
+    public function it_updates_a_asset_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
         $fileInfo = new FileInfo();
         $fileInfo
             ->setOriginalFilename('image_1.jpg')
             ->setKey('test/image_1.jpg');
 
-        $record = Record::create(
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
@@ -339,7 +339,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                 )
             ])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
         $this->eventDispatcherMock->reset();
 
         $valueToUpdate = Value::create(
@@ -348,49 +348,49 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('A completely new and updated description')
         );
-        $record->setValue($valueToUpdate);
-        $this->repository->update($record);
+        $asset->setValue($valueToUpdate);
+        $this->repository->update($asset);
 
-        $this->eventDispatcherMock->assertEventDispatched(RecordUpdatedEvent::class);
-        $recordFound = $this->repository->getByIdentifier($identifier);
-        $this->assertEquals($record->normalize(), $recordFound->normalize());
+        $this->eventDispatcherMock->assertEventDispatched(AssetUpdatedEvent::class);
+        $assetFound = $this->repository->getByIdentifier($identifier);
+        $this->assertEquals($asset->normalize(), $assetFound->normalize());
     }
 
     /**
      * @test
      */
-    public function it_replaces_record_value_codes_by_their_identifiers_when_creating_a_record()
+    public function it_replaces_asset_value_codes_by_their_identifiers_when_creating_a_asset()
     {
         // Create the brand we will link
-        $referenceEntityIdentifierBrand = ReferenceEntityIdentifier::fromString('brand');
-        $brandCode = RecordCode::fromString('ikea');
-        $brandIdentifier = $this->repository->nextIdentifier($referenceEntityIdentifierBrand, $brandCode);
-        $record = Record::create(
+        $assetFamilyIdentifierBrand = AssetFamilyIdentifier::fromString('brand');
+        $brandCode = AssetCode::fromString('ikea');
+        $brandIdentifier = $this->repository->nextIdentifier($assetFamilyIdentifierBrand, $brandCode);
+        $asset = Asset::create(
             $brandIdentifier,
-            $referenceEntityIdentifierBrand,
+            $assetFamilyIdentifierBrand,
             $brandCode,
             ValueCollection::fromValues([])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
-        $record = Record::create(
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
@@ -399,127 +399,127 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                     $this->fixturesDesigner['attributes']['brand']->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    RecordData::createFromNormalize('ikea')
+                    AssetData::createFromNormalize('ikea')
                 ),
                 Value::create(
                     $this->fixturesDesigner['attributes']['brands']->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    RecordCollectionData::createFromNormalize(['ikea'])
+                    AssetCollectionData::createFromNormalize(['ikea'])
                 ),
             ])
         );
-        $this->repository->create($record);
-        $recordFound = $this->repository->getByIdentifier($identifier);
-        $this->assertEquals($record->normalize(), $recordFound->normalize());
+        $this->repository->create($asset);
+        $assetFound = $this->repository->getByIdentifier($identifier);
+        $this->assertEquals($asset->normalize(), $assetFound->normalize());
     }
 
     /**
      * @test
      */
-    public function it_replaces_record_value_codes_by_their_identifiers_when_updating_a_record()
+    public function it_replaces_asset_value_codes_by_their_identifiers_when_updating_a_asset()
     {
         // Create the brand we will link
-        $referenceEntityIdentifierBrand = ReferenceEntityIdentifier::fromString('brand');
-        $brandCode = RecordCode::fromString('ikea');
-        $brandIdentifier = $this->repository->nextIdentifier($referenceEntityIdentifierBrand, $brandCode);
-        $record = Record::create(
+        $assetFamilyIdentifierBrand = AssetFamilyIdentifier::fromString('brand');
+        $brandCode = AssetCode::fromString('ikea');
+        $brandIdentifier = $this->repository->nextIdentifier($assetFamilyIdentifierBrand, $brandCode);
+        $asset = Asset::create(
             $brandIdentifier,
-            $referenceEntityIdentifierBrand,
+            $assetFamilyIdentifierBrand,
             $brandCode,
             ValueCollection::fromValues([])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
         // Create the designer we will update
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
-        $record = Record::create(
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
                 ),
             ])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
         $this->eventDispatcherMock->reset();
 
         $valueToUpdate = Value::create(
             $this->fixturesDesigner['attributes']['brand']->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            RecordData::createFromNormalize('ikea')
+            AssetData::createFromNormalize('ikea')
         );
-        $record->setValue($valueToUpdate);
+        $asset->setValue($valueToUpdate);
         $valueToUpdate = Value::create(
             $this->fixturesDesigner['attributes']['brands']->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            RecordCollectionData::createFromNormalize(['ikea'])
+            AssetCollectionData::createFromNormalize(['ikea'])
         );
-        $record->setValue($valueToUpdate);
-        $this->repository->update($record);
+        $asset->setValue($valueToUpdate);
+        $this->repository->update($asset);
 
-        $this->eventDispatcherMock->assertEventDispatched(RecordUpdatedEvent::class);
-        $recordFound = $this->repository->getByIdentifier($identifier);
-        $this->assertEquals($record->normalize(), $recordFound->normalize());
+        $this->eventDispatcherMock->assertEventDispatched(AssetUpdatedEvent::class);
+        $assetFound = $this->repository->getByIdentifier($identifier);
+        $this->assertEquals($asset->normalize(), $assetFound->normalize());
     }
 
     /**
      * @test
      */
-    public function it_counts_the_records()
+    public function it_counts_the_assets()
     {
         $this->assertEquals(0, $this->repository->count());
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $recordCode = RecordCode::fromString('record_identifier');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetCode = AssetCode::fromString('asset_identifier');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
 
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
         $this->assertEquals(1, $this->repository->count());
 
-        $recordCode = RecordCode::fromString('record_identifier2');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetCode = AssetCode::fromString('asset_identifier2');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
 
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
         $this->assertEquals(2, $this->repository->count());
     }
 
     public function it_retrieve_the_next_identifier()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
-        $nextIdentifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('starck');
+        $nextIdentifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
         $this->assertNotEmpty($nextIdentifier);
     }
@@ -529,11 +529,11 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_if_the_identifier_is_not_found()
     {
-        $this->expectException(RecordNotFoundException::class);
+        $this->expectException(AssetNotFoundException::class);
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('unknown_identifier');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('unknown_identifier');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
         $this->repository->getByIdentifier($identifier);
     }
@@ -541,96 +541,96 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_records_by_reference_entity_identifier()
+    public function it_deletes_assets_by_asset_family_identifier()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('starck');
 
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
-        $recordCode = RecordCode::fromString('dyson');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetCode = AssetCode::fromString('dyson');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
-        $referenceEntityIdentifierBrand = ReferenceEntityIdentifier::fromString('brand');
-        $recordCode = RecordCode::fromString('bar');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifierBrand, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifierBrand = AssetFamilyIdentifier::fromString('brand');
+        $assetCode = AssetCode::fromString('bar');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifierBrand, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifierBrand,
-            $recordCode,
+            $assetFamilyIdentifierBrand,
+            $assetCode,
             ValueCollection::fromValues([])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
         Assert::assertEquals(3, $this->repository->count());
 
-        $this->repository->deleteByReferenceEntity($referenceEntityIdentifier);
-        $this->eventDispatcherMock->assertEventDispatched(ReferenceEntityRecordsDeletedEvent::class);
+        $this->repository->deleteByAssetFamily($assetFamilyIdentifier);
+        $this->eventDispatcherMock->assertEventDispatched(AssetFamilyAssetsDeletedEvent::class);
         Assert::assertEquals(1, $this->repository->count());
     }
 
     /**
      * @test
      */
-    public function it_deletes_a_record_by_code_and_entity_identifier()
+    public function it_deletes_a_asset_by_code_and_entity_identifier()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
-        $this->repository->create($record);
+        $this->repository->create($asset);
 
-        $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
+        $this->repository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
 
-        $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
-        $this->expectException(RecordNotFoundException::class);
-        $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
+        $this->eventDispatcherMock->assertEventDispatched(AssetDeletedEvent::class);
+        $this->expectException(AssetNotFoundException::class);
+        $this->repository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
     }
 
     /**
      * @test
      */
-    public function it_throws_if_trying_to_delete_an_unknown_record()
+    public function it_throws_if_trying_to_delete_an_unknown_asset()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $unknownCode = RecordCode::fromString('unknown_code');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $unknownCode = AssetCode::fromString('unknown_code');
 
-        $this->expectException(RecordNotFoundException::class);
-        $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $unknownCode);
+        $this->expectException(AssetNotFoundException::class);
+        $this->repository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $unknownCode);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadFixtures(): void
     {
         $this->fixturesLoader
-            ->referenceEntity('brand')
+            ->assetFamily('brand')
             ->load();
 
         $this->fixturesDesigner = $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->withAttributes(['name', 'main_image', 'brand', 'brands', 'website'])
             ->load();
     }
@@ -638,19 +638,19 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_counts_the_records_by_reference_entity()
+    public function it_counts_the_assets_by_asset_family()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $this->assertSame(0, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $this->assertSame(0, $this->repository->countByAssetFamily($assetFamilyIdentifier));
 
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $starck = Record::create(
-            $this->repository->nextIdentifier($referenceEntityIdentifier, RecordCode::fromString('starck')),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('starck'),
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $starck = Asset::create(
+            $this->repository->nextIdentifier($assetFamilyIdentifier, AssetCode::fromString('starck')),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('starck'),
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Philippe Starck')
@@ -658,15 +658,15 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ])
         );
         $this->repository->create($starck);
-        $this->assertSame(1, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
+        $this->assertSame(1, $this->repository->countByAssetFamily($assetFamilyIdentifier));
 
-        $bob = Record::create(
-            $this->repository->nextIdentifier($referenceEntityIdentifier, RecordCode::fromString('bob')),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('bob'),
+        $bob = Asset::create(
+            $this->repository->nextIdentifier($assetFamilyIdentifier, AssetCode::fromString('bob')),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('bob'),
             ValueCollection::fromValues([
                 Value::create(
-                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Bob')
@@ -674,6 +674,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ])
         );
         $this->repository->create($bob);
-        $this->assertSame(2, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
+        $this->assertSame(2, $this->repository->countByAssetFamily($assetFamilyIdentifier));
     }
 }

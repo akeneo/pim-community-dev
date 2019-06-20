@@ -11,28 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\SearchAsset\SearchAsset;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Query\Asset\SearchAssetResult;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
@@ -40,42 +40,42 @@ use PHPUnit\Framework\Assert;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class ListRecordContext implements Context
+final class ListAssetContext implements Context
 {
-    /** @var SearchRecordResult */
+    /** @var SearchAssetResult */
     private $result;
 
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
-    /** @var ReferenceEntityRepositoryInterface  */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface  */
+    private $assetFamilyRepository;
 
     /** @var FindIdentifiersForQueryInterface */
     private $findIdentifiersForQuery;
 
-    /** @var SearchRecord */
-    private $searchRecord;
+    /** @var SearchAsset */
+    private $searchAsset;
 
     public function __construct(
-        RecordRepositoryInterface $recordRepository,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        SearchRecord $searchRecord
+        SearchAsset $searchAsset
     ) {
-        $this->recordRepository = $recordRepository;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetRepository = $assetRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->findIdentifiersForQuery = $findIdentifiersForQuery;
-        $this->searchRecord = $searchRecord;
+        $this->searchAsset = $searchAsset;
     }
 
     /**
-     * @Given /^a list of records$/
+     * @Given /^a list of assets$/
      */
-    public function aListOfRecords()
+    public function aListOfAssets()
     {
-        $this->loadReferenceEntity();
-        $this->loadRecord();
+        $this->loadAssetFamily();
+        $this->loadAsset();
     }
 
     /**
@@ -83,7 +83,7 @@ final class ListRecordContext implements Context
     */
     public function theUserSearchFor($searchInput)
     {
-        $query = RecordQuery::createFromNormalized([
+        $query = AssetQuery::createFromNormalized([
             'locale' => 'en_US',
             'channel' => 'ecommerce',
             'size' => 20,
@@ -96,7 +96,7 @@ final class ListRecordContext implements Context
                     'context' => []
                 ],
                 [
-                    'field' => 'reference_entity',
+                    'field' => 'asset_family',
                     'operator' => '=',
                     'value' => 'designer',
                     'context' => []
@@ -104,15 +104,15 @@ final class ListRecordContext implements Context
             ]
         ]);
 
-        $this->result = ($this->searchRecord)($query);
+        $this->result = ($this->searchAsset)($query);
     }
 
     /**
-     * @When /^the user filters records by "([^"]+)" with operator "([^"]+)" and value "([^"]*)"$/
+     * @When /^the user filters assets by "([^"]+)" with operator "([^"]+)" and value "([^"]*)"$/
      */
-    public function theUserFiltersRecordsByWithOperatorAndValue($filter, $operator, $value)
+    public function theUserFiltersAssetsByWithOperatorAndValue($filter, $operator, $value)
     {
-        $query = RecordQuery::createFromNormalized([
+        $query = AssetQuery::createFromNormalized([
             'locale' => 'en_US',
             'channel' => 'ecommerce',
             'size' => 20,
@@ -125,7 +125,7 @@ final class ListRecordContext implements Context
                     'context' => []
                 ],
                 [
-                    'field' => 'reference_entity',
+                    'field' => 'asset_family',
                     'operator' => '=',
                     'value' => 'designer',
                     'context' => []
@@ -133,52 +133,52 @@ final class ListRecordContext implements Context
             ]
         ]);
 
-        $this->result = ($this->searchRecord)($query);
+        $this->result = ($this->searchAsset)($query);
     }
 
     /**
-     * @Then the search result should be :recordCodes
+     * @Then the search result should be :assetCodes
      */
-    public function theSearchResultShouldBe(string $expectedRecordCodes)
+    public function theSearchResultShouldBe(string $expectedAssetCodes)
     {
-        $expectedRecordCodes = explode(',', $expectedRecordCodes);
+        $expectedAssetCodes = explode(',', $expectedAssetCodes);
         $resultCodes = array_map(
-            function (RecordItem $recordItem): string {
-                return $recordItem->code;
+            function (AssetItem $assetItem): string {
+                return $assetItem->code;
             },
             $this->result->items
         );
 
-        array_map(function (string $expectedRecordCode) use ($resultCodes) {
-            Assert::assertContains($expectedRecordCode, $resultCodes);
-        }, $expectedRecordCodes);
+        array_map(function (string $expectedAssetCode) use ($resultCodes) {
+            Assert::assertContains($expectedAssetCode, $resultCodes);
+        }, $expectedAssetCodes);
 
-        Assert::assertCount(count($expectedRecordCodes), $resultCodes, 'More results found than expected');
+        Assert::assertCount(count($expectedAssetCodes), $resultCodes, 'More results found than expected');
     }
 
     /**
-     * @Then /^there should be no result on a total of (\d+) records$/
+     * @Then /^there should be no result on a total of (\d+) assets$/
      */
-    public function thereShouldBeNoResult(int $expectedTotalOfRecords)
+    public function thereShouldBeNoResult(int $expectedTotalOfAssets)
     {
         Assert::assertEquals(0, $this->result->matchesCount);
         Assert::assertEmpty($this->result->items);
-        Assert::assertEquals($expectedTotalOfRecords, $this->result->totalCount);
+        Assert::assertEquals($expectedTotalOfAssets, $this->result->totalCount);
     }
 
     /**
-     * @When the user list the records
+     * @When the user list the assets
     */
-    public function theUserListTheRecords()
+    public function theUserListTheAssets()
     {
-        $query = RecordQuery::createFromNormalized([
+        $query = AssetQuery::createFromNormalized([
             'locale' => 'en_US',
             'channel' => 'ecommerce',
             'size' => 20,
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'reference_entity',
+                    'field' => 'asset_family',
                     'operator' => '=',
                     'value' => 'designer',
                     'context' => []
@@ -186,77 +186,77 @@ final class ListRecordContext implements Context
             ]
         ]);
 
-        $this->result = ($this->searchRecord)($query);
+        $this->result = ($this->searchAsset)($query);
     }
 
-    private function loadRecord(): void
+    private function loadAsset(): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
 
         // STARCK
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = RecordIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = AssetIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString(ucfirst((string) $recordCode))
+            TextData::fromString(ucfirst((string) $assetCode))
         );
 
-        $recordStarck = Record::create(
+        $assetStarck = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([$labelValue])
         );
-        $this->recordRepository->create($recordStarck);
+        $this->assetRepository->create($assetStarck);
 
         // COCO
-        $recordCode = RecordCode::fromString('coco');
-        $identifier = RecordIdentifier::fromString('designer_coco_34aee120-fa95-4ff2-8439-bea116120e34');
+        $assetCode = AssetCode::fromString('coco');
+        $identifier = AssetIdentifier::fromString('designer_coco_34aee120-fa95-4ff2-8439-bea116120e34');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString(ucfirst((string) $recordCode))
+            TextData::fromString(ucfirst((string) $assetCode))
         );
 
-        $recordCoco = Record::create(
+        $assetCoco = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([$labelValue])
         );
-        $this->recordRepository->create($recordCoco);
+        $this->assetRepository->create($assetCoco);
 
         // DYSON
-        $recordCode = RecordCode::fromString('dyson');
-        $identifier = RecordIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
+        $assetCode = AssetCode::fromString('dyson');
+        $identifier = AssetIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString(ucfirst((string) $recordCode))
+            TextData::fromString(ucfirst((string) $assetCode))
         );
 
-        $recordDyson = Record::create(
+        $assetDyson = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([$labelValue])
         );
-        $this->recordRepository->create($recordDyson);
+        $this->assetRepository->create($assetDyson);
     }
 
-    private function loadReferenceEntity(): void
+    private function loadAssetFamily(): void
     {
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
@@ -264,6 +264,6 @@ final class ListRecordContext implements Context
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 }

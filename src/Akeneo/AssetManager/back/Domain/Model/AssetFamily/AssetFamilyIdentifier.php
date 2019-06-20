@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Webmozart\Assert\Assert;
 
@@ -19,19 +19,19 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityIdentifier
+class AssetFamilyIdentifier
 {
     /** @var string */
     private $identifier;
 
     private function __construct(string $identifier)
     {
-        Assert::stringNotEmpty($identifier, 'Reference entity identifier cannot be empty');
+        Assert::stringNotEmpty($identifier, 'Asset family identifier cannot be empty');
         Assert::maxLength(
             $identifier,
             255,
             sprintf(
-                'Reference entity identifier cannot be longer than 255 characters, %d string long given',
+                'Asset family identifier cannot be longer than 255 characters, %d string long given',
                 strlen($identifier)
             )
         );
@@ -39,7 +39,7 @@ class ReferenceEntityIdentifier
             $identifier,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
-                'Reference entity identifier may contain only letters, numbers and underscores. "%s" given',
+                'Asset family identifier may contain only letters, numbers and underscores. "%s" given',
                 $identifier
             )
         );
@@ -57,7 +57,7 @@ class ReferenceEntityIdentifier
         return $this->identifier;
     }
 
-    public function equals(ReferenceEntityIdentifier $identifier): bool
+    public function equals(AssetFamilyIdentifier $identifier): bool
     {
         return $this->identifier === (string) $identifier;
     }

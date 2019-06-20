@@ -1,4 +1,4 @@
-import {MaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
+import {MaxValue} from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
 
 describe('akeneo > attribute > domain > model > attribute > type > text --- MaxValue', () => {
   test('I can create a MaxValue from normalized', () => {

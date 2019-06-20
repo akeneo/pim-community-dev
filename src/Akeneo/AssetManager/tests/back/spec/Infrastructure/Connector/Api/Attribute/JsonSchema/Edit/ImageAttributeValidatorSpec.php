@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
 class ImageAttributeValidatorSpec extends ObjectBehavior
@@ -44,7 +44,7 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = ImageAttribute::create(
             AttributeIdentifier::create('brand', 'photo', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('photo'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(3),
@@ -72,7 +72,7 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
             'max_file_size' => '10',
             '_links' => [
                 'self' => [
-                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/photo'
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/photo'
                 ]
             ],
         ];

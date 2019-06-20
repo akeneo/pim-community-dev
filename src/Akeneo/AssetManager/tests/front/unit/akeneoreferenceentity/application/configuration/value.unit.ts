@@ -5,12 +5,12 @@ import {
   hasCellView,
   hasFilterView,
   getFilterView,
-} from 'akeneoreferenceentity/application/configuration/value';
-import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+} from 'akeneoassetmanager/application/configuration/value';
+import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 jest.mock('require-context', name => {});
 
-describe('akeneo > reference entity > application > configuration --- value', () => {
+describe('akeneo > asset family > application > configuration --- value', () => {
   test('I can get a value denormalizer', () => {
     const getValueDenormalizer = getDenormalizer({
       text: {
@@ -57,7 +57,7 @@ export const denormalize = (normalizedBooleanData: boolean) => {
     }).toThrowError(`Cannot get the value denormalizer for type "text". The configuration should look like this:
 config:
     config:
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             text:
                 denormalize: '@my_value_denormalizer'
 
@@ -112,7 +112,7 @@ export const view = (value: TextValue, onChange: (value: Value) => void) => {
     }).toThrowError(`Cannot get the data field view generator for type "text". The configuration should look like this:
 config:
     config:
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             text:
                 view: '@my_data_view'
 
@@ -164,7 +164,7 @@ export const cell = (value: NormalizedTextValue) => {
     }).toThrowError(`Cannot get the data cell view generator for type "text". The configuration should look like this:
 config:
     config:
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             text:
                 cell: '@my_data_cell_view'
 
@@ -207,7 +207,7 @@ Actual conf: ${JSON.stringify({text: {}})}`);
 
     const attribute = denormalizeTextAttribute({
       identifier: 'description_1234',
-      reference_entity_identifier: 'designer',
+      asset_family_identifier: 'designer',
       code: 'description',
       labels: {en_US: 'Description'},
       type: 'text',
@@ -253,7 +253,7 @@ export const filter = (value: NormalizedTextValue) => {
     }).toThrowError(`Cannot get the data filter view generator for type "text". The configuration should look like this:
 config:
     config:
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             text:
                 filter: '@my_data_filter_view'
 

@@ -11,28 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CreateRecordCollectionAttributeCommand extends AbstractCreateAttributeCommand
+class CreateAssetCollectionAttributeCommand extends AbstractCreateAttributeCommand
 {
     /** @var string */
-    public $recordType;
+    public $assetType;
 
     public function __construct(
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         string $code,
         array $labels,
         bool $isRequired,
         bool $valuePerChannel,
         bool $valuePerLocale,
-        $recordType
+        $assetType
     ) {
         parent::__construct(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labels,
             $isRequired,
@@ -40,6 +40,6 @@ class CreateRecordCollectionAttributeCommand extends AbstractCreateAttributeComm
             $valuePerLocale
         );
 
-        $this->recordType = $recordType;
+        $this->assetType = $assetType;
     }
 }

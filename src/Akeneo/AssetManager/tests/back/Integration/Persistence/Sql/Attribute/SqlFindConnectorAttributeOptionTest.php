@@ -11,31 +11,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
@@ -47,9 +47,9 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        $this->findConnectorAttributeOption = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option');
+        $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
+        $this->findConnectorAttributeOption = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_option');
         $this->resetDB();
     }
 
@@ -58,12 +58,12 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
      */
     public function it_finds_an_option_for_an_attribute()
     {
-        $referenceEntityIdentifier = 'reference_entity';
-        $this->createReferenceEntity($referenceEntityIdentifier);
-        $this->createConnectorAttribute($referenceEntityIdentifier);
+        $assetFamilyIdentifier = 'asset_family';
+        $this->createAssetFamily($assetFamilyIdentifier);
+        $this->createConnectorAttribute($assetFamilyIdentifier);
 
         $foundAttributeOption = $this->findConnectorAttributeOption->find(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('attribute_1_code'),
             OptionCode::fromString('french')
         );
@@ -83,7 +83,7 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
     public function it_returns_null_if_no_option_found()
     {
         $foundAttribute = $this->findConnectorAttributeOption->find(
-            ReferenceEntityIdentifier::fromString('reference_entity'),
+            AssetFamilyIdentifier::fromString('asset_family'),
             AttributeCode::fromString('none'),
             OptionCode::fromString('whatever')
         );
@@ -93,14 +93,14 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function createConnectorAttribute(string $referenceEntityIdentifier)
+    private function createConnectorAttribute(string $assetFamilyIdentifier)
     {
         $optionCollectionAttribute = OptionCollectionAttribute::create(
-            AttributeIdentifier::create($referenceEntityIdentifier, 'attribute_1', 'test'),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeIdentifier::create($assetFamilyIdentifier, 'attribute_1', 'test'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('attribute_1_code'),
             LabelCollection::fromArray(['en_US' => 'Attribute']),
             AttributeOrder::fromInteger(2),
@@ -140,18 +140,18 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
         );
     }
 
-    private function createReferenceEntity(string $rawIdentifier): ReferenceEntity
+    private function createAssetFamily(string $rawIdentifier): AssetFamily
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($rawIdentifier);
 
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             ['en_US' => $rawIdentifier],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
 
-        return $referenceEntity;
+        return $assetFamily;
     }
 }

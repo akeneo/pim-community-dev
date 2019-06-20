@@ -10,20 +10,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface RecordHydratorInterface
+interface AssetHydratorInterface
 {
     public function hydrate(
         array $row,
         ValueKeyCollection $valueKeyCollection,
         array $attributes
-    ): Record;
+    ): Asset;
 }

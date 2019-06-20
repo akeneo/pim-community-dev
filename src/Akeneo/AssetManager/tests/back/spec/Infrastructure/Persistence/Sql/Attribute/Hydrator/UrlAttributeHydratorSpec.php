@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\UrlAttributeHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\UrlAttributeHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
@@ -38,7 +38,7 @@ class UrlAttributeHydratorSpec extends ObjectBehavior
         $urlAttribute = $this->hydrate([
             'identifier' => 'shooting_ad_fingerprint',
             'code' => 'shooting',
-            'reference_entity_identifier' => 'ad',
+            'asset_family_identifier' => 'ad',
             'labels' => json_encode(['fr_FR' => 'Shooting']),
             'attribute_type' => 'url',
             'attribute_order' => '0',
@@ -58,7 +58,7 @@ class UrlAttributeHydratorSpec extends ObjectBehavior
         $urlAttribute->shouldBeAnInstanceOf(UrlAttribute::class);
         $urlAttribute->normalize()->shouldBe([
             'identifier' => 'shooting_ad_fingerprint',
-            'reference_entity_identifier' => 'ad',
+            'asset_family_identifier' => 'ad',
             'code' => 'shooting',
             'labels' => ['fr_FR' => 'Shooting'],
             'order' => 0,

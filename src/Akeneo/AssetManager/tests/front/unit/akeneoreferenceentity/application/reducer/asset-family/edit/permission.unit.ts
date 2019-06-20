@@ -1,4 +1,4 @@
-import reducer from 'akeneoreferenceentity/application/reducer/reference-entity/edit/permission';
+import reducer from 'akeneoassetmanager/application/reducer/asset-family/edit/permission';
 
 const initialState = {
   data: [],
@@ -9,7 +9,7 @@ const initialState = {
   },
 };
 
-describe('akeneo > reference entity > application > reducer > reference-entity --- permission', () => {
+describe('akeneo > asset family > application > reducer > asset-family --- permission', () => {
   test('I ignore other commands', () => {
     const newState = reducer(initialState, {
       type: 'ANOTHER_ACTION',

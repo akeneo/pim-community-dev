@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
@@ -55,7 +55,7 @@ class UploadMediaFileAction
         }
 
         $downloadMediaFileUrl = $this->router->generate(
-            'akeneo_reference_entities_media_file_rest_connector_download',
+            'akeneo_asset_manager_media_file_rest_connector_download',
             ['fileCode' => $fileInfo->getKey()],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

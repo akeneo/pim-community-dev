@@ -1,25 +1,25 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
+namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -50,12 +50,12 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         $attributeNextOrder
     ) {
         $repository->nextIdentifier(
-            Argument::type(ReferenceEntityIdentifier::class),
+            Argument::type(AssetFamilyIdentifier::class),
             Argument::type(AttributeCode::class)
         )->willReturn($identifier);
 
         $attributeNextOrder
-            ->withReferenceEntityIdentifier(ReferenceEntityIdentifier::fromString('designer'))
+            ->withAssetFamilyIdentifier(AssetFamilyIdentifier::fromString('designer'))
             ->willReturn(AttributeOrder::fromInteger(0));
 
         $textAttribute = $this->getAttribute();
@@ -92,7 +92,7 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
                 'name',
                 'test'
             ),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),

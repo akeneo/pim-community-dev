@@ -1,7 +1,7 @@
-const Header = require('../../decorators/reference-entity/app/header.decorator');
-const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
+const Header = require('../../decorators/asset-family/app/header.decorator');
+const Sidebar = require('../../decorators/asset-family/app/sidebar.decorator');
 const Modal = require('../../decorators/create/modal.decorator');
-const Records = require('../../decorators/reference-entity/edit/records.decorator');
+const Assets = require('../../decorators/asset-family/edit/assets.decorator');
 const path = require('path');
 
 const {
@@ -26,30 +26,30 @@ module.exports = async function(cucumber) {
       selector: '.modal',
       decorator: Modal,
     },
-    Records: {
+    Assets: {
       selector: '.AknDefault-mainContent',
-      decorator: Records,
+      decorator: Assets,
     },
   };
 
   const getElement = createElementDecorator(config);
 
-  const saveRecord = async function(page) {
+  const saveAsset = async function(page) {
     page.on('request', request => {
-      if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'POST' === request.method()) {
+      if ('http://pim.com/rest/asset_manager/designer/asset' === request.url() && 'POST' === request.method()) {
         answerJson(request, {}, 204);
       }
     });
   };
 
-  const listRecordUpdated = async function(page, referenceEntityIdentifier, identifier, code, labels) {
+  const listAssetUpdated = async function(page, assetFamilyIdentifier, identifier, code, labels) {
     page.on('request', request => {
-      if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'GET' === request.method()) {
+      if ('http://pim.com/rest/asset_manager/designer/asset' === request.url() && 'GET' === request.method()) {
         answerJson(request, {
           items: [
             {
               identifier: identifier,
-              reference_entity_identifier: referenceEntityIdentifier,
+              asset_family_identifier: assetFamilyIdentifier,
               code: code,
               labels: labels,
             },
@@ -62,12 +62,12 @@ module.exports = async function(cucumber) {
 
   const validationMessageShown = async function(page, message) {
     page.on('request', request => {
-      if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'POST' === request.method()) {
+      if ('http://pim.com/rest/asset_manager/designer/asset' === request.url() && 'POST' === request.method()) {
         answerJson(
           request,
           [
             {
-              messageTemplate: 'pim_reference_entity.reference_entity.validation.code.pattern',
+              messageTemplate: 'pim_asset_manager.asset_family.validation.code.pattern',
               parameters: {'{{ value }}': '\u0022invalid/identifier\u0022'},
               plural: null,
               message: message,
@@ -85,23 +85,23 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const getRecordIdentifier = function(referenceEntityIdentifier, code) {
-    return `${referenceEntityIdentifier}_${code}_123456`;
+  const getAssetIdentifier = function(assetFamilyIdentifier, code) {
+    return `${assetFamilyIdentifier}_${code}_123456`;
   };
 
-  When('the user creates a record of {string} with:', async function(referenceEntityIdentifier, updates) {
-    const record = convertItemTable(updates)[0];
+  When('the user creates a asset of {string} with:', async function(assetFamilyIdentifier, updates) {
+    const asset = convertItemTable(updates)[0];
 
     const sidebar = await await getElement(this.page, 'Sidebar');
-    await sidebar.clickOnTab('record');
+    await sidebar.clickOnTab('asset');
 
     const header = await await getElement(this.page, 'Header');
     await header.clickOnCreateButton();
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.record.create.input.code', record.code);
-    if (record.labels !== undefined && record.labels.en_US !== undefined) {
-      await modal.fillField('pim_reference_entity.record.create.input.label', record.labels.en_US);
+    await modal.fillField('pim_asset_manager.asset.create.input.code', asset.code);
+    if (asset.labels !== undefined && asset.labels.en_US !== undefined) {
+      await modal.fillField('pim_asset_manager.asset.create.input.label', asset.labels.en_US);
     }
   });
 
@@ -110,42 +110,42 @@ module.exports = async function(cucumber) {
     await modal.toggleCreateAnother();
   });
 
-  Then('the record creation form should be displayed', async function() {
+  Then('the asset creation form should be displayed', async function() {
     await this.page.waitFor(1000);
     await this.page.waitFor('.modal .AknFullPage-content .AknFieldContainer');
   });
 
-  When('the user saves the record', async function() {
+  When('the user saves the asset', async function() {
     const modal = await await getElement(this.page, 'Modal');
     await modal.save();
   });
 
-  Then('there is a record of {string} with:', async function(referenceEntityIdentifier, updates) {
-    const record = convertItemTable(updates)[0];
-    const recordIdentifier = getRecordIdentifier(referenceEntityIdentifier, record.code);
+  Then('there is a asset of {string} with:', async function(assetFamilyIdentifier, updates) {
+    const asset = convertItemTable(updates)[0];
+    const assetIdentifier = getAssetIdentifier(assetFamilyIdentifier, asset.code);
 
-    await listRecordUpdated(this.page, referenceEntityIdentifier, recordIdentifier, record.code, record.labels);
+    await listAssetUpdated(this.page, assetFamilyIdentifier, assetIdentifier, asset.code, asset.labels);
 
-    const records = await await getElement(this.page, 'Records');
-    await records.hasRecord(recordIdentifier);
+    const assets = await await getElement(this.page, 'Assets');
+    await assets.hasAsset(assetIdentifier);
 
-    if (record.labels !== undefined && record.labels.en_US !== undefined) {
-      const label = await records.getRecordLabel(recordIdentifier);
-      assert.strictEqual(label, record.labels.en_US);
+    if (asset.labels !== undefined && asset.labels.en_US !== undefined) {
+      const label = await assets.getAssetLabel(assetIdentifier);
+      assert.strictEqual(label, asset.labels.en_US);
     }
   });
 
-  Then('the record validation error will be {string}', async function(expectedMessage) {
+  Then('the asset validation error will be {string}', async function(expectedMessage) {
     await validationMessageShown(this.page, expectedMessage);
   });
 
-  Then('the record will be saved', async function() {
-    await saveRecord(this.page);
+  Then('the asset will be saved', async function() {
+    await saveAsset(this.page);
   });
 
-  Then('the user cannot create a record', async function() {
+  Then('the user cannot create a asset', async function() {
     const sidebar = await await getElement(this.page, 'Sidebar');
-    await sidebar.clickOnTab('record');
+    await sidebar.clickOnTab('asset');
 
     const header = await await getElement(this.page, 'Header');
     const isCreateButtonVisible = await header.isCreateButtonVisible();

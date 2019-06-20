@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;

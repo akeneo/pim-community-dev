@@ -1,17 +1,17 @@
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  createIdentifier as createAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {
   NormalizedAttribute,
   Attribute,
   ConcreteAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {DecimalsAllowed, NormalizedDecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
-import {MinValue, NormalizedMinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
-import {MaxValue, NormalizedMaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
+} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {DecimalsAllowed, NormalizedDecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
+import {MinValue, NormalizedMinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
+import {MaxValue, NormalizedMaxValue} from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
 
 export type NumberAdditionalProperty = DecimalsAllowed | MinValue | MaxValue;
 export type NormalizedNumberAdditionalProperty = NormalizedDecimalsAllowed | NormalizedMinValue | NormalizedMaxValue;
@@ -35,7 +35,7 @@ export class InvalidArgumentError extends Error {}
 export class ConcreteNumberAttribute extends ConcreteAttribute implements NumberAttribute {
   private constructor(
     identifier: Identifier,
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
     valuePerLocale: boolean,
@@ -48,7 +48,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
   ) {
     super(
       identifier,
-      referenceEntityIdentifier,
+      assetFamilyIdentifier,
       code,
       labelCollection,
       'number',
@@ -76,7 +76,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
   public static createFromNormalized(normalizedNumberAttribute: NormalizedNumberAttribute) {
     return new ConcreteNumberAttribute(
       createIdentifier(normalizedNumberAttribute.identifier),
-      createReferenceEntityIdentifier(normalizedNumberAttribute.reference_entity_identifier),
+      createAssetFamilyIdentifier(normalizedNumberAttribute.asset_family_identifier),
       createCode(normalizedNumberAttribute.code),
       createLabelCollection(normalizedNumberAttribute.labels),
       normalizedNumberAttribute.value_per_locale,

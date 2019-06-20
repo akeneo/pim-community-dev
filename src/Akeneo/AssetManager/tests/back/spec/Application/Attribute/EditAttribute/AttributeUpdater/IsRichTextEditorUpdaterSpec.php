@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRichTextEditorUpdater;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\IsRichTextEditorUpdater;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
 class IsRichTextEditorUpdaterSpec extends ObjectBehavior

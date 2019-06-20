@@ -1,11 +1,11 @@
 class InvalidTypeError extends Error {}
 
-export type NormalizedRecordIdentifier = string;
+export type NormalizedAssetIdentifier = string;
 
 export default class Identifier {
   private constructor(readonly identifier: string) {
     if ('string' !== typeof identifier) {
-      throw new InvalidTypeError('RecordIdentifier expects a string as parameter to be created');
+      throw new InvalidTypeError('AssetIdentifier expects a string as parameter to be created');
     }
 
     Object.freeze(this);
@@ -19,7 +19,7 @@ export default class Identifier {
     return this.identifier === identifier.identifier;
   }
 
-  public normalize(): NormalizedRecordIdentifier {
+  public normalize(): NormalizedAssetIdentifier {
     return this.identifier;
   }
 

@@ -1,4 +1,4 @@
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/identifier';
-export * from 'akeneoreferenceentity/domain/model/identifier';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/identifier';
+export * from 'akeneoassetmanager/domain/model/identifier';
 
-export default ReferenceEntityIdentifier;
+export default AssetFamilyIdentifier;

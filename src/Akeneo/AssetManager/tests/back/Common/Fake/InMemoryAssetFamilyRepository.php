@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityCreatedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInterface
+class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
 {
-    /** @var ReferenceEntity[] */
-    private $referenceEntities = [];
+    /** @var AssetFamily[] */
+    private $assetFamilies = [];
 
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
@@ -37,65 +37,65 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function create(ReferenceEntity $referenceEntity): void
+    public function create(AssetFamily $assetFamily): void
     {
-        if (isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
-            throw new \RuntimeException('Reference entity already exists');
+        if (isset($this->assetFamilies[(string) $assetFamily->getIdentifier()])) {
+            throw new \RuntimeException('Asset family already exists');
         }
-        $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
+        $this->assetFamilies[(string) $assetFamily->getIdentifier()] = $assetFamily;
 
         $this->eventDispatcher->dispatch(
-            ReferenceEntityCreatedEvent::class,
-            new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier())
+            AssetFamilyCreatedEvent::class,
+            new AssetFamilyCreatedEvent($assetFamily->getIdentifier())
         );
     }
 
-    public function update(ReferenceEntity $referenceEntity): void
+    public function update(AssetFamily $assetFamily): void
     {
-        if (!isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
-            throw new \RuntimeException('Expected to save one reference entity, but none was saved');
+        if (!isset($this->assetFamilies[(string) $assetFamily->getIdentifier()])) {
+            throw new \RuntimeException('Expected to save one asset family, but none was saved');
         }
-        $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
+        $this->assetFamilies[(string) $assetFamily->getIdentifier()] = $assetFamily;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity
+    public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily
     {
-        $referenceEntity = $this->referenceEntities[(string) $identifier] ?? null;
-        if (null === $referenceEntity) {
-            throw ReferenceEntityNotFoundException::withIdentifier($identifier);
+        $assetFamily = $this->assetFamilies[(string) $identifier] ?? null;
+        if (null === $assetFamily) {
+            throw AssetFamilyNotFoundException::withIdentifier($identifier);
         }
 
-        return $referenceEntity;
+        return $assetFamily;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void
+    public function deleteByIdentifier(AssetFamilyIdentifier $identifier): void
     {
-        $referenceEntity = $this->referenceEntities[(string) $identifier] ?? null;
-        if (null === $referenceEntity) {
-            throw ReferenceEntityNotFoundException::withIdentifier($identifier);
+        $assetFamily = $this->assetFamilies[(string) $identifier] ?? null;
+        if (null === $assetFamily) {
+            throw AssetFamilyNotFoundException::withIdentifier($identifier);
         }
 
-        unset($this->referenceEntities[(string) $identifier]);
+        unset($this->assetFamilies[(string) $identifier]);
     }
 
     public function count(): int
     {
-        return count($this->referenceEntities);
+        return count($this->assetFamilies);
     }
 
-    public function hasReferenceEntity(ReferenceEntityIdentifier $identifier): bool
+    public function hasAssetFamily(AssetFamilyIdentifier $identifier): bool
     {
-        return isset($this->referenceEntities[(string) $identifier]);
+        return isset($this->assetFamilies[(string) $identifier]);
     }
 
     public function all(): \Iterator
     {
-        return new \ArrayIterator(array_values($this->referenceEntities));
+        return new \ArrayIterator(array_values($this->assetFamilies));
     }
 }

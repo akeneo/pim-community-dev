@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\Subscribers;
+namespace Akeneo\AssetManager\Application\AssetFamily\Subscribers;
 
-use Akeneo\ReferenceEntity\Domain\Event\BeforeAttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Domain\Event\BeforeAttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -25,12 +25,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class SetNullOnDefaultAttributesDeletionSubscriber implements EventSubscriberInterface
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
-    public function __construct(ReferenceEntityRepositoryInterface $referenceEntityRepository)
+    public function __construct(AssetFamilyRepositoryInterface $assetFamilyRepository)
     {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
     /**
      * {@inheritdoc}
@@ -44,19 +44,19 @@ class SetNullOnDefaultAttributesDeletionSubscriber implements EventSubscriberInt
 
     public function beforeAttributeAsLabelOrImageIsDeleted(BeforeAttributeDeletedEvent $beforeAttributeDeletedEvent): void
     {
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($beforeAttributeDeletedEvent->getReferenceEntityIdentifier());
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($beforeAttributeDeletedEvent->getAssetFamilyIdentifier());
 
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
-        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
+        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
+        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
 
         if (!$attributeAsLabel->isEmpty() && $beforeAttributeDeletedEvent->getAttributeIdentifier()->equals($attributeAsLabel->getIdentifier())) {
-            $referenceEntity->updateAttributeAsLabelReference(AttributeAsLabelReference::noReference());
+            $assetFamily->updateAttributeAsLabelReference(AttributeAsLabelReference::noReference());
         }
 
         if (!$attributeAsImage->isEmpty() && $beforeAttributeDeletedEvent->getAttributeIdentifier()->equals($attributeAsImage->getIdentifier())) {
-            $referenceEntity->updateAttributeAsImageReference(AttributeAsImageReference::noReference());
+            $assetFamily->updateAttributeAsImageReference(AttributeAsImageReference::noReference());
         }
 
-        $this->referenceEntityRepository->update($referenceEntity);
+        $this->assetFamilyRepository->update($assetFamily);
     }
 }

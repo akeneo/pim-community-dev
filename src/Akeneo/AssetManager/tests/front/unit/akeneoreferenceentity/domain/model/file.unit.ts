@@ -1,6 +1,6 @@
-import File, {createFile, createEmptyFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+import File, {createFile, createEmptyFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 
-describe('akeneo > reference entity > domain > model --- file', () => {
+describe('akeneo > asset family > domain > model --- file', () => {
   test('I can create a new uploaded file', () => {
     expect(createFile('file/path.png', 'my_filename.png').normalize()).toEqual({
       originalFilename: 'my_filename.png',

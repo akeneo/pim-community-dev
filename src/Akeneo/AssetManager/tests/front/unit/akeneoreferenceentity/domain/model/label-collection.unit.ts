@@ -1,6 +1,6 @@
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
-describe('akeneo > reference entity > domain > model --- label collection', () => {
+describe('akeneo > asset family > domain > model --- label collection', () => {
   test('I can create a new label collection with some values', () => {
     expect(createLabelCollection({en_US: 'Michel'})).toEqual(createLabelCollection({en_US: 'Michel'}));
   });

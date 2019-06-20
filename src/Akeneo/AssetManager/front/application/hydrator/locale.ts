@@ -1,5 +1,5 @@
-import Locale, {denormalizeLocale} from 'akeneoreferenceentity/domain/model/locale';
-import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
+import Locale, {denormalizeLocale} from 'akeneoassetmanager/domain/model/locale';
+import {validateKeys} from 'akeneoassetmanager/application/hydrator/hydrator';
 
 export const hydrator = (denormalizeLocale: (normalizedLocale: any) => Locale) => (normalizedLocale: any): Locale => {
   const expectedKeys = ['code', 'label', 'region', 'language'];

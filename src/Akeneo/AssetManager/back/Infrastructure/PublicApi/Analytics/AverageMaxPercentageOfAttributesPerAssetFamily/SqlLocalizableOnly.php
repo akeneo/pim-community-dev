@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily;
 
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxVolumes;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxVolumes;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -25,14 +25,14 @@ class SqlLocalizableOnly
     {
         $sql = <<<SQL
 SELECT 
-	MAX(number_of_localizable_only_attributes_per_reference_entity * 100 / number_of_attributes) as max,
-	CEIL(AVG(number_of_localizable_only_attributes_per_reference_entity * 100 / number_of_attributes)) as average
+  MAX(number_of_localizable_only_attributes_per_asset_family * 100 / number_of_attributes) as max,
+  CEIL(AVG(number_of_localizable_only_attributes_per_asset_family * 100 / number_of_attributes)) as average
 FROM (
-	SELECT reference_entity_identifier,
-	       SUM(value_per_locale = 1 AND value_per_channel = 0) as number_of_localizable_only_attributes_per_reference_entity,
-	       COUNT(*) as number_of_attributes
-	FROM akeneo_reference_entity_attribute 
-	GROUP BY reference_entity_identifier
+  SELECT asset_family_identifier,
+         SUM(value_per_locale = 1 AND value_per_channel = 0) as number_of_localizable_only_attributes_per_asset_family,
+         COUNT(*) as number_of_attributes
+  FROM akeneo_asset_manager_attribute 
+  GROUP BY asset_family_identifier
 ) AS rec;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();

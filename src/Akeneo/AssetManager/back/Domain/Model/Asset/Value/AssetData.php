@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Webmozart\Assert\Assert;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class RecordData implements ValueDataInterface
+class AssetData implements ValueDataInterface
 {
     /** @var string */
-    private $recordCode;
+    private $assetCode;
 
-    private function __construct(string $recordCode)
+    private function __construct(string $assetCode)
     {
-        Assert::stringNotEmpty($recordCode, 'Record code should be a non empty string');
+        Assert::stringNotEmpty($assetCode, 'Asset code should be a non empty string');
 
-        $this->recordCode = $recordCode;
+        $this->assetCode = $assetCode;
     }
 
     /**
@@ -37,7 +37,7 @@ class RecordData implements ValueDataInterface
      */
     public function normalize()
     {
-        return $this->recordCode;
+        return $this->assetCode;
     }
 
     public static function createFromNormalize($normalizedData): ValueDataInterface
@@ -47,8 +47,8 @@ class RecordData implements ValueDataInterface
         return new self($normalizedData);
     }
 
-    public static function fromRecordCode(RecordCode $recordCode): RecordData
+    public static function fromAssetCode(AssetCode $assetCode): AssetData
     {
-        return new self((string) $recordCode);
+        return new self((string) $assetCode);
     }
 }

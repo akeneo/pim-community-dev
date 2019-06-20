@@ -1,179 +1,179 @@
-akeneo_reference_entities_reference_entity_index:
-    path: '/reference_entity'
+akeneo_asset_manager_asset_family_index:
+    path: '/asset'
 
-akeneo_reference_entities_reference_entity_edit:
-    path: '/reference_entity/{identifier}/{tab}'
+akeneo_asset_manager_asset_family_edit:
+    path: '/asset/{identifier}/{tab}'
 
-akeneo_reference_entities_record_edit:
-    path: '/reference_entity/{referenceEntityIdentifier}/record/{recordCode}/{tab}'
+akeneo_asset_manager_asset_edit:
+    path: '/asset/{assetFamilyIdentifier}/asset/{assetCode}/{tab}'
 
-akeneo_reference_entities_reference_entity_index_rest:
-    path: '/rest/reference_entity'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.index }
+akeneo_asset_manager_asset_family_index_rest:
+    path: '/rest/asset_manager'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.index }
     methods: [GET]
 
-akeneo_reference_entities_reference_entity_create_rest:
-    path: '/rest/reference_entity'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.create }
+akeneo_asset_manager_asset_family_create_rest:
+    path: '/rest/asset_manager'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.create }
     methods: [POST]
 
-akeneo_reference_entities_reference_entity_get_rest:
-    path: '/rest/reference_entity/{identifier}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.get }
+akeneo_asset_manager_asset_family_get_rest:
+    path: '/rest/asset_manager/{identifier}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.get }
     methods: [GET]
 
-akeneo_reference_entities_reference_entity_edit_rest:
-    path: '/rest/reference_entity/{identifier}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.edit }
+akeneo_asset_manager_asset_family_edit_rest:
+    path: '/rest/asset_manager/{identifier}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.edit }
     methods: [POST]
 
-akeneo_reference_entities_reference_entity_delete_rest:
-    path: '/rest/reference_entity/{identifier}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.delete }
+akeneo_asset_manager_asset_family_delete_rest:
+    path: '/rest/asset_manager/{identifier}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.delete }
     methods: [DELETE]
 
-akeneo_reference_entities_record_index_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/record'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.index }
+akeneo_asset_manager_asset_index_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/asset'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.index }
     methods: [PUT] # We need this to pass the filters in the body of the request
 
-akeneo_reference_entities_record_create_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/record'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.create }
+akeneo_asset_manager_asset_create_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/asset'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.create }
     methods: [POST]
 
-akeneo_reference_entities_record_get_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/record/{recordCode}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.get }
+akeneo_asset_manager_asset_get_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/asset/{assetCode}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.get }
     methods: [GET]
 
-akeneo_reference_entities_record_edit_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/record/{recordCode}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.edit }
+akeneo_asset_manager_asset_edit_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/asset/{assetCode}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.edit }
     methods: [POST]
 
-akeneo_reference_entities_record_delete_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/record/{recordCode}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.delete }
+akeneo_asset_manager_asset_delete_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/asset/{assetCode}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.delete }
     methods: [DELETE]
 
-akeneo_reference_entities_record_delete_all_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/records'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.delete_all }
+akeneo_asset_manager_asset_delete_all_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/assets'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.delete_all }
     methods: [DELETE]
 
-akeneo_reference_entities_attribute_index_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.index }
+akeneo_asset_manager_attribute_index_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/attribute'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.attribute.index }
     methods: [GET]
 
-akeneo_reference_entities_attribute_create_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.create }
+akeneo_asset_manager_attribute_create_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/attribute'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.attribute.create }
     methods: [POST]
 
-akeneo_reference_entities_attribute_delete_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute/{attributeIdentifier}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.delete }
+akeneo_asset_manager_attribute_delete_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/attribute/{attributeIdentifier}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.attribute.delete }
     methods: [DELETE]
 
-akeneo_reference_entities_attribute_edit_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute/{attributeIdentifier}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.edit }
+akeneo_asset_manager_attribute_edit_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/attribute/{attributeIdentifier}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.attribute.edit }
     methods: [POST]
 
-akeneo_reference_entities_reference_entity_permission_set_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/permissions'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity_permission.set }
+akeneo_asset_manager_asset_family_permission_set_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/permissions'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family_permission.set }
     methods: [POST]
 
-akeneo_reference_entities_reference_entity_permission_get_rest:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/permissions'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity_permission.get }
+akeneo_asset_manager_asset_family_permission_get_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/permissions'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family_permission.get }
     methods: [GET]
 
-akeneo_reference_entities_product_get_linked_product:
-    path: '/rest/reference_entity/{referenceEntityIdentifier}/record/{recordCode}/product/{attributeCode}'
-    defaults: { _controller: pimee.reference_entity.enrichment.product.get_products_linked_to_a_record_action }
+akeneo_asset_manager_product_get_linked_product:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/asset/{assetCode}/product/{attributeCode}'
+    defaults: { _controller: pimee.asset_manager.enrichment.product.get_products_linked_to_a_asset_action }
     methods: [GET]
 
-akeneo_reference_entities_image_preview:
-    path: '/rest/reference_entity/image_preview/{data}/{attributeIdentifier}/{type}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.image_preview }
+akeneo_asset_manager_image_preview:
+    path: '/rest/asset_manager/image_preview/{data}/{attributeIdentifier}/{type}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.image_preview }
     methods: [GET]
 
 # API Connector
-akeneo_reference_entities_reference_entity_rest_connector_get:
-    path: '/api/rest/v1/reference-entities/{code}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity.get }
+akeneo_asset_manager_asset_family_rest_connector_get:
+    path: '/api/rest/v1/asset-families/{code}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_family.get }
     methods: [GET]
 
-akeneo_reference_entities_reference_entities_rest_connector_get:
-    path: '/api/rest/v1/reference-entities'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entities.get }
+akeneo_asset_manager_asset_families_rest_connector_get:
+    path: '/api/rest/v1/asset-families'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_families.get }
 
-akeneo_reference_entities_reference_entity_rest_connector_create_or_update:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity.create_or_update }
+akeneo_asset_manager_asset_family_rest_connector_create_or_update:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_family.create_or_update }
 
-akeneo_reference_entities_reference_entity_attributes_rest_connector_get:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get }
+akeneo_asset_manager_asset_family_attributes_rest_connector_get:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/attributes'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_family_attributes.get }
     methods: [GET]
 
-akeneo_reference_entities_reference_entity_attribute_rest_connector_get:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{code}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.get }
+akeneo_asset_manager_asset_family_attribute_rest_connector_get:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/attributes/{code}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute.get }
     methods: [GET]
 
-akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeCode}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.create_or_update }
+akeneo_asset_manager_asset_family_attribute_rest_connector_create_or_update:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/attributes/{attributeCode}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute.create_or_update }
     methods: [PATCH]
 
-akeneo_reference_entities_reference_entity_attribute_option_rest_connector_create_or_update:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeCode}/options/{optionCode}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.create_or_update }
+akeneo_asset_manager_asset_family_attribute_option_rest_connector_create_or_update:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/attributes/{attributeCode}/options/{optionCode}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_option.create_or_update }
     methods: [PATCH]
 
-akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeCode}/options/{optionCode}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get }
+akeneo_asset_manager_asset_family_attribute_option_rest_connector_get:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/attributes/{attributeCode}/options/{optionCode}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_option.get }
     methods: [GET]
 
-akeneo_reference_entities_reference_entity_attribute_options_rest_connector_get:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeCode}/options'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_options.get }
+akeneo_asset_manager_asset_family_attribute_options_rest_connector_get:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/attributes/{attributeCode}/options'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_options.get }
     methods: [GET]
 
-akeneo_reference_entities_record_rest_connector_get:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records/{code}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.record.get }
+akeneo_asset_manager_asset_rest_connector_get:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/assets/{code}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset.get }
     methods: [GET]
 
-akeneo_reference_entities_records_rest_connector_get:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.records.get }
+akeneo_asset_manager_assets_rest_connector_get:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/assets'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.assets.get }
     methods: [GET]
 
-akeneo_reference_entities_media_file_rest_connector_download:
-    path: '/api/rest/v1/reference-entities-media-files/{fileCode}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.media_file_download }
+akeneo_asset_manager_media_file_rest_connector_download:
+    path: '/api/rest/v1/asset-families-media-files/{fileCode}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.media_file_download }
     methods: [GET]
     requirements:
         fileCode: ([a-zA-Z0-9_./]+)
 
-akeneo_reference_entities_media_file_rest_connector_upload:
-    path: '/api/rest/v1/reference-entities-media-files'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.media_file_upload }
+akeneo_asset_manager_media_file_rest_connector_upload:
+    path: '/api/rest/v1/asset-families-media-files'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.media_file_upload }
     methods: [POST]
 
-akeneo_reference_entities_record_rest_connector_create_or_update:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records/{code}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.record.create_or_update }
+akeneo_asset_manager_asset_rest_connector_create_or_update:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/assets/{code}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset.create_or_update }
     methods: [PATCH]
 
-akeneo_reference_entities_records_rest_connector_create_or_update:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.records.create_or_update }
+akeneo_asset_manager_assets_rest_connector_create_or_update:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/assets'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.assets.create_or_update }
     methods: [PATCH]

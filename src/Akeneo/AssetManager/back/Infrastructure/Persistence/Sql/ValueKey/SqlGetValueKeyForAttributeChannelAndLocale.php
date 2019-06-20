@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\ValueKey;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\ValueKey\GetValueKeyForAttributeChannelAndLocaleInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Query\ValueKey\GetValueKeyForAttributeChannelAndLocaleInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -47,7 +47,7 @@ class SqlGetValueKeyForAttributeChannelAndLocale implements GetValueKeyForAttrib
                 FROM
                     (
                         SELECT identifier, value_per_channel, value_per_locale
-                        FROM akeneo_reference_entity_attribute
+                        FROM akeneo_asset_manager_attribute
                         WHERE identifier = :attribute_identifier
                     ) as a
                     LEFT JOIN (SELECT code FROM pim_catalog_channel WHERE code = :channel_identifier) c ON value_per_channel = 1 AND value_per_locale = 0

@@ -2,133 +2,133 @@ config:
     config:
         pim/controller-registry:
             controllers:
-                akeneo_reference_entities_reference_entity_index:
-                    module: pim/controller/reference-entity/list
-                akeneo_reference_entities_reference_entity_edit:
-                    module: pim/controller/reference-entity/edit
-                akeneo_reference_entities_record_edit:
-                    module: pim/controller/record/edit
+                akeneo_asset_manager_asset_family_index:
+                    module: pim/controller/asset-family/list
+                akeneo_asset_manager_asset_family_edit:
+                    module: pim/controller/asset-family/edit
+                akeneo_asset_manager_asset_edit:
+                    module: pim/controller/asset/edit
 
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             image:
-                denormalize: '@akeneoreferenceentity/domain/model/record/data/file'
-                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/file.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/cell/image.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/file'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/file.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/image.tsx'
             text:
-                denormalize: '@akeneoreferenceentity/domain/model/record/data/text'
-                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/cell/text.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/text'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/text.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/text.tsx'
             number:
-                denormalize: '@akeneoreferenceentity/domain/model/record/data/number'
-                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/number.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/cell/number.tsx'
-            record:
-                denormalize: '@akeneoreferenceentity/domain/model/record/data/record'
-                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/cell/record.tsx'
-                filter: '@akeneoreferenceentity/application/component/record/index/filter/record.tsx'
-            record_collection:
-                denormalize: '@akeneoreferenceentity/domain/model/record/data/record-collection'
-                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record-collection.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/cell/record-collection.tsx'
-                filter: '@akeneoreferenceentity/application/component/record/index/filter/record.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/number'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/number.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/number.tsx'
+            asset:
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/asset'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/asset.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/asset.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/index/filter/asset.tsx'
+            asset_collection:
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/asset-collection'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/asset-collection.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/asset-collection.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/index/filter/asset.tsx'
             option:
-                denormalize: '@akeneoreferenceentity/domain/model/record/data/option'
-                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/cell/option.tsx'
-                filter: '@akeneoreferenceentity/application/component/record/index/filter/option.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/option'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/option.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
             option_collection:
-                denormalize: '@akeneoreferenceentity/domain/model/record/data/option-collection'
-                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option-collection.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/cell/option-collection.tsx'
-                filter: '@akeneoreferenceentity/application/component/record/index/filter/option.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/option-collection'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option-collection.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/option-collection.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
 
-        akeneoreferenceentity/application/configuration/attribute:
+        akeneoassetmanager/application/configuration/attribute:
             image:
                 icon: bundles/pimui/images/attribute/icon-image.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/image'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/image'
-                view: '@akeneoreferenceentity/application/component/attribute/edit/image.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/image'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/image'
+                view: '@akeneoassetmanager/application/component/attribute/edit/image.tsx'
             text:
                 icon: bundles/pimui/images/attribute/icon-text.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
-                view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/text'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/text'
+                view: '@akeneoassetmanager/application/component/attribute/edit/text.tsx'
             number:
                 icon: bundles/pimui/images/attribute/icon-number.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/number'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/number'
-                view: '@akeneoreferenceentity/application/component/attribute/edit/number.tsx'
-            record:
-                icon: bundles/pimui/images/attribute/icon-reference-entity.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
-                view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
-            record_collection:
-                icon: bundles/pimui/images/attribute/icon-reference-entity-multiple.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record-collection'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
-                view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/number'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/number'
+                view: '@akeneoassetmanager/application/component/attribute/edit/number.tsx'
+            asset:
+                icon: bundles/pimui/images/attribute/icon-asset-family.svg
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/asset'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/asset'
+                view: '@akeneoassetmanager/application/component/attribute/edit/asset.tsx'
+            asset_collection:
+                icon: bundles/pimui/images/attribute/icon-asset-family-multiple.svg
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/asset-collection'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/asset'
+                view: '@akeneoassetmanager/application/component/attribute/edit/asset.tsx'
             option:
                 icon: bundles/pimui/images/attribute/icon-select.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
-                view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/option'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/option'
+                view: '@akeneoassetmanager/application/component/attribute/edit/option.tsx'
             option_collection:
                 icon: bundles/pimui/images/attribute/icon-multiselect.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option-collection'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
-                view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/option-collection'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/option'
+                view: '@akeneoassetmanager/application/component/attribute/edit/option.tsx'
 
-        akeneoreferenceentity/application/configuration/sidebar:
-            akeneo_reference_entities_reference_entity_edit:
+        akeneoassetmanager/application/configuration/sidebar:
+            akeneo_asset_manager_asset_family_edit:
                 tabs:
-                    record:
-                        label: '@akeneoreferenceentity/application/component/reference-entity/edit/record'
-                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/record'
+                    asset:
+                        label: '@akeneoassetmanager/application/component/asset-family/edit/asset'
+                        view: '@akeneoassetmanager/application/component/asset-family/edit/asset'
                     attribute:
-                        label: pim_reference_entity.reference_entity.tab.attribute
-                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/attribute'
+                        label: pim_asset_manager.asset_family.tab.attribute
+                        view: '@akeneoassetmanager/application/component/asset-family/edit/attribute'
                     property:
-                        label: pim_reference_entity.reference_entity.tab.properties
-                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/properties'
+                        label: pim_asset_manager.asset_family.tab.properties
+                        view: '@akeneoassetmanager/application/component/asset-family/edit/properties'
                     permission:
-                        label: pim_reference_entity.reference_entity.tab.permission
-                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/permission'
-            akeneo_reference_entities_record_edit:
+                        label: pim_asset_manager.asset_family.tab.permission
+                        view: '@akeneoassetmanager/application/component/asset-family/edit/permission'
+            akeneo_asset_manager_asset_edit:
                 tabs:
                     enrich:
-                        label: pim_reference_entity.record.tab.enrich
-                        view: '@akeneoreferenceentity/application/component/record/edit/enrich'
+                        label: pim_asset_manager.asset.tab.enrich
+                        view: '@akeneoassetmanager/application/component/asset/edit/enrich'
                     product:
-                        label: pim_reference_entity.record.tab.product
-                        view: '@akeneoreferenceentity/application/component/record/edit/product'
-                        acl: akeneo_referenceentity_record_list_product
+                        label: pim_asset_manager.asset.tab.product
+                        view: '@akeneoassetmanager/application/component/asset/edit/product'
+                        acl: akeneo_assetmanager_asset_list_product
 
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
-                akeneo_reference_entity_collection:
-                    create: pim-attribute-form-reference-entity
-                    edit:   pim-attribute-form-reference-entity
-                akeneo_reference_entity:
-                    create: pim-attribute-form-reference-entity
-                    edit:   pim-attribute-form-reference-entity
+                akeneo_asset_multiple_link:
+                    create: pim-attribute-form-asset
+                    edit:   pim-attribute-form-asset
+                akeneo_asset_single_link:
+                    create: pim-attribute-form-asset
+                    edit:   pim-attribute-form-asset
         pim/form/common/attributes/create-button:
             attribute_icons:
-                akeneo_reference_entity_collection: reference-entity-multiple
-                akeneo_reference_entity: reference-entity
+                akeneo_asset_multiple_link: asset-multiple-link
+                akeneo_asset_single_link: asset-single-link
 
     paths:
-        pim/controller/reference-entity/list: akeneoreferenceentity/infrastructure/controller/reference-entity/list.tsx
-        pim/controller/reference-entity/edit: akeneoreferenceentity/infrastructure/controller/reference-entity/edit.tsx
-        pim/controller/record/edit: akeneoreferenceentity/infrastructure/controller/record/edit.tsx
+        pim/controller/asset-family/list: akeneoassetmanager/infrastructure/controller/asset-family/list.tsx
+        pim/controller/asset-family/edit: akeneoassetmanager/infrastructure/controller/asset-family/edit.tsx
+        pim/controller/asset/edit: akeneoassetmanager/infrastructure/controller/asset/edit.tsx
 
-        pim/attribute-edit-form/properties/reference-entity: akeneoreferenceentity/infrastructure/attribute/reference-entity-field.ts
-        pim/reference-entity-collection-field: akeneoreferenceentity/infrastructure/product/reference-entity-collection-field.tsx
-        pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.tsx
+        pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-single-link-field.ts
+        pim/asset-multiple-link-field: akeneoassetmanager/infrastructure/product/asset-multiple-link-field.tsx
+        pim/asset-single-link-field: akeneoassetmanager/infrastructure/product/asset-single-link-field.tsx
 
-        oro/datafilter/reference-entity-collection-filter: akeneoreferenceentity/infrastructure/product-grid/filter/attribute/reference-entity-collection
+        oro/datafilter/asset-multiple-link-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
 
-        pim/form/common/fields/values/reference-entity: akeneoreferenceentity/infrastructure/product/axis/reference-entity.js
+        pim/form/common/fields/values/asset: akeneoassetmanager/infrastructure/product/axis/asset.js
 
-        pimee/filter/attribute/reference-entity-collection: pimenterpriseui/js/filter/attribute/reference-entity-collection
+        pimee/filter/attribute/asset-family-collection: pimenterpriseui/js/filter/attribute/asset-family-collection

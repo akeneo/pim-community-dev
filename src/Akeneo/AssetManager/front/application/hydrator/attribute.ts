@@ -1,13 +1,13 @@
-import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
-import denormalize from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {validateKeys} from 'akeneoassetmanager/application/hydrator/hydrator';
+import denormalize from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 
 export const hydrator = (denormalize: (normalizedAttribute: NormalizedAttribute) => Attribute) => (
   normalizedAttribute: any
 ): Attribute => {
   const expectedKeys = [
     'identifier',
-    'reference_entity_identifier',
+    'asset_family_identifier',
     'code',
     'labels',
     'is_required',

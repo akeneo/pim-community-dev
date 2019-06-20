@@ -1,73 +1,73 @@
-import RecordFetcher from 'akeneoreferenceentity/domain/fetcher/record';
-import {Query, SearchResult} from 'akeneoreferenceentity/domain/fetcher/fetcher';
-import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import hydrator from 'akeneoreferenceentity/application/hydrator/record';
-import {getJSON, putJSON} from 'akeneoreferenceentity/tools/fetch';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
-import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
+import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
+import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import Asset, {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import hydrator from 'akeneoassetmanager/application/hydrator/asset';
+import {getJSON, putJSON} from 'akeneoassetmanager/tools/fetch';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
+import {Filter} from 'akeneoassetmanager/application/reducer/grid';
+import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
 const routing = require('routing');
 
 class InvalidArgument extends Error {}
 
-export type RecordResult = {
-  record: Record;
-  permission: ReferenceEntityPermission;
+export type AssetResult = {
+  asset: Asset;
+  permission: AssetFamilyPermission;
 };
 
-export class RecordFetcherImplementation implements RecordFetcher {
-  private recordsByCodesCache: {
-    [key: string]: Promise<SearchResult<NormalizedRecord>>;
+export class AssetFetcherImplementation implements AssetFetcher {
+  private assetsByCodesCache: {
+    [key: string]: Promise<SearchResult<NormalizedAsset>>;
   } = {};
 
-  async fetch(referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode): Promise<RecordResult> {
-    const backendRecord = await getJSON(
-      routing.generate('akeneo_reference_entities_record_get_rest', {
-        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
-        recordCode: recordCode.stringValue(),
+  async fetch(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<AssetResult> {
+    const backendAsset = await getJSON(
+      routing.generate('akeneo_asset_manager_asset_get_rest', {
+        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
+        assetCode: assetCode.stringValue(),
       })
     ).catch(errorHandler);
 
     return {
-      record: hydrator(backendRecord),
+      asset: hydrator(backendAsset),
       permission: {
-        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
-        edit: backendRecord.permission.edit,
+        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
+        edit: backendAsset.permission.edit,
       },
     };
   }
 
-  async search(query: Query): Promise<SearchResult<NormalizedRecord>> {
-    const referenceEntityCode = query.filters.find((filter: Filter) => 'reference_entity' === filter.field);
-    if (undefined === referenceEntityCode) {
-      throw new InvalidArgument('The search repository expects a reference_entity filter');
+  async search(query: Query): Promise<SearchResult<NormalizedAsset>> {
+    const assetFamilyCode = query.filters.find((filter: Filter) => 'asset_family' === filter.field);
+    if (undefined === assetFamilyCode) {
+      throw new InvalidArgument('The search repository expects a asset_family filter');
     }
 
-    const backendRecords = await putJSON(
-      routing.generate('akeneo_reference_entities_record_index_rest', {
-        referenceEntityIdentifier: referenceEntityCode.value,
+    const backendAssets = await putJSON(
+      routing.generate('akeneo_asset_manager_asset_index_rest', {
+        assetFamilyIdentifier: assetFamilyCode.value,
       }),
       query
     ).catch(errorHandler);
 
     return {
-      items: backendRecords.items,
-      matchesCount: backendRecords.matches_count,
-      totalCount: backendRecords.total_count,
+      items: backendAssets.items,
+      matchesCount: backendAssets.matches_count,
+      totalCount: backendAssets.total_count,
     };
   }
 
   async fetchByCodes(
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
-    recordCodes: RecordCode[],
+    assetFamilyIdentifier: AssetFamilyIdentifier,
+    assetCodes: AssetCode[],
     context: {
       channel: string;
       locale: string;
     },
     cached: boolean = false
-  ): Promise<NormalizedRecord[]> {
+  ): Promise<NormalizedAsset[]> {
     const query = {
       channel: context.channel,
       locale: context.locale,
@@ -75,25 +75,25 @@ export class RecordFetcherImplementation implements RecordFetcher {
       page: 0,
       filters: [
         {
-          field: 'reference_entity',
+          field: 'asset_family',
           operator: '=',
-          value: referenceEntityIdentifier.stringValue(),
+          value: assetFamilyIdentifier.stringValue(),
         },
         {
           field: 'code',
           operator: 'IN',
-          value: recordCodes.map((recordCode: RecordCode) => recordCode.stringValue()),
+          value: assetCodes.map((assetCode: AssetCode) => assetCode.stringValue()),
         },
       ],
     };
 
     const queryHash = JSON.stringify(query);
-    if (!cached || undefined === this.recordsByCodesCache[queryHash]) {
-      this.recordsByCodesCache[queryHash] = this.search(query);
+    if (!cached || undefined === this.assetsByCodesCache[queryHash]) {
+      this.assetsByCodesCache[queryHash] = this.search(query);
     }
 
-    return (await this.recordsByCodesCache[queryHash]).items;
+    return (await this.assetsByCodesCache[queryHash]).items;
   }
 }
 
-export default new RecordFetcherImplementation();
+export default new AssetFetcherImplementation();

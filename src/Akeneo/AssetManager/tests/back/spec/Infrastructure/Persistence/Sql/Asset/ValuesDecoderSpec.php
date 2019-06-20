@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\ValuesDecoder;
+use Akeneo\AssetManager\back\Infrastructure\Persistence\Sql\Asset\ValuesDecoder;
 use PhpSpec\ObjectBehavior;
 
 class ValuesDecoderSpec extends ObjectBehavior

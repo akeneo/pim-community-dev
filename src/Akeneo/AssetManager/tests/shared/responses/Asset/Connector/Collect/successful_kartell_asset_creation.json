@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "PATCH",
-        "route": "akeneo_reference_entities_record_rest_connector_create_or_update",
+        "route": "akeneo_asset_manager_asset_rest_connector_create_or_update",
         "query": {
-            "referenceEntityIdentifier": "brand",
+            "assetFamilyIdentifier": "brand",
             "code": "kartell"
         },
         "body": {
@@ -40,7 +40,7 @@
         "status": 201,
         "body": "",
         "headers": {
-            "location": "http://localhost/api/rest/v1/reference-entities/brand/records/kartell"
+            "location": "http://localhost/api/rest/v1/asset-families/brand/assets/kartell"
         }
     }
 }

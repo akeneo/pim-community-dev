@@ -1,29 +1,29 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import __ from 'akeneoreferenceentity/tools/translator';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import __ from 'akeneoassetmanager/tools/translator';
 import {
-  denormalizeReferenceEntity,
-  NormalizedReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import PermissionCollectionEditor from 'akeneoreferenceentity/tools/component/permission';
-import {FormState} from 'akeneoreferenceentity/application/reducer/state';
-import {permissionEditionUpdated} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
+  denormalizeAssetFamily,
+  NormalizedAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
+import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permission';
+import {FormState} from 'akeneoassetmanager/application/reducer/state';
+import {permissionEditionUpdated} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {
   RightLevel,
   denormalizePermissionCollection,
   PermissionCollection,
-} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
-import {savePermission} from 'akeneoreferenceentity/application/action/reference-entity/permission';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+} from 'akeneoassetmanager/domain/model/asset-family/permission';
+import {savePermission} from 'akeneoassetmanager/application/action/asset-family/permission';
+import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 const routing = require('routing');
 
 interface StateProps {
-  referenceEntity: NormalizedReferenceEntity;
+  assetFamily: NormalizedAssetFamily;
   permission: {
     data: PermissionCollection;
     state: FormState;
@@ -32,7 +32,7 @@ interface StateProps {
     locale: string;
   };
   rights: {
-    referenceEntity: {
+    assetFamily: {
       edit: boolean;
     };
     userGroup: {
@@ -52,21 +52,21 @@ class Permission extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const referenceEntity = denormalizeReferenceEntity(this.props.referenceEntity);
+    const assetFamily = denormalizeAssetFamily(this.props.assetFamily);
 
     return (
       <React.Fragment>
         <Header
-          label={referenceEntity.getLabel(this.props.context.locale)}
-          image={referenceEntity.getImage()}
+          label={assetFamily.getLabel(this.props.context.locale)}
+          image={assetFamily.getImage()}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.referenceEntity.edit && !this.props.permission.data.isEmpty() ? (
+            return this.props.rights.assetFamily.edit && !this.props.permission.data.isEmpty() ? (
               <button
                 className="AknButton AknButton--apply"
                 onClick={this.props.events.onSavePermissionEditForm}
                 ref={defaultFocus}
               >
-                {__('pim_reference_entity.reference_entity.button.save_permission')}
+                {__('pim_asset_manager.asset_family.button.save_permission')}
               </button>
             ) : null;
           }}
@@ -80,12 +80,12 @@ class Permission extends React.Component<StateProps & DispatchProps> {
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--withHeader">
-            <span className="group-label">{__('pim_reference_entity.reference_entity.permission.title')}</span>
+            <span className="group-label">{__('pim_asset_manager.asset_family.permission.title')}</span>
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
             {!this.props.permission.data.isEmpty() ? (
               <PermissionCollectionEditor
-                readOnly={!this.props.rights.referenceEntity.edit}
+                readOnly={!this.props.rights.assetFamily.edit}
                 value={this.props.permission.data}
                 prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
                 onChange={(newValue: PermissionCollection) => {
@@ -96,13 +96,13 @@ class Permission extends React.Component<StateProps & DispatchProps> {
               <div className="AknGridContainer-noData">
                 <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--user-group" />
                 <div className="AknGridContainer-noDataTitle">
-                  {__('pim_reference_entity.permission.no_data.title')}
+                  {__('pim_asset_manager.permission.no_data.title')}
                 </div>
                 <div className="AknGridContainer-noDataSubtitle">
-                  {__('pim_reference_entity.permission.no_data.subtitle')}{' '}
+                  {__('pim_asset_manager.permission.no_data.subtitle')}{' '}
                   {this.props.rights.userGroup.create ? (
                     <a href={`#${routing.generate('pim_user_group_index')}`} target="_blank">
-                      {__('pim_reference_entity.permission.no_data.link')}
+                      {__('pim_asset_manager.permission.no_data.link')}
                     </a>
                   ) : null}
                 </div>
@@ -120,7 +120,7 @@ export default connect(
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
     return {
-      referenceEntity: state.form.data,
+      assetFamily: state.form.data,
       permission: {
         data: denormalizePermissionCollection(state.permission.data),
         state: state.permission.state,
@@ -129,10 +129,10 @@ export default connect(
         locale,
       },
       rights: {
-        referenceEntity: {
+        assetFamily: {
           edit:
-            securityContext.isGranted('akeneo_referenceentity_reference_entity_manage_permission') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_family_manage_permission') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
         userGroup: {
           create:

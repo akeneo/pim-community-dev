@@ -5,9 +5,9 @@
  */
 'use strict';
 
-import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 define([
   'pim/form/common/fields/simple-select-async',
@@ -64,7 +64,7 @@ define([
             type: 'PUT',
             params: {contentType: 'application/json;charset=utf-8'},
             data: (term, page) => {
-              const selectedRecords = [];
+              const selectedAssets = [];
               const searchQuery = {
                 channel: UserContext.get('catalogScope'),
                 locale: UserContext.get('catalogLocale'),
@@ -72,7 +72,7 @@ define([
                 page: page - 1,
                 filters: [
                   {
-                    field: 'reference_entity',
+                    field: 'asset_family',
                     operator: '=',
                     value: attribute.reference_data_name,
                   },
@@ -84,7 +84,7 @@ define([
                   {
                     field: 'code',
                     operator: 'NOT IN',
-                    value: selectedRecords,
+                    value: selectedAssets,
                   },
                 ],
               };
@@ -105,28 +105,28 @@ define([
             ajax: ajaxConfig,
             initSelection: (element, callback) => {
               const initialValue = element.val();
-              recordFetcher
-                .fetch(ReferenceEntityIdentifier.create(attribute.reference_data_name), RecordCode.create(initialValue))
+              assetFetcher
+                .fetch(AssetFamilyIdentifier.create(attribute.reference_data_name), AssetCode.create(initialValue))
                 .then(result => {
-                  callback(this.formatItem(result.record.normalize()));
+                  callback(this.formatItem(result.asset.normalize()));
                 });
             },
             multiple: false,
-            placeholder: __('pim_reference_entity.record.selector.no_value'),
+            placeholder: __('pim_asset_manager.asset.selector.no_value'),
             placeholderOption: '',
           };
         });
     },
 
     getChoiceUrl: function(attribute) {
-      return Routing.generate(this.config.url, {referenceEntityIdentifier: attribute.reference_data_name});
+      return Routing.generate(this.config.url, {assetFamilyIdentifier: attribute.reference_data_name});
     },
 
-    formatItem: normalizedRecord => {
+    formatItem: normalizedAsset => {
       return {
-        id: normalizedRecord.code,
-        text: i18n.getLabel(normalizedRecord.labels, UserContext.get('catalogLocale'), normalizedRecord.code),
-        original: normalizedRecord,
+        id: normalizedAsset.code,
+        text: i18n.getLabel(normalizedAsset.labels, UserContext.get('catalogLocale'), normalizedAsset.code),
+        original: normalizedAsset,
       };
     },
   });

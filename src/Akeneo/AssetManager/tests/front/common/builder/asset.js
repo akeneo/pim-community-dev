@@ -1,49 +1,49 @@
 /**
- * Generate a reference entity
+ * Generate an asset family
  *
  * Example:
- * const RecordBuilder = require('../../common/builder/record.js');
- * const record = (new RecordBuilder()).withReferenceEntityIdentifier('designer').build();
+ * const AssetBuilder = require('../../common/builder/asset.js');
+ * const asset = (new AssetBuilder()).withAssetFamilyIdentifier('designer').build();
  */
 
-class RecordBuilder {
+class AssetBuilder {
   constructor() {
-    this.record = {
-      reference_entity_identifier: '',
+    this.asset = {
+      asset_family_identifier: '',
       code: '',
       labels: {},
       image: null,
     };
   }
 
-  withReferenceEntityIdentifier(referenceEntityIdentifier) {
-    this.record.reference_entity_identifier = referenceEntityIdentifier;
+  withAssetFamilyIdentifier(assetFamilyIdentifier) {
+    this.asset.asset_family_identifier = assetFamilyIdentifier;
 
     return this;
   }
 
   withCode(code) {
-    this.record.code = code;
-    this.record.identifier = `${code}_123456`;
+    this.asset.code = code;
+    this.asset.identifier = `${code}_123456`;
 
     return this;
   }
 
   withLabels(labels) {
-    this.record.labels = labels;
+    this.asset.labels = labels;
 
     return this;
   }
 
   withImage(image) {
-    this.record.image = image;
+    this.asset.image = image;
 
     return this;
   }
 
   build() {
-    return this.record;
+    return this.asset;
   }
 }
 
-module.exports = RecordBuilder;
+module.exports = AssetBuilder;

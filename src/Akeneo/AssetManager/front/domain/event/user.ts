@@ -1,5 +1,5 @@
-import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
-import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
+import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
+import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
 
 export const defaultCatalogLocaleChanged = (locale: string) => {
   return {type: 'DEFAULT_LOCALE_CHANGED', locale, target: 'defaultCatalog'};
@@ -23,6 +23,6 @@ export const localePermissionsChanged = (localePermissions: LocalePermission[]) 
   return {type: 'LOCALE_PERMISSIONS_CHANGED', localePermissions};
 };
 
-export const referenceEntityPermissionChanged = (referenceEntityPermission: ReferenceEntityPermission) => {
-  return {type: 'REFERENCE_ENTITY_PERMISSIONS_CHANGED', referenceEntityPermission};
+export const assetFamilyPermissionChanged = (assetFamilyPermission: AssetFamilyPermission) => {
+  return {type: 'ASSET_FAMILY_PERMISSIONS_CHANGED', assetFamilyPermission};
 };

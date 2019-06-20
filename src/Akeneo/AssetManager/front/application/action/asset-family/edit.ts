@@ -1,73 +1,73 @@
 import {
-  referenceEntityEditionLabelUpdated,
-  referenceEntityEditionReceived,
-  referenceEntityEditionUpdated,
-  referenceEntityEditionImageUpdated,
-  referenceEntityEditionErrorOccured,
-  referenceEntityEditionSucceeded,
-  referenceEntityRecordCountUpdated,
-} from 'akeneoreferenceentity/domain/event/reference-entity/edit';
+  assetFamilyEditionLabelUpdated,
+  assetFamilyEditionReceived,
+  assetFamilyEditionUpdated,
+  assetFamilyEditionImageUpdated,
+  assetFamilyEditionErrorOccured,
+  assetFamilyEditionSucceeded,
+  assetFamilyAssetCountUpdated,
+} from 'akeneoassetmanager/domain/event/asset-family/edit';
 import {
-  notifyReferenceEntityWellSaved,
-  notifyReferenceEntitySaveFailed,
-} from 'akeneoreferenceentity/application/action/reference-entity/notify';
-import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
-import referenceEntityFetcher, {
-  ReferenceEntityResult,
-} from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
-import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
-import File from 'akeneoreferenceentity/domain/model/file';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {referenceEntityPermissionChanged} from 'akeneoreferenceentity/domain/event/user';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+  notifyAssetFamilyWellSaved,
+  notifyAssetFamilySaveFailed,
+} from 'akeneoassetmanager/application/action/asset-family/notify';
+import {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
+import assetFamilyFetcher, {
+  AssetFamilyResult,
+} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import File from 'akeneoassetmanager/domain/model/file';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
-export const saveReferenceEntity = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const referenceEntity = denormalizeReferenceEntity(getState().form.data);
+export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  const assetFamily = denormalizeAssetFamily(getState().form.data);
 
   try {
-    const errors = await referenceEntitySaver.save(referenceEntity);
+    const errors = await assetFamilySaver.save(assetFamily);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(referenceEntityEditionErrorOccured(validationErrors));
-      dispatch(notifyReferenceEntitySaveFailed());
+      dispatch(assetFamilyEditionErrorOccured(validationErrors));
+      dispatch(notifyAssetFamilySaveFailed());
 
       return;
     }
   } catch (error) {
-    dispatch(notifyReferenceEntitySaveFailed());
+    dispatch(notifyAssetFamilySaveFailed());
 
     return;
   }
 
-  dispatch(referenceEntityEditionSucceeded());
-  dispatch(notifyReferenceEntityWellSaved());
+  dispatch(assetFamilyEditionSucceeded());
+  dispatch(notifyAssetFamilyWellSaved());
 
-  dispatch(refreshReferenceEntity(referenceEntity.getIdentifier()));
+  dispatch(refreshAssetFamily(assetFamily.getIdentifier()));
 };
 
-export const refreshReferenceEntity = (
-  referenceEntityIdentifier: ReferenceEntityIdentifier,
+export const refreshAssetFamily = (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
   refreshDataForm: boolean = false
 ) => async (dispatch: any): Promise<void> => {
-  const referenceEntityResult: ReferenceEntityResult = await referenceEntityFetcher.fetch(referenceEntityIdentifier);
+  const assetFamilyResult: AssetFamilyResult = await assetFamilyFetcher.fetch(assetFamilyIdentifier);
   if (refreshDataForm) {
-    dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
+    dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
   }
-  dispatch(referenceEntityEditionReceived(referenceEntityResult.referenceEntity.normalize()));
-  dispatch(referenceEntityPermissionChanged(referenceEntityResult.permission));
+  dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily.normalize()));
+  dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
 };
 
-export const referenceEntityLabelUpdated = (value: string, locale: string) => (
+export const assetFamilyLabelUpdated = (value: string, locale: string) => (
   dispatch: any,
   getState: () => EditState
 ) => {
-  dispatch(referenceEntityEditionLabelUpdated(value, locale));
-  dispatch(referenceEntityEditionUpdated(getState().form.data));
+  dispatch(assetFamilyEditionLabelUpdated(value, locale));
+  dispatch(assetFamilyEditionUpdated(getState().form.data));
 };
 
-export const referenceEntityImageUpdated = (image: File) => (dispatch: any, getState: () => EditState) => {
-  dispatch(referenceEntityEditionImageUpdated(image));
-  dispatch(referenceEntityEditionUpdated(getState().form.data));
+export const assetFamilyImageUpdated = (image: File) => (dispatch: any, getState: () => EditState) => {
+  dispatch(assetFamilyEditionImageUpdated(image));
+  dispatch(assetFamilyEditionUpdated(getState().form.data));
 };

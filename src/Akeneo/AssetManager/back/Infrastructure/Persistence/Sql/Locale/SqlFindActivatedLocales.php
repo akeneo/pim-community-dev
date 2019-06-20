@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Locale;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Locale;
 
-use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;

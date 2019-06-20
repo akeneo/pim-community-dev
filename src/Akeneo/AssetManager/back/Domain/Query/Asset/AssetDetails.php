@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Read model representing a record's details.
+ * Read model representing a asset's details.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordDetails
+class AssetDetails
 {
     private const IDENTIFIER = 'identifier';
-    private const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
+    private const ASSET_FAMILY_IDENTIFIER = 'asset_family_identifier';
     private const CODE = 'code';
     private const LABELS = 'labels';
     private const IMAGE = 'image';
@@ -36,13 +36,13 @@ class RecordDetails
     private const PERMISSION = 'permission';
     private const EDIT_PERMISSION = 'edit';
 
-    /** @var RecordIdentifier */
+    /** @var AssetIdentifier */
     public $identifier;
 
-    /** @var ReferenceEntityIdentifier */
-    public $referenceEntityIdentifier;
+    /** @var AssetFamilyIdentifier */
+    public $assetFamilyIdentifier;
 
-    /** @var RecordCode */
+    /** @var AssetCode */
     public $code;
 
     /** @var LabelCollection */
@@ -58,16 +58,16 @@ class RecordDetails
     public $isAllowedToEdit = true;
 
     public function __construct(
-        RecordIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code,
+        AssetIdentifier $identifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code,
         LabelCollection $labels,
         Image $image,
         array $values,
         bool $isAllowedToEdit
     ) {
         $this->identifier = $identifier;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->code = $code;
         $this->labels = $labels;
         $this->values = $values;
@@ -79,7 +79,7 @@ class RecordDetails
     {
         return [
             self::IDENTIFIER                  => $this->identifier->normalize(),
-            self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
+            self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier->normalize(),
             self::CODE                        => $this->code->normalize(),
             self::LABELS                      => $this->labels->normalize(),
             self::IMAGE                       => $this->image->normalize(),

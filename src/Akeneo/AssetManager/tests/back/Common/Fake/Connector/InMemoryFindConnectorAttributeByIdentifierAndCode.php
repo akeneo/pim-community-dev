@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
+namespace Akeneo\AssetManager\Common\Fake\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 
 class InMemoryFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttributeByIdentifierAndCodeInterface
 {
@@ -29,18 +29,18 @@ class InMemoryFindConnectorAttributeByIdentifierAndCode implements FindConnector
     }
 
     public function save(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode,
         ConnectorAttribute $connectorAttribute
     ): void {
-        $this->attributes[(string) $referenceEntityIdentifier][(string) $attributeCode] = $connectorAttribute;
+        $this->attributes[(string) $assetFamilyIdentifier][(string) $attributeCode] = $connectorAttribute;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
     {
-        return $this->attributes[(string) $referenceEntityIdentifier][(string) $attributeCode] ?? null;
+        return $this->attributes[(string) $assetFamilyIdentifier][(string) $attributeCode] ?? null;
     }
 }

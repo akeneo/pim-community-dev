@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\TextUpdater;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistry;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\TextUpdater;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\ValueUpdaterRegistry;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -53,7 +53,7 @@ class ValueUpdaterRegistrySpec extends ObjectBehavior
     {
         $textAttribute = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),

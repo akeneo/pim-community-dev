@@ -11,50 +11,50 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetsByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
-class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
+class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var RecordRepositoryInterface */
+    /** @var AssetRepositoryInterface */
     private $repository;
 
-    /** @var FindConnectorRecordsByIdentifiersInterface */
-    private $findConnectorRecordsQuery;
+    /** @var FindConnectorAssetsByIdentifiersInterface */
+    private $findConnectorAssetsQuery;
 
     /** @var SaverInterface */
     private $fileInfoSaver;
@@ -63,24 +63,24 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $this->findConnectorRecordsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers');
+        $this->repository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $this->findConnectorAssetsQuery = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_connector_assets_by_identifiers');
         $this->fileInfoSaver = $this->get('akeneo_file_storage.saver.file');
 
         $this->resetDB();
-        $this->loadReferenceEntityWithAttributes();
+        $this->loadAssetFamilyWithAttributes();
     }
 
     /**
      * @test
      */
-    public function it_finds_records_from_a_list_of_identifiers()
+    public function it_finds_assets_from_a_list_of_identifiers()
     {
-        $this->loadRecords(['starck', 'dyson', 'newson']);
-        $this->loadRecords(['unexpected_record']);
+        $this->loadAssets(['starck', 'dyson', 'newson']);
+        $this->loadAssets(['unexpected_asset']);
 
-        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('designer'),
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             100,
@@ -89,10 +89,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
-        $expectedConnectorRecords = [];
+        $expectedConnectorAssets = [];
         foreach (['dyson', 'newson', 'starck'] as $code) {
-            $expectedConnectorRecords[] = new ConnectorRecord(
-                RecordCode::fromString($code),
+            $expectedConnectorAssets[] = new ConnectorAsset(
+                AssetCode::fromString($code),
                 [
                     'name'  => [
                         [
@@ -115,21 +115,21 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             );
         }
 
-        $connectorRecordsFound = $this->findConnectorRecordsQuery->find($identifiers, $recordQuery);
+        $connectorAssetsFound = $this->findConnectorAssetsQuery->find($identifiers, $assetQuery);
 
-        $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
+        $this->assertSameConnectorAssets($expectedConnectorAssets, $connectorAssetsFound);
     }
 
     /**
      * @test
      */
-    public function it_finds_records_from_a_list_of_identifiers_with_values_filtered_by_channel()
+    public function it_finds_assets_from_a_list_of_identifiers_with_values_filtered_by_channel()
     {
-        $this->loadRecords(['starck', 'dyson', 'newson']);
-        $this->loadRecords(['unexpected_record']);
+        $this->loadAssets(['starck', 'dyson', 'newson']);
+        $this->loadAssets(['unexpected_asset']);
 
-        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('designer'),
             ChannelReference::createfromNormalized('ecommerce'),
             LocaleIdentifierCollection::empty(),
             100,
@@ -138,10 +138,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
-        $expectedConnectorRecords = [];
+        $expectedConnectorAssets = [];
         foreach (['dyson', 'newson', 'starck'] as $code) {
-            $expectedConnectorRecords[] = new ConnectorRecord(
-                RecordCode::fromString($code),
+            $expectedConnectorAssets[] = new ConnectorAsset(
+                AssetCode::fromString($code),
                 [
                     'name'  => [
                         [
@@ -159,21 +159,21 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             );
         }
 
-        $connectorRecordsFound = $this->findConnectorRecordsQuery->find($identifiers, $recordQuery);
+        $connectorAssetsFound = $this->findConnectorAssetsQuery->find($identifiers, $assetQuery);
 
-        $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
+        $this->assertSameConnectorAssets($expectedConnectorAssets, $connectorAssetsFound);
     }
 
     /**
      * @test
      */
-    public function it_finds_records_from_a_list_of_identifiers_with_values_filtered_by_locales()
+    public function it_finds_assets_from_a_list_of_identifiers_with_values_filtered_by_locales()
     {
-        $this->loadRecords(['starck', 'dyson', 'newson']);
-        $this->loadRecords(['unexpected_record']);
+        $this->loadAssets(['starck', 'dyson', 'newson']);
+        $this->loadAssets(['unexpected_asset']);
 
-        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('designer'),
             ChannelReference::createfromNormalized('ecommerce'),
             LocaleIdentifierCollection::fromNormalized(['fr_FR']),
             100,
@@ -182,10 +182,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
-        $expectedConnectorRecords = [];
+        $expectedConnectorAssets = [];
         foreach (['dyson', 'newson', 'starck'] as $code) {
-            $expectedConnectorRecords[] = new ConnectorRecord(
-                RecordCode::fromString($code),
+            $expectedConnectorAssets[] = new ConnectorAsset(
+                AssetCode::fromString($code),
                 [
                     'name'  => [
                         [
@@ -198,20 +198,20 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             );
         }
 
-        $connectorRecordsFound = $this->findConnectorRecordsQuery->find($identifiers, $recordQuery);
+        $connectorAssetsFound = $this->findConnectorAssetsQuery->find($identifiers, $assetQuery);
 
-        $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
+        $this->assertSameConnectorAssets($expectedConnectorAssets, $connectorAssetsFound);
     }
 
     /**
      * @test
      */
-    public function it_returns_an_empty_array_if_no_records_found()
+    public function it_returns_an_empty_array_if_no_assets_found()
     {
-        $this->loadRecords(['starck', 'dyson']);
+        $this->loadAssets(['starck', 'dyson']);
 
-        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('designer'),
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             100,
@@ -219,67 +219,67 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             []
         );
 
-        $recordsFound = $this->findConnectorRecordsQuery->find(['foo', 'bar'], $recordQuery);
-        $this->assertSame([], $recordsFound);
+        $assetsFound = $this->findConnectorAssetsQuery->find(['foo', 'bar'], $assetQuery);
+        $this->assertSame([], $assetsFound);
     }
 
     /**
-     * @param ConnectorRecord[] $expectedConnectorRecords
-     * @param ConnectorRecord[] $connectorRecordsFound
+     * @param ConnectorAsset[] $expectedConnectorAssets
+     * @param ConnectorAsset[] $connectorAssetsFound
      */
-    private function assertSameConnectorRecords(array $expectedConnectorRecords, array $connectorRecordsFound): void
+    private function assertSameConnectorAssets(array $expectedConnectorAssets, array $connectorAssetsFound): void
     {
-        $this->assertCount(count($expectedConnectorRecords), $connectorRecordsFound);
+        $this->assertCount(count($expectedConnectorAssets), $connectorAssetsFound);
 
-        foreach ($expectedConnectorRecords as $index => $connectorRecord) {
-            $this->assertSameConnectorRecord($connectorRecord, $connectorRecordsFound[$index]);
+        foreach ($expectedConnectorAssets as $index => $connectorAsset) {
+            $this->assertSameConnectorAsset($connectorAsset, $connectorAssetsFound[$index]);
         }
     }
 
-    private function assertSameConnectorRecord(ConnectorRecord $expectedRecord, ConnectorRecord $currentRecord): void
+    private function assertSameConnectorAsset(ConnectorAsset $expectedAsset, ConnectorAsset $currentAsset): void
     {
-        $expectedRecord = $expectedRecord->normalize();
-        $expectedRecord['values'] = $this->sortRecordValues($expectedRecord['values']);
+        $expectedAsset = $expectedAsset->normalize();
+        $expectedAsset['values'] = $this->sortAssetValues($expectedAsset['values']);
 
-        $currentRecord = $currentRecord->normalize();
-        $currentRecord['values'] = $this->sortRecordValues($currentRecord['values']);
+        $currentAsset = $currentAsset->normalize();
+        $currentAsset['values'] = $this->sortAssetValues($currentAsset['values']);
 
-        $this->assertSame($expectedRecord, $currentRecord);
+        $this->assertSame($expectedAsset, $currentAsset);
     }
 
-    private function sortRecordValues(array $recordValues): array
+    private function sortAssetValues(array $assetValues): array
     {
-        ksort($recordValues);
+        ksort($assetValues);
 
-        foreach ($recordValues as $attributeCode => $recordValue) {
-            usort($recordValue, function ($firstValue, $secondValue) {
+        foreach ($assetValues as $attributeCode => $assetValue) {
+            usort($assetValue, function ($firstValue, $secondValue) {
                 $firstData = is_array($firstValue['data']) ? implode(',', sort($firstValue['data'])) : $firstValue['data'];
                 $secondData = is_array($secondValue['data']) ? implode(',', sort($secondValue['data'])) : $secondValue['data'];
 
                 return strcasecmp($firstData, $secondData);
             });
 
-            $recordValues[$attributeCode] = $recordValue;
+            $assetValues[$attributeCode] = $assetValue;
         }
 
-        return $recordValues;
+        return $assetValues;
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
      * @param string[] $codes
      */
-    private function loadRecords(array $codes): void
+    private function loadAssets(array $codes): void
     {
         foreach ($codes as $code) {
-            $record = Record::create(
-                RecordIdentifier::fromString(sprintf('designer_%s_fingerprint', $code)),
-                ReferenceEntityIdentifier::fromString('designer'),
-                RecordCode::fromString($code),
+            $asset = Asset::create(
+                AssetIdentifier::fromString(sprintf('designer_%s_fingerprint', $code)),
+                AssetFamilyIdentifier::fromString('designer'),
+                AssetCode::fromString($code),
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('name_designer_fingerprint'),
@@ -302,24 +302,24 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
                 ])
             );
 
-            $records[] = $record;
-            $this->repository->create($record);
+            $assets[] = $asset;
+            $this->repository->create($asset);
         }
     }
 
-    private function loadReferenceEntityWithAttributes(): void
+    private function loadAssetFamilyWithAttributes(): void
     {
-        $repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $repository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [],
             Image::createEmpty()
         );
-        $repository->create($referenceEntity);
+        $repository->create($assetFamily);
 
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
@@ -333,7 +333,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $image = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'main_image', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Image']),
             AttributeOrder::fromInteger(3),
@@ -344,7 +344,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             AttributeAllowedExtensions::fromList(['png'])
         );
 
-        $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributesRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $attributesRepository->create($name);
         $attributesRepository->create($image);
     }

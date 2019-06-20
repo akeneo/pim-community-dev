@@ -1,8 +1,8 @@
 pim_title:
-  akeneo_reference_entities_reference_entity_index: Luo uusi viitetieto
-  akeneo_reference_entities_reference_entity_edit: Muokkaa viitetietoa
-  akeneo_reference_entities_record_edit: Muokkaa tietuetta
-pim_reference_entity:
+  akeneo_asset_manager_asset_family_index: Luo uusi viitetieto
+  akeneo_asset_manager_asset_family_edit: Muokkaa viitetietoa
+  akeneo_asset_manager_asset_edit: Muokkaa tietuetta
+pim_asset_manager:
   app:
     image:
       wide:
@@ -13,12 +13,12 @@ pim_reference_entity:
         remove: Poista
         download: Lataa
         upload: Vedä ja pudota tuodaksesi
-  reference_entity:
+  asset_family:
     validation:
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
         should_be_unique: 'Koodi on jo käytössä.'
-        limit_reached: 'Et voi luoda uutta viitetietoa "{{ %reference_entity_label% }}", koska viitetietojen enimmäismäärä {{ %limit% }} on saavutettu'
+        limit_reached: 'Et voi luoda uutta viitetietoa "{{ %asset_family_label% }}", koska viitetietojen enimmäismäärä {{ %limit% }} on saavutettu'
     button:
       save: Tallenna
       save_permission: Tallenna
@@ -29,7 +29,7 @@ pim_reference_entity:
     breadcrumb: Viitetiedot
     img: Viittaustiedon "{{ label }}" pääkuva
     tab:
-      records: Tietueet
+      assets: Tietueet
       attribute: Attribuutit
       properties: Ominaisuudet
       permission: Käyttöoikeudet
@@ -64,7 +64,7 @@ pim_reference_entity:
         code: Koodi (pakollinen)
       confirm: Tallenna
     delete:
-      message: Oletko varma, että haluat poistaa viitetiedon "{{ referenceEntityLabel }}"?
+      message: Oletko varma, että haluat poistaa viitetiedon "{{ assetFamilyLabel }}"?
       title: Attribuutti
     notification:
       save:
@@ -85,9 +85,9 @@ pim_reference_entity:
       title: Käyttäjäryhmiä ei ole
       subtitle: Voidaksesi määritellä viitetiedon käyttöoikeudet, vähintään yksi käyttäjäryhmä on oltava olemassa.
       link: Klikkaa tästä luodaksesi ensimmäisen käyttäjäryhmän
-  record:
+  asset:
     validation:
-      limit_reached: 'Et voi lisätä tietuetta "{{ %record_label% }}", koska tietueiden enimmäismäärä {{ %limit% }} on saavutettu tälle viitetiedolle'
+      limit_reached: 'Et voi lisätä tietuetta "{{ %asset_label% }}", koska tietueiden enimmäismäärä {{ %limit% }} on saavutettu tälle viitetiedolle'
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
         should_be_unique: 'Koodi on jo käytössä.'
@@ -118,7 +118,7 @@ pim_reference_entity:
         create_another: Luo toinen tietue
       confirm: Tallenna
     delete:
-      message: Oletko varma, että haluat poistaa tietueen ”{{ recordLabel }}”? Jos se on liitetty tuotteisiin tai tietueisiin, liitokset poistetaan.
+      message: Oletko varma, että haluat poistaa tietueen ”{{ assetLabel }}”? Jos se on liitetty tuotteisiin tai tietueisiin, liitokset poistetaan.
       title: Tietue
     delete_all:
       confirm: Oletko varma, että haluat poistaa kaikki ”{{ entityIdentifier }}” tietueet? Jos ne on liitetty tuotteisiin, liitokset poistetaan.
@@ -169,8 +169,8 @@ pim_reference_entity:
     type:
       text: Teksti
       image: Kuva
-      record: Viitetiedot yksinkertainen valinta
-      record_collection: Viitetiedot monivalinta
+      asset: Viitetiedot yksinkertainen valinta
+      asset_collection: Viitetiedot monivalinta
       option: Yksinkertainen valinta
       option_collection: Monivalinta
     is_required: vaadittu täyteen valmiusasteeseen
@@ -197,7 +197,7 @@ pim_reference_entity:
         code: Koodi (pakollinen)
         label: Nimike
         type: Attribuuttityyppi
-        record_type: Liittyvä viittaustieto (vaadittu)
+        asset_type: Liittyvä viittaustieto (vaadittu)
         value_per_locale: Kielikohtainen arvo
         value_per_channel: Kanavakohtainen arvo
         is_required: Vaadittu täyteen valmiusasteeseen
@@ -247,13 +247,13 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Viitetiedot monivalinta
-          akeneo_reference_entity: Viitetiedot yksinkertainen valinta
+          akeneo_asset_multiple_link: Viitetiedot monivalinta
+          akeneo_asset_single_link: Viitetiedot yksinkertainen valinta
         section:
           type_specific: Tyyppikohtaiset parametrit
-        reference_entity:
+        asset_family:
           identifier: Liittyvä viittaustieto (vaadittu)
           default_label: Valitse viittaustieto
 pim_catalog_volume:
   axis:
-    count_reference_entity: Viitetiedot
+    count_asset_family: Viitetiedot

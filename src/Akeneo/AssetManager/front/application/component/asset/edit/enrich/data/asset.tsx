@@ -1,12 +1,12 @@
 import * as React from 'react';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import RecordData, {create} from 'akeneoreferenceentity/domain/model/record/data/record';
-import RecordSelector from 'akeneoreferenceentity/application/component/app/record-selector';
-import {RecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import AssetData, {create} from 'akeneoassetmanager/domain/model/asset/data/asset';
+import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
+import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import __ from 'akeneoassetmanager/tools/translator';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 
 const View = ({
   value,
@@ -21,25 +21,25 @@ const View = ({
   onChange: (value: Value) => void;
   canEditData: boolean;
 }) => {
-  if (!(value.data instanceof RecordData)) {
+  if (!(value.data instanceof AssetData)) {
     return null;
   }
 
-  const attribute = value.attribute as RecordAttribute;
+  const attribute = value.attribute as AssetAttribute;
 
   return (
-    <div className="record-selector-container">
-      <RecordSelector
-        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
-        value={value.data.recordData}
+    <div className="asset-selector-container">
+      <AssetSelector
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+        value={value.data.assetData}
         locale={locale}
         channel={channel}
-        placeholder={__('pim_reference_entity.record.selector.no_value')}
-        referenceEntityIdentifier={attribute.recordType.getReferenceEntityIdentifier()}
+        placeholder={__('pim_asset_manager.asset.selector.no_value')}
+        assetFamilyIdentifier={attribute.assetType.getAssetFamilyIdentifier()}
         readOnly={!canEditData}
-        onChange={(recordCode: RecordCode) => {
+        onChange={(assetCode: AssetCode) => {
           if (canEditData) {
-            const newData = create(recordCode);
+            const newData = create(assetCode);
             const newValue = value.setData(newData);
 
             onChange(newValue);

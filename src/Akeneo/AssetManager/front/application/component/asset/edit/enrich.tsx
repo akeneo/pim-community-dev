@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
-import {recordLabelUpdated, recordValueUpdated, saveRecord} from 'akeneoreferenceentity/application/action/record/edit';
-import {EditionFormState} from 'akeneoreferenceentity/application/reducer/record/edit/form';
-import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
-import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import renderValues from 'akeneoreferenceentity/application/component/record/edit/enrich/value';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import Key from 'akeneoreferenceentity/tools/key';
-import {canEditReferenceEntity, canEditLocale} from 'akeneoreferenceentity/application/reducer/right';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
+import {assetLabelUpdated, assetValueUpdated, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
+import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset/edit/form';
+import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';
+import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import renderValues from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import Key from 'akeneoassetmanager/tools/key';
+import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 
@@ -23,7 +23,7 @@ interface StateProps {
     locale: {
       edit: boolean;
     };
-    record: {
+    asset: {
       edit: boolean;
       delete: boolean;
     };
@@ -59,13 +59,13 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
   };
 
   render() {
-    const record = denormalizeRecord(this.props.form.data);
+    const asset = denormalizeAsset(this.props.form.data);
 
     return (
       <div className="AknSubsection">
         <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
           {renderValues(
-            record,
+            asset,
             createChannelReference(this.props.context.channel),
             createLocaleReference(this.props.context.locale),
             this.props.form.errors,
@@ -93,14 +93,14 @@ export default connect(
         locale: {
           edit: canEditLocale(state.right.locale, locale),
         },
-        record: {
+        asset: {
           edit:
-            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
           delete:
-            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
         },
       },
     };
@@ -110,13 +110,13 @@ export default connect(
       events: {
         form: {
           onLabelUpdated: (value: string, locale: string) => {
-            dispatch(recordLabelUpdated(value, locale));
+            dispatch(assetLabelUpdated(value, locale));
           },
           onValueChange: (value: Value) => {
-            dispatch(recordValueUpdated(value));
+            dispatch(assetValueUpdated(value));
           },
           onSubmit: () => {
-            dispatch(saveRecord());
+            dispatch(saveAsset());
           },
         },
       },

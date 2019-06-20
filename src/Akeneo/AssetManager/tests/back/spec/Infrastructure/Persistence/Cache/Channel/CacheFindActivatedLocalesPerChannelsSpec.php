@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel;
 
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels;
+use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels;
 use PhpSpec\ObjectBehavior;
 
 class CacheFindActivatedLocalesPerChannelsSpec extends ObjectBehavior

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model;
+namespace spec\Akeneo\AssetManager\Domain\Model;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use PhpSpec\ObjectBehavior;
 
 class LocaleIdentifierCollectionSpec extends ObjectBehavior

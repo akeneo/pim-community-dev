@@ -1,6 +1,6 @@
-const Header = require('../../decorators/reference-entity/app/header.decorator');
+const Header = require('../../decorators/asset-family/app/header.decorator');
 const Modal = require('../../decorators/create/modal.decorator');
-const Grid = require('../../decorators/reference-entity/index/grid.decorator');
+const Grid = require('../../decorators/asset-family/index/grid.decorator');
 const {getRequestContract, listenRequest} = require('../../tools');
 const path = require('path');
 
@@ -30,15 +30,15 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const saveReferenceEntity = async function(page) {
-    const requestContract = getRequestContract('ReferenceEntity/Create/ok.json');
+  const saveAssetFamily = async function(page) {
+    const requestContract = getRequestContract('AssetFamily/Create/ok.json');
 
     return await listenRequest(page, requestContract);
   };
 
-  const listReferenceEntityUpdated = async function(page, identifier, labels) {
+  const listAssetFamilyUpdated = async function(page, identifier, labels) {
     page.on('request', request => {
-      if ('http://pim.com/rest/reference_entity' === request.url()) {
+      if ('http://pim.com/rest/asset_manager' === request.url()) {
         answerJson(request, {
           items: [
             {
@@ -54,12 +54,12 @@ module.exports = async function(cucumber) {
 
   const validationMessageShown = async function(page, message) {
     page.on('request', request => {
-      if ('http://pim.com/rest/reference_entity' === request.url() && 'POST' === request.method()) {
+      if ('http://pim.com/rest/asset_manager' === request.url() && 'POST' === request.method()) {
         answerJson(
           request,
           [
             {
-              messageTemplate: 'pim_reference_entity.reference_entity.validation.code.pattern',
+              messageTemplate: 'pim_asset_manager.asset_family.validation.code.pattern',
               parameters: {'{{ value }}': '\u0022invalid/identifier\u0022'},
               plural: null,
               message: message,
@@ -77,11 +77,11 @@ module.exports = async function(cucumber) {
     });
   };
 
-  When('the user creates a reference entity {string} with:', async function(identifier, updates) {
-    const referenceEntity = convertItemTable(updates)[0];
+  When('the user creates an asset family {string} with:', async function(identifier, updates) {
+    const assetFamily = convertItemTable(updates)[0];
 
     await this.page.evaluate(async () => {
-      const Controller = require('pim/controller/reference-entity/list');
+      const Controller = require('pim/controller/asset-family/list');
       const controller = new Controller();
       controller.renderRoute();
       await document.getElementById('app').appendChild(controller.el);
@@ -91,28 +91,28 @@ module.exports = async function(cucumber) {
     await header.clickOnCreateButton();
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.reference_entity.create.input.code', identifier);
-    if (referenceEntity.labels !== undefined && referenceEntity.labels.en_US !== undefined) {
-      await modal.fillField('pim_reference_entity.reference_entity.create.input.label', referenceEntity.labels.en_US);
+    await modal.fillField('pim_asset_manager.asset_family.create.input.code', identifier);
+    if (assetFamily.labels !== undefined && assetFamily.labels.en_US !== undefined) {
+      await modal.fillField('pim_asset_manager.asset_family.create.input.label', assetFamily.labels.en_US);
     }
   });
 
-  When('the user saves the reference entity', async function() {
+  When('the user saves the asset family', async function() {
     const modal = await await getElement(this.page, 'Modal');
     await modal.save();
   });
 
-  Then('there is a reference entity {string} with:', async function(identifier, updates) {
-    const referenceEntity = convertItemTable(updates)[0];
+  Then('there is an asset family {string} with:', async function(identifier, updates) {
+    const assetFamily = convertItemTable(updates)[0];
 
-    listReferenceEntityUpdated(this.page, identifier, referenceEntity.labels);
+    listAssetFamilyUpdated(this.page, identifier, assetFamily.labels);
 
     const grid = await await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);
 
-    if (referenceEntity.labels !== undefined && referenceEntity.labels.en_US !== undefined) {
-      const label = await grid.getReferenceEntityLabel(referenceEntity.identifier);
-      assert.strictEqual(label, referenceEntity.labels.en_US);
+    if (assetFamily.labels !== undefined && assetFamily.labels.en_US !== undefined) {
+      const label = await grid.getAssetFamilyLabel(assetFamily.identifier);
+      assert.strictEqual(label, assetFamily.labels.en_US);
     }
   });
 
@@ -120,8 +120,8 @@ module.exports = async function(cucumber) {
     await validationMessageShown(this.page, expectedMessage);
   });
 
-  Then('the reference entity will be saved', async function() {
-    await saveReferenceEntity(this.page);
+  Then('the asset family will be saved', async function() {
+    await saveAssetFamily(this.page);
   });
 
   Then('a validation message is displayed {string}', async function(expectedMessage) {
@@ -130,7 +130,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(expectedMessage, actualMesssage);
   });
 
-  Then('the user should not be able to create a reference entity', async function() {
+  Then('the user should not be able to create an asset family', async function() {
     const header = await await getElement(this.page, 'Header');
     assert.strictEqual(false, await header.isCreateButtonVisible());
   });

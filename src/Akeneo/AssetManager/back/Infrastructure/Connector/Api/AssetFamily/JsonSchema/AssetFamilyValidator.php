@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema;
 
 use JsonSchema\Validator;
 
-class ReferenceEntityValidator
+class AssetFamilyValidator
 {
-    public function validate(array $normalizedRecord): array
+    public function validate(array $normalizedAsset): array
     {
         $validator = new Validator();
-        $normalizedRecordObject = Validator::arrayToObjectRecursive($normalizedRecord);
-        $validator->validate($normalizedRecordObject, $this->getJsonSchema());
+        $normalizedAssetObject = Validator::arrayToObjectRecursive($normalizedAsset);
+        $validator->validate($normalizedAssetObject, $this->getJsonSchema());
 
         return $validator->getErrors();
     }

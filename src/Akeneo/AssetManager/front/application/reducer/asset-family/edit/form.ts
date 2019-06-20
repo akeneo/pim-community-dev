@@ -1,23 +1,23 @@
-import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import formState, {FormState} from 'akeneoreferenceentity/application/reducer/state';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import {NormalizedFile} from 'akeneoreferenceentity/domain/model/file';
+import {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
 
 export interface EditionFormState {
   state: FormState;
-  data: NormalizedReferenceEntity;
+  data: NormalizedAssetFamily;
   errors: ValidationError[];
 }
 
 const stateReducer = formState(
-  'referenceEntity',
-  'REFERENCE_ENTITY_EDITION_UPDATED',
-  'REFERENCE_ENTITY_EDITION_RECEIVED'
+  'assetFamily',
+  'ASSET_FAMILY_EDITION_UPDATED',
+  'ASSET_FAMILY_EDITION_RECEIVED'
 );
 
 const dataReducer = (
-  state: NormalizedReferenceEntity = {
+  state: NormalizedAssetFamily = {
     identifier: '',
     code: '',
     labels: {},
@@ -27,20 +27,20 @@ const dataReducer = (
   },
   {
     type,
-    referenceEntity,
+    assetFamily,
     value,
     locale,
     image,
-  }: {type: string; referenceEntity: NormalizedReferenceEntity; value: string; locale: string; image: NormalizedFile}
+  }: {type: string; assetFamily: NormalizedAssetFamily; value: string; locale: string; image: NormalizedFile}
 ) => {
   switch (type) {
-    case 'REFERENCE_ENTITY_EDITION_RECEIVED':
-      state = referenceEntity;
+    case 'ASSET_FAMILY_EDITION_RECEIVED':
+      state = assetFamily;
       break;
-    case 'REFERENCE_ENTITY_EDITION_LABEL_UPDATED':
+    case 'ASSET_FAMILY_EDITION_LABEL_UPDATED':
       state = {...state, labels: {...state.labels, [locale]: value}};
       break;
-    case 'REFERENCE_ENTITY_EDITION_IMAGE_UPDATED':
+    case 'ASSET_FAMILY_EDITION_IMAGE_UPDATED':
       state = {...state, image};
       break;
     default:
@@ -52,10 +52,10 @@ const dataReducer = (
 
 const errorsReducer = (state: ValidationError[] = [], action: {type: string; errors: ValidationError[]}) => {
   switch (action.type) {
-    case 'REFERENCE_ENTITY_EDITION_SUBMISSION':
+    case 'ASSET_FAMILY_EDITION_SUBMISSION':
       state = [];
       break;
-    case 'REFERENCE_ENTITY_EDITION_ERROR_OCCURED':
+    case 'ASSET_FAMILY_EDITION_ERROR_OCCURED':
       state = action.errors;
       break;
     default:

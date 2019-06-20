@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,6 +19,6 @@ class EditCommands extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.attribute.edit_command_validator';
+        return 'akeneo_assetmanager.validator.attribute.edit_command_validator';
     }
 }

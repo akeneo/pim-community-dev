@@ -1,26 +1,26 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {connect} from 'react-redux';
-import {attributeCreationStart} from 'akeneoreferenceentity/domain/event/attribute/create';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/create';
-import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
-import ManageOptionsView from 'akeneoreferenceentity/application/component/attribute/edit/option';
-import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/application/action/attribute/edit';
-import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
-import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/attribute';
-import Key from 'akeneoreferenceentity/tools/key';
-import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
-import {EditOptionState} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {canEditLocale, canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+import {attributeCreationStart} from 'akeneoassetmanager/domain/event/attribute/create';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/create';
+import CreateAttributeModal from 'akeneoassetmanager/application/component/attribute/create';
+import ManageOptionsView from 'akeneoassetmanager/application/component/attribute/edit/option';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamily, {
+  denormalizeAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {attributeEditionStartByIdentifier} from 'akeneoassetmanager/application/action/attribute/edit';
+import AttributeEditForm from 'akeneoassetmanager/application/component/attribute/edit';
+import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
+import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/attribute';
+import Key from 'akeneoassetmanager/tools/key';
+import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
+import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
+import {canEditLocale, canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 
@@ -38,7 +38,7 @@ interface StateProps {
       delete: boolean;
     };
   };
-  referenceEntity: ReferenceEntity;
+  assetFamily: AssetFamily;
   createAttribute: CreateState;
   editAttribute: boolean;
   options: EditOptionState;
@@ -58,13 +58,13 @@ const renderSystemAttribute = (type: string, identifier: string) => {
     <div
       className="AknFieldContainer"
       data-placeholder="false"
-      data-identifier={`system_record_${identifier}`}
+      data-identifier={`system_asset_${identifier}`}
       data-type={type}
     >
       <div className="AknFieldContainer-header AknFieldContainer-header--light">
         <label
           className="AknFieldContainer-label AknFieldContainer-label--withImage"
-          htmlFor={`pim_reference_entity.reference_entity.properties.system_record_${identifier}`}
+          htmlFor={`pim_asset_manager.asset_family.properties.system_asset_${identifier}`}
         >
           <img className="AknFieldContainer-labelImage" src={`bundles/pimui/images/attribute/icon-${type}.svg`} />
           <span>{identifier}</span>
@@ -75,9 +75,9 @@ const renderSystemAttribute = (type: string, identifier: string) => {
           type="text"
           autoComplete="off"
           tabIndex={-1}
-          id={`pim_reference_entity.reference_entity.properties.system_record_${identifier}`}
+          id={`pim_asset_manager.asset_family.properties.system_asset_${identifier}`}
           className="AknTextField AknTextField--light AknTextField--disabled"
-          value={__(`pim_reference_entity.attribute.default.${identifier}`)}
+          value={__(`pim_asset_manager.attribute.default.${identifier}`)}
           readOnly
         />
       </div>
@@ -97,11 +97,11 @@ const renderAttributePlaceholders = () => {
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--withImage AknLoadingPlaceHolder"
-            htmlFor={`pim_reference_entity.reference_entity.properties.${attributeIdentifier}_${key}`}
+            htmlFor={`pim_asset_manager.asset_family.properties.${attributeIdentifier}_${key}`}
           >
             <img className="AknFieldContainer-labelImage" src={`bundles/pimui/images/attribute/icon-text.svg`} />
             <span>
-              {__(`pim_reference_entity.attribute.type.text`)} {`(${__('pim_reference_entity.attribute.is_required')})`}
+              {__(`pim_asset_manager.attribute.type.text`)} {`(${__('pim_asset_manager.attribute.is_required')})`}
             </span>
           </label>
         </div>
@@ -109,7 +109,7 @@ const renderAttributePlaceholders = () => {
           <input
             type="text"
             autoComplete="off"
-            id={`pim_reference_entity.reference_entity.properties.${attributeIdentifier}_${key}`}
+            id={`pim_asset_manager.asset_family.properties.${attributeIdentifier}_${key}`}
             className="AknTextField AknTextField--transparent"
           />
           <button className="AknIconButton AknIconButton--trash" />
@@ -158,12 +158,12 @@ class AttributeView extends React.Component<AttributeViewProps> {
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--withImage"
-            htmlFor={`pim_reference_entity.reference_entity.properties.${attribute.getCode().stringValue()}`}
+            htmlFor={`pim_asset_manager.asset_family.properties.${attribute.getCode().stringValue()}`}
           >
             <img className="AknFieldContainer-labelImage" src={icon} />
             <span>
               {attribute.getCode().stringValue()}{' '}
-              {attribute.isRequired ? `(${__('pim_reference_entity.attribute.is_required')})` : ''}
+              {attribute.isRequired ? `(${__('pim_asset_manager.attribute.is_required')})` : ''}
             </span>
           </label>
         </div>
@@ -171,7 +171,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
           <input
             type="text"
             autoComplete="off"
-            id={`pim_reference_entity.reference_entity.properties.${attribute.getCode().stringValue()}`}
+            id={`pim_asset_manager.asset_family.properties.${attribute.getCode().stringValue()}`}
             className="AknTextField AknTextField--light AknTextField--disabled"
             value={attribute.getLabel(locale)}
             readOnly
@@ -205,8 +205,8 @@ class AttributesView extends React.Component<CreateProps> {
     return (
       <React.Fragment>
         <Header
-          label={this.props.referenceEntity.getLabel(this.props.context.locale)}
-          image={this.props.referenceEntity.getImage()}
+          label={this.props.assetFamily.getLabel(this.props.context.locale)}
+          image={this.props.assetFamily.getImage()}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
             return this.props.rights.attribute.create ? (
               <button
@@ -215,7 +215,7 @@ class AttributesView extends React.Component<CreateProps> {
                 ref={defaultFocus}
                 tabIndex={0}
               >
-                {__('pim_reference_entity.attribute.button.add')}
+                {__('pim_asset_manager.attribute.button.add')}
               </button>
             ) : null;
           }}
@@ -228,7 +228,7 @@ class AttributesView extends React.Component<CreateProps> {
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: '192px'}}>
-            <span className="group-label">{__('pim_reference_entity.reference_entity.attribute.title')}</span>
+            <span className="group-label">{__('pim_asset_manager.asset_family.attribute.title')}</span>
           </header>
           {this.props.firstLoading || 0 < this.props.attributes.length ? (
             <div className="AknSubsection-container">
@@ -241,7 +241,7 @@ class AttributesView extends React.Component<CreateProps> {
                     {this.props.attributes.map((attribute: NormalizedAttribute) => (
                       <ErrorBoundary
                         key={attribute.identifier}
-                        errorMessage={__('pim_reference_entity.reference_entity.attribute.error.render_list')}
+                        errorMessage={__('pim_asset_manager.asset_family.attribute.error.render_list')}
                       >
                         <AttributeView
                           attribute={attribute}
@@ -263,15 +263,15 @@ class AttributesView extends React.Component<CreateProps> {
               </div>
               <div className="AknGridContainer-noData AknGridContainer-noData--small">
                 <div className="AknGridContainer-noDataTitle">
-                  {__('pim_reference_entity.attribute.no_data.title', {
-                    entityLabel: this.props.referenceEntity.getLabel(this.props.context.locale),
+                  {__('pim_asset_manager.attribute.no_data.title', {
+                    entityLabel: this.props.assetFamily.getLabel(this.props.context.locale),
                   })}
                 </div>
                 <div className="AknGridContainer-noDataSubtitle">
-                  {__('pim_reference_entity.attribute.no_data.subtitle')}
+                  {__('pim_asset_manager.attribute.no_data.subtitle')}
                 </div>
                 <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
-                  {__('pim_reference_entity.attribute.button.add')}
+                  {__('pim_asset_manager.attribute.button.add')}
                 </button>
               </div>
             </React.Fragment>
@@ -298,18 +298,18 @@ export default connect(
         },
         attribute: {
           create:
-            securityContext.isGranted('akeneo_referenceentity_attribute_create') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_attribute_create') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           edit:
-            securityContext.isGranted('akeneo_referenceentity_attribute_edit') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            securityContext.isGranted('akeneo_referenceentity_attribute_edit') &&
-            securityContext.isGranted('akeneo_referenceentity_attribute_delete') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_attribute_delete') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
-      referenceEntity: denormalizeReferenceEntity(state.form.data),
+      assetFamily: denormalizeAssetFamily(state.form.data),
       createAttribute: state.createAttribute,
       editAttribute: state.attribute.isActive,
       options: state.options,

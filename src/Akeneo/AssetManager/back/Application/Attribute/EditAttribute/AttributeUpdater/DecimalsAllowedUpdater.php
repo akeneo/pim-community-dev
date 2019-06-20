@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
+namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Doctrine\Common\Util\ClassUtils;
 
 /**

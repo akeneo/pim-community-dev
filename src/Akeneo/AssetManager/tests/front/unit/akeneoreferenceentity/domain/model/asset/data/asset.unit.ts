@@ -1,23 +1,23 @@
-import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/record';
-import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
+import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/asset';
+import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
 
-describe('akeneo > reference entity > domain > model > record > data --- record', () => {
-  test('I can create a new RecordData with a RecordCode value', () => {
+describe('akeneo > asset family > domain > model > asset > data --- asset', () => {
+  test('I can create a new AssetData with a AssetCode value', () => {
     expect(create(createCode('starck')).normalize()).toEqual('starck');
   });
 
-  test('I cannot create a new RecordData with a value other than a RecordCode', () => {
+  test('I cannot create a new AssetData with a value other than a AssetCode', () => {
     expect(() => {
       create(12);
-    }).toThrow('RecordData expects a RecordCode as parameter to be created');
+    }).toThrow('AssetData expects a AssetCode as parameter to be created');
   });
 
-  test('I can normalize a RecordData', () => {
+  test('I can normalize a AssetData', () => {
     expect(denormalize('starck').normalize()).toEqual('starck');
     expect(denormalize(null).normalize()).toEqual(null);
   });
 
-  test('I can test if two recordData are equal', () => {
+  test('I can test if two assetData are equal', () => {
     expect(denormalize('starck').equals(denormalize('starck'))).toEqual(true);
     expect(denormalize('starck').equals(denormalize('dyson'))).toEqual(false);
     expect(denormalize('starck').equals('starck')).toEqual(false);

@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get",
+    "route": "akeneo_asset_manager_asset_family_attribute_option_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "brand_2",
+      "assetFamilyIdentifier": "brand_2",
       "attributeCode": "sales_area",
       "optionCode": "asia"
     }

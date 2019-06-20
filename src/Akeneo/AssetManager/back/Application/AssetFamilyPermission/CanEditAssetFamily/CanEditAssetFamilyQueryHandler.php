@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity;
+namespace Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\SecurityIdentifier;
+use Akeneo\AssetManager\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 
 /**
- * Query handler that determines wether a editing the reference entity for a principal id is authorized.
+ * Query handler that determines wether a editing the asset family for a principal id is authorized.
  *
  * The checks of the ACL (Access Control List) is done separately (usually in the adapters).
  * The ACL check may be done in this service in the future.
@@ -18,31 +18,31 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepository
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CanEditReferenceEntityQueryHandler
+class CanEditAssetFamilyQueryHandler
 {
-    /** @var ReferenceEntityPermissionRepositoryInterface */
-    private $referenceEntityPermissionRepository;
+    /** @var AssetFamilyPermissionRepositoryInterface */
+    private $assetFamilyPermissionRepository;
 
     /** @var FindUserGroupsForSecurityIdentifierInterface */
     private $findUserGroupsForSecurityIdentifier;
 
     public function __construct(
-        ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository,
+        AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository,
         FindUserGroupsForSecurityIdentifierInterface $findUserGroupsForSecurityIdentifier
     ) {
-        $this->referenceEntityPermissionRepository = $referenceEntityPermissionRepository;
+        $this->assetFamilyPermissionRepository = $assetFamilyPermissionRepository;
         $this->findUserGroupsForSecurityIdentifier = $findUserGroupsForSecurityIdentifier;
     }
 
-    public function __invoke(CanEditReferenceEntityQuery $query): bool
+    public function __invoke(CanEditAssetFamilyQuery $query): bool
     {
-        $referenceEntityPermission = $this->referenceEntityPermissionRepository->getByReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString($query->referenceEntityIdentifier)
+        $assetFamilyPermission = $this->assetFamilyPermissionRepository->getByAssetFamilyIdentifier(
+            AssetFamilyIdentifier::fromString($query->assetFamilyIdentifier)
         );
         $userGroupIdentifiers = $this->findUserGroupsForSecurityIdentifier->find(
             SecurityIdentifier::fromString($query->securityIdentifier)
         );
 
-        return $referenceEntityPermission->isAllowedToEdit($userGroupIdentifiers);
+        return $assetFamilyPermission->isAllowedToEdit($userGroupIdentifiers);
     }
 }

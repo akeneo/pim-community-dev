@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface;
+use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -25,14 +25,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttributeValidator extends ConstraintValidator
+class AssetFamilyShouldNotBeLinkedToAnyAssetFamilyAttributeValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface */
-    private $isLinkedToAtLeastOneReferenceEntityAttribute;
+    /** @var AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface */
+    private $isLinkedToAtLeastOneAssetFamilyAttribute;
 
-    public function __construct(ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface $queryFunction)
+    public function __construct(AssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeInterface $queryFunction)
     {
-        $this->isLinkedToAtLeastOneReferenceEntityAttribute = $queryFunction;
+        $this->isLinkedToAtLeastOneAssetFamilyAttribute = $queryFunction;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -47,11 +47,11 @@ class ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttributeValidator ext
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof DeleteReferenceEntityCommand) {
+        if (!$command instanceof DeleteAssetFamilyCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
-                    DeleteReferenceEntityCommand::class,
+                    DeleteAssetFamilyCommand::class,
                     get_class($command)
                 )
             );
@@ -63,19 +63,19 @@ class ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttributeValidator ext
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute) {
+        if (!$constraint instanceof AssetFamilyShouldNotBeLinkedToAnyAssetFamilyAttribute) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(DeleteReferenceEntityCommand $command): void
+    private function validateCommand(DeleteAssetFamilyCommand $command): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->identifier);
-        $isLinked = $this->isLinkedToAtLeastOneReferenceEntityAttribute->isLinked($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->identifier);
+        $isLinked = $this->isLinkedToAtLeastOneAssetFamilyAttribute->isLinked($assetFamilyIdentifier);
 
         if ($isLinked) {
-            $this->context->buildViolation(ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
+            $this->context->buildViolation(AssetFamilyShouldNotBeLinkedToAnyAssetFamilyAttribute::ERROR_MESSAGE)
+                ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier)
                 ->addViolation();
         }
     }

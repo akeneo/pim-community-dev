@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetsByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ConnectorAssetHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -27,7 +27,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIdentifiersInterface
+class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdentifiersInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -38,33 +38,33 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
 
-    /** @var ConnectorRecordHydrator */
-    private $recordHydrator;
+    /** @var ConnectorAssetHydrator */
+    private $assetHydrator;
 
     public function __construct(
         Connection $connection,
-        ConnectorRecordHydrator $hydrator,
+        ConnectorAssetHydrator $hydrator,
         FindValueKeyCollectionInterface $findValueKeyCollection,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
         $this->sqlConnection = $connection;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->recordHydrator = $hydrator;
+        $this->assetHydrator = $hydrator;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(array $identifiers, RecordQuery $recordQuery): array
+    public function find(array $identifiers, AssetQuery $assetQuery): array
     {
         $sql = <<<SQL
             SELECT 
                 identifier, 
                 code, 
-                reference_entity_identifier, 
+                asset_family_identifier, 
                 value_collection
-            FROM akeneo_reference_entity_record
+            FROM akeneo_asset_manager_asset
             WHERE identifier IN (:identifiers);
 SQL;
 
@@ -75,52 +75,52 @@ SQL;
         );
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        return empty($results) ? [] : $this->hydrateRecords($results, $recordQuery);
+        return empty($results) ? [] : $this->hydrateAssets($results, $assetQuery);
     }
 
     /**
-     * @return ConnectorRecord[]
+     * @return ConnectorAsset[]
      */
-    private function hydrateRecords(array $results, RecordQuery $recordQuery): array
+    private function hydrateAssets(array $results, AssetQuery $assetQuery): array
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier(current($results));
-        $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
-        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifier(current($results));
+        $valueKeyCollection = $this->findValueKeyCollection->find($assetFamilyIdentifier);
+        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
 
-        $hydratedRecords = [];
+        $hydratedAssets = [];
         foreach ($results as $result) {
-            $hydratedRecord = $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
-            $hydratedRecords[] = $this->filterRecordValues($hydratedRecord, $recordQuery);
+            $hydratedAsset = $this->assetHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+            $hydratedAssets[] = $this->filterAssetValues($hydratedAsset, $assetQuery);
         }
 
-        return $hydratedRecords;
+        return $hydratedAssets;
     }
 
-    private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier
     {
-        if (!isset($result['reference_entity_identifier'])) {
-            throw new \LogicException('The record should have a reference entity identifier');
+        if (!isset($result['asset_family_identifier'])) {
+            throw new \LogicException('The asset should have an asset family identifier');
         }
-        $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
-            $result['reference_entity_identifier'],
+        $normalizedAssetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+            $result['asset_family_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );
 
-        return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
+        return AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
     }
 
-    private function filterRecordValues(ConnectorRecord $connectorRecord, RecordQuery $recordQuery): ConnectorRecord
+    private function filterAssetValues(ConnectorAsset $connectorAsset, AssetQuery $assetQuery): ConnectorAsset
     {
-        $channelReference = $recordQuery->getChannelReferenceValuesFilter();
+        $channelReference = $assetQuery->getChannelReferenceValuesFilter();
         if (!$channelReference->isEmpty()) {
-            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnChannel($channelReference->getIdentifier());
+            $connectorAsset = $connectorAsset->getAssetWithValuesFilteredOnChannel($channelReference->getIdentifier());
         }
 
-        $localesIdentifiers = $recordQuery->getLocaleIdentifiersValuesFilter();
+        $localesIdentifiers = $assetQuery->getLocaleIdentifiersValuesFilter();
         if (!$localesIdentifiers->isEmpty()) {
-            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnLocales($localesIdentifiers);
+            $connectorAsset = $connectorAsset->getAssetWithValuesFilteredOnLocales($localesIdentifiers);
         }
 
-        return $connectorRecord;
+        return $connectorAsset;
     }
 }

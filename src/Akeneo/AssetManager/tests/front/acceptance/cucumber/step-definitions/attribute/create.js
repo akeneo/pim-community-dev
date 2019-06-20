@@ -1,6 +1,6 @@
-const Header = require('../../decorators/reference-entity/app/header.decorator');
+const Header = require('../../decorators/asset-family/app/header.decorator');
 const Modal = require('../../decorators/create/modal.decorator');
-const Grid = require('../../decorators/reference-entity/index/grid.decorator');
+const Grid = require('../../decorators/asset-family/index/grid.decorator');
 const {getRequestContract, listenRequest, answerChannelList} = require('../../tools');
 const path = require('path');
 
@@ -31,7 +31,7 @@ module.exports = async function(cucumber) {
 
   const loadAttributeTab = async function(page) {
     await page.evaluate(async () => {
-      const Controller = require('pim/controller/reference-entity/edit');
+      const Controller = require('pim/controller/asset-family/edit');
       const controller = new Controller();
       controller.renderRoute({params: {identifier: 'designer', tab: 'attribute'}});
       await document.getElementById('app').appendChild(controller.el);
@@ -52,9 +52,9 @@ module.exports = async function(cucumber) {
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
-    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
-    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+    await modal.fillField('pim_asset_manager.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
+    await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
   When('the user creates an attribute with an invalid code', async function() {
@@ -62,9 +62,9 @@ module.exports = async function(cucumber) {
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'not so nice attribute');
-    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
-    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+    await modal.fillField('pim_asset_manager.attribute.create.input.code', 'not so nice attribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
+    await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
   Then('the user saves the valid attribute', async function() {
@@ -76,19 +76,19 @@ module.exports = async function(cucumber) {
     await modal.save();
   });
 
-  When('the user creates a valid record attribute', async function() {
+  When('the user creates a valid asset attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
-    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
-    await modal.select('.AknFieldContainer[data-code="type"]', 'record');
-    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+    await modal.fillField('pim_asset_manager.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'asset');
+    await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid record attribute', async function() {
-    const requestContract = getRequestContract('Attribute/Create/attribute_record_ok.json');
+  Then('the user saves the valid asset attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_asset_ok.json');
 
     await listenRequest(this.page, requestContract);
 
@@ -96,19 +96,19 @@ module.exports = async function(cucumber) {
     await modal.save();
   });
 
-  When('the user creates a valid record collection attribute', async function() {
+  When('the user creates a valid asset collection attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
-    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
-    await modal.select('.AknFieldContainer[data-code="type"]', 'record_collection');
-    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+    await modal.fillField('pim_asset_manager.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'asset_collection');
+    await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid record collection attribute', async function() {
-    const requestContract = getRequestContract('Attribute/Create/attribute_record_collection_ok.json');
+  Then('the user saves the valid asset collection attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_asset_collection_ok.json');
 
     await listenRequest(this.page, requestContract);
 
@@ -121,10 +121,10 @@ module.exports = async function(cucumber) {
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
-    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'image');
-    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+    await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
   Then('the user saves the valid image attribute', async function() {
@@ -170,10 +170,10 @@ module.exports = async function(cucumber) {
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
-    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'option');
-    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+    await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
   Then('the user saves the valid option attribute', async function() {
@@ -190,10 +190,10 @@ module.exports = async function(cucumber) {
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
-    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'option_collection');
-    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+    await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
   Then('the user saves the valid option collection attribute', async function() {
@@ -217,8 +217,8 @@ module.exports = async function(cucumber) {
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
-    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'number');
   });
 

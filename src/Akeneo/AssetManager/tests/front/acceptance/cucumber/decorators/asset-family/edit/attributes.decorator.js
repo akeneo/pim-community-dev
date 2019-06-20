@@ -12,7 +12,7 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
 
   const isLoaded = async () => {
     await page.waitFor(
-      '.AknDefault-mainContent .AknSubsection .AknFieldContainer[data-identifier="system_record_code"]'
+      '.AknDefault-mainContent .AknSubsection .AknFieldContainer[data-identifier="system_asset_code"]'
     );
 
     return true;

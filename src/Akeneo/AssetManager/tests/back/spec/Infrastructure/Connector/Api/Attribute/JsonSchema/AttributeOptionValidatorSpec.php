@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator;
 use PhpSpec\ObjectBehavior;
 
 class AttributeOptionValidatorSpec extends ObjectBehavior

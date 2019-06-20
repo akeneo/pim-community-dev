@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 class AttributeSupportsOptions
 {
@@ -24,9 +24,9 @@ class AttributeSupportsOptions
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function supports(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
+    public function supports(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): bool
     {
-        $identifier = $this->getAttributeIdentifier->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->getAttributeIdentifier->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
 
         return ($attribute instanceof OptionCollectionAttribute || $attribute instanceof OptionAttribute);

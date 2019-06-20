@@ -1,14 +1,14 @@
-import {createValueCollection, generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
-import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {denormalizeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
-import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {createValueCollection, generateKey} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
+import {denormalizeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
+import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const normalizedDescription = {
   identifier: 'description_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -40,13 +40,13 @@ const name = denormalizeTextAttribute({
 const nameMobileValue = createValue(name, mobile, denormalizeLocaleReference(null), awesomeName);
 const nameEcommerceValue = createValue(name, ecommerce, denormalizeLocaleReference(null), awesomeName);
 
-describe('akeneo > reference entity > domain > model > record --- value collection', () => {
+describe('akeneo > asset family > domain > model > asset --- value collection', () => {
   test('I can create a new value collection', () => {
     expect(createValueCollection([descriptionEnUsValue]).normalize()).toEqual([
       {
         attribute: {
           code: 'description',
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           identifier: 'description_1234',
           is_required: true,
           is_rich_text_editor: false,

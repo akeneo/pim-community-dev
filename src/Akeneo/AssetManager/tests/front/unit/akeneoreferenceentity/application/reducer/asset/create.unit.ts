@@ -1,6 +1,6 @@
-import reducer from 'akeneoreferenceentity/application/reducer/record/create';
+import reducer from 'akeneoassetmanager/application/reducer/asset/create';
 
-describe('akeneo > reference entity > application > reducer > record --- create', () => {
+describe('akeneo > asset family > application > reducer > asset --- create', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
@@ -18,7 +18,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     expect(newState).toEqual({active: false, data: {code: '', labels: {}}, errors: []});
   });
 
-  test('I can start the creation of a new record', () => {
+  test('I can start the creation of a new asset', () => {
     const state = {
       active: false,
       data: {
@@ -28,7 +28,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_START',
+      type: 'ASSET_CREATION_START',
     });
 
     expect(newState).toEqual({
@@ -41,7 +41,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     });
   });
 
-  test('I can update the code of the record', () => {
+  test('I can update the code of the asset', () => {
     const state = {
       active: true,
       data: {
@@ -51,7 +51,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_RECORD_CODE_UPDATED',
+      type: 'ASSET_CREATION_ASSET_CODE_UPDATED',
       value: 'code_test',
     });
 
@@ -65,7 +65,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     });
   });
 
-  test('I can update the label of the record', () => {
+  test('I can update the label of the asset', () => {
     const state = {
       active: true,
       data: {
@@ -75,7 +75,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_LABEL_UPDATED',
+      type: 'ASSET_CREATION_LABEL_UPDATED',
       value: 'label testé-/$',
       locale: 'en_US',
     });
@@ -102,7 +102,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_LABEL_UPDATED',
+      type: 'ASSET_CREATION_LABEL_UPDATED',
       value: 'label testé-/$',
       locale: 'en_US',
     });
@@ -131,7 +131,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_LABEL_UPDATED',
+      type: 'ASSET_CREATION_LABEL_UPDATED',
       value: 'new label',
       locale: 'en_US',
     });
@@ -148,7 +148,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     });
   });
 
-  test('I can cancel the record creation', () => {
+  test('I can cancel the asset creation', () => {
     const state = {
       active: true,
       data: {
@@ -158,7 +158,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_CANCEL',
+      type: 'ASSET_CREATION_CANCEL',
     });
 
     expect(newState).toEqual({
@@ -171,7 +171,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     });
   });
 
-  test('I can dismiss the record creation', () => {
+  test('I can dismiss the asset creation', () => {
     const state = {
       active: true,
       data: {
@@ -194,7 +194,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     });
   });
 
-  test('I can submit the record creation', () => {
+  test('I can submit the asset creation', () => {
     const state = {
       active: false,
       data: {
@@ -213,7 +213,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     };
 
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_SUBMISSION',
+      type: 'ASSET_CREATION_SUBMISSION',
     });
 
     expect(newState).toEqual({
@@ -226,7 +226,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     });
   });
 
-  test('I can succeed the record creation', () => {
+  test('I can succeed the asset creation', () => {
     const state = {
       active: true,
       data: {
@@ -237,7 +237,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     };
 
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_SUCCEEDED',
+      type: 'ASSET_CREATION_SUCCEEDED',
     });
 
     expect(newState).toEqual({
@@ -250,7 +250,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     });
   });
 
-  test('I get errors on the record creation', () => {
+  test('I get errors on the asset creation', () => {
     const state = {
       active: false,
       data: {
@@ -271,7 +271,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     ];
 
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_ERROR_OCCURED',
+      type: 'ASSET_CREATION_ERROR_OCCURED',
       errors,
     });
 

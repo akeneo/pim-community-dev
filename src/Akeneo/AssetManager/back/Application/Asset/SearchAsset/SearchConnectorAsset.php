@@ -11,39 +11,39 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\SearchRecord;
+namespace Akeneo\AssetManager\Application\Asset\SearchAsset;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetsByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
- * This service takes a record search query and will return a list of connector-records.
+ * This service takes a asset search query and will return a list of connector-assets.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchConnectorRecord
+class SearchConnectorAsset
 {
     /** @var FindIdentifiersForQueryInterface */
     private $findIdentifiersForQuery;
 
-    /** @var FindConnectorRecordsByIdentifiersInterface */
-    private $findConnectorRecordsByIdentifiers;
+    /** @var FindConnectorAssetsByIdentifiersInterface */
+    private $findConnectorAssetsByIdentifiers;
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        FindConnectorRecordsByIdentifiersInterface $findConnectorRecordsByIdentifiers
+        FindConnectorAssetsByIdentifiersInterface $findConnectorAssetsByIdentifiers
     ) {
         $this->findIdentifiersForQuery = $findIdentifiersForQuery;
-        $this->findConnectorRecordsByIdentifiers = $findConnectorRecordsByIdentifiers;
+        $this->findConnectorAssetsByIdentifiers = $findConnectorAssetsByIdentifiers;
     }
 
-    public function __invoke(RecordQuery $query): array
+    public function __invoke(AssetQuery $query): array
     {
         $result = $this->findIdentifiersForQuery->find($query);
-        $records = empty($result) ? [] : $this->findConnectorRecordsByIdentifiers->find($result->identifiers, $query);
+        $assets = empty($result) ? [] : $this->findConnectorAssetsByIdentifiers->find($result->identifiers, $query);
 
-        return $records;
+        return $assets;
     }
 }

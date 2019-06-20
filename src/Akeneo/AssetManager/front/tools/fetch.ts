@@ -1,5 +1,5 @@
 import * as $ from 'jquery';
-import promisify from 'akeneoreferenceentity/tools/promisify';
+import promisify from 'akeneoassetmanager/tools/promisify';
 
 export const getJSON = (...args: any[]) => {
   const promise = $.getJSON.apply($, args);

@@ -1,9 +1,9 @@
-import Code, {createCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
+import Code, {createCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
-} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {NormalizedCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
+} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {NormalizedCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
 
 type AttributeType = string;
 type UseableAsGridFilter = boolean;

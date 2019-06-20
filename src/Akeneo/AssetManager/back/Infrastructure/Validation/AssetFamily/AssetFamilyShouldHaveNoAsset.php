@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ReferenceEntityShouldHaveNoRecord extends Constraint
+class AssetFamilyShouldHaveNoAsset extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.records.should_have_no_record';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.assets.should_have_no_asset';
 
     public function getTargets()
     {
@@ -30,6 +30,6 @@ class ReferenceEntityShouldHaveNoRecord extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.reference_entity.should_have_no_record';
+        return 'akeneo_assetmanager.validator.asset_family.should_have_no_asset';
     }
 }

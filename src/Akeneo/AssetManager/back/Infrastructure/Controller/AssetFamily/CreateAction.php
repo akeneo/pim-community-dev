@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,15 +25,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Creates a reference entity
+ * Creates an asset family
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class CreateAction
 {
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
     /** @var NormalizerInterface */
     private $normalizer;
@@ -45,12 +45,12 @@ class CreateAction
     private $securityFacade;
 
     public function __construct(
-        CreateReferenceEntityHandler $createReferenceEntityHandler,
+        CreateAssetFamilyHandler $createAssetFamilyHandler,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
         $this->normalizer                  = $normalizer;
         $this->validator                   = $validator;
         $this->securityFacade              = $securityFacade;
@@ -62,7 +62,7 @@ class CreateAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_create')) {
+        if (!$this->securityFacade->isGranted('akeneo_assetmanager_asset_family_create')) {
             throw new AccessDeniedException();
         }
 
@@ -72,16 +72,16 @@ class CreateAction
             return new JsonResponse($this->normalizer->normalize($violations, 'internal_api'), Response::HTTP_BAD_REQUEST);
         }
 
-        ($this->createReferenceEntityHandler)($command);
+        ($this->createAssetFamilyHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function getCreateCommand(Request $request): CreateReferenceEntityCommand
+    private function getCreateCommand(Request $request): CreateAssetFamilyCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = new CreateReferenceEntityCommand(
+        $command = new CreateAssetFamilyCommand(
             $normalizedCommand['code'],
             $normalizedCommand['labels']
         );

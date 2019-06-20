@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -42,16 +42,16 @@ class AttributeShouldNotExistValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        $referenceEntityIdentifier = $command->referenceEntityIdentifier;
+        $assetFamilyIdentifier = $command->assetFamilyIdentifier;
         $code = $command->code;
-        $alreadyExists = $this->attributeExists->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $alreadyExists = $this->attributeExists->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($code)
         );
 
         if ($alreadyExists) {
             $this->context->buildViolation(AttributeShouldNotExist::ERROR_MESSAGE)
-                ->setParameter('reference_entity_identifier', $referenceEntityIdentifier)
+                ->setParameter('asset_family_identifier', $assetFamilyIdentifier)
                 ->setParameter('code', $code)
                 ->atPath('code')
                 ->addViolation();

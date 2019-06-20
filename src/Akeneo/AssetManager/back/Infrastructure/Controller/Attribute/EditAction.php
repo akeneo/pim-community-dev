@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Controller\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,8 +31,8 @@ class EditAction
     /** @var EditAttributeHandler */
     private $editAttributeHandler;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
@@ -49,7 +49,7 @@ class EditAction
     public function __construct(
         EditAttributeCommandFactoryInterface $editAttributeCommandFactory,
         EditAttributeHandler $editAttributeHandler,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
@@ -57,7 +57,7 @@ class EditAction
     ) {
         $this->editAttributeCommandFactory = $editAttributeCommandFactory;
         $this->editAttributeHandler = $editAttributeHandler;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
@@ -69,7 +69,7 @@ class EditAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->isUserAllowedToEdit($request->get('referenceEntityIdentifier'))) {
+        if (!$this->isUserAllowedToEdit($request->get('assetFamilyIdentifier'))) {
             throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
@@ -93,15 +93,15 @@ class EditAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToEdit(string $assetFamilyIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery(
-            $referenceEntityIdentifier,
+        $query = new CanEditAssetFamilyQuery(
+            $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
 
-        return $this->securityFacade->isGranted('akeneo_referenceentity_attribute_edit')
-            && ($this->canEditReferenceEntityQueryHandler)($query);
+        return $this->securityFacade->isGranted('akeneo_assetmanager_attribute_edit')
+            && ($this->canEditAssetFamilyQueryHandler)($query);
     }
 
     /**
@@ -112,7 +112,7 @@ class EditAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return $normalizedCommand['identifier'] !== $request->get('attributeIdentifier') ||
-            $normalizedCommand['reference_entity_identifier'] !== $request->get('referenceEntityIdentifier');
+            $normalizedCommand['asset_family_identifier'] !== $request->get('assetFamilyIdentifier');
     }
 
     private function getEditCommand(Request $request): AbstractEditAttributeCommand

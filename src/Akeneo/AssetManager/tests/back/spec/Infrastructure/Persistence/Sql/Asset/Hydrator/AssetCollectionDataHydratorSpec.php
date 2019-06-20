@@ -1,17 +1,17 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordCollectionDataHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetCollectionData;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetCollectionDataHydrator;
 use PhpSpec\ObjectBehavior;
 
-class RecordCollectionDataHydratorSpec extends ObjectBehavior
+class AssetCollectionDataHydratorSpec extends ObjectBehavior
 {
     function let(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
@@ -20,46 +20,46 @@ class RecordCollectionDataHydratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordCollectionDataHydrator::class);
+        $this->shouldHaveType(AssetCollectionDataHydrator::class);
     }
 
-    function it_only_supports_hydrate_data_of_record_collection_data_attribute(
-        RecordAttribute $recordAttribute,
-        RecordCollectionAttribute $recordCollectionAttribute
+    function it_only_supports_hydrate_data_of_asset_collection_data_attribute(
+        AssetAttribute $assetAttribute,
+        AssetCollectionAttribute $assetCollectionAttribute
     ) {
-        $this->supports($recordAttribute)->shouldReturn(false);
-        $this->supports($recordCollectionAttribute)->shouldReturn(true);
+        $this->supports($assetAttribute)->shouldReturn(false);
+        $this->supports($assetCollectionAttribute)->shouldReturn(true);
     }
 
-    function it_hydrates_record_collection_data_only_if_the_records_still_exists(
+    function it_hydrates_asset_collection_data_only_if_the_assets_still_exists(
         FindCodesByIdentifiersInterface $findCodesByIdentifiers,
-        RecordCollectionAttribute $recordCollectionAttribute
+        AssetCollectionAttribute $assetCollectionAttribute
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('referenceEntityType');
-        $recordCollectionAttribute->getRecordType()->willReturn($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('assetFamilyType');
+        $assetCollectionAttribute->getAssetType()->willReturn($assetFamilyIdentifier);
 
         $findCodesByIdentifiers
             ->find(['phillipe_starck_123456', 'patricia_urquiola_123456'])
             ->willReturn(['phillipe_starck', 'patricia_urquiola']);
 
-        $recordData = $this->hydrate(['phillipe_starck_123456', 'patricia_urquiola_123456'], $recordCollectionAttribute);
+        $assetData = $this->hydrate(['phillipe_starck_123456', 'patricia_urquiola_123456'], $assetCollectionAttribute);
 
-        $recordData->shouldBeAnInstanceOf(RecordCollectionData::class);
-        $recordData->normalize()->shouldReturn(['phillipe_starck', 'patricia_urquiola']);
+        $assetData->shouldBeAnInstanceOf(AssetCollectionData::class);
+        $assetData->normalize()->shouldReturn(['phillipe_starck', 'patricia_urquiola']);
     }
 
-    function it_returns_an_empty_data_if_none_of_the_records_still_exists(
+    function it_returns_an_empty_data_if_none_of_the_assets_still_exists(
         FindCodesByIdentifiersInterface $findCodesByIdentifiers,
-        RecordCollectionAttribute $recordCollectionAttribute
+        AssetCollectionAttribute $assetCollectionAttribute
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('referenceEntityType');
-        $recordCollectionAttribute->getRecordType()->willReturn($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('assetFamilyType');
+        $assetCollectionAttribute->getAssetType()->willReturn($assetFamilyIdentifier);
 
         $findCodesByIdentifiers
             ->find(['phillipe_starck_123456', 'patricia_urquiola_123456'])
             ->willReturn([]);
 
-        $recordData = $this->hydrate(['phillipe_starck_123456', 'patricia_urquiola_123456'], $recordCollectionAttribute);
-        $recordData->shouldBeAnInstanceOf(EmptyData::class);
+        $assetData = $this->hydrate(['phillipe_starck_123456', 'patricia_urquiola_123456'], $assetCollectionAttribute);
+        $assetData->shouldBeAnInstanceOf(EmptyData::class);
     }
 }

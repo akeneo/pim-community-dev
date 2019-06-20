@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source filters.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Object representing a record query
+ * Object representing a asset query
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordQuery
+class AssetQuery
 {
     private const PAGINATE_USING_OFFSET = 'offset';
     private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
@@ -45,14 +45,14 @@ class RecordQuery
     /** @var int|null */
     private $size;
 
-    /** @var RecordCode|null */
+    /** @var AssetCode|null */
     private $searchAfterCode;
 
     /** @var string */
     private $paginationMethod;
 
     /**
-     * If defined, the record values will be filtered by the given channel.
+     * If defined, the asset values will be filtered by the given channel.
      * The values without channel will not be filtered.
      *
      * @var ChannelReference
@@ -75,7 +75,7 @@ class RecordQuery
         string $paginationMethod,
         int $size,
         ?int $page,
-        ?RecordCode $searchAfterCode
+        ?AssetCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
             if (!(
@@ -83,7 +83,7 @@ class RecordQuery
                 key_exists('operator', $filter) &&
                 key_exists('value', $filter)
             )) {
-                throw new \InvalidArgumentException('RecordQuery expect an array of filters with a field, value, operator and context');
+                throw new \InvalidArgumentException('AssetQuery expect an array of filters with a field, value, operator and context');
             }
         }
 
@@ -104,7 +104,7 @@ class RecordQuery
         $this->localeIdentifiersValuesFilter = $localeIdentifiersValuesFilter;
     }
 
-    public static function createFromNormalized(array $normalizedQuery): RecordQuery
+    public static function createFromNormalized(array $normalizedQuery): AssetQuery
     {
         if (!(
             key_exists('channel', $normalizedQuery) &&
@@ -113,10 +113,10 @@ class RecordQuery
             key_exists('page', $normalizedQuery) &&
             key_exists('size', $normalizedQuery)
         )) {
-            throw new \InvalidArgumentException('RecordQuery expect a channel, a locale, filters, a page and a size');
+            throw new \InvalidArgumentException('AssetQuery expect a channel, a locale, filters, a page and a size');
         }
 
-        return new RecordQuery(
+        return new AssetQuery(
             ChannelReference::createfromNormalized($normalizedQuery['channel']),
             LocaleReference::createFromNormalized($normalizedQuery['locale']),
             $normalizedQuery['filters'],
@@ -130,20 +130,20 @@ class RecordQuery
     }
 
     public static function createPaginatedQueryUsingSearchAfter(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         ChannelReference $channelReferenceValuesFilter,
         LocaleIdentifierCollection $localeIdentifiersValuesFilter,
         int $size,
-        ?RecordCode $searchAfterCode,
+        ?AssetCode $searchAfterCode,
         array $filters
-    ): RecordQuery {
+    ): AssetQuery {
         $filters[] = [
-            'field'    => 'reference_entity',
+            'field'    => 'asset_family',
             'operator' => '=',
-            'value'    => (string)$referenceEntityIdentifier
+            'value'    => (string)$assetFamilyIdentifier
         ];
 
-        return new RecordQuery(
+        return new AssetQuery(
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             $filters,

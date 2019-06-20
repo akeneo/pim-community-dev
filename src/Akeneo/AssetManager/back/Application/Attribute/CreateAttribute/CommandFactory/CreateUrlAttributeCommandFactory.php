@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateUrlAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateUrlAttributeCommand;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -33,7 +33,7 @@ class CreateUrlAttributeCommandFactory extends AbstractCreateAttributeCommandFac
         $this->checkAdditionalProperties($normalizedCommand);
 
         $command = new CreateUrlAttributeCommand(
-            $normalizedCommand['reference_entity_identifier'],
+            $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -23,6 +23,6 @@ class LabelCollection extends Constraint
 {
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.infrastructure.validation.reference_entity.label_collection';
+        return 'akeneo_assetmanager.infrastructure.validation.asset_family.label_collection';
     }
 }

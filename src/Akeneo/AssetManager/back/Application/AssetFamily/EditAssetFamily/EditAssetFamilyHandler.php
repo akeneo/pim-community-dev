@@ -10,13 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity;
+namespace Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\File\FileExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
@@ -24,12 +24,12 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditReferenceEntityHandler
+class EditAssetFamilyHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var FileStorerInterface */
     private $storer;
@@ -38,38 +38,38 @@ class EditReferenceEntityHandler
     private $fileExists;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         FileStorerInterface $storer,
         FileExistsInterface $fileExists
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->storer = $storer;
         $this->fileExists = $fileExists;
     }
 
-    public function __invoke(EditReferenceEntityCommand $editReferenceEntityCommand): void
+    public function __invoke(EditAssetFamilyCommand $editAssetFamilyCommand): void
     {
-        $identifier = ReferenceEntityIdentifier::fromString($editReferenceEntityCommand->identifier);
-        $labelCollection = LabelCollection::fromArray($editReferenceEntityCommand->labels);
+        $identifier = AssetFamilyIdentifier::fromString($editAssetFamilyCommand->identifier);
+        $labelCollection = LabelCollection::fromArray($editAssetFamilyCommand->labels);
 
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($identifier);
-        $referenceEntity->updateLabels($labelCollection);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($identifier);
+        $assetFamily->updateLabels($labelCollection);
 
-        if (null !== $editReferenceEntityCommand->image) {
-            $existingImage = $referenceEntity->getImage();
+        if (null !== $editAssetFamilyCommand->image) {
+            $existingImage = $assetFamily->getImage();
             // If we want to update the image and it's not already in file storage, we store it if needed
             if (
                 $existingImage->isEmpty() ||
-                $existingImage->getKey() !== $editReferenceEntityCommand->image['filePath']
+                $existingImage->getKey() !== $editAssetFamilyCommand->image['filePath']
             ) {
-                $image = $this->getStoredImage($editReferenceEntityCommand->image);
-                $referenceEntity->updateImage($image);
+                $image = $this->getStoredImage($editAssetFamilyCommand->image);
+                $assetFamily->updateImage($image);
             }
         } else {
-            $referenceEntity->updateImage(Image::createEmpty());
+            $assetFamily->updateImage(Image::createEmpty());
         }
 
-        $this->referenceEntityRepository->update($referenceEntity);
+        $this->assetFamilyRepository->update($assetFamily);
     }
 
     private function getStoredImage(array $imageData): Image

@@ -1,11 +1,11 @@
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
-import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
-import updateResultsWithFetcher from 'akeneoreferenceentity/application/action/search';
-import {updateFilter, removeFilter, gridStateUpdated} from 'akeneoreferenceentity/application/event/search';
-import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
-import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import updateResultsWithFetcher from 'akeneoassetmanager/application/action/search';
+import {updateFilter, removeFilter, gridStateUpdated} from 'akeneoassetmanager/application/event/search';
+import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
+import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 
 const stateToQuery = async (state: EditState): Promise<Query> => {
   return {
@@ -16,7 +16,7 @@ const stateToQuery = async (state: EditState): Promise<Query> => {
     filters: [
       ...state.grid.query.filters,
       {
-        field: 'reference_entity',
+        field: 'asset_family',
         operator: '=',
         value: state.form.data.identifier,
         context: {},
@@ -25,27 +25,27 @@ const stateToQuery = async (state: EditState): Promise<Query> => {
   };
 };
 
-export const MAX_DISPLAYED_RECORDS = 500;
+export const MAX_DISPLAYED_ASSETS = 500;
 
 export const needMoreResults = () => (dispatch: any, getState: any) => {
   if (
     !getState().grid.isFetching &&
-    getState().grid.items.length < MAX_DISPLAYED_RECORDS &&
+    getState().grid.items.length < MAX_DISPLAYED_ASSETS &&
     getState().grid.items.length < getState().grid.matchesCount
   ) {
-    dispatch(updateRecordResults(true));
+    dispatch(updateAssetResults(true));
   }
 };
 
 export const searchUpdated = (searchInput: string) => (dispatch: any) => {
   dispatch(updateFilter('full_text', '=', searchInput));
-  dispatch(updateRecordResults(false));
+  dispatch(updateAssetResults(false));
   dispatch(gridStateUpdated());
 };
 
 export const filterUpdated = (updatedFilter: Filter) => (dispatch: any) => {
   dispatch(updateFilter(updatedFilter.field, updatedFilter.operator, updatedFilter.value));
-  dispatch(updateRecordResults(false));
+  dispatch(updateAssetResults(false));
   dispatch(gridStateUpdated());
 };
 
@@ -66,8 +66,8 @@ export const completenessFilterUpdated = (completenessValue: CompletenessValue) 
       break;
   }
 
-  dispatch(updateRecordResults(false));
+  dispatch(updateAssetResults(false));
   dispatch(gridStateUpdated());
 };
 
-export const updateRecordResults = updateResultsWithFetcher<NormalizedRecord>(recordFetcher, stateToQuery);
+export const updateAssetResults = updateResultsWithFetcher<NormalizedAsset>(assetFetcher, stateToQuery);

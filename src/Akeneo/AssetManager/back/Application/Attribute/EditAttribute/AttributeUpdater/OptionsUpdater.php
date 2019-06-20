@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
+namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

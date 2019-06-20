@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "GET",
-        "route": "akeneo_reference_entities_attribute_index_rest",
+        "route": "akeneo_asset_manager_attribute_index_rest",
         "query": {
-            "referenceEntityIdentifier": "designer"
+            "assetFamilyIdentifier": "designer"
         }
     },
     "response": {
@@ -12,7 +12,7 @@
             {
                 "type": "text",
                 "identifier": "designer_name_123456",
-                "reference_entity_identifier": "designer",
+                "asset_family_identifier": "designer",
                 "code": "name",
                 "labels": {
                     "en_US": "Name",
@@ -31,7 +31,7 @@
             {
                 "type": "text",
                 "identifier": "designer_bio_123456",
-                "reference_entity_identifier": "designer",
+                "asset_family_identifier": "designer",
                 "code": "bio",
                 "labels": {
                     "en_US": "Bio",
@@ -50,7 +50,7 @@
             {
                 "type": "image",
                 "identifier": "designer_portrait_123456",
-                "reference_entity_identifier": "designer",
+                "asset_family_identifier": "designer",
                 "code": "portrait",
                 "labels": {
                     "en_US": "Portrait",

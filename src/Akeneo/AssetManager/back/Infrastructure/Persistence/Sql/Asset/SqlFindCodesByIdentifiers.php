@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -37,7 +37,7 @@ class SqlFindCodesByIdentifiers implements FindCodesByIdentifiersInterface
     {
         $query = <<<SQL
         SELECT identifier, code
-        FROM akeneo_reference_entity_record
+        FROM akeneo_asset_manager_asset
         WHERE identifier IN (:identifiers)
 SQL;
 

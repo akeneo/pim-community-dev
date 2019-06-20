@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

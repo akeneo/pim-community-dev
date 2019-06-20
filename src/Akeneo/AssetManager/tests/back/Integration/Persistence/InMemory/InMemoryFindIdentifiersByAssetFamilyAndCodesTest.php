@@ -2,58 +2,58 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersByReferenceEntityAndCodes;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindIdentifiersByAssetFamilyAndCodes;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class InMemoryFindIdentifiersByReferenceEntityAndCodesTest extends TestCase
+class InMemoryFindIdentifiersByAssetFamilyAndCodesTest extends TestCase
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    /** @var InMemoryReferenceEntityRepository */
-    private $referenceEntityRepository;
+    /** @var InMemoryAssetFamilyRepository */
+    private $assetFamilyRepository;
 
-    /** @var InMemoryFindIdentifiersByReferenceEntityAndCodes */
+    /** @var InMemoryFindIdentifiersByAssetFamilyAndCodes */
     private $query;
 
-    /** @var ReferenceEntityIdentifier */
+    /** @var AssetFamilyIdentifier */
     private $starckIdentifier;
 
-    /** @var ReferenceEntityIdentifier */
+    /** @var AssetFamilyIdentifier */
     private $cocoIdentifier;
 
     public function setUp(): void
     {
-        $this->recordRepository = new InMemoryRecordRepository();
-        $this->referenceEntityRepository = new InMemoryReferenceEntityRepository(new EventDispatcher());
-        $this->query = new InMemoryFindIdentifiersByReferenceEntityAndCodes(
-            $this->recordRepository
+        $this->assetRepository = new InMemoryAssetRepository();
+        $this->assetFamilyRepository = new InMemoryAssetFamilyRepository(new EventDispatcher());
+        $this->query = new InMemoryFindIdentifiersByAssetFamilyAndCodes(
+            $this->assetRepository
         );
     }
 
     /**
      * @test
      */
-    public function it_finds_identifiers_of_records_by_their_reference_entity_and_codes()
+    public function it_finds_identifiers_of_assets_by_their_asset_family_and_codes()
     {
         $this->loadFixtures();
 
         $identifiers = $this->query->find(
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             [
-                RecordCode::fromString('starck'),
-                RecordCode::fromString('coco'),
+                AssetCode::fromString('starck'),
+                AssetCode::fromString('coco'),
             ]
         );
 
@@ -62,9 +62,9 @@ class InMemoryFindIdentifiersByReferenceEntityAndCodesTest extends TestCase
         $this->assertContains($this->cocoIdentifier->normalize(), $identifiers);
 
         $identifiers = $this->query->find(
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             [
-                RecordCode::fromString('coco'),
+                AssetCode::fromString('coco'),
             ]
         );
 
@@ -75,34 +75,34 @@ class InMemoryFindIdentifiersByReferenceEntityAndCodesTest extends TestCase
 
     private function loadFixtures()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
 
-        $starkCode = RecordCode::fromString('starck');
-        $this->starckIdentifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $starkCode);
-        $this->recordRepository->create(
-            Record::create(
+        $starkCode = AssetCode::fromString('starck');
+        $this->starckIdentifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $starkCode);
+        $this->assetRepository->create(
+            Asset::create(
                 $this->starckIdentifier,
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 $starkCode,
                 ValueCollection::fromValues([])
             )
         );
 
-        $cocoCode = RecordCode::fromString('coco');
-        $this->cocoIdentifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $cocoCode);
-        $this->recordRepository->create(
-            Record::create(
+        $cocoCode = AssetCode::fromString('coco');
+        $this->cocoIdentifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $cocoCode);
+        $this->assetRepository->create(
+            Asset::create(
                 $this->cocoIdentifier,
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 $cocoCode,
                 ValueCollection::fromValues([])
             )

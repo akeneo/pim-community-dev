@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\OptionDataHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\OptionDataHydrator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -22,10 +22,10 @@ class OptionDataHydratorSpec extends ObjectBehavior
 
     function it_only_supports_data_for_option_attribute(
         OptionAttribute $optionAttribute,
-        RecordCollectionAttribute $recordCollectionAttribute
+        AssetCollectionAttribute $assetCollectionAttribute
     ) {
         $this->supports($optionAttribute)->shouldReturn(true);
-        $this->supports($recordCollectionAttribute)->shouldReturn(false);
+        $this->supports($assetCollectionAttribute)->shouldReturn(false);
     }
 
     function it_hydrates_option_data_if_the_option_still_exists(OptionAttribute $optionAttribute)

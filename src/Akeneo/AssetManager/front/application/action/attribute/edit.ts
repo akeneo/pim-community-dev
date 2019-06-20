@@ -1,30 +1,30 @@
-import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
+import attributeSaver from 'akeneoassetmanager/infrastructure/saver/attribute';
 import {
   attributeEditionSucceeded,
   attributeEditionErrorOccured,
   attributeEditionStart as attributeEditionStartEvent,
   attributeEditionSubmission,
   attributeEditionCancel,
-} from 'akeneoreferenceentity/domain/event/attribute/edit';
-import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+} from 'akeneoassetmanager/domain/event/attribute/edit';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   notifyAttributeSaveFailed,
   notifyAttributeSaveValidationError,
-} from 'akeneoreferenceentity/application/action/attribute/notify';
-import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
-import AttributeCode from 'akeneoreferenceentity/domain/model/code';
-import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+} from 'akeneoassetmanager/application/action/attribute/notify';
+import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
+import AttributeCode from 'akeneoassetmanager/domain/model/code';
+import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
+import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
   optionEditionSubmission,
   optionEditionErrorOccured,
   optionEditionSucceeded,
-} from 'akeneoreferenceentity/domain/event/attribute/option';
-import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import {AttributeWithOptions} from 'akeneoreferenceentity/domain/model/attribute/type/option';
-import attributeOptionSaver from 'akeneoreferenceentity/infrastructure/saver/options';
+} from 'akeneoassetmanager/domain/event/attribute/option';
+import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import attributeOptionSaver from 'akeneoassetmanager/infrastructure/saver/options';
 
 export const saveAttribute = (dismiss: boolean = true) => async (
   dispatch: any,

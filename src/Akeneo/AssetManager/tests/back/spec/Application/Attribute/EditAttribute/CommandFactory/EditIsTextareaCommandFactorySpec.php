@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditIsTextareaCommandFactorySpec extends ObjectBehavior

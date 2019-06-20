@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Event;
+namespace Akeneo\AssetManager\Domain\Event;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -15,21 +15,21 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AttributeDeletedEvent extends Event
 {
-    /** @var ReferenceEntityIdentifier */
-    public $referenceEntityIdentifier;
+    /** @var AssetFamilyIdentifier */
+    public $assetFamilyIdentifier;
 
     /** @var AttributeIdentifier */
     public $attributeIdentifier;
 
-    public function __construct(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeIdentifier $attributeIdentifier)
+    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeIdentifier $attributeIdentifier)
     {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->attributeIdentifier = $attributeIdentifier;
     }
 
-    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
     {
-        return $this->referenceEntityIdentifier;
+        return $this->assetFamilyIdentifier;
     }
 
     public function getAttributeIdentifier(): AttributeIdentifier

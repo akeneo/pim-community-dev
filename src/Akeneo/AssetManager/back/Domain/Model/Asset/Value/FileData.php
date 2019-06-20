@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace Akeneo\AssetManager\Domain\Model\Asset\Value;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Webmozart\Assert\Assert;

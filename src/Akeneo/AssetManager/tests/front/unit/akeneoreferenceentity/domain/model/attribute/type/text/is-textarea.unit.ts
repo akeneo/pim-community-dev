@@ -1,4 +1,4 @@
-import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
+import {IsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
 
 describe('akeneo > attribute > domain > model > attribute > type > text --- IsTextarea', () => {
   test('I can create a IsTextarea from normalized', () => {

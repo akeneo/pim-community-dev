@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
+namespace Akeneo\AssetManager\Common\Fake\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyByAssetFamilyIdentifierInterface;
 
-class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier implements FindConnectorReferenceEntityByReferenceEntityIdentifierInterface
+class InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnectorAssetFamilyByAssetFamilyIdentifierInterface
 {
-    /** @var ConnectorReferenceEntity[] */
+    /** @var ConnectorAssetFamily[] */
     private $results;
 
     public function __construct()
@@ -28,18 +28,18 @@ class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier implements
     }
 
     public function save(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        ConnectorReferenceEntity $connectorReferenceEntity
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        ConnectorAssetFamily $connectorAssetFamily
     ): void {
-        $this->results[(string) $referenceEntityIdentifier] = $connectorReferenceEntity;
+        $this->results[(string) $assetFamilyIdentifier] = $connectorAssetFamily;
     }
 
     /**
      * {@inheritdoc}
      */
     public function find(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
-    ): ?ConnectorReferenceEntity {
-        return $this->results[(string) $referenceEntityIdentifier] ?? null;
+        AssetFamilyIdentifier $assetFamilyIdentifier
+    ): ?ConnectorAssetFamily {
+        return $this->results[(string) $assetFamilyIdentifier] ?? null;
     }
 }

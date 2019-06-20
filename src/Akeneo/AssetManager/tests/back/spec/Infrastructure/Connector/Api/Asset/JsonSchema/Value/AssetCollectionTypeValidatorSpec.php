@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\RecordCollectionTypeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\AssetCollectionTypeValidator;
 use PhpSpec\ObjectBehavior;
 
-class RecordCollectionTypeValidatorSpec extends ObjectBehavior
+class AssetCollectionTypeValidatorSpec extends ObjectBehavior
 {
-    function it_is_a_record_value_validator()
+    function it_is_a_asset_value_validator()
     {
-        $this->shouldImplement(RecordValueValidatorInterface::class);
+        $this->shouldImplement(AssetValueValidatorInterface::class);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordCollectionTypeValidator::class);
+        $this->shouldHaveType(AssetCollectionTypeValidator::class);
     }
 
-    function it_returns_all_the_errors_of_invalid_record_values()
+    function it_returns_all_the_errors_of_invalid_asset_values()
     {
-        $record = [
+        $asset = [
             'values' => [
                 'materials' => [
                     [
@@ -55,14 +55,14 @@ class RecordCollectionTypeValidatorSpec extends ObjectBehavior
             ]
         ];
 
-        $errors = $this->validate($record);
+        $errors = $this->validate($asset);
         $errors->shouldBeArray();
         $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_empty_array_if_all_the_record_values_are_valid()
+    function it_returns_an_empty_array_if_all_the_asset_values_are_valid()
     {
-        $record = [
+        $asset = [
             'values' => [
                 'materials' => [
                     [
@@ -74,6 +74,6 @@ class RecordCollectionTypeValidatorSpec extends ObjectBehavior
             ]
         ];
 
-        $this->validate($record)->shouldReturn([]);
+        $this->validate($asset)->shouldReturn([]);
     }
 }

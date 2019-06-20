@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -20,6 +20,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class Code extends Constraint
 {
-    public const MESSAGE_RESERVED_CODE = 'pim_reference_entity.attribute.validation.code.reserved_codes';
-    public const MESSAGE_WRONG_PATTERN = 'pim_reference_entity.attribute.validation.code.pattern';
+    public const MESSAGE_RESERVED_CODE = 'pim_asset_manager.attribute.validation.code.reserved_codes';
+    public const MESSAGE_WRONG_PATTERN = 'pim_asset_manager.attribute.validation.code.pattern';
 }

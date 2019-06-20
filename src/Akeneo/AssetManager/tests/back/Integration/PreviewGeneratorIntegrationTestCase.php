@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration;
+namespace Akeneo\AssetManager\Integration;
 
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
+use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -42,7 +42,7 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
         if (null === $this->testKernel) {
             $this->bootTestKernel();
         }
-        $this->fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
+        $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
         $this->resetDB();
     }
 
@@ -68,6 +68,6 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 
     protected function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 }

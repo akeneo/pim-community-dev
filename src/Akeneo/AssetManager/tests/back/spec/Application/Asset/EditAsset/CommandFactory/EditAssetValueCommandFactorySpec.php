@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommandFactory;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommandFactory;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use PhpSpec\ObjectBehavior;
 
-class EditRecordValueCommandFactorySpec extends ObjectBehavior
+class EditAssetValueCommandFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditRecordValueCommandFactory::class);
+        $this->shouldHaveType(EditAssetValueCommandFactory::class);
     }
 
-    function it_only_supports_create_value_of_record_attribute(
-        RecordAttribute $recordAttribute,
-        RecordCollectionAttribute $recordCollectionAttribute
+    function it_only_supports_create_value_of_asset_attribute(
+        AssetAttribute $assetAttribute,
+        AssetCollectionAttribute $assetCollectionAttribute
     ) {
         $normalizedValue = [
             'channel' => 'ecommerce',
@@ -26,23 +26,23 @@ class EditRecordValueCommandFactorySpec extends ObjectBehavior
             'data'    => 'philippe_starck'
         ];
 
-        $this->supports($recordAttribute, $normalizedValue)->shouldReturn(true);
-        $this->supports($recordCollectionAttribute, $normalizedValue)->shouldReturn(false);
+        $this->supports($assetAttribute, $normalizedValue)->shouldReturn(true);
+        $this->supports($assetCollectionAttribute, $normalizedValue)->shouldReturn(false);
     }
 
-    function it_creates_record_value(RecordAttribute $recordAttribute)
+    function it_creates_asset_value(AssetAttribute $assetAttribute)
     {
         $normalizedValue = [
             'channel' => 'ecommerce',
             'locale'  => 'en_US',
             'data'    => 'philippe_starck'
         ];
-        $command = $this->create($recordAttribute, $normalizedValue);
+        $command = $this->create($assetAttribute, $normalizedValue);
 
-        $command->shouldBeAnInstanceOf(EditRecordValueCommand::class);
-        $command->attribute->shouldBeEqualTo($recordAttribute);
+        $command->shouldBeAnInstanceOf(EditAssetValueCommand::class);
+        $command->attribute->shouldBeEqualTo($assetAttribute);
         $command->channel->shouldBeEqualTo('ecommerce');
         $command->locale->shouldBeEqualTo('en_US');
-        $command->recordCode->shouldBeEqualTo('philippe_starck');
+        $command->assetCode->shouldBeEqualTo('philippe_starck');
     }
 }

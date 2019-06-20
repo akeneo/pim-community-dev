@@ -11,62 +11,62 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetsByIdentifiers;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use PHPUnit\Framework\TestCase;
 
-class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
+class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
 {
-    /** @var InMemoryFindConnectorRecordsByIdentifiers */
-    private $findConnectorRecordsByIdentifiers;
+    /** @var InMemoryFindConnectorAssetsByIdentifiers */
+    private $findConnectorAssetsByIdentifiers;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findConnectorRecordsByIdentifiers = new InMemoryFindConnectorRecordsByIdentifiers();
+        $this->findConnectorAssetsByIdentifiers = new InMemoryFindConnectorAssetsByIdentifiers();
     }
 
     /**
      * @test
      */
-    public function it_finds_connector_records_for_a_given_list_of_identifiers()
+    public function it_finds_connector_assets_for_a_given_list_of_identifiers()
     {
-        $kartellRecord = new ConnectorRecord(
-            RecordCode::fromString('kartell'),
+        $kartellAsset = new ConnectorAsset(
+            AssetCode::fromString('kartell'),
             []
         );
-        $kartellRecordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
-        $this->findConnectorRecordsByIdentifiers->save($kartellRecordIdentifier, $kartellRecord);
+        $kartellAssetIdentifier = AssetIdentifier::fromString('brand_kartell_fingerprint');
+        $this->findConnectorAssetsByIdentifiers->save($kartellAssetIdentifier, $kartellAsset);
 
-        $lexonRecord = new ConnectorRecord(
-            RecordCode::fromString('lexon'),
+        $lexonAsset = new ConnectorAsset(
+            AssetCode::fromString('lexon'),
             []
         );
-        $lexonRecordIdentifier = RecordIdentifier::fromString('brand_lexon_fingerprint');
-        $this->findConnectorRecordsByIdentifiers->save($lexonRecordIdentifier, $lexonRecord);
+        $lexonAssetIdentifier = AssetIdentifier::fromString('brand_lexon_fingerprint');
+        $this->findConnectorAssetsByIdentifiers->save($lexonAssetIdentifier, $lexonAsset);
 
-        $alessiRecord = new ConnectorRecord(
-            RecordCode::fromString('alessi'),
+        $alessiAsset = new ConnectorAsset(
+            AssetCode::fromString('alessi'),
             []
         );
-        $alessiRecordIdentifier = RecordIdentifier::fromString('brand_alessi_fingerprint');
-        $this->findConnectorRecordsByIdentifiers->save($alessiRecordIdentifier, $alessiRecord);
+        $alessiAssetIdentifier = AssetIdentifier::fromString('brand_alessi_fingerprint');
+        $this->findConnectorAssetsByIdentifiers->save($alessiAssetIdentifier, $alessiAsset);
 
-        $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
-            $lexonRecordIdentifier->normalize(),
-            $alessiRecordIdentifier->normalize(),
+        $assetsFound = $this->findConnectorAssetsByIdentifiers->find([
+            $lexonAssetIdentifier->normalize(),
+            $alessiAssetIdentifier->normalize(),
             'brand_muuto_fingerprint',
-        ], RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('brand'),
+        ], AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('brand'),
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             10,
@@ -74,26 +74,26 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             []
         ));
 
-        $this->assertEquals([$lexonRecord, $alessiRecord], $recordsFound);
+        $this->assertEquals([$lexonAsset, $alessiAsset], $assetsFound);
     }
 
     /**
      * @test
      */
-    public function it_returns_an_empty_array_if_no_records_are_found()
+    public function it_returns_an_empty_array_if_no_assets_are_found()
     {
-        $connectorRecord = new ConnectorRecord(
-            RecordCode::fromString('kartell'),
+        $connectorAsset = new ConnectorAsset(
+            AssetCode::fromString('kartell'),
             []
         );
-        $recordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
-        $this->findConnectorRecordsByIdentifiers->save($recordIdentifier, $connectorRecord);
+        $assetIdentifier = AssetIdentifier::fromString('brand_kartell_fingerprint');
+        $this->findConnectorAssetsByIdentifiers->save($assetIdentifier, $connectorAsset);
 
-        $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
+        $assetsFound = $this->findConnectorAssetsByIdentifiers->find([
             'brand_lexon_fingerprint',
             'brand_muuto_fingerprint',
-        ], RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('brand'),
+        ], AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('brand'),
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             10,
@@ -101,16 +101,16 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             []
         ));
 
-        $this->assertEquals([], $recordsFound);
+        $this->assertEquals([], $assetsFound);
     }
 
     /**
      * @test
      */
-    public function it_finds_connector_records_and_filters_the_values_by_channel()
+    public function it_finds_connector_assets_and_filters_the_values_by_channel()
     {
-        $connectorRecord = new ConnectorRecord(
-            RecordCode::fromString('kartell'),
+        $connectorAsset = new ConnectorAsset(
+            AssetCode::fromString('kartell'),
             [
                 'label' => [
                     [
@@ -150,12 +150,12 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
                 ]
             ]
         );
-        $recordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
+        $assetIdentifier = AssetIdentifier::fromString('brand_kartell_fingerprint');
 
-        $this->findConnectorRecordsByIdentifiers->save($recordIdentifier, $connectorRecord);
+        $this->findConnectorAssetsByIdentifiers->save($assetIdentifier, $connectorAsset);
 
-        $expectedConnectorRecord = new ConnectorRecord(
-            RecordCode::fromString('kartell'),
+        $expectedConnectorAsset = new ConnectorAsset(
+            AssetCode::fromString('kartell'),
             [
                 'label' => [
                     [
@@ -184,10 +184,10 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             ]
         );
 
-        $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
-            $recordIdentifier->normalize(),
-        ], RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetsFound = $this->findConnectorAssetsByIdentifiers->find([
+            $assetIdentifier->normalize(),
+        ], AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('brand'),
             ChannelReference::createfromNormalized('ecommerce'),
             LocaleIdentifierCollection::empty(),
             10,
@@ -195,16 +195,16 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             []
         ));
 
-        $this->assertEquals([$expectedConnectorRecord], $recordsFound);
+        $this->assertEquals([$expectedConnectorAsset], $assetsFound);
     }
 
     /**
      * @test
      */
-    public function it_finds_connector_records_and_filters_the_values_by_locale()
+    public function it_finds_connector_assets_and_filters_the_values_by_locale()
     {
-        $connectorRecord = new ConnectorRecord(
-            RecordCode::fromString('kartell'),
+        $connectorAsset = new ConnectorAsset(
+            AssetCode::fromString('kartell'),
             [
                 'label' => [
                     [
@@ -251,12 +251,12 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
                 ],
             ]
         );
-        $recordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
+        $assetIdentifier = AssetIdentifier::fromString('brand_kartell_fingerprint');
 
-        $this->findConnectorRecordsByIdentifiers->save($recordIdentifier, $connectorRecord);
+        $this->findConnectorAssetsByIdentifiers->save($assetIdentifier, $connectorAsset);
 
-        $expectedConnectorRecord = new ConnectorRecord(
-            RecordCode::fromString('kartell'),
+        $expectedConnectorAsset = new ConnectorAsset(
+            AssetCode::fromString('kartell'),
             [
                 'label' => [
                     [
@@ -287,10 +287,10 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             ]
         );
 
-        $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
-            $recordIdentifier->normalize(),
-        ], RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetsFound = $this->findConnectorAssetsByIdentifiers->find([
+            $assetIdentifier->normalize(),
+        ], AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('brand'),
             ChannelReference::createfromNormalized('ecommerce'),
             LocaleIdentifierCollection::fromNormalized([
                 'en_US',
@@ -301,6 +301,6 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             []
         ));
 
-        $this->assertEquals([$expectedConnectorRecord], $recordsFound);
+        $this->assertEquals([$expectedConnectorAsset], $assetsFound);
     }
 }

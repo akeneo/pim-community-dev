@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 
@@ -30,7 +30,7 @@ class UrlAttributeSpec extends ObjectBehavior
             'create',
             [
                 AttributeIdentifier::create('asset', 'image', 'test'),
-                ReferenceEntityIdentifier::fromString('asset'),
+                AssetFamilyIdentifier::fromString('asset'),
                 AttributeCode::fromString('image'),
                 LabelCollection::fromArray(['fr_FR' => 'Image', 'en_US' => 'Image']),
                 AttributeOrder::fromInteger(0),
@@ -61,7 +61,7 @@ class UrlAttributeSpec extends ObjectBehavior
             'create',
             [
                 AttributeIdentifier::create('city', 'area', 'test'),
-                ReferenceEntityIdentifier::fromString('city'),
+                AssetFamilyIdentifier::fromString('city'),
                 AttributeCode::fromString('area'),
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
@@ -81,7 +81,7 @@ class UrlAttributeSpec extends ObjectBehavior
             'create',
             [
                 AttributeIdentifier::create('city', 'area', 'test'),
-                ReferenceEntityIdentifier::fromString('city'),
+                AssetFamilyIdentifier::fromString('city'),
                 AttributeCode::fromString('area'),
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
@@ -100,7 +100,7 @@ class UrlAttributeSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'identifier'                  => 'image_asset_test',
-                'reference_entity_identifier' => 'asset',
+                'asset_family_identifier' => 'asset',
                 'code'                        => 'image',
                 'labels'                      => ['fr_FR' => 'Image', 'en_US' => 'Image'],
                 'order'                       => 0,

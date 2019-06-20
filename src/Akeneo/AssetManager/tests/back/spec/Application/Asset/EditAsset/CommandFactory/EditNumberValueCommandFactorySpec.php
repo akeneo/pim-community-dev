@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumberValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumberValueCommandFactory;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommandFactory;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use PhpSpec\ObjectBehavior;
 
 class EditNumberValueCommandFactorySpec extends ObjectBehavior

@@ -1,6 +1,6 @@
-import {dataReceived} from 'akeneoreferenceentity/domain/event/search';
+import {dataReceived} from 'akeneoassetmanager/domain/event/search';
 
-describe('akeneo > reference entity > domain > event --- search', () => {
+describe('akeneo > asset family > domain > event --- search', () => {
   test('I can create a dataReceived event', () => {
     expect(dataReceived([], 0, 0, false)).toEqual({
       type: 'GRID_DATA_RECEIVED',

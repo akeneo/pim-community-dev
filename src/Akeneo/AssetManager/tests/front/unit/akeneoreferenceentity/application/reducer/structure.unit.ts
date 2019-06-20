@@ -1,6 +1,6 @@
-import reducer, {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
+import reducer, {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 
-describe('akeneo > reference entity > application > reducer --- structure[', () => {
+describe('akeneo > asset family > application > reducer --- structure[', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {

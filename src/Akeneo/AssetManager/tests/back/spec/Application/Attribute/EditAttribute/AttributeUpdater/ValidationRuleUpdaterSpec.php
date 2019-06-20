@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\ValidationRuleUpdater;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\ValidationRuleUpdater;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
 class ValidationRuleUpdaterSpec extends ObjectBehavior

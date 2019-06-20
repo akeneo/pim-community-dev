@@ -1,15 +1,15 @@
 import {
   ValidationRuleOption,
   NormalizedValidationRule,
-} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
-import {NormalizedRegularExpression} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
-import {NormalizedIsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
-import {NormalizedIsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
-import {NormalizedMaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
+} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
+import {NormalizedRegularExpression} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
+import {NormalizedIsRichTextEditor} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
+import {NormalizedIsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
+import {NormalizedMaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
 import {
   NormalizedTextAttribute,
   NormalizedTextAdditionalProperty,
-} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const textAttributeReducer = (
   normalizedAttribute: NormalizedTextAttribute,

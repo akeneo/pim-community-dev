@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

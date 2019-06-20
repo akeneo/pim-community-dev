@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\UserGroup;
+namespace Akeneo\AssetManager\Domain\Query\UserGroup;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\SecurityIdentifier;
 
 interface FindUserGroupsForSecurityIdentifierInterface
 {

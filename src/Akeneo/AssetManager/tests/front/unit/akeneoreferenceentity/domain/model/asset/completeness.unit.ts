@@ -1,16 +1,16 @@
-import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
-import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
-import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
-import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
+import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
+import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
+import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 
 const normalizedDescription = {
   identifier: 'description_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -27,7 +27,7 @@ const normalizedDescription = {
 const description = denormalizeTextAttribute(normalizedDescription);
 const normalizedWebsite = {
   identifier: 'website_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'website',
   labels: {en_US: 'Website'},
   type: 'text',
@@ -45,7 +45,7 @@ const website = denormalizeTextAttribute(normalizedWebsite);
 
 const normalizedNickname = {
   identifier: 'nickname_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'nickname',
   labels: {en_US: 'Nickname'},
   type: 'text',
@@ -88,7 +88,7 @@ const valueCollectionComplete = createValueCollection([descriptionValue]);
 const channelEcommerce = createChannelReference('ecommerce');
 const localeFr = createLocaleReference('en_US');
 
-describe('akeneo > record > domain > model --- completeness', () => {
+describe('akeneo > asset > domain > model --- completeness', () => {
   test('I can create from the normalized', () => {
     const completeness = Completeness.createFromNormalized({complete: 0, required: 0});
     expect(completeness.getCompleteAttributeCount()).toBe(0);

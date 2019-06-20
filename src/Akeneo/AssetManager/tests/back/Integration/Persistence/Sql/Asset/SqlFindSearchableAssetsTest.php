@@ -2,65 +2,65 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindSearchableAssets;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
+class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindSearchableRecords */
-    private $findSearchableRecords;
+    /** @var SqlFindSearchableAssets */
+    private $findSearchableAssets;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findSearchableRecords = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records');
+        $this->findSearchableAssets = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets');
         $this->resetDB();
-        $this->loadReferenceEntityAndAttributes();
+        $this->loadAssetFamilyAndAttributes();
     }
 
     /**
      * @test
      */
-    public function it_returns_null_if_it_does_not_find_by_record_identifier()
+    public function it_returns_null_if_it_does_not_find_by_asset_identifier()
     {
         Assert::assertNull(
-            $this->findSearchableRecords->byRecordIdentifier(RecordIdentifier::fromString('wrong_identifier'))
+            $this->findSearchableAssets->byAssetIdentifier(AssetIdentifier::fromString('wrong_identifier'))
         );
     }
 
     /**
      * @test
      */
-    public function it_returns_a_searchable_record_item()
+    public function it_returns_a_searchable_asset_item()
     {
-        $searchableRecord = $this->findSearchableRecords->byRecordIdentifier(RecordIdentifier::fromString('stark_designer_fingerprint'));
+        $searchableAsset = $this->findSearchableAssets->byAssetIdentifier(AssetIdentifier::fromString('stark_designer_fingerprint'));
 
         $labelIdentifier = $this->getAttributeAsLabelIdentifier('designer');
-        Assert::assertEquals('stark_designer_fingerprint', $searchableRecord->identifier);
-        Assert::assertEquals('stark', $searchableRecord->code);
-        Assert::assertEquals('designer', $searchableRecord->referenceEntityIdentifier);
-        Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableRecord->labels);
+        Assert::assertEquals('stark_designer_fingerprint', $searchableAsset->identifier);
+        Assert::assertEquals('stark', $searchableAsset->code);
+        Assert::assertEquals('designer', $searchableAsset->assetFamilyIdentifier);
+        Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableAsset->labels);
         Assert::assertSame([
             'name'                      => [
                 'data' => 'Philippe stark',
@@ -74,16 +74,16 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
                 'channel'   => null,
                 'attribute' => $labelIdentifier,
             ],
-        ], $searchableRecord->values);
+        ], $searchableAsset->values);
     }
 
     /**
      * @test
      */
-    public function it_returns_null_if_it_does_not_find_by_reference_entity_identifier()
+    public function it_returns_null_if_it_does_not_find_by_asset_family_identifier()
     {
-        $items = $this->findSearchableRecords->byReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString('wrong_reference_entity')
+        $items = $this->findSearchableAssets->byAssetFamilyIdentifier(
+            AssetFamilyIdentifier::fromString('wrong_asset_family')
         );
         $count = 0;
         foreach ($items as $searchItem) {
@@ -95,20 +95,20 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_searchable_record_items_by_reference_entity()
+    public function it_returns_searchable_asset_items_by_asset_family()
     {
-        $searchableRecords = $this->findSearchableRecords->byReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString('designer')
+        $searchableAssets = $this->findSearchableAssets->byAssetFamilyIdentifier(
+            AssetFamilyIdentifier::fromString('designer')
         );
 
         $labelIdentifier = $this->getAttributeAsLabelIdentifier('designer');
-        $searchableRecords = iterator_to_array($searchableRecords);
-        Assert::assertCount(1, $searchableRecords);
-        $searchableRecord = current($searchableRecords);
-        Assert::assertEquals('stark_designer_fingerprint', $searchableRecord->identifier);
-        Assert::assertEquals('stark', $searchableRecord->code);
-        Assert::assertEquals('designer', $searchableRecord->referenceEntityIdentifier);
-        Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableRecord->labels);
+        $searchableAssets = iterator_to_array($searchableAssets);
+        Assert::assertCount(1, $searchableAssets);
+        $searchableAsset = current($searchableAssets);
+        Assert::assertEquals('stark_designer_fingerprint', $searchableAsset->identifier);
+        Assert::assertEquals('stark', $searchableAsset->code);
+        Assert::assertEquals('designer', $searchableAsset->assetFamilyIdentifier);
+        Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableAsset->labels);
         Assert::assertSame(
             [
                 'name'                      => [
@@ -124,13 +124,13 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
                     'attribute' => $labelIdentifier,
                 ],
             ],
-            $searchableRecord->values
+            $searchableAsset->values
         );
     }
 
-    private function loadReferenceEntityAndAttributes(): void
+    private function loadAssetFamilyAndAttributes(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
         $designer = $this->createDesigner();
         $this->createStark($designer);
 
@@ -139,15 +139,15 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
     }
 
     /**
-     * @return ReferenceEntity
+     * @return AssetFamily
      *
      */
-    private function createDesigner(): ReferenceEntity
+    private function createDesigner(): AssetFamily
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                AssetFamilyIdentifier::fromString('designer'),
                 [
                     'fr_FR' => 'Concepteur',
                     'en_US' => 'Designer',
@@ -155,17 +155,17 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
                 Image::createEmpty()
             )
         );
-        $result = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $result = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
         return $result;
     }
 
-    private function createBrand(): ReferenceEntity
+    private function createBrand(): AssetFamily
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                AssetFamilyIdentifier::fromString('brand'),
                 [
                     'fr_FR' => 'Marque',
                     'en_US' => 'Brand',
@@ -173,19 +173,19 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
                 Image::createEmpty()
             )
         );
-        $result = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $result = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
         return $result;
     }
 
-    private function createStark(ReferenceEntity $designer): void
+    private function createStark(AssetFamily $designer): void
     {
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString('stark_designer_fingerprint'),
-                ReferenceEntityIdentifier::fromString('designer'),
-                RecordCode::fromString('stark'),
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString('stark_designer_fingerprint'),
+                AssetFamilyIdentifier::fromString('designer'),
+                AssetCode::fromString('stark'),
                 ValueCollection::fromValues([
                     Value::create(
                         $designer->getAttributeAsLabelReference()->getIdentifier(),
@@ -204,14 +204,14 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
         );
     }
 
-    private function createFatboy(ReferenceEntity $brand): void
+    private function createFatboy(AssetFamily $brand): void
     {
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString('fatboy_brand_fingerprint'),
-                ReferenceEntityIdentifier::fromString('brand'),
-                RecordCode::fromString('fatboy'),
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString('fatboy_brand_fingerprint'),
+                AssetFamilyIdentifier::fromString('brand'),
+                AssetCode::fromString('fatboy'),
                 ValueCollection::fromValues([
                     Value::create(
                         $brand->getAttributeAsLabelReference()->getIdentifier(),
@@ -232,14 +232,14 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function getAttributeAsLabelIdentifier($identifier): string
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
-        $result = $referenceEntity->getAttributeAsLabelReference()->normalize();
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString($identifier));
+        $result = $assetFamily->getAttributeAsLabelReference()->normalize();
 
         return $result;
     }

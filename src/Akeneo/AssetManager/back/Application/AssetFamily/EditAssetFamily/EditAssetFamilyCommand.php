@@ -10,13 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity;
+namespace Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditReferenceEntityCommand
+class EditAssetFamilyCommand
 {
     /** @var string */
     public $identifier;

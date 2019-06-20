@@ -1,14 +1,14 @@
-import reducer, {canEditLocale, canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+import reducer, {canEditLocale, canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 
 const defaultState = {
   locale: [],
-  referenceEntity: {
+  assetFamily: {
     edit: false,
-    referenceEntityIdentifier: '',
+    assetFamilyIdentifier: '',
   },
 };
 
-describe('akeneo > reference entity > application > reducer --- right', () => {
+describe('akeneo > asset family > application > reducer --- right', () => {
   test('I can initialize an empty state', () => {
     const newState = reducer(undefined, {
       type: 'GRID_GO_FIRST_PAGE',
@@ -48,12 +48,12 @@ describe('akeneo > reference entity > application > reducer --- right', () => {
     });
   });
 
-  test('I receive new reference entity permissions', () => {
+  test('I receive new asset family permissions', () => {
     const newState = reducer(defaultState, {
-      type: 'REFERENCE_ENTITY_PERMISSIONS_CHANGED',
-      referenceEntityPermission: [
+      type: 'ASSET_FAMILY_PERMISSIONS_CHANGED',
+      assetFamilyPermission: [
         {
-          referenceEntityIdentifier: 'designer',
+          assetFamilyIdentifier: 'designer',
           edit: true,
         },
       ],
@@ -61,9 +61,9 @@ describe('akeneo > reference entity > application > reducer --- right', () => {
 
     expect(newState).toEqual({
       ...defaultState,
-      referenceEntity: [
+      assetFamily: [
         {
-          referenceEntityIdentifier: 'designer',
+          assetFamilyIdentifier: 'designer',
           edit: true,
         },
       ],
@@ -110,11 +110,11 @@ describe('akeneo > reference entity > application > reducer --- right', () => {
     expect(canEditLocale([], 'en_US')).toBe(false);
   });
 
-  test('I can check if I can edit a reference entity', () => {
+  test('I can check if I can edit an asset family', () => {
     expect(
-      canEditReferenceEntity(
+      canEditAssetFamily(
         {
-          referenceEntityIdentifier: 'designer',
+          assetFamilyIdentifier: 'designer',
           edit: true,
         },
         'designer'
@@ -122,9 +122,9 @@ describe('akeneo > reference entity > application > reducer --- right', () => {
     ).toBe(true);
 
     expect(
-      canEditReferenceEntity(
+      canEditAssetFamily(
         {
-          referenceEntityIdentifier: 'designer',
+          assetFamilyIdentifier: 'designer',
           edit: false,
         },
         'designer'
@@ -132,15 +132,15 @@ describe('akeneo > reference entity > application > reducer --- right', () => {
     ).toBe(false);
 
     expect(
-      canEditReferenceEntity(
+      canEditAssetFamily(
         {
-          referenceEntityIdentifier: 'brand',
+          assetFamilyIdentifier: 'brand',
           edit: true,
         },
         'designer'
       )
     ).toBe(false);
 
-    expect(canEditReferenceEntity([], 'designer')).toBe(false);
+    expect(canEditAssetFamily([], 'designer')).toBe(false);
   });
 });

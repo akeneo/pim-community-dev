@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use PHPUnit\Framework\TestCase;
 
 /**

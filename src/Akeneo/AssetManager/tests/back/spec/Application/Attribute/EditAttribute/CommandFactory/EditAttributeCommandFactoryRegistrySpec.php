@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistry;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistry;
 use PhpSpec\ObjectBehavior;
 
 class EditAttributeCommandFactoryRegistrySpec extends ObjectBehavior

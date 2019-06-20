@@ -1,59 +1,59 @@
-import ValueData from 'akeneoreferenceentity/domain/model/record/data';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
+import ValueData from 'akeneoassetmanager/domain/model/asset/data';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 class InvalidTypeError extends Error {}
 
-export type NormalizedRecordCollectionData = string[] | null;
+export type NormalizedAssetCollectionData = string[] | null;
 
-class RecordCollectionData extends ValueData {
-  private constructor(readonly recordCollectionData: RecordCode[]) {
+class AssetCollectionData extends ValueData {
+  private constructor(readonly assetCollectionData: AssetCode[]) {
     super();
     Object.freeze(this);
 
-    if (!Array.isArray(recordCollectionData)) {
-      throw new InvalidTypeError('RecordCollectionData expects an array of RecordCode as parameter to be created');
+    if (!Array.isArray(assetCollectionData)) {
+      throw new InvalidTypeError('AssetCollectionData expects an array of AssetCode as parameter to be created');
     }
 
-    recordCollectionData.forEach((recordCode: RecordCode) => {
-      if (!(recordCode instanceof RecordCode)) {
-        throw new InvalidTypeError('RecordCollectionData expects an array of RecordCode as parameter to be created');
+    assetCollectionData.forEach((assetCode: AssetCode) => {
+      if (!(assetCode instanceof AssetCode)) {
+        throw new InvalidTypeError('AssetCollectionData expects an array of AssetCode as parameter to be created');
       }
     });
   }
 
-  public static create(recordCollectionData: RecordCode[]): RecordCollectionData {
-    return new RecordCollectionData(recordCollectionData);
+  public static create(assetCollectionData: AssetCode[]): AssetCollectionData {
+    return new AssetCollectionData(assetCollectionData);
   }
 
   public static createFromNormalized(
-    normalizedRecordCollectionData: NormalizedRecordCollectionData
-  ): RecordCollectionData {
-    return new RecordCollectionData(
-      Array.isArray(normalizedRecordCollectionData)
-        ? normalizedRecordCollectionData.map((recordCode: string) => RecordCode.create(recordCode))
+    normalizedAssetCollectionData: NormalizedAssetCollectionData
+  ): AssetCollectionData {
+    return new AssetCollectionData(
+      Array.isArray(normalizedAssetCollectionData)
+        ? normalizedAssetCollectionData.map((assetCode: string) => AssetCode.create(assetCode))
         : []
     );
   }
 
   public isEmpty(): boolean {
-    return 0 === this.recordCollectionData.length;
+    return 0 === this.assetCollectionData.length;
   }
 
   public equals(data: ValueData): boolean {
     return (
-      data instanceof RecordCollectionData &&
-      this.recordCollectionData.length === data.recordCollectionData.length &&
-      !this.recordCollectionData.some((recordCode: RecordCode, index: number) => {
-        return !recordCode.equals(data.recordCollectionData[index]);
+      data instanceof AssetCollectionData &&
+      this.assetCollectionData.length === data.assetCollectionData.length &&
+      !this.assetCollectionData.some((assetCode: AssetCode, index: number) => {
+        return !assetCode.equals(data.assetCollectionData[index]);
       })
     );
   }
 
-  public normalize(): NormalizedRecordCollectionData {
-    return this.recordCollectionData.map((recordCode: RecordCode) => recordCode.stringValue());
+  public normalize(): NormalizedAssetCollectionData {
+    return this.assetCollectionData.map((assetCode: AssetCode) => assetCode.stringValue());
   }
 }
 
-export default RecordCollectionData;
-export const create = RecordCollectionData.create;
-export const denormalize = RecordCollectionData.createFromNormalized;
+export default AssetCollectionData;
+export const create = AssetCollectionData.create;
+export const denormalize = AssetCollectionData.createFromNormalized;

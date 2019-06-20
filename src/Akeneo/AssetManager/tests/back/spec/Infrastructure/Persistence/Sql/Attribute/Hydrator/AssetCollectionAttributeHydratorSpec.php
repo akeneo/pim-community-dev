@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\RecordCollectionAttributeHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AssetCollectionAttributeHydrator;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 use Doctrine\DBAL\Connection;
 
-class RecordCollectionAttributeHydratorSpec extends ObjectBehavior
+class AssetCollectionAttributeHydratorSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
@@ -20,12 +20,12 @@ class RecordCollectionAttributeHydratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordCollectionAttributeHydrator::class);
+        $this->shouldHaveType(AssetCollectionAttributeHydrator::class);
     }
 
-    function it_only_supports_the_hydration_of_record_collection_attributes()
+    function it_only_supports_the_hydration_of_asset_collection_attributes()
     {
-        $this->supports(['attribute_type' => 'record_collection'])->shouldReturn(true);
+        $this->supports(['attribute_type' => 'asset_collection'])->shouldReturn(true);
         $this->supports(['attribute_type' => 'text'])->shouldReturn(false);
         $this->supports([])->shouldReturn(false);
     }
@@ -35,34 +35,34 @@ class RecordCollectionAttributeHydratorSpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)->during('hydrate', [['code' => 'brands']]);
     }
 
-    function it_hydrates_a_record_attribute()
+    function it_hydrates_a_asset_attribute()
     {
-        $recordCollectionAttribute = $this->hydrate([
+        $assetCollectionAttribute = $this->hydrate([
             'identifier' => 'brands_designer_fingerprint',
             'code' => 'brands',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'labels' => json_encode(['fr_FR' => 'Marques']),
-            'attribute_type' => 'record',
+            'attribute_type' => 'asset',
             'attribute_order' => '0',
             'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'additional_properties' => json_encode([
-                'record_type' => 'designer',
+                'asset_type' => 'designer',
             ]),
         ]);
-        $recordCollectionAttribute->shouldBeAnInstanceOf(RecordCollectionAttribute::class);
-        $recordCollectionAttribute->normalize()->shouldBe([
+        $assetCollectionAttribute->shouldBeAnInstanceOf(AssetCollectionAttribute::class);
+        $assetCollectionAttribute->normalize()->shouldBe([
             'identifier' => 'brands_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'brands',
             'labels' => ['fr_FR' => 'Marques'],
             'order' => 0,
             'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
-            'type' => 'record_collection',
-            'record_type' => 'designer',
+            'type' => 'asset_collection',
+            'asset_type' => 'designer',
         ]);
     }
 }

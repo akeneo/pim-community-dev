@@ -1,22 +1,22 @@
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import formState, {FormState} from 'akeneoreferenceentity/application/reducer/state';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import {NormalizedFile} from 'akeneoreferenceentity/domain/model/file';
-import {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
+import {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
+import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
 
 export interface EditionFormState {
   state: FormState;
-  data: NormalizedRecord;
+  data: NormalizedAsset;
   errors: ValidationError[];
 }
 
-const stateReducer = formState('record', 'RECORD_EDITION_UPDATED', 'RECORD_EDITION_RECEIVED');
+const stateReducer = formState('asset', 'ASSET_EDITION_UPDATED', 'ASSET_EDITION_RECEIVED');
 
 const dataReducer = (
-  state: NormalizedRecord = {
+  state: NormalizedAsset = {
     identifier: '',
-    reference_entity_identifier: '',
+    asset_family_identifier: '',
     code: '',
     labels: {},
     image: null,
@@ -24,14 +24,14 @@ const dataReducer = (
   },
   {
     type,
-    record,
+    asset,
     label,
     locale,
     image,
     value,
   }: {
     type: string;
-    record: NormalizedRecord;
+    asset: NormalizedAsset;
     label: string;
     locale: string;
     image: NormalizedFile;
@@ -39,16 +39,16 @@ const dataReducer = (
   }
 ) => {
   switch (type) {
-    case 'RECORD_EDITION_RECEIVED':
-      state = record;
+    case 'ASSET_EDITION_RECEIVED':
+      state = asset;
       break;
-    case 'RECORD_EDITION_LABEL_UPDATED':
+    case 'ASSET_EDITION_LABEL_UPDATED':
       state = {...state, labels: {...state.labels, [locale]: label}};
       break;
-    case 'RECORD_EDITION_IMAGE_UPDATED':
+    case 'ASSET_EDITION_IMAGE_UPDATED':
       state = {...state, image};
       break;
-    case 'RECORD_EDITION_VALUE_UPDATED':
+    case 'ASSET_EDITION_VALUE_UPDATED':
       state = {
         ...state,
         values: state.values.map((currentValue: NormalizedValue) => {
@@ -74,10 +74,10 @@ const dataReducer = (
 
 const errorsReducer = (state: ValidationError[] = [], action: {type: string; errors: ValidationError[]}) => {
   switch (action.type) {
-    case 'RECORD_EDITION_SUBMISSION':
+    case 'ASSET_EDITION_SUBMISSION':
       state = [];
       break;
-    case 'RECORD_EDITION_ERROR_OCCURED':
+    case 'ASSET_EDITION_ERROR_OCCURED':
       state = action.errors;
       break;
     default:

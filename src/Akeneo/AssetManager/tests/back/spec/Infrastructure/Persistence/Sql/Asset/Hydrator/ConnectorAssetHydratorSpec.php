@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\TextConnectorValueTransformer;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ConnectorAssetHydrator;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\TextConnectorValueTransformer;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
-class ConnectorRecordHydratorSpec extends ObjectBehavior
+class ConnectorAssetHydratorSpec extends ObjectBehavior
 {
     function let(
         Connection $connection
@@ -41,10 +41,10 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ConnectorRecordHydrator::class);
+        $this->shouldHaveType(ConnectorAssetHydrator::class);
     }
 
-    function it_hydrates_a_connector_record(
+    function it_hydrates_a_connector_asset(
         TextAttribute $nameAttribute,
         TextAttribute $countryAttribute
     ) {
@@ -65,7 +65,7 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
         $row = [
             'identifier'                  => 'designer_starck_fingerprint',
             'code'                        => 'starck',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'value_collection'            => json_encode([
                 'name_designer_fingerprint_ecommerce_en_US' => [
                     'data'      => 'Starck',
@@ -88,8 +88,8 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             ])
         ];
 
-        $expectedRecord = $connectorRecord = new ConnectorRecord(
-            RecordCode::fromString('starck'),
+        $expectedAsset = $connectorAsset = new ConnectorAsset(
+            AssetCode::fromString('starck'),
             [
                 'name' => [
                     [
@@ -113,7 +113,7 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             ]
         );
 
-        $this->hydrate($row, $valueKeyCollection, $attributes)->shouldBeLike($expectedRecord);
+        $this->hydrate($row, $valueKeyCollection, $attributes)->shouldBeLike($expectedAsset);
     }
 
     function it_does_not_hydrates_unexpected_values(
@@ -137,7 +137,7 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
         $row = [
             'identifier'                  => 'designer_starck_fingerprint',
             'code'                        => 'starck',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'value_collection'            => json_encode([
                 'name_designer_fingerprint_ecommerce_en_US' => [
                     'data'      => 'Starck',
@@ -166,8 +166,8 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             ])
         ];
 
-        $expectedRecord = $connectorRecord = new ConnectorRecord(
-            RecordCode::fromString('starck'),
+        $expectedAsset = $connectorAsset = new ConnectorAsset(
+            AssetCode::fromString('starck'),
             [
                 'name' => [
                     [
@@ -191,6 +191,6 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             ]
         );
 
-        $this->hydrate($row, $valueKeyCollection, $attributes)->shouldBeLike($expectedRecord);
+        $this->hydrate($row, $valueKeyCollection, $attributes)->shouldBeLike($expectedAsset);
     }
 }

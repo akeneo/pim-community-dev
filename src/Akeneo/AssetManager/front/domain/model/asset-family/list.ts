@@ -1,51 +1,51 @@
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
-} from 'akeneoreferenceentity/domain/model/label-collection';
+} from 'akeneoassetmanager/domain/model/label-collection';
 import Identifier, {
   NormalizedIdentifier,
   createIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 
-export interface NormalizedReferenceEntityListItem {
+export interface NormalizedAssetFamilyListItem {
   identifier: NormalizedIdentifier;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
 }
 
-export default interface ReferenceEntityListItem {
+export default interface AssetFamilyListItem {
   getIdentifier: () => Identifier;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getImage: () => File;
-  equals: (referenceEntityListItem: ReferenceEntityListItem) => boolean;
-  normalize: () => NormalizedReferenceEntityListItem;
+  equals: (assetFamilyListItem: AssetFamilyListItem) => boolean;
+  normalize: () => NormalizedAssetFamilyListItem;
 }
 class InvalidArgumentError extends Error {}
 
-class ReferenceEntityListItemImplementation implements ReferenceEntityListItem {
+class AssetFamilyListItemImplementation implements AssetFamilyListItem {
   private constructor(private identifier: Identifier, private labelCollection: LabelCollection, private image: File) {
     if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('ReferenceEntityListItem expects an Identifier as identifier argument');
+      throw new InvalidArgumentError('AssetFamilyListItem expects an Identifier as identifier argument');
     }
 
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('ReferenceEntityListItem expects a LabelCollection as labelCollection argument');
+      throw new InvalidArgumentError('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
     }
 
     if (!(image instanceof File)) {
-      throw new InvalidArgumentError('ReferenceEntityListItem expects a File as image argument');
+      throw new InvalidArgumentError('AssetFamilyListItem expects a File as image argument');
     }
 
     Object.freeze(this);
   }
 
-  public static create(identifier: Identifier, labelCollection: LabelCollection, image: File): ReferenceEntityListItem {
-    return new ReferenceEntityListItemImplementation(identifier, labelCollection, image);
+  public static create(identifier: Identifier, labelCollection: LabelCollection, image: File): AssetFamilyListItem {
+    return new AssetFamilyListItemImplementation(identifier, labelCollection, image);
   }
 
-  public static createEmpty(): ReferenceEntityListItem {
-    return new ReferenceEntityListItemImplementation(
+  public static createEmpty(): AssetFamilyListItem {
+    return new AssetFamilyListItemImplementation(
       createIdentifier(''),
       createLabelCollection({}),
       denormalizeFile(null)
@@ -53,13 +53,13 @@ class ReferenceEntityListItemImplementation implements ReferenceEntityListItem {
   }
 
   public static createFromNormalized(
-    normalizedReferenceEntity: NormalizedReferenceEntityListItem
-  ): ReferenceEntityListItem {
-    const identifier = createIdentifier(normalizedReferenceEntity.identifier);
-    const labelCollection = createLabelCollection(normalizedReferenceEntity.labels);
-    const image = denormalizeFile(normalizedReferenceEntity.image);
+    normalizedAssetFamily: NormalizedAssetFamilyListItem
+  ): AssetFamilyListItem {
+    const identifier = createIdentifier(normalizedAssetFamily.identifier);
+    const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
+    const image = denormalizeFile(normalizedAssetFamily.image);
 
-    return ReferenceEntityListItemImplementation.create(identifier, labelCollection, image);
+    return AssetFamilyListItemImplementation.create(identifier, labelCollection, image);
   }
 
   public getIdentifier(): Identifier {
@@ -82,11 +82,11 @@ class ReferenceEntityListItemImplementation implements ReferenceEntityListItem {
     return this.labelCollection;
   }
 
-  public equals(referenceEntityListItem: ReferenceEntityListItem): boolean {
-    return referenceEntityListItem.getIdentifier().equals(this.identifier);
+  public equals(assetFamilyListItem: AssetFamilyListItem): boolean {
+    return assetFamilyListItem.getIdentifier().equals(this.identifier);
   }
 
-  public normalize(): NormalizedReferenceEntityListItem {
+  public normalize(): NormalizedAssetFamilyListItem {
     return {
       identifier: this.getIdentifier().stringValue(),
       labels: this.getLabelCollection().normalize(),
@@ -95,6 +95,6 @@ class ReferenceEntityListItemImplementation implements ReferenceEntityListItem {
   }
 }
 
-export const createReferenceEntityListItem = ReferenceEntityListItemImplementation.create;
-export const createEmptyReferenceEntityListItem = ReferenceEntityListItemImplementation.createEmpty;
-export const denormalizeReferenceEntityListItem = ReferenceEntityListItemImplementation.createFromNormalized;
+export const createAssetFamilyListItem = AssetFamilyListItemImplementation.create;
+export const createEmptyAssetFamilyListItem = AssetFamilyListItemImplementation.createEmpty;
+export const denormalizeAssetFamilyListItem = AssetFamilyListItemImplementation.createFromNormalized;

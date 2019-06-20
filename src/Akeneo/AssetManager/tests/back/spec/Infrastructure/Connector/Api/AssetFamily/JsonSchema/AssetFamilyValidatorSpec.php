@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema\ReferenceEntityValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema\AssetFamilyValidator;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityValidatorSpec extends ObjectBehavior
+class AssetFamilyValidatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ReferenceEntityValidator::class);
+        $this->shouldHaveType(AssetFamilyValidator::class);
     }
 
-    function it_does_not_return_any_error_when_the_reference_entity_is_valid()
+    function it_does_not_return_any_error_when_the_asset_family_is_valid()
     {
-        $referenceEntity = [
+        $assetFamily = [
             'code' => 'starck',
             'labels' => [
                 'en_US' => 'Philippe Starck'
@@ -33,30 +33,30 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
             'image' => 'images/starck.png',
             '_links'  => [
                 'image_download' => [
-                    'href' => 'http://localhost/api/rest/v1/reference-entities-media-files/images/starck.png'
+                    'href' => 'http://localhost/api/rest/v1/asset-families-media-files/images/starck.png'
                 ]
             ]
         ];
 
-        $this->validate($referenceEntity)->shouldReturn([]);
+        $this->validate($assetFamily)->shouldReturn([]);
     }
 
-    function it_is_only_mandatory_to_provide_the_code_of_the_reference_entity()
+    function it_is_only_mandatory_to_provide_the_code_of_the_asset_family()
     {
-        $referenceEntity = [
+        $assetFamily = [
             'code' => 'starck'
         ];
 
-        $this->validate($referenceEntity)->shouldReturn([]);
+        $this->validate($assetFamily)->shouldReturn([]);
     }
 
     function it_returns_an_error_when_code_is_not_a_string()
     {
-        $referenceEntity = [
+        $assetFamily = [
             'code' => []
         ];
 
-        $errors = $this->validate($referenceEntity);
+        $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
         $errors->shouldHaveCount(1);
@@ -64,14 +64,14 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
 
     function it_returns_an_error_when_labels_has_a_wrong_format()
     {
-        $referenceEntity = [
+        $assetFamily = [
             'code' => 'starck',
             'labels' => [
                 'en_US' => []
             ]
         ];
 
-        $errors = $this->validate($referenceEntity);
+        $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
         $errors->shouldHaveCount(1);
@@ -87,12 +87,12 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
 
     function it_returns_an_error_when_an_additional_property_is_filled()
     {
-        $referenceEntity = [
+        $assetFamily = [
             'code' => 'starck',
             'unknown_property' => 'michel'
         ];
 
-        $errors = $this->validate($referenceEntity);
+        $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
         $errors->shouldHaveCount(1);
@@ -100,12 +100,12 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
 
     function it_returns_an_error_when_image_is_not_a_string_or_null()
     {
-        $referenceEntity = [
+        $assetFamily = [
             'code' => 'starck',
             'image' => 42
         ];
 
-        $errors = $this->validate($referenceEntity);
+        $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
         $errors->shouldHaveCount(1);

@@ -11,30 +11,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record;
+namespace spec\Akeneo\AssetManager\Domain\Model\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use PhpSpec\ObjectBehavior;
 
-class RecordSpec extends ObjectBehavior
+class AssetSpec extends ObjectBehavior
 {
      function let()
     {
-        $identifier = RecordIdentifier::fromString('designer_starck_fingerprint');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
+        $identifier = AssetIdentifier::fromString('designer_starck_fingerprint');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('starck');
         $valueCollection = ValueCollection::fromValues([
             Value::create(
                 AttributeIdentifier::create('designer', 'label', 'fingerprint'),
@@ -58,50 +58,50 @@ class RecordSpec extends ObjectBehavior
 
         $this->beConstructedThrough('create', [
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             $valueCollection
         ]);
     }
 
      function it_is_initializable()
     {
-        $this->shouldHaveType(Record::class);
+        $this->shouldHaveType(Asset::class);
     }
 
      function it_returns_its_identifier()
     {
-        $identifier = RecordIdentifier::fromString('designer_starck_fingerprint');
+        $identifier = AssetIdentifier::fromString('designer_starck_fingerprint');
 
         $this->getIdentifier()->shouldBeLike($identifier);
     }
 
-     function it_returns_the_identifier_of_the_reference_entity_it_belongs_to()
+     function it_returns_the_identifier_of_the_asset_family_it_belongs_to()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $this->getReferenceEntityIdentifier()->shouldBeLike($referenceEntityIdentifier);
+        $this->getAssetFamilyIdentifier()->shouldBeLike($assetFamilyIdentifier);
     }
 
      function it_is_comparable()
     {
-        $sameIdentifier = RecordIdentifier::fromString('designer_starck_fingerprint');
-        $sameRecord = Record::create(
+        $sameIdentifier = AssetIdentifier::fromString('designer_starck_fingerprint');
+        $sameAsset = Asset::create(
             $sameIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
-            RecordCode::fromString('starck'),
+            AssetFamilyIdentifier::fromString('designer'),
+            AssetCode::fromString('starck'),
             ValueCollection::fromValues([])
         );
-        $this->equals($sameRecord)->shouldReturn(true);
+        $this->equals($sameAsset)->shouldReturn(true);
 
-        $anotherIdentifier = RecordIdentifier::fromString('designer_jony_ive_other-fingerprint');
-        $anotherRecord = Record::create(
+        $anotherIdentifier = AssetIdentifier::fromString('designer_jony_ive_other-fingerprint');
+        $anotherAsset = Asset::create(
             $anotherIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
-            RecordCode::fromString('jony_ive'),
+            AssetFamilyIdentifier::fromString('designer'),
+            AssetCode::fromString('jony_ive'),
             ValueCollection::fromValues([])
         );
-        $this->equals($anotherRecord)->shouldReturn(false);
+        $this->equals($anotherAsset)->shouldReturn(false);
     }
     
      function it_sets_a_value_to_the_value_collection()
@@ -129,7 +129,7 @@ class RecordSpec extends ObjectBehavior
          $this->normalize()->shouldReturn([
              'identifier' => 'designer_starck_fingerprint',
              'code' => 'starck',
-             'referenceEntityIdentifier' => 'designer',
+             'assetFamilyIdentifier' => 'designer',
              'values' => [
                  'label_designer_fingerprint_fr_FR' => [
                      'attribute' => 'label_designer_fingerprint',

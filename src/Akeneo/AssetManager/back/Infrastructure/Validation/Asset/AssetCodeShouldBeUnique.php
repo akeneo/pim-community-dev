@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks whether a given record already exists in the data referential
+ * Checks whether a given asset already exists in the data referential
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordCodeShouldBeUnique extends Constraint
+class AssetCodeShouldBeUnique extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.record.validation.code.should_be_unique';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset.validation.code.should_be_unique';
 
     public function getTargets()
     {
@@ -32,6 +32,6 @@ class RecordCodeShouldBeUnique extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.record.record_is_unique';
+        return 'akeneo_assetmanager.validator.asset.asset_is_unique';
     }
 }

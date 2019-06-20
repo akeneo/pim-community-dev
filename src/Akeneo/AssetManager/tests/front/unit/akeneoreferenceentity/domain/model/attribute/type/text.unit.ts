@@ -1,20 +1,20 @@
-import {ConcreteTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
-import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
-import {IsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
-import {ValidationRule} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
-import {RegularExpression} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
+import {ConcreteTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  createIdentifier as createAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {AttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
+import {MaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
+import {IsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
+import {IsRichTextEditor} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
+import {ValidationRule} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
+import {RegularExpression} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
 
 const normalizedDescription = {
   identifier: 'description',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -40,7 +40,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('description'),
         createLabelCollection({en_US: 'Description'}),
         true,
@@ -52,7 +52,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('description'),
         createLabelCollection({en_US: 'Description'}),
         true,
@@ -65,7 +65,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('description'),
         createLabelCollection({en_US: 'Description'}),
         true,
@@ -79,7 +79,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('description'),
         createLabelCollection({en_US: 'Description'}),
         true,
@@ -94,7 +94,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('description'),
         createLabelCollection({en_US: 'Description'}),
         true,
@@ -109,7 +109,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('description'),
         createLabelCollection({en_US: 'Description'}),
         true,
@@ -125,7 +125,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('description'),
         createLabelCollection({en_US: 'Description'}),
         true,
@@ -141,7 +141,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('description'),
         createLabelCollection({en_US: 'Description'}),
         true,

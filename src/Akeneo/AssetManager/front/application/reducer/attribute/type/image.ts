@@ -1,9 +1,9 @@
 import {
   NormalizedImageAttribute,
   NormalizedImageAdditionalProperty,
-} from 'akeneoreferenceentity/domain/model/attribute/type/image';
-import {NormalizedMaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
-import {NormalizedAllowedExtensions} from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
+} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {NormalizedMaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
+import {NormalizedAllowedExtensions} from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
 
 const imageAttributeReducer = (
   normalizedAttribute: NormalizedImageAttribute,

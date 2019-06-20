@@ -2,41 +2,41 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context\EditRecord;
+namespace Akeneo\AssetManager\Acceptance\Context\EditAsset;
 
-use Akeneo\ReferenceEntity\Acceptance\Context\ConstraintViolationsContext;
-use Akeneo\ReferenceEntity\Acceptance\Context\ExceptionContext;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\UrlData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Acceptance\Context\ConstraintViolationsContext;
+use Akeneo\AssetManager\Acceptance\Context\ExceptionContext;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\UrlData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -47,28 +47,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditUrlContext implements Context
 {
-    private const REFERENCE_ENTITY_IDENTIFIER = 'designer';
+    private const ASSET_FAMILY_IDENTIFIER = 'designer';
     private const ATTRIBUTE_CODE = 'website';
     private const ATTRIBUTE_IDENTIFIER = 'website_designer_fingerprint';
-    private const RECORD_CODE = 'stark';
+    private const ASSET_CODE = 'stark';
     private const FINGERPRINT = 'fingerprint';
     private const NEW_URL = 'house_2345112';
     private const OLD_URL = 'garden_5124';
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
 
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
+    /** @var EditAssetCommandFactory */
+    private $editAssetCommandFactory;
 
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
+    /** @var EditAssetHandler */
+    private $editAssetHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -80,44 +80,44 @@ class EditUrlContext implements Context
     private $violationsContext;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        RecordRepositoryInterface $recordRepository,
-        EditRecordCommandFactory $editRecordCommandFactory,
-        EditRecordHandler $editRecordHandler,
+        AssetRepositoryInterface $assetRepository,
+        EditAssetCommandFactory $editAssetCommandFactory,
+        EditAssetHandler $editAssetHandler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
         ConstraintViolationsContext $violationsContext
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->recordRepository = $recordRepository;
-        $this->editRecordCommandFactory = $editRecordCommandFactory;
-        $this->editRecordHandler = $editRecordHandler;
+        $this->assetRepository = $assetRepository;
+        $this->editAssetCommandFactory = $editAssetCommandFactory;
+        $this->editAssetHandler = $editAssetHandler;
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
         $this->violationsContext = $violationsContext;
     }
 
     /**
-     * @Given /^a reference entity with an url attribute and a record belonging to this reference entity$/
+     * @Given /^an asset family with an url attribute and a asset belonging to this asset family$/
      */
-    public function aReferenceEntityWithAnUrlAttributeAndARecordBelongingToThisReferenceEntity(): void
+    public function aAssetFamilyWithAnUrlAttributeAndAAssetBelongingToThisAssetFamily(): void
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->createUrlAttribute();
-        $this->createRecord();
+        $this->createAsset();
     }
 
     /**
-     * @When /^the user updates the url value of the record$/
+     * @When /^the user updates the url value of the asset$/
      */
-    public function theUserUpdatesTheUrlValueOfTheRecord(): void
+    public function theUserUpdatesTheUrlValueOfTheAsset(): void
     {
-        $editCommand = $this->editRecordCommandFactory->create(
+        $editCommand = $this->editAssetCommandFactory->create(
             [
-                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-                'code'                        => self::RECORD_CODE,
+                'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+                'code'                        => self::ASSET_CODE,
                 'labels'                      => [],
                 'values'                      => [
                     [
@@ -138,28 +138,28 @@ class EditUrlContext implements Context
         }
 
         try {
-            ($this->editRecordHandler)($editCommand);
+            ($this->editAssetHandler)($editCommand);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
     }
 
     /**
-     * @Then /^the record should have the url value for this attribute$/
+     * @Then /^the asset should have the url value for this attribute$/
      */
-    public function theRecordShouldHaveTheUrlValueForThisAttribute(): void
+    public function theAssetShouldHaveTheUrlValueForThisAttribute(): void
     {
         $this->violationsContext->assertThereIsNoViolations();
         $this->exceptionContext->assertThereIsNoExceptionThrown();
 
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -172,25 +172,25 @@ class EditUrlContext implements Context
         Assert::assertSame(self::NEW_URL, $value->getData()->normalize());
     }
 
-    private function createReferenceEntity(): void
+    private function createAssetFamily(): void
     {
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             [],
             Image::createEmpty()
         );
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     private function createUrlAttribute(): void
     {
         $attribute = UrlAttribute::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::ATTRIBUTE_CODE),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
@@ -204,17 +204,17 @@ class EditUrlContext implements Context
         $this->attributeRepository->create($attribute);
     }
 
-    private function createRecord(): void
+    private function createAsset(): void
     {
-        $this->recordRepository->create(
-            Record::create(
-                RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-                RecordCode::fromString(self::RECORD_CODE),
+        $this->assetRepository->create(
+            Asset::create(
+                AssetIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ASSET_CODE, self::FINGERPRINT),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AssetCode::fromString(self::ASSET_CODE),
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::create(
-                            self::REFERENCE_ENTITY_IDENTIFIER,
+                            self::ASSET_FAMILY_IDENTIFIER,
                             self::ATTRIBUTE_CODE,
                             self::FINGERPRINT
                         ),

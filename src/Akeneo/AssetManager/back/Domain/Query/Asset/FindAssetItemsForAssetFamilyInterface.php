@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Find records by their Reference Entity identifier
+ * Find assets by their Asset Family identifier
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindRecordItemsForReferenceEntityInterface
+interface FindAssetItemsForAssetFamilyInterface
 {
     /**
-     * @return RecordItem[]
+     * @return AssetItem[]
      */
-    public function find(ReferenceEntityIdentifier $identifier): array;
+    public function find(AssetFamilyIdentifier $identifier): array;
 }

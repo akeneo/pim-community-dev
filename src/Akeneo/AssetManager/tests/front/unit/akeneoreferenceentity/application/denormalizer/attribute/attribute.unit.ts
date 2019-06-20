@@ -1,9 +1,9 @@
-import denormalize, {denormalizeAttribute} from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import denormalize, {denormalizeAttribute} from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
+import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const normalizedDescription = {
   identifier: 'description_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -18,7 +18,7 @@ const normalizedDescription = {
   regular_expression: null,
 };
 
-describe('akeneo > reference entity > application > denormalizer > attribute --- attribute', () => {
+describe('akeneo > asset family > application > denormalizer > attribute --- attribute', () => {
   test('I can denormalize an attribute', () => {
     expect(denormalizeAttribute(() => denormalizeTextAttribute)(normalizedDescription).normalize()).toEqual(
       normalizedDescription

@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityCreatedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -31,7 +31,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
+class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -54,11 +54,11 @@ class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
      * @throws \RuntimeException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function create(ReferenceEntity $referenceEntity): void
+    public function create(AssetFamily $assetFamily): void
     {
-        $serializedLabels = $this->getSerializedLabels($referenceEntity);
+        $serializedLabels = $this->getSerializedLabels($assetFamily);
         $insert = <<<SQL
-        INSERT INTO akeneo_reference_entity_reference_entity 
+        INSERT INTO akeneo_asset_manager_asset_family 
             (identifier, labels, attribute_as_label, attribute_as_image) 
         VALUES 
             (:identifier, :labels, :attributeAsLabel, :attributeAsImage);
@@ -66,21 +66,21 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => (string) $referenceEntity->getIdentifier(),
+                'identifier' => (string) $assetFamily->getIdentifier(),
                 'labels' => $serializedLabels,
-                'attributeAsLabel' => $referenceEntity->getAttributeAsLabelReference()->normalize(),
-                'attributeAsImage' => $referenceEntity->getAttributeAsImageReference()->normalize()
+                'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
+                'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize()
             ]
         );
         if ($affectedRows !== 1) {
             throw new \RuntimeException(
-                sprintf('Expected to create one reference entity, but %d were affected', $affectedRows)
+                sprintf('Expected to create one asset family, but %d were affected', $affectedRows)
             );
         }
 
         $this->eventDispatcher->dispatch(
-            ReferenceEntityCreatedEvent::class,
-            new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier())
+            AssetFamilyCreatedEvent::class,
+            new AssetFamilyCreatedEvent($assetFamily->getIdentifier())
         );
     }
 
@@ -88,11 +88,11 @@ SQL;
      * @throws \RuntimeException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function update(ReferenceEntity $referenceEntity): void
+    public function update(AssetFamily $assetFamily): void
     {
-        $serializedLabels = $this->getSerializedLabels($referenceEntity);
+        $serializedLabels = $this->getSerializedLabels($assetFamily);
         $update = <<<SQL
-        UPDATE akeneo_reference_entity_reference_entity
+        UPDATE akeneo_asset_manager_asset_family
         SET 
             labels = :labels, 
             image = :image, 
@@ -103,26 +103,26 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $update,
             [
-                'identifier' => (string) $referenceEntity->getIdentifier(),
+                'identifier' => (string) $assetFamily->getIdentifier(),
                 'labels' => $serializedLabels,
-                'image' => $referenceEntity->getImage()->isEmpty() ? null : $referenceEntity->getImage()->getKey(),
-                'attributeAsLabel' => $referenceEntity->getAttributeAsLabelReference()->normalize(),
-                'attributeAsImage' => $referenceEntity->getAttributeAsImageReference()->normalize(),
+                'image' => $assetFamily->getImage()->isEmpty() ? null : $assetFamily->getImage()->getKey(),
+                'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
+                'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
             ]
         );
 
         if ($affectedRows > 1) {
             throw new \RuntimeException(
-                sprintf('Expected to update one reference entity, but %d rows were affected.', $affectedRows)
+                sprintf('Expected to update one asset family, but %d rows were affected.', $affectedRows)
             );
         }
     }
 
-    public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity
+    public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily
     {
         $fetch = <<<SQL
         SELECT ee.identifier, ee.labels, fi.image, ee.attribute_as_label, ee.attribute_as_image
-        FROM akeneo_reference_entity_reference_entity ee
+        FROM akeneo_asset_manager_asset_family ee
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
@@ -137,10 +137,10 @@ SQL;
         $statement->closeCursor();
 
         if (!$result) {
-            throw ReferenceEntityNotFoundException::withIdentifier($identifier);
+            throw AssetFamilyNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateReferenceEntity(
+        return $this->hydrateAssetFamily(
             $result['identifier'],
             $result['labels'],
             null !== $result['image'] ? json_decode($result['image'], true) : null,
@@ -153,14 +153,14 @@ SQL;
     {
         $selectAllQuery = <<<SQL
         SELECT identifier, labels, attribute_as_label, attribute_as_image
-        FROM akeneo_reference_entity_reference_entity;
+        FROM akeneo_asset_manager_asset_family;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAll();
         $statement->closeCursor();
 
         foreach ($results as $result) {
-            yield $this->hydrateReferenceEntity(
+            yield $this->hydrateAssetFamily(
                 $result['identifier'],
                 $result['labels'],
                 null,
@@ -170,10 +170,10 @@ SQL;
         }
     }
 
-    public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void
+    public function deleteByIdentifier(AssetFamilyIdentifier $identifier): void
     {
         $sql = <<<SQL
-        DELETE FROM akeneo_reference_entity_reference_entity
+        DELETE FROM akeneo_asset_manager_asset_family
         WHERE identifier = :identifier;
 SQL;
 
@@ -185,7 +185,7 @@ SQL;
         );
 
         if (1 !== $affectedRows) {
-            throw ReferenceEntityNotFoundException::withIdentifier($identifier);
+            throw AssetFamilyNotFoundException::withIdentifier($identifier);
         }
     }
 
@@ -193,7 +193,7 @@ SQL;
     {
         $query = <<<SQL
         SELECT COUNT(*) as total
-        FROM akeneo_reference_entity_reference_entity
+        FROM akeneo_asset_manager_asset_family
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $result = $statement->fetch();
@@ -201,35 +201,35 @@ SQL;
         return intval($result['total']);
     }
 
-    private function hydrateReferenceEntity(
+    private function hydrateAssetFamily(
         string $identifier,
         string $normalizedLabels,
         ?array $image,
         ?string $attributeAsLabel,
         ?string $attributeAsImage
-    ): ReferenceEntity {
+    ): AssetFamily {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
 
-        $referenceEntity = ReferenceEntity::createWithAttributes(
-            ReferenceEntityIdentifier::fromString($identifier),
+        $assetFamily = AssetFamily::createWithAttributes(
+            AssetFamilyIdentifier::fromString($identifier),
             $labels,
             $entityImage,
             AttributeAsLabelReference::createFromNormalized($attributeAsLabel),
             AttributeAsImageReference::createFromNormalized($attributeAsImage)
         );
 
-        return $referenceEntity;
+        return $assetFamily;
     }
 
-    private function getSerializedLabels(ReferenceEntity $referenceEntity): string
+    private function getSerializedLabels(AssetFamily $assetFamily): string
     {
         $labels = [];
-        foreach ($referenceEntity->getLabelCodes() as $localeCode) {
-            $labels[$localeCode] = $referenceEntity->getLabel($localeCode);
+        foreach ($assetFamily->getLabelCodes() as $localeCode) {
+            $labels[$localeCode] = $assetFamily->getLabel($localeCode);
         }
 
         return json_encode($labels);

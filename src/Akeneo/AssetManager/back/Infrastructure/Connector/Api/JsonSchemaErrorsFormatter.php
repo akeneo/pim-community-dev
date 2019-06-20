@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api;
 
 /**
  * Format errors from the json-schema validator for the API connector.

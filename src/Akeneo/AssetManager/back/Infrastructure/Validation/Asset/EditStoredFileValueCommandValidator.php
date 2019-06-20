@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\File\FileExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditStoredFileValueCommand as EditStoredFileValueCommandConstraint;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditStoredFileValueCommand as EditStoredFileValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;

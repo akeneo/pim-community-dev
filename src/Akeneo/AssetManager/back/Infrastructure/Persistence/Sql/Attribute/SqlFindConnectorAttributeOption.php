@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
@@ -41,23 +41,23 @@ class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInt
     /**
      * @return ConnectorAttribute
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $optionCode): ?ConnectorAttributeOption
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode, OptionCode $optionCode): ?ConnectorAttributeOption
     {
-        return $this->fetch($referenceEntityIdentifier, $attributeCode, $optionCode);
+        return $this->fetch($assetFamilyIdentifier, $attributeCode, $optionCode);
     }
 
-    private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $optionCode): ?ConnectorAttributeOption
+    private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode, OptionCode $optionCode): ?ConnectorAttributeOption
     {
         $query = <<<SQL
         SELECT additional_properties
-        FROM akeneo_reference_entity_attribute
-        WHERE reference_entity_identifier = :reference_entity_identifier
+        FROM akeneo_asset_manager_attribute
+        WHERE asset_family_identifier = :asset_family_identifier
         AND code = :attribute_code
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
             [
-                'reference_entity_identifier' => $referenceEntityIdentifier->normalize(),
+                'asset_family_identifier' => $assetFamilyIdentifier->normalize(),
                 'attribute_code' => (string) $attributeCode
             ]
         );

@@ -1,4 +1,4 @@
-const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
+const Sidebar = require('../../decorators/asset-family/app/sidebar.decorator');
 const path = require('path');
 
 const {

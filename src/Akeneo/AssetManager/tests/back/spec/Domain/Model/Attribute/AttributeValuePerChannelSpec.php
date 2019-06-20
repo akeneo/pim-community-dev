@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use PhpSpec\ObjectBehavior;
 
 class AttributeValuePerChannelSpec extends ObjectBehavior

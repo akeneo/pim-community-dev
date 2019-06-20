@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 
-use Akeneo\ReferenceEntity\Domain\Repository\MediaFileNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\MediaFileRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\MediaFileRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Symfony\Component\HttpFoundation\Response;

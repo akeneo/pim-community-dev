@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -45,23 +45,23 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
      *
      * @return AbstractAttribute[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        if (!isset($this->cachedResults[$referenceEntityIdentifier->normalize()])) {
-            $results = $this->fetchResult($referenceEntityIdentifier);
-            $this->cachedResults[$referenceEntityIdentifier->normalize()] = $this->hydrateAttributes($results);
+        if (!isset($this->cachedResults[$assetFamilyIdentifier->normalize()])) {
+            $results = $this->fetchResult($assetFamilyIdentifier);
+            $this->cachedResults[$assetFamilyIdentifier->normalize()] = $this->hydrateAttributes($results);
         }
 
-        return $this->cachedResults[$referenceEntityIdentifier->normalize()];
+        return $this->cachedResults[$assetFamilyIdentifier->normalize()];
     }
 
-    private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function fetchResult(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $query = <<<SQL
         SELECT
             identifier,
             code,
-            reference_entity_identifier,
+            asset_family_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -69,12 +69,12 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
             value_per_channel,
             value_per_locale,
             additional_properties
-        FROM akeneo_reference_entity_attribute
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        FROM akeneo_asset_manager_attribute
+        WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
-            ['reference_entity_identifier' => (string) $referenceEntityIdentifier]
+            ['asset_family_identifier' => (string) $assetFamilyIdentifier]
         );
         $result = $statement->fetchAll();
 

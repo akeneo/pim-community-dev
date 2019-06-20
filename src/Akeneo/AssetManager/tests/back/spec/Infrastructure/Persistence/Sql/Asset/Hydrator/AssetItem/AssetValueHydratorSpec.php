@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ValueHydratorInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByCodesInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorInterface;
 use PhpSpec\ObjectBehavior;
 
-class RecordValueHydratorSpec extends ObjectBehavior
+class AssetValueHydratorSpec extends ObjectBehavior
 {
-    public function let(FindRecordLabelsByCodesInterface $findRecordLabelsByCodes)
+    public function let(FindAssetLabelsByCodesInterface $findAssetLabelsByCodes)
     {
-        $this->beConstructedWith($findRecordLabelsByCodes);
+        $this->beConstructedWith($findAssetLabelsByCodes);
     }
 
     public function it_is_initializable()
@@ -25,20 +25,20 @@ class RecordValueHydratorSpec extends ObjectBehavior
         $this->shouldImplement(ValueHydratorInterface::class);
     }
 
-    public function it_supports_record_type_attributes(
-        RecordAttribute $recordAttribute,
-        RecordCollectionAttribute $recordCollectionAttribute,
+    public function it_supports_asset_type_attributes(
+        AssetAttribute $assetAttribute,
+        AssetCollectionAttribute $assetCollectionAttribute,
         AbstractAttribute $otherAttribute
     ) {
-        $this->supports($recordAttribute)->shouldReturn(true);
-        $this->supports($recordCollectionAttribute)->shouldReturn(true);
+        $this->supports($assetAttribute)->shouldReturn(true);
+        $this->supports($assetCollectionAttribute)->shouldReturn(true);
         $this->supports($otherAttribute)->shouldReturn(false);
     }
 
-    public function it_fills_labels_linked_record_collection_into_a_value_context(
-        RecordAttribute $recordAttribute
+    public function it_fills_labels_linked_asset_collection_into_a_value_context(
+        AssetAttribute $assetAttribute
     ) {
-        $recordAttribute->getType()->willReturn('record_collection');
+        $assetAttribute->getType()->willReturn('asset_collection');
         $normalizedValue = [
             'attribute' => 'brands',
             'locale' => null,
@@ -55,7 +55,7 @@ class RecordValueHydratorSpec extends ObjectBehavior
             ]
         ];
 
-        $this->hydrate($normalizedValue, $recordAttribute, $context)->shouldReturn([
+        $this->hydrate($normalizedValue, $assetAttribute, $context)->shouldReturn([
             'attribute' => 'brands',
             'locale' => null,
             'channel' => null,
@@ -69,10 +69,10 @@ class RecordValueHydratorSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_fills_labels_linked_record_into_a_value_context(
-        RecordAttribute $recordAttribute
+    public function it_fills_labels_linked_asset_into_a_value_context(
+        AssetAttribute $assetAttribute
     ) {
-        $recordAttribute->getType()->willReturn('record');
+        $assetAttribute->getType()->willReturn('asset');
         $normalizedValue = [
             'attribute' => 'brands',
             'locale' => null,
@@ -86,7 +86,7 @@ class RecordValueHydratorSpec extends ObjectBehavior
             ]
         ];
 
-        $this->hydrate($normalizedValue, $recordAttribute, $context)->shouldReturn([
+        $this->hydrate($normalizedValue, $assetAttribute, $context)->shouldReturn([
            'attribute' => 'brands',
            'locale' => null,
            'channel' => null,
@@ -99,9 +99,9 @@ class RecordValueHydratorSpec extends ObjectBehavior
        ]);
     }
 
-    public function it_erase_removed_linked_record_from_the_data(RecordAttribute $recordAttribute)
+    public function it_erase_removed_linked_asset_from_the_data(AssetAttribute $assetAttribute)
     {
-        $recordAttribute->getType()->willReturn('record');
+        $assetAttribute->getType()->willReturn('asset');
         $normalizedValue = [
             'attribute' => 'brands',
             'locale' => null,
@@ -113,7 +113,7 @@ class RecordValueHydratorSpec extends ObjectBehavior
             'labels' => []
         ];
 
-        $this->hydrate($normalizedValue, $recordAttribute, $context)->shouldReturn([
+        $this->hydrate($normalizedValue, $assetAttribute, $context)->shouldReturn([
            'attribute' => 'brands',
            'locale' => null,
            'channel' => null,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
+namespace Akeneo\AssetManager\Infrastructure\PublicApi\Analytics;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface ReferenceEntityExistsInterface
+interface AssetFamilyExistsInterface
 {
-    public function withIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): bool;
+    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): bool;
 }

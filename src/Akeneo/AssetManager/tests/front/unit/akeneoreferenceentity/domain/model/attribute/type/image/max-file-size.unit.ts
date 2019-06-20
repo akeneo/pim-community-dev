@@ -1,4 +1,4 @@
-import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
+import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 
 describe('akeneo > attribute > domain > model > attribute > type > text --- MaxFileSize', () => {
   test('I can create a MaxFileSize from normalized', () => {

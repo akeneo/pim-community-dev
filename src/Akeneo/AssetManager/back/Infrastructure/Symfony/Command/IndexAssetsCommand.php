@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\Command;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,14 +20,14 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * This command indexes all the records loaded in the database
+ * This command indexes all the assets loaded in the database
  *
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IndexRecordsCommand extends ContainerAwareCommand
+class IndexAssetsCommand extends ContainerAwareCommand
 {
-    public const INDEX_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:index-records';
+    public const INDEX_ASSETS_COMMAND_NAME = 'akeneo:asset-manager:index-assets';
     private const ERROR_CODE_USAGE = 1;
 
     /**
@@ -36,20 +36,20 @@ class IndexRecordsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(self::INDEX_RECORDS_COMMAND_NAME)
+            ->setName(self::INDEX_ASSETS_COMMAND_NAME)
             ->addArgument(
-                'reference_entity_codes',
+                'asset_family_codes',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-                'List of reference entity codes to index',
+                'List of asset family codes to index',
                 []
             )
             ->addOption(
                 'all',
                 true,
                 InputOption::VALUE_NONE,
-                'Index all existing records into Elasticsearch'
+                'Index all existing assets into Elasticsearch'
             )
-            ->setDescription('Index all the records belonging to the given reference entities.');
+            ->setDescription('Index all the assets belonging to the given asset families.');
     }
 
     /**
@@ -57,17 +57,17 @@ class IndexRecordsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->checkRecordIndexExists();
+        $this->checkAssetIndexExists();
 
         $isIndexAll = $input->getOption('all');
-        $referenceEntityCodes = $input->getArgument('reference_entity_codes');
+        $assetFamilyCodes = $input->getArgument('asset_family_codes');
 
         if ($isIndexAll) {
             $this->indexAll($output);
-        } elseif (0 < count($referenceEntityCodes)) {
-            $this->indexByReferenceEntity($referenceEntityCodes, $output);
+        } elseif (0 < count($assetFamilyCodes)) {
+            $this->indexByAssetFamily($assetFamilyCodes, $output);
         } else {
-            $output->writeln('<error>Please specify a list of reference entity codes to index or use the flag --all to index all records</error>');
+            $output->writeln('<error>Please specify a list of asset family codes to index or use the flag --all to index all assets</error>');
 
             return self::ERROR_CODE_USAGE;
         }
@@ -76,14 +76,14 @@ class IndexRecordsCommand extends ContainerAwareCommand
     /**
      * @throws \RuntimeException
      */
-    private function checkRecordIndexExists()
+    private function checkAssetIndexExists()
     {
-        $recordClient = $this->getContainer()->get('akeneo_referenceentity.client.record');
-        if (!$recordClient->hasIndex()) {
+        $assetClient = $this->getContainer()->get('akeneo_assetmanager.client.asset');
+        if (!$assetClient->hasIndex()) {
             throw new \RuntimeException(
                 sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
-                    $this->getContainer()->getParameter('record_index_name')
+                    $this->getContainer()->getParameter('asset_index_name')
                 )
             );
         }
@@ -95,55 +95,55 @@ class IndexRecordsCommand extends ContainerAwareCommand
      */
     protected function indexAll(OutputInterface $output): void
     {
-        $referenceEntityRepository = $this->getContainer()->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $recordIndexer = $this->getContainer()->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer');
-        $allReferenceEntities = $referenceEntityRepository->all();
+        $assetFamilyRepository = $this->getContainer()->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetIndexer = $this->getContainer()->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer');
+        $allAssetFamilies = $assetFamilyRepository->all();
         $count = 0;
-        foreach ($allReferenceEntities as $referenceEntity) {
-            /** @var ReferenceEntity $referenceEntity */
-            $recordIndexer->indexByReferenceEntity($referenceEntity->getIdentifier());
+        foreach ($allAssetFamilies as $assetFamily) {
+            /** @var AssetFamily $assetFamily */
+            $assetIndexer->indexByAssetFamily($assetFamily->getIdentifier());
             $count++;
         }
 
-        $output->writeln(sprintf('<info>The records of %d reference entities have been indexed.</info>', $count));
+        $output->writeln(sprintf('<info>The assets of %d asset families have been indexed.</info>', $count));
     }
 
     /**
-     * @param string[] $referenceEntityCodes
+     * @param string[] $assetFamilyCodes
      */
-    private function indexByReferenceEntity(array $referenceEntityCodes, OutputInterface $output): void
+    private function indexByAssetFamily(array $assetFamilyCodes, OutputInterface $output): void
     {
-        $existingReferenceEntityCodes = $this->getExistingReferenceEntityCodes($referenceEntityCodes, $output);
+        $existingAssetFamilyCodes = $this->getExistingAssetFamilyCodes($assetFamilyCodes, $output);
 
-        $recordIndexer = $this->getContainer()->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer');
-        foreach ($existingReferenceEntityCodes as $i => $referenceEntityIdentifier) {
-            $output->writeln(sprintf('<info>Indexing the records of "%s".</info>', $referenceEntityCodes[$i]));
-            $recordIndexer->indexByReferenceEntity($referenceEntityIdentifier);
+        $assetIndexer = $this->getContainer()->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer');
+        foreach ($existingAssetFamilyCodes as $i => $assetFamilyIdentifier) {
+            $output->writeln(sprintf('<info>Indexing the assets of "%s".</info>', $assetFamilyCodes[$i]));
+            $assetIndexer->indexByAssetFamily($assetFamilyIdentifier);
         }
     }
 
     /**
-     * @param String[] $referenceEntityCodes
+     * @param String[] $assetFamilyCodes
      *
-     * @return ReferenceEntityIdentifier[]
+     * @return AssetFamilyIdentifier[]
      */
-    private function getExistingReferenceEntityCodes(array $referenceEntityCodes, OutputInterface $output): array
+    private function getExistingAssetFamilyCodes(array $assetFamilyCodes, OutputInterface $output): array
     {
-        $existsReferenceEntity = $this
+        $existsAssetFamily = $this
             ->getContainer()
-            ->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists');
-        $existingReferenceEntityCodes = [];
-        foreach ($referenceEntityCodes as $referenceEntityCode) {
-            if ($existsReferenceEntity->withIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityCode))) {
-                $existingReferenceEntityCodes[] = ReferenceEntityIdentifier::fromString($referenceEntityCode);
+            ->get('akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists');
+        $existingAssetFamilyCodes = [];
+        foreach ($assetFamilyCodes as $assetFamilyCode) {
+            if ($existsAssetFamily->withIdentifier(AssetFamilyIdentifier::fromString($assetFamilyCode))) {
+                $existingAssetFamilyCodes[] = AssetFamilyIdentifier::fromString($assetFamilyCode);
             } else {
                 $output->writeln(
-                    sprintf('<info>Skip "%s", this reference entity does not exist.</info>',
-                        ReferenceEntityIdentifier::fromString($referenceEntityCode))
+                    sprintf('<info>Skip "%s", this asset family does not exist.</info>',
+                        AssetFamilyIdentifier::fromString($assetFamilyCode))
                 );
             }
         }
 
-        return $existingReferenceEntityCodes;
+        return $existingAssetFamilyCodes;
     }
 }

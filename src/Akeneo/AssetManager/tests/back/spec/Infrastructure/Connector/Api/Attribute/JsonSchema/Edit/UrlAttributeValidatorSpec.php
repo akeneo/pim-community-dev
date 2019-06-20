@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\UrlAttributeValidator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\UrlAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
 class UrlAttributeValidatorSpec extends ObjectBehavior
@@ -45,7 +45,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = UrlAttribute::create(
             AttributeIdentifier::create('ad', 'preview', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('ad'),
+            AssetFamilyIdentifier::fromString('ad'),
             AttributeCode::fromString('preview'),
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(3),
@@ -73,7 +73,7 @@ class UrlAttributeValidatorSpec extends ObjectBehavior
             'media_type' => 'image',
             '_links' => [
                 'self' => [
-                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/photo'
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/photo'
                 ]
             ],
         ];

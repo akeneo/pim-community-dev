@@ -1,6 +1,6 @@
-import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
-import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {Filter} from 'akeneoassetmanager/application/reducer/grid';
+import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
+import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export const getFilter = (filters: Filter[], field: string): Filter | undefined => {
   return filters.find((filter: Filter) => filter.field === field);

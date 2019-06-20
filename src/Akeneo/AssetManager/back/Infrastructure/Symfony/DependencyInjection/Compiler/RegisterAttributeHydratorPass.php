@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,8 +23,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterAttributeHydratorPass implements CompilerPassInterface
 {
-    private const ATTRIBUTE_HYDRATOR_REGISTRY = 'akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry';
-    private const ATTRIBUTE_HYDRATOR_TAG = 'akeneo_referenceentity.attribute_hydrator';
+    private const ATTRIBUTE_HYDRATOR_REGISTRY = 'akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry';
+    private const ATTRIBUTE_HYDRATOR_TAG = 'akeneo_assetmanager.attribute_hydrator';
 
     /**
      * {@inheritdoc}

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -29,7 +29,7 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
     {
         $keysToCheck = [
             'code',
-            'reference_entity_identifier',
+            'asset_family_identifier',
             'value_per_channel',
             'value_per_locale',
         ];

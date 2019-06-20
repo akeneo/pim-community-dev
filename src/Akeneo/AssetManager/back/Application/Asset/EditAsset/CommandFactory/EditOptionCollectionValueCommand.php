@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 
 /**
  * Command to edit the options of an "option collection" attribute.

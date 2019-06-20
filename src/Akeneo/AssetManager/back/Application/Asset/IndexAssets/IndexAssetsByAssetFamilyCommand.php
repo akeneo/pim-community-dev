@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\IndexRecords;
+namespace Akeneo\AssetManager\Application\Asset\IndexAssets;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IndexRecordsByReferenceEntityCommand
+class IndexAssetsByAssetFamilyCommand
 {
-    /** string $referenceEntity */
-    public $referenceEntityIdentifier;
+    /** string $assetFamily */
+    public $assetFamilyIdentifier;
 
-    public function __construct(string $referenceEntityIdentifier)
+    public function __construct(string $assetFamilyIdentifier)
     {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 }

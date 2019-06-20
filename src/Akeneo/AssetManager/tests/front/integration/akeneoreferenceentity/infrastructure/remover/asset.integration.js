@@ -2,17 +2,17 @@ const {getRequestContract, listenRequest} = require('../../../../acceptance/cucu
 
 const timeout = 5000;
 
-describe('Akeneoreferenceentity > infrastructure > remover > record', () => {
+describe('Akeneoassetfamily > infrastructure > remover > asset', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
     await page.reload();
   }, timeout);
 
-  it('It deletes a record', async () => {
+  it('It deletes a asset', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity/designer/record/starck' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager/designer/asset/starck' === interceptedRequest.url() &&
         'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -22,30 +22,30 @@ describe('Akeneoreferenceentity > infrastructure > remover > record', () => {
     });
 
     await page.evaluate(async () => {
-      const createRecordCode = require('akeneoreferenceentity/domain/model/record/code').createCode;
-      const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+      const createAssetCode = require('akeneoassetmanager/domain/model/asset/code').createCode;
+      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
         .createIdentifier;
-      const remover = require('akeneoreferenceentity/infrastructure/remover/record').default;
+      const remover = require('akeneoassetmanager/infrastructure/remover/asset').default;
 
-      const recordCodeToDelete = createRecordCode('starck');
-      const referenceEntityIdentifier = createReferenceEntityIdentifier('designer');
+      const assetCodeToDelete = createAssetCode('starck');
+      const assetFamilyIdentifier = createAssetFamilyIdentifier('designer');
 
-      return await remover.remove(referenceEntityIdentifier, recordCodeToDelete);
+      return await remover.remove(assetFamilyIdentifier, assetCodeToDelete);
     });
   });
 
-  it('It deletes all reference entity records', async () => {
-    const requestContract = getRequestContract('Record/DeleteAll/ok.json');
+  it('It deletes all asset family assets', async () => {
+    const requestContract = getRequestContract('Asset/DeleteAll/ok.json');
     await listenRequest(page, requestContract);
 
     await page.evaluate(async () => {
-      const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
         .createIdentifier;
-      const remover = require('akeneoreferenceentity/infrastructure/remover/record').default;
+      const remover = require('akeneoassetmanager/infrastructure/remover/asset').default;
 
-      const referenceEntityIdentifier = createReferenceEntityIdentifier('designer');
+      const assetFamilyIdentifier = createAssetFamilyIdentifier('designer');
 
-      return await remover.removeAll(referenceEntityIdentifier);
+      return await remover.removeAll(assetFamilyIdentifier);
     });
   });
 });

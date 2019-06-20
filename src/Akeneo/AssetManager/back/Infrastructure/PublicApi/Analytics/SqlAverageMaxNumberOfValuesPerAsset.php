@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
+namespace Akeneo\AssetManager\Infrastructure\PublicApi\Analytics;
 
 use Doctrine\DBAL\Connection;
 
@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlAverageMaxNumberOfValuesPerRecord
+class SqlAverageMaxNumberOfValuesPerAsset
 {
     /** @var Connection */
     private $sqlConnection;
@@ -26,7 +26,7 @@ class SqlAverageMaxNumberOfValuesPerRecord
             SELECT
               MAX(JSON_LENGTH(JSON_EXTRACT(value_collection, '$.*'))) AS max,
               CEIL(AVG(JSON_LENGTH(JSON_EXTRACT(value_collection, '$.*')))) AS average
-            FROM akeneo_reference_entity_record;
+            FROM akeneo_asset_manager_asset;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
         $volume = new AverageMaxVolumes(

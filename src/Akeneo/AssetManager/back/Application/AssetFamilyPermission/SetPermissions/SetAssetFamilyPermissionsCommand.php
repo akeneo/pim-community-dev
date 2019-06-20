@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions;
+namespace Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions;
 
 /**
- * This command represents all the user group permissions set for one reference entity
+ * This command represents all the user group permissions set for one asset family
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SetReferenceEntityPermissionsCommand
+class SetAssetFamilyPermissionsCommand
 {
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
     /** @var SetUserGroupPermissionCommand[] */
     public $permissionsByUserGroup = [];
 
-    public function __construct(string $referenceEntityIdentifier, array $permissionsByUserGroup)
+    public function __construct(string $assetFamilyIdentifier, array $permissionsByUserGroup)
     {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->permissionsByUserGroup = $permissionsByUserGroup;
     }
 }

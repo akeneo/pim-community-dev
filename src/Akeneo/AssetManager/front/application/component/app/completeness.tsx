@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
-import __ from 'akeneoreferenceentity/tools/translator';
+import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
+import __ from 'akeneoassetmanager/tools/translator';
 
 const memo = (React as any).memo;
 
 export const getLabel = (value: number, expanded: boolean) => {
-  return `${expanded ? __('pim_reference_entity.record.completeness.label') + ': ' : ''}${value}%`;
+  return `${expanded ? __('pim_asset_manager.asset.completeness.label') + ': ' : ''}${value}%`;
 };
 
 export const getCompletenessClass = (completeness: Completeness, expanded: boolean) => {
@@ -19,7 +19,7 @@ export const getCompletenessClass = (completeness: Completeness, expanded: boole
 };
 
 export const getTranslationKey = (completeness: Completeness) => {
-  const keyBase = 'pim_reference_entity.record.grid.completeness';
+  const keyBase = 'pim_asset_manager.asset.grid.completeness';
 
   if (!completeness.hasCompleteAttribute()) {
     return `${keyBase}.title_non_complete`;
@@ -32,7 +32,7 @@ export const getTranslationKey = (completeness: Completeness) => {
 
 const CompletenessLabel = memo(({completeness, expanded = true}: {completeness: Completeness; expanded: boolean}) => {
   if (!completeness.hasRequiredAttribute()) {
-    return <span title={__('pim_reference_entity.record.grid.completeness.title_no_required')}>-</span>;
+    return <span title={__('pim_asset_manager.asset.grid.completeness.title_no_required')}>-</span>;
   }
 
   return (

@@ -1,50 +1,50 @@
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
-} from 'akeneoreferenceentity/domain/model/label-collection';
-import Code, {NormalizedCode, createCode} from 'akeneoreferenceentity/domain/model/code';
+} from 'akeneoassetmanager/domain/model/label-collection';
+import Code, {NormalizedCode, createCode} from 'akeneoassetmanager/domain/model/code';
 
-export interface NormalizedReferenceEntityCreation {
+export interface NormalizedAssetFamilyCreation {
   code: NormalizedCode;
   labels: NormalizedLabelCollection;
 }
 
-export default interface ReferenceEntityCreation {
+export default interface AssetFamilyCreation {
   getCode: () => Code;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
-  equals: (referenceEntityCreation: ReferenceEntityCreation) => boolean;
-  normalize: () => NormalizedReferenceEntityCreation;
+  equals: (assetFamilyCreation: AssetFamilyCreation) => boolean;
+  normalize: () => NormalizedAssetFamilyCreation;
 }
 class InvalidArgumentError extends Error {}
 
-class ReferenceEntityCreationImplementation implements ReferenceEntityCreation {
+class AssetFamilyCreationImplementation implements AssetFamilyCreation {
   private constructor(private code: Code, private labelCollection: LabelCollection) {
     if (!(code instanceof Code)) {
-      throw new InvalidArgumentError('ReferenceEntityCreation expects a Code as code argument');
+      throw new InvalidArgumentError('AssetFamilyCreation expects a Code as code argument');
     }
 
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('ReferenceEntityCreation expects a LabelCollection as labelCollection argument');
+      throw new InvalidArgumentError('AssetFamilyCreation expects a LabelCollection as labelCollection argument');
     }
 
     Object.freeze(this);
   }
 
-  public static create(code: Code, labelCollection: LabelCollection): ReferenceEntityCreation {
-    return new ReferenceEntityCreationImplementation(code, labelCollection);
+  public static create(code: Code, labelCollection: LabelCollection): AssetFamilyCreation {
+    return new AssetFamilyCreationImplementation(code, labelCollection);
   }
 
-  public static createEmpty(): ReferenceEntityCreation {
-    return new ReferenceEntityCreationImplementation(createCode(''), createLabelCollection({}));
+  public static createEmpty(): AssetFamilyCreation {
+    return new AssetFamilyCreationImplementation(createCode(''), createLabelCollection({}));
   }
 
   public static createFromNormalized(
-    normalizedReferenceEntity: NormalizedReferenceEntityCreation
-  ): ReferenceEntityCreation {
-    const code = createCode(normalizedReferenceEntity.code);
-    const labelCollection = createLabelCollection(normalizedReferenceEntity.labels);
+    normalizedAssetFamily: NormalizedAssetFamilyCreation
+  ): AssetFamilyCreation {
+    const code = createCode(normalizedAssetFamily.code);
+    const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
 
-    return ReferenceEntityCreationImplementation.create(code, labelCollection);
+    return AssetFamilyCreationImplementation.create(code, labelCollection);
   }
 
   public getCode(): Code {
@@ -63,11 +63,11 @@ class ReferenceEntityCreationImplementation implements ReferenceEntityCreation {
     return this.labelCollection;
   }
 
-  public equals(referenceEntityCreation: ReferenceEntityCreation): boolean {
-    return referenceEntityCreation.getCode().equals(this.code);
+  public equals(assetFamilyCreation: AssetFamilyCreation): boolean {
+    return assetFamilyCreation.getCode().equals(this.code);
   }
 
-  public normalize(): NormalizedReferenceEntityCreation {
+  public normalize(): NormalizedAssetFamilyCreation {
     return {
       code: this.getCode().stringValue(),
       labels: this.getLabelCollection().normalize(),
@@ -75,6 +75,6 @@ class ReferenceEntityCreationImplementation implements ReferenceEntityCreation {
   }
 }
 
-export const createReferenceEntityCreation = ReferenceEntityCreationImplementation.create;
-export const createEmptyReferenceEntityCreation = ReferenceEntityCreationImplementation.createEmpty;
-export const denormalizeReferenceEntityCreation = ReferenceEntityCreationImplementation.createFromNormalized;
+export const createAssetFamilyCreation = AssetFamilyCreationImplementation.create;
+export const createEmptyAssetFamilyCreation = AssetFamilyCreationImplementation.createEmpty;
+export const denormalizeAssetFamilyCreation = AssetFamilyCreationImplementation.createFromNormalized;

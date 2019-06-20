@@ -11,36 +11,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class RecordCollectionAttribute extends AbstractAttribute
+class AssetCollectionAttribute extends AbstractAttribute
 {
-    public const ATTRIBUTE_TYPE = 'record_collection';
+    public const ATTRIBUTE_TYPE = 'asset_collection';
 
-    /** @var ReferenceEntityIdentifier */
-    private $recordType;
+    /** @var AssetFamilyIdentifier */
+    private $assetType;
 
     protected function __construct(
         AttributeIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        ReferenceEntityIdentifier $recordType
+        AssetFamilyIdentifier $assetType
     ) {
         parent::__construct(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labelCollection,
             $order,
@@ -49,30 +49,30 @@ class RecordCollectionAttribute extends AbstractAttribute
             $valuePerLocale
         );
 
-        $this->recordType = $recordType;
+        $this->assetType = $assetType;
     }
 
     public static function create(
         AttributeIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        ReferenceEntityIdentifier $recordType
+        AssetFamilyIdentifier $assetType
     ): self {
         return new self(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labelCollection,
             $order,
             $isRequired,
             $valuePerChannel,
             $valuePerLocale,
-            $recordType
+            $assetType
         );
     }
 
@@ -81,19 +81,19 @@ class RecordCollectionAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'record_type' => $this->recordType->normalize()
+                'asset_type' => $this->assetType->normalize()
             ]
         );
     }
 
-    public function getRecordType(): ReferenceEntityIdentifier
+    public function getAssetType(): AssetFamilyIdentifier
     {
-        return $this->recordType;
+        return $this->assetType;
     }
 
-    public function setRecordType(ReferenceEntityIdentifier $recordType): void
+    public function setAssetType(AssetFamilyIdentifier $assetType): void
     {
-        $this->recordType = $recordType;
+        $this->assetType = $assetType;
     }
 
     public function getType(): string

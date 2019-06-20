@@ -11,34 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributesByReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAttributesByAssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends TestCase
+class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindConnectorAttributesByReferenceEntityIdentifier */
+    /** @var InMemoryFindConnectorAttributesByAssetFamilyIdentifier */
     private $query;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->query = new InMemoryFindConnectorAttributesByReferenceEntityIdentifier();
+        $this->query = new InMemoryFindConnectorAttributesByAssetFamilyIdentifier();
     }
 
     /**
      * @test
      */
-    public function it_returns_null_when_finding_a_non_existent_reference_entity()
+    public function it_returns_null_when_finding_a_non_existent_asset_family()
     {
         $connectorAttribute = new ConnectorAttribute(
             AttributeCode::fromString('description'),
@@ -51,7 +51,7 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends Tes
         );
 
         $result = $this->query->find(
-            ReferenceEntityIdentifier::fromString('non_existent_reference_entity_identifier'),
+            AssetFamilyIdentifier::fromString('non_existent_asset_family_identifier'),
             $connectorAttribute
         );
 
@@ -61,7 +61,7 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends Tes
     /**
      * @test
      */
-    public function it_returns_the_attributes_when_finding_an_existing_reference_entity()
+    public function it_returns_the_attributes_when_finding_an_existing_asset_family()
     {
         $connectorAttribute = new ConnectorAttribute(
             AttributeCode::fromString('description'),
@@ -74,12 +74,12 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends Tes
         );
 
         $this->query->save(
-            ReferenceEntityIdentifier::fromString('existent_reference_entity_identifier'),
+            AssetFamilyIdentifier::fromString('existent_asset_family_identifier'),
             $connectorAttribute
         );
 
         $results = $this->query->find(
-            ReferenceEntityIdentifier::fromString('existent_reference_entity_identifier'),
+            AssetFamilyIdentifier::fromString('existent_asset_family_identifier'),
             $connectorAttribute
         );
 

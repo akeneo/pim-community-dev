@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator;
+namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.

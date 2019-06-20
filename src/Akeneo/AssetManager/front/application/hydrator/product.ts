@@ -2,11 +2,11 @@ import Product, {
   NormalizedProduct,
   denormalizeProduct,
   PRODUCT_TYPE,
-} from 'akeneoreferenceentity/domain/model/product/product';
-import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import {NormalizedCompleteness} from 'akeneoreferenceentity/domain/model/product/completeness';
-import {accessProperty} from 'akeneoreferenceentity/tools/property';
+} from 'akeneoassetmanager/domain/model/product/product';
+import {validateKeys} from 'akeneoassetmanager/application/hydrator/hydrator';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/product/completeness';
+import {accessProperty} from 'akeneoassetmanager/tools/property';
 
 const getProductCompleteness = (normalizedProduct: any): NormalizedCompleteness => {
   const completenessRatio = accessProperty(normalizedProduct, `completeness`, undefined);

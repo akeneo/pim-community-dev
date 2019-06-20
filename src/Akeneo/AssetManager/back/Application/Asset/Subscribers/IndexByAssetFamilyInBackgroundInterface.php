@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
+namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
-interface IndexByReferenceEntityInBackgroundInterface
+interface IndexByAssetFamilyInBackgroundInterface
 {
-    public function execute(ReferenceEntityIdentifier $referenceEntityIdentifier): void;
+    public function execute(AssetFamilyIdentifier $assetFamilyIdentifier): void;
 }

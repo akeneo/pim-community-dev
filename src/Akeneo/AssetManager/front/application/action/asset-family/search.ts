@@ -1,8 +1,8 @@
-import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
-import ReferenceEntityListItem from 'akeneoreferenceentity/domain/model/reference-entity/list';
-import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
-import ReferenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
-import updateResultsWithFetcher from 'akeneoreferenceentity/application/action/search';
+import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
+import AssetFamilyListItem from 'akeneoassetmanager/domain/model/asset-family/list';
+import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import AssetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import updateResultsWithFetcher from 'akeneoassetmanager/application/action/search';
 
 const stateToQuery = async (state: IndexState): Promise<Query> => {
   return {
@@ -14,7 +14,7 @@ const stateToQuery = async (state: IndexState): Promise<Query> => {
   };
 };
 
-export const updateReferenceEntityResults = updateResultsWithFetcher<ReferenceEntityListItem>(
-  ReferenceEntityFetcher,
+export const updateAssetFamilyResults = updateResultsWithFetcher<AssetFamilyListItem>(
+  AssetFamilyFetcher,
   stateToQuery
 );

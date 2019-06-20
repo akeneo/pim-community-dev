@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Event;
+namespace Akeneo\AssetManager\Domain\Event;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -14,39 +14,39 @@ use Symfony\Component\EventDispatcher\Event;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @api
  */
-class RecordUpdatedEvent extends Event
+class AssetUpdatedEvent extends Event
 {
-    /** @var RecordIdentifier */
-    private $recordIdentifier;
+    /** @var AssetIdentifier */
+    private $assetIdentifier;
 
-    /** @var RecordCode */
-    private $recordCode;
+    /** @var AssetCode */
+    private $assetCode;
 
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
+    /** @var AssetFamilyIdentifier */
+    private $assetFamilyIdentifier;
 
     public function __construct(
-        RecordIdentifier $recordIdentifier,
-        RecordCode $recordCode,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetIdentifier $assetIdentifier,
+        AssetCode $assetCode,
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ) {
-        $this->recordIdentifier = $recordIdentifier;
-        $this->recordCode = $recordCode;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetIdentifier = $assetIdentifier;
+        $this->assetCode = $assetCode;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
-    public function getRecordIdentifier(): RecordIdentifier
+    public function getAssetIdentifier(): AssetIdentifier
     {
-        return $this->recordIdentifier;
+        return $this->assetIdentifier;
     }
 
-    public function getRecordCode(): RecordCode
+    public function getAssetCode(): AssetCode
     {
-        return $this->recordCode;
+        return $this->assetCode;
     }
 
-    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
     {
-        return $this->referenceEntityIdentifier;
+        return $this->assetFamilyIdentifier;
     }
 }

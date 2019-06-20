@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Get the identifier of an existing attribute from its code and the reference entity identifier
+ * Get the identifier of an existing attribute from its code and the asset family identifier
  */
 interface GetAttributeIdentifierInterface
 {
@@ -27,8 +27,8 @@ interface GetAttributeIdentifierInterface
      *
      * @throws \LogicException if the attribute identifier is not found
      */
-    public function withReferenceEntityAndCode(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+    public function withAssetFamilyAndCode(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode
     ): AttributeIdentifier;
 }

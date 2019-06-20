@@ -10,18 +10,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
 /**
- * It represents the intent to edit a record
+ * It represents the intent to edit a asset
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditRecordCommand
+class EditAssetCommand
 {
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
     /** @var string */
     public $code;
@@ -33,19 +33,19 @@ class EditRecordCommand
     public $image;
 
     /** @var array */
-    public $editRecordValueCommands = [];
+    public $editAssetValueCommands = [];
 
     public function __construct(
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         string $code,
         array $labels,
         ?array $image,
-        array $editRecordValueCommands
+        array $editAssetValueCommands
     ) {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->code = $code;
         $this->labels = $labels;
         $this->image = $image;
-        $this->editRecordValueCommands = $editRecordValueCommands;
+        $this->editAssetValueCommands = $editAssetValueCommands;
     }
 }

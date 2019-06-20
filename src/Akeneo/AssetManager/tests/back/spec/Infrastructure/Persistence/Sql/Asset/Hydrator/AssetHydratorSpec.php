@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydrator;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydrator;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class RecordHydratorSpec extends ObjectBehavior
+class AssetHydratorSpec extends ObjectBehavior
 {
     public function let(ValueHydratorInterface $valueHydrator, Connection $connection)
     {
@@ -30,10 +30,10 @@ class RecordHydratorSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(RecordHydrator::class);
+        $this->shouldHaveType(AssetHydrator::class);
     }
 
-    public function it_hydrates_a_record(
+    public function it_hydrates_a_asset(
         $valueHydrator,
         TextAttribute $label,
         ImageAttribute $image,
@@ -54,11 +54,11 @@ class RecordHydratorSpec extends ObjectBehavior
             ValueKey::createFromNormalized('description_game_fingerprint-en_US'),
             ValueKey::createFromNormalized('boximage_game_fingerprint-mobile'),
         ]);
-        $record = $this->hydrate(
+        $asset = $this->hydrate(
             [
                 'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
                 'code'                        => 'world_of_warcraft',
-                'reference_entity_identifier' => 'game',
+                'asset_family_identifier' => 'game',
                 'value_collection'            => json_encode([]),
             ],
             $expectedValueKeys,
@@ -66,12 +66,12 @@ class RecordHydratorSpec extends ObjectBehavior
         );
 
         $valueHydrator->hydrate()->shouldNotBeCalled();
-        $record->getIdentifier()->shouldBeAnInstanceOf(RecordIdentifier::class);
-        $record->getReferenceEntityIdentifier()->shouldBeAnInstanceOf(ReferenceEntityIdentifier::class);
-        $record->getCode()->shouldBeAnInstanceOf(RecordCode::class);
+        $asset->getIdentifier()->shouldBeAnInstanceOf(AssetIdentifier::class);
+        $asset->getAssetFamilyIdentifier()->shouldBeAnInstanceOf(AssetFamilyIdentifier::class);
+        $asset->getCode()->shouldBeAnInstanceOf(AssetCode::class);
     }
 
-    public function it_hydrates_a_record_with_values(
+    public function it_hydrates_a_asset_with_values(
         $valueHydrator,
         TextAttribute $label,
         ImageAttribute $imageAttribute,
@@ -193,18 +193,18 @@ class RecordHydratorSpec extends ObjectBehavior
         $valueHydrator->hydrate($gameDescriptionEnUSNormalized, $gameDescription)->willReturn($gameDescriptionEnUS);
         $valueHydrator->hydrate($gameBoxImageMobileNormalized, $gameBoxImage)->willReturn($gameBoxImageMobile);
 
-        $record = $this->hydrate(
+        $asset = $this->hydrate(
             [
                 'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
                 'code'                        => 'world_of_warcraft',
-                'reference_entity_identifier' => 'game',
+                'asset_family_identifier' => 'game',
                 'value_collection'            => json_encode($rawValues),
             ],
             $expectedValueKeys,
             $indexedAttributes
         );
 
-        $record->getValues()->normalize()->shouldReturn([
+        $asset->getValues()->normalize()->shouldReturn([
                 'label_game_fingerprint-fr_FR'     => $labelFrFrNormalized,
                 'label_game_fingerprint-en_US'     => $labelenUSNormalized,
                 'image_game_fingerprint'           => $imageNormalized,
@@ -258,11 +258,11 @@ class RecordHydratorSpec extends ObjectBehavior
         $indexedAttributes = ['description_game_fingerprint' => $gameDescription];
 
         $valueHydrator->hydrate($gameDescriptionFrFrNormalized, $gameDescription)->willReturn($gameDescriptionFrFr);
-        $record = $this->hydrate(
+        $asset = $this->hydrate(
             [
                 'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
                 'code'                        => 'world_of_warcraft',
-                'reference_entity_identifier' => 'game',
+                'asset_family_identifier' => 'game',
                 'labels'                      => json_encode([]),
                 'value_collection'            => json_encode($rawValues),
             ],
@@ -270,7 +270,7 @@ class RecordHydratorSpec extends ObjectBehavior
             $indexedAttributes
         );
 
-        $record->getValues()->normalize()->shouldReturn([
+        $asset->getValues()->normalize()->shouldReturn([
             'description_game_finger-fr_FR' => $gameDescriptionFrFrNormalized,
         ]);
     }
@@ -289,11 +289,11 @@ class RecordHydratorSpec extends ObjectBehavior
         );
         $emptyValue->isEmpty()->willReturn(true);
         $valueHydrator->hydrate(Argument::any(), Argument::any())->willReturn($emptyValue);
-        $record = $this->hydrate(
+        $asset = $this->hydrate(
             [
                 'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
                 'code'                        => 'world_of_warcraft',
-                'reference_entity_identifier' => 'game',
+                'asset_family_identifier' => 'game',
                 'labels'                      => json_encode([]),
                 'value_collection' => json_encode(['description_game_finger-fr_FR' => ['attribute' => 'description_game_fingerprint']]),
             ],
@@ -301,6 +301,6 @@ class RecordHydratorSpec extends ObjectBehavior
             $indexedAttributes
         );
 
-        $record->getValues()->normalize()->shouldReturn([]);
+        $asset->getValues()->normalize()->shouldReturn([]);
     }
 }

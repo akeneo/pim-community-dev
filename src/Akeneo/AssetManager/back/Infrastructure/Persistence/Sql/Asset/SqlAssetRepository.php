@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
+use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Ramsey\Uuid\Uuid;
@@ -38,13 +38,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlRecordRepository implements RecordRepositoryInterface
+class SqlAssetRepository implements AssetRepositoryInterface
 {
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var RecordHydratorInterface */
-    private $recordHydrator;
+    /** @var AssetHydratorInterface */
+    private $assetHydrator;
 
     /** @var FindValueKeyCollectionInterface */
     private $findValueKeyCollection;
@@ -55,57 +55,57 @@ class SqlRecordRepository implements RecordRepositoryInterface
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /** @var FindIdentifiersByReferenceEntityAndCodesInterface */
-    private $findIdentifiersByReferenceEntityAndCodes;
+    /** @var FindIdentifiersByAssetFamilyAndCodesInterface */
+    private $findIdentifiersByAssetFamilyAndCodes;
 
     /** @var FindValueKeysByAttributeTypeInterface */
     private $findValueKeysByAttributeType;
 
     public function __construct(
         Connection $sqlConnection,
-        RecordHydratorInterface $recordHydrator,
+        AssetHydratorInterface $assetHydrator,
         FindValueKeyCollectionInterface $findValueKeyCollection,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         EventDispatcherInterface $eventDispatcher,
-        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes,
+        FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
     ) {
         $this->sqlConnection = $sqlConnection;
-        $this->recordHydrator = $recordHydrator;
+        $this->assetHydrator = $assetHydrator;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
         $this->eventDispatcher = $eventDispatcher;
-        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
+        $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
         $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
     }
 
     public function count(): int
     {
-        $sql = 'SELECT COUNT(*) FROM akeneo_reference_entity_record';
+        $sql = 'SELECT COUNT(*) FROM akeneo_asset_manager_asset';
         $statement = $this->sqlConnection->executeQuery($sql);
         $count = (int) $statement->fetchColumn();
 
         return $count;
     }
 
-    public function create(Record $record): void
+    public function create(Asset $asset): void
     {
         $valueCollection = $this->replaceCodesByIdentifiers(
-            $record->getValues()->normalize(),
-            $record->getReferenceEntityIdentifier()
+            $asset->getValues()->normalize(),
+            $asset->getAssetFamilyIdentifier()
         );
 
         $insert = <<<SQL
-        INSERT INTO akeneo_reference_entity_record
-            (identifier, code, reference_entity_identifier, value_collection)
-        VALUES (:identifier, :code, :reference_entity_identifier, :value_collection);
+        INSERT INTO akeneo_asset_manager_asset
+            (identifier, code, asset_family_identifier, value_collection)
+        VALUES (:identifier, :code, :asset_family_identifier, :value_collection);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => (string) $record->getIdentifier(),
-                'code' => (string) $record->getCode(),
-                'reference_entity_identifier' => (string) $record->getReferenceEntityIdentifier(),
+                'identifier' => (string) $asset->getIdentifier(),
+                'code' => (string) $asset->getCode(),
+                'asset_family_identifier' => (string) $asset->getAssetFamilyIdentifier(),
                 'value_collection' => $valueCollection,
             ],
             [
@@ -114,36 +114,36 @@ SQL;
         );
         if ($affectedRows > 1) {
             throw new \RuntimeException(
-                sprintf('Expected to create one record, but %d rows were affected', $affectedRows)
+                sprintf('Expected to create one asset, but %d rows were affected', $affectedRows)
             );
         }
 
         $this->eventDispatcher->dispatch(
-            RecordUpdatedEvent::class,
-            new RecordUpdatedEvent(
-                $record->getIdentifier(),
-                $record->getCode(),
-                $record->getReferenceEntityIdentifier()
+            AssetUpdatedEvent::class,
+            new AssetUpdatedEvent(
+                $asset->getIdentifier(),
+                $asset->getCode(),
+                $asset->getAssetFamilyIdentifier()
             )
         );
     }
 
-    public function update(Record $record): void
+    public function update(Asset $asset): void
     {
         $valueCollection = $this->replaceCodesByIdentifiers(
-            $record->getValues()->normalize(),
-            $record->getReferenceEntityIdentifier()
+            $asset->getValues()->normalize(),
+            $asset->getAssetFamilyIdentifier()
         );
 
         $update = <<<SQL
-        UPDATE akeneo_reference_entity_record
+        UPDATE akeneo_asset_manager_asset
         SET value_collection = :value_collection
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $update,
             [
-                'identifier' => $record->getIdentifier(),
+                'identifier' => $asset->getIdentifier(),
                 'value_collection' => $valueCollection,
             ],
             [
@@ -153,168 +153,168 @@ SQL;
 
         if ($affectedRows > 1) {
             throw new \RuntimeException(
-                sprintf('Expected to update one record, but %d rows were affected', $affectedRows)
+                sprintf('Expected to update one asset, but %d rows were affected', $affectedRows)
             );
         }
 
         $this->eventDispatcher->dispatch(
-            RecordUpdatedEvent::class,
-            new RecordUpdatedEvent(
-                $record->getIdentifier(),
-                $record->getCode(),
-                $record->getReferenceEntityIdentifier()
+            AssetUpdatedEvent::class,
+            new AssetUpdatedEvent(
+                $asset->getIdentifier(),
+                $asset->getCode(),
+                $asset->getAssetFamilyIdentifier()
             )
         );
     }
 
-    public function getByReferenceEntityAndCode(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code
-    ): Record {
+    public function getByAssetFamilyAndCode(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code
+    ): Asset {
         $fetch = <<<SQL
-        SELECT identifier, code, reference_entity_identifier, value_collection
-        FROM akeneo_reference_entity_record
-        WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
+        SELECT identifier, code, asset_family_identifier, value_collection
+        FROM akeneo_asset_manager_asset
+        WHERE code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
                 'code' => (string) $code,
-                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+                'asset_family_identifier' => (string) $assetFamilyIdentifier,
             ]
         );
         $result = $statement->fetch();
 
         if (!$result) {
-            throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
+            throw AssetNotFoundException::withAssetFamilyAndCode($assetFamilyIdentifier, $code);
         }
 
-        return $this->hydrateRecord($result);
+        return $this->hydrateAsset($result);
     }
 
-    public function getByIdentifier(RecordIdentifier $identifier): Record
+    public function getByIdentifier(AssetIdentifier $identifier): Asset
     {
         $fetch = <<<SQL
-        SELECT record.identifier, record.code, record.reference_entity_identifier, record.value_collection, reference.attribute_as_label, reference.attribute_as_image
-        FROM akeneo_reference_entity_record AS record
-        INNER JOIN akeneo_reference_entity_reference_entity AS reference
-            ON reference.identifier = record.reference_entity_identifier
-        WHERE record.identifier = :record_identifier;
+        SELECT asset.identifier, asset.code, asset.asset_family_identifier, asset.value_collection, reference.attribute_as_label, reference.attribute_as_image
+        FROM akeneo_asset_manager_asset AS asset
+        INNER JOIN akeneo_asset_manager_asset_family AS reference
+            ON reference.identifier = asset.asset_family_identifier
+        WHERE asset.identifier = :asset_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'record_identifier' => (string) $identifier,
+                'asset_identifier' => (string) $identifier,
             ]
         );
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw RecordNotFoundException::withIdentifier($identifier);
+            throw AssetNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateRecord($result);
+        return $this->hydrateAsset($result);
     }
 
-    public function deleteByReferenceEntity(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+    public function deleteByAssetFamily(
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ): void {
         $sql = <<<SQL
-        DELETE FROM akeneo_reference_entity_record
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        DELETE FROM akeneo_asset_manager_asset
+        WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
         $this->sqlConnection->executeUpdate(
             $sql,
             [
-                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+                'asset_family_identifier' => (string) $assetFamilyIdentifier,
             ]
         );
 
         $this->eventDispatcher->dispatch(
-            ReferenceEntityRecordsDeletedEvent::class,
-            new ReferenceEntityRecordsDeletedEvent($referenceEntityIdentifier)
+            AssetFamilyAssetsDeletedEvent::class,
+            new AssetFamilyAssetsDeletedEvent($assetFamilyIdentifier)
         );
     }
 
-    public function deleteByReferenceEntityAndCode(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code
+    public function deleteByAssetFamilyAndCode(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code
     ): void {
-        $identifiers = $this->findIdentifiersByReferenceEntityAndCodes->find($referenceEntityIdentifier, [$code]);
+        $identifiers = $this->findIdentifiersByAssetFamilyAndCodes->find($assetFamilyIdentifier, [$code]);
 
         $sql = <<<SQL
-        DELETE FROM akeneo_reference_entity_record
-        WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
+        DELETE FROM akeneo_asset_manager_asset
+        WHERE code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $sql,
             [
                 'code' => (string) $code,
-                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+                'asset_family_identifier' => (string) $assetFamilyIdentifier,
             ]
         );
 
         if (0 === $affectedRows) {
-            throw new RecordNotFoundException();
+            throw new AssetNotFoundException();
         }
 
         $this->eventDispatcher->dispatch(
-            RecordDeletedEvent::class,
-            new RecordDeletedEvent(
+            AssetDeletedEvent::class,
+            new AssetDeletedEvent(
                 $identifiers[$code->normalize()],
                 $code,
-                $referenceEntityIdentifier
+                $assetFamilyIdentifier
             )
         );
     }
 
     public function nextIdentifier(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code
-    ): RecordIdentifier {
-        return RecordIdentifier::create(
-            (string) $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code
+    ): AssetIdentifier {
+        return AssetIdentifier::create(
+            (string) $assetFamilyIdentifier,
             (string) $code,
             Uuid::uuid4()->toString()
         );
     }
 
-    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
     {
         $fetch = <<<SQL
         SELECT COUNT(*)
-        FROM akeneo_reference_entity_record
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        FROM akeneo_asset_manager_asset
+        WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
-            ['reference_entity_identifier' => $referenceEntityIdentifier,]
+            ['asset_family_identifier' => $assetFamilyIdentifier,]
         );
         $count = $statement->fetchColumn();
 
         return intval($count);
     }
 
-    private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier
     {
-        if (!isset($result['reference_entity_identifier'])) {
-            throw new \LogicException('The record should have a reference entity identifier');
+        if (!isset($result['asset_family_identifier'])) {
+            throw new \LogicException('The asset should have an asset family identifier');
         }
-        $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
-            $result['reference_entity_identifier'],
+        $normalizedAssetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+            $result['asset_family_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );
 
-        return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
+        return AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
     }
 
-    private function hydrateRecord($result): Record
+    private function hydrateAsset($result): Asset
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
-        $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
-        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifier($result);
+        $valueKeyCollection = $this->findValueKeyCollection->find($assetFamilyIdentifier);
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
 
-        return $this->recordHydrator->hydrate(
+        return $this->assetHydrator->hydrate(
             $result,
             $valueKeyCollection,
             $attributesIndexedByIdentifier
@@ -323,32 +323,32 @@ SQL;
 
     private function replaceCodesByIdentifiers(
         array $valueCollection,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ): array {
-        $recordsValueKeys = $this->findValueKeysByAttributeType->find(
-            $referenceEntityIdentifier,
-            ['record', 'record_collection']
+        $assetsValueKeys = $this->findValueKeysByAttributeType->find(
+            $assetFamilyIdentifier,
+            ['asset', 'asset_collection']
         );
 
-        if (empty($recordsValueKeys)) {
+        if (empty($assetsValueKeys)) {
             return $valueCollection;
         }
 
-        $onlyRecordsValues = array_intersect_key($valueCollection, array_flip($recordsValueKeys));
+        $onlyAssetsValues = array_intersect_key($valueCollection, array_flip($assetsValueKeys));
 
-        if (empty($onlyRecordsValues)) {
+        if (empty($onlyAssetsValues)) {
             return $valueCollection;
         }
 
-        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
 
         // Replace codes by identifiers in the value collection
-        foreach ($onlyRecordsValues as $valueKey => $value) {
-            /** @var RecordAttribute|RecordCollectionAttribute $attribute */
+        foreach ($onlyAssetsValues as $valueKey => $value) {
+            /** @var AssetAttribute|AssetCollectionAttribute $attribute */
             $attribute = $attributesIndexedByIdentifier[$value['attribute']];
 
-            $indexedIdentifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
-                $attribute->getRecordType(),
+            $indexedIdentifiers = $this->findIdentifiersByAssetFamilyAndCodes->find(
+                $attribute->getAssetType(),
                 is_array($value['data']) ? $value['data'] : [$value['data']]
             );
 

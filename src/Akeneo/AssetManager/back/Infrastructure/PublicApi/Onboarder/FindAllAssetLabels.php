@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder;
+namespace Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder;
 
 use Doctrine\DBAL\Connection;
 
@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class FindAllRecordLabels
+class FindAllAssetLabels
 {
     /** @var Connection */
     private $sqlConnection;
@@ -23,30 +23,30 @@ class FindAllRecordLabels
     {
         $fetch = <<<SQL
             SELECT 
-                result.record_identifier as identifier,
-                result.record_code as code,
+                result.asset_identifier as identifier,
+                result.asset_code as code,
                 JSON_OBJECTAGG(result.locale_code, result.label) as labels,
-                result.reference_entity_identifier
+                result.asset_family_identifier
             FROM (
                 SELECT
-                    labels_result.record_identifier,
-                    labels_result.record_code,
+                    labels_result.asset_identifier,
+                    labels_result.asset_code,
                     labels_result.locale_code,
                     labels_result.label,
-                    labels_result.reference_entity_identifier
+                    labels_result.asset_family_identifier
                 FROM (
                     SELECT 
-                        r.identifier as record_identifier,
-                        r.code as record_code,
+                        r.identifier as asset_identifier,
+                        r.code as asset_code,
                         locales.code as locale_code,
-                        r.reference_entity_identifier as reference_entity_identifier,
+                        r.asset_family_identifier as asset_family_identifier,
                         JSON_EXTRACT(
                             value_collection,
                             CONCAT('$.', '"', re.attribute_as_label, '_', locales.code, '"', '.data')
                         ) as label
-                    FROM akeneo_reference_entity_record r
-                    JOIN akeneo_reference_entity_reference_entity re
-                        ON r.reference_entity_identifier = re.identifier
+                    FROM akeneo_asset_manager_asset r
+                    JOIN akeneo_asset_manager_asset_family re
+                        ON r.asset_family_identifier = re.identifier
                     CROSS JOIN pim_catalog_locale as locales
                     WHERE locales.is_activated = true
                 ) as labels_result
@@ -56,12 +56,12 @@ SQL;
 
         $statement = $this->sqlConnection->executeQuery($fetch);
 
-        foreach ($statement->fetchAll() as $record) {
-            yield new RecordLabels(
-                $record['identifier'],
-                json_decode($record['labels'], true),
-                $record['code'],
-                $record['reference_entity_identifier']
+        foreach ($statement->fetchAll() as $asset) {
+            yield new AssetLabels(
+                $asset['identifier'],
+                json_decode($asset['labels'], true),
+                $asset['code'],
+                $asset['asset_family_identifier']
             );
         }
     }

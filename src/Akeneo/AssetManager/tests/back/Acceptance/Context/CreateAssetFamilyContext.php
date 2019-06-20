@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -30,13 +30,13 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class CreateReferenceEntityContext implements Context
+final class CreateAssetFamilyContext implements Context
 {
-    /** @var InMemoryReferenceEntityRepository */
-    private $referenceEntityRepository;
+    /** @var InMemoryAssetFamilyRepository */
+    private $assetFamilyRepository;
 
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -51,15 +51,15 @@ final class CreateReferenceEntityContext implements Context
     private $activatedLocales;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        CreateReferenceEntityHandler $createReferenceEntityHandler,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        CreateAssetFamilyHandler $createAssetFamilyHandler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
         ConstraintViolationsContext $violationsContext,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
         $this->validator = $validator;
         $this->exceptionContext = $exceptionContext;
         $this->violationsContext = $violationsContext;
@@ -67,12 +67,12 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
-     * @When /^the user creates a reference entity "([^"]+)" with:$/
+     * @When /^the user creates an asset family "([^"]+)" with:$/
      */
-    public function theUserCreatesAnReferenceEntityWith($code, TableNode $updateTable)
+    public function theUserCreatesAnAssetFamilyWith($code, TableNode $updateTable)
     {
         $updates = current($updateTable->getHash());
-        $command = new CreateReferenceEntityCommand(
+        $command = new CreateAssetFamilyCommand(
             $code,
             json_decode($updates['labels'], true)
         );
@@ -80,31 +80,31 @@ final class CreateReferenceEntityContext implements Context
         $this->violationsContext->addViolations($this->validator->validate($command));
 
         try {
-            ($this->createReferenceEntityHandler)($command);
+            ($this->createAssetFamilyHandler)($command);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
     }
 
     /**
-     * @Then /^there is a reference entity "([^"]+)" with:$/
+     * @Then /^there is an asset family "([^"]+)" with:$/
      */
-    public function thereIsAnReferenceEntityWith(string $code, TableNode $referenceEntityTable)
+    public function thereIsAnAssetFamilyWith(string $code, TableNode $assetFamilyTable)
     {
-        $expectedIdentifier = ReferenceEntityIdentifier::fromString($code);
-        $expectedInformation = current($referenceEntityTable->getHash());
-        $actualReferenceEntity = $this->referenceEntityRepository->getByIdentifier($expectedIdentifier);
+        $expectedIdentifier = AssetFamilyIdentifier::fromString($code);
+        $expectedInformation = current($assetFamilyTable->getHash());
+        $actualAssetFamily = $this->assetFamilyRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),
-            $actualReferenceEntity
+            $actualAssetFamily
         );
     }
 
-    private function assertSameLabels(array $expectedLabels, ReferenceEntity $actualReferenceEntity)
+    private function assertSameLabels(array $expectedLabels, AssetFamily $actualAssetFamily)
     {
         $actualLabels = [];
-        foreach ($actualReferenceEntity->getLabelCodes() as $labelCode) {
-            $actualLabels[$labelCode] = $actualReferenceEntity->getLabel($labelCode);
+        foreach ($actualAssetFamily->getLabelCodes() as $labelCode) {
+            $actualLabels[$labelCode] = $actualAssetFamily->getLabel($labelCode);
         }
 
         $differences = array_merge(
@@ -119,28 +119,28 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^there should be no reference entity$/
+     * @Given /^there should be no asset family$/
      */
-    public function thereShouldBeNoReferenceEntity()
+    public function thereShouldBeNoAssetFamily()
     {
-        $referenceEntityCount = $this->referenceEntityRepository->count();
+        $assetFamilyCount = $this->assetFamilyRepository->count();
         Assert::same(
             0,
-            $referenceEntityCount,
-            sprintf('Expected to have 0 reference entity. %d found.', $referenceEntityCount)
+            $assetFamilyCount,
+            sprintf('Expected to have 0 asset family. %d found.', $assetFamilyCount)
         );
     }
 
     /**
-     * @Given /^(\d+) random reference entities$/
+     * @Given /^(\d+) random asset families$/
      */
-    public function randomReferenceEntities(int $number)
+    public function randomAssetFamilies(int $number)
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
         for ($i = 0; $i < $number; $i++) {
-            $command = new CreateReferenceEntityCommand(
+            $command = new CreateAssetFamilyCommand(
                 uniqid(),
                 ['en_US' => uniqid('label_')]
             );
@@ -149,11 +149,11 @@ final class CreateReferenceEntityContext implements Context
             if ($violations->count() > 0) {
                 $errorMessage = $violations->get(0)->getMessage();
                 throw new \RuntimeException(
-                    sprintf('Cannot create the reference entity, command not valid (%s)', $errorMessage)
+                    sprintf('Cannot create the asset family, command not valid (%s)', $errorMessage)
                 );
             }
 
-            ($this->createReferenceEntityHandler)($command);
+            ($this->createAssetFamilyHandler)($command);
         }
     }
 }

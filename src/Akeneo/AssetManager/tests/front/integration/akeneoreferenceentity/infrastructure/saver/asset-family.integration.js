@@ -1,16 +1,16 @@
 const timeout = 5000;
 
-describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', () => {
+describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
     await page.reload();
   }, timeout);
 
-  it('It saves a reference entity', async () => {
+  it('It saves an asset family', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity/sofa' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager/sofa' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -20,24 +20,24 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     });
 
     const response = await page.evaluate(async () => {
-      const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
-        .createReferenceEntity;
-      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family')
+        .createAssetFamily;
+      const createIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
         .createIdentifier;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
         .createLabelCollection;
-      const createAttributeIdentifier = require('akeneoreferenceentity/domain/model/attribute/identifier')
+      const createAttributeIdentifier = require('akeneoassetmanager/domain/model/attribute/identifier')
         .createIdentifier;
-      const Image = require('akeneoreferenceentity/domain/model/file').default;
+      const Image = require('akeneoassetmanager/domain/model/file').default;
 
-      const savedSofa = createReferenceEntity(
+      const savedSofa = createAssetFamily(
         createIdentifier('sofa'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty(),
         createAttributeIdentifier(''),
         createAttributeIdentifier('')
       );
-      const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
+      const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
       return await saver.save(savedSofa);
     });
@@ -45,10 +45,10 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     expect(response).toEqual(undefined);
   });
 
-  it('It creates a reference entity', async () => {
+  it('It creates an asset family', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method() &&
         'sofa' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
@@ -59,18 +59,18 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     });
 
     const response = await page.evaluate(async () => {
-      const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
-        .createReferenceEntity;
-      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family')
+        .createAssetFamily;
+      const createIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
         .createIdentifier;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
         .createLabelCollection;
-      const createAttributeIdentifier = require('akeneoreferenceentity/domain/model/attribute/identifier')
+      const createAttributeIdentifier = require('akeneoassetmanager/domain/model/attribute/identifier')
         .createIdentifier;
-      const Image = require('akeneoreferenceentity/domain/model/file').default;
-      const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
+      const Image = require('akeneoassetmanager/domain/model/file').default;
+      const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
-      const sofaCreated = createReferenceEntity(
+      const sofaCreated = createAssetFamily(
         createIdentifier('sofa'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty(),
@@ -84,7 +84,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     expect(response).toEqual(undefined);
   });
 
-  it('It returns errors when we create an invalid reference entity', async () => {
+  it('It returns errors when we create an invalid asset family', async () => {
     const responseMessage = [
       {
         messageTemplate: 'This value should not be blank.',
@@ -114,7 +114,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
 
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method() &&
         'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
@@ -127,18 +127,18 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     });
 
     const response = await page.evaluate(async () => {
-      const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
-        .createReferenceEntity;
-      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family')
+        .createAssetFamily;
+      const createIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
         .createIdentifier;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
         .createLabelCollection;
-      const createAttributeIdentifier = require('akeneoreferenceentity/domain/model/attribute/identifier')
+      const createAttributeIdentifier = require('akeneoassetmanager/domain/model/attribute/identifier')
         .createIdentifier;
-      const Image = require('akeneoreferenceentity/domain/model/file').default;
-      const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
+      const Image = require('akeneoassetmanager/domain/model/file').default;
+      const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
-      const sofaCreated = createReferenceEntity(
+      const sofaCreated = createAssetFamily(
         createIdentifier('invalid/identifier'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty(),

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
 use Webmozart\Assert\Assert;
 
@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
  * For an attribute, there could be a multiple combination of value keys,
  * depending on Channel & Locale (if it has multiple values per channel and/or locale).
  *
- * For instance, let's have the attribute "name" for the reference entity "brand".
+ * For instance, let's have the attribute "name" for the asset family "brand".
  * It has distinct values per channel, for "ecommerce" and "mobile".
  * It has distinct values per locale, for "fr_FR" and "en_US".
  *

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,7 +23,7 @@ class OptionAttribute extends AbstractAttribute
 
     public static function create(
         AttributeIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -33,7 +33,7 @@ class OptionAttribute extends AbstractAttribute
     ) : self {
         return new self(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labelCollection,
             $order,

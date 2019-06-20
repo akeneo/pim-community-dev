@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_reference_entities_attribute_create_rest",
+    "route": "akeneo_asset_manager_attribute_create_rest",
     "query": {
-      "referenceEntityIdentifier": "designer"
+      "assetFamilyIdentifier": "designer"
     },
     "body": {
-      "reference_entity_identifier": "designer",
+      "asset_family_identifier": "designer",
       "code": "not so nice attribute",
       "type": "text",
       "labels": {
@@ -20,7 +20,7 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate": "pim_reference_entity.attribute.validation.code.pattern",
+        "messageTemplate": "pim_asset_manager.attribute.validation.code.pattern",
         "parameters": {
           "{{ value }}": "\"not so nice attribute\""
         },
@@ -32,7 +32,7 @@
           "isRichTextEditor": false,
           "validationRule": "none",
           "regularExpression": null,
-          "referenceEntityIdentifier": "designer",
+          "assetFamilyIdentifier": "designer",
           "code": "not so nice attribute",
           "labels": {
             "en_US": "Nice attribute"

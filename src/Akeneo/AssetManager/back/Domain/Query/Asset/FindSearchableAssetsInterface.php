@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Query function that finds SearchRecordItem read models.
+ * Query function that finds SearchAssetItem read models.
  */
-interface FindSearchableRecordsInterface
+interface FindSearchableAssetsInterface
 {
-    public function byRecordIdentifier(RecordIdentifier $recordIdentifier): ?SearchableRecordItem;
+    public function byAssetIdentifier(AssetIdentifier $assetIdentifier): ?SearchableAssetItem;
 
-    public function byReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator;
+    public function byAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator;
 }

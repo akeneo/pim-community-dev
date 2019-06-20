@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -38,7 +38,7 @@ class UrlAttribute extends AbstractAttribute
 
     private function __construct(
         AttributeIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -51,7 +51,7 @@ class UrlAttribute extends AbstractAttribute
     ) {
         parent::__construct(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labelCollection,
             $order,
@@ -67,7 +67,7 @@ class UrlAttribute extends AbstractAttribute
 
     public static function create(
         AttributeIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -80,7 +80,7 @@ class UrlAttribute extends AbstractAttribute
     ) {
         return new self(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labelCollection,
             $order,

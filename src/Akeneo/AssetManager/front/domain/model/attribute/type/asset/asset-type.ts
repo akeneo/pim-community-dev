@@ -1,23 +1,23 @@
-import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import ReferenceEntityIdentifier, {
-  NormalizedIdentifier as NormalizedReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import AssetFamilyIdentifier, {
+  NormalizedIdentifier as NormalizedAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
-export type NormalizedRecordType = NormalizedReferenceEntityIdentifier | null;
+export type NormalizedAssetType = NormalizedAssetFamilyIdentifier | null;
 
 export class InvalidArgumentError extends Error {}
 export class InvalidCallError extends Error {}
 
-export class RecordType implements NormalizableAdditionalProperty {
-  private constructor(readonly recordType?: ReferenceEntityIdentifier) {
-    if (undefined === recordType) {
+export class AssetType implements NormalizableAdditionalProperty {
+  private constructor(readonly assetType?: AssetFamilyIdentifier) {
+    if (undefined === assetType) {
       Object.freeze(this);
 
       return;
     }
 
-    if (!(recordType instanceof ReferenceEntityIdentifier)) {
-      throw new InvalidArgumentError('RecordType expects a ReferenceEntityIdentifier argument');
+    if (!(assetType instanceof AssetFamilyIdentifier)) {
+      throw new InvalidArgumentError('AssetType expects a AssetFamilyIdentifier argument');
     }
 
     Object.freeze(this);
@@ -27,38 +27,38 @@ export class RecordType implements NormalizableAdditionalProperty {
     return typeof value === 'string';
   }
 
-  public static createFromNormalized(normalizedRecordType: NormalizedRecordType) {
-    return null === normalizedRecordType
-      ? new RecordType()
-      : new RecordType(ReferenceEntityIdentifier.create(normalizedRecordType));
+  public static createFromNormalized(normalizedAssetType: NormalizedAssetType) {
+    return null === normalizedAssetType
+      ? new AssetType()
+      : new AssetType(AssetFamilyIdentifier.create(normalizedAssetType));
   }
 
-  public normalize(): NormalizedRecordType {
-    return undefined === this.recordType ? null : this.recordType.stringValue();
+  public normalize(): NormalizedAssetType {
+    return undefined === this.assetType ? null : this.assetType.stringValue();
   }
 
-  public static createFromString(recordType: string) {
-    return '' === recordType ? RecordType.createFromNormalized(null) : RecordType.createFromNormalized(recordType);
+  public static createFromString(assetType: string) {
+    return '' === assetType ? AssetType.createFromNormalized(null) : AssetType.createFromNormalized(assetType);
   }
 
   public stringValue(): string {
-    return undefined === this.recordType ? '' : this.recordType.stringValue();
+    return undefined === this.assetType ? '' : this.assetType.stringValue();
   }
 
-  public equals(recordType: RecordType) {
+  public equals(assetType: AssetType) {
     return (
-      (undefined === this.recordType && undefined === recordType.recordType) ||
-      (undefined !== this.recordType &&
-        undefined !== recordType.recordType &&
-        this.recordType.equals(recordType.recordType))
+      (undefined === this.assetType && undefined === assetType.assetType) ||
+      (undefined !== this.assetType &&
+        undefined !== assetType.assetType &&
+        this.assetType.equals(assetType.assetType))
     );
   }
 
-  public getReferenceEntityIdentifier(): ReferenceEntityIdentifier {
-    if (undefined === this.recordType) {
-      throw new InvalidCallError('The reference entity identifier is undefined');
+  public getAssetFamilyIdentifier(): AssetFamilyIdentifier {
+    if (undefined === this.assetType) {
+      throw new InvalidCallError('The asset family identifier is undefined');
     }
 
-    return this.recordType;
+    return this.assetType;
   }
 }

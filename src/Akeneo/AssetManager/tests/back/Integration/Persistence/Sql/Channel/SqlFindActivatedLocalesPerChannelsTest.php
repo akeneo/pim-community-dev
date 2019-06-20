@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Channel;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Channel;
 
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -21,8 +21,8 @@ class SqlFindActivatedLocalesPerChannelsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findActivatedLocalesPerChannels = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels');
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->findActivatedLocalesPerChannels = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels');
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**

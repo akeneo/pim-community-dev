@@ -1,8 +1,8 @@
 pim_title:
-  akeneo_reference_entities_reference_entity_index: Créer une nouvelle entité
-  akeneo_reference_entities_reference_entity_edit: Modifier une entité référentielle
-  akeneo_reference_entities_record_edit: Modifier un enregistrement
-pim_reference_entity:
+  akeneo_asset_manager_asset_family_index: Créer une nouvelle entité
+  akeneo_asset_manager_asset_family_edit: Modifier une entité référentielle
+  akeneo_asset_manager_asset_edit: Modifier un enregistrement
+pim_asset_manager:
   app:
     image:
       wide:
@@ -13,12 +13,12 @@ pim_reference_entity:
         remove: Supprimer
         download: Téléchargement
         upload: Glisser et déposer pour télécharger
-  reference_entity:
+  asset_family:
     validation:
       code:
         pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
         should_be_unique: 'Ce code existe déjà pour cette entité.'
-        limit_reached: 'Vous ne pouvez pas créer l’entité référentielle « {{ %reference_entity_label% }} » parce que vous avez atteint la limite de {{ %limit% }} entités référentielles'
+        limit_reached: 'Vous ne pouvez pas créer l’entité référentielle « {{ %asset_family_label% }} » parce que vous avez atteint la limite de {{ %limit% }} entités référentielles'
     button:
       save: Enregistrer
       save_permission: Enregistrer
@@ -29,7 +29,7 @@ pim_reference_entity:
     breadcrumb: Entités référentielles
     img: L’image principale de l’entité référentielle "{{ label }}"
     tab:
-      records: Enregistrements
+      assets: Enregistrements
       attribute: Attributs
       properties: Propriétés
       permission: Permissions
@@ -68,7 +68,7 @@ pim_reference_entity:
         code: Code (requis)
       confirm: Enregistrer
     delete:
-      message: Êtes-vous sûr de vouloir supprimer l’entité «{{ referenceEntityLabel }} » ?
+      message: Êtes-vous sûr de vouloir supprimer l’entité «{{ assetFamilyLabel }} » ?
       title: Attribut
     notification:
       save:
@@ -89,9 +89,9 @@ pim_reference_entity:
       title: Vous n’avez aucun groupe utilisateurs
       subtitle: Pour gérer des permissions sur l’entité référentielle, vous devez appartenir à au moins un groupe utilisateurs.
       link: Cliquez ici pour ajouter pour votre 1er groupe utilisateurs
-  record:
+  asset:
     validation:
-      limit_reached: 'Vous ne pouvez pas créer l''enregistrement « {{ %record_label% }} » parce que vous avez atteint la limite de {{ %limit% }} enregistrements pour cette entité référentielle'
+      limit_reached: 'Vous ne pouvez pas créer l''enregistrement « {{ %asset_label% }} » parce que vous avez atteint la limite de {{ %limit% }} enregistrements pour cette entité référentielle'
       code:
         pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
         should_be_unique: 'Ce code existe déjà pour cette entité.'
@@ -127,7 +127,7 @@ pim_reference_entity:
         create_another: Créer un autre enregistrement
       confirm: Enregistrer
     delete:
-      message: Êtes-vous sûr de vouloir supprimer l'enregistrement «{{ recordLabel }}» ? S'il est lié à des produits ou des enregistrements, les liens vers ces derniers seront supprimés.
+      message: Êtes-vous sûr de vouloir supprimer l'enregistrement «{{ assetLabel }}» ? S'il est lié à des produits ou des enregistrements, les liens vers ces derniers seront supprimés.
       title: Enregistrement
     delete_all:
       confirm: Êtes-vous sûr de vouloir supprimer tous les enregistrements "{{ entityIdentifier }}" ? S'il sont liés à des produits, les liens vers les produits seront supprimés.
@@ -187,8 +187,8 @@ pim_reference_entity:
     type:
       text: Texte
       image: Image
-      record: Lien simple vers une entité référentielle
-      record_collection: Lien multiple vers une entité référentielle
+      asset: Lien simple vers une entité référentielle
+      asset_collection: Lien multiple vers une entité référentielle
       option: Option simple
       option_collection: Options multiples
     is_required: requis pour la complétude
@@ -207,11 +207,11 @@ pim_reference_entity:
         code: Code (requis)
         label: Libellé
         type: Type d'attribut
-        record_type: Entité référentielle à lier (obligatoire)
+        asset_type: Entité référentielle à lier (obligatoire)
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
       placeholder:
-        record_type: Sélectionnez votre entité référentielle liée
+        asset_type: Sélectionnez votre entité référentielle liée
       confirm: Enregistrer
     edit:
       delete: Supprimer l'attribut
@@ -222,7 +222,7 @@ pim_reference_entity:
         code: Code (requis)
         label: Libellé
         type: Type d'attribut
-        record_type: Entité référentielle liée (obligatoire)
+        asset_type: Entité référentielle liée (obligatoire)
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
         is_required: Requis pour la complétude
@@ -282,21 +282,21 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Lien multiple vers une entité référentielle
-          akeneo_reference_entity: Lien simple vers une entité référentielle
+          akeneo_asset_multiple_link: Lien multiple vers une entité référentielle
+          akeneo_asset_single_link: Lien simple vers une entité référentielle
         section:
           type_specific: Paramètres spécifiques
-        reference_entity:
+        asset_family:
           identifier: Entité référentielle liée (obligatoire)
           default_label: Veuillez sélectionner une entité référentielle
 permission:
   mass_action: Appliquer {{ rightLevel }} sur tous les groupes
 pim_catalog_volume:
   section:
-    reference_entity:
+    asset_family:
       title: Axes sur les entités de référence
       hint: Si vous utilisez les entités de référence, voici les axes pour vous aider à surveiller votre volume.
   axis:
-    count_reference_entity: Entités référentielles
-    average_max_records_per_reference_entity: Enregistrements par entité de référence
-    average_max_attributes_per_reference_entity: Attributs par entité de référence
+    count_asset_family: Entités référentielles
+    average_max_assets_per_asset_family: Enregistrements par entité de référence
+    average_max_attributes_per_asset_family: Attributs par entité de référence

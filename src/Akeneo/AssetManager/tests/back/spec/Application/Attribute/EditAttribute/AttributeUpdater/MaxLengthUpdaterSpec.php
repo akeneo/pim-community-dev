@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
 class MaxLengthUpdaterSpec extends ObjectBehavior

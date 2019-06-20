@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -12,6 +12,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeOptionCode extends Constraint
 {
-    public const MESSAGE_WRONG_PATTERN = 'pim_reference_entity.attribute.validation.options.code.pattern';
-    public const CODE_SHOULD_NOT_BE_BLANK = 'pim_reference_entity.attribute.validation.options.code.should_not_be_blank';
+    public const MESSAGE_WRONG_PATTERN = 'pim_asset_manager.attribute.validation.options.code.pattern';
+    public const CODE_SHOULD_NOT_BE_BLANK = 'pim_asset_manager.attribute.validation.options.code.should_not_be_blank';
 }

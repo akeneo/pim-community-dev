@@ -14,8 +14,8 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const noLinkedAttribute = async () => {
-    await page.waitForSelector('.AknGridContainer-noDataImage--reference-entity');
-    const noAtttributeMessage = await nodeElement.$('.AknGridContainer-noDataImage--reference-entity');
+    await page.waitForSelector('.AknGridContainer-noDataImage--asset-family');
+    const noAtttributeMessage = await nodeElement.$('.AknGridContainer-noDataImage--asset-family');
 
     return null !== noAtttributeMessage;
   };

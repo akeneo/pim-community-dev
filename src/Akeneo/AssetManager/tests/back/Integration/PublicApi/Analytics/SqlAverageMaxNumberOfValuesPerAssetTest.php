@@ -2,49 +2,49 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics;
+namespace Akeneo\AssetManager\Integration\PublicApi\Analytics;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerRecord;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerAsset;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
+class SqlAverageMaxNumberOfValuesPerAssetTest extends SqlIntegrationTestCase
 {
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
-    /** @var SqlAverageMaxNumberOfValuesPerRecord */
-    private $averageMaxNumberOfValuesPerRecords;
+    /** @var SqlAverageMaxNumberOfValuesPerAsset */
+    private $averageMaxNumberOfValuesPerAssets;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
@@ -53,50 +53,50 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->averageMaxNumberOfValuesPerRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_values_per_record');
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        $this->recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $this->averageMaxNumberOfValuesPerAssets = $this->get('akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_values_per_asset');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
+        $this->assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
         $this->resetDB();
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
      * @test
      */
-    public function it_returns_the_average_and_max_number_of_values_per_record()
+    public function it_returns_the_average_and_max_number_of_values_per_asset()
     {
-        $this->loadRecordWithNumberOfValues(2);
-        $this->loadRecordWithNumberOfValues(4);
+        $this->loadAssetWithNumberOfValues(2);
+        $this->loadAssetWithNumberOfValues(4);
 
-        $volume = $this->averageMaxNumberOfValuesPerRecords->fetch();
+        $volume = $this->averageMaxNumberOfValuesPerAssets->fetch();
 
         $this->assertEquals('4', $volume->getMaxVolume());
         $this->assertEquals('3', $volume->getAverageVolume());
     }
 
-    private function loadRecordWithNumberOfValues(int $numberOfValuesForRecord): void
+    private function loadAssetWithNumberOfValues(int $numberOfValuesForAsset): void
     {
-        $referenceEntityIdentifier = $this->createReferenceEntity();
-        $attributes = $this->createAttributes($numberOfValuesForRecord, $referenceEntityIdentifier);
+        $assetFamilyIdentifier = $this->createAssetFamily();
+        $attributes = $this->createAttributes($numberOfValuesForAsset, $assetFamilyIdentifier);
 
-        $this->createRecordWithOneValueForEachAttribute($referenceEntityIdentifier, $attributes);
+        $this->createAssetWithOneValueForEachAttribute($assetFamilyIdentifier, $attributes);
     }
 
-    private function createReferenceEntity(): ReferenceEntityIdentifier
+    private function createAssetFamily(): AssetFamilyIdentifier
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($this->randomString());
-        $referenceEntityRepository->create(ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($this->randomString());
+        $assetFamilyRepository->create(AssetFamily::create(
+            $assetFamilyIdentifier,
             [],
             Image::createEmpty()
         ));
 
-        return $referenceEntityIdentifier;
+        return $assetFamilyIdentifier;
     }
 
     /**
@@ -109,20 +109,20 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
     }
 
     /**
-     * @param int $numberOfValuesForRecord
-     * @param     $referenceEntityIdentifier
+     * @param int $numberOfValuesForAsset
+     * @param     $assetFamilyIdentifier
      *
      * @return array
      *
      */
-    private function createAttributes(int $numberOfValuesForRecord, $referenceEntityIdentifier): array
+    private function createAttributes(int $numberOfValuesForAsset, $assetFamilyIdentifier): array
     {
         $attributes = array_map(
-            function (int $index) use ($referenceEntityIdentifier) {
-                $identifier = sprintf('%s%d', $referenceEntityIdentifier->normalize(), $index);
+            function (int $index) use ($assetFamilyIdentifier) {
+                $identifier = sprintf('%s%d', $assetFamilyIdentifier->normalize(), $index);
                 $attribute = TextAttribute::createText(
                     AttributeIdentifier::fromString($identifier),
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString($identifier),
                     LabelCollection::fromArray([]),
                     AttributeOrder::fromInteger($index + 2), // Labels and Image are created by default
@@ -137,7 +137,7 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
 
                 return $attribute;
             },
-            range(1, $numberOfValuesForRecord)
+            range(1, $numberOfValuesForAsset)
         );
 
         return $attributes;
@@ -146,16 +146,16 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
     /**
      * @param AttributeInterface[] $attributes
      */
-    private function createRecordWithOneValueForEachAttribute(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+    private function createAssetWithOneValueForEachAttribute(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         array $attributes
     ): void {
         $valueCollection = $this->generateValues($attributes);
-        $this->recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString($this->randomString()),
-                $referenceEntityIdentifier,
-                RecordCode::fromString($this->randomString()),
+        $this->assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString($this->randomString()),
+                $assetFamilyIdentifier,
+                AssetCode::fromString($this->randomString()),
                 $valueCollection
             )
         );

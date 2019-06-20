@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends ControllerIntegrationTestCase
 {
-    private const REFERENCE_ENTITY_EDIT_ROUTE = 'akeneo_reference_entities_reference_entity_edit_rest';
+    private const ASSET_FAMILY_EDIT_ROUTE = 'akeneo_asset_manager_asset_family_edit_rest';
 
     /** @var Client */
     private $client;
@@ -43,13 +43,13 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_edits_a_reference_entity_details(): void
+    public function it_edits_an_asset_family_details(): void
     {
         $postContent = [
             'identifier' => 'designer',
@@ -65,7 +65,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->callRoute(
             $this->client,
-            self::REFERENCE_ENTITY_EDIT_ROUTE,
+            self::ASSET_FAMILY_EDIT_ROUTE,
             ['identifier' => 'designer'],
             'POST',
             [
@@ -78,7 +78,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
 
         $repository = $this->getEnrichEntityRepository();
-        $entityItem = $repository->getByIdentifier(ReferenceEntityIdentifier::fromString($postContent['identifier']));
+        $entityItem = $repository->getByIdentifier(AssetFamilyIdentifier::fromString($postContent['identifier']));
 
         Assert::assertEquals(array_keys($postContent['labels']), $entityItem->getLabelCodes());
         Assert::assertEquals($postContent['labels']['en_US'], $entityItem->getLabel('en_US'));
@@ -92,7 +92,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::REFERENCE_ENTITY_EDIT_ROUTE,
+            self::ASSET_FAMILY_EDIT_ROUTE,
             ['identifier' => 'brand'],
             'POST',
             [
@@ -108,7 +108,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"Reference entity identifier provided in the route and the one given in the body of your request are different"');
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"Asset family identifier provided in the route and the one given in the body of your request are different"');
     }
 
     /**
@@ -119,7 +119,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::REFERENCE_ENTITY_EDIT_ROUTE,
+            self::ASSET_FAMILY_EDIT_ROUTE,
             ['identifier' => 'any_id'],
             'POST'
         );
@@ -143,7 +143,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->callRoute(
             $this->client,
-            self::REFERENCE_ENTITY_EDIT_ROUTE,
+            self::ASSET_FAMILY_EDIT_ROUTE,
             ['identifier' => 'designer'],
             'POST',
             [
@@ -156,37 +156,37 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
-    private function getEnrichEntityRepository(): ReferenceEntityRepositoryInterface
+    private function getEnrichEntityRepository(): AssetFamilyRepositoryInterface
     {
-        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        return $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
     }
 
     private function forbidsEdit(): void
     {
-        $this->get('akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler')
+        $this->get('akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler')
             ->forbid();
     }
 
     private function loadFixtures(): void
     {
-        $referenceEntityRepository = $this->getEnrichEntityRepository();
+        $assetFamilyRepository = $this->getEnrichEntityRepository();
 
-        $entityItem = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $entityItem = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($entityItem);
+        $assetFamilyRepository->create($entityItem);
 
         $fr = new Locale();
         $fr->setId(1);
         $fr->setCode('fr_FR');
         $this->get('pim_catalog.repository.locale')->save($fr);
 
-        $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $activatedLocales = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
     }

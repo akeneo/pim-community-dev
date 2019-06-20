@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Find the list of codes of the image type attributes of a reference entity.
+ * Find the list of codes of the image type attributes of an asset family.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -27,5 +27,5 @@ interface FindImageAttributeCodesInterface
     /**
      * @return AttributeCode[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array;
 }

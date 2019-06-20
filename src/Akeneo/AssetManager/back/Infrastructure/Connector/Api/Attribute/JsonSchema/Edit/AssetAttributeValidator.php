@@ -9,28 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
-class RecordAttributeValidator implements AttributeValidatorInterface
+class AssetAttributeValidator implements AttributeValidatorInterface
 {
     public function validate(array $normalizedAttribute): array
     {
-        $record = Validator::arrayToObjectRecursive($normalizedAttribute);
+        $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
-        $validator->validate($record, $this->getJsonSchema());
+        $validator->validate($asset, $this->getJsonSchema());
 
         return $validator->getErrors();
     }
 
     public function support(AbstractAttribute $attribute): bool
     {
-        return $attribute instanceof RecordAttribute || $attribute instanceof RecordCollectionAttribute;
+        return $attribute instanceof AssetAttribute || $attribute instanceof AssetCollectionAttribute;
     }
 
     private function getJsonSchema(): array
@@ -60,7 +60,7 @@ class RecordAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => [ 'boolean'],
                 ],
-                'reference_entity_code' => [
+                'asset_family_code' => [
                     'type' => [ 'string'],
                 ],
                 '_links' => [

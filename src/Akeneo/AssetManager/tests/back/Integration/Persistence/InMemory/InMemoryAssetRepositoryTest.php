@@ -11,56 +11,56 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class InMemoryRecordRepositoryTest extends TestCase
+class InMemoryAssetRepositoryTest extends TestCase
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
     public function setUp(): void
     {
-        $this->recordRepository = new InMemoryRecordRepository();
+        $this->assetRepository = new InMemoryAssetRepository();
     }
 
     /**
      * @test
      */
-    public function it_creates_a_record_and_returns_it()
+    public function it_creates_a_asset_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
         $imageInfo = new FileInfo();
         $imageInfo
             ->setOriginalFilename('image_2.jpg')
             ->setKey('test/image_2.jpg');
 
-        $record = Record::create(
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([
                 Value::create(
                     AttributeIdentifier::fromString('image_designer_fingerprint'),
@@ -71,150 +71,150 @@ class InMemoryRecordRepositoryTest extends TestCase
             ])
         );
 
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
 
-        $recordFound = $this->recordRepository->getByIdentifier($identifier);
-        $this->assertTrue($record->equals($recordFound));
+        $assetFound = $this->assetRepository->getByIdentifier($identifier);
+        $this->assertTrue($asset->equals($assetFound));
     }
 
     /**
      * @test
      */
-    public function it_throws_when_creating_an_existing_record_with_same_identifier()
+    public function it_throws_when_creating_an_existing_asset_with_same_identifier()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
 
         $this->expectException(\RuntimeException::class);
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
     }
 
     /**
      * @test
      */
-    public function it_throws_when_creating_an_existing_record_with_same_entity_identifier_and_same_code()
+    public function it_throws_when_creating_an_existing_asset_with_same_entity_identifier_and_same_code()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
 
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
-            ValueCollection::fromValues([])
-        );
-
-        $this->expectException(\RuntimeException::class);
-        $this->recordRepository->create($record);
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_a_record_and_returns_it()
-    {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
-            $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
-            ValueCollection::fromValues([])
-        );
-        $this->recordRepository->create($record);
-
-        $this->recordRepository->update($record);
-        $recordFound = $this->recordRepository->getByIdentifier($identifier);
-
-        $this->assertTrue($record->equals($recordFound));
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_updating_a_non_existing_record()
-    {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
-            $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
 
         $this->expectException(\RuntimeException::class);
-        $this->recordRepository->update($record);
+        $this->assetRepository->create($asset);
     }
 
     /**
      * @test
      */
-    public function it_counts_the_records()
+    public function it_updates_a_asset_and_returns_it()
     {
-        $this->assertEquals(0, $this->recordRepository->count());
-
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
+        $this->assetRepository->create($asset);
 
-        $this->recordRepository->create($record);
+        $this->assetRepository->update($asset);
+        $assetFound = $this->assetRepository->getByIdentifier($identifier);
 
-        $this->assertEquals(1, $this->recordRepository->count());
-
-        $recordIdentifier = RecordCode::fromString('record_identifier');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordIdentifier);
-        $record = Record::create(
-            $identifier,
-            $referenceEntityIdentifier,
-            $recordIdentifier,
-            ValueCollection::fromValues([])
-        );
-
-        $this->recordRepository->create($record);
-
-        $this->assertEquals(2, $this->recordRepository->count());
+        $this->assertTrue($asset->equals($assetFound));
     }
 
-    public function it_tells_if_it_has_a_record_identifier()
+    /**
+     * @test
+     */
+    public function it_throws_when_updating_a_non_existing_asset()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
 
-        $this->recordRepository->create($record);
-        $this->assertTrue($this->recordRepository->hasRecord($identifier));
+        $this->expectException(\RuntimeException::class);
+        $this->assetRepository->update($asset);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_the_assets()
+    {
+        $this->assertEquals(0, $this->assetRepository->count());
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
+            $identifier,
+            $assetFamilyIdentifier,
+            $assetCode,
+            ValueCollection::fromValues([])
+        );
+
+        $this->assetRepository->create($asset);
+
+        $this->assertEquals(1, $this->assetRepository->count());
+
+        $assetIdentifier = AssetCode::fromString('asset_identifier');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetIdentifier);
+        $asset = Asset::create(
+            $identifier,
+            $assetFamilyIdentifier,
+            $assetIdentifier,
+            ValueCollection::fromValues([])
+        );
+
+        $this->assetRepository->create($asset);
+
+        $this->assertEquals(2, $this->assetRepository->count());
+    }
+
+    public function it_tells_if_it_has_a_asset_identifier()
+    {
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
+            $identifier,
+            $assetFamilyIdentifier,
+            $assetCode,
+            ValueCollection::fromValues([])
+        );
+
+        $this->assetRepository->create($asset);
+        $this->assertTrue($this->assetRepository->hasAsset($identifier));
     }
 
     /**
@@ -222,84 +222,84 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_throws_if_the_code_is_not_found()
     {
-        $this->expectException(RecordNotFoundException::class);
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('unknown_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $this->expectException(AssetNotFoundException::class);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('unknown_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
-        $this->recordRepository->getByIdentifier($identifier);
+        $this->assetRepository->getByIdentifier($identifier);
     }
 
     /**
      * @test
      */
-    public function it_throws_if_the_reference_entity_identifier_is_not_found()
+    public function it_throws_if_the_asset_family_identifier_is_not_found()
     {
-        $this->expectException(RecordNotFoundException::class);
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown_reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $this->expectException(AssetNotFoundException::class);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('unknown_asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
 
-        $this->recordRepository->getByIdentifier($identifier);
+        $this->assetRepository->getByIdentifier($identifier);
     }
 
     /**
      * @test
      */
-    public function it_deletes_a_record_by_code_and_entity_identifier()
+    public function it_deletes_a_asset_by_code_and_entity_identifier()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
 
-        $this->recordRepository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
+        $this->assetRepository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
 
-        $hasRecord = 0 !== $this->recordRepository->count();
-        Assert::assertFalse($hasRecord, 'Expected record to be removed, but was not');
+        $hasAsset = 0 !== $this->assetRepository->count();
+        Assert::assertFalse($hasAsset, 'Expected asset to be removed, but was not');
     }
 
     /**
      * @test
      */
-    public function it_throws_if_trying_to_delete_an_unknown_record()
+    public function it_throws_if_trying_to_delete_an_unknown_asset()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetCode = AssetCode::fromString('asset_code');
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         );
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
 
-        $unknownCode = RecordCode::fromString('unknown_code');
+        $unknownCode = AssetCode::fromString('unknown_code');
 
-        $this->expectException(RecordNotFoundException::class);
-        $this->recordRepository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $unknownCode);
+        $this->expectException(AssetNotFoundException::class);
+        $this->assetRepository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $unknownCode);
     }
 
     /**
      * @test
      */
-    public function it_counts_the_records_by_reference_entity()
+    public function it_counts_the_assets_by_asset_family()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $this->assertSame(0, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
+        $this->assertSame(0, $this->assetRepository->countByAssetFamily($assetFamilyIdentifier));
 
-        $starck = Record::create(
-            RecordIdentifier::fromString('starck_designer'),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('starck'),
+        $starck = Asset::create(
+            AssetIdentifier::fromString('starck_designer'),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('starck'),
             ValueCollection::fromValues([
                 Value::create(
                     AttributeIdentifier::fromString('label_designer_fingerprint'),
@@ -309,13 +309,13 @@ class InMemoryRecordRepositoryTest extends TestCase
                 ),
             ])
         );
-        $this->recordRepository->create($starck);
-        $this->assertSame(1, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
+        $this->assetRepository->create($starck);
+        $this->assertSame(1, $this->assetRepository->countByAssetFamily($assetFamilyIdentifier));
 
-        $bob = Record::create(
-            RecordIdentifier::fromString('bob_designer'),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('bob'),
+        $bob = Asset::create(
+            AssetIdentifier::fromString('bob_designer'),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('bob'),
             ValueCollection::fromValues([
                 Value::create(
                     AttributeIdentifier::fromString('label_designer_fingerprint'),
@@ -325,7 +325,7 @@ class InMemoryRecordRepositoryTest extends TestCase
                 ),
             ])
         );
-        $this->recordRepository->create($bob);
-        $this->assertSame(2, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
+        $this->assetRepository->create($bob);
+        $this->assertSame(2, $this->assetRepository->countByAssetFamily($assetFamilyIdentifier));
     }
 }

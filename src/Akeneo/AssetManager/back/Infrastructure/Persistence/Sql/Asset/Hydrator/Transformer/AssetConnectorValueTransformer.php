@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
 use Webmozart\Assert\Assert;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordConnectorValueTransformer implements ConnectorValueTransformerInterface
+class AssetConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
     /** @var FindCodesByIdentifiersInterface */
     private $findCodesByIdentifiers;
@@ -36,24 +36,24 @@ class RecordConnectorValueTransformer implements ConnectorValueTransformerInterf
 
     public function supports(AbstractAttribute $attribute): bool
     {
-        return $attribute instanceof RecordAttribute;
+        return $attribute instanceof AssetAttribute;
     }
 
     public function transform(array $normalizedValue, AbstractAttribute $attribute): ?array
     {
         Assert::true($this->supports($attribute));
 
-        $recordIdentifier = RecordIdentifier::fromString($normalizedValue['data']);
-        $recordCodes = $this->findCodesByIdentifiers->find([$recordIdentifier]);
+        $assetIdentifier = AssetIdentifier::fromString($normalizedValue['data']);
+        $assetCodes = $this->findCodesByIdentifiers->find([$assetIdentifier]);
 
-        if (empty($recordCodes)) {
+        if (empty($assetCodes)) {
             return null;
         }
 
         return [
             'locale'  => $normalizedValue['locale'],
             'channel' => $normalizedValue['channel'],
-            'data'    => (string) current($recordCodes),
+            'data'    => (string) current($assetCodes),
         ];
     }
 }

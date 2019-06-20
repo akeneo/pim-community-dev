@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Finds a list of attribute details by their reference entity identifiers
+ * Finds a list of attribute details by their asset family identifiers
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -26,5 +26,5 @@ interface FindAttributesIndexedByIdentifierInterface
     /**
      * @return AttributeDetails[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array;
 }

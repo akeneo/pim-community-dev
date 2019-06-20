@@ -11,43 +11,43 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetItemsForIdentifiersAndQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
+class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
 {
-    /** @var FindRecordItemsForIdentifiersAndQueryInterface */
-    private $findRecordItemsForIdentifiersAndQuery;
+    /** @var FindAssetItemsForIdentifiersAndQueryInterface */
+    private $findAssetItemsForIdentifiersAndQuery;
 
-    /** @var RecordIdentifier */
+    /** @var AssetIdentifier */
     private $starckIdentifier;
 
-    /** @var RecordIdentifier */
+    /** @var AssetIdentifier */
     private $cocoIdentifier;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findRecordItemsForIdentifiersAndQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query');
+        $this->findAssetItemsForIdentifiersAndQuery = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_items_for_identifiers_and_query');
         $this->resetDB();
-        $this->loadReferenceEntityAndRecords();
+        $this->loadAssetFamilyAndAssets();
     }
 
     /**
@@ -55,12 +55,12 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
      */
     public function it_returns_empty_collection_if_there_is_no_matching_identifiers()
     {
-        $query = RecordQuery::createFromNormalized([
+        $query = AssetQuery::createFromNormalized([
             'channel' => 'ecommerce',
             'locale' => 'en_US',
             'filters' => [
                 [
-                    'field' => 'reference_entity',
+                    'field' => 'asset_family',
                     'operator' => '=',
                     'value' => 'designer'
                 ]
@@ -69,20 +69,20 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
             'size' => 10,
         ]);
 
-        $this->assertEmpty($this->findRecordItemsForIdentifiersAndQuery->find(['michel_sardou', 'bob_ross'], $query));
+        $this->assertEmpty($this->findAssetItemsForIdentifiersAndQuery->find(['michel_sardou', 'bob_ross'], $query));
     }
 
     /**
      * @test
      */
-    public function it_returns_record_items_for_matching_identifiers_with_same_order()
+    public function it_returns_asset_items_for_matching_identifiers_with_same_order()
     {
-        $query = RecordQuery::createFromNormalized([
+        $query = AssetQuery::createFromNormalized([
             'channel' => 'ecommerce',
             'locale' => 'en_US',
             'filters' => [
                 [
-                    'field' => 'reference_entity',
+                    'field' => 'asset_family',
                     'operator' => '=',
                     'value' => 'designer'
                 ]
@@ -91,20 +91,20 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
             'size' => 10,
         ]);
 
-        $recordItems = $this->findRecordItemsForIdentifiersAndQuery->find(
+        $assetItems = $this->findAssetItemsForIdentifiersAndQuery->find(
             [(string) $this->starckIdentifier, (string) $this->cocoIdentifier],
             $query
         );
 
-        /** @var ReferenceEntity $referenceEntity */
-        $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
-            ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
-        $labelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier()->normalize();
+        /** @var AssetFamily $assetFamily */
+        $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
+            ->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
+        $labelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier()->normalize();
         $attributeAsLabelValueKey = $labelIdentifier . '_fr_FR';
 
-        $starck = new RecordItem();
+        $starck = new AssetItem();
         $starck->identifier = (string) $this->starckIdentifier;
-        $starck->referenceEntityIdentifier = 'designer';
+        $starck->assetFamilyIdentifier = 'designer';
         $starck->code = 'starck';
         $starck->labels = ['fr_FR' => 'Philippe Starck'];
         $starck->values = [
@@ -118,9 +118,9 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
         $starck->completeness = ['complete' => 0, 'required' => 0];
         $starck->image = null;
 
-        $coco = new RecordItem();
+        $coco = new AssetItem();
         $coco->identifier = (string) $this->cocoIdentifier;
-        $coco->referenceEntityIdentifier = 'designer';
+        $coco->assetFamilyIdentifier = 'designer';
         $coco->code = 'coco';
         $coco->labels = ['fr_FR' => 'Coco Chanel'];
         $coco->values = [
@@ -134,72 +134,72 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
         $coco->completeness = ['complete' => 0, 'required' => 0];
         $coco->image = null;
 
-        $this->assertRecordItem($starck, $recordItems[0]);
-        $this->assertRecordItem($coco, $recordItems[1]);
+        $this->assertAssetItem($starck, $assetItems[0]);
+        $this->assertAssetItem($coco, $assetItems[1]);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntityAndRecords(): void
+    private function loadAssetFamilyAndAssets(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
-        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $assetFamilyRepository->create($assetFamily);
+        $assetFamily = $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
 
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $starkCode = RecordCode::fromString('starck');
-        $this->starckIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $starkCode);
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $starkCode = AssetCode::fromString('starck');
+        $this->starckIdentifier = $assetRepository->nextIdentifier($assetFamilyIdentifier, $starkCode);
         $labelValue = Value::create(
-            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Philippe Starck')
         );
-        $recordRepository->create(
-            Record::create(
+        $assetRepository->create(
+            Asset::create(
                 $this->starckIdentifier,
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 $starkCode,
                 ValueCollection::fromValues([$labelValue])
             )
         );
-        $cocoCode = RecordCode::fromString('coco');
-        $this->cocoIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $cocoCode);
+        $cocoCode = AssetCode::fromString('coco');
+        $this->cocoIdentifier = $assetRepository->nextIdentifier($assetFamilyIdentifier, $cocoCode);
         $labelValue = Value::create(
-            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Coco Chanel')
         );
-        $recordRepository->create(
-            Record::create(
+        $assetRepository->create(
+            Asset::create(
                 $this->cocoIdentifier,
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 $cocoCode,
                 ValueCollection::fromValues([$labelValue])
             )
         );
     }
 
-    private function assertRecordItem(RecordItem $expected, RecordItem $actual): void
+    private function assertAssetItem(AssetItem $expected, AssetItem $actual): void
     {
-        $this->assertEquals($expected->identifier, $actual->identifier, 'Record identifiers are not equal');
+        $this->assertEquals($expected->identifier, $actual->identifier, 'Asset identifiers are not equal');
         $this->assertEquals(
-            $expected->referenceEntityIdentifier,
-            $actual->referenceEntityIdentifier,
-            'Reference entity identifier are not the same'
+            $expected->assetFamilyIdentifier,
+            $actual->assetFamilyIdentifier,
+            'Asset family identifier are not the same'
         );
         $expectedLabels = $expected->labels;
         $actualLabels = $actual->labels;
@@ -208,7 +208,7 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
                 array_diff($expectedLabels, $actualLabels),
                 array_diff($actualLabels, $expectedLabels)
             ),
-            'Labels for the record item are not the same'
+            'Labels for the asset item are not the same'
         );
         $this->assertEquals(
             $expected->values,

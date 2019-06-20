@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -43,7 +43,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
     /**
      * @test
      */
-    public function it_finds_required_value_key_collection_for_a_given_reference_entity_on_a_channel_and_locale()
+    public function it_finds_required_value_key_collection_for_a_given_asset_family_on_a_channel_and_locale()
     {
         $this->query->setActivatedChannels(['ecommerce', 'mobile']);
         $this->query->setActivatedLocales(['en_US', 'fr_FR']);
@@ -51,7 +51,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create('designer', 'name', 'fingerprint'),
-                ReferenceEntityIdentifier::fromString('designer'),
+                AssetFamilyIdentifier::fromString('designer'),
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray(['en_US' => 'Name']),
                 AttributeOrder::fromInteger(0),
@@ -67,7 +67,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create('designer', 'nickname', 'fingerprint'),
-                ReferenceEntityIdentifier::fromString('designer'),
+                AssetFamilyIdentifier::fromString('designer'),
                 AttributeCode::fromString('nickname'),
                 LabelCollection::fromArray(['en_US' => 'Name']),
                 AttributeOrder::fromInteger(1),
@@ -83,7 +83,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create('designer', 'description', 'fingerprint'),
-                ReferenceEntityIdentifier::fromString('designer'),
+                AssetFamilyIdentifier::fromString('designer'),
                 AttributeCode::fromString('description'),
                 LabelCollection::fromArray(['en_US' => 'Description']),
                 AttributeOrder::fromInteger(2),
@@ -98,7 +98,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
 
         /** @var ValueKeyCollection $valueKeyCollection */
         $valueKeyCollection = $this->query->find(
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             ChannelIdentifier::fromCode('ecommerce'),
             LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR', 'de_DE'])
         );

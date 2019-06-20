@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "GET",
-        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
         "query": {
-            "referenceEntityIdentifier": "brand",
+            "assetFamilyIdentifier": "brand",
             "search_after": "brand_6"
         }
     },
@@ -12,10 +12,10 @@
         "body": {
             "_links": {
                 "self": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_6"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search_after=brand_6"
                 },
                 "first": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets"
                 }
             },
             "_embedded": {
@@ -23,7 +23,7 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_7"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_7"
                             }
                         },
                         "code": "brand_7",
@@ -56,7 +56,7 @@
                                     "data": "test/brand_7_image.jpg",
                                     "_links": {
                                         "download": {
-                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_7_image.jpg"
+                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_7_image.jpg"
                                         }
                                     }
                                 }

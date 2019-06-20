@@ -10,31 +10,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords;
+namespace Akeneo\AssetManager\Application\Asset\DeleteAllAssets;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 
 /**
- * Handler to delete all records belonging to a reference entity
+ * Handler to delete all assets belonging to an asset family
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteAllReferenceEntityRecordsHandler
+class DeleteAllAssetFamilyAssetsHandler
 {
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
-    public function __construct(RecordRepositoryInterface $recordRepository)
+    public function __construct(AssetRepositoryInterface $assetRepository)
     {
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
     }
 
-    public function __invoke(DeleteAllReferenceEntityRecordsCommand $deleteAllRecordsCommand): void
+    public function __invoke(DeleteAllAssetFamilyAssetsCommand $deleteAllAssetsCommand): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($deleteAllRecordsCommand->referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($deleteAllAssetsCommand->assetFamilyIdentifier);
 
-        $this->recordRepository->deleteByReferenceEntity($referenceEntityIdentifier);
+        $this->assetRepository->deleteByAssetFamily($assetFamilyIdentifier);
     }
 }

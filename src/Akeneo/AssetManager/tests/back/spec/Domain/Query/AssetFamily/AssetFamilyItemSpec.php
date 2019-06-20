@@ -1,18 +1,18 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace spec\Akeneo\AssetManager\Domain\Query\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyItem;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityItemSpec extends ObjectBehavior
+class AssetFamilyItemSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ReferenceEntityItem::class);
+        $this->shouldHaveType(AssetFamilyItem::class);
     }
 
     function it_normalizes_a_read_model(Image $image)
@@ -22,7 +22,7 @@ class ReferenceEntityItemSpec extends ObjectBehavior
             'originalFilename' => 'image.jpg'
         ]);
 
-        $this->identifier = ReferenceEntityIdentifier::fromString('starck');
+        $this->identifier = AssetFamilyIdentifier::fromString('starck');
         $this->labels = LabelCollection::fromArray([
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',

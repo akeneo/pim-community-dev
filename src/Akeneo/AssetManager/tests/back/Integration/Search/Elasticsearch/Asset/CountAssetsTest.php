@@ -2,100 +2,100 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
+namespace Akeneo\AssetManager\Integration\Search\Elasticsearch\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\CountRecordsInterface;
-use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
+use Akeneo\AssetManager\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CountRecordsTest extends SearchIntegrationTestCase
+class CountAssetsTest extends SearchIntegrationTestCase
 {
-    /** @var CountRecordsInterface */
-    private $countRecords;
+    /** @var CountAssetsInterface */
+    private $countAssets;
 
-    /** @var ReferenceEntityIdentifier */
-    private $emptyReferenceEntityIdentifier;
+    /** @var AssetFamilyIdentifier */
+    private $emptyAssetFamilyIdentifier;
 
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifiersWithRecords;
+    /** @var AssetFamilyIdentifier */
+    private $assetFamilyIdentifiersWithAssets;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->countRecords = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records');
+        $this->countAssets = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets');
         $this->resetDB();
-        $this->createReferenceEntityWithAttributes();
+        $this->createAssetFamilyWithAttributes();
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
      * @test
      */
-    public function it_counts_the_number_of_records_for_a_reference_entity()
+    public function it_counts_the_number_of_assets_for_an_asset_family()
     {
         Assert::assertThat(
-            $this->countRecords->forReferenceEntity($this->emptyReferenceEntityIdentifier),
+            $this->countAssets->forAssetFamily($this->emptyAssetFamilyIdentifier),
             Assert::isEmpty()
         );
         Assert::assertThat(
-            $this->countRecords->forReferenceEntity($this->referenceEntityIdentifiersWithRecords),
+            $this->countAssets->forAssetFamily($this->assetFamilyIdentifiersWithAssets),
             Assert::equalTo(2)
         );
     }
 
-    private function createReferenceEntityWithAttributes(): void
+    private function createAssetFamilyWithAttributes(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $this->emptyReferenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                $this->emptyReferenceEntityIdentifier,
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $this->emptyAssetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                $this->emptyAssetFamilyIdentifier,
                 [],
                 Image::createEmpty()
             )
         );
-        $this->referenceEntityIdentifiersWithRecords = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                $this->referenceEntityIdentifiersWithRecords,
+        $this->assetFamilyIdentifiersWithAssets = AssetFamilyIdentifier::fromString('designer');
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                $this->assetFamilyIdentifiersWithAssets,
                 [],
                 Image::createEmpty()
             )
         );
 
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString('starck_designer'),
-                $this->referenceEntityIdentifiersWithRecords,
-                RecordCode::fromString('stark'),
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString('starck_designer'),
+                $this->assetFamilyIdentifiersWithAssets,
+                AssetCode::fromString('stark'),
                 ValueCollection::fromValues([])
             )
         );
-        $recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString('kartell_designer'),
-                $this->referenceEntityIdentifiersWithRecords,
-                RecordCode::fromString('kartell'),
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString('kartell_designer'),
+                $this->assetFamilyIdentifiersWithAssets,
+                AssetCode::fromString('kartell'),
                 ValueCollection::fromValues([])
             )
         );
-        $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer')->refresh();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->refresh();
     }
 }

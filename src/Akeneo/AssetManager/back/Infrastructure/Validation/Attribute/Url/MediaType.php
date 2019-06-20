@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,5 +21,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class MediaType extends Constraint
 {
-    public const MESSAGE_NOT_EXPECTED_MEDIA_TYPE = 'pim_reference_entity.attribute.validation.media_type.not_expected';
+    public const MESSAGE_NOT_EXPECTED_MEDIA_TYPE = 'pim_asset_manager.attribute.validation.media_type.not_expected';
 }

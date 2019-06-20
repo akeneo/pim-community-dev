@@ -11,31 +11,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,8 +50,8 @@ class CreateOrUpdateAttributeOptionContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var null|string */
     private $requestContract;
@@ -69,13 +69,13 @@ class CreateOrUpdateAttributeOptionContext implements Context
     private $activatedLocales;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->attributeRepository = $attributeRepository;
@@ -83,11 +83,11 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @Given /^the Brand reference entity reference entity existing both in the ERP and in the PIM$/
+     * @Given /^the Brand asset family asset family existing both in the ERP and in the PIM$/
      */
-    public function theBrandReferenceEntityReferenceEntityExistingBothInTheERPAndInThePIM()
+    public function theBrandAssetFamilyAssetFamilyExistingBothInTheERPAndInThePIM()
     {
-        $this->createBrandReferenceEntity();
+        $this->createBrandAssetFamily();
     }
 
     /**
@@ -107,9 +107,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @When /^the connector collects the USA attribute option of the Sales area Attribute of the Brand reference entity from the ERP to synchronize it with the PIM$/
+     * @When /^the connector collects the USA attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM$/
      */
-    public function theConnectorCollectsTheUSAAttributeOptionOfTheSalesAreaAttributeOfTheBrandReferenceEntityFromTheERPToSynchronizeItWithThePIM()
+    public function theConnectorCollectsTheUSAAttributeOptionOfTheSalesAreaAttributeOfTheBrandAssetFamilyFromTheERPToSynchronizeItWithThePIM()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
@@ -119,9 +119,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @Then /^the USA attribute option of the Sales area attribute is added to the structure of the Brand reference entity in the PIM with the properties coming from the ERP$/
+     * @Then /^the USA attribute option of the Sales area attribute is added to the structure of the Brand asset family in the PIM with the properties coming from the ERP$/
      */
-    public function theUSAAttributeOptionOfTheSalesAreaAttributeIsAddedToTheStructureOfTheBrandReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    public function theUSAAttributeOptionOfTheSalesAreaAttributeIsAddedToTheStructureOfTheBrandAssetFamilyInThePIMWithThePropertiesComingFromTheERP()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
@@ -151,9 +151,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @Given /^some attributes that structure the Brand reference entity$/
+     * @Given /^some attributes that structure the Brand asset family$/
      */
-    public function someAttributesThatStructureTheBrandReferenceEntity()
+    public function someAttributesThatStructureTheBrandAssetFamily()
     {
         $this->createSomeBrandAttributes();
     }
@@ -183,9 +183,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @Given /^the Color attribute that structures the Brand reference entity and whose type is text$/
+     * @Given /^the Color attribute that structures the Brand asset family and whose type is text$/
      */
-    public function theColorAttributeThatStructuresTheBrandReferenceEntityAndWhoseTypeIsText()
+    public function theColorAttributeThatStructuresTheBrandAssetFamilyAndWhoseTypeIsText()
     {
         $this->createColorTextAttribute();
     }
@@ -214,10 +214,10 @@ class CreateOrUpdateAttributeOptionContext implements Context
         );
     }
 
-    private function createBrandReferenceEntity()
+    private function createBrandAssetFamily()
     {
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand_4'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand_4'),
             [],
             Image::createEmpty()
         );
@@ -225,17 +225,17 @@ class CreateOrUpdateAttributeOptionContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     private function createSalesAreaAttribute()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_4');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand_4');
         $attributeIdentifier = AttributeIdentifier::fromString('attribute_4');
 
         $this->optionAttribute = OptionCollectionAttribute::create(
             $attributeIdentifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('sales_area'),
             LabelCollection::fromArray([ 'fr_FR' => 'Ventes', 'en_US' => 'Sales area']),
             AttributeOrder::fromInteger(5),
@@ -256,12 +256,12 @@ class CreateOrUpdateAttributeOptionContext implements Context
 
     private function createSomeBrandAttributes()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
         $attributeIdentifier = AttributeIdentifier::fromString('sales_identifier');
 
         $optionAttribute = OptionCollectionAttribute::create(
             $attributeIdentifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('sales_identifier'),
             LabelCollection::fromArray([ 'fr_FR' => 'Ventes', 'en_US' => 'Sales']),
             AttributeOrder::fromInteger(5),
@@ -272,7 +272,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
 
         $textAttribute = TextAttribute::createText(
             AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description']),
             AttributeOrder::fromInteger(3),
@@ -292,7 +292,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
     {
         $this->attributeRepository->create(TextAttribute::createText(
             AttributeIdentifier::create('brand', 'color', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray(['en_US' => 'Color']),
             AttributeOrder::fromInteger(2),
@@ -318,17 +318,17 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @Given /^the Australia attribute option of the Sales area attribute of the Brand reference entity in the ERP and in the PIM but with some unsynchronized properties$/
+     * @Given /^the Australia attribute option of the Sales area attribute of the Brand asset family in the ERP and in the PIM but with some unsynchronized properties$/
      */
-    public function theAustraliaAttributeOptionThatIsBothPartOfTheStructureOfTheBrandReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    public function theAustraliaAttributeOptionThatIsBothPartOfTheStructureOfTheBrandAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
         $this->createAustraliaAttributeOption();
     }
 
     /**
-     * @When /^the connector collects the Australia attribute option of the Sales area Attribute of the Brand reference entity from the ERP to synchronize it with the PIM$/
+     * @When /^the connector collects the Australia attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM$/
      */
-    public function theConnectorCollectsTheAustraliaAttributeOptionOfTheSalesAreaAttributeOfTheBrandReferenceEntityFromTheERPToSynchronizeItWithThePIM()
+    public function theConnectorCollectsTheAustraliaAttributeOptionOfTheSalesAreaAttributeOfTheBrandAssetFamilyFromTheERPToSynchronizeItWithThePIM()
     {
         $this->requestContract = 'successful_australia_attribute_option_update.json';
         $client = $this->clientFactory->logIn('julia');
@@ -340,9 +340,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @Then /^the Australia attribute option of the Sales area attribute is added to the structure of the Brand reference entity in the PIM with the properties coming from the ERP$/
+     * @Then /^the Australia attribute option of the Sales area attribute is added to the structure of the Brand asset family in the PIM with the properties coming from the ERP$/
      */
-    public function theAustraliaAttributeOptionOfTheSalesAreaAttributeIsAddedToTheStructureOfTheBrandReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    public function theAustraliaAttributeOptionOfTheSalesAreaAttributeIsAddedToTheStructureOfTheBrandAssetFamilyInThePIMWithThePropertiesComingFromTheERP()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,

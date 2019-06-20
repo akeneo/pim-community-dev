@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source filters.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Object representing a reference entity query
+ * Object representing an asset family query
  *
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityQuery
+class AssetFamilyQuery
 {
     /** @var int|null */
     private $size;
 
-    /** @var ReferenceEntityIdentifier|null */
+    /** @var AssetFamilyIdentifier|null */
     private $searchAfterIdentifier;
 
     private function __construct(
         int $size,
-        ?ReferenceEntityIdentifier $searchAfterIdentifier
+        ?AssetFamilyIdentifier $searchAfterIdentifier
     ) {
         $this->size = $size;
         $this->searchAfterIdentifier = $searchAfterIdentifier;
@@ -39,9 +39,9 @@ class ReferenceEntityQuery
 
     public static function createPaginatedQuery(
         int $size,
-        ?ReferenceEntityIdentifier $searchAfterIdentifier
-    ): ReferenceEntityQuery {
-        return new ReferenceEntityQuery(
+        ?AssetFamilyIdentifier $searchAfterIdentifier
+    ): AssetFamilyQuery {
+        return new AssetFamilyQuery(
             $size,
             $searchAfterIdentifier
         );

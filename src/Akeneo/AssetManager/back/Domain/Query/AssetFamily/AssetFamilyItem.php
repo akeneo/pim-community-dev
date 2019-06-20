@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Read model representing a reference entity for listing purpose (like in a grid)
+ * Read model representing an asset family for listing purpose (like in a grid)
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityItem
+class AssetFamilyItem
 {
     public const IDENTIFIER = 'identifier';
 
@@ -31,7 +31,7 @@ class ReferenceEntityItem
 
     public const IMAGE = 'image';
 
-    /** @var ReferenceEntityIdentifier */
+    /** @var AssetFamilyIdentifier */
     public $identifier;
 
     /** @var LabelCollection */

@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "GET",
-        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
         "query": {
-            "referenceEntityIdentifier": "Brand",
+            "assetFamilyIdentifier": "Brand",
             "channel": "wrong_channel"
         }
     },

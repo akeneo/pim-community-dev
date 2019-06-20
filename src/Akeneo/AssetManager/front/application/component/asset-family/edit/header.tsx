@@ -1,18 +1,18 @@
 import * as React from 'react';
-import BreadCrumb, {BreadcrumbConfiguration} from 'akeneoreferenceentity/application/component/app/breadcrumb';
-import __ from 'akeneoreferenceentity/tools/translator';
-import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
-import Image from 'akeneoreferenceentity/application/component/app/image';
+import BreadCrumb, {BreadcrumbConfiguration} from 'akeneoassetmanager/application/component/app/breadcrumb';
+import __ from 'akeneoassetmanager/tools/translator';
+import EditState from 'akeneoassetmanager/application/component/app/edit-state';
+import Image from 'akeneoassetmanager/application/component/app/image';
 import {connect} from 'react-redux';
-import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/locale-switcher';
-import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
-import File from 'akeneoreferenceentity/domain/model/file';
-import Locale from 'akeneoreferenceentity/domain/model/locale';
-import {EditState as State} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
-import Channel from 'akeneoreferenceentity/domain/model/channel';
-import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
-import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
+import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
+import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
+import File from 'akeneoassetmanager/domain/model/file';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/domain/event/user';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
+import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 
 interface OwnProps {
   label: string;
@@ -87,7 +87,7 @@ class Header extends React.Component<HeaderProps> {
     return (
       <header className="AknTitleContainer">
         <div className="AknTitleContainer-line">
-          <Image alt={__('pim_reference_entity.reference_entity.img', {'{{ label }}': label})} image={image} />
+          <Image alt={__('pim_asset_manager.asset_family.img', {'{{ label }}': label})} image={image} />
           <div className="AknTitleContainer-mainContainer">
             <div>
               <div className="AknTitleContainer-line">
@@ -101,7 +101,7 @@ class Header extends React.Component<HeaderProps> {
                       className={`AknTitleContainer-userMenu ${
                         displayActions ? '' : 'AknTitleContainer--withoutMargin'
                       }`}
-                      viewName="pim-reference-entity-index-user-navigation"
+                      viewName="pim-asset-family-index-user-navigation"
                     />
                   </div>
                   <div className="AknTitleContainer-actionsContainer AknButtonList">

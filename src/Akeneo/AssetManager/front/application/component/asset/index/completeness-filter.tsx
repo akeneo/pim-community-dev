@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
-import Key from 'akeneoreferenceentity/tools/key';
-import __ from 'akeneoreferenceentity/tools/translator';
+import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
+import Key from 'akeneoassetmanager/tools/key';
+import __ from 'akeneoassetmanager/tools/translator';
 
 type Props = {
   value: CompletenessValue;
@@ -24,7 +24,7 @@ const CompletenessFilterButtonView = ({
       if (Key.Space === event.key) onClick();
     }}
   >
-    {__('pim_reference_entity.record.grid.filter.completeness.label')}
+    {__('pim_asset_manager.asset.grid.filter.completeness.label')}
     :&nbsp;
     <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
       {selectedElement.label}
@@ -71,15 +71,15 @@ export default class CompletenessFilter extends React.Component<Props> {
     return [
       {
         identifier: CompletenessValue.All,
-        label: __('pim_reference_entity.record.grid.filter.completeness.all'),
+        label: __('pim_asset_manager.asset.grid.filter.completeness.all'),
       },
       {
         identifier: CompletenessValue.Yes,
-        label: __('pim_reference_entity.record.grid.filter.completeness.yes'),
+        label: __('pim_asset_manager.asset.grid.filter.completeness.yes'),
       },
       {
         identifier: CompletenessValue.No,
-        label: __('pim_reference_entity.record.grid.filter.completeness.no'),
+        label: __('pim_asset_manager.asset.grid.filter.completeness.no'),
       },
     ];
   };
@@ -93,7 +93,7 @@ export default class CompletenessFilter extends React.Component<Props> {
       <Dropdown
         ItemView={CompletenessFilterItemView}
         ButtonView={CompletenessFilterButtonView}
-        label={__('pim_reference_entity.record.grid.filter.completeness.label')}
+        label={__('pim_asset_manager.asset.grid.filter.completeness.label')}
         elements={this.getCompletenessFilter()}
         selectedElement={this.props.value}
         onSelectionChange={this.onCompletenessUpdated.bind(this)}

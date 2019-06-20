@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\ImageTypeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\ImageTypeValidator;
 use PhpSpec\ObjectBehavior;
 
 class ImageTypeValidatorSpec extends ObjectBehavior
 {
-    function it_is_a_record_value_validator()
+    function it_is_a_asset_value_validator()
     {
-        $this->shouldImplement(RecordValueValidatorInterface::class);
+        $this->shouldImplement(AssetValueValidatorInterface::class);
     }
 
     function it_is_initializable()
@@ -29,9 +29,9 @@ class ImageTypeValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(ImageTypeValidator::class);
     }
 
-    function it_returns_all_the_errors_of_invalid_record_values()
+    function it_returns_all_the_errors_of_invalid_asset_values()
     {
-        $record = [
+        $asset = [
             'values' => [
                 'front_image' => [
                     [
@@ -47,14 +47,14 @@ class ImageTypeValidatorSpec extends ObjectBehavior
             ]
         ];
 
-        $errors = $this->validate($record);
+        $errors = $this->validate($asset);
         $errors->shouldBeArray();
         $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_empty_array_if_all_the_record_values_are_valid()
+    function it_returns_an_empty_array_if_all_the_asset_values_are_valid()
     {
-        $record = [
+        $asset = [
             'values' => [
                 'front_image' => [
                     [
@@ -66,6 +66,6 @@ class ImageTypeValidatorSpec extends ObjectBehavior
             ]
         ];
 
-        $this->validate($record)->shouldReturn([]);
+        $this->validate($asset)->shouldReturn([]);
     }
 }

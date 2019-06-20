@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

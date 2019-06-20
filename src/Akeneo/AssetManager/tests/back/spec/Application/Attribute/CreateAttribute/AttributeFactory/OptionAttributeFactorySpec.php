@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\OptionAttributeFactory;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\OptionAttributeFactory;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -51,7 +51,7 @@ class OptionAttributeFactorySpec extends ObjectBehavior
         )->shouldReturn(false);
     }
 
-    function it_creates_a_record_attribute_with_a_command()
+    function it_creates_a_asset_attribute_with_a_command()
     {
         $command = new CreateOptionAttributeCommand(
             'designer',
@@ -68,7 +68,7 @@ class OptionAttributeFactorySpec extends ObjectBehavior
             AttributeOrder::fromInteger(0)
         )->normalize()->shouldReturn([
             'identifier'                  => 'favorite_color_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code'                        => 'favorite_color',
             'labels'                      => ['fr_FR' => 'Couleur favorite'],
             'order'                       => 0,

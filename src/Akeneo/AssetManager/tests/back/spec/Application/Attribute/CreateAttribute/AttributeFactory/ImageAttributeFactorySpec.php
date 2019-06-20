@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
 
 class ImageAttributeFactorySpec extends ObjectBehavior
@@ -69,7 +69,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             AttributeOrder::fromInteger(0)
         )->normalize()->shouldReturn([
             'identifier'                  => 'name_designer_test',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code'                        => 'name',
             'labels'                      => ['fr_FR' => 'Nom'],
             'order'                       => 0,
@@ -103,7 +103,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             AttributeOrder::fromInteger(0)
         )->normalize()->shouldReturn([
             'identifier'                  => 'name_designer_test',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code'                        => 'name',
             'labels'                      => ['fr_FR' => 'Nom'],
             'order'                       => 0,
@@ -137,7 +137,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             AttributeOrder::fromInteger(0)
         )->normalize()->shouldReturn([
             'identifier'                  => 'name_designer_test',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code'                        => 'name',
             'labels'                      => ['fr_FR' => 'Nom'],
             'order'                       => 0,

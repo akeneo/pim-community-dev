@@ -11,35 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordListValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetListValidator;
 use PhpSpec\ObjectBehavior;
 
-class RecordListValidatorSpec extends ObjectBehavior
+class AssetListValidatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordListValidator::class);
+        $this->shouldHaveType(AssetListValidator::class);
     }
 
-    function it_returns_the_errors_of_an_invalid_list_of_records()
+    function it_returns_the_errors_of_an_invalid_list_of_assets()
     {
-        $recordList = [
+        $assetList = [
             [
                 'not a object'
             ],
             'not an array'
         ];
 
-        $errors = $this->validate($recordList);
+        $errors = $this->validate($assetList);
         $errors->shouldBeArray();
         $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_empty_array_if_the_list_of_records_is_valid()
+    function it_returns_an_empty_array_if_the_list_of_assets_is_valid()
     {
-        $recordList = [
+        $assetList = [
             [
                 'code' => 'starck',
                 'labels' => [
@@ -52,6 +52,6 @@ class RecordListValidatorSpec extends ObjectBehavior
             ]
         ];
 
-        $this->validate($recordList)->shouldBe([]);
+        $this->validate($assetList)->shouldBe([]);
     }
 }

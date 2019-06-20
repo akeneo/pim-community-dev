@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -26,7 +26,7 @@ use Webmozart\Assert\Assert;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ConnectorRecordHydrator
+class ConnectorAssetHydrator
 {
     /** @var AbstractPlatform */
     private $platform;
@@ -42,11 +42,11 @@ class ConnectorRecordHydrator
         $this->valueTransformerRegistry = $valueTransformerRegistry;
     }
 
-    public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): ConnectorRecord
+    public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): ConnectorAsset
     {
         $valueCollection = Type::getType(Type::JSON_ARRAY)
             ->convertToPHPValue($row['value_collection'], $this->platform);
-        $recordCode = Type::getType(Type::STRING)
+        $assetCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
         $filteredRawValues = [];
@@ -60,9 +60,9 @@ class ConnectorRecordHydrator
         }
 
         $normalizedValues = $this->normalizeValues($filteredRawValues, $attributes);
-        $connectorRecord = new ConnectorRecord(RecordCode::fromString($recordCode), $normalizedValues);
+        $connectorAsset = new ConnectorAsset(AssetCode::fromString($assetCode), $normalizedValues);
 
-        return $connectorRecord;
+        return $connectorAsset;
     }
 
     private function normalizeValues(array $rawValues, array $attributes): array

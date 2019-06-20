@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -39,17 +39,17 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
     {
-        $cacheKey = $this->getCacheKey($referenceEntityIdentifier, $attributeTypes);
+        $cacheKey = $this->getCacheKey($assetFamilyIdentifier, $attributeTypes);
         if (!isset($this->cachedResult[$cacheKey])) {
-            $this->cachedResult[$cacheKey] = $this->fetch($referenceEntityIdentifier, $attributeTypes);
+            $this->cachedResult[$cacheKey] = $this->fetch($assetFamilyIdentifier, $attributeTypes);
         }
 
         return $this->cachedResult[$cacheKey];
     }
 
-    private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array
+    private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
     {
         $query = <<<SQL
             SELECT
@@ -66,7 +66,7 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
                     COALESCE(c.code, locale_channel.channel_code) as channel_code,
                     COALESCE(l.code, locale_channel.locale_code) as locale_code
                 FROM
-                    akeneo_reference_entity_attribute as a
+                    akeneo_asset_manager_attribute as a
                     LEFT JOIN pim_catalog_channel c ON value_per_channel = 1 AND value_per_locale = 0
                     LEFT JOIN pim_catalog_locale l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
                     LEFT JOIN (
@@ -81,7 +81,7 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
                             l.is_activated = 1
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
-                    a.reference_entity_identifier = :reference_entity_identifier
+                    a.asset_family_identifier = :asset_family_identifier
                     AND a.attribute_type IN (:types)
                 ) as mask;
 SQL;
@@ -89,7 +89,7 @@ SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
             [
-                'reference_entity_identifier' => $referenceEntityIdentifier,
+                'asset_family_identifier' => $assetFamilyIdentifier,
                 'types' => $attributeTypes,
             ],
             [
@@ -100,11 +100,11 @@ SQL;
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
 
-    private function getCacheKey(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): string
+    private function getCacheKey(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): string
     {
         return sprintf(
             '%s_%s',
-            (string) $referenceEntityIdentifier,
+            (string) $assetFamilyIdentifier,
             implode('_', $attributeTypes)
         );
     }

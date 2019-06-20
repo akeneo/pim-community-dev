@@ -1,15 +1,15 @@
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import attributeRemover from 'akeneoreferenceentity/infrastructure/remover/attribute';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import attributeRemover from 'akeneoassetmanager/infrastructure/remover/attribute';
 import {
   notifyAttributeWellDeleted,
   notifyAttributeDeletionFailed,
-} from 'akeneoreferenceentity/application/action/attribute/notify';
-import {attributeDeleted} from 'akeneoreferenceentity/domain/event/attribute/list';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {attributeEditionCancel} from 'akeneoreferenceentity/domain/event/attribute/edit';
-import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
-import {closeDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+} from 'akeneoassetmanager/application/action/attribute/notify';
+import {attributeDeleted} from 'akeneoassetmanager/domain/event/attribute/list';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {attributeEditionCancel} from 'akeneoassetmanager/domain/event/attribute/edit';
+import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
+import {closeDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 
 export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => async (
   dispatch: any,
@@ -18,8 +18,8 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
   dispatch(attributeEditionCancel());
   dispatch(attributeDeleted(attributeIdentifier));
   try {
-    const referenceEntityIdentifier = createIdentifier(getState().form.data.identifier);
-    const errors = await attributeRemover.remove(referenceEntityIdentifier, attributeIdentifier);
+    const assetFamilyIdentifier = createIdentifier(getState().form.data.identifier);
+    const errors = await attributeRemover.remove(assetFamilyIdentifier, attributeIdentifier);
 
     if (errors) {
       dispatch(notifyAttributeDeletionFailed());

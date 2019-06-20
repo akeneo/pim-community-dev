@@ -1,8 +1,8 @@
-import {NormalizedNumberAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/number';
-import {NormalizedNumberAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/type/number';
-import {NormalizedDecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
-import {NormalizedMinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
-import {NormalizedMaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
+import {NormalizedNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
+import {NormalizedNumberAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/type/number';
+import {NormalizedDecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
+import {NormalizedMinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
+import {NormalizedMaxValue} from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
 
 const numberAttributeReducer = (
   normalizedAttribute: NormalizedNumberAttribute,

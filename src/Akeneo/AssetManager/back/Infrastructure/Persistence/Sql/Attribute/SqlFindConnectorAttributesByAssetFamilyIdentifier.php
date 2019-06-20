@@ -1,18 +1,18 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributesByReferenceEntityIdentifierInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributesByAssetFamilyIdentifierInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 
-class SqlFindConnectorAttributesByReferenceEntityIdentifier implements FindConnectorAttributesByReferenceEntityIdentifierInterface
+class SqlFindConnectorAttributesByAssetFamilyIdentifier implements FindConnectorAttributesByAssetFamilyIdentifierInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -32,34 +32,34 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifier implements FindConne
     /**
      * @return ConnectorAttribute[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        $results = $this->fetchAll($referenceEntityIdentifier);
+        $results = $this->fetchAll($assetFamilyIdentifier);
 
         return $this->hydrateAttributes($results);
     }
 
-    private function fetchAll(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function fetchAll(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $query = <<<SQL
         SELECT
             identifier,
             code,
             labels,
-            reference_entity_identifier,
+            asset_family_identifier,
             attribute_order,
             is_required,
             attribute_type,
             value_per_channel,
             value_per_locale,
             additional_properties
-        FROM akeneo_reference_entity_attribute
-        WHERE reference_entity_identifier = :reference_entity_identifier
+        FROM akeneo_asset_manager_attribute
+        WHERE asset_family_identifier = :asset_family_identifier
         ORDER BY attribute_order ASC;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
-            ['reference_entity_identifier' => $referenceEntityIdentifier->normalize()]
+            ['asset_family_identifier' => $assetFamilyIdentifier->normalize()]
         );
         $result = $statement->fetchAll();
 
@@ -95,7 +95,7 @@ SQL;
     private function getAdditionalProperties(array $normalizedAttribute): array
     {
         unset($normalizedAttribute['identifier']);
-        unset($normalizedAttribute['reference_entity_identifier']);
+        unset($normalizedAttribute['asset_family_identifier']);
         unset($normalizedAttribute['code']);
         unset($normalizedAttribute['labels']);
         unset($normalizedAttribute['order']);

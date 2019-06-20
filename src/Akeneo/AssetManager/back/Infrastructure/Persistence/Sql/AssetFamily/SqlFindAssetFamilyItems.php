@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyItem;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -28,7 +28,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindReferenceEntityItems implements FindReferenceEntityItemsInterface
+class SqlFindAssetFamilyItems implements FindAssetFamilyItemsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -47,23 +47,23 @@ class SqlFindReferenceEntityItems implements FindReferenceEntityItemsInterface
     public function find(): array
     {
         $results = $this->fetchResults();
-        $referenceEntityItems = [];
+        $assetFamilyItems = [];
         foreach ($results as $result) {
-            $referenceEntityItems[] = $this->hydrateReferenceEntityItem(
+            $assetFamilyItems[] = $this->hydrateAssetFamilyItem(
                 $result['identifier'],
                 $result['labels'],
                 $result['image']
             );
         }
 
-        return $referenceEntityItems;
+        return $assetFamilyItems;
     }
 
     private function fetchResults(): array
     {
         $query = <<<SQL
         SELECT ee.identifier, ee.labels, fi.image
-        FROM akeneo_reference_entity_reference_entity AS ee
+        FROM akeneo_asset_manager_asset_family AS ee
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
@@ -76,11 +76,11 @@ SQL;
         return $results;
     }
 
-    private function hydrateReferenceEntityItem(
+    private function hydrateAssetFamilyItem(
         string $identifier,
         string $normalizedLabels,
         ?string $rawFile
-    ): ReferenceEntityItem {
+    ): AssetFamilyItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
@@ -96,11 +96,11 @@ SQL;
             $image = Image::fromFileInfo($file);
         }
 
-        $referenceEntityItem = new ReferenceEntityItem();
-        $referenceEntityItem->identifier = ReferenceEntityIdentifier::fromString($identifier);
-        $referenceEntityItem->labels = LabelCollection::fromArray($labels);
-        $referenceEntityItem->image = $image;
+        $assetFamilyItem = new AssetFamilyItem();
+        $assetFamilyItem->identifier = AssetFamilyIdentifier::fromString($identifier);
+        $assetFamilyItem->labels = LabelCollection::fromArray($labels);
+        $assetFamilyItem->image = $image;
 
-        return $referenceEntityItem;
+        return $assetFamilyItem;
     }
 }

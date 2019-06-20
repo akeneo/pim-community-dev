@@ -1,24 +1,24 @@
 import * as React from 'react';
-import {FilterView, FilterViewProps} from 'akeneoreferenceentity/application/configuration/value';
-import {ConcreteRecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {FilterView, FilterViewProps} from 'akeneoassetmanager/application/configuration/value';
+import {ConcreteAssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {connect} from 'react-redux';
-import __ from 'akeneoreferenceentity/tools/translator';
-import {ConcreteRecordCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record-collection';
-import RecordSelector from 'akeneoreferenceentity/application/component/app/record-selector';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import __ from 'akeneoassetmanager/tools/translator';
+import {ConcreteAssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
+import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {getLabel} from 'pimui/js/i18n';
-import {getAttributeFilterKey} from 'akeneoreferenceentity/tools/filter';
+import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;
 const useEffect = (React as any).useEffect;
 
-type RecordFilterViewProps = FilterViewProps & {
+type AssetFilterViewProps = FilterViewProps & {
   context: {
     locale: string;
     channel: string;
@@ -27,27 +27,27 @@ type RecordFilterViewProps = FilterViewProps & {
 
 const DEFAULT_OPERATOR = 'IN';
 
-const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, context}: RecordFilterViewProps) => {
-  if (!(attribute instanceof ConcreteRecordAttribute || attribute instanceof ConcreteRecordCollectionAttribute)) {
+const AssetFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, context}: AssetFilterViewProps) => {
+  if (!(attribute instanceof ConcreteAssetAttribute || attribute instanceof ConcreteAssetCollectionAttribute)) {
     return null;
   }
 
   const [isOpen, setIsOpen] = useState(false);
-  const [hydratedRecords, setHydratedRecords] = useState([]);
+  const [hydratedAssets, setHydratedAssets] = useState([]);
 
   const rawValues = undefined !== filter ? filter.value : [];
-  const value = rawValues.map((recordCode: string) => RecordCode.create(recordCode));
+  const value = rawValues.map((assetCode: string) => AssetCode.create(assetCode));
 
-  const updateHydratedRecords = async () => {
+  const updateHydratedAssets = async () => {
     if (0 < value.length) {
-      const records = await recordFetcher.fetchByCodes(
-        attribute.getRecordType().getReferenceEntityIdentifier(),
+      const assets = await assetFetcher.fetchByCodes(
+        attribute.getAssetType().getAssetFamilyIdentifier(),
         value,
         context,
         true
       );
 
-      setHydratedRecords(records);
+      setHydratedAssets(assets);
     }
   };
 
@@ -62,14 +62,14 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   };
 
   useEffect(() => {
-    updateHydratedRecords();
+    updateHydratedAssets();
   });
 
   const hint =
     0 === value.length
-      ? __('pim_reference_entity.record.grid.filter.option.all')
-      : hydratedRecords
-          .map((record: NormalizedRecord) => getLabel(record.labels, context.locale, record.code))
+      ? __('pim_asset_manager.asset.grid.filter.option.all')
+      : hydratedAssets
+          .map((asset: NormalizedAsset) => getLabel(asset.labels, context.locale, asset.code))
           .join(', ');
 
   return (
@@ -95,18 +95,18 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
                 <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>
                 <div className="AknIconButton AknIconButton--erase" onClick={emptyFilter} />
               </div>
-              <RecordSelector
+              <AssetSelector
                 value={value}
-                referenceEntityIdentifier={attribute.getRecordType().getReferenceEntityIdentifier()}
+                assetFamilyIdentifier={attribute.getAssetType().getAssetFamilyIdentifier()}
                 multiple={true}
                 compact={true}
                 locale={createLocaleReference(context.locale)}
                 channel={createChannelReference(context.channel)}
-                onChange={(recordCodes: RecordCode[]) => {
+                onChange={(assetCodes: AssetCode[]) => {
                   onFilterUpdated({
                     field: getAttributeFilterKey(attribute),
                     operator: DEFAULT_OPERATOR,
-                    value: recordCodes.map((recordCode: RecordCode) => recordCode.stringValue()),
+                    value: assetCodes.map((assetCode: AssetCode) => assetCode.stringValue()),
                     context: {},
                   });
                 }}
@@ -120,7 +120,7 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 });
 
 export const filter = connect(
-  (state: EditState, ownProps: FilterViewProps): RecordFilterViewProps => {
+  (state: EditState, ownProps: FilterViewProps): AssetFilterViewProps => {
     return {
       ...ownProps,
       context: {
@@ -129,4 +129,4 @@ export const filter = connect(
       },
     };
   }
-)(RecordFilterView);
+)(AssetFilterView);

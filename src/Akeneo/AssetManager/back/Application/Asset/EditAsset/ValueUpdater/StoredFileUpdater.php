@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditUploadedFileValueCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueDataInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 /**
@@ -39,10 +39,10 @@ class StoredFileUpdater implements ValueUpdaterInterface
         return $command instanceof EditStoredFileValueCommand;
     }
 
-    public function __invoke(Record $record, AbstractEditValueCommand $command): void
+    public function __invoke(Asset $asset, AbstractEditValueCommand $command): void
     {
         if (!$this->supports($command)) {
-            throw new \RuntimeException('Impossible to update the value of the record with the given command.');
+            throw new \RuntimeException('Impossible to update the value of the asset with the given command.');
         }
 
         $attribute = $command->attribute;
@@ -53,20 +53,20 @@ class StoredFileUpdater implements ValueUpdaterInterface
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
 
-        $fileData = $this->getFileData($record, $command, $attribute, $channelReference, $localeReference);
+        $fileData = $this->getFileData($asset, $command, $attribute, $channelReference, $localeReference);
 
-        $record->setValue(Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $fileData));
+        $asset->setValue(Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $fileData));
     }
 
     private function getFileData(
-        Record $record,
+        Asset $asset,
         $command,
         AbstractAttribute $attribute,
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): ValueDataInterface {
         $valueKey = ValueKey::create($attribute->getIdentifier(), $channelReference, $localeReference);
-        $existingValue = $record->findValue($valueKey);
+        $existingValue = $asset->findValue($valueKey);
 
         if (null === $existingValue || $existingValue->getData()->getKey() !== $command->filePath) {
             $fileInfo = new FileInfo();

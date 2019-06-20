@@ -1,8 +1,8 @@
-import reducer from 'akeneoreferenceentity/application/reducer/attribute/list';
-import {denormalizeMinimalAttribute} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import reducer from 'akeneoassetmanager/application/reducer/attribute/list';
+import {denormalizeMinimalAttribute} from 'akeneoassetmanager/domain/model/attribute/minimal';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
-describe('akeneo > reference entity > application > reducer > attribute --- list', () => {
+describe('akeneo > asset family > application > reducer > attribute --- list', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
@@ -38,14 +38,14 @@ describe('akeneo > reference entity > application > reducer > attribute --- list
         {
           type: 'text',
           identifier: 'description_1234',
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           code: 'description',
           labels: {},
         },
         {
           type: 'text',
           identifier: 'name_1234',
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           code: 'name',
           labels: {},
         },
@@ -62,7 +62,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- list
         {
           type: 'text',
           identifier: 'name_1234',
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           code: 'name',
           labels: {},
         },
@@ -70,20 +70,20 @@ describe('akeneo > reference entity > application > reducer > attribute --- list
     });
   });
 
-  test('I delete an attribute only in the right reference entity', () => {
+  test('I delete an attribute only in the right asset family', () => {
     const state = {
       attributes: [
         {
           type: 'text',
           identifier: 'description_1234',
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           code: 'description',
           labels: {},
         },
         {
           type: 'text',
           identifier: 'name_1234',
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           code: 'name',
           labels: {},
         },
@@ -100,7 +100,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- list
         {
           type: 'text',
           identifier: 'name_1234',
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           code: 'name',
           labels: {},
         },
@@ -116,7 +116,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- list
     const deletedAttribute = {
       type: 'text',
       identifier: 'description_1234',
-      reference_entity_identifier: 'designer',
+      asset_family_identifier: 'designer',
       code: 'description',
       labels: {},
     };

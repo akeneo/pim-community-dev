@@ -11,30 +11,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindExistingAssetCodesInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
+class SqlFindExistingAssetCodesTest extends SqlIntegrationTestCase
 {
-    /** @var FindExistingRecordCodesInterface */
-    private $existingRecordCodes;
+    /** @var FindExistingAssetCodesInterface */
+    private $existingAssetCodes;
 
-    /** @var RecordIdentifier */
-    private $recordIdentifier;
+    /** @var AssetIdentifier */
+    private $assetIdentifier;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->existingRecordCodes = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes');
+        $this->existingAssetCodes = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_existing_asset_codes');
         $this->resetDB();
 
         $this->loadFixtures();
@@ -43,28 +43,28 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_the_record_codes_found()
+    public function it_returns_the_asset_codes_found()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $expectedRecordCodes = ['jacobs', 'starck'];
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $expectedAssetCodes = ['jacobs', 'starck'];
 
-        $recordCodes = $this->existingRecordCodes->find($referenceEntityIdentifier, ['Coco', 'starck', 'jacobs']);
-        $this->assertEquals($expectedRecordCodes, $recordCodes);
+        $assetCodes = $this->existingAssetCodes->find($assetFamilyIdentifier, ['Coco', 'starck', 'jacobs']);
+        $this->assertEquals($expectedAssetCodes, $assetCodes);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadFixtures(): void
     {
         $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->load();
 
         $this->fixturesLoader
-            ->record('designer', 'starck')
+            ->asset('designer', 'starck')
             ->withValues([
                 'label' => [
                     [
@@ -77,7 +77,7 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
             ->load();
 
         $this->fixturesLoader
-            ->record('designer', 'jacobs')
+            ->asset('designer', 'jacobs')
             ->withValues([
                 'label' => [
                     [

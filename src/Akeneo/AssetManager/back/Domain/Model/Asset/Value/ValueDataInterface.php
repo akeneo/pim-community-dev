@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace Akeneo\AssetManager\Domain\Model\Asset\Value;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

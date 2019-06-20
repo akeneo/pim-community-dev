@@ -1,6 +1,6 @@
-import reducer, {createState, createQuery, NormalizedFilter} from 'akeneoreferenceentity/application/reducer/grid';
+import reducer, {createState, createQuery, NormalizedFilter} from 'akeneoassetmanager/application/reducer/grid';
 
-describe('akeneo > reference entity > application > reducer --- grid', () => {
+describe('akeneo > asset family > application > reducer --- grid', () => {
   test('I can initialize an empty state', () => {
     const newState = reducer(undefined, {
       type: 'GRID_GO_FIRST_PAGE',

@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\UrlData;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\UrlDataHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\UrlData;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\UrlDataHydrator;
 use PhpSpec\ObjectBehavior;
 
 class UrlDataHydratorSpec extends ObjectBehavior

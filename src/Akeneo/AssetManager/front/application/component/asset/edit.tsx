@@ -1,40 +1,40 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState as State} from 'akeneoreferenceentity/application/reducer/record/edit';
-import Sidebar from 'akeneoreferenceentity/application/component/app/sidebar';
-import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
-import sidebarProvider from 'akeneoreferenceentity/application/configuration/sidebar';
-import Breadcrumb from 'akeneoreferenceentity/application/component/app/breadcrumb';
-import Image from 'akeneoreferenceentity/application/component/app/image';
-import __ from 'akeneoreferenceentity/tools/translator';
-import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
-import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
+import Sidebar from 'akeneoassetmanager/application/component/app/sidebar';
+import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
+import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
+import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
+import Image from 'akeneoassetmanager/application/component/app/image';
+import __ from 'akeneoassetmanager/tools/translator';
+import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
+import Asset, {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {
-  saveRecord,
-  recordImageUpdated,
-  backToReferenceEntity,
-} from 'akeneoreferenceentity/application/action/record/edit';
-import {deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
-import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
-import File from 'akeneoreferenceentity/domain/model/file';
-import Locale from 'akeneoreferenceentity/domain/model/locale';
-import {localeChanged, channelChanged} from 'akeneoreferenceentity/application/action/record/user';
-import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/locale-switcher';
-import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
-import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
-import Channel from 'akeneoreferenceentity/domain/model/channel';
-import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
-import Key from 'akeneoreferenceentity/tools/key';
-import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
-import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
-import {NormalizedCode} from 'akeneoreferenceentity/domain/model/record/code';
-import {NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
-import {redirectToProductGrid} from 'akeneoreferenceentity/application/event/router';
+  saveAsset,
+  assetImageUpdated,
+  backToAssetFamily,
+} from 'akeneoassetmanager/application/action/asset/edit';
+import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
+import EditState from 'akeneoassetmanager/application/component/app/edit-state';
+import File from 'akeneoassetmanager/domain/model/file';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import {localeChanged, channelChanged} from 'akeneoassetmanager/application/action/asset/user';
+import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
+import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
+import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
+import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
+import Key from 'akeneoassetmanager/tools/key';
+import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
+import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
+import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
+import {NormalizedCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {NormalizedCode as NormalizedAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
+import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
 
 const securityContext = require('pim/security-context');
 
@@ -51,12 +51,12 @@ interface StateProps {
     channel: string;
   };
   rights: {
-    record: {
+    asset: {
       edit: boolean;
       delete: boolean;
     };
   };
-  record: NormalizedRecord;
+  asset: NormalizedAsset;
   structure: {
     locales: Locale[];
     channels: Channel[];
@@ -65,7 +65,7 @@ interface StateProps {
     isActive: boolean;
   };
   selectedAttribute: NormalizedAttribute | null;
-  recordCode: NormalizedCode;
+  assetCode: NormalizedCode;
 }
 
 interface DispatchProps {
@@ -74,35 +74,35 @@ interface DispatchProps {
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (channel: Channel) => void;
     onImageUpdated: (image: File) => void;
-    onDelete: (record: Record) => void;
+    onDelete: (asset: Asset) => void;
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
-    backToReferenceEntity: () => void;
-    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => void;
+    backToAssetFamily: () => void;
+    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedCode) => void;
   };
 }
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class RecordEditView extends React.Component<EditProps> {
+class AssetEditView extends React.Component<EditProps> {
   public props: EditProps;
-  private backToReferenceEntity = () => (
+  private backToAssetFamily = () => (
     <span
       role="button"
       tabIndex={0}
       className="AknColumn-navigationLink"
-      onClick={this.props.events.backToReferenceEntity}
+      onClick={this.props.events.backToAssetFamily}
       onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) this.props.events.backToReferenceEntity();
+        if (Key.Space === event.key) this.props.events.backToAssetFamily();
       }}
     >
-      {__('pim_reference_entity.record.button.back')}
+      {__('pim_asset_manager.asset.button.back')}
     </span>
   );
 
   private onConfirmedDelete = () => {
-    const record = denormalizeRecord(this.props.record);
-    this.props.events.onDelete(record);
+    const asset = denormalizeAsset(this.props.asset);
+    this.props.events.onDelete(asset);
   };
 
   private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
@@ -114,7 +114,7 @@ class RecordEditView extends React.Component<EditProps> {
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
               <button className="AknDropdown-menuLink" onClick={() => this.props.events.onOpenDeleteModal()}>
-                {__('pim_reference_entity.record.button.delete')}
+                {__('pim_asset_manager.asset.button.delete')}
               </button>
             </div>
           </div>
@@ -127,10 +127,10 @@ class RecordEditView extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
-    const record = denormalizeRecord(this.props.record);
-    const label = record.getLabel(this.props.context.locale);
-    const TabView = sidebarProvider.getView('akeneo_reference_entities_record_edit', this.props.sidebar.currentTab);
-    const completeness = record.getCompleteness(
+    const asset = denormalizeAsset(this.props.asset);
+    const label = asset.getLabel(this.props.context.locale);
+    const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_edit', this.props.sidebar.currentTab);
+    const completeness = asset.getCompleteness(
       createChannelReference(this.props.context.channel),
       createLocaleReference(this.props.context.locale)
     );
@@ -148,8 +148,8 @@ class RecordEditView extends React.Component<EditProps> {
               <header className="AknTitleContainer">
                 <div className="AknTitleContainer-line">
                   <Image
-                    alt={__('pim_reference_entity.record.img', {'{{ label }}': label})}
-                    image={record.getImage()}
+                    alt={__('pim_asset_manager.asset.img', {'{{ label }}': label})}
+                    image={asset.getImage()}
                     readOnly={true}
                   />
                   <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
@@ -161,26 +161,26 @@ class RecordEditView extends React.Component<EditProps> {
                               {
                                 action: {
                                   type: 'redirect',
-                                  route: 'akeneo_reference_entities_reference_entity_index',
+                                  route: 'akeneo_asset_manager_asset_family_index',
                                 },
-                                label: __('pim_reference_entity.reference_entity.breadcrumb'),
+                                label: __('pim_asset_manager.asset_family.breadcrumb'),
                               },
                               {
                                 action: {
                                   type: 'redirect',
-                                  route: 'akeneo_reference_entities_reference_entity_edit',
+                                  route: 'akeneo_asset_manager_asset_family_edit',
                                   parameters: {
-                                    identifier: record.getReferenceEntityIdentifier().stringValue(),
-                                    tab: 'record',
+                                    identifier: asset.getAssetFamilyIdentifier().stringValue(),
+                                    tab: 'asset',
                                   },
                                 },
-                                label: record.getReferenceEntityIdentifier().stringValue(),
+                                label: asset.getAssetFamilyIdentifier().stringValue(),
                               },
                               {
                                 action: {
                                   type: 'display',
                                 },
-                                label: record.getCode().stringValue(),
+                                label: asset.getCode().stringValue(),
                               },
                             ]}
                           />
@@ -189,9 +189,9 @@ class RecordEditView extends React.Component<EditProps> {
                           <div className="AknTitleContainer-userMenuContainer user-menu">
                             <PimView
                               className={`AknTitleContainer-userMenu ${
-                                this.props.rights.record.edit ? '' : 'AknTitleContainer--withoutMargin'
+                                this.props.rights.asset.edit ? '' : 'AknTitleContainer--withoutMargin'
                               }`}
-                              viewName="pim-reference-entity-index-user-navigation"
+                              viewName="pim-asset-family-index-user-navigation"
                             />
                           </div>
                           {'product' === this.props.sidebar.currentTab ? (
@@ -203,25 +203,25 @@ class RecordEditView extends React.Component<EditProps> {
                                     onClick={() =>
                                       this.props.events.onRedirectToProductGrid(
                                         (this.props.selectedAttribute as NormalizedAttribute).code,
-                                        this.props.recordCode
+                                        this.props.assetCode
                                       )
                                     }
                                   >
-                                    {__('pim_reference_entity.record.product.not_enough_items.button')}
+                                    {__('pim_asset_manager.asset.product.not_enough_items.button')}
                                   </button>
                                 </div>
                               </div>
                             ) : null
                           ) : (
                             <div className="AknTitleContainer-actionsContainer AknButtonList">
-                              {this.getSecondaryActions(this.props.rights.record.delete)}
-                              {this.props.rights.record.edit ? (
+                              {this.getSecondaryActions(this.props.rights.asset.delete)}
+                              {this.props.rights.asset.edit ? (
                                 <div className="AknTitleContainer-rightButton">
                                   <button
                                     className="AknButton AknButton--apply"
                                     onClick={this.props.events.onSaveEditForm}
                                   >
-                                    {__('pim_reference_entity.record.button.save')}
+                                    {__('pim_asset_manager.asset.button.save')}
                                   </button>
                                 </div>
                               ) : null}
@@ -266,12 +266,12 @@ class RecordEditView extends React.Component<EditProps> {
               </div>
             </div>
           </div>
-          <Sidebar backButton={this.backToReferenceEntity} />
+          <Sidebar backButton={this.backToAssetFamily} />
         </div>
         {this.props.confirmDelete.isActive && (
           <DeleteModal
-            message={__('pim_reference_entity.record.delete.message', {recordLabel: label})}
-            title={__('pim_reference_entity.record.delete.title')}
+            message={__('pim_asset_manager.asset.delete.message', {assetLabel: label})}
+            title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={this.onConfirmedDelete}
             onCancel={this.props.events.onCancelDeleteModal}
           />
@@ -299,32 +299,32 @@ export default connect(
         locale,
         channel: state.user.catalogChannel,
       },
-      record: state.form.data,
+      asset: state.form.data,
       structure: {
         locales: getLocales(state.structure.channels, state.user.catalogChannel),
         channels: state.structure.channels,
       },
       rights: {
-        record: {
+        asset: {
           edit:
-            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
           delete:
-            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
         },
       },
       confirmDelete: state.confirmDelete,
       selectedAttribute: state.products.selectedAttribute,
-      recordCode: state.form.data.code,
+      assetCode: state.form.data.code,
     };
   },
   (dispatch: any): DispatchProps => {
     return {
       events: {
         onSaveEditForm: () => {
-          dispatch(saveRecord());
+          dispatch(saveAsset());
         },
         onLocaleChanged: (locale: Locale) => {
           dispatch(localeChanged(locale.code));
@@ -333,10 +333,10 @@ export default connect(
           dispatch(channelChanged(channel.code));
         },
         onImageUpdated: (image: File) => {
-          dispatch(recordImageUpdated(image));
+          dispatch(assetImageUpdated(image));
         },
-        onDelete: (record: Record) => {
-          dispatch(deleteRecord(record.getReferenceEntityIdentifier(), record.getCode()));
+        onDelete: (asset: Asset) => {
+          dispatch(deleteAsset(asset.getAssetFamilyIdentifier(), asset.getCode()));
         },
         onOpenDeleteModal: () => {
           dispatch(openDeleteModal());
@@ -344,13 +344,13 @@ export default connect(
         onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
         },
-        backToReferenceEntity: () => {
-          dispatch(backToReferenceEntity());
+        backToAssetFamily: () => {
+          dispatch(backToAssetFamily());
         },
-        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => {
-          dispatch(redirectToProductGrid(selectedAttribute, recordCode));
+        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedCode) => {
+          dispatch(redirectToProductGrid(selectedAttribute, assetCode));
         },
       },
     };
   }
-)(RecordEditView);
+)(AssetEditView);

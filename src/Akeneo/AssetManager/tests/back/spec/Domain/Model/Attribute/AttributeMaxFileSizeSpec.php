@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use PhpSpec\ObjectBehavior;
 
 class AttributeMaxFileSizeSpec extends ObjectBehavior

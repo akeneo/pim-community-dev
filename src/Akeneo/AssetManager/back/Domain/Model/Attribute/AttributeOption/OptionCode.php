@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption;
+namespace Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption;
 
 use Webmozart\Assert\Assert;
 

@@ -2,48 +2,48 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class SqlFindIdentifiersByReferenceEntityAndCodesTest extends SqlIntegrationTestCase
+class SqlFindIdentifiersByAssetFamilyAndCodesTest extends SqlIntegrationTestCase
 {
-    /** @var FindIdentifiersByReferenceEntityAndCodesInterface */
-    private $findIdentifiersByReferenceEntityAndCodes;
+    /** @var FindIdentifiersByAssetFamilyAndCodesInterface */
+    private $findIdentifiersByAssetFamilyAndCodes;
 
-    /** @var RecordIdentifier */
+    /** @var AssetIdentifier */
     private $starckIdentifier;
 
-    /** @var RecordIdentifier */
+    /** @var AssetIdentifier */
     private $cocoIdentifier;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findIdentifiersByReferenceEntityAndCodes = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes');
+        $this->findIdentifiersByAssetFamilyAndCodes = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes');
         $this->resetDB();
-        $this->loadReferenceEntityAndRecords();
+        $this->loadAssetFamilyAndAssets();
     }
 
     /**
      * @test
      */
-    public function it_finds_identifiers_of_records_by_their_reference_entity_and_codes()
+    public function it_finds_identifiers_of_assets_by_their_asset_family_and_codes()
     {
-        $identifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $identifiers = $this->findIdentifiersByAssetFamilyAndCodes->find(
+            AssetFamilyIdentifier::fromString('designer'),
             [
-                RecordCode::fromString('starck'),
-                RecordCode::fromString('coco'),
+                AssetCode::fromString('starck'),
+                AssetCode::fromString('coco'),
             ]
         );
 
@@ -51,10 +51,10 @@ class SqlFindIdentifiersByReferenceEntityAndCodesTest extends SqlIntegrationTest
         $this->assertContains($this->starckIdentifier->normalize(), $identifiers);
         $this->assertContains($this->cocoIdentifier->normalize(), $identifiers);
 
-        $identifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $identifiers = $this->findIdentifiersByAssetFamilyAndCodes->find(
+            AssetFamilyIdentifier::fromString('designer'),
             [
-                RecordCode::fromString('coco'),
+                AssetCode::fromString('coco'),
             ]
         );
 
@@ -65,41 +65,41 @@ class SqlFindIdentifiersByReferenceEntityAndCodesTest extends SqlIntegrationTest
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntityAndRecords(): void
+    private function loadAssetFamilyAndAssets(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
 
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $starkCode = RecordCode::fromString('starck');
-        $this->starckIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $starkCode);
-        $recordRepository->create(
-            Record::create(
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $starkCode = AssetCode::fromString('starck');
+        $this->starckIdentifier = $assetRepository->nextIdentifier($assetFamilyIdentifier, $starkCode);
+        $assetRepository->create(
+            Asset::create(
                 $this->starckIdentifier,
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 $starkCode,
                 ValueCollection::fromValues([])
             )
         );
 
-        $cocoCode = RecordCode::fromString('coco');
-        $this->cocoIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $cocoCode);
-        $recordRepository->create(
-            Record::create(
+        $cocoCode = AssetCode::fromString('coco');
+        $this->cocoIdentifier = $assetRepository->nextIdentifier($assetFamilyIdentifier, $cocoCode);
+        $assetRepository->create(
+            Asset::create(
                 $this->cocoIdentifier,
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 $cocoCode,
                 ValueCollection::fromValues([])
             )

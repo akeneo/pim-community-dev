@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions;
+namespace Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupPermission;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SetReferenceEntityPermissionsHandler
+class SetAssetFamilyPermissionsHandler
 {
-    /** @var ReferenceEntityPermissionRepositoryInterface */
+    /** @var AssetFamilyPermissionRepositoryInterface */
     private $repository;
 
-    public function __construct(ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository)
+    public function __construct(AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository)
     {
-        $this->repository = $referenceEntityPermissionRepository;
+        $this->repository = $assetFamilyPermissionRepository;
     }
 
-    public function __invoke(SetReferenceEntityPermissionsCommand $command)
+    public function __invoke(SetAssetFamilyPermissionsCommand $command)
     {
         $permissions = [];
         foreach ($command->permissionsByUserGroup as $permissionByUserGroup) {
@@ -35,11 +35,11 @@ class SetReferenceEntityPermissionsHandler
             );
         }
 
-        $referenceEntityPermissions = ReferenceEntityPermission::create(
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
+        $assetFamilyPermissions = AssetFamilyPermission::create(
+            AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier),
             $permissions
         );
 
-        $this->repository->save($referenceEntityPermissions);
+        $this->repository->save($assetFamilyPermissions);
     }
 }

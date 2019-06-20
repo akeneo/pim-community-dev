@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use PhpSpec\ObjectBehavior;
 
 class AttributeCodeSpec extends ObjectBehavior

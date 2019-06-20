@@ -1,6 +1,6 @@
-import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {NormalizedIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
-export interface ReferenceEntityPermission {
-  referenceEntityIdentifier: NormalizedIdentifier;
+export interface AssetFamilyPermission {
+  assetFamilyIdentifier: NormalizedIdentifier;
   edit: boolean;
 }

@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Generate empty values structure for a given Reference Entity
+ * Generate empty values structure for a given Asset Family
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 interface GenerateEmptyValuesInterface
 {
-    public function generate(ReferenceEntityIdentifier $identifier): array;
+    public function generate(AssetFamilyIdentifier $identifier): array;
 }

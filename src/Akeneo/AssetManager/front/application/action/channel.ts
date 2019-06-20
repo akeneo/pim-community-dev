@@ -1,7 +1,7 @@
-import {channelsReceived} from 'akeneoreferenceentity/domain/event/channel';
-import Channel from 'akeneoreferenceentity/domain/model/channel';
-import hydrator from 'akeneoreferenceentity/application/hydrator/channel';
-import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
+import {channelsReceived} from 'akeneoassetmanager/domain/event/channel';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import hydrator from 'akeneoassetmanager/application/hydrator/channel';
+import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 export const updateChannels = () => async (dispatch: any): Promise<any> => {

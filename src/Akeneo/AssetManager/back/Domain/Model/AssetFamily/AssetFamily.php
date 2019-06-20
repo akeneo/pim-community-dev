@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntity
+class AssetFamily
 {
     public const DEFAULT_ATTRIBUTE_AS_LABEL_CODE = 'label';
     public const DEFAULT_ATTRIBUTE_AS_IMAGE_CODE = 'image';
 
-    /** @var ReferenceEntityIdentifier */
+    /** @var AssetFamilyIdentifier */
     private $identifier;
 
     /** @var LabelCollection */
@@ -41,7 +41,7 @@ class ReferenceEntity
     private $attributeAsImage;
 
     private function __construct(
-        ReferenceEntityIdentifier $identifier,
+        AssetFamilyIdentifier $identifier,
         LabelCollection $labelCollection,
         Image $image,
         AttributeAsLabelReference $attributeAsLabel,
@@ -55,7 +55,7 @@ class ReferenceEntity
     }
 
     public static function create(
-        ReferenceEntityIdentifier $identifier,
+        AssetFamilyIdentifier $identifier,
         array $rawLabelCollection,
         Image $image
     ): self {
@@ -71,7 +71,7 @@ class ReferenceEntity
     }
 
     public static function createWithAttributes(
-        ReferenceEntityIdentifier $identifier,
+        AssetFamilyIdentifier $identifier,
         array $rawLabelCollection,
         Image $image,
         AttributeAsLabelReference $attributeAsLabel,
@@ -88,14 +88,14 @@ class ReferenceEntity
         );
     }
 
-    public function getIdentifier(): ReferenceEntityIdentifier
+    public function getIdentifier(): AssetFamilyIdentifier
     {
         return $this->identifier;
     }
 
-    public function equals(ReferenceEntity $referenceEntity): bool
+    public function equals(AssetFamily $assetFamily): bool
     {
-        return $this->identifier->equals($referenceEntity->identifier);
+        return $this->identifier->equals($assetFamily->identifier);
     }
 
     public function getLabel(string $localeCode): ?string

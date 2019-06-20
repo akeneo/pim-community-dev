@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\EventSubscriber;
+namespace Akeneo\AssetManager\Infrastructure\EventSubscriber;
 
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission\SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
@@ -27,36 +27,36 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveUserGroupSubscriber implements EventSubscriberInterface
 {
-    /** @var SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight */
-    private $findReferenceEntityWhereUserGroupIsLastToHaveEditRight;
+    /** @var SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight */
+    private $findAssetFamilyWhereUserGroupIsLastToHaveEditRight;
 
     public function __construct(
-        SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight $findReferenceEntityWhereUserGroupIsLastToHaveEditRight
+        SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight $findAssetFamilyWhereUserGroupIsLastToHaveEditRight
     ) {
-        $this->findReferenceEntityWhereUserGroupIsLastToHaveEditRight = $findReferenceEntityWhereUserGroupIsLastToHaveEditRight;
+        $this->findAssetFamilyWhereUserGroupIsLastToHaveEditRight = $findAssetFamilyWhereUserGroupIsLastToHaveEditRight;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_REMOVE => 'checkUserGroupPermissionsOnReferenceEntity',
+            StorageEvents::PRE_REMOVE => 'checkUserGroupPermissionsOnAssetFamily',
         ];
     }
 
-    public function checkUserGroupPermissionsOnReferenceEntity(RemoveEvent $event): void
+    public function checkUserGroupPermissionsOnAssetFamily(RemoveEvent $event): void
     {
         $userGroup = $event->getSubject();
         if (!$userGroup instanceof GroupInterface) {
             return;
         }
 
-        $referenceEntityIdentifiers = $this->findReferenceEntityWhereUserGroupIsLastToHaveEditRight->find($userGroup->getId());
+        $assetFamilyIdentifiers = $this->findAssetFamilyWhereUserGroupIsLastToHaveEditRight->find($userGroup->getId());
 
-        if (count($referenceEntityIdentifiers) > 0) {
+        if (count($assetFamilyIdentifiers) > 0) {
             throw new ResourceDeletionDeniedException(
                 sprintf(
-                    'You cannot delete this group, it is the only user group with "edit" permission on reference entity "%s".',
-                    implode('", "', $referenceEntityIdentifiers)
+                    'You cannot delete this group, it is the only user group with "edit" permission on asset family "%s".',
+                    implode('", "', $assetFamilyIdentifiers)
                 )
             );
         }

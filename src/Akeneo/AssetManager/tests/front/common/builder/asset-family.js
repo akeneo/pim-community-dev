@@ -1,19 +1,19 @@
 /**
- * Generate a reference entity
+ * Generate an asset family
  *
  * Example:
- * const ReferenceEntityBuilder = require('../../common/builder/reference-entity.js');
- * const referenceEntity = (new ReferenceEntityBuilder()).withIdentifier('designer').build();
+ * const AssetFamilyBuilder = require('../../common/builder/asset-family.js');
+ * const assetFamily = (new AssetFamilyBuilder()).withIdentifier('designer').build();
  */
 
-class ReferenceEntityBuilder {
+class AssetFamilyBuilder {
   constructor() {
-    this.referenceEntity = {
+    this.assetFamily = {
       identifier: '',
       labels: {},
       image: null,
       attributes: [],
-      record_count: 123,
+      asset_count: 123,
       attribute_as_label: '',
       attribute_as_image: '',
       permission: {edit: true},
@@ -21,50 +21,50 @@ class ReferenceEntityBuilder {
   }
 
   withIdentifier(identifier) {
-    this.referenceEntity.identifier = identifier;
+    this.assetFamily.identifier = identifier;
 
     return this;
   }
 
   withLabels(labels) {
-    this.referenceEntity.labels = labels;
+    this.assetFamily.labels = labels;
 
     return this;
   }
 
   withImage(image) {
-    this.referenceEntity.image = image;
+    this.assetFamily.image = image;
 
     return this;
   }
 
   withAttributes(attributes) {
-    this.referenceEntity.attributes = attributes;
+    this.assetFamily.attributes = attributes;
 
     return this;
   }
 
   withAttributeAsImage(attribute) {
-    this.referenceEntity.attribute_as_image = attribute;
+    this.assetFamily.attribute_as_image = attribute;
 
     return this;
   }
 
   withAttributeAsLabel(attribute) {
-    this.referenceEntity.attribute_as_label = attribute;
+    this.assetFamily.attribute_as_label = attribute;
 
     return this;
   }
 
   withPermission(permission) {
-    this.referenceEntity.permission = permission;
+    this.assetFamily.permission = permission;
 
     return this;
   }
 
   build() {
-    return this.referenceEntity;
+    return this.assetFamily;
   }
 }
 
-module.exports = ReferenceEntityBuilder;
+module.exports = AssetFamilyBuilder;

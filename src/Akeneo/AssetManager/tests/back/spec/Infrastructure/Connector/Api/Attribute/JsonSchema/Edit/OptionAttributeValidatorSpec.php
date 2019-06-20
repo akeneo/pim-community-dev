@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
 class OptionAttributeValidatorSpec extends ObjectBehavior
@@ -43,7 +43,7 @@ class OptionAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = OptionAttribute::create(
             AttributeIdentifier::create('brand', 'main_material', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('main_material'),
             LabelCollection::fromArray(['en_US' => 'Main material']),
             AttributeOrder::fromInteger(4),
@@ -59,7 +59,7 @@ class OptionAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = OptionCollectionAttribute::create(
             AttributeIdentifier::create('designer', 'materials', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('materials'),
             LabelCollection::fromArray(['en_US' => 'Materials']),
             AttributeOrder::fromInteger(5),
@@ -84,7 +84,7 @@ class OptionAttributeValidatorSpec extends ObjectBehavior
             'is_required_for_completeness' => false,
             '_links' => [
                 'self' => [
-                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/birthday'
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/birthday'
                 ]
             ],
         ];

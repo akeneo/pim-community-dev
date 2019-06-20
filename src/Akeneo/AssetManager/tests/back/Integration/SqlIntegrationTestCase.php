@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration;
+namespace Akeneo\AssetManager\Integration;
 
-use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
-use Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy;
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
+use Akeneo\AssetManager\Common\Fake\EventDispatcherMock;
+use Akeneo\AssetManager\Common\Fake\AssetIndexerSpy;
+use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ResettableContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -44,7 +44,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
             $this->bootTestKernel();
         }
 
-        $this->fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
+        $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
     }
 
     protected function bootTestKernel(): void
@@ -66,7 +66,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     {
         $realEventDispatcher = $this->testKernel->getContainer()->get('event_dispatcher');
         $this->testKernel->getContainer()->set('event_dispatcher', new EventDispatcherMock($realEventDispatcher));
-        $this->testKernel->getContainer()->set('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer', new RecordIndexerSpy());
+        $this->testKernel->getContainer()->set('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer', new AssetIndexerSpy());
     }
 
     /**

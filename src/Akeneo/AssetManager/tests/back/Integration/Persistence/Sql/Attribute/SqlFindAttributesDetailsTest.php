@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 {
@@ -33,7 +33,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findAttributesDetails = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
+        $this->findAttributesDetails = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details');
         $this->resetDB();
         $this->loadFixtures();
     }
@@ -41,9 +41,9 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_the_attributes_details_for_a_reference_entity()
+    public function it_returns_the_attributes_details_for_an_asset_family()
     {
-        $attributeDetails = $this->findAttributesDetails->find(ReferenceEntityIdentifier::fromString('designer'));
+        $attributeDetails = $this->findAttributesDetails->find(AssetFamilyIdentifier::fromString('designer'));
 
         $this->assertCount(7, $attributeDetails);
         $this->assertNameAttribute($attributeDetails);
@@ -55,18 +55,18 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadFixtures(): void
     {
         $this->fixturesDesigner = $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->withAttributes(['name', 'email', 'regex', 'long_description', 'main_image'])
             ->load();
 
         $this->fixturesBrand = $this->fixturesLoader
-            ->referenceEntity('brand')
+            ->assetFamily('brand')
             ->load();
     }
 
@@ -81,7 +81,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName = new AttributeDetails();
         $expectedName->type = 'text';
         $expectedName->identifier = (string) $this->fixturesDesigner['attributes']['name']->getIdentifier();
-        $expectedName->referenceEntityIdentifier = 'designer';
+        $expectedName->assetFamilyIdentifier = 'designer';
         $expectedName->code = 'name';
         $expectedName->labels = ['en_US' => 'Name', 'fr_FR' => 'Nom'];
         $expectedName->order = 2;
@@ -106,7 +106,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedEmail = new AttributeDetails();
         $expectedEmail->type = 'text';
         $expectedEmail->identifier = (string) $this->fixturesDesigner['attributes']['email']->getIdentifier();
-        $expectedEmail->referenceEntityIdentifier = 'designer';
+        $expectedEmail->assetFamilyIdentifier = 'designer';
         $expectedEmail->code = 'email';
         $expectedEmail->labels = ['en_US' => 'Email', 'fr_FR' => 'Email'];
         $expectedEmail->order = 3;
@@ -131,7 +131,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedRegex = new AttributeDetails();
         $expectedRegex->type = 'text';
         $expectedRegex->identifier = (string) $this->fixturesDesigner['attributes']['regex']->getIdentifier();
-        $expectedRegex->referenceEntityIdentifier = 'designer';
+        $expectedRegex->assetFamilyIdentifier = 'designer';
         $expectedRegex->code = 'regex';
         $expectedRegex->labels = ['en_US' => 'Regex'];
         $expectedRegex->order = 4;
@@ -156,7 +156,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedLongDescription = new AttributeDetails();
         $expectedLongDescription->type = 'text';
         $expectedLongDescription->identifier = (string) $this->fixturesDesigner['attributes']['long_description']->getIdentifier();
-        $expectedLongDescription->referenceEntityIdentifier = 'designer';
+        $expectedLongDescription->assetFamilyIdentifier = 'designer';
         $expectedLongDescription->code = 'long_description';
         $expectedLongDescription->labels = ['en_US' => 'Long description'];
         $expectedLongDescription->order = 5;
@@ -185,7 +185,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedImage = new AttributeDetails();
         $expectedImage->type = 'image';
         $expectedImage->identifier = (string) $this->fixturesDesigner['attributes']['main_image']->getIdentifier();
-        $expectedImage->referenceEntityIdentifier = 'designer';
+        $expectedImage->assetFamilyIdentifier = 'designer';
         $expectedImage->code = 'main_image';
         $expectedImage->labels = ['en_US' => 'Portrait'];
         $expectedImage->order = 6;

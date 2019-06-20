@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUrlValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\UrlData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditUrlValueCommand;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\UrlData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -25,10 +25,10 @@ class UrlUpdater implements ValueUpdaterInterface
         return $command instanceof EditUrlValueCommand;
     }
 
-    public function __invoke(Record $record, AbstractEditValueCommand $command): void
+    public function __invoke(Asset $asset, AbstractEditValueCommand $command): void
     {
         if (!$this->supports($command)) {
-            throw new \RuntimeException('Impossible to update the value of the record with the given command.');
+            throw new \RuntimeException('Impossible to update the value of the asset with the given command.');
         }
 
         $attribute = $command->attribute->getIdentifier();
@@ -42,6 +42,6 @@ class UrlUpdater implements ValueUpdaterInterface
         $text = UrlData::createFromNormalize($command->url);
 
         $value = Value::create($attribute, $channelReference, $localeReference, $text);
-        $record->setValue($value);
+        $asset->setValue($value);
     }
 }

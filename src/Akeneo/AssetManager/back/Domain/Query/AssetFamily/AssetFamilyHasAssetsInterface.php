@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Tells if an Reference Entity has some records
+ * Tells if an Asset Family has some assets
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface ReferenceEntityHasRecordsInterface
+interface AssetFamilyHasAssetsInterface
 {
-    public function hasRecords(ReferenceEntityIdentifier $identifier): bool;
+    public function hasAssets(AssetFamilyIdentifier $identifier): bool;
 }

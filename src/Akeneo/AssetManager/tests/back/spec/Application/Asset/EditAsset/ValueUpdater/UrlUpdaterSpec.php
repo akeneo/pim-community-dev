@@ -1,28 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUrlValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\UrlUpdater;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\UrlData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditUrlValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\UrlUpdater;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\UrlData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -44,7 +44,7 @@ class UrlUpdaterSpec extends ObjectBehavior
         $this->supports($editTextValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_url_value_of_a_record(Record $record) {
+    function it_edits_the_url_value_of_a_asset(Asset $asset) {
         $urlAttribute = $this->urlAttribute();
 
         $editTextValueCommand = new EditUrlValueCommand(
@@ -60,23 +60,23 @@ class UrlUpdaterSpec extends ObjectBehavior
             UrlData::createFromNormalize($editTextValueCommand->url)
         );
 
-        $this->__invoke($record, $editTextValueCommand);
-        $record->setValue($value)->shouldBeCalled();
+        $this->__invoke($asset, $editTextValueCommand);
+        $asset->setValue($value)->shouldBeCalled();
     }
 
     function it_throws_if_it_does_not_support_the_command(
-        Record $record,
+        Asset $asset,
         EditStoredFileValueCommand $editStoredFileValueCommand
     ) {
         $this->supports($editStoredFileValueCommand)->shouldReturn(false);
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $editStoredFileValueCommand]);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$asset, $editStoredFileValueCommand]);
     }
 
     private function urlAttribute(): UrlAttribute
     {
         return UrlAttribute::create(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),

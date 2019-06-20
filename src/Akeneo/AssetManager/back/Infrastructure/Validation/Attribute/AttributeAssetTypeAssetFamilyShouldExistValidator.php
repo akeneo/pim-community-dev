@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class AttributeRecordTypeReferenceEntityShouldExistValidator extends ConstraintValidator
+class AttributeAssetTypeAssetFamilyShouldExistValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
-    public function __construct(ReferenceEntityExistsInterface $referenceEntityExists)
+    public function __construct(AssetFamilyExistsInterface $assetFamilyExists)
     {
-        $this->referenceEntityExists = $referenceEntityExists;
+        $this->assetFamilyExists = $assetFamilyExists;
     }
 
     public function validate($command, Constraint $constraint)
@@ -35,11 +35,11 @@ class AttributeRecordTypeReferenceEntityShouldExistValidator extends ConstraintV
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->recordType);
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
-            $this->context->buildViolation(AttributeRecordTypeReferenceEntityShouldExist::ERROR_MESSAGE)
-                ->atPath('reference_entity_code')
-                ->setParameter('%reference_entity_code%', $command->recordType)
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->assetType);
+        if (false === $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
+            $this->context->buildViolation(AttributeAssetTypeAssetFamilyShouldExist::ERROR_MESSAGE)
+                ->atPath('asset_family_code')
+                ->setParameter('%asset_family_code%', $command->assetType)
                 ->addViolation();
         }
     }
@@ -60,7 +60,7 @@ class AttributeRecordTypeReferenceEntityShouldExistValidator extends ConstraintV
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof AttributeRecordTypeReferenceEntityShouldExist) {
+        if (!$constraint instanceof AttributeAssetTypeAssetFamilyShouldExist) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }

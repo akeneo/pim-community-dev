@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RefreshAllRecords
+class RefreshAllAssets
 {
-    /** @var SelectRecordIdentifiersInterface */
-    private $selectRecordIdentifiers;
+    /** @var SelectAssetIdentifiersInterface */
+    private $selectAssetIdentifiers;
 
-    /** @var RefreshRecord */
-    private $refreshRecord;
+    /** @var RefreshAsset */
+    private $refreshAsset;
 
     public function __construct(
-        SelectRecordIdentifiersInterface $selectRecordIdentifiers,
-        RefreshRecord $refreshRecord
+        SelectAssetIdentifiersInterface $selectAssetIdentifiers,
+        RefreshAsset $refreshAsset
     ) {
-        $this->selectRecordIdentifiers = $selectRecordIdentifiers;
-        $this->refreshRecord = $refreshRecord;
+        $this->selectAssetIdentifiers = $selectAssetIdentifiers;
+        $this->refreshAsset = $refreshAsset;
     }
 
     public function execute(): void
     {
-        $recordIdentifiers = $this->selectRecordIdentifiers->fetch();
-        foreach ($recordIdentifiers as $recordIdentifier) {
-            $this->refreshRecord->refresh($recordIdentifier);
+        $assetIdentifiers = $this->selectAssetIdentifiers->fetch();
+        foreach ($assetIdentifiers as $assetIdentifier) {
+            $this->refreshAsset->refresh($assetIdentifier);
         }
     }
 }

@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity;
+namespace Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteReferenceEntityCommand
+class DeleteAssetFamilyCommand
 {
     /** @var string */
     public $identifier;

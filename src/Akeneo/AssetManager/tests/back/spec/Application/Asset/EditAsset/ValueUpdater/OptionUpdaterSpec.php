@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\OptionUpdater;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\OptionUpdater;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\ValueUpdaterInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class OptionUpdaterSpec extends ObjectBehavior
@@ -45,7 +45,7 @@ class OptionUpdaterSpec extends ObjectBehavior
         $this->supports($editTextValueCommand)->shouldReturn(false);
     }
 
-    function it_updates_a_record_with_an_option_value(Record $record)
+    function it_updates_a_asset_with_an_option_value(Asset $asset)
     {
         $attribute = $this->getAttribute();
 
@@ -63,16 +63,16 @@ class OptionUpdaterSpec extends ObjectBehavior
             OptionData::createFromNormalize('18-25')
         );
 
-        $record->setValue($value)->shouldBeCalled();
+        $asset->setValue($value)->shouldBeCalled();
 
-        $this->__invoke($record, $command);
+        $this->__invoke($asset, $command);
     }
 
     private function getAttribute(): OptionAttribute
     {
         $optionAttribute = OptionAttribute::create(
             AttributeIdentifier::create('brand', 'age', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('age_target'),
             LabelCollection::fromArray(['fr_FR' => 'Cible âge', 'en_US' => 'Age target']),
             AttributeOrder::fromInteger(0),

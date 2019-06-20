@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Product, {PRODUCT_MODEL_TYPE} from 'akeneoreferenceentity/domain/model/product/product';
-import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
-import Completeness from 'akeneoreferenceentity/domain/model/product/completeness';
-import ProductCompletenessLabel from 'akeneoreferenceentity/application/component/app/product-completeness';
+import Product, {PRODUCT_MODEL_TYPE} from 'akeneoassetmanager/domain/model/product/product';
+import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
+import ProductCompletenessLabel from 'akeneoassetmanager/application/component/app/product-completeness';
 
 const router = require('pim/router');
 

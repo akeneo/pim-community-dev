@@ -1,6 +1,6 @@
-import reducer from 'akeneoreferenceentity/application/reducer/reference-entity/create';
+import reducer from 'akeneoassetmanager/application/reducer/asset-family/create';
 
-describe('akeneo > reference entity > application > reducer > reference-entity --- create', () => {
+describe('akeneo > asset family > application > reducer > asset-family --- create', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
@@ -18,7 +18,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     expect(newState).toEqual({active: false, data: {code: '', labels: {}}, errors: []});
   });
 
-  test('I can start the creation of a new reference entity', () => {
+  test('I can start the creation of a new asset family', () => {
     const state = {
       active: false,
       data: {
@@ -28,7 +28,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_START',
+      type: 'ASSET_FAMILY_CREATION_START',
     });
 
     expect(newState).toEqual({
@@ -41,7 +41,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can update the code of the reference entity', () => {
+  test('I can update the code of the asset family', () => {
     const state = {
       active: true,
       data: {
@@ -51,7 +51,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_CODE_UPDATED',
+      type: 'ASSET_FAMILY_CREATION_CODE_UPDATED',
       value: 'code_test',
     });
 
@@ -65,7 +65,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can update the label of the reference entity', () => {
+  test('I can update the label of the asset family', () => {
     const state = {
       active: true,
       data: {
@@ -75,7 +75,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_LABEL_UPDATED',
+      type: 'ASSET_FAMILY_CREATION_LABEL_UPDATED',
       value: 'label testé-/$',
       locale: 'en_US',
     });
@@ -102,7 +102,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_LABEL_UPDATED',
+      type: 'ASSET_FAMILY_CREATION_LABEL_UPDATED',
       value: 'label testé-/$',
       locale: 'en_US',
     });
@@ -131,7 +131,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_LABEL_UPDATED',
+      type: 'ASSET_FAMILY_CREATION_LABEL_UPDATED',
       value: 'new label',
       locale: 'en_US',
     });
@@ -148,7 +148,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can cancel the reference entity creation', () => {
+  test('I can cancel the asset family creation', () => {
     const state = {
       active: true,
       data: {
@@ -158,7 +158,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_CANCEL',
+      type: 'ASSET_FAMILY_CREATION_CANCEL',
     });
 
     expect(newState).toEqual({
@@ -171,7 +171,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can dismiss the reference entity creation', () => {
+  test('I can dismiss the asset family creation', () => {
     const state = {
       active: true,
       data: {
@@ -194,7 +194,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can submit the reference entity creation', () => {
+  test('I can submit the asset family creation', () => {
     const state = {
       active: false,
       data: {
@@ -213,7 +213,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     };
 
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_SUBMISSION',
+      type: 'ASSET_FAMILY_CREATION_SUBMISSION',
     });
 
     expect(newState).toEqual({
@@ -226,7 +226,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can succeed the reference entity creation', () => {
+  test('I can succeed the asset family creation', () => {
     const state = {
       active: true,
       data: {
@@ -237,7 +237,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     };
 
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_SUCCEEDED',
+      type: 'ASSET_FAMILY_CREATION_SUCCEEDED',
     });
 
     expect(newState).toEqual({
@@ -250,7 +250,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I get errors on the reference entity creation', () => {
+  test('I get errors on the asset family creation', () => {
     const state = {
       active: false,
       data: {
@@ -271,7 +271,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     ];
 
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_ERROR_OCCURED',
+      type: 'ASSET_FAMILY_CREATION_ERROR_OCCURED',
       errors,
     });
 

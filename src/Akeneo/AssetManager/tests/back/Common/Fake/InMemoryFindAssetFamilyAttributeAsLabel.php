@@ -11,31 +11,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 
-class InMemoryFindReferenceEntityAttributeAsLabel implements FindReferenceEntityAttributeAsLabelInterface
+class InMemoryFindAssetFamilyAttributeAsLabel implements FindAssetFamilyAttributeAsLabelInterface
 {
-    /** @var InMemoryReferenceEntityRepository */
-    private $referenceEntityRepository;
+    /** @var InMemoryAssetFamilyRepository */
+    private $assetFamilyRepository;
 
-    public function __construct(InMemoryReferenceEntityRepository $referenceEntityRepository)
+    public function __construct(InMemoryAssetFamilyRepository $assetFamilyRepository)
     {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsLabelReference
     {
         try {
-            $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        } catch (ReferenceEntityNotFoundException $e) {
+            $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        } catch (AssetFamilyNotFoundException $e) {
             return AttributeAsLabelReference::noReference();
         }
 
-        return $referenceEntity->getAttributeAsLabelReference();
+        return $assetFamily->getAttributeAsLabelReference();
     }
 }

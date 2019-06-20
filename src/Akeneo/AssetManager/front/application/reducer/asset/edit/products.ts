@@ -1,6 +1,6 @@
-import {NormalizedProduct} from 'akeneoreferenceentity/domain/model/product/product';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
-import {NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
+import {NormalizedProduct} from 'akeneoassetmanager/domain/model/product/product';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
+import {NormalizedCode as NormalizedAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
 
 export interface ProductsState {
   selectedAttribute: NormalizedAttribute | null;

@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
+namespace Akeneo\AssetManager\Common\Fake\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordByReferenceEntityAndCodeInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetByAssetFamilyAndCodeInterface;
 
 /**
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRecordByReferenceEntityAndCodeInterface
+class InMemoryFindConnectorAssetByAssetFamilyAndCode implements FindConnectorAssetByAssetFamilyAndCodeInterface
 {
-    /** @var ConnectorRecord[] */
+    /** @var ConnectorAsset[] */
     private $results;
 
     public function __construct()
@@ -33,20 +33,20 @@ class InMemoryFindConnectorRecordByReferenceEntityAndCode implements FindConnect
     }
 
     public function save(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $recordCode,
-        ConnectorRecord $connectorRecord
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $assetCode,
+        ConnectorAsset $connectorAsset
     ): void {
-        $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $recordCode)] = $connectorRecord;
+        $this->results[sprintf('%s____%s', $assetFamilyIdentifier, $assetCode)] = $connectorAsset;
     }
 
     /**
      * {@inheritdoc}
      */
     public function find(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $recordCode
-    ): ?ConnectorRecord {
-        return $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $recordCode)] ?? null;
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $assetCode
+    ): ?ConnectorAsset {
+        return $this->results[sprintf('%s____%s', $assetFamilyIdentifier, $assetCode)] ?? null;
     }
 }

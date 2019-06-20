@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 
 /**
  * Validate that the immutable properties of an attribute are not changed when editing it.
@@ -26,7 +26,7 @@ class ValidateAttributePropertiesImmutability
         'type',
         'value_per_locale',
         'value_per_channel',
-        'reference_entity_code',
+        'asset_family_code',
     ];
 
     /** @var FindConnectorAttributeByIdentifierAndCodeInterface */
@@ -40,16 +40,16 @@ class ValidateAttributePropertiesImmutability
     /**
      * Returns the list of errors formatted as:
      * [
-     *      'property' => 'reference_entity_code',
-     *      'message'  => 'The property reference_entity_code is immutable.'
+     *      'property' => 'asset_family_code',
+     *      'message'  => 'The property asset_family_code is immutable.'
      * ]
      */
     public function __invoke(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode,
         array $editedProperties
     ): array {
-        $attribute = $this->findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode);
+        $attribute = $this->findConnectorAttribute->find($assetFamilyIdentifier, $attributeCode);
         if (null === $attribute) {
             throw new \RuntimeException(sprintf('Attribute %s was not found.', $editedProperties['code']));
         }

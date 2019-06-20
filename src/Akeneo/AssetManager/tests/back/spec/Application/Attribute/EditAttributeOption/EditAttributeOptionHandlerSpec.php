@@ -1,22 +1,22 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttributeOption;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class EditAttributeOptionHandlerSpec extends ObjectBehavior
@@ -45,14 +45,14 @@ class EditAttributeOptionHandlerSpec extends ObjectBehavior
             ]
         );
 
-        $getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('color')
         )->willReturn(AttributeIdentifier::fromString('brand'));
 
         $optionAttribute = OptionAttribute::create(
             AttributeIdentifier::fromString('color'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('red'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),
@@ -69,7 +69,7 @@ class EditAttributeOptionHandlerSpec extends ObjectBehavior
 
         $expectedOptionAttribute = OptionAttribute::create(
             AttributeIdentifier::fromString('color'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('red'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),

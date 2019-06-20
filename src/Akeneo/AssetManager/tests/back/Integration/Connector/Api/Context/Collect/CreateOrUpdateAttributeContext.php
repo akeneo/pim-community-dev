@@ -11,39 +11,39 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeByIdentifierAndCode;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAttributeByIdentifierAndCode;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,8 +52,8 @@ class CreateOrUpdateAttributeContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Collect/';
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -77,14 +77,14 @@ class CreateOrUpdateAttributeContext implements Context
     private $findConnectorAttribute;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindConnectorAttributeByIdentifierAndCode $findConnectorAttribute
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->attributeRepository = $attributeRepository;
@@ -93,12 +93,12 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the ([a-zA-Z]+) reference entity existing both in the ERP and in the PIM$/
+     * @Given /^the ([a-zA-Z]+) asset family existing both in the ERP and in the PIM$/
      */
-    public function theColorReferenceEntityExistingBothInTheErpAndInThePim(string $referenceEntityIdentifier)
+    public function theColorAssetFamilyExistingBothInTheErpAndInThePim(string $assetFamilyIdentifier)
     {
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString(strtolower($referenceEntityIdentifier)),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString(strtolower($assetFamilyIdentifier)),
             [],
             Image::createEmpty()
         );
@@ -106,30 +106,30 @@ class CreateOrUpdateAttributeContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @Given the Main Color attribute that is only part of the structure of the Color reference entity in the ERP but not in the PIM
+     * @Given the Main Color attribute that is only part of the structure of the Color asset family in the ERP but not in the PIM
      */
-    public function theMainColorAttributeThatIsOnlyPartOfTheStructureOfTheColorReferenceEntityInTheERPButNotInThePIM()
+    public function theMainColorAttributeThatIsOnlyPartOfTheStructureOfTheColorAssetFamilyInTheERPButNotInThePIM()
     {
-        $this->requestContract = 'successful_main_color_reference_entity_attribute_creation.json';
+        $this->requestContract = 'successful_main_color_asset_family_attribute_creation.json';
     }
 
     /**
-     * @Given /^the image attribute Portrait that is only part of the structure of the Designer reference entity in the ERP but not in the PIM$/
+     * @Given /^the image attribute Portrait that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
      */
-    public function thePortraitAttributeThatIsOnlyPartOfTheStructureOfTheDesignerReferenceEntityInTheERPButNotInThePIM()
+    public function thePortraitAttributeThatIsOnlyPartOfTheStructureOfTheDesignerAssetFamilyInTheERPButNotInThePIM()
     {
-        $this->requestContract = 'successful_portrait_reference_entity_attribute_creation.json';
+        $this->requestContract = 'successful_portrait_asset_family_attribute_creation.json';
     }
 
 
     /**
      * @When /^the connector collects this attribute from the ERP to synchronize it with the PIM$/
      */
-    public function theConnectorCollectsTheMainColorAttributeOfTheColorReferenceEntityFromTheERPToSynchronizeItWithThePIM()
+    public function theConnectorCollectsTheMainColorAttributeOfTheColorAssetFamilyFromTheERPToSynchronizeItWithThePIM()
     {
         Assert::assertNotNull($this->requestContract, 'The request contract must be defined first.');
 
@@ -141,16 +141,16 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Then the Main Color attribute is added to the structure of the Color reference entity in the PIM with the properties coming from the ERP
+     * @Then the Main Color attribute is added to the structure of the Color asset family in the PIM with the properties coming from the ERP
      */
-    public function theMainColorAttributeIsAddedToTheStructureOfTheColorReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    public function theMainColorAttributeIsAddedToTheStructureOfTheColorAssetFamilyInThePIMWithThePropertiesComingFromTheERP()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_main_color_reference_entity_attribute_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_main_color_asset_family_attribute_creation.json'
         );
 
-        $referenceEntityIdentifier = 'color';
+        $assetFamilyIdentifier = 'color';
 
         $identifier = AttributeIdentifier::create(
             (string) 'color',
@@ -161,7 +161,7 @@ class CreateOrUpdateAttributeContext implements Context
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         $expectedAttribute = TextAttribute::createText(
             $identifier,
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('main_color'),
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(2),
@@ -177,13 +177,13 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Then /^the Portrait attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP$/
+     * @Then /^the Portrait attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP$/
      */
-    public function thePortraitAttributeIsAddedToTheStructureOfTheDesignerReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    public function thePortraitAttributeIsAddedToTheStructureOfTheDesignerAssetFamilyInThePIMWithThePropertiesComingFromTheERP()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_portrait_reference_entity_attribute_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_portrait_asset_family_attribute_creation.json'
         );
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'portrait', md5('designer_portrait'));
@@ -191,7 +191,7 @@ class CreateOrUpdateAttributeContext implements Context
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $expectedAttribute = ImageAttribute::create(
             $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
@@ -206,70 +206,70 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the record attribute Country that is only part of the structure of the Designer reference entity in the ERP but not in the PIM$/
+     * @Given /^the asset attribute Country that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
      */
-    public function theRecordAttributeCountryThatIsOnlyPartOfTheStructureOfTheDesignerReferenceEntityInTheERPButNotInThePIM()
+    public function theAssetAttributeCountryThatIsOnlyPartOfTheStructureOfTheDesignerAssetFamilyInTheERPButNotInThePIM()
     {
-        $this->requestContract = 'successful_country_reference_entity_attribute_creation.json';
+        $this->requestContract = 'successful_country_asset_family_attribute_creation.json';
 
-        $country = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('country'),
+        $country = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('country'),
             [],
             Image::createEmpty()
         );
-        $this->referenceEntityRepository->create($country);
+        $this->assetFamilyRepository->create($country);
     }
 
     /**
-     * @Then /^the Country attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP$/
+     * @Then /^the Country attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP$/
      */
-    public function theCountryAttributeIsAddedToTheStructureOfTheDesignerReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    public function theCountryAttributeIsAddedToTheStructureOfTheDesignerAssetFamilyInThePIMWithThePropertiesComingFromTheERP()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_country_reference_entity_attribute_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_country_asset_family_attribute_creation.json'
         );
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'country', md5('designer_country'));
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = RecordAttribute::create(
+        $expectedAttribute = AssetAttribute::create(
             $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('country'),
             LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('country')
+            AssetFamilyIdentifier::fromString('country')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
     }
 
     /**
-     * @Given /^the option attribute Birth Date that is only part of the structure of the Designer reference entity in the ERP but not in the PIM$/
+     * @Given /^the option attribute Birth Date that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
      */
-    public function theOptionAttributeBirthDateThatIsOnlyPartOfTheStructureOfTheDesignerReferenceEntityInTheERPButNotInThePIM()
+    public function theOptionAttributeBirthDateThatIsOnlyPartOfTheStructureOfTheDesignerAssetFamilyInTheERPButNotInThePIM()
     {
-        $this->requestContract = 'successful_birthdate_reference_entity_attribute_creation.json';
+        $this->requestContract = 'successful_birthdate_asset_family_attribute_creation.json';
     }
 
     /**
-     * @Then /^the Birth Date attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP$/
+     * @Then /^the Birth Date attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP$/
      */
-    public function theBirthDateAttributeIsAddedToTheStructureOfTheDesignerReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    public function theBirthDateAttributeIsAddedToTheStructureOfTheDesignerAssetFamilyInThePIMWithThePropertiesComingFromTheERP()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_birthdate_reference_entity_attribute_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_birthdate_asset_family_attribute_creation.json'
         );
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'birthdate', md5('designer_birthdate'));
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $expectedAttribute = OptionAttribute::create(
             $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('birthdate'),
             LabelCollection::fromArray(['en_US' => 'Birth date']),
             AttributeOrder::fromInteger(2),
@@ -282,28 +282,28 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the url attribute Preview that is only part of the structure of the Designer reference entity in the ERP but not in the PIM$/
+     * @Given /^the url attribute Preview that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
      */
-    public function theUrlAttributePreviewThatIsOnlyPartOfTheStructureOfTheDesignerReferenceEntityInTheERPButNotInThePIM()
+    public function theUrlAttributePreviewThatIsOnlyPartOfTheStructureOfTheDesignerAssetFamilyInTheERPButNotInThePIM()
     {
-        $this->requestContract = 'successful_preview_reference_entity_attribute_creation.json';
+        $this->requestContract = 'successful_preview_asset_family_attribute_creation.json';
     }
 
     /**
-     * @Then /^the Preview attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP$/
+     * @Then /^the Preview attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP$/
      */
-    public function thePreviewAttributeIsAddedToTheStructureOfTheDesignerReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    public function thePreviewAttributeIsAddedToTheStructureOfTheDesignerAssetFamilyInThePIMWithThePropertiesComingFromTheERP()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_preview_reference_entity_attribute_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_preview_asset_family_attribute_creation.json'
         );
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'preview', md5('designer_preview'));
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $expectedAttribute = UrlAttribute::create(
             $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('preview'),
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(2),
@@ -319,13 +319,13 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given the Main Color attribute that is both part of the structure of the Color reference entity in the ERP and in the PIM but with some unsynchronized properties
+     * @Given the Main Color attribute that is both part of the structure of the Color asset family in the ERP and in the PIM but with some unsynchronized properties
      */
-    public function theMainColorAttributeThatIsBothPartOfTheStructureOfTheColorReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    public function theMainColorAttributeThatIsBothPartOfTheStructureOfTheColorAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
         $attribute = TextAttribute::createText(
             AttributeIdentifier::fromString('main_color_identifier'),
-            ReferenceEntityIdentifier::fromString('color'),
+            AssetFamilyIdentifier::fromString('color'),
             AttributeCode::fromString('main_color'),
             LabelCollection::fromArray(['en_US' => 'Main color']),
             AttributeOrder::fromInteger(2),
@@ -353,9 +353,9 @@ class CreateOrUpdateAttributeContext implements Context
                 'regular_expression' => '/\w+/',
             ]
         );
-        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+        $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
 
-        $this->requestContract = 'successful_main_color_reference_entity_attribute_update.json';
+        $this->requestContract = 'successful_main_color_asset_family_attribute_update.json';
     }
 
     /**
@@ -365,17 +365,17 @@ class CreateOrUpdateAttributeContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_main_color_reference_entity_attribute_update.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_main_color_asset_family_attribute_update.json'
         );
 
-        $referenceEntityIdentifier = 'color';
+        $assetFamilyIdentifier = 'color';
 
         $attribute = $this->attributeRepository->getByIdentifier(
             AttributeIdentifier::fromString('main_color_identifier')
         );
         $expectedAttribute = TextAttribute::createText(
             AttributeIdentifier::fromString('main_color_identifier'),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('main_color'),
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(2),
@@ -391,13 +391,13 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given the Portrait attribute that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties
+     * @Given the Portrait attribute that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties
      */
-    public function thePortraitAttributeThatIsBothPartOfTheStructureOfTheDesignerReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    public function thePortraitAttributeThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
         $attribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
@@ -421,9 +421,9 @@ class CreateOrUpdateAttributeContext implements Context
                 'allowed_extensions' => ['gif'],
             ]
         );
-        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+        $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
 
-        $this->requestContract = 'successful_portrait_reference_entity_attribute_update.json';
+        $this->requestContract = 'successful_portrait_asset_family_attribute_update.json';
     }
 
     /**
@@ -433,15 +433,15 @@ class CreateOrUpdateAttributeContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_portrait_reference_entity_attribute_update.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_portrait_asset_family_attribute_update.json'
         );
 
-        $referenceEntityIdentifier = 'designer';
+        $assetFamilyIdentifier = 'designer';
         $attributeIdentifier = AttributeIdentifier::create('designer', 'image', 'fingerprint');
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $expectedAttribute = ImageAttribute::create(
             $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
@@ -456,35 +456,35 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the Country attribute that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties$/
+     * @Given /^the Country attribute that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties$/
      */
-    public function theCountryAttributeThatIsBothPartOfTheStructureOfTheDesignerReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    public function theCountryAttributeThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
-        $attribute = RecordAttribute::create(
+        $attribute = AssetAttribute::create(
             AttributeIdentifier::create('designer', 'country', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('country'),
             LabelCollection::fromArray(['en_US' => 'Country']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('country')
+            AssetFamilyIdentifier::fromString('country')
         );
         $this->attributeRepository->create($attribute);
 
         $connectorAttribute = new ConnectorAttribute(
             $attribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Country']),
-            'record',
+            'asset',
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
-            ['record_type' => 'country']
+            ['asset_type' => 'country']
         );
-        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+        $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
 
-        $this->requestContract = 'successful_country_reference_entity_attribute_update.json';
+        $this->requestContract = 'successful_country_asset_family_attribute_update.json';
     }
 
     /**
@@ -494,34 +494,34 @@ class CreateOrUpdateAttributeContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_country_reference_entity_attribute_update.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_country_asset_family_attribute_update.json'
         );
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'country', 'fingerprint');
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = RecordAttribute::create(
+        $expectedAttribute = AssetAttribute::create(
             $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('country'),
             LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('country')
+            AssetFamilyIdentifier::fromString('country')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
     }
 
     /**
-     * @Given /^the option attribute Birth Date that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties$/
+     * @Given /^the option attribute Birth Date that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties$/
      */
-    public function theOptionAttributeBirthDateThatIsBothPartOfTheStructureOfTheDesignerReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    public function theOptionAttributeBirthDateThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
         $attribute = OptionAttribute::create(
             AttributeIdentifier::create('designer', 'birthdate', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('birthdate'),
             LabelCollection::fromArray(['en_US' => 'Birth date']),
             AttributeOrder::fromInteger(2),
@@ -540,10 +540,10 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(true),
             []
         );
-        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+        $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
 
 
-        $this->requestContract = 'successful_birthdate_reference_entity_attribute_update.json';
+        $this->requestContract = 'successful_birthdate_asset_family_attribute_update.json';
     }
 
     /**
@@ -553,14 +553,14 @@ class CreateOrUpdateAttributeContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_birthdate_reference_entity_attribute_update.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_birthdate_asset_family_attribute_update.json'
         );
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'birthdate', 'fingerprint');
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $expectedAttribute = OptionAttribute::create(
             $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('birthdate'),
             LabelCollection::fromArray(['en_US' => 'Birth date', 'fr_FR' => 'Date de naissance']),
             AttributeOrder::fromInteger(2),
@@ -573,13 +573,13 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the url attribute Preview that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties$/
+     * @Given /^the url attribute Preview that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties$/
      */
-    public function theUrlAttributePreviewThatIsBothPartOfTheStructureOfTheDesignerReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    public function theUrlAttributePreviewThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
         $attribute = UrlAttribute::create(
             AttributeIdentifier::create('designer', 'preview', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('preview'),
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(2),
@@ -601,10 +601,10 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(true),
             ['media_type' => 'image']
         );
-        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+        $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
 
 
-        $this->requestContract = 'successful_preview_reference_entity_attribute_update.json';
+        $this->requestContract = 'successful_preview_asset_family_attribute_update.json';
     }
 
     /**
@@ -614,14 +614,14 @@ class CreateOrUpdateAttributeContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_preview_reference_entity_attribute_update.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_preview_asset_family_attribute_update.json'
         );
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'preview', 'fingerprint');
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $expectedAttribute = UrlAttribute::create(
             $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('preview'),
             LabelCollection::fromArray(['en_US' => 'Preview', 'fr_FR' => 'Aperçu']),
             AttributeOrder::fromInteger(2),
@@ -641,7 +641,7 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function theConnectorCollectsTheMainColorAttributeWhoseDataDoesNotComplyWithTheBusinessRules()
     {
-        $this->requestContract = 'unprocessable_creation_main_color_reference_entity_attribute_for_invalid_data.json';
+        $this->requestContract = 'unprocessable_creation_main_color_asset_family_attribute_for_invalid_data.json';
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
@@ -665,7 +665,7 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function theConnectorCollectsTheExistingMainColorAttributeWhoseDataDoesNotComplyWithTheBusinessRules()
     {
-        $this->requestContract = 'unprocessable_update_main_color_reference_entity_attribute_for_invalid_data.json';
+        $this->requestContract = 'unprocessable_update_main_color_asset_family_attribute_for_invalid_data.json';
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
@@ -678,7 +678,7 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function theConnectorCollectsTheNewMainColorAttributeWithAnInvalidFormat()
     {
-        $this->requestContract = 'unprocessable_creation_main_color_reference_entity_attribute_for_invalid_format.json';
+        $this->requestContract = 'unprocessable_creation_main_color_asset_family_attribute_for_invalid_format.json';
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
@@ -702,7 +702,7 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function theConnectorCollectsTheExistingMainColorAttributeWithAnInvalidFormat()
     {
-        $this->requestContract = 'unprocessable_update_main_color_reference_entity_attribute_for_invalid_format.json';
+        $this->requestContract = 'unprocessable_update_main_color_asset_family_attribute_for_invalid_format.json';
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -33,18 +33,18 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
         $this->activatedLocalesQuery = $activatedLocalesQuery;
     }
 
-    public function save(AttributeDetails $referenceEntityDetails): void
+    public function save(AttributeDetails $assetFamilyDetails): void
     {
-        $this->results[(string) $referenceEntityDetails->referenceEntityIdentifier][] = $referenceEntityDetails;
+        $this->results[(string) $assetFamilyDetails->assetFamilyIdentifier][] = $assetFamilyDetails;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $activatedLocales = $this->activatedLocalesQuery->findAll();
-        $key = (string) $referenceEntityIdentifier;
+        $key = (string) $assetFamilyIdentifier;
 
         if (!isset($this->results[$key])) {
             return [];

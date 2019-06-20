@@ -1,11 +1,11 @@
 import {
-  createReferenceEntity,
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createIdentifier as createAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+  createAssetFamily,
+  denormalizeAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createIdentifier as createAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const michelIdentifier = createIdentifier('michel');
 const michelLabels = createLabelCollection({en_US: 'Michel'});
@@ -14,10 +14,10 @@ const didierLabels = createLabelCollection({en_US: 'Didier'});
 const attributeAsImage = createAttributeIdentifier('name');
 const attributeAsLabel = createAttributeIdentifier('portrait');
 
-describe('akeneo > reference entity > domain > model --- reference entity', () => {
-  test('I can create a new reference entity with an identifier and labels', () => {
+describe('akeneo > asset family > domain > model --- asset family', () => {
+  test('I can create a new asset family with an identifier and labels', () => {
     expect(
-      createReferenceEntity(
+      createAssetFamily(
         michelIdentifier,
         michelLabels,
         createEmptyFile(),
@@ -27,44 +27,44 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
     ).toBe(michelIdentifier);
   });
 
-  test('I cannot create a malformed reference entity', () => {
+  test('I cannot create a malformed asset family', () => {
     expect(() => {
-      createReferenceEntity(michelIdentifier);
-    }).toThrow('ReferenceEntity expects a LabelCollection as labelCollection argument');
+      createAssetFamily(michelIdentifier);
+    }).toThrow('AssetFamily expects a LabelCollection as labelCollection argument');
     expect(() => {
-      createReferenceEntity();
-    }).toThrow('ReferenceEntity expects an ReferenceEntityIdentifier as identifier argument');
+      createAssetFamily();
+    }).toThrow('AssetFamily expects an AssetFamilyIdentifier as identifier argument');
     expect(() => {
-      createReferenceEntity(12);
-    }).toThrow('ReferenceEntity expects an ReferenceEntityIdentifier as identifier argument');
+      createAssetFamily(12);
+    }).toThrow('AssetFamily expects an AssetFamilyIdentifier as identifier argument');
     expect(() => {
-      createReferenceEntity(michelIdentifier, 52);
-    }).toThrow('ReferenceEntity expects a LabelCollection as labelCollection argument');
+      createAssetFamily(michelIdentifier, 52);
+    }).toThrow('AssetFamily expects a LabelCollection as labelCollection argument');
     expect(() => {
-      createReferenceEntity(michelIdentifier, 52, {filePath: 'my_path.png', originalFilename: 'path.png'});
-    }).toThrow('ReferenceEntity expects a LabelCollection as labelCollection argument');
+      createAssetFamily(michelIdentifier, 52, {filePath: 'my_path.png', originalFilename: 'path.png'});
+    }).toThrow('AssetFamily expects a LabelCollection as labelCollection argument');
     expect(() => {
-      createReferenceEntity(michelIdentifier, michelLabels, {filePath: 'my_path.png', originalFilename: 'path.png'});
-    }).toThrow('ReferenceEntity expects a File as image argument');
+      createAssetFamily(michelIdentifier, michelLabels, {filePath: 'my_path.png', originalFilename: 'path.png'});
+    }).toThrow('AssetFamily expects a File as image argument');
     expect(() => {
-      createReferenceEntity(michelIdentifier, michelLabels, createEmptyFile());
-    }).toThrow('ReferenceEntity expects a AttributeIdentifier as attributeAsLabel argument');
+      createAssetFamily(michelIdentifier, michelLabels, createEmptyFile());
+    }).toThrow('AssetFamily expects a AttributeIdentifier as attributeAsLabel argument');
     expect(() => {
-      createReferenceEntity(michelIdentifier, michelLabels, createEmptyFile(), attributeAsLabel);
-    }).toThrow('ReferenceEntity expects a AttributeIdentifier as attributeAsImage argument');
+      createAssetFamily(michelIdentifier, michelLabels, createEmptyFile(), attributeAsLabel);
+    }).toThrow('AssetFamily expects a AttributeIdentifier as attributeAsImage argument');
   });
 
-  test('I can compare two reference entities', () => {
+  test('I can compare two asset families', () => {
     const michelLabels = createLabelCollection({en_US: 'Michel'});
     expect(
-      createReferenceEntity(
+      createAssetFamily(
         didierIdentifier,
         didierLabels,
         createEmptyFile(),
         createAttributeIdentifier('name_michel_fingerprint'),
         createAttributeIdentifier('image_michel_fingerprint')
       ).equals(
-        createReferenceEntity(
+        createAssetFamily(
           didierIdentifier,
           didierLabels,
           createEmptyFile(),
@@ -74,14 +74,14 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
       )
     ).toBe(true);
     expect(
-      createReferenceEntity(
+      createAssetFamily(
         didierIdentifier,
         didierLabels,
         createEmptyFile(),
         createAttributeIdentifier('name_michel_fingerprint'),
         createAttributeIdentifier('image_michel_fingerprint')
       ).equals(
-        createReferenceEntity(
+        createAssetFamily(
           michelIdentifier,
           michelLabels,
           createEmptyFile(),
@@ -94,7 +94,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
 
   test('I can get a label for the given locale', () => {
     expect(
-      createReferenceEntity(
+      createAssetFamily(
         michelIdentifier,
         michelLabels,
         createEmptyFile(),
@@ -103,7 +103,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
       ).getLabel('en_US')
     ).toBe('Michel');
     expect(
-      createReferenceEntity(
+      createAssetFamily(
         michelIdentifier,
         michelLabels,
         createEmptyFile(),
@@ -112,7 +112,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
       ).getLabel('fr_FR')
     ).toBe('[michel]');
     expect(
-      createReferenceEntity(
+      createAssetFamily(
         michelIdentifier,
         michelLabels,
         createEmptyFile(),
@@ -124,7 +124,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
 
   test('I can get the collection of labels', () => {
     expect(
-      createReferenceEntity(
+      createAssetFamily(
         michelIdentifier,
         michelLabels,
         createEmptyFile(),
@@ -134,8 +134,8 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
     ).toBe(michelLabels);
   });
 
-  test('I can normalize a reference entity', () => {
-    const michelReferenceEntity = createReferenceEntity(
+  test('I can normalize an asset family', () => {
+    const michelAssetFamily = createAssetFamily(
       michelIdentifier,
       michelLabels,
       createEmptyFile(),
@@ -143,7 +143,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
       attributeAsLabel
     );
 
-    expect(michelReferenceEntity.normalize()).toEqual({
+    expect(michelAssetFamily.normalize()).toEqual({
       identifier: 'michel',
       code: 'michel',
       labels: {en_US: 'Michel'},
@@ -153,8 +153,8 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
     });
   });
 
-  test('I can normalize a reference entity', () => {
-    const michelReferenceEntity = denormalizeReferenceEntity({
+  test('I can normalize an asset family', () => {
+    const michelAssetFamily = denormalizeAssetFamily({
       identifier: 'michel',
       labels: {
         en_US: 'Michel',
@@ -164,7 +164,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
       attribute_as_label: 'name',
     });
 
-    expect(michelReferenceEntity.normalize()).toEqual({
+    expect(michelAssetFamily.normalize()).toEqual({
       identifier: 'michel',
       code: 'michel',
       labels: {en_US: 'Michel'},

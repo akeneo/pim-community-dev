@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 use PDO;
 
@@ -21,7 +21,7 @@ use PDO;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentifiersInterface
+class SqlFindAssetLabelsByIdentifiers implements FindAssetLabelsByIdentifiersInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -34,34 +34,34 @@ class SqlFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentifiersI
     /**
      * {@inheritdoc}
      */
-    public function find(array $recordIdentifiers): array
+    public function find(array $assetIdentifiers): array
     {
         $fetch = <<<SQL
 SELECT 
-    result.record_identifier as identifier,
-    result.record_code as code,
+    result.asset_identifier as identifier,
+    result.asset_code as code,
     JSON_OBJECTAGG(result.locale_code, result.label) as labels
 FROM (
     SELECT 
-        labels_result.record_identifier,
-        labels_result.record_code,
+        labels_result.asset_identifier,
+        labels_result.asset_code,
         labels_result.locale_code,
         labels_result.label
     FROM (
         SELECT 
-            r.identifier as record_identifier,
-            r.code as record_code,
+            r.identifier as asset_identifier,
+            r.code as asset_code,
             locales.code as locale_code,
             JSON_EXTRACT(
                 value_collection,
                 CONCAT('$.', '"', re.attribute_as_label, '_', locales.code, '"', '.data')
             ) as label
-        FROM akeneo_reference_entity_record r
-        JOIN akeneo_reference_entity_reference_entity re
-            ON r.reference_entity_identifier = re.identifier
+        FROM akeneo_asset_manager_asset r
+        JOIN akeneo_asset_manager_asset_family re
+            ON r.asset_family_identifier = re.identifier
         CROSS JOIN pim_catalog_locale as locales
         WHERE locales.is_activated = true
-        AND r.identifier IN (:recordIdentifiers)
+        AND r.identifier IN (:assetIdentifiers)
     ) as labels_result
 ) as result
 GROUP BY identifier;
@@ -70,20 +70,20 @@ SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'recordIdentifiers' => $recordIdentifiers,
+                'assetIdentifiers' => $assetIdentifiers,
             ],
             [
-                'recordIdentifiers' => Connection::PARAM_STR_ARRAY
+                'assetIdentifiers' => Connection::PARAM_STR_ARRAY
             ]
         );
 
-        return array_reduce($statement->fetchAll(PDO::FETCH_ASSOC), function ($labelsIndexedByRecord, $current) {
-            $labelsIndexedByRecord[$current['identifier']] = [
+        return array_reduce($statement->fetchAll(PDO::FETCH_ASSOC), function ($labelsIndexedByAsset, $current) {
+            $labelsIndexedByAsset[$current['identifier']] = [
                 'labels' => json_decode($current['labels'], true),
                 'code' => $current['code'],
             ];
 
-            return $labelsIndexedByRecord;
+            return $labelsIndexedByAsset;
         }, []);
     }
 }

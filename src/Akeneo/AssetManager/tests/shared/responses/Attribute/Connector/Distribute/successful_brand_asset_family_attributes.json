@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_reference_entity_attributes_rest_connector_get",
+    "route": "akeneo_asset_manager_asset_family_attributes_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "brand"
+      "assetFamilyIdentifier": "brand"
     }
   },
   "response": {
@@ -26,7 +26,7 @@
         "validation_regexp": null,
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/description"
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/description"
           }
         }
       },
@@ -44,7 +44,7 @@
         "max_file_size": "10",
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/image"
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/image"
           }
         }
       },
@@ -60,7 +60,7 @@
         "is_required_for_completeness": false,
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/nationality"
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/nationality"
           }
         }
       },
@@ -76,7 +76,7 @@
         "is_required_for_completeness": false,
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/sales_areas"
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/sales_areas"
           }
         }
       },
@@ -86,14 +86,14 @@
           "en_US": "Country",
           "fr_FR": "Pays"
         },
-        "type": "reference_entity_single_link",
+        "type": "asset_family_single_link",
         "value_per_locale": false,
         "value_per_channel": false,
         "is_required_for_completeness": false,
-        "reference_entity_code": "country",
+        "asset_family_code": "country",
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/country"
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/country"
           }
         }
       },
@@ -103,14 +103,14 @@
           "en_US": "Designers",
           "fr_FR": "Designeurs"
         },
-        "type": "reference_entity_multiple_links",
+        "type": "asset_family_multiple_links",
         "value_per_locale": false,
         "value_per_channel": false,
         "is_required_for_completeness": true,
-        "reference_entity_code": "designer",
+        "asset_family_code": "designer",
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/designers"
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/designers"
           }
         }
       }

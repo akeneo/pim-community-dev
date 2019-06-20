@@ -2,42 +2,42 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -101,7 +101,7 @@ class EditAttributeContext implements Context
                 $identifier = AttributeIdentifier::fromString($attribute['identifier']);
             } else {
                 $identifier = $this->attributeRepository->nextIdentifier(
-                    ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
+                    AssetFamilyIdentifier::fromString($attribute['entity_identifier']),
                     AttributeCode::fromString($attribute['code'])
                 );
             }
@@ -109,7 +109,7 @@ class EditAttributeContext implements Context
             $this->attributeRepository->create(
                 TextAttribute::createText(
                     $identifier,
-                    ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
+                    AssetFamilyIdentifier::fromString($attribute['entity_identifier']),
                     AttributeCode::fromString($attribute['code']),
                     LabelCollection::fromArray(json_decode($attribute['labels'], true)),
                     AttributeOrder::fromInteger((int)$attribute['order']),
@@ -125,9 +125,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an asset family with a text attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function anReferenceEntityWithATextAttributeAndTheLabelEqualTo(
+    public function anAssetFamilyWithATextAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $localeCode,
         string $label
@@ -140,7 +140,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
@@ -167,9 +167,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute \'([^\']*)\' non required$/
+     * @Given /^an asset family with a text attribute \'([^\']*)\' non required$/
      */
-    public function anReferenceEntityWithATextAttributeNonRequired(string $attributeCode)
+    public function anAssetFamilyWithATextAttributeNonRequired(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -177,7 +177,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -212,9 +212,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute \'([^\']*)\' and max length (\d+)$/
+     * @Given /^an asset family with a text attribute \'([^\']*)\' and max length (\d+)$/
      */
-    public function anReferenceEntityWithATextAttributeAndMaxLength(string $attributeCode, int $maxLength)
+    public function anAssetFamilyWithATextAttributeAndMaxLength(string $attributeCode, int $maxLength)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -222,7 +222,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -263,9 +263,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an image attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an asset family with an image attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function anReferenceEntityWithAImageAttributeAndTheLabelEqualTo(
+    public function anAssetFamilyWithAImageAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $localeCode,
         string $label
@@ -278,7 +278,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             ImageAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
@@ -292,9 +292,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a record attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an asset family with a asset attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function aReferenceEntityWithARecordAttributeAndTheLabelEqualTo(
+    public function aAssetFamilyWithAAssetAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $label,
         string $localeCode
@@ -305,24 +305,24 @@ class EditAttributeContext implements Context
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            RecordAttribute::create(
+            AssetAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                ReferenceEntityIdentifier::fromString('dummy_identifier')
+                AssetFamilyIdentifier::fromString('dummy_identifier')
             )
         );
     }
 
     /**
-     * @Given /^a reference entity with a record collection attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an asset family with a asset collection attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function aReferenceEntityWithARecordCollectionAttributeAndTheLabelEqualTo(
+    public function aAssetFamilyWithAAssetCollectionAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $label,
         string $localeCode
@@ -333,24 +333,24 @@ class EditAttributeContext implements Context
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            RecordCollectionAttribute::create(
+            AssetCollectionAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                ReferenceEntityIdentifier::fromString('dummy_identifier')
+                AssetFamilyIdentifier::fromString('dummy_identifier')
             )
         );
     }
 
     /**
-     * @Given /^a reference entity with an image attribute \'([^\']*)\' with max file size \'([^\']*)\'$/
+     * @Given /^an asset family with an image attribute \'([^\']*)\' with max file size \'([^\']*)\'$/
      */
-    public function anReferenceEntityWithATextAttributeAndMaxFileSize(string $attributeCode, string $maxFileSize): void
+    public function anAssetFamilyWithATextAttributeAndMaxFileSize(string $attributeCode, string $maxFileSize): void
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -358,7 +358,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             ImageAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -398,11 +398,11 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute \'([^\']*)\' and no allowed extensions$/
+     * @Given /^an asset family with a text attribute \'([^\']*)\' and no allowed extensions$/
      */
-    public function anReferenceEntityWithATextAttributeAndNoAllowedExtensions(string $attributeCode)
+    public function anAssetFamilyWithATextAttributeAndNoAllowedExtensions(string $attributeCode)
     {
-        $this->anReferenceEntityWithAnImageAttributeWithAllowedExtensions($attributeCode, '[]');
+        $this->anAssetFamilyWithAnImageAttributeWithAllowedExtensions($attributeCode, '[]');
     }
 
     /**
@@ -510,9 +510,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an image attribute \'([^\']*)\' non required$/
+     * @Given /^an asset family with an image attribute \'([^\']*)\' non required$/
      */
-    public function anReferenceEntityWithAnImageAttributeNonRequired(string $attributeCode)
+    public function anAssetFamilyWithAnImageAttributeNonRequired(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -520,7 +520,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             ImageAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -534,9 +534,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an image attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
+     * @Given /^an asset family with an image attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
      */
-    public function anReferenceEntityWithAnImageAttributeWithAllowedExtensions(
+    public function anAssetFamilyWithAnImageAttributeWithAllowedExtensions(
         string $attributeCode,
         string $normalizedExtensions
     ): void {
@@ -547,7 +547,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             ImageAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -561,9 +561,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text area attribute \'([^\']*)\'$/
+     * @Given /^an asset family with a text area attribute \'([^\']*)\'$/
      */
-    public function anReferenceEntityWithATextareaAttribute(string $attributeCode)
+    public function anAssetFamilyWithATextareaAttribute(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -571,7 +571,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createTextarea(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -613,9 +613,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute \'([^\']*)\'$/
+     * @Given /^an asset family with a text attribute \'([^\']*)\'$/
      */
-    public function anReferenceEntityWithATextAttribute(string $attributeCode)
+    public function anAssetFamilyWithATextAttribute(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -623,7 +623,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -657,9 +657,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute \'([^\']*)\' with no validation rule$/
+     * @Given /^an asset family with a text attribute \'([^\']*)\' with no validation rule$/
      */
-    public function anReferenceEntityWithATextAttributeWithNoValidationRule(string $attributeCode)
+    public function anAssetFamilyWithATextAttributeWithNoValidationRule(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -667,7 +667,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -709,9 +709,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute \'([^\']*)\' with a regular expression \'([^\']*)\'$/
+     * @Given /^an asset family with a text attribute \'([^\']*)\' with a regular expression \'([^\']*)\'$/
      */
-    public function anReferenceEntityWithATextAttributeWithARegularExpression(
+    public function anAssetFamilyWithATextAttributeWithARegularExpression(
         string $attributeCode,
         string $regularExpression
     ) {
@@ -721,7 +721,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -836,9 +836,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text area attribute \'([^\']*)\' with no rich text editor$/
+     * @Given /^an asset family with a text area attribute \'([^\']*)\' with no rich text editor$/
      */
-    public function anReferenceEntityWithATextareaAttributeWithNoRichTextEditor(string $attributeCode)
+    public function anAssetFamilyWithATextareaAttributeWithNoRichTextEditor(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -846,7 +846,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createTextarea(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -947,9 +947,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an attribute \'([^\']*)\' having a single value for all locales$/
+     * @Given /^an asset family with an attribute \'([^\']*)\' having a single value for all locales$/
      */
-    public function anReferenceEntityWithAnAttributeNotHavingOneValuePerLocale(string $attributeCode)
+    public function anAssetFamilyWithAnAttributeNotHavingOneValuePerLocale(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -957,7 +957,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -998,9 +998,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an attribute \'([^\']*)\' having a single value for all channels$/
+     * @Given /^an asset family with an attribute \'([^\']*)\' having a single value for all channels$/
      */
-    public function anReferenceEntityWithAnAttributeNotHavingOneValuePerChannel(string $attributeCode)
+    public function anAssetFamilyWithAnAttributeNotHavingOneValuePerChannel(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -1008,7 +1008,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -1038,86 +1038,86 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a record attribute \'([^\']*)\' non required$/
+     * @Given /^an asset family with a asset attribute \'([^\']*)\' non required$/
      */
-    public function aReferenceEntityWithARecordAttributeNonRequired($attributeCode)
+    public function aAssetFamilyWithAAssetAttributeNonRequired($attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            RecordAttribute::create(
+            AssetAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                ReferenceEntityIdentifier::fromString('dummy_identifier')
+                AssetFamilyIdentifier::fromString('dummy_identifier')
             )
         );
     }
 
     /**
-     * @Given /^a reference entity with a record collection attribute \'([^\']*)\' non required$/
+     * @Given /^an asset family with a asset collection attribute \'([^\']*)\' non required$/
      */
-    public function aReferenceEntityWithARecordCollectionAttributeNonRequired($attributeCode)
+    public function aAssetFamilyWithAAssetCollectionAttributeNonRequired($attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            RecordCollectionAttribute::create(
+            AssetCollectionAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                ReferenceEntityIdentifier::fromString('dummy_identifier')
+                AssetFamilyIdentifier::fromString('dummy_identifier')
             )
         );
     }
 
     /**
-     * @Given /^the following record attributes:$/
+     * @Given /^the following asset attributes:$/
      */
-    public function theFollowingRecordAttributes(TableNode $attributesTable)
+    public function theFollowingAssetAttributes(TableNode $attributesTable)
     {
         foreach ($attributesTable->getHash() as $attribute) {
             if (isset($attribute['identifier'])) {
                 $identifier = AttributeIdentifier::fromString($attribute['identifier']);
             } else {
                 $identifier = $this->attributeRepository->nextIdentifier(
-                    ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
+                    AssetFamilyIdentifier::fromString($attribute['entity_identifier']),
                     AttributeCode::fromString($attribute['code'])
                 );
             }
 
             $this->attributeRepository->create(
-                RecordAttribute::create(
+                AssetAttribute::create(
                     $identifier,
-                    ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
+                    AssetFamilyIdentifier::fromString($attribute['entity_identifier']),
                     AttributeCode::fromString($attribute['code']),
                     LabelCollection::fromArray(json_decode($attribute['labels'], true)),
                     AttributeOrder::fromInteger((int)$attribute['order']),
                     AttributeIsRequired::fromBoolean((bool)$attribute['required']),
                     AttributeValuePerChannel::fromBoolean((bool)$attribute['value_per_channel']),
                     AttributeValuePerLocale::fromBoolean((bool)$attribute['value_per_locale']),
-                    ReferenceEntityIdentifier::fromString($attribute['record_type'])
+                    AssetFamilyIdentifier::fromString($attribute['asset_type'])
                 )
             );
         }
     }
 
     /**
-     * @Given /^a reference entity with an option attribute with no available options$/
+     * @Given /^an asset family with an option attribute with no available options$/
      */
-    public function aReferenceEntityWithAnOptionAttributeWithNoAvailableOptions()
+    public function aAssetFamilyWithAnOptionAttributeWithNoAvailableOptions()
     {
         $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
@@ -1125,7 +1125,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             OptionAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString('favorite_color'),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -1137,9 +1137,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an option attribute with some options$/
+     * @Given /^an asset family with an option attribute with some options$/
      */
-    public function aReferenceEntityWithAnOptionAttributeWithSomeOptions()
+    public function aAssetFamilyWithAnOptionAttributeWithSomeOptions()
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
@@ -1149,7 +1149,7 @@ class EditAttributeContext implements Context
 
         $optionAttribute = OptionAttribute::create(
             $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AssetFamilyIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString('favorite_color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -1235,16 +1235,16 @@ class EditAttributeContext implements Context
 
 
     /**
-     * @Given /^a reference entity with an option attribute \'([^\']+)\' and the label \'([^\']+)\' equal to \'([^\']+)\'$/
+     * @Given /^an asset family with an option attribute \'([^\']+)\' and the label \'([^\']+)\' equal to \'([^\']+)\'$/
      */
-    public function aReferenceEntityWithAnOptionAttributeAndTheLabelEqualTo($attributeCode, $locale, $label)
+    public function aAssetFamilyWithAnOptionAttributeAndTheLabelEqualTo($attributeCode, $locale, $label)
     {
         $identifier = AttributeIdentifier::create('designer', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $optionAttribute = OptionAttribute::create(
             $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AssetFamilyIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray(
                 [
@@ -1389,9 +1389,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an option collection attribute with some options$/
+     * @Given /^an asset family with an option collection attribute with some options$/
      */
-    public function aReferenceEntityWithAnOptionCollectionAttributeWithSomeOptions()
+    public function aAssetFamilyWithAnOptionCollectionAttributeWithSomeOptions()
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
@@ -1401,7 +1401,7 @@ class EditAttributeContext implements Context
 
         $optionAttribute = OptionCollectionAttribute::create(
             $identifier,
-            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AssetFamilyIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString('favorite_color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -1422,9 +1422,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a number attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function aReferenceEntityWithANumberAttributeAndTheLabelEqualTo(
+    public function aAssetFamilyWithANumberAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $localeCode,
         string $label
@@ -1437,7 +1437,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             NumberAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
@@ -1452,11 +1452,11 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a number attribute \'([^\']*)\' non decimal$/
-     * @Given /^a reference entity with a number attribute \'([^\']*)\' no min value$/
-     * @Given /^a reference entity with a number attribute \'([^\']*)\' no max value$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\' non decimal$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\' no min value$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\' no max value$/
      */
-    public function aReferenceEntityWithANumberAttributeNonDecimal(string $attributeCode): void
+    public function aAssetFamilyWithANumberAttributeNonDecimal(string $attributeCode): void
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -1464,7 +1464,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             NumberAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -1528,10 +1528,10 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a min value$/
-     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a min value set to 150$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\' with a min value$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\' with a min value set to 150$/
      */
-    public function aReferenceEntityWithANumberAttributeWithAMinValue(string $attributeCode)
+    public function aAssetFamilyWithANumberAttributeWithAMinValue(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -1539,7 +1539,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             NumberAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -1600,11 +1600,11 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a number attribute \'([^\']*)\'$/
-     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value$/
-     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value set to 200$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\'$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\' with a max value$/
+     * @Given /^an asset family with a number attribute \'([^\']*)\' with a max value set to 200$/
      */
-    public function aReferenceEntityWithANumberAttributeWithAMaxValue(string $attributeCode)
+    public function aAssetFamilyWithANumberAttributeWithAMaxValue(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -1612,7 +1612,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             NumberAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
@@ -1704,9 +1704,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an url attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an asset family with an url attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function aReferenceEntityWithAnUrlAttributeAndTheLabelEqualTo(
+    public function aAssetFamilyWithAnUrlAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $localeCode,
         string $label
@@ -1719,7 +1719,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             UrlAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
@@ -1734,9 +1734,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an url attribute \'([^\']*)\'$/
+     * @Given /^an asset family with an url attribute \'([^\']*)\'$/
      */
-    public function aReferenceEntityWithAnUrlAttribute(string $attributeCode): void
+    public function aAssetFamilyWithAnUrlAttribute(string $attributeCode): void
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
@@ -1744,7 +1744,7 @@ class EditAttributeContext implements Context
         $this->attributeRepository->create(
             UrlAttribute::create(
                 $identifier,
-                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),

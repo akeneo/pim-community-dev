@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditDecimalsAllowedCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditDecimalsAllowedCommandFactorySpec extends ObjectBehavior

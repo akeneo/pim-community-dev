@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -27,7 +27,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class RecordHydrator implements RecordHydratorInterface
+class AssetHydrator implements AssetHydratorInterface
 {
     /** @var ValueHydratorInterface */
     private $valueHydrator;
@@ -45,23 +45,23 @@ class RecordHydrator implements RecordHydratorInterface
         array $row,
         ValueKeyCollection $valueKeyCollection,
         array $attributes
-    ): Record {
-        $recordIdentifier = Type::getType(Type::STRING)
+    ): Asset {
+        $assetIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
-            ->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
-        $recordCode = Type::getType(Type::STRING)
+        $assetFamilyIdentifier = Type::getType(Type::STRING)
+            ->convertToPHPValue($row['asset_family_identifier'], $this->platform);
+        $assetCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $valueCollection = json_decode($row['value_collection'], true);
 
-        $record = Record::create(
-            RecordIdentifier::fromString($recordIdentifier),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            RecordCode::fromString($recordCode),
+        $asset = Asset::create(
+            AssetIdentifier::fromString($assetIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AssetCode::fromString($assetCode),
             ValueCollection::fromValues($this->hydrateValues($valueKeyCollection, $attributes, $valueCollection))
         );
 
-        return $record;
+        return $asset;
     }
 
     private function hydrateValues(ValueKeyCollection $valueKeyCollection, array $attributes, $valueCollection): array

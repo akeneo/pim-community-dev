@@ -10,57 +10,57 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\SearchRecord;
+namespace Akeneo\AssetManager\Application\Asset\SearchAsset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\CountRecordsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetItemsForIdentifiersAndQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\IdentifiersForQueryResult;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Query\Asset\SearchAssetResult;
 
 /**
- * This service takes a record search query and will return a collection of record items.
+ * This service takes a asset search query and will return a collection of asset items.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SearchRecord
+class SearchAsset
 {
     /** @var FindIdentifiersForQueryInterface */
     private $findIdentifiersForQuery;
 
-    /** @var FindRecordItemsForIdentifiersAndQueryInterface */
-    private $findRecordItemsForIdentifiersAndQuery;
+    /** @var FindAssetItemsForIdentifiersAndQueryInterface */
+    private $findAssetItemsForIdentifiersAndQuery;
 
-    /** @var CountRecordsInterface */
-    private $countRecords;
+    /** @var CountAssetsInterface */
+    private $countAssets;
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        FindRecordItemsForIdentifiersAndQueryInterface $findRecordItemsForIdentifiersAndQuery,
-        CountRecordsInterface $countRecords
+        FindAssetItemsForIdentifiersAndQueryInterface $findAssetItemsForIdentifiersAndQuery,
+        CountAssetsInterface $countAssets
     ) {
         $this->findIdentifiersForQuery = $findIdentifiersForQuery;
-        $this->findRecordItemsForIdentifiersAndQuery = $findRecordItemsForIdentifiersAndQuery;
-        $this->countRecords = $countRecords;
+        $this->findAssetItemsForIdentifiersAndQuery = $findAssetItemsForIdentifiersAndQuery;
+        $this->countAssets = $countAssets;
     }
 
-    public function __invoke(RecordQuery $query): SearchRecordResult
+    public function __invoke(AssetQuery $query): SearchAssetResult
     {
         /** @var IdentifiersForQueryResult $result */
         $result = $this->findIdentifiersForQuery->find($query);
-        $records = $this->findRecordItemsForIdentifiersAndQuery->find($result->identifiers, $query);
-        $totalCount = $this->countTotalRecords($query);
+        $assets = $this->findAssetItemsForIdentifiersAndQuery->find($result->identifiers, $query);
+        $totalCount = $this->countTotalAssets($query);
 
-        return new SearchRecordResult($records, $result->matchesCount, $totalCount);
+        return new SearchAssetResult($assets, $result->matchesCount, $totalCount);
     }
 
-    private function countTotalRecords(RecordQuery $recordQuery): int
+    private function countTotalAssets(AssetQuery $assetQuery): int
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($recordQuery->getFilter('reference_entity')['value']);
-        $totalCount = $this->countRecords->forReferenceEntity($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetQuery->getFilter('asset_family')['value']);
+        $totalCount = $this->countAssets->forAssetFamily($assetFamilyIdentifier);
 
         return $totalCount;
     }

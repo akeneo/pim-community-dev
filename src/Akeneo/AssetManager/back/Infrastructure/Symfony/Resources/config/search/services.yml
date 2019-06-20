@@ -1,72 +1,72 @@
 parameters:
-   akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer.batch_size: 1000
+   akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer.batch_size: 1000
 
 services:
     # Subscribers
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:
-        class: Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexRecordSubscriber
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.index_asset:
+        class: Akeneo\AssetManager\Application\Asset\Subscribers\IndexAssetSubscriber
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
-            - '@akeneo_referenceentity.infrastructure.symfony.command.index_by_reference_entity_in_background'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
+            - '@akeneo_assetmanager.infrastructure.symfony.command.index_by_asset_family_in_background'
         tags:
             - { name: kernel.event_subscriber }
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.remove_record_from_index:
-        class: Akeneo\ReferenceEntity\Application\Record\Subscribers\RemoveRecordFromIndexSubscriber
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.remove_asset_from_index:
+        class: Akeneo\AssetManager\Application\Asset\Subscribers\RemoveAssetFromIndexSubscriber
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
         tags:
             - { name: kernel.event_subscriber }
 
     # Indexers
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexer
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer:
+        class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetIndexer
         arguments:
-            - '@akeneo_referenceentity.client.record'
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer'
-            - '%akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer.batch_size%'
+            - '@akeneo_assetmanager.client.asset'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer'
+            - '%akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer.batch_size%'
 
     # Normalizers
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer:
+        class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetNormalizer
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale'
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_values_to_index_for_channel_and_locale'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type'
 
     # Query function
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlFindActivatedLocalesPerChannels
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Channel\SqlFindActivatedLocalesPerChannels
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindIdentifiersForQuery
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query:
+        class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\FindIdentifiersForQuery
         arguments:
-            - '@akeneo_referenceentity.client.record'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes'
+            - '@akeneo_assetmanager.client.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\CountRecords
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets:
+        class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets
         arguments:
-            - '@akeneo_referenceentity.client.record'
+            - '@akeneo_assetmanager.client.asset'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale:
-       class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_values_to_index_for_channel_and_locale:
+       class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales
        arguments:
            - '@database_connection'
-           - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+           - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records:
-       class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets:
+       class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindSearchableAssets
        arguments:
            - '@database_connection'
 
     # Commands
-    akeneo_referenceentity.infrastructure.symfony.command.index_by_reference_entity_in_background:
-        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexByReferenceEntityInBackground
+    akeneo_assetmanager.infrastructure.symfony.command.index_by_asset_family_in_background:
+        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\IndexByAssetFamilyInBackground
         arguments:
             - '@pim_catalog.command_launcher'

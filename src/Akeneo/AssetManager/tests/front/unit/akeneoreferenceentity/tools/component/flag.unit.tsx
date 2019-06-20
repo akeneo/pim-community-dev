@@ -1,5 +1,5 @@
-import Flag from 'akeneoreferenceentity/tools/component/flag';
-import {denormalizeLocale} from 'akeneoreferenceentity/domain/model/locale';
+import Flag from 'akeneoassetmanager/tools/component/flag';
+import {denormalizeLocale} from 'akeneoassetmanager/domain/model/locale';
 import * as React from 'react';
 import {mount} from 'enzyme';
 

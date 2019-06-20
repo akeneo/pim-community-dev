@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\MediaFile;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\MediaFile;
 
-use Akeneo\ReferenceEntity\Domain\Repository\MediaFileNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\MediaFileRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\MediaFileRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 /**
@@ -31,7 +31,7 @@ class SqlMediaFileRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->mediaFileRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.media_file');
+        $this->mediaFileRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.media_file');
         $this->resetDB();
     }
 
@@ -78,6 +78,6 @@ class SqlMediaFileRepositoryTest extends SqlIntegrationTestCase
 
     private function resetDB()
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 }

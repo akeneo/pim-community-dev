@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 /**
  * ----------------------------------
@@ -47,8 +47,8 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
     {
         parent::setUp();
 
-        $this->findRequiredValueKeyCollection = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales');
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->findRequiredValueKeyCollection = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $this->resetDB();
         $this->loadFixtures();
     }
@@ -56,9 +56,9 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
     /**
      * @test
      */
-    public function it_returns_the_value_key_collection_of_required_attributes_of_a_reference_entity()
+    public function it_returns_the_value_key_collection_of_required_attributes_of_an_asset_family()
     {
-        $designer = ReferenceEntityIdentifier::fromString('designer');
+        $designer = AssetFamilyIdentifier::fromString('designer');
         $channel = ChannelIdentifier::fromCode('ecommerce');
         $locales = LocaleIdentifierCollection::fromNormalized(['fr_FR', 'en_US', 'en_AU']);
 
@@ -85,11 +85,11 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
     {
         $this->resetDB();
         $this->fixturesDesigner = $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->withAttributes(['long_description'])
             ->load();
 
-        $designer = ReferenceEntityIdentifier::fromString('designer');
+        $designer = AssetFamilyIdentifier::fromString('designer');
         $channel = ChannelIdentifier::fromCode('mobile');
         $locales = LocaleIdentifierCollection::fromNormalized(['fr_FR', 'en_US']);
 
@@ -100,18 +100,18 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadFixtures(): void
     {
         $this->fixturesDesigner = $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->withAttributes(['country', 'main_image', 'long_description', 'materials', 'nickname'])
             ->load();
 
         $this->fixturesCountry = $this->fixturesLoader
-            ->referenceEntity('country')
+            ->assetFamily('country')
             ->load();
     }
 }

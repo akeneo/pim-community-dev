@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Tick from 'akeneoreferenceentity/application/component/app/icon/tick';
+import Tick from 'akeneoassetmanager/application/component/app/icon/tick';
 
 class InvalidArgumentError extends Error {}
 

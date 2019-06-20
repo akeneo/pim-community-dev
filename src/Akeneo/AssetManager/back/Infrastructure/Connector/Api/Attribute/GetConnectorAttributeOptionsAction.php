@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeSupportsOptions;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeSupportsOptions;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -26,8 +26,8 @@ class GetConnectorAttributeOptionsAction
     /** @var FindConnectorAttributeOptionsInterface */
     private $findConnectorAttributeOptionsQuery;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     /** @var AttributeExistsInterface */
     private $attributeExists;
@@ -37,11 +37,11 @@ class GetConnectorAttributeOptionsAction
 
     public function __construct(
         FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists,
+        AssetFamilyExistsInterface $assetFamilyExists,
         AttributeExistsInterface $attributeExists,
         AttributeSupportsOptions $attributeSupportsOptions
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
+        $this->assetFamilyExists = $assetFamilyExists;
         $this->findConnectorAttributeOptionsQuery = $findConnectorAttributeOptionsQuery;
         $this->attributeExists = $attributeExists;
         $this->attributeSupportsOptions = $attributeSupportsOptions;
@@ -51,18 +51,18 @@ class GetConnectorAttributeOptionsAction
      * @throws UnprocessableEntityHttpException
      * @throws NotFoundHttpException
      */
-    public function __invoke(string $referenceEntityIdentifier, string $attributeCode): JsonResponse
+    public function __invoke(string $assetFamilyIdentifier, string $attributeCode): JsonResponse
     {
         try {
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
+        $assetFamilyExists = $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
 
-        if (false === $referenceEntityExists) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        if (false === $assetFamilyExists) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
         try {
@@ -71,23 +71,23 @@ class GetConnectorAttributeOptionsAction
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $attributeExists = $this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
+        $attributeExists = $this->attributeExists->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
 
         if (false === $attributeExists) {
             throw new NotFoundHttpException(sprintf(
-                'Attribute "%s" does not exist for reference entity "%s".',
+                'Attribute "%s" does not exist for asset family "%s".',
                 (string) $attributeCode,
-                (string) $referenceEntityIdentifier
+                (string) $assetFamilyIdentifier
             ));
         }
 
-        $attributeSupportsOptions = $this->attributeSupportsOptions->supports($referenceEntityIdentifier, $attributeCode);
+        $attributeSupportsOptions = $this->attributeSupportsOptions->supports($assetFamilyIdentifier, $attributeCode);
 
         if (false === $attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 
-        $attributeOptions = $this->findConnectorAttributeOptionsQuery->find($referenceEntityIdentifier, $attributeCode);
+        $attributeOptions = $this->findConnectorAttributeOptionsQuery->find($assetFamilyIdentifier, $attributeCode);
         $normalizedAttributeOptions = [];
 
         foreach ($attributeOptions as $attributeOption) {

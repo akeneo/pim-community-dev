@@ -1,9 +1,9 @@
-import Saver from 'akeneoreferenceentity/domain/saver/attribute';
-import {postJSON} from 'akeneoreferenceentity/tools/fetch';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import MinimalAttribute from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
-import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import Saver from 'akeneoassetmanager/domain/saver/attribute';
+import {postJSON} from 'akeneoassetmanager/tools/fetch';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import MinimalAttribute from 'akeneoassetmanager/domain/model/attribute/minimal';
+import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
+import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 const routing = require('routing');
 
@@ -18,12 +18,12 @@ export class AttributeSaverImplementation implements AttributeSaver {
     const normalizedAttribute = attribute.normalize() as any;
     normalizedAttribute.identifier = {
       identifier: normalizedAttribute.identifier,
-      reference_entity_identifier: normalizedAttribute.reference_entity_identifier,
+      asset_family_identifier: normalizedAttribute.asset_family_identifier,
     };
 
     return await postJSON(
-      routing.generate('akeneo_reference_entities_attribute_edit_rest', {
-        referenceEntityIdentifier: attribute.getReferenceEntityIdentifier().stringValue(),
+      routing.generate('akeneo_asset_manager_attribute_edit_rest', {
+        assetFamilyIdentifier: attribute.getAssetFamilyIdentifier().stringValue(),
         attributeIdentifier: attribute.getIdentifier().identifier,
       }),
       attribute.normalize()
@@ -34,8 +34,8 @@ export class AttributeSaverImplementation implements AttributeSaver {
     const normalizedAttribute = attribute.normalize() as NormalizedAttribute;
 
     return await postJSON(
-      routing.generate('akeneo_reference_entities_attribute_create_rest', {
-        referenceEntityIdentifier: attribute.getReferenceEntityIdentifier().stringValue(),
+      routing.generate('akeneo_asset_manager_attribute_create_rest', {
+        assetFamilyIdentifier: attribute.getAssetFamilyIdentifier().stringValue(),
       }),
       normalizedAttribute
     ).catch(handleError);

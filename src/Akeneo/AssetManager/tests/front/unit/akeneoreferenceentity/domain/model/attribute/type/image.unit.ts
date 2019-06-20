@@ -1,16 +1,16 @@
-import {ConcreteImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
+import {ConcreteImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  createIdentifier as createAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {AttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
+import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 
 const normalizedFrontView = {
   identifier: 'front_view',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'front_view',
   labels: {en_US: 'Front view'},
   type: 'image',
@@ -30,7 +30,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- ImageAttrib
     expect(() => {
       new ConcreteImageAttribute(
         createIdentifier('designer', 'front_view'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'}),
         true,
@@ -43,7 +43,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- ImageAttrib
     expect(() => {
       new ConcreteImageAttribute(
         createIdentifier('designer', 'front_view'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'}),
         true,

@@ -11,33 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordByReferenceEntityAndCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetByAssetFamilyAndCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class InMemoryFindConnectorRecordTest extends TestCase
+class InMemoryFindConnectorAssetTest extends TestCase
 {
-    /** @var InMemoryFindConnectorRecordByReferenceEntityAndCode */
+    /** @var InMemoryFindConnectorAssetByAssetFamilyAndCode */
     private $query;
 
     public function setUp(): void
     {
-        $this->query = new InMemoryFindConnectorRecordByReferenceEntityAndCode();
+        $this->query = new InMemoryFindConnectorAssetByAssetFamilyAndCode();
     }
 
     /**
      * @test
      */
-    public function it_returns_null_when_finding_a_non_existent_record()
+    public function it_returns_null_when_finding_a_non_existent_asset()
     {
         $result = $this->query->find(
-            ReferenceEntityIdentifier::fromString('reference_entity'),
-            RecordCode::fromString('non_existent_record_code')
+            AssetFamilyIdentifier::fromString('asset_family'),
+            AssetCode::fromString('non_existent_asset_code')
         );
 
         Assert::assertNull($result);
@@ -46,26 +46,26 @@ class InMemoryFindConnectorRecordTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_record_when_finding_an_existent_record()
+    public function it_returns_the_asset_when_finding_an_existent_asset()
     {
-        $record = new ConnectorRecord(
-            RecordCode::fromString('record_code'),
+        $asset = new ConnectorAsset(
+            AssetCode::fromString('asset_code'),
             []
         );
         $this->query->save(
-            ReferenceEntityIdentifier::fromString('reference_entity'),
-            RecordCode::fromString('record_code'),
-            $record
+            AssetFamilyIdentifier::fromString('asset_family'),
+            AssetCode::fromString('asset_code'),
+            $asset
         );
 
         $result = $this->query->find(
-            ReferenceEntityIdentifier::fromString('reference_entity'),
-            RecordCode::fromString('record_code')
+            AssetFamilyIdentifier::fromString('asset_family'),
+            AssetCode::fromString('asset_code')
         );
 
         Assert::assertNotNull($result);
         Assert::assertEquals(
-            $record->normalize(),
+            $asset->normalize(),
             $result->normalize()
         );
     }

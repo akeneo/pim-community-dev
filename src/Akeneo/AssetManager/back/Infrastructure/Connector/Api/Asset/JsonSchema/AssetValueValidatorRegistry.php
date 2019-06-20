@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
 /**
- * Register the record value validators by attribute type.
+ * Register the asset value validators by attribute type.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordValueValidatorRegistry
+class AssetValueValidatorRegistry
 {
-    /** @var RecordValueValidatorInterface[] */
+    /** @var AssetValueValidatorInterface[] */
     private $validators = [];
 
     public function __construct(iterable $validators)
@@ -31,10 +31,10 @@ class RecordValueValidatorRegistry
         }
     }
 
-    public function getValidator(string $attributeType): RecordValueValidatorInterface
+    public function getValidator(string $attributeType): AssetValueValidatorInterface
     {
         if (!array_key_exists($attributeType, $this->validators)) {
-            throw new \InvalidArgumentException(sprintf('There was no record value validator found for the attribute type "%s"', $attributeType));
+            throw new \InvalidArgumentException(sprintf('There was no asset value validator found for the attribute type "%s"', $attributeType));
         }
 
         return $this->validators[$attributeType];

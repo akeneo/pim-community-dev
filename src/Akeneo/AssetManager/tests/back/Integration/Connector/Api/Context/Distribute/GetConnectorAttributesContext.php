@@ -11,33 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributesByReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAttributesByAssetFamilyIdentifier;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,116 +52,116 @@ class GetConnectorAttributesContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorAttributesByReferenceEntityIdentifier */
-    private $findConnectorReferenceEntityAttributes;
+    /** @var InMemoryFindConnectorAttributesByAssetFamilyIdentifier */
+    private $findConnectorAssetFamilyAttributes;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     /** @var null|Response */
-    private $attributesForReferenceEntity;
+    private $attributesForAssetFamily;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindConnectorAttributesByReferenceEntityIdentifier $findConnectorReferenceEntityAttributes,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        InMemoryFindConnectorAttributesByAssetFamilyIdentifier $findConnectorAssetFamilyAttributes,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->findConnectorReferenceEntityAttributes = $findConnectorReferenceEntityAttributes;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->findConnectorAssetFamilyAttributes = $findConnectorAssetFamilyAttributes;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
     }
 
     /**
-     * @Given /^6 attributes that structure the Brand reference entity in the PIM$/
+     * @Given /^6 attributes that structure the Brand asset family in the PIM$/
      */
-    public function attributesThatStructureTheBrandReferenceEntityInThePIM()
+    public function attributesThatStructureTheBrandAssetFamilyInThePIM()
     {
-        $referenceEntityIdentifier = 'brand';
+        $assetFamilyIdentifier = 'brand';
 
-        $this->createTextAttribute($referenceEntityIdentifier);
-        $this->createImageAttribute($referenceEntityIdentifier);
-        $this->createOptionAttribute($referenceEntityIdentifier);
-        $this->createMultiOptionAttribute($referenceEntityIdentifier);
-        $this->createSingleLinkAttribute($referenceEntityIdentifier);
-        $this->createMultiLinkAttribute($referenceEntityIdentifier);
+        $this->createTextAttribute($assetFamilyIdentifier);
+        $this->createImageAttribute($assetFamilyIdentifier);
+        $this->createOptionAttribute($assetFamilyIdentifier);
+        $this->createMultiOptionAttribute($assetFamilyIdentifier);
+        $this->createSingleLinkAttribute($assetFamilyIdentifier);
+        $this->createMultiLinkAttribute($assetFamilyIdentifier);
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             [],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @When /^the connector requests the structure of the Brand reference entity from the PIM$/
+     * @When /^the connector requests the structure of the Brand asset family from the PIM$/
      */
-    public function theConnectorRequestsTheStructureOfTheBrandReferenceEntityFromThePIM()
+    public function theConnectorRequestsTheStructureOfTheBrandAssetFamilyFromThePIM()
     {
         $client = $this->clientFactory->logIn('julia');
 
-        $this->attributesForReferenceEntity = $this->webClientHelper->requestFromFile(
+        $this->attributesForAssetFamily = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR ."successful_brand_reference_entity_attributes.json"
+            self::REQUEST_CONTRACT_DIR ."successful_brand_asset_family_attributes.json"
         );
     }
 
     /**
-     * @Then /^the PIM returns the 6 attributes of the Brand reference entity$/
+     * @Then /^the PIM returns the 6 attributes of the Brand asset family$/
      */
-    public function thePIMReturnsTheAttributesOfTheBrandReferenceEntity()
+    public function thePIMReturnsTheAttributesOfTheBrandAssetFamily()
     {
         $this->webClientHelper->assertJsonFromFile(
-            $this->attributesForReferenceEntity,
-            self::REQUEST_CONTRACT_DIR . "successful_brand_reference_entity_attributes.json"
+            $this->attributesForAssetFamily,
+            self::REQUEST_CONTRACT_DIR . "successful_brand_asset_family_attributes.json"
         );
     }
 
     /**
-     * @Given /^some reference entities with some attributes$/
+     * @Given /^some asset families with some attributes$/
      */
-    public function someReferenceEntitiesWithSomeAttributes()
+    public function someAssetFamiliesWithSomeAttributes()
     {
         $firstIdentifier = 'whatever_1';
 
         $this->createTextAttribute($firstIdentifier);
 
-        $firstReferenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString($firstIdentifier),
+        $firstAssetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($firstIdentifier),
             [],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($firstReferenceEntity);
+        $this->assetFamilyRepository->create($firstAssetFamily);
 
         $secondIdentifier = 'whatever_2';
 
         $this->createImageAttribute($secondIdentifier);
 
-        $secondReferenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString($secondIdentifier),
+        $secondAssetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($secondIdentifier),
             [],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($secondReferenceEntity);
+        $this->assetFamilyRepository->create($secondAssetFamily);
     }
 
-    private function createTextAttribute(string $referenceEntityIdentifier)
+    private function createTextAttribute(string $assetFamilyIdentifier)
     {
         $attributeIdentifier = 'description';
 
         $textAttribute = TextAttribute::createText(
-            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeIdentifier::create($assetFamilyIdentifier, $attributeIdentifier, 'test'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             AttributeOrder::fromInteger(2),
@@ -191,19 +191,19 @@ class GetConnectorAttributesContext implements Context
             ]
         );
 
-        $this->findConnectorReferenceEntityAttributes->save(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $this->findConnectorAssetFamilyAttributes->save(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             $textConnectorAttribute
         );
     }
 
-    private function createImageAttribute(string $referenceEntityIdentifier)
+    private function createImageAttribute(string $assetFamilyIdentifier)
     {
         $attributeIdentifier = 'photo';
 
         $imageAttribute = ImageAttribute::create(
-            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeIdentifier::create($assetFamilyIdentifier, $attributeIdentifier, 'test'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
             AttributeOrder::fromInteger(3),
@@ -229,19 +229,19 @@ class GetConnectorAttributesContext implements Context
             ]
         );
 
-        $this->findConnectorReferenceEntityAttributes->save(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $this->findConnectorAssetFamilyAttributes->save(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             $imageAttribute
         );
     }
 
-    private function createOptionAttribute(string $referenceEntityIdentifier)
+    private function createOptionAttribute(string $assetFamilyIdentifier)
     {
         $attributeIdentifier = 'nationality';
 
         $optionAttribute = OptionAttribute::create(
-            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeIdentifier::create($assetFamilyIdentifier, $attributeIdentifier, 'test'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'Nationalité', 'en_US' => 'Nationality']),
             AttributeOrder::fromInteger(4),
@@ -262,19 +262,19 @@ class GetConnectorAttributesContext implements Context
             []
         );
 
-        $this->findConnectorReferenceEntityAttributes->save(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $this->findConnectorAssetFamilyAttributes->save(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             $optionAttribute
         );
     }
 
-    private function createMultiOptionAttribute(string $referenceEntityIdentifier)
+    private function createMultiOptionAttribute(string $assetFamilyIdentifier)
     {
         $attributeIdentifier = 'sales_areas';
 
         $optionAttribute = OptionCollectionAttribute::create(
-            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeIdentifier::create($assetFamilyIdentifier, $attributeIdentifier, 'test'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'Zones de vente', 'en_US' => 'Sales areas']),
             AttributeOrder::fromInteger(5),
@@ -295,19 +295,19 @@ class GetConnectorAttributesContext implements Context
             []
         );
 
-        $this->findConnectorReferenceEntityAttributes->save(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $this->findConnectorAssetFamilyAttributes->save(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             $optionAttribute
         );
     }
 
-    private function createSingleLinkAttribute(string $referenceEntityIdentifier)
+    private function createSingleLinkAttribute(string $assetFamilyIdentifier)
     {
         $attributeIdentifier = 'country';
 
         $linkAttribute = OptionCollectionAttribute::create(
-            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeIdentifier::create($assetFamilyIdentifier, $attributeIdentifier, 'test'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
             AttributeOrder::fromInteger(6),
@@ -321,28 +321,28 @@ class GetConnectorAttributesContext implements Context
         $linkAttribute = new ConnectorAttribute(
             $linkAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
-            'reference_entity_single_link',
+            'asset_family_single_link',
             AttributeValuePerLocale::fromBoolean($linkAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($linkAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(false),
             [
-                "reference_entity_code" => 'country'
+                "asset_family_code" => 'country'
             ]
         );
 
-        $this->findConnectorReferenceEntityAttributes->save(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $this->findConnectorAssetFamilyAttributes->save(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             $linkAttribute
         );
     }
 
-    private function createMultiLinkAttribute(string $referenceEntityIdentifier)
+    private function createMultiLinkAttribute(string $assetFamilyIdentifier)
     {
         $attributeIdentifier = 'designers';
 
         $multiLinkAttribute = OptionCollectionAttribute::create(
-            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeIdentifier::create($assetFamilyIdentifier, $attributeIdentifier, 'test'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['en_US' => 'Designers', 'fr_FR' => 'Designeurs']),
             AttributeOrder::fromInteger(7),
@@ -356,17 +356,17 @@ class GetConnectorAttributesContext implements Context
         $multiLinkAttribute = new ConnectorAttribute(
             $multiLinkAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Designers', 'fr_FR' => 'Designeurs']),
-            'reference_entity_multiple_links',
+            'asset_family_multiple_links',
             AttributeValuePerLocale::fromBoolean($multiLinkAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($multiLinkAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
             [
-                "reference_entity_code" => 'designer'
+                "asset_family_code" => 'designer'
             ]
         );
 
-        $this->findConnectorReferenceEntityAttributes->save(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $this->findConnectorAssetFamilyAttributes->save(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             $multiLinkAttribute
         );
     }

@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\FindReferenceEntityPermissionsDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\PermissionDetails;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\FindAssetFamilyPermissionsDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\PermissionDetails;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
 /**
- * If there are no permissions set for the reference entity, then this query function returns an empty list.
+ * If there are no permissions set for the asset family, then this query function returns an empty list.
  * However, if there are permissions, we need to merge those with all the user group (except 'All') defined in the PIM
  * with the default right level: "view"
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindReferenceEntityPermissionsDetails implements FindReferenceEntityPermissionsDetailsInterface
+class SqlFindAssetFamilyPermissionsDetails implements FindAssetFamilyPermissionsDetailsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -32,10 +32,10 @@ class SqlFindReferenceEntityPermissionsDetails implements FindReferenceEntityPer
     /**
      * @return PermissionDetails[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $userGroups = $this->fetchUserGroups();
-        $permissionDetails = $this->fetchPermissions($referenceEntityIdentifier);
+        $permissionDetails = $this->fetchPermissions($assetFamilyIdentifier);
 
         return $this->hydrate($userGroups, $permissionDetails);
     }
@@ -53,16 +53,16 @@ SQL;
         return false !== $result ? $result : [];
     }
 
-    private function fetchPermissions(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function fetchPermissions(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $query = <<<SQL
 SELECT ug.id as user_group_identifier, ug.name as user_group_name, rp.right_level
-FROM oro_access_group ug INNER JOIN akeneo_reference_entity_reference_entity_permissions rp ON ug.id = rp.user_group_identifier
-WHERE rp.reference_entity_identifier = :reference_entity_identifier;
+FROM oro_access_group ug INNER JOIN akeneo_asset_manager_asset_family_permissions rp ON ug.id = rp.user_group_identifier
+WHERE rp.asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
-            ['reference_entity_identifier' => (string) $referenceEntityIdentifier]
+            ['asset_family_identifier' => (string) $assetFamilyIdentifier]
         );
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 

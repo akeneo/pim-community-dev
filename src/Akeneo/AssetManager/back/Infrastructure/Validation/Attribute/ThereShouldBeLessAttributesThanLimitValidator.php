@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -75,8 +75,8 @@ class ThereShouldBeLessAttributesThanLimitValidator extends ConstraintValidator
 
     private function validateCommand(AbstractCreateAttributeCommand $command): void
     {
-        $total = $this->attributeRepository->countByReferenceEntity(
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier)
+        $total = $this->attributeRepository->countByAssetFamily(
+            AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier)
         );
 
         if ($total >= $this->attributesLimit) {

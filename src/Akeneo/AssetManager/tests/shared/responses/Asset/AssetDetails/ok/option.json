@@ -1,17 +1,17 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_record_get_rest",
+    "route": "akeneo_asset_manager_asset_get_rest",
     "query": {
-      "referenceEntityIdentifier": "designer",
-      "recordCode": "starck"
+      "assetFamilyIdentifier": "designer",
+      "assetCode": "starck"
     }
   },
   "response": {
     "status": 200,
     "body": {
       "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
-      "reference_entity_identifier": "designer",
+      "asset_family_identifier": "designer",
       "code": "starck",
       "labels": {
         "fr_FR": "Philippe Starck"
@@ -21,7 +21,7 @@
         {
           "attribute": {
             "identifier": "option_designer_fingerprint",
-            "reference_entity_identifier": "designer",
+            "asset_family_identifier": "designer",
             "code": "option",
             "labels": {
               "fr_FR": "Couleur",
@@ -54,7 +54,7 @@
         {
           "attribute": {
             "identifier": "option_designer_fingerprint",
-            "reference_entity_identifier": "designer",
+            "asset_family_identifier": "designer",
             "code": "option",
             "labels": {
               "fr_FR": "Couleur",

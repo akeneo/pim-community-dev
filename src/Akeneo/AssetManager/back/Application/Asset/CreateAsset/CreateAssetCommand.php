@@ -10,18 +10,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\CreateRecord;
+namespace Akeneo\AssetManager\Application\Asset\CreateAsset;
 
 /**
- * It represents the intent to create a new record
+ * It represents the intent to create a new asset
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CreateRecordCommand
+class CreateAssetCommand
 {
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
     /** @var string */
     public $code;
@@ -29,9 +29,9 @@ class CreateRecordCommand
     /** @var array */
     public $labels;
 
-    public function __construct(string $referenceEntityIdentifier, string $code, array $labels)
+    public function __construct(string $assetFamilyIdentifier, string $code, array $labels)
     {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->code = $code;
         $this->labels = $labels;
     }

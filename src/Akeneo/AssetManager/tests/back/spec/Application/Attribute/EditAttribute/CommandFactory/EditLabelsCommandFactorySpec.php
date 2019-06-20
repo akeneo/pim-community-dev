@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditLabelsCommandFactorySpec extends ObjectBehavior

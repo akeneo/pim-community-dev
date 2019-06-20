@@ -1,4 +1,4 @@
-import {RegularExpression} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
+import {RegularExpression} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
 
 describe('akeneo > attribute > domain > model > attribute > type > text --- RegularExpression', () => {
   test('I can create a RegularExpression from normalized', () => {

@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommandFactory;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommandFactory;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use PhpSpec\ObjectBehavior;
 
 class EditValidationRuleCommandFactorySpec extends ObjectBehavior

@@ -1,10 +1,10 @@
-import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/option';
-import {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
-import {denormalize as denormalizeOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
+import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/option';
+import {createCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import {denormalize as denormalizeOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 
 const color = denormalizeOptionAttribute({
   identifier: 'option_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'option',
   labels: {en_US: 'Option'},
   type: 'option',
@@ -28,7 +28,7 @@ const color = denormalizeOptionAttribute({
   ],
 });
 
-describe('akeneo > reference entity > domain > model > option > data --- option', () => {
+describe('akeneo > asset family > domain > model > option > data --- option', () => {
   test('I can create a new OptionData with a OptionCode value', () => {
     expect(create(createCode('red')).normalize()).toEqual('red');
     expect(create(null).normalize()).toEqual(null);

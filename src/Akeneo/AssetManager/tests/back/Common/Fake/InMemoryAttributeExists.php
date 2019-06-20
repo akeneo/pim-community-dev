@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -47,16 +47,16 @@ class InMemoryAttributeExists implements AttributeExistsInterface
         return $found;
     }
 
-    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
+    public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): bool
     {
         $attributes = $this->attributeRepository->getAttributes();
         $found = false;
 
         foreach ($attributes as $attribute) {
-            $sameReferenceEntity = $attribute->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier);
+            $sameAssetFamily = $attribute->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier);
             $sameCode = $attribute->getCode()->equals($attributeCode);
 
-            if ($sameReferenceEntity && $sameCode) {
+            if ($sameAssetFamily && $sameCode) {
                 $found = true;
             }
         }
@@ -64,13 +64,13 @@ class InMemoryAttributeExists implements AttributeExistsInterface
         return $found;
     }
 
-    public function withReferenceEntityIdentifierAndOrder(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+    public function withAssetFamilyIdentifierAndOrder(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeOrder $order
     ): bool {
         $attributes = $this->attributeRepository->getAttributes();
         foreach ($attributes as $attribute) {
-            if ((string) $referenceEntityIdentifier === (string) $attribute->getReferenceEntityIdentifier() &&
+            if ((string) $assetFamilyIdentifier === (string) $attribute->getAssetFamilyIdentifier() &&
                 $attribute->hasOrder($order)
             ) {
                 return true;

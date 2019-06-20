@@ -11,46 +11,46 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryDateRepository;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetsByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryDateRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetIdentifiersForQuery;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
@@ -61,9 +61,9 @@ use Webmozart\Assert\Assert;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class GetConnectorRecordsContext implements Context
+class GetConnectorAssetsContext implements Context
 {
-    private const REQUEST_CONTRACT_DIR = 'Record/Connector/Distribute/';
+    private const REQUEST_CONTRACT_DIR = 'Asset/Connector/Distribute/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -71,20 +71,20 @@ class GetConnectorRecordsContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorRecordsByIdentifiers */
-    private $findConnectorRecords;
+    /** @var InMemoryFindConnectorAssetsByIdentifiers */
+    private $findConnectorAssets;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
 
     /** @var array */
-    private $recordPages;
+    private $assetPages;
 
-    /** @var InMemoryFindRecordIdentifiersForQuery */
-    private $findRecordIdentifiersForQuery;
+    /** @var InMemoryFindAssetIdentifiersForQuery */
+    private $findAssetIdentifiersForQuery;
 
     /** @var null|Response */
     private $unprocessableEntityResponse;
@@ -98,8 +98,8 @@ class GetConnectorRecordsContext implements Context
     /** @var InMemoryChannelExists */
     private $channelExists;
 
-    /** @var ConnectorRecord[] */
-    private $connectorRecordsByRecordIdentifier;
+    /** @var ConnectorAsset[] */
+    private $connectorAssetsByAssetIdentifier;
 
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
     private $findActivatedLocalesByIdentifiers;
@@ -119,9 +119,9 @@ class GetConnectorRecordsContext implements Context
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindRecordIdentifiersForQuery $findRecordIdentifiersForQuery,
-        InMemoryFindConnectorRecordsByIdentifiers $findConnectorRecords,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        InMemoryFindAssetIdentifiersForQuery $findAssetIdentifiersForQuery,
+        InMemoryFindConnectorAssetsByIdentifiers $findConnectorAssets,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         InMemoryAttributeRepository $attributeRepository,
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers,
@@ -131,11 +131,11 @@ class GetConnectorRecordsContext implements Context
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->findConnectorRecords = $findConnectorRecords;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->findConnectorAssets = $findConnectorAssets;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->recordPages = [];
-        $this->findRecordIdentifiersForQuery = $findRecordIdentifiersForQuery;
+        $this->assetPages = [];
+        $this->findAssetIdentifiersForQuery = $findAssetIdentifiersForQuery;
         $this->channelExists = $channelExists;
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
         $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
@@ -144,35 +144,35 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Given /^([\d]+) records for the ([\S]+) reference entity$/
+     * @Given /^([\d]+) assets for the ([\S]+) asset family$/
      */
-    public function theRecordsForTheReferenceEntity(int $numberOfRecords, string $referenceEntityIdentifier): void
+    public function theAssetsForTheAssetFamily(int $numberOfAssets, string $assetFamilyIdentifier): void
     {
-        $referenceEntityIdentifier = strtolower($referenceEntityIdentifier);
+        $assetFamilyIdentifier = strtolower($assetFamilyIdentifier);
 
-        for ($i = 1; $i <= $numberOfRecords; $i++) {
-            $rawRecordCode = sprintf('%s_%d', $referenceEntityIdentifier, $i);
-            $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+        for ($i = 1; $i <= $numberOfAssets; $i++) {
+            $rawAssetCode = sprintf('%s_%d', $assetFamilyIdentifier, $i);
+            $assetCode = AssetCode::fromString($rawAssetCode);
+            $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
             $labelCollection = [
-                'en_US' => sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i)
+                'en_US' => sprintf('%s number %d', ucfirst($assetFamilyIdentifier), $i)
             ];
 
             $mainImageInfo = (new FileInfo())
-                ->setOriginalFilename(sprintf('%s_image.jpg', $rawRecordCode))
-                ->setKey(sprintf('test/%s_image.jpg', $rawRecordCode));
+                ->setOriginalFilename(sprintf('%s_image.jpg', $rawAssetCode))
+                ->setKey(sprintf('test/%s_image.jpg', $rawAssetCode));
             $mainImage = Image::fromFileInfo($mainImageInfo);
 
-            Record::create(
-                $recordIdentifier,
-                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-                $recordCode,
+            Asset::create(
+                $assetIdentifier,
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                $assetCode,
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                        TextData::fromString(sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i))
+                        TextData::fromString(sprintf('%s number %d', ucfirst($assetFamilyIdentifier), $i))
                     ),
                     Value::create(
                         AttributeIdentifier::fromString('main_image_brand_fingerprint'),
@@ -183,8 +183,8 @@ class GetConnectorRecordsContext implements Context
                 ])
             );
 
-            $connectorRecord = new ConnectorRecord(
-                $recordCode,
+            $connectorAsset = new ConnectorAsset(
+                $assetCode,
                 [
                     'label' => [
                         [
@@ -197,7 +197,7 @@ class GetConnectorRecordsContext implements Context
                         [
                             'locale' => 'en_US',
                             'channel' => null,
-                            'data' => sprintf('%s example %d', ucfirst($referenceEntityIdentifier), $i)
+                            'data' => sprintf('%s example %d', ucfirst($assetFamilyIdentifier), $i)
                         ]
                     ],
                     'country' => [
@@ -217,31 +217,31 @@ class GetConnectorRecordsContext implements Context
                 ]
             );
 
-            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+            $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
         }
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             [],
             Image::createEmpty()
         );
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @When /^the connector requests all records of the ([\S]+) reference entity$/
+     * @When /^the connector requests all assets of the ([\S]+) asset family$/
      */
-    public function theConnectorRequestsAllRecordsOfTheReferenceEntity(string $referenceEntityIdentifier): void
+    public function theConnectorRequestsAllAssetsOfTheAssetFamily(string $assetFamilyIdentifier): void
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->recordPages = [];
+        $this->assetPages = [];
 
         for ($page = 1; $page <= 4; $page++) {
-            $this->recordPages[$page] = $this->webClientHelper->requestFromFile(
+            $this->assetPages[$page] = $this->webClientHelper->requestFromFile(
                 $client,
                 self::REQUEST_CONTRACT_DIR . sprintf(
-                    "successful_%s_records_page_%d.json",
-                    strtolower($referenceEntityIdentifier),
+                    "successful_%s_assets_page_%d.json",
+                    strtolower($assetFamilyIdentifier),
                     $page
                 )
             );
@@ -249,17 +249,17 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the [\d]+ records of the ([\S]+) reference entity$/
+     * @Then /^the PIM returns the [\d]+ assets of the ([\S]+) asset family$/
      */
-    public function thePimReturnsTheRecordsOfTheReferenceEntity(string $referenceEntityIdentifier): void
+    public function thePimReturnsTheAssetsOfTheAssetFamily(string $assetFamilyIdentifier): void
     {
         for ($page = 1; $page <= 4; $page++) {
-            Assert::keyExists($this->recordPages, $page, sprintf('The page %d has not been loaded', $page));
+            Assert::keyExists($this->assetPages, $page, sprintf('The page %d has not been loaded', $page));
             $this->webClientHelper->assertJsonFromFile(
-                $this->recordPages[$page],
+                $this->assetPages[$page],
                 self::REQUEST_CONTRACT_DIR . sprintf(
-                    "successful_%s_records_page_%d.json",
-                    strtolower($referenceEntityIdentifier),
+                    "successful_%s_assets_page_%d.json",
+                    strtolower($assetFamilyIdentifier),
                     $page
                 )
             );
@@ -267,11 +267,11 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Given 3 records for the Brand reference entity with filled attribute values for the Ecommerce and the Tablet channels
+     * @Given 3 assets for the Brand asset family with filled attribute values for the Ecommerce and the Tablet channels
      */
-    public function theRecordsForTheBrandReferenceEntityWithFilledAttributesValuesForTwoChannels(): void
+    public function theAssetsForTheBrandAssetFamilyWithFilledAttributesValuesForTwoChannels(): void
     {
-        $referenceEntityIdentifier = 'brand';
+        $assetFamilyIdentifier = 'brand';
         $firstChannel = 'ecommerce';
         $secondChannel = 'tablet';
 
@@ -279,28 +279,28 @@ class GetConnectorRecordsContext implements Context
         $this->channelExists->save(ChannelIdentifier::fromCode($secondChannel));
 
         for ($i = 1; $i <= 3; $i++) {
-            $rawRecordCode = sprintf('%s_%d', $referenceEntityIdentifier, $i);
-            $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $rawAssetCode = sprintf('%s_%d', $assetFamilyIdentifier, $i);
+            $assetCode = AssetCode::fromString($rawAssetCode);
+            $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
             $labelCollection = [
-                'en_US' => sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i)
+                'en_US' => sprintf('%s number %d', ucfirst($assetFamilyIdentifier), $i)
             ];
 
             $mainImageInfo = (new FileInfo())
-                ->setOriginalFilename(sprintf('%s_image.jpg', $rawRecordCode))
-                ->setKey(sprintf('test/%s_image.jpg', $rawRecordCode));
+                ->setOriginalFilename(sprintf('%s_image.jpg', $rawAssetCode))
+                ->setKey(sprintf('test/%s_image.jpg', $rawAssetCode));
             $mainImage = Image::fromFileInfo($mainImageInfo);
 
-            Record::create(
-                $recordIdentifier,
-                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-                $recordCode,
+            Asset::create(
+                $assetIdentifier,
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                $assetCode,
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                        TextData::fromString(sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i))
+                        TextData::fromString(sprintf('%s number %d', ucfirst($assetFamilyIdentifier), $i))
                     ),
                     Value::create(
                         AttributeIdentifier::fromString('main_image_brand_fingerprint'),
@@ -311,8 +311,8 @@ class GetConnectorRecordsContext implements Context
                 ])
             );
 
-            $connectorRecord = new ConnectorRecord(
-                $recordCode,
+            $connectorAsset = new ConnectorAsset(
+                $assetCode,
                 [
                     'label' => [
                         [
@@ -327,7 +327,7 @@ class GetConnectorRecordsContext implements Context
                             'channel' => $firstChannel,
                             'data' => sprintf(
                                 'Description for %s number %d and channel %s',
-                                ucfirst($referenceEntityIdentifier), $i, $firstChannel
+                                ucfirst($assetFamilyIdentifier), $i, $firstChannel
                             )
                         ],
                         [
@@ -335,7 +335,7 @@ class GetConnectorRecordsContext implements Context
                             'channel' => $secondChannel,
                             'data' => sprintf(
                                 'Description for %s number %d and channel %s',
-                                ucfirst($referenceEntityIdentifier), $i, $secondChannel
+                                ucfirst($assetFamilyIdentifier), $i, $secondChannel
                             )
                         ]
                     ],
@@ -356,51 +356,51 @@ class GetConnectorRecordsContext implements Context
                 ]
             );
 
-            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+            $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
         }
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             [],
             Image::createEmpty()
         );
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @When the connector requests all records of the Brand reference entity with the information of the Ecommerce channel
+     * @When the connector requests all assets of the Brand asset family with the information of the Ecommerce channel
      */
-    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheInformationOfTheEcommerceChannel(): void
+    public function theConnectorRequestsAllAssetsOfTheBrandAssetFamilyWithTheInformationOfTheEcommerceChannel(): void
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->recordPages = [];
+        $this->assetPages = [];
 
-        $this->recordPages[1] = $this->webClientHelper->requestFromFile(
+        $this->assetPages[1] = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_ecommerce_channel.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_for_ecommerce_channel.json'
         );
     }
 
     /**
-     * @Then the PIM returns 3 records of the Brand reference entity with only the information of the Ecommerce channel
+     * @Then the PIM returns 3 assets of the Brand asset family with only the information of the Ecommerce channel
      */
-    public function thePimReturnsAllRecordsOfTheBrandReferenceEntityWithOnlyAttributeValuesOfTheEcommerceChannel(): void
+    public function thePimReturnsAllAssetsOfTheBrandAssetFamilyWithOnlyAttributeValuesOfTheEcommerceChannel(): void
     {
-        Assert::keyExists($this->recordPages, 1, 'The page 1 has not been loaded');
+        Assert::keyExists($this->assetPages, 1, 'The page 1 has not been loaded');
 
         $this->webClientHelper->assertJsonFromFile(
-            $this->recordPages[1],
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_ecommerce_channel.json'
+            $this->assetPages[1],
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_for_ecommerce_channel.json'
         );
     }
 
     /**
-     * @When the connector requests all records of the Brand reference entity with the information of a non-existent channel
+     * @When the connector requests all assets of the Brand asset family with the information of a non-existent channel
      */
-    public function theConnectorRequestAllRecordsOfTheBrandReferenceEntityWithTheInformationOfANonExistentChannel(): void
+    public function theConnectorRequestAllAssetsOfTheBrandAssetFamilyWithTheInformationOfANonExistentChannel(): void
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->requestContract = 'unprocessable_entity_brand_records_for_non_existent_channel.json';
+        $this->requestContract = 'unprocessable_entity_brand_assets_for_non_existent_channel.json';
 
         $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
             $client,
@@ -420,38 +420,38 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Given 3 records for the Brand reference entity with filled attribute values for the English and the French locales
+     * @Given 3 assets for the Brand asset family with filled attribute values for the English and the French locales
      */
-    public function theRecordsForTheBrandReferenceEntityWithFilledAttributeValuesForEnglishAndFrenchLocales()
+    public function theAssetsForTheBrandAssetFamilyWithFilledAttributeValuesForEnglishAndFrenchLocales()
     {
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
 
         for ($i = 1; $i <= 3; $i++) {
-            $rawRecordCode = sprintf('brand_%d', $i);
-            $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $rawAssetCode = sprintf('brand_%d', $i);
+            $assetCode = AssetCode::fromString($rawAssetCode);
+            $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
 
-            Record::create(
-                $recordIdentifier,
-                ReferenceEntityIdentifier::fromString('brand'),
-                $recordCode,
+            Asset::create(
+                $assetIdentifier,
+                AssetFamilyIdentifier::fromString('brand'),
+                $assetCode,
                 ValueCollection::fromValues([])
             );
 
-            $connectorRecord = new ConnectorRecord(
-                $recordCode,
+            $connectorAsset = new ConnectorAsset(
+                $assetCode,
                 [
                     'label' => [
                         [
                             'locale'  => 'en_US',
                             'channel' => null,
-                            'value'   => sprintf('English label for %s', $rawRecordCode)
+                            'value'   => sprintf('English label for %s', $rawAssetCode)
                         ],
                         [
                             'locale'  => 'fr_FR',
                             'channel' => null,
-                            'value'   => sprintf('French label for %s', $rawRecordCode)
+                            'value'   => sprintf('French label for %s', $rawAssetCode)
                         ]
                     ],
                     'description' => [
@@ -481,51 +481,51 @@ class GetConnectorRecordsContext implements Context
                 ]
             );
 
-            $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
-            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+            $this->connectorAssetsByAssetIdentifier[(string) $assetIdentifier] = $connectorAsset;
+            $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
         }
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [],
             Image::createEmpty()
         );
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @When the connector requests all records of the Brand reference entity with the information in English
+     * @When the connector requests all assets of the Brand asset family with the information in English
      */
-    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheInformationInEnglish()
+    public function theConnectorRequestsAllAssetsOfTheBrandAssetFamilyWithTheInformationInEnglish()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->recordPages[1] = $this->webClientHelper->requestFromFile(
+        $this->assetPages[1] = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_english_locale.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_for_english_locale.json'
         );
     }
 
     /**
-     * @Then the PIM returns 3 records of the Brand reference entity with the information in English only
+     * @Then the PIM returns 3 assets of the Brand asset family with the information in English only
      */
-    public function thePimReturnsTheRecordsOfTheBrandReferenceEntityWithTheInformationInEnglishOnly()
+    public function thePimReturnsTheAssetsOfTheBrandAssetFamilyWithTheInformationInEnglishOnly()
     {
-        Assert::keyExists($this->recordPages, 1, 'The page 1 has not been loaded');
+        Assert::keyExists($this->assetPages, 1, 'The page 1 has not been loaded');
 
         $this->webClientHelper->assertJsonFromFile(
-            $this->recordPages[1],
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_english_locale.json'
+            $this->assetPages[1],
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_for_english_locale.json'
         );
     }
 
     /**
-     * @When the connector requests all records of the Brand reference entity with the information of a provided locale that does not exist
+     * @When the connector requests all assets of the Brand asset family with the information of a provided locale that does not exist
      */
-    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheAttributesValuesOfAProvidedLocaleThatDoesNotExist()
+    public function theConnectorRequestsAllAssetsOfTheBrandAssetFamilyWithTheAttributesValuesOfAProvidedLocaleThatDoesNotExist()
     {
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
         $client = $this->clientFactory->logIn('julia');
-        $this->requestContract = 'unprocessable_entity_brand_records_for_non_existent_locale.json';
+        $this->requestContract = 'unprocessable_entity_brand_assets_for_non_existent_locale.json';
 
         $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
             $client,
@@ -540,41 +540,41 @@ class GetConnectorRecordsContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->unprocessableEntityResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_locale.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_assets_for_non_existent_locale.json'
         );
     }
 
     /**
-     * @Given /^([\d]+) records for the Brand reference entity on the Ecommerce channel that are incomplete for the French locale but complete for the English locale$/
+     * @Given /^([\d]+) assets for the Brand asset family on the Ecommerce channel that are incomplete for the French locale but complete for the English locale$/
      */
-    public function recordsForTheBrandReferenceEntityOnTheEcommerceChannelThatAreIncompleteForTheFrenchLocaleButCompleteForTheEnglishLocale(int $numberOfRecords)
+    public function assetsForTheBrandAssetFamilyOnTheEcommerceChannelThatAreIncompleteForTheFrenchLocaleButCompleteForTheEnglishLocale(int $numberOfAssets)
     {
         $this->findActivatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
-        $this->loadBrandReferenceEntity();
+        $this->loadBrandAssetFamily();
         $this->loadRequiredAttribute();
         $this->loadNotRequiredAttribute();
 
-        for ($i = 1; $i <= $numberOfRecords; $i++) {
-            $rawRecordCode = sprintf('incomplete_french_%d', $i);
-            $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+        for ($i = 1; $i <= $numberOfAssets; $i++) {
+            $rawAssetCode = sprintf('incomplete_french_%d', $i);
+            $assetCode = AssetCode::fromString($rawAssetCode);
+            $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
             $labelCollection = [
-                'en_US' => sprintf('Incomplete french Brand record number %d', $i)
+                'en_US' => sprintf('Incomplete french Brand asset number %d', $i)
             ];
 
-            Record::create(
-                $recordIdentifier,
-                ReferenceEntityIdentifier::fromString('brand'),
-                $recordCode,
+            Asset::create(
+                $assetIdentifier,
+                AssetFamilyIdentifier::fromString('brand'),
+                $assetCode,
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                        TextData::fromString(sprintf('Incomplete french Brand record number %d', $i))
+                        TextData::fromString(sprintf('Incomplete french Brand asset number %d', $i))
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
@@ -597,8 +597,8 @@ class GetConnectorRecordsContext implements Context
                 ])
             );
 
-            $connectorRecord = new ConnectorRecord(
-                $recordCode,
+            $connectorAsset = new ConnectorAsset(
+                $assetCode,
                 [
                     'label' => [
                         [
@@ -629,33 +629,33 @@ class GetConnectorRecordsContext implements Context
                 ]
             );
 
-            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+            $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
         }
     }
 
     /**
-     * @Given /^([\d]+) records for the Brand reference entity on the Ecommerce channel that are complete for the French locale but that are incomplete for the English locale$/
+     * @Given /^([\d]+) assets for the Brand asset family on the Ecommerce channel that are complete for the French locale but that are incomplete for the English locale$/
      */
-    public function recordsForTheBrandReferenceEntityOnTheEcommerceChannelThatAreCompleteForTheFrenchLocaleButThatAreIncompleteForTheEnglishLocale(int $numberOfRecords)
+    public function assetsForTheBrandAssetFamilyOnTheEcommerceChannelThatAreCompleteForTheFrenchLocaleButThatAreIncompleteForTheEnglishLocale(int $numberOfAssets)
     {
-        for ($i = 1; $i <= $numberOfRecords; $i++) {
-            $rawRecordCode = sprintf('incomplete_english_%d', $i);
-            $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+        for ($i = 1; $i <= $numberOfAssets; $i++) {
+            $rawAssetCode = sprintf('incomplete_english_%d', $i);
+            $assetCode = AssetCode::fromString($rawAssetCode);
+            $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
             $labelCollection = [
-                'en_US' => sprintf('Incomplete english Brand record number %d', $i)
+                'en_US' => sprintf('Incomplete english Brand asset number %d', $i)
             ];
 
-            Record::create(
-                $recordIdentifier,
-                ReferenceEntityIdentifier::fromString('brand'),
-                $recordCode,
+            Asset::create(
+                $assetIdentifier,
+                AssetFamilyIdentifier::fromString('brand'),
+                $assetCode,
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                        TextData::fromString(sprintf('Incomplete english Brand record number %d', $i))
+                        TextData::fromString(sprintf('Incomplete english Brand asset number %d', $i))
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
@@ -678,8 +678,8 @@ class GetConnectorRecordsContext implements Context
                 ])
             );
 
-            $connectorRecord = new ConnectorRecord(
-                $recordCode,
+            $connectorAsset = new ConnectorAsset(
+                $assetCode,
                 [
                     'label' => [
                         [
@@ -710,36 +710,36 @@ class GetConnectorRecordsContext implements Context
                 ]
             );
 
-            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+            $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
         }
     }
 
     /**
-     * @Given /^([\d]+) records for the Brand reference entity on the Ecommerce channel that are both complete for the French and the English locale$/
+     * @Given /^([\d]+) assets for the Brand asset family on the Ecommerce channel that are both complete for the French and the English locale$/
      */
-    public function recordsForTheBrandReferenceEntityOnTheEcommerceChannelThatAreBothCompleteForTheFrenchAndTheEnglishLocale(int $numberOfRecords)
+    public function assetsForTheBrandAssetFamilyOnTheEcommerceChannelThatAreBothCompleteForTheFrenchAndTheEnglishLocale(int $numberOfAssets)
     {
         $this->findRequiredValueKeyCollectionForChannelAndLocales->setActivatedChannels(['ecommerce']);
         $this->findRequiredValueKeyCollectionForChannelAndLocales->setActivatedLocales(['en_US', 'fr_FR']);
 
-        for ($i = 1; $i <= $numberOfRecords; $i++) {
-            $rawRecordCode = sprintf('complete_brand_record_%d', $i);
-            $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+        for ($i = 1; $i <= $numberOfAssets; $i++) {
+            $rawAssetCode = sprintf('complete_brand_asset_%d', $i);
+            $assetCode = AssetCode::fromString($rawAssetCode);
+            $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
             $labelCollection = [
-                'en_US' => sprintf('Complete Brand record number %d', $i)
+                'en_US' => sprintf('Complete Brand asset number %d', $i)
             ];
 
-            Record::create(
-                $recordIdentifier,
-                ReferenceEntityIdentifier::fromString('brand'),
-                $recordCode,
+            Asset::create(
+                $assetIdentifier,
+                AssetFamilyIdentifier::fromString('brand'),
+                $assetCode,
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                        TextData::fromString(sprintf('Complete Brand record number %d', $i))
+                        TextData::fromString(sprintf('Complete Brand asset number %d', $i))
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
@@ -768,8 +768,8 @@ class GetConnectorRecordsContext implements Context
                 ])
             );
 
-            $connectorRecord = new ConnectorRecord(
-                $recordCode,
+            $connectorAsset = new ConnectorAsset(
+                $assetCode,
                 [
                     'label' => [
                         [
@@ -805,42 +805,42 @@ class GetConnectorRecordsContext implements Context
                 ]
             );
 
-            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+            $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
         }
     }
 
     /**
-     * @When the connector requests all complete records of the Brand reference entity on the Ecommerce channel for the French and English locales
+     * @When the connector requests all complete assets of the Brand asset family on the Ecommerce channel for the French and English locales
      */
-    public function theConnectorRequestsAllCompleteRecordsOfTheBrandReferenceEntityOnTheEcommerceChannelForTheFrenchAndEnglishLocales()
+    public function theConnectorRequestsAllCompleteAssetsOfTheBrandAssetFamilyOnTheEcommerceChannelForTheFrenchAndEnglishLocales()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->recordPages[1] = $this->webClientHelper->requestFromFile(
+        $this->assetPages[1] = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'successful_complete_brand_records.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_complete_brand_assets.json'
         );
     }
 
     /**
-     * @Then the PIM returns the 2 complete records of the Brand reference entity on the Ecommerce channel for the French and English locales
+     * @Then the PIM returns the 2 complete assets of the Brand asset family on the Ecommerce channel for the French and English locales
      */
-    public function thePimReturnsThe2CompleteRecordsOfTheBrandReferenceEntityOnTheEcommerceChannelForTheFrenchAndEnglishLocales()
+    public function thePimReturnsThe2CompleteAssetsOfTheBrandAssetFamilyOnTheEcommerceChannelForTheFrenchAndEnglishLocales()
     {
-        Assert::keyExists($this->recordPages, 1, 'The page 1 has not been loaded');
+        Assert::keyExists($this->assetPages, 1, 'The page 1 has not been loaded');
 
         $this->webClientHelper->assertJsonFromFile(
-            $this->recordPages[1],
-            self::REQUEST_CONTRACT_DIR . 'successful_complete_brand_records.json'
+            $this->assetPages[1],
+            self::REQUEST_CONTRACT_DIR . 'successful_complete_brand_assets.json'
         );
     }
 
     /**
-     * @When /^the connector requests all complete records of the Brand reference entity on a channel that does not exist$/
+     * @When /^the connector requests all complete assets of the Brand asset family on a channel that does not exist$/
      */
-    public function theConnectorRequestsAllCompleteRecordsOfTheBrandReferenceEntityOnAChannelThatDoesNotExist()
+    public function theConnectorRequestsAllCompleteAssetsOfTheBrandAssetFamilyOnAChannelThatDoesNotExist()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->requestContract = 'unprocessable_entity_brand_records_filtered_on_completeness_for_a_non_existent_channel.json';
+        $this->requestContract = 'unprocessable_entity_brand_assets_filtered_on_completeness_for_a_non_existent_channel.json';
 
         $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
             $client,
@@ -849,12 +849,12 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @When /^the connector requests all complete records of the Brand reference entity on the Ecommerce channel for a not activated locale$/
+     * @When /^the connector requests all complete assets of the Brand asset family on the Ecommerce channel for a not activated locale$/
      */
-    public function theConnectorRequestsAllCompleteRecordsOfTheBrandReferenceEntityOnTheEcommerceChannelForANotActivatedLocale()
+    public function theConnectorRequestsAllCompleteAssetsOfTheBrandAssetFamilyOnTheEcommerceChannelForANotActivatedLocale()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->requestContract = 'unprocessable_entity_brand_records_filtered_on_completeness_for_a_non_existent_locale.json';
+        $this->requestContract = 'unprocessable_entity_brand_assets_filtered_on_completeness_for_a_non_existent_locale.json';
 
         $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
             $client,
@@ -862,22 +862,22 @@ class GetConnectorRecordsContext implements Context
         );
     }
 
-    private function loadBrandReferenceEntity(): void
+    private function loadBrandAssetFamily(): void
     {
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     private function loadRequiredAttribute(): void
     {
         $attribute = TextAttribute::createText(
             AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('required_attribute'),
             LabelCollection::fromArray(['en_US' => 'Required attribute']),
             AttributeOrder::fromInteger(2),
@@ -896,7 +896,7 @@ class GetConnectorRecordsContext implements Context
     {
         $attribute = TextAttribute::createText(
             AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('not_required_attribute'),
             LabelCollection::fromArray(['en_US' => 'Not required attribute']),
             AttributeOrder::fromInteger(3),
@@ -912,21 +912,21 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Given /^2 records for the Brand reference entity that were last updated on the 10th of October (\d+)$/
+     * @Given /^2 assets for the Brand asset family that were last updated on the 10th of October (\d+)$/
      */
-    public function recordsForTheBrandReferenceEntityThatWereLastUpdatedOnThe10thOfOctober()
+    public function assetsForTheBrandAssetFamilyThatWereLastUpdatedOnThe10thOfOctober()
     {
         $this->dateRepository->setCurrentDate(new \DateTime('2018-10-10'));
 
         for ($i = 4; $i >= 2; $i--) {
-            $rawRecordCode = sprintf('brand_%d', $i);
-            $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $rawAssetCode = sprintf('brand_%d', $i);
+            $assetCode = AssetCode::fromString($rawAssetCode);
+            $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
 
-            Record::create(
-                $recordIdentifier,
-                ReferenceEntityIdentifier::fromString('brand_test'),
-                $recordCode,
+            Asset::create(
+                $assetIdentifier,
+                AssetFamilyIdentifier::fromString('brand_test'),
+                $assetCode,
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_brand_fingerprint'),
@@ -937,40 +937,40 @@ class GetConnectorRecordsContext implements Context
                 ])
             );
 
-            $connectorRecord = new ConnectorRecord(
-                $recordCode,
+            $connectorAsset = new ConnectorAsset(
+                $assetCode,
                 []
             );
 
-            $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
-            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+            $this->connectorAssetsByAssetIdentifier[(string) $assetIdentifier] = $connectorAsset;
+            $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
         }
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand_test'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand_test'),
             [],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @Given /^2 records for the Brand reference entity that were updated on the 15th of October 2018$/
+     * @Given /^2 assets for the Brand asset family that were updated on the 15th of October 2018$/
      */
-    public function recordsForTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
+    public function assetsForTheBrandAssetFamilyThatWereUpdatedOnThe15thOfOctober()
     {
         $this->dateRepository->setCurrentDate(new \DateTime('2018-10-15'));
 
         for ($i = 2; $i >= 0; $i--) {
-            $rawRecordCode = sprintf('brand_%d', $i);
-            $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $rawAssetCode = sprintf('brand_%d', $i);
+            $assetCode = AssetCode::fromString($rawAssetCode);
+            $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
 
-            Record::create(
-                $recordIdentifier,
-                ReferenceEntityIdentifier::fromString('brand_test'),
-                $recordCode,
+            Asset::create(
+                $assetIdentifier,
+                AssetFamilyIdentifier::fromString('brand_test'),
+                $assetCode,
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_brand_fingerprint'),
@@ -981,50 +981,50 @@ class GetConnectorRecordsContext implements Context
                 ])
             );
 
-            $connectorRecord = new ConnectorRecord(
-                $recordCode,
+            $connectorAsset = new ConnectorAsset(
+                $assetCode,
                 []
             );
 
-            $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
-            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+            $this->connectorAssetsByAssetIdentifier[(string) $assetIdentifier] = $connectorAsset;
+            $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
         }
     }
 
     /**
-     * @When /^the connector requests all records of the Brand reference entity updated since the 14th of October 2018$/
+     * @When /^the connector requests all assets of the Brand asset family updated since the 14th of October 2018$/
      */
-    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityUpdatedSinceThe14thOfOctober()
+    public function theConnectorRequestsAllAssetsOfTheBrandAssetFamilyUpdatedSinceThe14thOfOctober()
     {
         $client = $this->clientFactory->logIn('julia');
 
         $this->updatedSinceResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'updated_since_brand_records_page_1.json'
+            self::REQUEST_CONTRACT_DIR . 'updated_since_brand_assets_page_1.json'
         );
     }
 
     /**
-     * @Then /^the PIM returns the 2 records of the Brand reference entity that were updated on the 15th of October 2018$/
+     * @Then /^the PIM returns the 2 assets of the Brand asset family that were updated on the 15th of October 2018$/
      */
-    public function thePIMReturnsTheRecordsOfTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
+    public function thePIMReturnsTheAssetsOfTheBrandAssetFamilyThatWereUpdatedOnThe15thOfOctober()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->updatedSinceResponse,
-            self::REQUEST_CONTRACT_DIR . 'updated_since_brand_records_page_1.json'
+            self::REQUEST_CONTRACT_DIR . 'updated_since_brand_assets_page_1.json'
         );
     }
 
     /**
-     * @When /^the connector requests records that were updated since a date that does not have the right format$/
+     * @When /^the connector requests assets that were updated since a date that does not have the right format$/
      */
-    public function theConnectorRequestsRecordsThatWereUpdatedSinceADateThatDoesNotHaveTheRightFormat()
+    public function theConnectorRequestsAssetsThatWereUpdatedSinceADateThatDoesNotHaveTheRightFormat()
     {
         $client = $this->clientFactory->logIn('julia');
 
         $this->updatedSinceWrongFormatResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_assets_for_wrong_format.json'
         );
     }
 
@@ -1035,7 +1035,7 @@ class GetConnectorRecordsContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->updatedSinceWrongFormatResponse,
-            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_assets_for_wrong_format.json'
         );
     }
 }

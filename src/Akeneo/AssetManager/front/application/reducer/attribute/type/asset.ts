@@ -1,11 +1,11 @@
-import {NormalizedRecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record';
-import {NormalizedRecordCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record-collection';
+import {NormalizedAssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
+import {NormalizedAssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
 
-const recordAttributeReducer = (
-  normalizedAttribute: NormalizedRecordAttribute | NormalizedRecordCollectionAttribute
-): NormalizedRecordAttribute | NormalizedRecordCollectionAttribute => {
+const assetAttributeReducer = (
+  normalizedAttribute: NormalizedAssetAttribute | NormalizedAssetCollectionAttribute
+): NormalizedAssetAttribute | NormalizedAssetCollectionAttribute => {
   // Nothing to edit
   return normalizedAttribute;
 };
 
-export const reducer = recordAttributeReducer;
+export const reducer = assetAttributeReducer;

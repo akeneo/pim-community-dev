@@ -11,57 +11,57 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlReferenceEntityExistsTest extends SqlIntegrationTestCase
+class SqlAssetFamilyExistsTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->referenceEntityExists = $this->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists');
+        $this->assetFamilyExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists');
         $this->resetDB();
     }
 
     /**
      * @test
      */
-    public function it_tells_if_there_is_a_corresponding_record_identifier()
+    public function it_tells_if_there_is_a_corresponding_asset_identifier()
     {
-        $this->loadReferenceEntityDesigner();
-        $this->assertTrue($this->referenceEntityExists->withIdentifier(ReferenceEntityIdentifier::fromString('designer')));
-        $this->assertFalse($this->referenceEntityExists->withIdentifier(ReferenceEntityIdentifier::fromString('manufacturer')));
+        $this->loadAssetFamilyDesigner();
+        $this->assertTrue($this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString('designer')));
+        $this->assertFalse($this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString('manufacturer')));
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntityDesigner(): void
+    private function loadAssetFamilyDesigner(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
     }
 }

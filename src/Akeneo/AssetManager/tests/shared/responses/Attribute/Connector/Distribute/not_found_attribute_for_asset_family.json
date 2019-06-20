@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_get",
+    "route": "akeneo_asset_manager_asset_family_attribute_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "brand_test",
+      "assetFamilyIdentifier": "brand_test",
       "code": "nonexistent"
     }
   },
@@ -11,7 +11,7 @@
     "status": 404,
     "body": {
       "code": 404,
-      "message":"Attribute \"nonexistent\" does not exist for the reference entity \"brand_test\"."
+      "message":"Attribute \"nonexistent\" does not exist for the asset family \"brand_test\"."
     }
   }
 }

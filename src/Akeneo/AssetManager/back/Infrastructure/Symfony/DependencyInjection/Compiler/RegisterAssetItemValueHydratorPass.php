@@ -11,22 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Registers every RecordItem value hydrators in the dedicated registry
+ * Registers every AssetItem value hydrators in the dedicated registry
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class RegisterRecordItemValueHydratorPass implements CompilerPassInterface
+class RegisterAssetItemValueHydratorPass implements CompilerPassInterface
 {
-    private const VALUE_HYDRATOR_REGISTRY = 'akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item_value_hydrator_registry';
-    private const VALUE_HYDRATOR_TAG = 'akeneo_referenceentity.record_item_value_hydrator';
+    private const VALUE_HYDRATOR_REGISTRY = 'akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_item_value_hydrator_registry';
+    private const VALUE_HYDRATOR_TAG = 'akeneo_assetmanager.asset_item_value_hydrator';
 
     /**
      * {@inheritdoc}

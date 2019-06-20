@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\File;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\File;
 
-use Akeneo\ReferenceEntity\Domain\Query\File\FileExistsInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
@@ -30,9 +30,9 @@ class SqlFileExistsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->fileExists = $this->get('akeneo_referenceentity.infrastructure.persistence.query.file_exists');
+        $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
         $this->fileSaver = $this->get('akeneo_file_storage.saver.file');
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
 
         $this->loadFile();
     }

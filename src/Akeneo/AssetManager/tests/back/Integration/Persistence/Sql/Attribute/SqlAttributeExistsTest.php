@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\FixturesLoader;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 class SqlAttributeExistsTest extends SqlIntegrationTestCase
@@ -33,7 +33,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->attributeExists = $this->get('akeneo_referenceentity.infrastructure.persistence.query.attribute_exists');
+        $this->attributeExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.attribute_exists');
         $this->resetDB();
         $this->loadFixtures();
     }
@@ -60,10 +60,10 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_says_if_the_attribute_exists_for_the_given_reference_entity_identifier_and_order()
+    public function it_says_if_the_attribute_exists_for_the_given_asset_family_identifier_and_order()
     {
-        $isExistingAtOrder2 = $this->attributeExists->withReferenceEntityIdentifierAndOrder(ReferenceEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(2));
-        $isExistingAtOrder3 = $this->attributeExists->withReferenceEntityIdentifierAndOrder(ReferenceEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(3));
+        $isExistingAtOrder2 = $this->attributeExists->withAssetFamilyIdentifierAndOrder(AssetFamilyIdentifier::fromString('designer'), AttributeOrder::fromInteger(2));
+        $isExistingAtOrder3 = $this->attributeExists->withAssetFamilyIdentifierAndOrder(AssetFamilyIdentifier::fromString('designer'), AttributeOrder::fromInteger(3));
 
         Assert::assertTrue($isExistingAtOrder2);
         Assert::assertFalse($isExistingAtOrder3);
@@ -71,13 +71,13 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadFixtures(): void
     {
         $this->fixtures = $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->withAttributes(['name'])
             ->load();
     }

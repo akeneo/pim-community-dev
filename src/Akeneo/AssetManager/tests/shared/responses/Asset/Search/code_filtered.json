@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "PUT",
-        "route": "akeneo_reference_entities_record_index_rest",
+        "route": "akeneo_asset_manager_asset_index_rest",
         "query": {
-            "referenceEntityIdentifier": "designer"
+            "assetFamilyIdentifier": "designer"
         },
         "body": {
             "locale": "en_US",
@@ -18,7 +18,7 @@
                     "context": {}
                 },
                 {
-                    "field": "reference_entity",
+                    "field": "asset_family",
                     "operator": "=",
                     "value": "designer",
                     "context": {}
@@ -32,7 +32,7 @@
             "items": [
                 {
                     "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
-                    "reference_entity_identifier": "designer",
+                    "asset_family_identifier": "designer",
                     "code": "dyson",
                     "labels": {
                         "en_US": "Dyson",

@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\Attribute;
+namespace Akeneo\AssetManager\Integration\UI\Web\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -42,7 +42,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteActionTest extends ControllerIntegrationTestCase
 {
-    private const DELETE_ATTRIBUTE_ROUTE = 'akeneo_reference_entities_attribute_delete_rest';
+    private const DELETE_ATTRIBUTE_ROUTE = 'akeneo_asset_manager_attribute_delete_rest';
 
     /** @var Client */
     private $client;
@@ -57,20 +57,20 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_deletes_an_attribute_and_its_records_values(): void
+    public function it_deletes_an_attribute_and_its_assets_values(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint')),
-                'referenceEntityIdentifier' => 'designer',
+                'assetFamilyIdentifier' => 'designer',
             ],
             'DELETE',
             [
@@ -90,7 +90,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint')),
-                'referenceEntityIdentifier' => 'designer',
+                'assetFamilyIdentifier' => 'designer',
             ],
             'DELETE',
             [
@@ -109,7 +109,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => 'unknown',
-                'referenceEntityIdentifier' => 'designer',
+                'assetFamilyIdentifier' => 'designer',
             ],
             'DELETE',
             [
@@ -131,7 +131,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => 'name',
-                'referenceEntityIdentifier' => 'celine_dion',
+                'assetFamilyIdentifier' => 'celine_dion',
             ],
             'DELETE'
         );
@@ -142,7 +142,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_reference_entity()
+    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_asset_family()
     {
         $this->forbidsEdit();
         $this->webClientHelper->callRoute(
@@ -150,7 +150,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint')),
-                'referenceEntityIdentifier' => 'designer',
+                'assetFamilyIdentifier' => 'designer',
             ],
             'DELETE',
             [
@@ -163,18 +163,18 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
     private function forbidsEdit(): void
     {
-        $this->get('akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler')
+        $this->get('akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler')
             ->forbid();
     }
 
     private function loadFixtures(): void
     {
         $attributeRepository = $this->getAttributeRepository();
-        $referenceEntityRepository = $this->getReferenceEntityRepository();
+        $assetFamilyRepository = $this->getAssetFamilyRepository();
 
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                AssetFamilyIdentifier::fromString('designer'),
                 [],
                 Image::createEmpty()
             )
@@ -182,7 +182,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
         $attributeItem = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', md5('fingerprint')),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
@@ -196,22 +196,22 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $attributeRepository->create($attributeItem);
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_delete', true);
+        $securityFacadeStub->setIsGranted('akeneo_assetmanager_attribute_delete', true);
     }
 
     private function getAttributeRepository(): AttributeRepositoryInterface
     {
-        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        return $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
     }
 
-    private function getReferenceEntityRepository(): ReferenceEntityRepositoryInterface
+    private function getAssetFamilyRepository(): AssetFamilyRepositoryInterface
     {
-        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        return $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
     }
 
     private function revokeDeletionRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_delete', false);
+        $securityFacadeStub->setIsGranted('akeneo_assetmanager_attribute_delete', false);
     }
 }

@@ -1,37 +1,37 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity;
+namespace spec\Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class CreateReferenceEntityHandlerSpec extends ObjectBehavior
+class CreateAssetFamilyHandlerSpec extends ObjectBehavior
 {
     function let(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository
     )
     {
-        $this->beConstructedWith($referenceEntityRepository, $attributeRepository);
+        $this->beConstructedWith($assetFamilyRepository, $attributeRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CreateReferenceEntityHandler::class);
+        $this->shouldHaveType(CreateAssetFamilyHandler::class);
     }
 
-    function it_creates_a_new_record(ReferenceEntityRepositoryInterface $referenceEntityRepository) {
-        $createReferenceEntityCommand = new CreateReferenceEntityCommand(
+    function it_creates_a_new_asset(AssetFamilyRepositoryInterface $assetFamilyRepository) {
+        $createAssetFamilyCommand = new CreateAssetFamilyCommand(
             'brand',
             [
                 'en_US' => 'Intel',
@@ -39,13 +39,13 @@ class CreateReferenceEntityHandlerSpec extends ObjectBehavior
             ]
         );
 
-        $referenceEntityRepository->create(Argument::that(function ($referenceEntity) {
-            return $referenceEntity instanceof ReferenceEntity
-                && 'brand' === $referenceEntity->getIdentifier()->normalize()
-                && 'Intel' === $referenceEntity->getLabel('en_US')
-                && 'Intel' === $referenceEntity->getLabel('fr_FR');
+        $assetFamilyRepository->create(Argument::that(function ($assetFamily) {
+            return $assetFamily instanceof AssetFamily
+                && 'brand' === $assetFamily->getIdentifier()->normalize()
+                && 'Intel' === $assetFamily->getLabel('en_US')
+                && 'Intel' === $assetFamily->getLabel('fr_FR');
         }))->shouldBeCalled();
 
-        $this->__invoke($createReferenceEntityCommand);
+        $this->__invoke($createAssetFamilyCommand);
     }
 }

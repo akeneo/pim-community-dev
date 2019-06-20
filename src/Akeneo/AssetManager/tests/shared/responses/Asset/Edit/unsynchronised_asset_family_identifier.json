@@ -1,15 +1,15 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_reference_entities_record_edit_rest",
+    "route": "akeneo_asset_manager_asset_edit_rest",
     "query": {
-      "recordCode": "celine_dion",
-      "referenceEntityIdentifier": "singer"
+      "assetCode": "celine_dion",
+      "assetFamilyIdentifier": "singer"
     },
     "body": {
       "identifier": "singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392",
       "code": "celine_dion",
-      "reference_entity_identifier": "driver",
+      "asset_family_identifier": "driver",
       "labels": {
         "en_US": "Celine Dion",
         "fr_FR": "Madame Celine Dion"

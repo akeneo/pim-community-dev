@@ -1,18 +1,18 @@
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import AssetFamilyIdentifier, {
+  createIdentifier as createAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
-} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {RecordType, NormalizedRecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
+} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {AssetType, NormalizedAssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 /**
  * @api
  */
 export interface MinimalNormalizedAttribute {
-  reference_entity_identifier: string;
+  asset_family_identifier: string;
   type: string;
   code: string;
   labels: NormalizedLabelCollection;
@@ -24,14 +24,14 @@ export interface MinimalNormalizedAttribute {
  * @api
  */
 export default interface MinimalAttribute {
-  referenceEntityIdentifier: ReferenceEntityIdentifier;
+  assetFamilyIdentifier: AssetFamilyIdentifier;
   code: AttributeCode;
   labelCollection: LabelCollection;
   type: string;
   valuePerLocale: boolean;
   valuePerChannel: boolean;
   getCode: () => AttributeCode;
-  getReferenceEntityIdentifier: () => ReferenceEntityIdentifier;
+  getAssetFamilyIdentifier: () => AssetFamilyIdentifier;
   getType(): string;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
@@ -40,8 +40,8 @@ export default interface MinimalAttribute {
 
 class InvalidArgumentError extends Error {}
 
-export const isRecordAttributeType = (attributeType: string) => {
-  return ['record', 'record_collection'].includes(attributeType);
+export const isAssetAttributeType = (attributeType: string) => {
+  return ['asset', 'asset_collection'].includes(attributeType);
 };
 
 /**
@@ -49,15 +49,15 @@ export const isRecordAttributeType = (attributeType: string) => {
  */
 export class MinimalConcreteAttribute implements MinimalAttribute {
   protected constructor(
-    readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
+    readonly assetFamilyIdentifier: AssetFamilyIdentifier,
     readonly code: AttributeCode,
     readonly labelCollection: LabelCollection,
     readonly type: string,
     readonly valuePerLocale: boolean,
     readonly valuePerChannel: boolean
   ) {
-    if (!(referenceEntityIdentifier instanceof ReferenceEntityIdentifier)) {
-      throw new InvalidArgumentError('Attribute expects an ReferenceEntityIdentifier argument');
+    if (!(assetFamilyIdentifier instanceof AssetFamilyIdentifier)) {
+      throw new InvalidArgumentError('Attribute expects an AssetFamilyIdentifier argument');
     }
     if (!(code instanceof AttributeCode)) {
       throw new InvalidArgumentError('Attribute expects a AttributeCode argument');
@@ -78,7 +78,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public static createFromNormalized(minimalNormalizedAttribute: MinimalNormalizedAttribute) {
     return new MinimalConcreteAttribute(
-      createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
+      createAssetFamilyIdentifier(minimalNormalizedAttribute.asset_family_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
       minimalNormalizedAttribute.type,
@@ -87,8 +87,8 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     );
   }
 
-  public getReferenceEntityIdentifier(): ReferenceEntityIdentifier {
-    return this.referenceEntityIdentifier;
+  public getAssetFamilyIdentifier(): AssetFamilyIdentifier {
+    return this.assetFamilyIdentifier;
   }
 
   public getCode(): AttributeCode {
@@ -113,7 +113,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public normalize(): MinimalNormalizedAttribute {
     return {
-      reference_entity_identifier: this.referenceEntityIdentifier.stringValue(),
+      asset_family_identifier: this.assetFamilyIdentifier.stringValue(),
       code: this.code.stringValue(),
       type: this.getType(),
       labels: this.labelCollection.normalize(),
@@ -123,54 +123,54 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
   }
 }
 
-export interface MinimalRecordNormalizedAttribute extends MinimalNormalizedAttribute {
-  record_type: NormalizedRecordType;
+export interface MinimalAssetNormalizedAttribute extends MinimalNormalizedAttribute {
+  asset_type: NormalizedAssetType;
 }
 
-export class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
+export class MinimalAssetConcreteAttribute extends MinimalConcreteAttribute {
   protected constructor(
-    readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
+    readonly assetFamilyIdentifier: AssetFamilyIdentifier,
     readonly code: AttributeCode,
     readonly labelCollection: LabelCollection,
     readonly type: string,
     readonly valuePerLocale: boolean,
     readonly valuePerChannel: boolean,
-    readonly recordType: RecordType
+    readonly assetType: AssetType
   ) {
-    super(referenceEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
+    super(assetFamilyIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
-    if (!isRecordAttributeType(type)) {
-      throw new InvalidArgumentError('MinimalRecordAttribute type needs to be "record" or "record_collection"');
+    if (!isAssetAttributeType(type)) {
+      throw new InvalidArgumentError('MinimalAssetAttribute type needs to be "asset" or "asset_collection"');
     }
 
-    if (!(recordType instanceof RecordType)) {
-      throw new InvalidArgumentError('Attribute expects a RecordType argument');
+    if (!(assetType instanceof AssetType)) {
+      throw new InvalidArgumentError('Attribute expects a AssetType argument');
     }
   }
 
-  public static createFromNormalized(minimalNormalizedAttribute: MinimalRecordNormalizedAttribute) {
-    return new MinimalRecordConcreteAttribute(
-      createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
+  public static createFromNormalized(minimalNormalizedAttribute: MinimalAssetNormalizedAttribute) {
+    return new MinimalAssetConcreteAttribute(
+      createAssetFamilyIdentifier(minimalNormalizedAttribute.asset_family_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
       minimalNormalizedAttribute.type,
       minimalNormalizedAttribute.value_per_locale,
       minimalNormalizedAttribute.value_per_channel,
-      RecordType.createFromNormalized(minimalNormalizedAttribute.record_type)
+      AssetType.createFromNormalized(minimalNormalizedAttribute.asset_type)
     );
   }
 
-  public normalize(): MinimalRecordNormalizedAttribute {
+  public normalize(): MinimalAssetNormalizedAttribute {
     return {
       ...super.normalize(),
-      record_type: this.recordType.normalize(),
+      asset_type: this.assetType.normalize(),
     };
   }
 }
 
 export const denormalizeMinimalAttribute = (normalizedAttribute: MinimalNormalizedAttribute) => {
-  if (isRecordAttributeType(normalizedAttribute.type)) {
-    return MinimalRecordConcreteAttribute.createFromNormalized(normalizedAttribute as MinimalRecordNormalizedAttribute);
+  if (isAssetAttributeType(normalizedAttribute.type)) {
+    return MinimalAssetConcreteAttribute.createFromNormalized(normalizedAttribute as MinimalAssetNormalizedAttribute);
   }
 
   return MinimalConcreteAttribute.createFromNormalized(normalizedAttribute);

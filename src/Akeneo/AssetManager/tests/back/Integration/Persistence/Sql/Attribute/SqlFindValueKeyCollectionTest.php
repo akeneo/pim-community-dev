@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
 {
@@ -42,9 +42,9 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findValueKeyCollection = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection');
+        $this->findValueKeyCollection = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection');
         $this->resetDB();
-        $this->loadReferenceEntity();
+        $this->loadAssetFamily();
     }
 
     /**
@@ -52,7 +52,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
      */
     public function it_returns_all_attributes()
     {
-        $designer = ReferenceEntityIdentifier::fromString('designer');
+        $designer = AssetFamilyIdentifier::fromString('designer');
         $image = $this->loadAttribute('designer', 'main_image', false, false);
         $name = $this->loadAttribute('designer', 'name', false, true);
         $age = $this->loadAttribute('designer', 'age', true, false);
@@ -60,11 +60,11 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
 
         $actualValueKeyCollection = $this->findValueKeyCollection->find($designer);
 
-        /** @var ReferenceEntity $referenceEntity */
-        $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
+        /** @var AssetFamily $assetFamily */
+        $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->getByIdentifier($designer);
-        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
-        $attributeAsImageIdentifier = $referenceEntity->getAttributeAsImageReference()->getIdentifier();
+        $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
+        $attributeAsImageIdentifier = $assetFamily->getAttributeAsImageReference()->getIdentifier();
 
         $this->assertInstanceOf(ValueKeyCollection::class, $actualValueKeyCollection);
         $normalizedActualValueKeyCollection = $actualValueKeyCollection->normalize();
@@ -88,34 +88,34 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntity(): void
+    private function loadAssetFamily(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
     }
 
-    private function loadAttribute(string $referenceEntityIdentifier, string $attributeCode, bool $hasValuePerChannel, bool $hasValuePerLocale): AbstractAttribute
+    private function loadAttribute(string $assetFamilyIdentifier, string $attributeCode, bool $hasValuePerChannel, bool $hasValuePerLocale): AbstractAttribute
     {
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $attribute = TextAttribute::createText(
             $identifier,
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),

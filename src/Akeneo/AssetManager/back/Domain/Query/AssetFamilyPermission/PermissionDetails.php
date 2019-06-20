@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamilyPermission;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

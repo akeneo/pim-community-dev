@@ -11,32 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 
-class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
+class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityRepositoryInterface */
+    /** @var AssetFamilyRepositoryInterface */
     private $repository;
 
     /** @var AttributeRepositoryInterface */
@@ -46,80 +46,80 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->repository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $this->resetDB();
     }
 
     /**
      * @test
      */
-    public function it_creates_a_reference_entity_and_returns_it()
+    public function it_creates_an_asset_family_and_returns_it()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('identifier');
-        $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $identifier = AssetFamilyIdentifier::fromString('identifier');
+        $assetFamily = AssetFamily::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
 
-        $this->repository->create($referenceEntity);
+        $this->repository->create($assetFamily);
 
-        $referenceEntityFound = $this->repository->getByIdentifier($identifier);
-        $this->assertReferenceEntity($referenceEntity, $referenceEntityFound);
+        $assetFamilyFound = $this->repository->getByIdentifier($identifier);
+        $this->assertAssetFamily($assetFamily, $assetFamilyFound);
     }
 
     /**
      * @test
      */
-    public function it_returns_all_reference_entities()
+    public function it_returns_all_asset_families()
     {
-        $designer = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $designer = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             ['en_US' => 'Designer'],
             Image::createEmpty()
         );
-        $brand = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $brand = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             ['en_US' => 'Brand'],
             Image::createEmpty()
         );
         $this->repository->create($designer);
         $this->repository->create($brand);
 
-        $referenceEntities = iterator_to_array($this->repository->all());
-        $this->assertReferenceEntity($brand, $referenceEntities[0]);
-        $this->assertReferenceEntity($designer, $referenceEntities[1]);
+        $assetFamilies = iterator_to_array($this->repository->all());
+        $this->assertAssetFamily($brand, $assetFamilies[0]);
+        $this->assertAssetFamily($designer, $assetFamilies[1]);
     }
 
     /**
      * @test
      */
-    public function it_throws_when_creating_a_reference_entity_with_the_same_identifier()
+    public function it_throws_when_creating_an_asset_family_with_the_same_identifier()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('identifier');
-        $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $this->repository->create($referenceEntity);
+        $identifier = AssetFamilyIdentifier::fromString('identifier');
+        $assetFamily = AssetFamily::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $this->repository->create($assetFamily);
 
         $this->expectException(DBALException::class);
-        $this->repository->create($referenceEntity);
+        $this->repository->create($assetFamily);
     }
 
     /**
      * @test
      */
-    public function it_updates_a_reference_entity_and_returns_it()
+    public function it_updates_an_asset_family_and_returns_it()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('identifier');
-        $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $this->repository->create($referenceEntity);
-        $referenceEntity->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
+        $identifier = AssetFamilyIdentifier::fromString('identifier');
+        $assetFamily = AssetFamily::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $this->repository->create($assetFamily);
+        $assetFamily->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
 
         $file = new FileInfo();
         $file->setKey('/path/image.jpg');
         $file->setOriginalFilename('image.jpg');
-        $referenceEntity->updateImage(Image::fromFileInfo($file));
+        $assetFamily->updateImage(Image::fromFileInfo($file));
 
-        $this->repository->update($referenceEntity);
+        $this->repository->update($assetFamily);
 
-        $referenceEntityFound = $this->repository->getByIdentifier($identifier);
-        $this->assertReferenceEntity($referenceEntity, $referenceEntityFound);
+        $assetFamilyFound = $this->repository->getByIdentifier($identifier);
+        $this->assertAssetFamily($assetFamily, $assetFamilyFound);
     }
 
     /**
@@ -127,39 +127,39 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_if_the_identifier_is_not_found()
     {
-        $this->expectException(ReferenceEntityNotFoundException::class);
-        $this->repository->getByIdentifier(ReferenceEntityIdentifier::fromString('unknown_identifier'));
+        $this->expectException(AssetFamilyNotFoundException::class);
+        $this->repository->getByIdentifier(AssetFamilyIdentifier::fromString('unknown_identifier'));
     }
 
     /**
      * @test
      */
-    public function it_deletes_a_reference_entity_given_an_identifier()
+    public function it_deletes_an_asset_family_given_an_identifier()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('identifier');
-        $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $this->repository->create($referenceEntity);
+        $identifier = AssetFamilyIdentifier::fromString('identifier');
+        $assetFamily = AssetFamily::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $this->repository->create($assetFamily);
 
         $this->repository->deleteByIdentifier($identifier);
 
-        $this->expectException(ReferenceEntityNotFoundException::class);
+        $this->expectException(AssetFamilyNotFoundException::class);
         $this->repository->getByIdentifier($identifier);
     }
 
     /**
      * @test
      */
-    public function it_deletes_a_reference_entity_given_an_identifier_even_if_it_has_attributes()
+    public function it_deletes_an_asset_family_given_an_identifier_even_if_it_has_attributes()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = ReferenceEntity::create($referenceEntityIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $this->repository->create($referenceEntity);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = AssetFamily::create($assetFamilyIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $this->repository->create($assetFamily);
 
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attribute = TextAttribute::createText(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(2),
@@ -172,23 +172,23 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
         );
         $this->attributeRepository->create($attribute);
 
-        $this->repository->deleteByIdentifier($referenceEntityIdentifier);
+        $this->repository->deleteByIdentifier($assetFamilyIdentifier);
 
-        $this->expectException(ReferenceEntityNotFoundException::class);
-        $this->repository->getByIdentifier($referenceEntityIdentifier);
+        $this->expectException(AssetFamilyNotFoundException::class);
+        $this->repository->getByIdentifier($assetFamilyIdentifier);
     }
 
     /**
      * @test
      */
-    public function it_counts_all_reference_entities()
+    public function it_counts_all_asset_families()
     {
         $this->assertEquals(0, $this->repository->count());
 
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $designer = ReferenceEntity::create($designerIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $brandIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $brand = ReferenceEntity::create($brandIdentifier, ['en_US' => 'Brand', 'fr_FR' => 'Marque'], Image::createEmpty());
+        $designerIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $designer = AssetFamily::create($designerIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $brandIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $brand = AssetFamily::create($brandIdentifier, ['en_US' => 'Brand', 'fr_FR' => 'Marque'], Image::createEmpty());
 
         $this->repository->create($designer);
         $this->repository->create($brand);
@@ -199,37 +199,37 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_it_tries_to_delete_an_unknown_reference_entity()
+    public function it_throws_an_exception_if_it_tries_to_delete_an_unknown_asset_family()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('unknown');
+        $identifier = AssetFamilyIdentifier::fromString('unknown');
 
-        $this->expectException(ReferenceEntityNotFoundException::class);
+        $this->expectException(AssetFamilyNotFoundException::class);
         $this->repository->deleteByIdentifier($identifier);
     }
 
     /**
-     * @param $referenceEntityExpected
-     * @param $referenceEntityFound
+     * @param $assetFamilyExpected
+     * @param $assetFamilyFound
      *
      */
-    private function assertReferenceEntity(
-        ReferenceEntity $referenceEntityExpected,
-        ReferenceEntity $referenceEntityFound
+    private function assertAssetFamily(
+        AssetFamily $assetFamilyExpected,
+        AssetFamily $assetFamilyFound
     ): void {
-        $this->assertTrue($referenceEntityExpected->equals($referenceEntityFound));
-        $labelCodesExpected = $referenceEntityExpected->getLabelCodes();
-        $labelCodesFound = $referenceEntityFound->getLabelCodes();
+        $this->assertTrue($assetFamilyExpected->equals($assetFamilyFound));
+        $labelCodesExpected = $assetFamilyExpected->getLabelCodes();
+        $labelCodesFound = $assetFamilyFound->getLabelCodes();
         sort($labelCodesExpected);
         sort($labelCodesFound);
         $this->assertSame($labelCodesExpected, $labelCodesFound);
-        foreach ($referenceEntityExpected->getLabelCodes() as $localeCode) {
-            $this->assertEquals($referenceEntityExpected->getLabel($localeCode),
-                $referenceEntityFound->getLabel($localeCode));
+        foreach ($assetFamilyExpected->getLabelCodes() as $localeCode) {
+            $this->assertEquals($assetFamilyExpected->getLabel($localeCode),
+                $assetFamilyFound->getLabel($localeCode));
         }
     }
 
     private function resetDB()
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 }

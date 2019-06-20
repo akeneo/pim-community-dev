@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
 
 interface ValueUpdaterRegistryInterface
 {

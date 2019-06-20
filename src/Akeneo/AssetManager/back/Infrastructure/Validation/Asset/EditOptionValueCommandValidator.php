@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditOptionValueCommand as EditOptionValueCommandConstraint;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionValueCommand as EditOptionValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;

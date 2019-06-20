@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,9 +21,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditStoredFileValueCommand extends Constraint
 {
-    public const FILE_EXTENSION_NOT_ALLOWED_MESSAGE = 'pim_reference_entity.record.validation.file.extension_not_allowed';
-    public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_reference_entity.record.validation.file.file_size_exceeded';
-    public const FILE_SHOULD_EXIST = 'pim_reference_entity.record.validation.file.should_exist';
+    public const FILE_EXTENSION_NOT_ALLOWED_MESSAGE = 'pim_asset_manager.asset.validation.file.extension_not_allowed';
+    public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_asset_manager.asset.validation.file.file_size_exceeded';
+    public const FILE_SHOULD_EXIST = 'pim_asset_manager.asset.validation.file.should_exist';
 
     public function getTargets()
     {
@@ -32,6 +32,6 @@ class EditStoredFileValueCommand extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.record.edit_stored_file_value_command';
+        return 'akeneo_assetmanager.validator.asset.edit_stored_file_value_command';
     }
 }

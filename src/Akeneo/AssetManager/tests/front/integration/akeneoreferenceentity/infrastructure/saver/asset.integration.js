@@ -1,16 +1,16 @@
 const timeout = 5000;
 
-describe('Akeneoreferenceentity > infrastructure > saver > record', () => {
+describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
     await page.reload();
   }, timeout);
 
-  it('It creates a record', async () => {
+  it('It creates a asset', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity/designer/record' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager/designer/asset' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method() &&
         'designer_starck_1' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
@@ -21,34 +21,34 @@ describe('Akeneoreferenceentity > infrastructure > saver > record', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createRecord = require('akeneoreferenceentity/domain/model/record/record').createRecord;
-      const createRecordCode = require('akeneoreferenceentity/domain/model/record/code').createCode;
-      const createValueCollection = require('akeneoreferenceentity/domain/model/record/value-collection')
+      const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
+      const createAssetCode = require('akeneoassetmanager/domain/model/asset/code').createCode;
+      const createValueCollection = require('akeneoassetmanager/domain/model/asset/value-collection')
         .createValueCollection;
-      const createIdentifier = require('akeneoreferenceentity/domain/model/record/identifier').createIdentifier;
-      const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+      const createIdentifier = require('akeneoassetmanager/domain/model/asset/identifier').createIdentifier;
+      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
         .createIdentifier;
-      const Image = require('akeneoreferenceentity/domain/model/file').default;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+      const Image = require('akeneoassetmanager/domain/model/file').default;
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
         .createLabelCollection;
-      const saver = require('akeneoreferenceentity/infrastructure/saver/record').default;
+      const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
-      const recordCreated = createRecord(
+      const assetCreated = createAsset(
         createIdentifier('designer_starck_1'),
-        createReferenceEntityIdentifier('designer'),
-        createRecordCode('starck'),
+        createAssetFamilyIdentifier('designer'),
+        createAssetCode('starck'),
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'}),
         Image.createEmpty(),
         createValueCollection([])
       );
 
-      return await saver.create(recordCreated);
+      return await saver.create(assetCreated);
     });
 
     expect(response).toEqual(undefined);
   });
 
-  it('It returns errors when we create an invalid record', async () => {
+  it('It returns errors when we create an invalid asset', async () => {
     const responseMessage = [
       {
         messageTemplate: 'This field may only contain letters, numbers and underscores.',
@@ -56,7 +56,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > record', () => {
           '{{ value }}': '/',
         },
         plural: null,
-        message: 'pim_reference_entity.record.validation.identifier.pattern',
+        message: 'pim_asset_manager.asset.validation.identifier.pattern',
         root: {
           identifier: 'invalid/identifier',
           labels: {
@@ -79,7 +79,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > record', () => {
 
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity/designer/record' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager/designer/asset' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method() &&
         'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
@@ -92,28 +92,28 @@ describe('Akeneoreferenceentity > infrastructure > saver > record', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createRecord = require('akeneoreferenceentity/domain/model/record/record').createRecord;
-      const createRecordCode = require('akeneoreferenceentity/domain/model/record/code').createCode;
-      const createIdentifier = require('akeneoreferenceentity/domain/model/record/identifier').createIdentifier;
-      const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+      const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
+      const createAssetCode = require('akeneoassetmanager/domain/model/asset/code').createCode;
+      const createIdentifier = require('akeneoassetmanager/domain/model/asset/identifier').createIdentifier;
+      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
         .createIdentifier;
-      const Image = require('akeneoreferenceentity/domain/model/file').default;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+      const Image = require('akeneoassetmanager/domain/model/file').default;
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
         .createLabelCollection;
-      const createValueCollection = require('akeneoreferenceentity/domain/model/record/value-collection')
+      const createValueCollection = require('akeneoassetmanager/domain/model/asset/value-collection')
         .createValueCollection;
-      const saver = require('akeneoreferenceentity/infrastructure/saver/record').default;
+      const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
-      const recordCreated = createRecord(
+      const assetCreated = createAsset(
         createIdentifier('invalid/identifier'),
-        createReferenceEntityIdentifier('designer'),
-        createRecordCode('invalid/identifier'),
+        createAssetFamilyIdentifier('designer'),
+        createAssetCode('invalid/identifier'),
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'}),
         Image.createEmpty(),
         createValueCollection([])
       );
 
-      return await saver.create(recordCreated);
+      return await saver.create(assetCreated);
     });
 
     expect(JSON.stringify(response)).toEqual(JSON.stringify(responseMessage));

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -24,7 +24,7 @@ final class ValuesDecoder
         $decodedValues = json_decode($values, true);
 
         if (null === $decodedValues) {
-            $message = sprintf('Impossible to decode record values %s', $values);
+            $message = sprintf('Impossible to decode asset values %s', $values);
             throw new \RuntimeException($message);
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
 class InMemoryDateRepository
 {

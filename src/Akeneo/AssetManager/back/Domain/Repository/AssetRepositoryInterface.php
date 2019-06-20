@@ -11,39 +11,39 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Repository;
+namespace Akeneo\AssetManager\Domain\Repository;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
-interface RecordRepositoryInterface
+interface AssetRepositoryInterface
 {
-    public function create(Record $record): void;
+    public function create(Asset $asset): void;
 
-    public function update(Record $record): void;
-
-    /**
-     * @throws RecordNotFoundException
-     */
-    public function getByIdentifier(RecordIdentifier $identifier): Record;
+    public function update(Asset $asset): void;
 
     /**
-     * @throws RecordNotFoundException
+     * @throws AssetNotFoundException
      */
-    public function getByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): Record;
+    public function getByIdentifier(AssetIdentifier $identifier): Asset;
 
     /**
-     * @throws RecordNotFoundException
+     * @throws AssetNotFoundException
      */
-    public function deleteByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): void;
+    public function getByAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): Asset;
 
-    public function deleteByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void;
+    /**
+     * @throws AssetNotFoundException
+     */
+    public function deleteByAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): void;
+
+    public function deleteByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void;
 
     public function count(): int;
 
-    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int;
+    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int;
 
-    public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code):  RecordIdentifier;
+    public function nextIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code):  AssetIdentifier;
 }

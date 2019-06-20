@@ -1,21 +1,21 @@
 parameters:
-    pimee_product_asset.datagrid.extension.formatter.property.product_value.reference_entity_property.class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Extension\Formatter\Property\ProductValue\ReferenceEntityCollectionProperty
+    pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property.class: Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Extension\Formatter\Property\ProductValue\AssetMultipleLinkProperty
 
 services:
-    pimee_product_asset.datagrid.extension.formatter.property.product_value.reference_entity_collection_property:
-        class: '%pimee_product_asset.datagrid.extension.formatter.property.product_value.reference_entity_property.class%'
+    pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_multiple_link_property:
+        class: '%pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property.class%'
         arguments:
             - '@twig'
             - '@pim_datagrid.datagrid.request.parameters_extractor'
             - '@pim_user.context.user'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: reference_entity_collection }
+            - { name: oro_datagrid.extension.formatter.property, type:.asset_multiple_link }
 
-    pimee_product_asset.datagrid.extension.formatter.property.product_value.reference_entity_property:
-        class: '%pimee_product_asset.datagrid.extension.formatter.property.product_value.reference_entity_property.class%'
+    pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property:
+        class: '%pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property.class%'
         arguments:
             - '@twig'
             - '@pim_datagrid.datagrid.request.parameters_extractor'
             - '@pim_user.context.user'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: reference_entity }
+            - { name: oro_datagrid.extension.formatter.property, type: asset_single_link }

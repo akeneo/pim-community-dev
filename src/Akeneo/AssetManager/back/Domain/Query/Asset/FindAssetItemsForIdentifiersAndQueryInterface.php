@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
 /**
- * Search on records for the given query. This query function returns RecordItems
+ * Search on assets for the given query. This query function returns AssetItems
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface FindRecordItemsForIdentifiersAndQueryInterface
+interface FindAssetItemsForIdentifiersAndQueryInterface
 {
     /**
-     * @return RecordItem[]
+     * @return AssetItem[]
      */
-    public function find(array $identifiers, RecordQuery $query): array;
+    public function find(array $identifiers, AssetQuery $query): array;
 }

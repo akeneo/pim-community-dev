@@ -1,19 +1,19 @@
 const BaseField = require('pim/form/common/fields/field');
 import * as $ from 'jquery';
-import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
-import ReferenceEntityListItem from 'akeneoreferenceentity/domain/model/reference-entity/list';
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import AssetFamilyListItem from 'akeneoassetmanager/domain/model/asset-family/list';
 const __ = require('oro/translator');
 const _ = require('underscore');
 const UserContext = require('pim/user-context');
 const template = _.template(require('pim/template/form/common/fields/select'));
 
 /**
- * Reference entity field for attribute form
+ * Asset family field for attribute form
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
+class AssetFamilyField extends (BaseField as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
@@ -32,8 +32,8 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
   configure() {
     const promise = $.Deferred();
 
-    referenceEntityFetcher.fetchAll().then((referenceEntities: ReferenceEntityListItem[]) => {
-      this.referenceEntities = referenceEntities;
+    assetFamilyFetcher.fetchAll().then((assetFamilies: AssetFamilyListItem[]) => {
+      this.assetFamilies = assetFamilies;
       promise.resolve();
     });
 
@@ -51,15 +51,15 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
       multiple: false,
       readOnly: undefined !== this.getFormData().meta,
       labels: {
-        defaultLabel: __('pim_enrich.entity.attribute.property.reference_entity.default_label'),
+        defaultLabel: __('pim_enrich.entity.attribute.property.asset_family.default_label'),
       },
     });
   }
 
   getChoices() {
-    return this.referenceEntities.reduce(
-      (result: {[key: string]: string}, referenceEntity: ReferenceEntityListItem) => {
-        result[referenceEntity.getIdentifier().stringValue()] = referenceEntity.getLabel(
+    return this.assetFamilies.reduce(
+      (result: {[key: string]: string}, assetFamily: AssetFamilyListItem) => {
+        result[assetFamily.getIdentifier().stringValue()] = assetFamily.getLabel(
           UserContext.get('catalogLocale')
         );
 
@@ -84,4 +84,4 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
   }
 }
 
-export = ReferenceEntityField;
+export = AssetFamilyField;

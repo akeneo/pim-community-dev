@@ -1,36 +1,36 @@
 const timeout = 5000;
 const {getRequestContract, listenRequest} = require('../../../../acceptance/cucumber/tools');
 
-describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
+describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
     await page.reload();
   }, timeout);
 
-  it('It fetches one record', async () => {
-    const requestContract = getRequestContract('Record/RecordDetails/ok.json');
+  it('It fetches one asset', async () => {
+    const requestContract = getRequestContract('Asset/AssetDetails/ok.json');
 
     await listenRequest(page, requestContract);
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/record').default;
+      const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset').default;
 
-      const referenceEntityIdentifierModule = 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-      const referenceEntityIdentifier = require(referenceEntityIdentifierModule).createIdentifier('designer');
-      const recordIdentifier = require(referenceEntityIdentifierModule).createIdentifier('starck');
+      const assetFamilyIdentifierModule = 'akeneoassetmanager/domain/model/asset-family/identifier';
+      const assetFamilyIdentifier = require(assetFamilyIdentifierModule).createIdentifier('designer');
+      const assetIdentifier = require(assetFamilyIdentifierModule).createIdentifier('starck');
 
-      return await fetcher.fetch(referenceEntityIdentifier, recordIdentifier);
+      return await fetcher.fetch(assetFamilyIdentifier, assetIdentifier);
     });
 
     expect(response).toEqual({
-      permission: {edit: true, referenceEntityIdentifier: 'designer'},
-      record: {
+      permission: {edit: true, assetFamilyIdentifier: 'designer'},
+      asset: {
         code: {code: 'starck'},
         identifier: {identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392'},
         image: {},
         labelCollection: {labels: {fr_FR: 'Philippe Starck'}},
-        referenceEntityIdentifier: {identifier: 'designer'},
+        assetFamilyIdentifier: {identifier: 'designer'},
         valueCollection: {
           values: [
             {
@@ -43,7 +43,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
                 labelCollection: {labels: {fr_FR: 'Nom'}},
                 maxLength: {maxLength: 25},
                 order: 0,
-                referenceEntityIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: {identifier: 'designer'},
                 regularExpression: {regularExpression: null},
                 type: 'text',
                 validationRule: {validationRule: 'none'},
@@ -64,7 +64,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
                 labelCollection: {labels: {fr_FR: 'Description'}},
                 maxLength: {maxLength: 25},
                 order: 1,
-                referenceEntityIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: {identifier: 'designer'},
                 regularExpression: {regularExpression: null},
                 type: 'text',
                 validationRule: {validationRule: 'none'},
@@ -85,7 +85,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
                 labelCollection: {labels: {fr_FR: 'Description'}},
                 maxLength: {maxLength: 25},
                 order: 1,
-                referenceEntityIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: {identifier: 'designer'},
                 regularExpression: {regularExpression: null},
                 type: 'text',
                 validationRule: {validationRule: 'none'},
@@ -106,7 +106,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
                 labelCollection: {labels: {fr_FR: 'Website'}},
                 maxLength: {maxLength: 25},
                 order: 2,
-                referenceEntityIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: {identifier: 'designer'},
                 regularExpression: {regularExpression: null},
                 type: 'text',
                 validationRule: {validationRule: 'url'},
@@ -126,7 +126,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
                 labelCollection: {labels: {en_US: 'Portrait', fr_FR: 'Image autobiographique'}},
                 maxFileSize: {maxFileSize: '200.10'},
                 order: 3,
-                referenceEntityIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: {identifier: 'designer'},
                 type: 'image',
                 valuePerChannel: false,
                 valuePerLocale: false,
@@ -138,7 +138,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             {
               attribute: {
                 code: {code: 'age'},
-                referenceEntityIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: {identifier: 'designer'},
                 identifier: {identifier: 'age_designer_fingerprint'},
                 decimalsAllowed: {decimalsAllowed: false},
                 isRequired: false,
@@ -160,13 +160,13 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
     });
   });
 
-  it('It search for records', async () => {
-    const requestContract = getRequestContract('Record/Search/ok.json');
+  it('It search for assets', async () => {
+    const requestContract = getRequestContract('Asset/Search/ok.json');
 
     await listenRequest(page, requestContract);
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/record').default;
+      const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset').default;
 
       return await fetcher.search({
         locale: 'en_US',
@@ -181,7 +181,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             context: {},
           },
           {
-            field: 'reference_entity',
+            field: 'asset_family',
             operator: '=',
             value: 'designer',
             context: {},
@@ -196,7 +196,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           code: 'dyson',
           identifier: 'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
           labels: {en_US: 'Dyson', fr_FR: 'Dyson'},
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           image: null,
           values: {
             label_designer_d00de54460082b239164135175588647_en_US: {
@@ -243,7 +243,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           code: 'starck',
           identifier: 'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
           labels: {en_US: 'Starck'},
-          reference_entity_identifier: 'designer',
+          asset_family_identifier: 'designer',
           image: null,
           values: {
             'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US': {
@@ -292,13 +292,13 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
     });
   });
 
-  it('It search for empty records', async () => {
-    const requestContract = getRequestContract('Record/Search/no_result.json');
+  it('It search for empty assets', async () => {
+    const requestContract = getRequestContract('Asset/Search/no_result.json');
 
     await listenRequest(page, requestContract);
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/record').default;
+      const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset').default;
 
       return await fetcher.search({
         locale: 'en_US',
@@ -313,7 +313,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             context: {},
           },
           {
-            field: 'reference_entity',
+            field: 'asset_family',
             operator: '=',
             value: 'designer',
             context: {},

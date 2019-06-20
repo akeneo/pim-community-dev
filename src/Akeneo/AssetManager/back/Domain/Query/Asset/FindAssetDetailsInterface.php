@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Find a record by its composite identifier (made of its Reference Entity identifier
- * and its own Record identifier)
+ * Find a asset by its composite identifier (made of its Asset Family identifier
+ * and its own Asset identifier)
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindRecordDetailsInterface
+interface FindAssetDetailsInterface
 {
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?AssetDetails;
 }

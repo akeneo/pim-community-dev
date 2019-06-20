@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorInterface;
 use JsonSchema\Validator;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class NumberTypeValidator implements RecordValueValidatorInterface
+class NumberTypeValidator implements AssetValueValidatorInterface
 {
-    public function validate(array $normalizedRecord): array
+    public function validate(array $normalizedAsset): array
     {
-        $record = Validator::arrayToObjectRecursive($normalizedRecord);
+        $asset = Validator::arrayToObjectRecursive($normalizedAsset);
         $validator = new Validator();
-        $validator->validate($record, $this->getJsonSchema());
+        $validator->validate($asset, $this->getJsonSchema());
 
         return $validator->getErrors();
     }

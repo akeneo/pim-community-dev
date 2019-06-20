@@ -1,14 +1,14 @@
-const Records = async (nodeElement, createElementDecorator, page) => {
+const Assets = async (nodeElement, createElementDecorator, page) => {
   const isLoaded = async () => {
     return true;
   };
 
-  const hasRecord = async identifier => {
+  const hasAsset = async identifier => {
     await isLoaded();
     await page.waitFor(`.AknDefault-mainContent .AknGrid-bodyRow [data-identifier="${identifier}"]`);
-    const record = await nodeElement.$(`[data-identifier="${identifier}"]`);
+    const asset = await nodeElement.$(`[data-identifier="${identifier}"]`);
 
-    return record !== null;
+    return asset !== null;
   };
 
   const isEmpty = async () => {
@@ -21,14 +21,14 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  const getRecordLabel = async identifier => {
+  const getAssetLabel = async identifier => {
     const label = await nodeElement.$(`a[data-identifier="${identifier}"]`);
     const labelProperty = await label.getProperty('textContent');
 
     return await labelProperty.jsonValue();
   };
 
-  const getRecordCompleteness = async identifier => {
+  const getAssetCompleteness = async identifier => {
     await page.waitFor(`tr[data-identifier="${identifier}"] .AknBadge`);
     const span = await nodeElement.$(`tr[data-identifier="${identifier}"] .AknBadge`);
     const completeness = await span.getProperty('textContent');
@@ -54,14 +54,13 @@ const Records = async (nodeElement, createElementDecorator, page) => {
   const filterOption = async (attributeCode, options) => {
     const containerSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"]`;
     await page.waitForSelector(containerSelector);
-    const container = await nodeElement.$(containerSelector);
 
     const filterSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"] .AknFilterBox-filterLabel`;
     await page.waitForSelector(filterSelector);
     const filterButton = await nodeElement.$(filterSelector);
     await filterButton.click();
 
-    const selectSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"] select.record-option-selector`;
+    const selectSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"] select.asset-option-selector`;
     await page.waitForSelector(selectSelector);
     const optionSelect = await nodeElement.$(selectSelector);
 
@@ -71,7 +70,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     }
   };
 
-  const filterLink = async (attributeCode, recordCode) => {
+  const filterLink = async (attributeCode, assetCode) => {
     const containerSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"]`;
     await page.waitForSelector(containerSelector);
     const container = await nodeElement.$(containerSelector);
@@ -81,10 +80,10 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     const filterButton = await nodeElement.$(filterSelector);
     await filterButton.click();
 
-    const recordSelectorInput = `.AknFilterBox-filter[data-attribute="${attributeCode}"] .record-selector`;
-    await page.waitForSelector(recordSelectorInput);
-    const recordInput = await container.$(recordSelectorInput);
-    await recordInput.type(recordCode);
+    const assetSelectorInput = `.AknFilterBox-filter[data-attribute="${attributeCode}"] .asset-selector`;
+    await page.waitForSelector(assetSelectorInput);
+    const assetInput = await container.$(assetSelectorInput);
+    await assetInput.type(assetCode);
   };
 
   const hasErrorNotification = async () => {
@@ -105,11 +104,11 @@ const Records = async (nodeElement, createElementDecorator, page) => {
   };
 
   return {
-    hasRecord,
+    hasAsset,
     isLoaded,
     isEmpty,
-    getRecordLabel,
-    getRecordCompleteness,
+    getAssetLabel,
+    getAssetCompleteness,
     hasSuccessNotification,
     hasErrorNotification,
     search,
@@ -119,4 +118,4 @@ const Records = async (nodeElement, createElementDecorator, page) => {
   };
 };
 
-module.exports = Records;
+module.exports = Assets;

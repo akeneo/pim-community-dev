@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -27,16 +27,16 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeRecordTypeIsRequiredValidator extends ConstraintValidator
+class AttributeAssetTypeIsRequiredValidator extends ConstraintValidator
 {
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        if (null === $command->recordType) {
-            $this->context->buildViolation(AttributeRecordTypeIsRequired::ERROR_MESSAGE)
-                ->atPath('recordType')
+        if (null === $command->assetType) {
+            $this->context->buildViolation(AttributeAssetTypeIsRequired::ERROR_MESSAGE)
+                ->atPath('assetType')
                 ->addViolation();
         }
     }
@@ -57,7 +57,7 @@ class AttributeRecordTypeIsRequiredValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof AttributeRecordTypeIsRequired) {
+        if (!$constraint instanceof AttributeAssetTypeIsRequired) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }

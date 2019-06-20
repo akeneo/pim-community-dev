@@ -11,28 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Validate a record using JSON Schema.
+ * Validate a asset using JSON Schema.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordValidator
+class AssetValidator
 {
-    /** @var RecordPropertiesValidator */
-    private $recordPropertiesValidator;
+    /** @var AssetPropertiesValidator */
+    private $assetPropertiesValidator;
 
-    /** @var RecordValuesValidator */
-    private $recordValuesValidator;
+    /** @var AssetValuesValidator */
+    private $assetValuesValidator;
 
-    public function __construct(RecordPropertiesValidator $recordPropertiesValidator, RecordValuesValidator $recordValuesValidator)
+    public function __construct(AssetPropertiesValidator $assetPropertiesValidator, AssetValuesValidator $assetValuesValidator)
     {
-        $this->recordPropertiesValidator = $recordPropertiesValidator;
-        $this->recordValuesValidator = $recordValuesValidator;
+        $this->assetPropertiesValidator = $assetPropertiesValidator;
+        $this->assetValuesValidator = $assetValuesValidator;
     }
 
     /**
@@ -44,12 +44,12 @@ class RecordValidator
      *
      * Returns an empty array if there are no errors.
      */
-    public function validate(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): array
+    public function validate(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): array
     {
-        $errors = $this->recordPropertiesValidator->validate($normalizedRecord);
+        $errors = $this->assetPropertiesValidator->validate($normalizedAsset);
 
-        if (empty($errors) && !empty($normalizedRecord['values'])) {
-            $errors = array_merge($errors, $this->recordValuesValidator->validate($referenceEntityIdentifier, $normalizedRecord));
+        if (empty($errors) && !empty($normalizedAsset['values'])) {
+            $errors = array_merge($errors, $this->assetValuesValidator->validate($assetFamilyIdentifier, $normalizedAsset));
         }
 
         return $errors;

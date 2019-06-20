@@ -1,112 +1,112 @@
 services:
     # Reference entities
-    akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler:
-        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler
+    akeneo_assetmanager.application.asset_family.edit_asset_family_handler:
+        class: Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.file_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
 
-    akeneo_referenceentity.application.reference_entity.create_reference_entity_handler:
-        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler
+    akeneo_assetmanager.application.asset_family.create_asset_family_handler:
+        class: Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 
-    akeneo_referenceentity.application.reference_entity.delete_reference_entity_handler:
-        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler
+    akeneo_assetmanager.application.asset_family.delete_asset_family_handler:
+        class: Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 
-    akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler:
-        class: Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler
+    akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler:
+        class: Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
-            - '@akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission'
+            - '@akeneoassetmanager.infrastructure.persistence.query.find_user_groups_for_security_identifier'
 
-    akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler:
-        class: Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsHandler
+    akeneo_assetmanager.application.asset_family_permission.set_asset_family_permissions_handler:
+        class: Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission'
 
     # Attributes
-    akeneo_referenceentity.application.attribute.create_attribute_handler:
-        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler
+    akeneo_assetmanager.application.attribute.create_attribute_handler:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler
         arguments:
-            - '@akeneo_referenceentity.application.registry.attribute_factory'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
+            - '@akeneo_assetmanager.application.registry.attribute_factory'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order'
 
-    akeneo_referenceentity.application.attribute.delete_attribute_handler:
-        class: Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler
+    akeneo_assetmanager.application.attribute.delete_attribute_handler:
+        class: Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_image'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
-    akeneo_referenceentity.application.attribute.edit_attribute_handler:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler
+    akeneo_assetmanager.application.attribute.edit_attribute_handler:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler
         arguments:
-            - '@akeneo_referenceentity.application.edit_attribute.attribute_updater.attribute_updater_registry'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.edit_attribute.attribute_updater.attribute_updater_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
     # Attribute options
-    akeneo_referenceentity.application.attribute.append_attribute_option_handler:
-        class: Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
+    akeneo_assetmanager.application.attribute.append_attribute_option_handler:
+        class: Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
         arguments:
-            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
-    akeneo_referenceentity.application.attribute.edit_attribute_option_handler:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler
+    akeneo_assetmanager.application.attribute.edit_attribute_option_handler:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler
         arguments:
-            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
-    akeneo_referenceentity.application.attribute.append_attribute_option_handler:
-        class: Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
+    akeneo_assetmanager.application.attribute.append_attribute_option_handler:
+        class: Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
         arguments:
-            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
-    # Records
-    akeneo_referenceentity.application.record.create_record_handler:
-        class: Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler
+    # Assets
+    akeneo_assetmanager.application.asset.create_asset_handler:
+        class: Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
 
-    akeneo_referenceentity.application.record.edit_record_handler:
-            class: Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler
+    akeneo_assetmanager.application.asset.edit_asset_handler:
+            class: Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler
             arguments:
-                - '@akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry'
-                - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+                - '@akeneo_assetmanager.application.registry.edit_asset.asset_value_updater.asset_value_updater_registry'
+                - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
                 - '@akeneo_file_storage.file_storage.file.file_storer'
 
-    akeneo_referenceentity.application.record.delete_record_handler:
-        class: Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler
+    akeneo_assetmanager.application.asset.delete_asset_handler:
+        class: Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
-    akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler:
-        class: Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsHandler
+    akeneo_assetmanager.application.asset.delete_all_asset_family_assets_handler:
+        class: Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
-    akeneo_referenceentity.application.record.search_record:
-        class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord
+    akeneo_assetmanager.application.asset.search_asset:
+        class: Akeneo\AssetManager\Application\Asset\SearchAsset\SearchAsset
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query'
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_items_for_identifiers_and_query'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
 
-    akeneo_referenceentity.application.record.search_connector_record:
-        class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord
+    akeneo_assetmanager.application.asset.search_connector_asset:
+        class: Akeneo\AssetManager\Application\Asset\SearchAsset\SearchConnectorAsset
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_assets_by_identifiers'
 
-    akeneo_referenceentity.application.record.index_records_handler:
-        class: Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityHandler
+    akeneo_assetmanager.application.asset.index_assets_handler:
+        class: Akeneo\AssetManager\Application\Asset\IndexAssets\IndexAssetsByAssetFamilyHandler
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
 

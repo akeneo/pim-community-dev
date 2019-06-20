@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
@@ -40,7 +40,7 @@ class CodeValidator extends ConstraintValidator
                 new Constraints\Length(['max' => self::MAX_CODE_LENGTH, 'min' => 1]),
                 new Constraints\Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
-                        'message' => 'pim_reference_entity.reference_entity.validation.code.pattern',
+                        'message' => 'pim_asset_manager.asset_family.validation.code.pattern',
                     ]
                 ),
             ]

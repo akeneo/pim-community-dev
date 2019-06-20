@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Repository;
+namespace Akeneo\AssetManager\Domain\Repository;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 interface AttributeRepositoryInterface
 {
@@ -35,16 +35,16 @@ interface AttributeRepositoryInterface
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute;
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
      * @return AbstractAttribute[]
      */
-    public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
+    public function findByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): array;
 
     /**
-     * Count attributes for a given reference entity
+     * Count attributes for a given asset family
      */
-    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int;
+    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int;
 
-    public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): AttributeIdentifier;
+    public function nextIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): AttributeIdentifier;
 }

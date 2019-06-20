@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace Akeneo\AssetManager\Domain\Model\Asset\Value;
 
 use Webmozart\Assert\Assert;
 

@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
 
-class RecordConnectorValueTransformerSpec extends ObjectBehavior
+class AssetConnectorValueTransformerSpec extends ObjectBehavior
 {
     function let(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
@@ -32,20 +32,20 @@ class RecordConnectorValueTransformerSpec extends ObjectBehavior
         $this->shouldImplement(ConnectorValueTransformerInterface::class);
     }
 
-    function it_only_supports_a_value_of_an_record_attribute(
+    function it_only_supports_a_value_of_an_asset_attribute(
         TextAttribute $textAttribute,
-        RecordAttribute $recordAttribute
+        AssetAttribute $assetAttribute
     ) {
-        $this->supports($recordAttribute)->shouldReturn(true);
+        $this->supports($assetAttribute)->shouldReturn(true);
         $this->supports($textAttribute)->shouldReturn(false);
     }
 
     function it_transforms_a_normalized_value_to_a_normalized_connector_value(
         $findCodesByIdentifiers,
-        RecordAttribute $attribute,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetAttribute $attribute,
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ) {
-        $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
+        $attribute->getAssetType()->willReturn($assetFamilyIdentifier);
         $findCodesByIdentifiers
             ->find(['france'])
             ->willReturn(['france']);
@@ -61,12 +61,12 @@ class RecordConnectorValueTransformerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_null_if_the_record_does_not_exists(
+    function it_returns_null_if_the_asset_does_not_exists(
         $findCodesByIdentifiers,
-        RecordAttribute $attribute,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetAttribute $attribute,
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ) {
-        $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
+        $attribute->getAssetType()->willReturn($assetFamilyIdentifier);
         $findCodesByIdentifiers
             ->find(['foo'])
             ->willReturn([]);

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
+namespace Akeneo\AssetManager\Integration\Search\Elasticsearch\Asset;
 
-use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
+use Akeneo\AssetManager\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchRecordCompletenessIndexConfigurationTest extends SearchIntegrationTestCase
+class SearchAssetCompletenessIndexConfigurationTest extends SearchIntegrationTestCase
 {
     public function setUp(): void
     {
@@ -54,7 +54,7 @@ class SearchRecordCompletenessIndexConfigurationTest extends SearchIntegrationTe
             ],
         ];
 
-        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery($query);
+        $matchingIdentifiers = $this->searchAssetIndexHelper->executeQuery($query);
         Assert::assertSame(['brand_kartell'], $matchingIdentifiers);
     }
 
@@ -83,17 +83,17 @@ class SearchRecordCompletenessIndexConfigurationTest extends SearchIntegrationTe
             ],
         ];
 
-        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery($query);
+        $matchingIdentifiers = $this->searchAssetIndexHelper->executeQuery($query);
         Assert::assertSame(['brand_kartell', 'brand_ikea'], $matchingIdentifiers);
     }
 
     private function loadDataset()
     {
         $complete = [
-            'reference_entity_code'   => 'brand',
+            'asset_family_code'   => 'brand',
             'identifier'              => 'brand_kartell',
             'code'                    => 'kartell',
-            'record_full_text_search' => [],
+            'asset_full_text_search' => [],
             'updated_at'              => date_create('2018-01-01')->getTimestamp(),
             'complete_value_keys' => [
                 'description_brand_fingerprint_ecommerce_en_US' => true,
@@ -103,10 +103,10 @@ class SearchRecordCompletenessIndexConfigurationTest extends SearchIntegrationTe
         ];
 
         $incomplete = [
-            'reference_entity_code'   => 'brand',
+            'asset_family_code'   => 'brand',
             'identifier'              => 'brand_ikea',
             'code'                    => 'ikea',
-            'record_full_text_search' => [],
+            'asset_full_text_search' => [],
             'updated_at'              => date_create('2018-01-01')->getTimestamp(),
             'complete_value_keys'                  => [
                 'description_brand_fingerprint_ecommerce_en_US' => true,
@@ -114,6 +114,6 @@ class SearchRecordCompletenessIndexConfigurationTest extends SearchIntegrationTe
             ],
         ];
 
-        $this->searchRecordIndexHelper->index([$complete, $incomplete]);
+        $this->searchAssetIndexHelper->index([$complete, $incomplete]);
     }
 }

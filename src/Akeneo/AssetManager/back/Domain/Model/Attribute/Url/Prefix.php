@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute\Url;
+namespace Akeneo\AssetManager\Domain\Model\Attribute\Url;
 
 use Webmozart\Assert\Assert;
 

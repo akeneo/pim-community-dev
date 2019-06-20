@@ -1,4 +1,4 @@
-pim_reference_entity:
+pim_asset_manager:
   app:
     image:
       wide:
@@ -6,7 +6,7 @@ pim_reference_entity:
       small:
         remove: Ta bort
         download: Ladda ner
-  reference_entity:
+  asset_family:
     button:
       save: Spara
       create: Skapa
@@ -25,7 +25,7 @@ pim_reference_entity:
       confirm: Spara
     delete:
       title: Attribut
-  record:
+  asset:
     button:
       save: Spara
       delete: Ta bort

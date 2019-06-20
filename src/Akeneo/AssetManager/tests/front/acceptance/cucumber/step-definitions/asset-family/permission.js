@@ -1,7 +1,7 @@
-const Edit = require('../../decorators/reference-entity/edit.decorator');
-const Header = require('../../decorators/reference-entity/app/header.decorator');
+const Edit = require('../../decorators/asset-family/edit.decorator');
+const Header = require('../../decorators/asset-family/app/header.decorator');
 const path = require('path');
-const {askForReferenceEntity, getRequestContract, listenRequest} = require('../../tools');
+const {askForAssetFamily, getRequestContract, listenRequest} = require('../../tools');
 
 const {
   decorators: {createElementDecorator},
@@ -24,39 +24,39 @@ module.exports = async function(cucumber) {
   };
   const getElement = createElementDecorator(config);
 
-  When('a reference entity', async function() {
-    const permissionRequestContract = getRequestContract('ReferenceEntityPermission/show.json');
+  When('an asset family', async function() {
+    const permissionRequestContract = getRequestContract('AssetFamilyPermission/show.json');
     await listenRequest(this.page, permissionRequestContract);
 
-    const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
+    const requestContract = getRequestContract('AssetFamily/AssetFamilyDetails/ok.json');
     await listenRequest(this.page, requestContract);
 
-    await askForReferenceEntity.apply(this, ['designer']);
+    await askForAssetFamily.apply(this, ['designer']);
   });
 
-  When('the user sets the following permissions for the reference entity:', async function(permissions) {
+  When('the user sets the following permissions for the asset family:', async function(permissions) {
     const editView = await await getElement(this.page, 'Edit');
     const permissionView = await editView.getPermission();
 
     for (const permission of convertItemTable(permissions)) {
       await permissionView.setPermission(permission.user_group_identifier, permission.right_level);
     }
-    const editRequestContract = getRequestContract('ReferenceEntityPermission/edit.json');
+    const editRequestContract = getRequestContract('AssetFamilyPermission/edit.json');
 
     await listenRequest(this.page, editRequestContract);
   });
 
-  When('the user ask for a reference entity without any user groups', async function() {
-    const showRequestContract = getRequestContract('ReferenceEntityPermission/show_empty.json');
+  When('the user ask for an asset family without any user groups', async function() {
+    const showRequestContract = getRequestContract('AssetFamilyPermission/show_empty.json');
     await listenRequest(this.page, showRequestContract);
-    const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
+    const requestContract = getRequestContract('AssetFamily/AssetFamilyDetails/ok.json');
     await listenRequest(this.page, requestContract);
 
-    await askForReferenceEntity.apply(this, ['designer']);
+    await askForAssetFamily.apply(this, ['designer']);
   });
 
   Then(
-    'there should be a {string} permission right for the user group {string} on the reference entity',
+    'there should be a {string} permission right for the user group {string} on the asset family',
     async function(rightLevel, groupName) {
       const editView = await await getElement(this.page, 'Edit');
       const permissionView = await editView.getPermission();

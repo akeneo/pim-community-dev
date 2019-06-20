@@ -11,45 +11,45 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\BulkRecordItemHydrator;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetItemsForIdentifiersAndQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\BulkAssetItemHydrator;
 
 /**
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIdentifiersAndQueryInterface
+class InMemoryFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForIdentifiersAndQueryInterface
 {
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
-    /** @var ReferenceEntityRepositoryInterface  */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface  */
+    private $assetFamilyRepository;
 
     /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
     private $findRequiredValueKeyCollectionForChannelAndLocales;
 
-    /** @var BulkRecordItemHydrator */
-    private $bulkRecordItemHydrator;
+    /** @var BulkAssetItemHydrator */
+    private $bulkAssetItemHydrator;
 
     public function __construct(
-        RecordRepositoryInterface $recordRepository,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales,
-        BulkRecordItemHydrator $bulkRecordItemHydrator
+        BulkAssetItemHydrator $bulkAssetItemHydrator
     ) {
-        $this->recordRepository = $recordRepository;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetRepository = $assetRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
-        $this->bulkRecordItemHydrator = $bulkRecordItemHydrator;
+        $this->bulkAssetItemHydrator = $bulkAssetItemHydrator;
 
         $this->findRequiredValueKeyCollectionForChannelAndLocales->setActivatedLocales(['en_US']);
         $this->findRequiredValueKeyCollectionForChannelAndLocales->setActivatedChannels(['ecommerce']);
@@ -58,53 +58,53 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
     /**
      * {@inheritdoc}
      */
-    public function find(array $identifiers, RecordQuery $query): array
+    public function find(array $identifiers, AssetQuery $query): array
     {
-        $referenceEntityFilter = $query->getFilter('reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
-        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
+        $assetFamilyFilter = $query->getFilter('asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyFilter['value']);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
+        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
 
-        $query = RecordQuery::createFromNormalized([
+        $query = AssetQuery::createFromNormalized([
            'locale' => $query->getChannel(),
            'channel' => $query->getLocale(),
            'size' => 20,
            'page' => 0,
            'filters' => [
                [
-                   'field' => 'reference_entity',
+                   'field' => 'asset_family',
                    'operator' => '=',
-                   'value' => $referenceEntityIdentifier->normalize(),
+                   'value' => $assetFamilyIdentifier->normalize(),
                    'context' => []
                ]
            ]
         ]);
 
-        $normalizedRecordItems = array_values(array_filter(array_map(function (string $identifier) use (
+        $normalizedAssetItems = array_values(array_filter(array_map(function (string $identifier) use (
             $attributeAsLabel,
             $attributeAsImage
         ) {
             try {
-                $record = $this->recordRepository->getByIdentifier(RecordIdentifier::fromString($identifier));
-            } catch (RecordNotFoundException $exception) {
+                $asset = $this->assetRepository->getByIdentifier(AssetIdentifier::fromString($identifier));
+            } catch (AssetNotFoundException $exception) {
                 return false;
             }
 
-            $normalizedRecordItem = [
-                'identifier' => (string) $record->getIdentifier(),
-                'reference_entity_identifier' => (string) $record->getReferenceEntityIdentifier(),
-                'code' => (string) $record->getCode(),
-                'value_collection' => json_encode($record->getValues()->normalize()),
+            $normalizedAssetItem = [
+                'identifier' => (string) $asset->getIdentifier(),
+                'asset_family_identifier' => (string) $asset->getAssetFamilyIdentifier(),
+                'code' => (string) $asset->getCode(),
+                'value_collection' => json_encode($asset->getValues()->normalize()),
                 'attribute_as_image' => $attributeAsImage->normalize(),
                 'attribute_as_label' => $attributeAsLabel->normalize()
             ];
 
-            return $normalizedRecordItem;
+            return $normalizedAssetItem;
         }, $identifiers)));
 
-        $recordItems = $this->bulkRecordItemHydrator->hydrateAll($normalizedRecordItems, $query);
+        $assetItems = $this->bulkAssetItemHydrator->hydrateAll($normalizedAssetItems, $query);
 
-        return $recordItems;
+        return $assetItems;
     }
 }

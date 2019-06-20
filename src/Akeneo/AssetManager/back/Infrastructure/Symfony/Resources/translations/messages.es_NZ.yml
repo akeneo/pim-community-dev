@@ -1,14 +1,14 @@
-akeneo_referenceentity:
+akeneo_assetmanager:
   acl_group:
-    reference_entity: Reference entities
+    asset_family: Reference entities
   acl:
-    reference_entity:
+    asset_family:
       create: Create an entity
       delete: Delete an entity
-    record:
-      create: Create a record
-      delete: Delete a record
-      delete_all: Delete all entity records
+    asset:
+      create: Create a asset
+      delete: Delete a asset
+      delete_all: Delete all entity assets
     attribute:
-      create: Add an attribute to a reference entity
-      edit: Edit an attribute of a reference entity
+      create: Add an attribute to an asset family
+      edit: Edit an attribute of an asset family

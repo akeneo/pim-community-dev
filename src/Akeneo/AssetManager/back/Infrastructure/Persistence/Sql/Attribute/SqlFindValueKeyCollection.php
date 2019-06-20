@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
 
 class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
@@ -32,23 +32,23 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): ValueKeyCollection
     {
-        if (!isset($this->cachedResult[$referenceEntityIdentifier->normalize()])) {
-            $this->cachedResult[$referenceEntityIdentifier->normalize()] = $this->fetch($referenceEntityIdentifier);
+        if (!isset($this->cachedResult[$assetFamilyIdentifier->normalize()])) {
+            $this->cachedResult[$assetFamilyIdentifier->normalize()] = $this->fetch($assetFamilyIdentifier);
         }
 
-        return $this->cachedResult[$referenceEntityIdentifier->normalize()];
+        return $this->cachedResult[$assetFamilyIdentifier->normalize()];
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
      * @return ValueKeyCollection
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
+    private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier): ValueKeyCollection
     {
         $query = <<<SQL
             SELECT
@@ -65,7 +65,7 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
                     COALESCE(c.code, locale_channel.channel_code) as channel_code,
                     COALESCE(l.code, locale_channel.locale_code) as locale_code
                 FROM
-                    akeneo_reference_entity_attribute as a
+                    akeneo_asset_manager_attribute as a
                     LEFT JOIN pim_catalog_channel c ON value_per_channel = 1 AND value_per_locale = 0
                     LEFT JOIN pim_catalog_locale l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
                     LEFT JOIN (
@@ -80,12 +80,12 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
                             l.is_activated = 1
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
-                    reference_entity_identifier = :reference_entity_identifier
+                    asset_family_identifier = :asset_family_identifier
             ) as mask;
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($query, [
-            'reference_entity_identifier' => $referenceEntityIdentifier,
+            'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
 
         $rows = $statement->fetchAll(\PDO::FETCH_COLUMN);

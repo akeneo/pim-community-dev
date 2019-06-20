@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Symfony\Command\Installer;
+namespace Akeneo\AssetManager\Integration\Symfony\Command\Installer;
 
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
@@ -24,18 +24,18 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
     private $sqlConnection;
 
     /** @var Client */
-    private $recordClient;
+    private $assetClient;
 
-    private const RECORD_INDEX = 'pimee_reference_entity_record';
+    private const ASSET_INDEX = 'pimee_asset_family_asset';
 
-    private const TOTAL_RECORDS = 10026;
+    private const TOTAL_ASSETS = 10026;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->fixturesInstaller = $this->get('akeneo_referenceentity.command.installer.fixtures_installer');
+        $this->fixturesInstaller = $this->get('akeneo_assetmanager.command.installer.fixtures_installer');
         $this->sqlConnection = $this->get('database_connection');
-        $this->recordClient =  $this->get('akeneo_referenceentity.client.record');
+        $this->assetClient =  $this->get('akeneo_assetmanager.client.asset');
         $this->resetPersistence();
     }
 
@@ -73,14 +73,14 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
     {
         $dropSchema = <<<SQL
 SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE akeneo_reference_entity_attribute;
-DROP TABLE akeneo_reference_entity_record;
-DROP TABLE akeneo_reference_entity_reference_entity;
-DROP TABLE akeneo_reference_entity_reference_entity_permissions;
+DROP TABLE akeneo_asset_manager_attribute;
+DROP TABLE akeneo_asset_manager_asset;
+DROP TABLE akeneo_asset_manager_asset_family;
+DROP TABLE akeneo_asset_manager_asset_family_permissions;
 SET FOREIGN_KEY_CHECKS = 1;
 SQL;
         $this->sqlConnection->executeUpdate($dropSchema);
-        $this->recordClient->resetIndex();
+        $this->assetClient->resetIndex();
     }
 
     private function assertSchemaCreated(): void
@@ -88,39 +88,39 @@ SQL;
         /** @var AbstractSchemaManager $schemaManager */
         $schemaManager = $this->sqlConnection->getSchemaManager();
         $expectedTables = [
-            'akeneo_reference_entity_record',
-            'akeneo_reference_entity_attribute',
-            'akeneo_reference_entity_reference_entity',
-            'akeneo_reference_entity_reference_entity_permissions',
+            'akeneo_asset_manager_asset',
+            'akeneo_asset_manager_attribute',
+            'akeneo_asset_manager_asset_family',
+            'akeneo_asset_manager_asset_family_permissions',
         ];
         Assert::assertTrue($schemaManager->tablesExist($expectedTables));
     }
 
     private function assertFixturesPersisted(): void
     {
-        Assert::assertEquals(7, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_reference_entity_reference_entity;')->rowCount());
-        Assert::assertEquals(36, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_reference_entity_attribute')->rowCount());
-        Assert::assertEquals(self::TOTAL_RECORDS, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_reference_entity_record')->rowCount());
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_reference_entity_reference_entity_permissions')->rowCount());
+        Assert::assertEquals(7, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
+        Assert::assertEquals(36, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
+        Assert::assertEquals(self::TOTAL_ASSETS, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset')->rowCount());
+        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family_permissions')->rowCount());
     }
 
     private function assertFixturesNotLoaded(): void
     {
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_reference_entity_reference_entity;')->rowCount());
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_reference_entity_attribute')->rowCount());
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_reference_entity_record')->rowCount());
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_reference_entity_reference_entity_permissions')->rowCount());
+        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
+        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
+        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset')->rowCount());
+        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family_permissions')->rowCount());
     }
 
     private function assertFixturesIndexed(): void
     {
-        Assert::assertEquals(self::TOTAL_RECORDS, $this->numbersOfRecordsIndexed());
+        Assert::assertEquals(self::TOTAL_ASSETS, $this->numbersOfAssetsIndexed());
     }
 
-    private function numbersOfRecordsIndexed(): int
+    private function numbersOfAssetsIndexed(): int
     {
-        $this->recordClient->refreshIndex();
-        $matches = $this->recordClient->search(self::RECORD_INDEX, ['_source' => '_id' ]);
+        $this->assetClient->refreshIndex();
+        $matches = $this->assetClient->search(self::ASSET_INDEX, ['_source' => '_id' ]);
 
         return $matches['hits']['total'];
     }

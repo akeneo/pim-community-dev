@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditTextValueCommand as EditTextValueCommandConstraint;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTextValueCommand as EditTextValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;

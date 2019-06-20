@@ -10,16 +10,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordCommandFactory
+class EditAssetCommandFactory
 {
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $sqlFindAttributesIndexedByIdentifier;
@@ -35,22 +35,22 @@ class EditRecordCommandFactory
         $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
     }
 
-    public function create(array $normalizedCommand): EditRecordCommand
+    public function create(array $normalizedCommand): EditAssetCommand
     {
         if (!$this->isValid($normalizedCommand)) {
-            throw new \RuntimeException('Impossible to create a command of record edition.');
+            throw new \RuntimeException('Impossible to create a command of asset edition.');
         }
 
-        $command = new EditRecordCommand(
-            $normalizedCommand['reference_entity_identifier'],
+        $command = new EditAssetCommand(
+            $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             [],
             null,
             []
         );
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-        $attributesIndexedByIdentifier = $this->sqlFindAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier);
+        $attributesIndexedByIdentifier = $this->sqlFindAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
 
         foreach ($normalizedCommand['values'] as $normalizedValue) {
             if (!$this->isUserInputCorrectlyFormed($normalizedValue)) {
@@ -63,7 +63,7 @@ class EditRecordCommandFactory
             }
 
             $attribute = $attributesIndexedByIdentifier[$normalizedValue['attribute']];
-            $command->editRecordValueCommands[] = $this->editValueCommandFactoryRegistry
+            $command->editAssetValueCommands[] = $this->editValueCommandFactoryRegistry
                 ->getFactory($attribute, $normalizedValue)
                 ->create($attribute, $normalizedValue);
         }
@@ -73,7 +73,7 @@ class EditRecordCommandFactory
 
     private function isValid(array $normalizedCommand): bool
     {
-        return array_key_exists('reference_entity_identifier', $normalizedCommand)
+        return array_key_exists('asset_family_identifier', $normalizedCommand)
             && array_key_exists('code', $normalizedCommand)
             && array_key_exists('values', $normalizedCommand);
     }

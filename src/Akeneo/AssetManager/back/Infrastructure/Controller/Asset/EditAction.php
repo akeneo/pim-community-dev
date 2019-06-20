@@ -10,13 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
+namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,18 +30,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Validate & save a record
+ * Validate & save a asset
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class EditAction
 {
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
+    /** @var EditAssetCommandFactory */
+    private $editAssetCommandFactory;
 
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
+    /** @var EditAssetHandler */
+    private $editAssetHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -49,24 +49,24 @@ class EditAction
     /** @var NormalizerInterface */
     private $normalizer;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
-        EditRecordCommandFactory $editRecordCommandFactory,
-        EditRecordHandler $editRecordHandler,
+        EditAssetCommandFactory $editAssetCommandFactory,
+        EditAssetHandler $editAssetHandler,
         ValidatorInterface $validator,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer
     ) {
-        $this->editRecordCommandFactory = $editRecordCommandFactory;
-        $this->editRecordHandler = $editRecordHandler;
+        $this->editAssetCommandFactory = $editAssetCommandFactory;
+        $this->editAssetHandler = $editAssetHandler;
         $this->validator = $validator;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
     }
@@ -76,7 +76,7 @@ class EditAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->isUserAllowedToEdit($request->get('referenceEntityIdentifier'))) {
+        if (!$this->isUserAllowedToEdit($request->get('assetFamilyIdentifier'))) {
             throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifiers($request)) {
@@ -94,7 +94,7 @@ class EditAction
         }
 
         try {
-            ($this->editRecordHandler)($command);
+            ($this->editAssetHandler)($command);
         } catch (FileTransferException | FileRemovalException $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }
@@ -102,14 +102,14 @@ class EditAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToEdit(string $assetFamilyIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery(
-            $referenceEntityIdentifier,
+        $query = new CanEditAssetFamilyQuery(
+            $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
 
-        return ($this->canEditReferenceEntityQueryHandler)($query);
+        return ($this->canEditAssetFamilyQueryHandler)($query);
     }
 
     /**
@@ -119,14 +119,14 @@ class EditAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['reference_entity_identifier'] !== $request->get('referenceEntityIdentifier') ||
-            $normalizedCommand['code'] !== $request->get('recordCode');
+        return $normalizedCommand['asset_family_identifier'] !== $request->get('assetFamilyIdentifier') ||
+            $normalizedCommand['code'] !== $request->get('assetCode');
     }
 
-    private function getEditCommand(Request $request): EditRecordCommand
+    private function getEditCommand(Request $request): EditAssetCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
-        $command = $this->editRecordCommandFactory->create($normalizedCommand);
+        $command = $this->editAssetCommandFactory->create($normalizedCommand);
 
         return $command;
     }

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\UserGroup;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\UserGroup;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\SecurityIdentifier;
+use Akeneo\AssetManager\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 

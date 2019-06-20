@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 
 /**
- * An AttributeAsLabelReference represents an attribute used as label for a Reference Entity.
+ * An AttributeAsLabelReference represents an attribute used as label for an Asset Family.
  *
  * If there is an attribute, then the AttributeAsLabelReference is the AttributeIdentifier of the attribute
  * If there is no attribute then it is null

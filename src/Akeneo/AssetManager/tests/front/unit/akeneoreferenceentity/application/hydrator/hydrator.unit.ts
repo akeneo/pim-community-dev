@@ -1,6 +1,6 @@
-import hydrateAll, {validateKeys, InvalidRawObjectError} from 'akeneoreferenceentity/application/hydrator/hydrator';
+import hydrateAll, {validateKeys, InvalidRawObjectError} from 'akeneoassetmanager/application/hydrator/hydrator';
 
-describe('akeneo > reference entity > application > hydrator --- hydrator', () => {
+describe('akeneo > asset family > application > hydrator --- hydrator', () => {
   test('I can hydrate a collection of elements', () => {
     const hydrator = element => {
       expect(element).toEqual('element_to_hydrate');
@@ -44,7 +44,7 @@ describe('akeneo > reference entity > application > hydrator --- hydrator', () =
   test('I can throw InvalidRawObjectError', () => {
     expect(() => {
       throw new InvalidRawObjectError(
-        'The provided raw reference entity seems to be malformed.',
+        'The provided raw asset family seems to be malformed.',
         ['name'],
         ['height'],
         {

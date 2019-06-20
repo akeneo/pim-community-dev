@@ -11,61 +11,61 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
+namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * Record get action.
+ * Asset get action.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class GetAction
 {
-    /** @var FindRecordDetailsInterface */
-    private $findRecordDetailsQuery;
+    /** @var FindAssetDetailsInterface */
+    private $findAssetDetailsQuery;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
-        FindRecordDetailsInterface $findRecordDetailsQuery,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        FindAssetDetailsInterface $findAssetDetailsQuery,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->findRecordDetailsQuery = $findRecordDetailsQuery;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->findAssetDetailsQuery = $findAssetDetailsQuery;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function __invoke(string $referenceEntityIdentifier, string $recordCode): JsonResponse
+    public function __invoke(string $assetFamilyIdentifier, string $assetCode): JsonResponse
     {
-        $recordCode = $this->getRecordCodeOr404($recordCode);
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $recordDetails = $this->findRecordDetailsOr404($referenceEntityIdentifier, $recordCode);
+        $assetCode = $this->getAssetCodeOr404($assetCode);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
+        $assetDetails = $this->findAssetDetailsOr404($assetFamilyIdentifier, $assetCode);
 
-        return new JsonResponse($recordDetails->normalize());
+        return new JsonResponse($assetDetails->normalize());
     }
 
     /**
      * @throws NotFoundHttpException
      */
-    private function getRecordCodeOr404(string $recordCode): RecordCode
+    private function getAssetCodeOr404(string $assetCode): AssetCode
     {
         try {
-            return RecordCode::fromString($recordCode);
+            return AssetCode::fromString($assetCode);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
@@ -74,10 +74,10 @@ class GetAction
     /**
      * @throws NotFoundHttpException
      */
-    private function getReferenceEntityIdentifierOr404(string $referenceEntityIdentifier): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifierOr404(string $assetFamilyIdentifier): AssetFamilyIdentifier
     {
         try {
-            return ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            return AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
@@ -86,11 +86,11 @@ class GetAction
     /**
      * @throws NotFoundHttpException
      */
-    private function findRecordDetailsOr404(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $recordCode
-    ): RecordDetails {
-        $result = $this->findRecordDetailsQuery->find($referenceEntityIdentifier, $recordCode);
+    private function findAssetDetailsOr404(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $assetCode
+    ): AssetDetails {
+        $result = $this->findAssetDetailsQuery->find($assetFamilyIdentifier, $assetCode);
 
         if (null === $result) {
             throw new NotFoundHttpException();
@@ -99,14 +99,14 @@ class GetAction
         return $this->hydratePermissions($result);
     }
 
-    private function hydratePermissions(RecordDetails $recordDetails): RecordDetails
+    private function hydratePermissions(AssetDetails $assetDetails): AssetDetails
     {
-        $canEditQuery = new CanEditReferenceEntityQuery(
-            (string) $recordDetails->referenceEntityIdentifier,
+        $canEditQuery = new CanEditAssetFamilyQuery(
+            (string) $assetDetails->assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
-        $recordDetails->isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($canEditQuery);
+        $assetDetails->isAllowedToEdit = ($this->canEditAssetFamilyQueryHandler)($canEditQuery);
 
-        return $recordDetails;
+        return $assetDetails;
     }
 }

@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_reference_entities_reference_entity_create_rest",
+    "route": "akeneo_asset_manager_asset_family_create_rest",
     "query": {},
     "body": {
       "identifier": "brand",

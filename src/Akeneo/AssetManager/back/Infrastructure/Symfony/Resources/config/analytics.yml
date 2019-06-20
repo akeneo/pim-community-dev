@@ -1,76 +1,76 @@
 services:
     # System info
-    pimee.reference_entity.analytics.reference_entity_statistics_collector:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Analytics\ReferenceEntityStatisticsCollector
+    pimee.asset_manager.analytics.asset_family_statistics_collector:
+        class: Akeneo\Pim\Enrichment\AssetManager\Bundle\Analytics\AssetFamilyStatisticsCollector
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_values_per_record'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.localizable_only'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only_and_localizable'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.count_asset_families'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_values_per_asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.localizable_only'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.scopable_only'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.scopable_only_and_localizable'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
 
     # Catalog volume monitoring
-    pimee.reference_entity.catalog_volume_monitoring.count_reference_entities:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\CatalogVolumeMonitoring\CountReferenceEntities
+    pimee.asset_manager.catalog_volume_monitoring.count_asset_families:
+        class: Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring\CountAssetFamilies
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities'
-            - '%reference_entity_limit%'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.count_asset_families'
+            - '%asset_family_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
-    pimee.reference_entity.catalog_volume_monitoring.average_max_number_of_records_per_reference_entity:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfRecordsPerReferenceEntity
+    pimee.asset_manager.catalog_volume_monitoring.average_max_number_of_assets_per_asset_family:
+        class: Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAssetsPerAssetFamily
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity'
-            - '%reference_entity_record_limit_per_reference_entity%'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family'
+            - '%asset_manager_asset_limit_per_asset_family%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
-    pimee.reference_entity.catalog_volume_monitoring.average_max_number_of_attributes_per_reference_entity:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAttributesPerReferenceEntity
+    pimee.asset_manager.catalog_volume_monitoring.average_max_number_of_attributes_per_asset_family:
+        class: Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAttributesPerAssetFamily
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity'
-            - '%reference_entity_maximum_attribute%'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_asset_family'
+            - '%asset_family_maximum_attribute%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
     # Query functions
-    akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities:
-        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlCountReferenceEntities
+    akeneo_assetmanager.infrastructure.persistence.query.analytics.count_asset_families:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlCountAssetFamilies
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity:
-        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfRecordsPerReferenceEntity
+    akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_values_per_record:
-        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerRecord
+    akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_values_per_asset:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerAsset
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity:
-        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerReferenceEntity
+    akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_asset_family:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerAssetFamily
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.localizable_only:
-        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly
+    akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.localizable_only:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlLocalizableOnly
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only:
-        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly
+    akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.scopable_only:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableOnly
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only_and_localizable:
-        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableAndLocalizable
+    akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.scopable_only_and_localizable:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableAndLocalizable
         arguments:
             - '@database_connection'

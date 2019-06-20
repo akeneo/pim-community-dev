@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\Attribute;
+namespace Akeneo\AssetManager\Integration\UI\Web\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
@@ -37,15 +37,15 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_lists_all_attributes_for_a_reference_entity(): void
+    public function it_lists_all_attributes_for_an_asset_family(): void
     {
-        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
+        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createEmailAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
@@ -57,9 +57,9 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_lists_another_set_of_attributes_for_a_reference_entity(): void
+    public function it_lists_another_set_of_attributes_for_an_asset_family(): void
     {
-        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
+        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
         $this->webClientHelper->assertRequest($this->client, 'Attribute/ListDetails/ok/name_portrait.json');
@@ -68,7 +68,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_list_if_the_reference_entity_does_not_have_any_attributes(): void
+    public function it_returns_an_empty_list_if_the_asset_family_does_not_have_any_attributes(): void
     {
         $this->webClientHelper->assertRequest($this->client, 'Attribute/ListDetails/empty_list.json');
     }
@@ -76,7 +76,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_a_not_found_response_when_the_reference_entity_identifier_does_not_exists(): void
+    public function it_returns_a_not_found_response_when_the_asset_family_identifier_does_not_exists(): void
     {
         $this->webClientHelper->assertRequest($this->client, 'Attribute/ListDetails/not_found.json');
     }
@@ -84,16 +84,16 @@ class IndexActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_create', true);
+        $securityFacadeStub->setIsGranted('akeneo_assetmanager_attribute_create', true);
 
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityRepository->create(ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyRepository->create(AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [],
             Image::createEmpty()
         ));
-        $referenceEntityRepository->create(ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamilyRepository->create(AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [],
             Image::createEmpty()
         ));
@@ -103,7 +103,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $nameAttribute = new AttributeDetails();
         $nameAttribute->identifier = sprintf('name_designer_%s', md5('fingerprint'));
-        $nameAttribute->referenceEntityIdentifier = 'designer';
+        $nameAttribute->assetFamilyIdentifier = 'designer';
         $nameAttribute->type = 'text';
         $nameAttribute->code = 'name';
         $nameAttribute->labels = ['en_US' => 'Name'];
@@ -126,7 +126,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $emailAttribute = new AttributeDetails();
         $emailAttribute->identifier = sprintf('email_designer_%s', md5('fingerprint'));
-        $emailAttribute->referenceEntityIdentifier = 'designer';
+        $emailAttribute->assetFamilyIdentifier = 'designer';
         $emailAttribute->type = 'text';
         $emailAttribute->code = 'email';
         $emailAttribute->labels = ['en_US' => 'Email'];
@@ -149,7 +149,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $portraitAttribute = new AttributeDetails();
         $portraitAttribute->identifier = sprintf('portrait_designer_%s', md5('fingerprint'));
-        $portraitAttribute->referenceEntityIdentifier = 'designer';
+        $portraitAttribute->assetFamilyIdentifier = 'designer';
         $portraitAttribute->type = 'image';
         $portraitAttribute->code = 'portrait';
         $portraitAttribute->labels = ['en_US' => 'Portrait'];
@@ -169,7 +169,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $optionAttribute = new AttributeDetails();
         $optionAttribute->identifier = sprintf('favorite_color_designer_%s', md5('fingerprint'));
-        $optionAttribute->referenceEntityIdentifier = 'designer';
+        $optionAttribute->assetFamilyIdentifier = 'designer';
         $optionAttribute->type = 'option';
         $optionAttribute->code = 'favorite_color';
         $optionAttribute->labels = ['en_US' => 'Favorite color'];
@@ -203,7 +203,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $optionCollectionAttribute = new AttributeDetails();
         $optionCollectionAttribute->identifier = sprintf('colors_designer_%s', md5('fingerprint'));
-        $optionCollectionAttribute->referenceEntityIdentifier = 'designer';
+        $optionCollectionAttribute->assetFamilyIdentifier = 'designer';
         $optionCollectionAttribute->type = 'option_collection';
         $optionCollectionAttribute->code = 'colors';
         $optionCollectionAttribute->labels = ['en_US' => 'Colors'];

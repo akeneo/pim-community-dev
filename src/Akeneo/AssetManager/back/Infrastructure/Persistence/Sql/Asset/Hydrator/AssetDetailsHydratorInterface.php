@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface RecordDetailsHydratorInterface
+interface AssetDetailsHydratorInterface
 {
-    public function hydrate(array $row, array $emptyValues, ValueKeyCollection $valueKeyCollection, array $attributes): RecordDetails;
+    public function hydrate(array $row, array $emptyValues, ValueKeyCollection $valueKeyCollection, array $attributes): AssetDetails;
 }

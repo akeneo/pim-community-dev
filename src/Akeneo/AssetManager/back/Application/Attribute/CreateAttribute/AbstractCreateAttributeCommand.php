@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -21,7 +21,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
 abstract class AbstractCreateAttributeCommand
 {
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
     /** @var string */
     public $code;
@@ -39,14 +39,14 @@ abstract class AbstractCreateAttributeCommand
     public $valuePerLocale;
 
     public function __construct(
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         string $code,
         array $labels,
         bool $isRequired,
         bool $valuePerChannel,
         bool $valuePerLocale
     ) {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->code = $code;
         $this->labels = $labels;
         $this->isRequired = $isRequired;

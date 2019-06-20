@@ -1,11 +1,11 @@
-import hydrator from 'akeneoreferenceentity/application/hydrator/record';
+import hydrator from 'akeneoassetmanager/application/hydrator/asset';
 
-describe('akeneo > reference entity > application > hydrator --- record', () => {
-  test('I can hydrate a new record', () => {
+describe('akeneo > asset family > application > hydrator --- asset', () => {
+  test('I can hydrate a new asset', () => {
     expect(
       hydrator({
         identifier: 'designer_starck_fingerprint',
-        reference_entity_identifier: 'designer',
+        asset_family_identifier: 'designer',
         code: 'starck',
         labels: {en_US: 'Stark'},
         image: null,
@@ -14,10 +14,10 @@ describe('akeneo > reference entity > application > hydrator --- record', () => 
     );
   });
 
-  test('It throw an error if I pass a malformed record', () => {
+  test('It throw an error if I pass a malformed asset', () => {
     expect(() => hydrator({})).toThrow();
     expect(() => hydrator({labels: {}})).toThrow();
     expect(() => hydrator({identifier: 'starck'})).toThrow();
-    expect(() => hydrator({referenceEntityIdentifier: 'designer'})).toThrow();
+    expect(() => hydrator({assetFamilyIdentifier: 'designer'})).toThrow();
   });
 });

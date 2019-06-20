@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace spec\Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
 use PhpSpec\ObjectBehavior;
 
-class RecordDetailsSpec extends ObjectBehavior
+class AssetDetailsSpec extends ObjectBehavior
 {
     public function let(
-        RecordIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code,
+        AssetIdentifier $identifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code,
         LabelCollection $labelCollection
     ) {
         $this->beConstructedWith(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labelCollection,
             Image::createEmpty(),
@@ -33,24 +33,24 @@ class RecordDetailsSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(RecordDetails::class);
+        $this->shouldHaveType(AssetDetails::class);
     }
 
     public function it_normalizes_itself(
-        RecordIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code,
+        AssetIdentifier $identifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code,
         LabelCollection $labelCollection
     ) {
 
         $identifier->normalize()->willReturn('starck_designer_fingerprint');
-        $referenceEntityIdentifier->normalize()->willReturn('designer');
+        $assetFamilyIdentifier->normalize()->willReturn('designer');
         $code->normalize()->willReturn('starck');
         $labelCollection->normalize()->willReturn(['fr_FR' => 'Philippe Starck']);
 
         $this->normalize()->shouldReturn([
             'identifier'                  => 'starck_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code'                        => 'starck',
             'labels'                      => ['fr_FR' => 'Philippe Starck'],
             'image'                       => null,

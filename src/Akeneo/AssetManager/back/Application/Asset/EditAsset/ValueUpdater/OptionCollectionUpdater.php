@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -12,18 +12,18 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
  * file that was distributed with this source code.
  */
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionCollectionValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionCollectionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollectionValueCommand;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionCollectionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 
 /**
- * Record updater responsible for updating values of "record collection" on a record.
+ * Asset updater responsible for updating values of "asset collection" on a asset.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
@@ -35,10 +35,10 @@ class OptionCollectionUpdater implements ValueUpdaterInterface
         return $command instanceof EditOptionCollectionValueCommand;
     }
 
-    public function __invoke(Record $record, AbstractEditValueCommand $command): void
+    public function __invoke(Asset $asset, AbstractEditValueCommand $command): void
     {
         if (!$this->supports($command)) {
-            throw new \RuntimeException('Impossible to update the value of the record with the given command.');
+            throw new \RuntimeException('Impossible to update the value of the asset with the given command.');
         }
 
         /** @var EditOptionCollectionValueCommand $command */
@@ -52,6 +52,6 @@ class OptionCollectionUpdater implements ValueUpdaterInterface
         $options = OptionCollectionData::createFromNormalize($command->optionCodes);
 
         $value = Value::create($attribute, $channelReference, $localeReference, $options);
-        $record->setValue($value);
+        $asset->setValue($value);
     }
 }

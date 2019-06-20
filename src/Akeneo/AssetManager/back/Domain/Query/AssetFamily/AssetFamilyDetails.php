@@ -11,33 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 
 /**
- * Read model representing a reference entity detailled for display purpose (like a form)
+ * Read model representing an asset family detailled for display purpose (like a form)
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityDetails
+class AssetFamilyDetails
 {
     public const IDENTIFIER = 'identifier';
     public const LABELS = 'labels';
     public const IMAGE = 'image';
-    public const RECORD_COUNT = 'record_count';
+    public const ASSET_COUNT = 'asset_count';
     public const ATTRIBUTES = 'attributes';
     public const PERMISSION = 'permission';
     public const ATTRIBUTE_AS_LABEL = 'attribute_as_label';
     public const ATTRIBUTE_AS_IMAGE = 'attribute_as_image';
 
-    /** @var ReferenceEntityIdentifier */
+    /** @var AssetFamilyIdentifier */
     public $identifier;
 
     /** @var LabelCollection */
@@ -47,7 +47,7 @@ class ReferenceEntityDetails
     public $image;
 
     /** @var int */
-    public $recordCount;
+    public $assetCount;
 
     /** @var AttributeDetails[] */
     public $attributes;
@@ -69,7 +69,7 @@ class ReferenceEntityDetails
             self::IDENTIFIER   => (string) $this->identifier,
             self::LABELS       => $this->labels->normalize(),
             self::IMAGE        => $this->image->normalize(),
-            self::RECORD_COUNT => $this->recordCount,
+            self::ASSET_COUNT => $this->assetCount,
             self::ATTRIBUTES   => array_map(function (AttributeDetails $attribute) {
                 return $attribute->normalize();
             }, $this->attributes),

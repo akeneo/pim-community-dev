@@ -2,48 +2,48 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByIdentifiersInterface;
 
-class InMemoryFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentifiersInterface
+class InMemoryFindAssetLabelsByIdentifiers implements FindAssetLabelsByIdentifiersInterface
 {
-    /** @var InMemoryRecordRepository  */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository  */
+    private $assetRepository;
 
-    /** @var InMemoryReferenceEntityRepository  */
-    private $referenceEntityRepository;
+    /** @var InMemoryAssetFamilyRepository  */
+    private $assetFamilyRepository;
 
     public function __construct(
-        InMemoryRecordRepository $recordRepository,
-        InMemoryReferenceEntityRepository $referenceEntityRepository
+        InMemoryAssetRepository $assetRepository,
+        InMemoryAssetFamilyRepository $assetFamilyRepository
     ) {
-        $this->recordRepository = $recordRepository;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetRepository = $assetRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(array $recordIdentifiers): array
+    public function find(array $assetIdentifiers): array
     {
-        $recordLabels = [];
-        foreach ($recordIdentifiers as $identifier) {
-            $recordIdentifier = RecordIdentifier::fromString($identifier);
-            $record = $this->recordRepository->getByIdentifier($recordIdentifier);
-            $referenceEntity = $this->referenceEntityRepository->getByIdentifier($record->getReferenceEntityIdentifier());
+        $assetLabels = [];
+        foreach ($assetIdentifiers as $identifier) {
+            $assetIdentifier = AssetIdentifier::fromString($identifier);
+            $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
+            $assetFamily = $this->assetFamilyRepository->getByIdentifier($asset->getAssetFamilyIdentifier());
 
-            $valueKey = ValueKey::createFromNormalized(sprintf('%s_en_US', $referenceEntity->getAttributeAsLabelReference()->normalize()));
-            $value = $record->findValue($valueKey);
+            $valueKey = ValueKey::createFromNormalized(sprintf('%s_en_US', $assetFamily->getAttributeAsLabelReference()->normalize()));
+            $value = $asset->findValue($valueKey);
             $labels[$value->getLocaleReference()->normalize()] = $value->getData()->normalize();
-            $recordLabels[$recordIdentifier->normalize()] = [
+            $assetLabels[$assetIdentifier->normalize()] = [
                 'labels' => $labels,
-                'code' => $record->getCode()->normalize()
+                'code' => $asset->getCode()->normalize()
             ];
         }
 
-        return $recordLabels;
+        return $assetLabels;
     }
 }

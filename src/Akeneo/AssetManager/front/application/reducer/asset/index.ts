@@ -1,10 +1,10 @@
-import user, {UserState} from 'akeneoreferenceentity/application/reducer/user';
-import grid, {GridState} from 'akeneoreferenceentity/application/reducer/grid';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
+import user, {UserState} from 'akeneoassetmanager/application/reducer/user';
+import grid, {GridState} from 'akeneoassetmanager/application/reducer/grid';
+import Asset from 'akeneoassetmanager/domain/model/asset/asset';
 
 export interface State {
   user: UserState;
-  grid: GridState<Record>;
+  grid: GridState<Asset>;
 }
 
 export default {

@@ -1,8 +1,8 @@
-import hydrator from 'akeneoreferenceentity/application/hydrator/product';
-import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import {denormalizeProduct} from 'akeneoreferenceentity/domain/model/product/product';
+import hydrator from 'akeneoassetmanager/application/hydrator/product';
+import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalizeProduct} from 'akeneoassetmanager/domain/model/product/product';
 
-describe('akeneo > reference entity > application > hydrator --- product', () => {
+describe('akeneo > asset family > application > hydrator --- product', () => {
   test('I can hydrate a new product', () => {
     expect(
       hydrator(
@@ -89,6 +89,6 @@ describe('akeneo > reference entity > application > hydrator --- product', () =>
     expect(() => hydrator({})).toThrow();
     expect(() => hydrator({labels: {}})).toThrow();
     expect(() => hydrator({identifier: 'starck'})).toThrow();
-    expect(() => hydrator({referenceEntityIdentifier: 'designer'})).toThrow();
+    expect(() => hydrator({assetFamilyIdentifier: 'designer'})).toThrow();
   });
 });

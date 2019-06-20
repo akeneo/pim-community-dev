@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -75,8 +75,8 @@ class AttributeOptionShouldExistValidator extends ConstraintValidator
 
     private function validateCommand(EditAttributeOptionCommand $command): void
     {
-        $identifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
+        $identifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier),
             AttributeCode::fromString($command->attributeCode)
         );
         $attribute = $this->attributeRepository->getByIdentifier($identifier);

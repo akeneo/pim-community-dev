@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
+namespace Akeneo\AssetManager\Common\Fake\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyItemsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
 
-class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenceEntityItemsInterface
+class InMemoryFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyItemsInterface
 {
-    /** @var ConnectorReferenceEntity[] */
+    /** @var ConnectorAssetFamily[] */
     private $results;
 
     public function __construct()
@@ -29,29 +29,29 @@ class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenc
     }
 
     public function save(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        ConnectorReferenceEntity $connectorReferenceEntity
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        ConnectorAssetFamily $connectorAssetFamily
     ): void {
-        $this->results[(string) $referenceEntityIdentifier] = $connectorReferenceEntity;
+        $this->results[(string) $assetFamilyIdentifier] = $connectorAssetFamily;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityQuery $query): array
+    public function find(AssetFamilyQuery $query): array
     {
         $searchAfterCode = $query->getSearchAfterIdentifier();
-        $referenceEntities = array_values(array_filter($this->results, function (ConnectorReferenceEntity $referenceEntity) use ($searchAfterCode): bool {
+        $assetFamilies = array_values(array_filter($this->results, function (ConnectorAssetFamily $assetFamily) use ($searchAfterCode): bool {
             return null === $searchAfterCode
-                || strcasecmp((string) $referenceEntity->getIdentifier(), $searchAfterCode) > 0;
+                || strcasecmp((string) $assetFamily->getIdentifier(), $searchAfterCode) > 0;
         }));
 
-        usort($referenceEntities, function (ConnectorReferenceEntity $first, ConnectorReferenceEntity $second) {
+        usort($assetFamilies, function (ConnectorAssetFamily $first, ConnectorAssetFamily $second) {
             return strcasecmp((string) $first->getIdentifier(), (string) $second->getIdentifier());
         });
 
-        $referenceEntities = array_slice($referenceEntities, 0, $query->getSize());
+        $assetFamilies = array_slice($assetFamilies, 0, $query->getSize());
 
-        return $referenceEntities;
+        return $assetFamilies;
     }
 }

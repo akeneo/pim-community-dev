@@ -1,6 +1,6 @@
-import {toggleSidebar, setUpTabs} from 'akeneoreferenceentity/application/event/sidebar';
-import sidebarProvider from 'akeneoreferenceentity/application/configuration/sidebar';
-import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
+import {toggleSidebar, setUpTabs} from 'akeneoassetmanager/application/event/sidebar';
+import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
+import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 
 export const setUpSidebar = (sidebarIdentifier: string) => async (dispatch: any): Promise<void> => {
   const tabs: Tab[] = sidebarProvider.getTabs(sidebarIdentifier);

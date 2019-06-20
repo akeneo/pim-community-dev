@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query;
+namespace Akeneo\AssetManager\Domain\Query;
 
 use Webmozart\Assert\Assert;
 

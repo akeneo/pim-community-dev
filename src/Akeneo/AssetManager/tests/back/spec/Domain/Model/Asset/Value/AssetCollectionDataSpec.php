@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace spec\Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetCollectionData;
 use PhpSpec\ObjectBehavior;
 
-class RecordCollectionDataSpec extends ObjectBehavior
+class AssetCollectionDataSpec extends ObjectBehavior
 {
     public function let(
-        RecordCode $starckRecordCode,
-        RecordCode $breuerRecordCode
+        AssetCode $starckAssetCode,
+        AssetCode $breuerAssetCode
     ) {
-        $starckRecordCode->__toString()->willReturn('starck');
-        $breuerRecordCode->__toString()->willReturn('breuer');
+        $starckAssetCode->__toString()->willReturn('starck');
+        $breuerAssetCode->__toString()->willReturn('breuer');
 
-        $this->beConstructedThrough('fromRecordCodes', [[$starckRecordCode, $breuerRecordCode]]);
+        $this->beConstructedThrough('fromAssetCodes', [[$starckAssetCode, $breuerAssetCode]]);
     }
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(RecordCollectionData::class);
+        $this->shouldHaveType(AssetCollectionData::class);
     }
 
     public function it_can_be_constructed_through_normalized_data()
     {
         $this->beConstructedThrough('createFromNormalize', [['breuer', 'paul']]);
-        $this->shouldBeAnInstanceOf(RecordCollectionData::class);
+        $this->shouldBeAnInstanceOf(AssetCollectionData::class);
     }
 
     public function it_cannot_be_constructed_with_something_else_than_a_normalized_array()
@@ -44,10 +44,10 @@ class RecordCollectionDataSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
-    public function it_cannot_be_constructed_with_something_else_than_a_record_code(
-        RecordIdentifier $starckRecordIdentifier
+    public function it_cannot_be_constructed_with_something_else_than_a_asset_code(
+        AssetIdentifier $starckAssetIdentifier
     ) {
-        $this->beConstructedThrough('fromRecordCodes', [[$starckRecordIdentifier]]);
+        $this->beConstructedThrough('fromAssetCodes', [[$starckAssetIdentifier]]);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 

@@ -1,4 +1,4 @@
-import Switch from 'akeneoreferenceentity/application/component/app/switch';
+import Switch from 'akeneoassetmanager/application/component/app/switch';
 import * as React from 'react';
 import {mount} from 'enzyme';
 

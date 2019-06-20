@@ -2,37 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\CountRecordsInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class CountRecords implements CountRecordsInterface
+class CountAssets implements CountAssetsInterface
 {
-    private const INDEX_TYPE = 'pimee_reference_entity_record';
+    private const INDEX_TYPE = 'pimee_asset_family_asset';
 
     /** @var Client */
-    private $recordClient;
+    private $assetClient;
 
-    public function __construct(Client $recordClient)
+    public function __construct(Client $assetClient)
     {
-        $this->recordClient = $recordClient;
+        $this->assetClient = $assetClient;
     }
 
-    public function forReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    public function forAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
     {
-        $elasticSearchQuery = $this->getElasticSearchQuery($referenceEntityIdentifier);
-        $matches = $this->recordClient->search(self::INDEX_TYPE, $elasticSearchQuery);
+        $elasticSearchQuery = $this->getElasticSearchQuery($assetFamilyIdentifier);
+        $matches = $this->assetClient->search(self::INDEX_TYPE, $elasticSearchQuery);
 
         return $matches['hits']['total'];
     }
 
-    private function getElasticSearchQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function getElasticSearchQuery(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         return [
             '_source' => '_id',
@@ -43,7 +43,7 @@ class CountRecords implements CountRecordsInterface
                             'filter' => [
                                 [
                                     'term' => [
-                                        'reference_entity_code' => (string) $referenceEntityIdentifier,
+                                        'asset_family_code' => (string) $assetFamilyIdentifier,
                                     ],
                                 ],
                             ],

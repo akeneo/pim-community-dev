@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
 interface EditAttributeCommandFactoryRegistryInterface
 {

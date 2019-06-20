@@ -1,5 +1,5 @@
 const routing = require('routing');
-import File from 'akeneoreferenceentity/domain/model/file';
+import File from 'akeneoassetmanager/domain/model/file';
 
 export const getImageShowUrl = (image: File, filter: string): string => {
   const path = !image.isEmpty() ? image.getFilePath() : 'undefined';

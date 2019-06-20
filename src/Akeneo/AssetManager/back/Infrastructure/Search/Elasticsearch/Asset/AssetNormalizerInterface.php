@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
-interface RecordNormalizerInterface
+interface AssetNormalizerInterface
 {
-    public function normalizeRecord(RecordIdentifier $recordIdentifier): array;
+    public function normalizeAsset(AssetIdentifier $assetIdentifier): array;
 
-    public function normalizeRecordsByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator;
+    public function normalizeAssetsByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator;
 }

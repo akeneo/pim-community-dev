@@ -2,47 +2,47 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\SearchRecord;
+namespace spec\Akeneo\AssetManager\Application\Asset\SearchAsset;
 
-use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\CountRecordsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Application\Asset\SearchAsset\SearchAsset;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetItemsForIdentifiersAndQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\IdentifiersForQueryResult;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class SearchRecordSpec extends ObjectBehavior
+class SearchAssetSpec extends ObjectBehavior
 {
     function let(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        FindRecordItemsForIdentifiersAndQueryInterface $findRecordItemsForIdentifiersAndQuery,
-        CountRecordsInterface $countRecords
+        FindAssetItemsForIdentifiersAndQueryInterface $findAssetItemsForIdentifiersAndQuery,
+        CountAssetsInterface $countAssets
     ) {
-        $this->beConstructedWith($findIdentifiersForQuery, $findRecordItemsForIdentifiersAndQuery, $countRecords);
+        $this->beConstructedWith($findIdentifiersForQuery, $findAssetItemsForIdentifiersAndQuery, $countAssets);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SearchRecord::class);
+        $this->shouldHaveType(SearchAsset::class);
     }
 
-    function it_returns_search_result_from_a_record_query(
+    function it_returns_search_result_from_a_asset_query(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        FindRecordItemsForIdentifiersAndQueryInterface $findRecordItemsForIdentifiersAndQuery,
-        CountRecordsInterface $countRecords,
-        RecordItem $stark,
-        RecordItem $dyson
+        FindAssetItemsForIdentifiersAndQueryInterface $findAssetItemsForIdentifiersAndQuery,
+        CountAssetsInterface $countAssets,
+        AssetItem $stark,
+        AssetItem $dyson
     ) {
         $stark->normalize()->willReturn(['identifier' => 'stark']);
         $dyson->normalize()->willReturn(['identifier' => 'dyson']);
-        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('brand'),
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             1,
@@ -50,18 +50,18 @@ class SearchRecordSpec extends ObjectBehavior
             []
         );
         $identifiersResult = new IdentifiersForQueryResult(['stark', 'dyson'], 2);
-        $findIdentifiersForQuery->find($recordQuery)->willReturn($identifiersResult);
-        $findRecordItemsForIdentifiersAndQuery->find(['stark', 'dyson'], $recordQuery)
+        $findIdentifiersForQuery->find($assetQuery)->willReturn($identifiersResult);
+        $findAssetItemsForIdentifiersAndQuery->find(['stark', 'dyson'], $assetQuery)
             ->willReturn([$stark, $dyson]);
-        $countRecords->forReferenceEntity(
+        $countAssets->forAssetFamily(
             Argument::that(
-                function (ReferenceEntityIdentifier $referenceEntityIdentifier) {
-                    return 'brand' === (string) $referenceEntityIdentifier;
+                function (AssetFamilyIdentifier $assetFamilyIdentifier) {
+                    return 'brand' === (string) $assetFamilyIdentifier;
                 }
             )
         )->willReturn(10);
 
-        $result = $this->__invoke($recordQuery);
+        $result = $this->__invoke($assetQuery);
 
         $result->normalize()->shouldReturn([
             'items' => [

@@ -1,16 +1,16 @@
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-  NormalizedReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
+import AssetFamily, {
+  denormalizeAssetFamily,
+  NormalizedAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {validateKeys} from 'akeneoassetmanager/application/hydrator/hydrator';
 
 export const hydrator = (
-  denormalizeReferenceEntity: (normalizedReferenceEntity: NormalizedReferenceEntity) => ReferenceEntity
-) => (backendReferenceEntity: any): ReferenceEntity => {
+  denormalizeAssetFamily: (normalizedAssetFamily: NormalizedAssetFamily) => AssetFamily
+) => (backendAssetFamily: any): AssetFamily => {
   const expectedKeys = ['identifier', 'labels', 'image', 'attribute_as_image', 'attribute_as_label'];
 
-  validateKeys(backendReferenceEntity, expectedKeys, 'The provided raw reference entity seems to be malformed.');
-  return denormalizeReferenceEntity(backendReferenceEntity);
+  validateKeys(backendAssetFamily, expectedKeys, 'The provided raw asset family seems to be malformed.');
+  return denormalizeAssetFamily(backendAssetFamily);
 };
 
-export default hydrator(denormalizeReferenceEntity);
+export default hydrator(denormalizeAssetFamily);

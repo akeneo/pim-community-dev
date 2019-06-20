@@ -1,4 +1,4 @@
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export class InvalidArgument extends Error {}
 

@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Limit;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal\AddHalDownloadLinkToReferenceEntityImage;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Limit;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyItemsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,27 +29,27 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class GetConnectorReferenceEntitiesAction
+class GetConnectorAssetFamiliesAction
 {
     /** @var Limit */
     private $limit;
 
-    /** @var FindConnectorReferenceEntityItemsInterface */
-    private $findConnectorReferenceEntityItems;
+    /** @var FindConnectorAssetFamilyItemsInterface */
+    private $findConnectorAssetFamilyItems;
 
     /** @var PaginatorInterface */
     private $halPaginator;
 
-    /** @var AddHalDownloadLinkToReferenceEntityImage */
+    /** @var AddHalDownloadLinkToAssetFamilyImage */
     private $addHalDownloadLinkToImage;
 
     public function __construct(
-        FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems,
+        FindConnectorAssetFamilyItemsInterface $findConnectorAssetFamilyItems,
         PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToReferenceEntityImage $addHalDownloadLinkToImage,
+        AddHalDownloadLinkToAssetFamilyImage $addHalDownloadLinkToImage,
         int $limit
     ) {
-        $this->findConnectorReferenceEntityItems = $findConnectorReferenceEntityItems;
+        $this->findConnectorAssetFamilyItems = $findConnectorAssetFamilyItems;
         $this->limit = new Limit($limit);
         $this->halPaginator = $halPaginator;
         $this->addHalDownloadLinkToImage = $addHalDownloadLinkToImage;
@@ -63,41 +63,41 @@ class GetConnectorReferenceEntitiesAction
     {
         try {
             $searchAfter = $request->get('search_after', null);
-            $searchAfterIdentifier = null !== $searchAfter ? ReferenceEntityIdentifier::fromString($searchAfter) : null;
-            $referenceEntityQuery = ReferenceEntityQuery::createPaginatedQuery($this->limit->intValue(), $searchAfterIdentifier);
+            $searchAfterIdentifier = null !== $searchAfter ? AssetFamilyIdentifier::fromString($searchAfter) : null;
+            $assetFamilyQuery = AssetFamilyQuery::createPaginatedQuery($this->limit->intValue(), $searchAfterIdentifier);
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        $referenceEntities = $this->findConnectorReferenceEntityItems->find($referenceEntityQuery);
-        $referenceEntities = array_map(function (ConnectorReferenceEntity $referenceEntity) {
-            $normalizedReferenceEntity = $referenceEntity->normalize();
-            return ($this->addHalDownloadLinkToImage)($normalizedReferenceEntity);
-        }, $referenceEntities);
+        $assetFamilies = $this->findConnectorAssetFamilyItems->find($assetFamilyQuery);
+        $assetFamilies = array_map(function (ConnectorAssetFamily $assetFamily) {
+            $normalizedAssetFamily = $assetFamily->normalize();
+            return ($this->addHalDownloadLinkToImage)($normalizedAssetFamily);
+        }, $assetFamilies);
 
-        $paginatedReferenceEntities = $this->paginateReferenceEntities($referenceEntities, $searchAfter);
+        $paginatedAssetFamilies = $this->paginateAssetFamilies($assetFamilies, $searchAfter);
 
-        return new JsonResponse($paginatedReferenceEntities);
+        return new JsonResponse($paginatedAssetFamilies);
     }
 
-    private function paginateReferenceEntities(array $referenceEntities, ?string $searchAfter): array
+    private function paginateAssetFamilies(array $assetFamilies, ?string $searchAfter): array
     {
-        $lastReferenceEntity = end($referenceEntities);
-        reset($referenceEntities);
-        $lastReferenceEntityCode = $lastReferenceEntity['code'] ?? null;
+        $lastAssetFamily = end($assetFamilies);
+        reset($assetFamilies);
+        $lastAssetFamilyCode = $lastAssetFamily['code'] ?? null;
 
         $paginationParameters = [
-            'list_route_name'     => 'akeneo_reference_entities_reference_entities_rest_connector_get',
-            'item_route_name'     => 'akeneo_reference_entities_reference_entity_rest_connector_get',
+            'list_route_name'     => 'akeneo_asset_manager_asset_families_rest_connector_get',
+            'item_route_name'     => 'akeneo_asset_manager_asset_family_rest_connector_get',
             'search_after'        => [
                 'self' => $searchAfter,
-                'next' => $lastReferenceEntityCode
+                'next' => $lastAssetFamilyCode
             ],
             'limit'               => $this->limit->intValue(),
             'item_identifier_key' => 'code',
             'query_parameters'    => [],
         ];
 
-        return $this->halPaginator->paginate($referenceEntities, $paginationParameters, count($referenceEntities));
+        return $this->halPaginator->paginate($assetFamilies, $paginationParameters, count($assetFamilies));
     }
 }

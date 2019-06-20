@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\FindReferenceEntityPermissionsDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\PermissionDetails;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\FindAssetFamilyPermissionsDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\PermissionDetails;
 use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindReferenceEntityPermissionsDetails implements FindReferenceEntityPermissionsDetailsInterface
+class InMemoryFindAssetFamilyPermissionsDetails implements FindAssetFamilyPermissionsDetailsInterface
 {
     /** @var array */
     public $results = [];
@@ -36,7 +36,7 @@ class InMemoryFindReferenceEntityPermissionsDetails implements FindReferenceEnti
     /**
      * @return PermissionDetails[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         return $this->results;
     }

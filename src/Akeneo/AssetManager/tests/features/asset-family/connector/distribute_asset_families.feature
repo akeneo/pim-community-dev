@@ -1,22 +1,22 @@
 Feature: Connection to e-commerce platforms and marketplaces
-  In order to choose which reference entities will be used as dedicated pages inside my e-commerce webstore
+  In order to choose which asset families will be used as dedicated pages inside my e-commerce webstore
   As a connector
-  I want to distribute the properties of all the reference entities from the PIM into my e-commerce platform
+  I want to distribute the properties of all the asset families from the PIM into my e-commerce platform
 
   @integration-back
-  Scenario: Get a reference entity
-    Given the Brand reference entity
-    When the connector requests the Brand reference entity
-    Then the PIM returns the label and image properties Brand reference entity
+  Scenario: Get an asset family
+    Given the Brand asset family
+    When the connector requests the Brand asset family
+    Then the PIM returns the label and image properties Brand asset family
 
   @integration-back
-  Scenario: Notify an error when getting a non-existent reference entity
-    Given some reference entities with some records
-    When the connector requests a non-existent reference entity
-    Then the PIM notifies the connector about an error indicating that the reference entity does not exist
+  Scenario: Notify an error when getting a non-existent asset family
+    Given some asset families with some assets
+    When the connector requests a non-existent asset family
+    Then the PIM notifies the connector about an error indicating that the asset family does not exist
 
   @integration-back
-  Scenario: Get all the reference entities
-    Given 7 reference entities in the PIM
-    When the connector requests all reference entities of the PIM
-    Then the PIM returns the label and image properties of the 7 reference entities of the PIM
+  Scenario: Get all the asset families
+    Given 7 asset families in the PIM
+    When the connector requests all asset families of the PIM
+    Then the PIM returns the label and image properties of the 7 asset families of the PIM

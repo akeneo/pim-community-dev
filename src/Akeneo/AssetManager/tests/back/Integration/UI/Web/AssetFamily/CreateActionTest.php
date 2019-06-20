@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
 {
-    private const CREATE_REFERENCE_ENTITY_ROUTE = 'akeneo_reference_entities_reference_entity_create_rest';
+    private const CREATE_ASSET_FAMILY_ROUTE = 'akeneo_asset_manager_asset_family_create_rest';
 
     /** @var Client */
     private $client;
@@ -38,17 +38,17 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_creates_a_reference_entity(): void
+    public function it_creates_an_asset_family(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_REFERENCE_ENTITY_ROUTE,
+            self::CREATE_ASSET_FAMILY_ROUTE,
             [],
             'POST',
             [
@@ -69,11 +69,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_a_reference_entity_with_no_labels(): void
+    public function it_creates_an_asset_family_with_no_labels(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_REFERENCE_ENTITY_ROUTE,
+            self::CREATE_ASSET_FAMILY_ROUTE,
             [],
             'POST',
             [
@@ -100,7 +100,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     ): void {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_REFERENCE_ENTITY_ROUTE,
+            self::CREATE_ASSET_FAMILY_ROUTE,
             [],
             'POST',
             [
@@ -125,7 +125,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_when_the_reference_entity_code_is_not_unique()
+    public function it_returns_an_error_when_the_asset_family_code_is_not_unique()
     {
         $headers = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -138,13 +138,13 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'Designer',
             ],
         ];
-        $this->webClientHelper->callRoute($this->client, self::CREATE_REFERENCE_ENTITY_ROUTE, [], 'POST', $headers, $content);
-        $this->webClientHelper->callRoute($this->client, self::CREATE_REFERENCE_ENTITY_ROUTE, [], 'POST', $headers, $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_FAMILY_ROUTE, [], 'POST', $headers, $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_FAMILY_ROUTE, [], 'POST', $headers, $content);
 
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer"},"plural":null,"message":"An reference entity already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+            '[{"messageTemplate":"pim_asset_manager.asset_family.validation.code.should_be_unique","parameters":{"%asset_family_identifier%":"designer"},"plural":null,"message":"An asset family already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
         );
     }
 
@@ -163,7 +163,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_REFERENCE_ENTITY_ROUTE,
+            self::CREATE_ASSET_FAMILY_ROUTE,
             [],
             'POST',
             [
@@ -187,7 +187,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_REFERENCE_ENTITY_ROUTE,
+            self::CREATE_ASSET_FAMILY_ROUTE,
             [
                 'code' => 'celine_dion',
             ],
@@ -203,7 +203,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->revokeCreationRights();
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_REFERENCE_ENTITY_ROUTE,
+            self::CREATE_ASSET_FAMILY_ROUTE,
             [],
             'POST',
             [
@@ -225,9 +225,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_referenceentity_reference_entity_create', true);
+        $securityFacadeStub->setIsGranted('akeneo_assetmanager_asset_family_create', true);
 
-        $findActivatedLocalesByIdentifiers = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $findActivatedLocalesByIdentifiers = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
         $findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
     }
@@ -237,7 +237,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Identifier has a dash character' => [
                 'invalid-code',
-                '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"code":"invalid-code","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"pim_asset_manager.asset_family.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"code":"invalid-code","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Identifier is 256 characters'    => [
                 str_repeat('a', 256),
@@ -263,6 +263,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
     private function revokeCreationRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_referenceentity_reference_entity_create', false);
+        $securityFacadeStub->setIsGranted('akeneo_assetmanager_asset_family_create', false);
     }
 }

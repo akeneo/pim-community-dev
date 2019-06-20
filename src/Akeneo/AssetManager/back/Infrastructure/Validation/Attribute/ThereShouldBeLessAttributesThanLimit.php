@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ThereShouldBeLessAttributesThanLimit extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.attribute.validation.limit_reached';
+    public const ERROR_MESSAGE = 'pim_asset_manager.attribute.validation.limit_reached';
 
     public function getTargets()
     {
@@ -30,6 +30,6 @@ class ThereShouldBeLessAttributesThanLimit extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.attribute.there_should_be_less_attributes_than_limit';
+        return 'akeneo_assetmanager.validator.attribute.there_should_be_less_attributes_than_limit';
     }
 }

@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Event;
+namespace Akeneo\AssetManager\Domain\Event;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Event triggered when all records belonging to a reference entity are deleted from DB
+ * Event triggered when all assets belonging to an asset family are deleted from DB
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @internal
  */
-class ReferenceEntityRecordsDeletedEvent extends Event
+class AssetFamilyAssetsDeletedEvent extends Event
 {
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
+    /** @var AssetFamilyIdentifier */
+    private $assetFamilyIdentifier;
 
-    public function __construct(ReferenceEntityIdentifier $referenceEntityIdentifier)
+    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
     {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
-    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
     {
-        return $this->referenceEntityIdentifier;
+        return $this->assetFamilyIdentifier;
     }
 }

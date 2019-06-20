@@ -2,112 +2,112 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
+namespace Akeneo\AssetManager\Integration\Search\Elasticsearch\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
-use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
+use Akeneo\AssetManager\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
- * Testing the search usecases for the record grid for information in the code of the record.
+ * Testing the search usecases for the asset grid for information in the code of the asset.
  *
- * @see       https://akeneo.atlassian.net/wiki/spaces/AKN/pages/572424236/Search+an+entity+record
+ * @see       https://akeneo.atlassian.net/wiki/spaces/AKN/pages/572424236/Search+an+entity+asset
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordIndexerTest extends SearchIntegrationTestCase
+class AssetIndexerTest extends SearchIntegrationTestCase
 {
-    /** @var RecordIndexerInterface */
-    protected $recordIndexer;
+    /** @var AssetIndexerInterface */
+    protected $assetIndexer;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->loadFixtures();
-        $this->recordIndexer = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer');
+        $this->assetIndexer = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer');
     }
 
     /**
      * @test
      */
-    public function it_indexes_one_record()
+    public function it_indexes_one_asset()
     {
-        $this->searchRecordIndexHelper->resetIndex();
-        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
+        $this->searchAssetIndexHelper->resetIndex();
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
 
-        $this->recordIndexer->index(RecordIdentifier::fromString('stark_designer_fingerprint'));
+        $this->assetIndexer->index(AssetIdentifier::fromString('stark_designer_fingerprint'));
 
-        $this->searchRecordIndexHelper->assertRecordExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'stark');
     }
 
     /**
      * @test
      */
-    public function it_indexes_by_reference_entity()
+    public function it_indexes_by_asset_family()
     {
-        $this->searchRecordIndexHelper->resetIndex();
-        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
-        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'coco');
+        $this->searchAssetIndexHelper->resetIndex();
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'coco');
 
-        $this->recordIndexer->indexByReferenceEntity(ReferenceEntityIdentifier::fromString('designer'));
+        $this->assetIndexer->indexByAssetFamily(AssetFamilyIdentifier::fromString('designer'));
 
-        $this->searchRecordIndexHelper->assertRecordExists('designer', 'stark');
-        $this->searchRecordIndexHelper->assertRecordExists('designer', 'coco');
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'coco');
     }
 
     /**
      * @test
      */
-    public function it_deletes_one_record()
+    public function it_deletes_one_asset()
     {
-        $this->searchRecordIndexHelper->refreshIndex();
-        $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode('designer', 'stark');
+        $this->searchAssetIndexHelper->refreshIndex();
+        $this->assetIndexer->removeAssetByAssetFamilyIdentifierAndCode('designer', 'stark');
 
-        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
-        $this->searchRecordIndexHelper->assertRecordExists('designer', 'coco');
-        Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
-        Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('another_reference_entity'));
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'coco');
+        Assert::assertCount(1, $this->searchAssetIndexHelper->findAssetsByAssetFamily('designer'));
+        Assert::assertCount(1, $this->searchAssetIndexHelper->findAssetsByAssetFamily('another_asset_family'));
     }
 
     /**
      * @test
      */
-    public function it_deletes_all_reference_entity_records()
+    public function it_deletes_all_asset_family_assets()
     {
-        $this->recordIndexer->removeByReferenceEntityIdentifier('designer');
+        $this->assetIndexer->removeByAssetFamilyIdentifier('designer');
 
-        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
-        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'coco');
-        Assert::assertCount(0, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
-        Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('another_reference_entity'));
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'coco');
+        Assert::assertCount(0, $this->searchAssetIndexHelper->findAssetsByAssetFamily('designer'));
+        Assert::assertCount(1, $this->searchAssetIndexHelper->findAssetsByAssetFamily('another_asset_family'));
     }
 
     /**
@@ -117,7 +117,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
     {
         $isExceptionThrown = false;
         try {
-            $this->recordIndexer->refresh();
+            $this->assetIndexer->refresh();
         } catch (\Exception $e) {
             $isExceptionThrown = true;
         }
@@ -126,27 +126,27 @@ class RecordIndexerTest extends SearchIntegrationTestCase
 
     private function loadFixtures()
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
-        $this->loadReferenceEntities();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
+        $this->loadAssetFamilies();
         $this->loadAttributes();
-        $this->loadRecords();
-        $this->searchRecordIndexHelper->refreshIndex();
+        $this->loadAssets();
+        $this->searchAssetIndexHelper->refreshIndex();
     }
 
-    private function loadReferenceEntities(): void
+    private function loadAssetFamilies(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                AssetFamilyIdentifier::fromString('designer'),
                 [],
                 Image::createEmpty()
             )
         );
 
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString('another_reference_entity'),
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                AssetFamilyIdentifier::fromString('another_asset_family'),
                 [],
                 Image::createEmpty()
             )
@@ -155,11 +155,11 @@ class RecordIndexerTest extends SearchIntegrationTestCase
 
     private function loadAttributes(): void
     {
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create('designer', 'name', 'fingerprint'),
-                ReferenceEntityIdentifier::fromString('designer'),
+                AssetFamilyIdentifier::fromString('designer'),
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(2),
@@ -175,7 +175,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         $attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create('designer', 'image', 'fingerprint'),
-                ReferenceEntityIdentifier::fromString('designer'),
+                AssetFamilyIdentifier::fromString('designer'),
                 AttributeCode::fromString('portrait'),
                 LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
                 AttributeOrder::fromInteger(3),
@@ -189,7 +189,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
 
         $attributeRepository->create(
             TextAttribute::createText(
-                AttributeIdentifier::create('another_reference_entity', 'name', 'fingerprint'), ReferenceEntityIdentifier::fromString('another_reference_entity'),
+                AttributeIdentifier::create('another_asset_family', 'name', 'fingerprint'), AssetFamilyIdentifier::fromString('another_asset_family'),
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(2),
@@ -203,14 +203,14 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         );
     }
 
-    private function loadRecords(): void
+    private function loadAssets(): void
     {
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString('stark_designer_fingerprint'),
-                ReferenceEntityIdentifier::fromString('designer'),
-                RecordCode::fromString('stark'),
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString('stark_designer_fingerprint'),
+                AssetFamilyIdentifier::fromString('designer'),
+                AssetCode::fromString('stark'),
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_designer_fingerprint'),
@@ -241,11 +241,11 @@ class RecordIndexerTest extends SearchIntegrationTestCase
             )
         );
 
-        $recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString('coco_designer_fingerprint'),
-                ReferenceEntityIdentifier::fromString('designer'),
-                RecordCode::fromString('coco'),
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString('coco_designer_fingerprint'),
+                AssetFamilyIdentifier::fromString('designer'),
+                AssetCode::fromString('coco'),
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_designer_fingerprint'),
@@ -276,11 +276,11 @@ class RecordIndexerTest extends SearchIntegrationTestCase
             )
         );
 
-        $recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString('another_record_another_reference_entity'),
-                ReferenceEntityIdentifier::fromString('another_reference_entity'),
-                RecordCode::fromString('another_record'),
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString('another_asset_another_asset_family'),
+                AssetFamilyIdentifier::fromString('another_asset_family'),
+                AssetCode::fromString('another_asset'),
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('label_designer_fingerprint'),
@@ -289,7 +289,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                         TextData::fromString('Coco')
                     ),
                     Value::create(
-                        AttributeIdentifier::create('another_reference_entity', 'name', 'fingerprint'),
+                        AttributeIdentifier::create('another_asset_family', 'name', 'fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
                         TextData::fromString('Another name')

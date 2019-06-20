@@ -4,11 +4,11 @@ import {
   getView,
   getDenormalizer,
   getReducer,
-} from 'akeneoreferenceentity/application/configuration/attribute';
+} from 'akeneoassetmanager/application/configuration/attribute';
 
 jest.mock('require-context', name => {});
 
-describe('akeneo > reference entity > application > configuration --- attribute', () => {
+describe('akeneo > asset family > application > configuration --- attribute', () => {
   test('I can get an attribute denormalizer', () => {
     const getAttributeDenormalizer = getDenormalizer({
       text: {
@@ -56,7 +56,7 @@ export const denormalize = (normalizedTextAttribute: NormalizedAttribute) => {
     }).toThrowError(`Cannot get the attribute denormalizer for type "text". The configuration should look like this:
 config:
     config:
-        akeneoreferenceentity/application/configuration/attribute:
+        akeneoassetmanager/application/configuration/attribute:
             text:
                 denormalize: '@my_attribute_denormalizer'
 
@@ -107,15 +107,15 @@ const TextView = ({
     <React.Fragment>
       <div className="AknFieldContainer" data-code="canBeNull">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.can_be_null">
-            {__('pim_reference_entity.attribute.edit.input.can_be_null')}
+          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.can_be_null">
+            {__('pim_asset_manager.attribute.edit.input.can_be_null')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
             className="AknTextField AknTextField--light"
-            id="pim_reference_entity.attribute.edit.input.can_be_null"
+            id="pim_asset_manager.attribute.edit.input.can_be_null"
             name="can_be_null"
             value={attribute.canBeNull.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -154,7 +154,7 @@ export view = TextView;`);
     }).toThrowError(`Cannot get the attribute view for type "text". The configuration should look like this:
 config:
     config:
-        akeneoreferenceentity/application/configuration/attribute:
+        akeneoassetmanager/application/configuration/attribute:
             text:
                 view: '@my_attribute_view'
 
@@ -219,7 +219,7 @@ export reducer = (
     }).toThrowError(`Cannot get the attribute reducer for type "text". The configuration should look like this:
 config:
     config:
-        akeneoreferenceentity/application/configuration/attribute:
+        akeneoassetmanager/application/configuration/attribute:
             text:
                 reducer: '@my_attribute_reducer'
 
@@ -239,8 +239,8 @@ Actual conf: ${JSON.stringify({text: {}})}`);
         },
       })()
     ).toEqual([
-      {icon: 'icon.svg', identifier: 'text', label: 'pim_reference_entity.attribute.type.text'},
-      {icon: 'icon.svg', identifier: 'image', label: 'pim_reference_entity.attribute.type.image'},
+      {icon: 'icon.svg', identifier: 'text', label: 'pim_asset_manager.attribute.type.text'},
+      {icon: 'icon.svg', identifier: 'image', label: 'pim_asset_manager.attribute.type.image'},
     ]);
   });
 

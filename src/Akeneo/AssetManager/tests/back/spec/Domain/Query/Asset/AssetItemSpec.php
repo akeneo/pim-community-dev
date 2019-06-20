@@ -1,27 +1,27 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace spec\Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
 use PhpSpec\ObjectBehavior;
 
-class RecordItemSpec extends ObjectBehavior
+class AssetItemSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordItem::class);
+        $this->shouldHaveType(AssetItem::class);
     }
 
     function it_normalizes_a_read_model()
     {
         $this->identifier = 'designer_starck_fingerprint';
         $this->code = 'starck';
-        $this->referenceEntityIdentifier = 'designer';
+        $this->assetFamilyIdentifier = 'designer';
         $this->labels = [
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',
@@ -40,7 +40,7 @@ class RecordItemSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'identifier'                 => 'designer_starck_fingerprint',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code' => 'starck',
                 'labels'                     => [
                     'fr_FR' => 'Philippe starck',

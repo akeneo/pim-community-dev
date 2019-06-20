@@ -10,16 +10,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\ValueUpdaterRegistryInterface;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -28,57 +28,57 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditRecordHandler
+class EditAssetHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
     /** @var ValueUpdaterRegistryInterface  */
     private $valueUpdaterRegistry;
 
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
     /** @var FileStorerInterface */
     private $storer;
 
     public function __construct(
         ValueUpdaterRegistryInterface $valueUpdaterRegistry,
-        RecordRepositoryInterface $recordRepository,
+        AssetRepositoryInterface $assetRepository,
         FileStorerInterface $storer
     ) {
         $this->valueUpdaterRegistry = $valueUpdaterRegistry;
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
         $this->storer = $storer;
     }
 
     /**
-     * @param EditRecordCommand $editRecordCommand
+     * @param EditAssetCommand $editAssetCommand
      *
      * @throws FileRemovalException
      * @throws FileTransferException
      */
-    public function __invoke(EditRecordCommand $editRecordCommand): void
+    public function __invoke(EditAssetCommand $editAssetCommand): void
     {
-        $record = $this->getRecord($editRecordCommand);
-        $this->editValues($record, $editRecordCommand);
+        $asset = $this->getAsset($editAssetCommand);
+        $this->editValues($asset, $editAssetCommand);
 
-        $this->recordRepository->update($record);
+        $this->assetRepository->update($asset);
     }
 
-    private function getRecord(EditRecordCommand $editRecordCommand): Record
+    private function getAsset(EditAssetCommand $editAssetCommand): Asset
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($editRecordCommand->referenceEntityIdentifier);
-        $code = RecordCode::fromString($editRecordCommand->code);
-        $record = $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $code);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($editAssetCommand->assetFamilyIdentifier);
+        $code = AssetCode::fromString($editAssetCommand->code);
+        $asset = $this->assetRepository->getByAssetFamilyAndCode($assetFamilyIdentifier, $code);
 
-        return $record;
+        return $asset;
     }
 
-    private function editValues(Record $record, EditRecordCommand $editRecordCommand): void
+    private function editValues(Asset $asset, EditAssetCommand $editAssetCommand): void
     {
-        foreach ($editRecordCommand->editRecordValueCommands as $editRecordValueCommand) {
-            $editValueUpdater = $this->valueUpdaterRegistry->getUpdater($editRecordValueCommand);
-            ($editValueUpdater)($record, $editRecordValueCommand);
+        foreach ($editAssetCommand->editAssetValueCommands as $editAssetValueCommand) {
+            $editValueUpdater = $this->valueUpdaterRegistry->getUpdater($editAssetValueCommand);
+            ($editValueUpdater)($asset, $editAssetValueCommand);
         }
     }
 }

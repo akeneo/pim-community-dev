@@ -1,30 +1,30 @@
-import CommonRows from 'akeneoreferenceentity/application/component/record/index/row/common';
-import ActionViews from 'akeneoreferenceentity/application/component/record/index/row/action';
-import DetailsView from 'akeneoreferenceentity/application/component/record/index/row/detail';
-import NoResult from 'akeneoreferenceentity/application/component/app/no-result';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import CommonRows from 'akeneoassetmanager/application/component/asset/index/row/common';
+import ActionViews from 'akeneoassetmanager/application/component/asset/index/row/action';
+import DetailsView from 'akeneoassetmanager/application/component/asset/index/row/detail';
+import NoResult from 'akeneoassetmanager/application/component/app/no-result';
+import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import {CellViews, FilterViews} from 'akeneoreferenceentity/application/component/reference-entity/edit/record';
-import {MAX_DISPLAYED_RECORDS} from 'akeneoreferenceentity/application/action/record/search';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
+import __ from 'akeneoassetmanager/tools/translator';
+import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {Column} from 'akeneoassetmanager/application/reducer/grid';
+import {CellViews, FilterViews} from 'akeneoassetmanager/application/component/asset-family/edit/asset';
+import {MAX_DISPLAYED_ASSETS} from 'akeneoassetmanager/application/action/asset/search';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {getLabel} from 'pimui/js/i18n';
-import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import {getFilter, getCompletenessFilter, getAttributeFilterKey} from 'akeneoreferenceentity/tools/filter';
-import SearchField from 'akeneoreferenceentity/application/component/record/index/search-field';
+import {Filter} from 'akeneoassetmanager/application/reducer/grid';
+import {getFilter, getCompletenessFilter, getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
+import SearchField from 'akeneoassetmanager/application/component/asset/index/search-field';
 import CompletenessFilter, {
   CompletenessValue,
-} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
-import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
-import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
+import ItemsCounter from 'akeneoassetmanager/application/component/asset/index/items-counter';
+import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 interface TableState {
   locale: string;
   channel: string;
   grid: {
-    records: NormalizedRecord[];
+    assets: NormalizedAsset[];
     columns: Column[];
     matchesCount: number;
     isLoading: boolean;
@@ -33,10 +33,10 @@ interface TableState {
   };
   cellViews: CellViews;
   filterViews: FilterViews;
-  recordCount: number;
-  referenceEntity: ReferenceEntity;
+  assetCount: number;
+  assetFamily: AssetFamily;
   rights: {
-    record: {
+    asset: {
       create: boolean;
       edit: boolean;
       deleteAll: boolean;
@@ -57,18 +57,18 @@ const columnCollectionsAreDifferent = (firstCollumnCollection: Column[], secondC
 
 export type RowView = React.SFC<{
   isLoading: boolean;
-  record: NormalizedRecord;
+  asset: NormalizedAsset;
   locale: string;
-  onRedirectToRecord: (record: NormalizedRecord) => void;
-  onDeleteRecord: (recordCode: RecordCode, label: string) => void;
+  onRedirectToAsset: (asset: NormalizedAsset) => void;
+  onDeleteAsset: (assetCode: AssetCode, label: string) => void;
   position: number;
   columns: Column[];
   cellViews: CellViews;
 }>;
 
 interface TableDispatch {
-  onRedirectToRecord: (record: NormalizedRecord) => void;
-  onDeleteRecord: (recordCode: RecordCode, label: string) => void;
+  onRedirectToAsset: (asset: NormalizedAsset) => void;
+  onDeleteAsset: (assetCode: AssetCode, label: string) => void;
   onNeedMoreResults: () => void;
   onSearchUpdated: (userSearch: string) => void;
   onFilterUpdated: (filter: Filter) => void;
@@ -79,8 +79,8 @@ interface TableProps extends TableState, TableDispatch {}
 
 /**
  * This table is divided in three tables: one on the left to have sticky columns on common properties (common.tsx)
- * On the second table, you will have the additional properties of the records (details.tsx)
- * On the thrid one, you have all the actions of the record.
+ * On the second table, you will have the additional properties of the assets (details.tsx)
+ * On the thrid one, you have all the actions of the asset.
  */
 export default class Table extends React.Component<TableProps, {columns: Column[]}> {
   private needResize = false;
@@ -183,10 +183,10 @@ export default class Table extends React.Component<TableProps, {columns: Column[
       grid,
       locale,
       channel,
-      onRedirectToRecord,
-      onDeleteRecord,
+      onRedirectToAsset,
+      onDeleteAsset,
       onFilterUpdated,
-      recordCount,
+      assetCount,
       cellViews,
       rights,
       filterViews,
@@ -196,8 +196,8 @@ export default class Table extends React.Component<TableProps, {columns: Column[
     const completenessValue = getCompletenessFilter(grid.filters);
     const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
 
-    const noResult = 0 === grid.records.length && false === grid.isLoading;
-    const placeholder = 0 === grid.records.length && grid.isLoading;
+    const noResult = 0 === grid.assets.length && false === grid.isLoading;
+    const placeholder = 0 === grid.assets.length && grid.isLoading;
 
     return (
       <React.Fragment>
@@ -227,7 +227,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
           </div>
         </div>
         {noResult ? (
-          <NoResult entityLabel={this.props.referenceEntity.getLabel(locale)} />
+          <NoResult entityLabel={this.props.assetFamily.getLabel(locale)} />
         ) : (
           <div
             className="AknDefault-horizontalScrollContainer"
@@ -238,19 +238,19 @@ export default class Table extends React.Component<TableProps, {columns: Column[
               <table className="AknGrid AknGrid--light AknGrid--left" ref={this.commonTable}>
                 <thead className="AknGrid-header">
                   <tr className="AknGrid-bodyRow">
-                    <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.image')}</th>
-                    <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.label')}</th>
-                    <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.code')}</th>
-                    <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.complete')}</th>
+                    <th className="AknGrid-headerCell">{__('pim_asset_manager.asset.grid.column.image')}</th>
+                    <th className="AknGrid-headerCell">{__('pim_asset_manager.asset.grid.column.label')}</th>
+                    <th className="AknGrid-headerCell">{__('pim_asset_manager.asset.grid.column.code')}</th>
+                    <th className="AknGrid-headerCell">{__('pim_asset_manager.asset.grid.column.complete')}</th>
                   </tr>
                 </thead>
                 <tbody className="AknGrid-body">
                   <CommonRows
-                    records={grid.records}
+                    assets={grid.assets}
                     locale={locale}
                     placeholder={placeholder}
-                    onRedirectToRecord={onRedirectToRecord}
-                    recordCount={recordCount}
+                    onRedirectToAsset={onRedirectToAsset}
+                    assetCount={assetCount}
                   />
                 </tbody>
               </table>
@@ -272,11 +272,11 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                 </thead>
                 <tbody className="AknGrid-body">
                   <DetailsView
-                    records={grid.records}
+                    assets={grid.assets}
                     locale={locale}
                     placeholder={placeholder}
-                    onRedirectToRecord={onRedirectToRecord}
-                    recordCount={recordCount}
+                    onRedirectToAsset={onRedirectToAsset}
+                    assetCount={assetCount}
                     columns={columnsToDisplay}
                     cellViews={cellViews}
                   />
@@ -290,27 +290,27 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                 </thead>
                 <tbody className="AknGrid-body">
                   <ActionViews
-                    records={grid.records}
+                    assets={grid.assets}
                     locale={locale}
                     placeholder={placeholder}
-                    onRedirectToRecord={onRedirectToRecord}
-                    onDeleteRecord={onDeleteRecord}
-                    recordCount={recordCount}
+                    onRedirectToAsset={onRedirectToAsset}
+                    onDeleteAsset={onDeleteAsset}
+                    assetCount={assetCount}
                     rights={rights}
                   />
                 </tbody>
               </table>
             </div>
-            {grid.records.length >= MAX_DISPLAYED_RECORDS ? (
+            {grid.assets.length >= MAX_DISPLAYED_ASSETS ? (
               <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
                 <div
                   className="AknDescriptionHeader-icon"
                   style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Product.svg")'}}
                 />
                 <div className="AknDescriptionHeader-title">
-                  {__('pim_reference_entity.record.grid.more_result.title')}
+                  {__('pim_asset_manager.asset.grid.more_result.title')}
                   <div className="AknDescriptionHeader-description">
-                    {__('pim_reference_entity.record.grid.more_result.description', {total: grid.matchesCount})}
+                    {__('pim_asset_manager.asset.grid.more_result.description', {total: grid.matchesCount})}
                   </div>
                 </div>
               </div>

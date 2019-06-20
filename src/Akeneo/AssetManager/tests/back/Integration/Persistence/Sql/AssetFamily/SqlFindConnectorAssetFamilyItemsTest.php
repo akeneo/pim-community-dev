@@ -11,134 +11,134 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyItemsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
-class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
+class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
-    /** @var FindConnectorReferenceEntityItemsInterface*/
-    private $findConnectorReferenceEntityItems;
+    /** @var FindConnectorAssetFamilyItemsInterface*/
+    private $findConnectorAssetFamilyItems;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $this->findConnectorReferenceEntityItems = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items');
+        $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $this->findConnectorAssetFamilyItems = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_items');
         $this->resetDB();
     }
 
     /**
      * @test
      */
-    public function it_finds_connector_reference_entity_items_without_search_after()
+    public function it_finds_connector_asset_family_items_without_search_after()
     {
-        $referenceEntities = [];
+        $assetFamilies = [];
 
         for ($i = 1; $i <= 3; $i++) {
-            $referenceEntity = $this->createReferenceEntity(sprintf('reference_entity_%s', $i));
-            $referenceEntities[] = new ConnectorReferenceEntity(
-                $referenceEntity->getIdentifier(),
-                LabelCollection::fromArray(['en_US' => sprintf('reference_entity_%s', $i)]),
+            $assetFamily = $this->createAssetFamily(sprintf('asset_family_%s', $i));
+            $assetFamilies[] = new ConnectorAssetFamily(
+                $assetFamily->getIdentifier(),
+                LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
                 Image::createEmpty()
             );
         }
 
-        $findReferenceEntitiesQuery = ReferenceEntityQuery::createPaginatedQuery(3, null);
-        $foundReferenceEntities = $this->findConnectorReferenceEntityItems->find($findReferenceEntitiesQuery);
+        $findAssetFamiliesQuery = AssetFamilyQuery::createPaginatedQuery(3, null);
+        $foundAssetFamilies = $this->findConnectorAssetFamilyItems->find($findAssetFamiliesQuery);
 
-        $normalizedReferenceEntities = [];
-        foreach ($referenceEntities as $referenceEntity) {
-            $normalizedReferenceEntities[] = $referenceEntity->normalize();
+        $normalizedAssetFamilies = [];
+        foreach ($assetFamilies as $assetFamily) {
+            $normalizedAssetFamilies[] = $assetFamily->normalize();
         }
 
-        $normalizedFoundReferenceEntities = [];
-        foreach ($foundReferenceEntities as $referenceEntity) {
-            $normalizedFoundReferenceEntities[] = $referenceEntity->normalize();
+        $normalizedFoundAssetFamilies = [];
+        foreach ($foundAssetFamilies as $assetFamily) {
+            $normalizedFoundAssetFamilies[] = $assetFamily->normalize();
         }
 
-        $this->assertSame($normalizedReferenceEntities, $normalizedFoundReferenceEntities);
+        $this->assertSame($normalizedAssetFamilies, $normalizedFoundAssetFamilies);
     }
 
     /**
      * @test
      */
-    public function it_finds_connector_reference_entities_after_identifier()
+    public function it_finds_connector_asset_families_after_identifier()
     {
-        $referenceEntities = [];
+        $assetFamilies = [];
 
         for ($i = 1; $i <= 7; $i++) {
-            $referenceEntity = $this->createReferenceEntity(sprintf('reference_entity_%s', $i));
-            $referenceEntities[] = new ConnectorReferenceEntity(
-                $referenceEntity->getIdentifier(),
-                LabelCollection::fromArray(['en_US' => sprintf('reference_entity_%s', $i)]),
+            $assetFamily = $this->createAssetFamily(sprintf('asset_family_%s', $i));
+            $assetFamilies[] = new ConnectorAssetFamily(
+                $assetFamily->getIdentifier(),
+                LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
                 Image::createEmpty()
             );
         }
 
-        $searchAfterIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_3');
-        $findReferenceEntitiesQuery = ReferenceEntityQuery::createPaginatedQuery(3, $searchAfterIdentifier);
-        $foundReferenceEntities = $this->findConnectorReferenceEntityItems->find($findReferenceEntitiesQuery);
+        $searchAfterIdentifier = AssetFamilyIdentifier::fromString('asset_family_3');
+        $findAssetFamiliesQuery = AssetFamilyQuery::createPaginatedQuery(3, $searchAfterIdentifier);
+        $foundAssetFamilies = $this->findConnectorAssetFamilyItems->find($findAssetFamiliesQuery);
 
-        $normalizedReferenceEntities = [];
-        foreach ($referenceEntities as $referenceEntity) {
-            $normalizedReferenceEntities[] = $referenceEntity->normalize();
+        $normalizedAssetFamilies = [];
+        foreach ($assetFamilies as $assetFamily) {
+            $normalizedAssetFamilies[] = $assetFamily->normalize();
         }
 
-        $normalizedFoundReferenceEntities = [];
-        foreach ($foundReferenceEntities as $referenceEntity) {
-            $normalizedFoundReferenceEntities[] = $referenceEntity->normalize();
+        $normalizedFoundAssetFamilies = [];
+        foreach ($foundAssetFamilies as $assetFamily) {
+            $normalizedFoundAssetFamilies[] = $assetFamily->normalize();
         }
 
-        $this->assertSame(array_slice($normalizedReferenceEntities, 3, 3), $normalizedFoundReferenceEntities);
+        $this->assertSame(array_slice($normalizedAssetFamilies, 3, 3), $normalizedFoundAssetFamilies);
     }
 
     /**
      * @test
      */
-    public function it_returns_an_empty_array_if_no_reference_entities_found()
+    public function it_returns_an_empty_array_if_no_asset_families_found()
     {
-        $findReferenceEntitiesQuery = ReferenceEntityQuery::createPaginatedQuery(3, null);
-        $foundReferenceEntities = $this->findConnectorReferenceEntityItems->find($findReferenceEntitiesQuery);
+        $findAssetFamiliesQuery = AssetFamilyQuery::createPaginatedQuery(3, null);
+        $foundAssetFamilies = $this->findConnectorAssetFamilyItems->find($findAssetFamiliesQuery);
 
-        $this->assertSame([], $foundReferenceEntities);
+        $this->assertSame([], $foundAssetFamilies);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function createReferenceEntity(string $rawIdentifier): ReferenceEntity
+    private function createAssetFamily(string $rawIdentifier): AssetFamily
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($rawIdentifier);
 
         $imageInfo = new FileInfo();
         $imageInfo
             ->setOriginalFilename(sprintf('image_%s', $rawIdentifier))
             ->setKey(sprintf('test/image_%s.jpg', $rawIdentifier));
 
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             ['en_US' => $rawIdentifier],
             Image::fromFileInfo($imageInfo)
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
 
-        return $referenceEntity;
+        return $assetFamily;
     }
 }

@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindImageAttributeCodesInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
 {
@@ -43,29 +43,29 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
     /** @var AttributeRepositoryInterface */
     private $attributesRepository;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findImageAttributeCodes = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes');
-        $this->attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $this->findImageAttributeCodes = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes');
+        $this->attributesRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
+        $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
 
         $this->resetDB();
-        $this->loadReferenceEntity();
+        $this->loadAssetFamily();
     }
 
     /**
      * @test
      */
-    public function it_returns_the_codes_of_the_image_attributes_for_a_given_reference_entity()
+    public function it_returns_the_codes_of_the_image_attributes_for_a_given_asset_family()
     {
         $this->loadAttributesWithImageType();
 
-        $imageAttributeCodes = $this->findImageAttributeCodes->find(ReferenceEntityIdentifier::fromString('designer'));
+        $imageAttributeCodes = $this->findImageAttributeCodes->find(AssetFamilyIdentifier::fromString('designer'));
         $expectedCodes = [
             AttributeCode::fromString('image'),
             AttributeCode::fromString('main_image'),
@@ -82,15 +82,15 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
     {
         $this->loadAttributesWithoutImageType();
 
-        $imageAttributeCodes = $this->findImageAttributeCodes->find(ReferenceEntityIdentifier::fromString('designer'));
+        $imageAttributeCodes = $this->findImageAttributeCodes->find(AssetFamilyIdentifier::fromString('designer'));
 
         $this->assertSame([], $imageAttributeCodes);
     }
 
-    private function loadReferenceEntity(): void
+    private function loadAssetFamily(): void
     {
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
@@ -98,14 +98,14 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     private function loadAttributesWithImageType(): void
     {
         $imageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
@@ -118,7 +118,7 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
 
         $secondImageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'second_image', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('second_image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(3),
@@ -129,19 +129,19 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
             AttributeAllowedExtensions::fromList(['pdf'])
         );
 
-        $referenceEntity = $this->referenceEntityRepository
-            ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $assetFamily = $this->assetFamilyRepository
+            ->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
         $this->attributesRepository->create($imageAttribute);
         $this->attributesRepository->create($secondImageAttribute);
-        $this->attributesRepository->deleteByIdentifier($referenceEntity->getAttributeAsLabelReference()->getIdentifier());
+        $this->attributesRepository->deleteByIdentifier($assetFamily->getAttributeAsLabelReference()->getIdentifier());
     }
 
     private function loadAttributesWithoutImageType()
     {
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(4),
@@ -155,7 +155,7 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
 
         $email = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'email', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('email'),
             LabelCollection::fromArray(['en_US' => 'Email']),
             AttributeOrder::fromInteger(5),
@@ -167,16 +167,16 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
             AttributeRegularExpression::createEmpty()
         );
 
-        $referenceEntity = $this->referenceEntityRepository
-            ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $assetFamily = $this->assetFamilyRepository
+            ->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
         $this->attributesRepository->create($name);
         $this->attributesRepository->create($email);
-        $this->attributesRepository->deleteByIdentifier($referenceEntity->getAttributeAsImageReference()->getIdentifier());
+        $this->attributesRepository->deleteByIdentifier($assetFamily->getAttributeAsImageReference()->getIdentifier());
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 }

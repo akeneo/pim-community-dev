@@ -1,6 +1,6 @@
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/identifier';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/identifier';
 
-describe('akeneo > reference entity > domain > model --- identifier', () => {
+describe('akeneo > asset family > domain > model --- identifier', () => {
   test('I can create a new identifier with a string value', () => {
     expect(createIdentifier('michel').identifier).toBe('michel');
   });

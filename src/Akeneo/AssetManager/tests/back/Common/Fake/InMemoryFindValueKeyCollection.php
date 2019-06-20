@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
@@ -27,7 +27,7 @@ class InMemoryFindValueKeyCollection implements FindValueKeyCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $identifier): ValueKeyCollection
+    public function find(AssetFamilyIdentifier $identifier): ValueKeyCollection
     {
         throw new NotImplementedException('__invoke');
     }

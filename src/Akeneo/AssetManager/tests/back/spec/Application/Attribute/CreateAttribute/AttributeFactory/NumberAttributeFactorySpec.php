@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\NumberAttributeFactory;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\NumberAttributeFactory;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -75,7 +75,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
         )->normalize()->shouldReturn(
             [
                 'identifier'                  => 'favorite_color_designer_fingerprint',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code'                        => 'number',
                 'labels'                      => ['fr_FR' => 'Nombre'],
                 'order'                       => 0,
@@ -111,7 +111,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
         )->normalize()->shouldReturn(
             [
                 'identifier'                  => 'favorite_color_designer_fingerprint',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code'                        => 'number',
                 'labels'                      => ['fr_FR' => 'Nombre'],
                 'order'                       => 0,

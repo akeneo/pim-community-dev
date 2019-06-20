@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption;
+namespace Akeneo\AssetManager\Application\Attribute\EditAttributeOption;
 
 class EditAttributeOptionCommand
 {
     /**@var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
     /**@var string */
     public $attributeCode;
@@ -28,12 +28,12 @@ class EditAttributeOptionCommand
     public $labels;
 
     public function __construct(
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         string $attributeCode,
         string $optionCode,
         ?array $labels
     ) {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->attributeCode = $attributeCode;
         $this->optionCode = $optionCode;
         $this->labels = $labels;

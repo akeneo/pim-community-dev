@@ -1,8 +1,8 @@
-import Locale, {denormalizeLocale, ConcreteLocale, NormalizedLocale} from 'akeneoreferenceentity/domain/model/locale';
+import Locale, {denormalizeLocale, ConcreteLocale, NormalizedLocale} from 'akeneoassetmanager/domain/model/locale';
 import LabelCollection, {
   createLabelCollection,
   NormalizedLabelCollection,
-} from 'akeneoreferenceentity/domain/model/label-collection';
+} from 'akeneoassetmanager/domain/model/label-collection';
 
 export default interface Channel {
   code: string;

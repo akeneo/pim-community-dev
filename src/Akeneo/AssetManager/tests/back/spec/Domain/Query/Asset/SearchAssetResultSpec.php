@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace spec\Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
-use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
+use Akeneo\AssetManager\Domain\Query\Asset\SearchAssetResult;
 use PhpSpec\ObjectBehavior;
 
-class SearchRecordResultSpec extends ObjectBehavior
+class SearchAssetResultSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith([], 5, 10);
-        $this->shouldHaveType(SearchRecordResult::class);
+        $this->shouldHaveType(SearchAssetResult::class);
     }
 
-    function it_normalizes_itself(RecordItem $recordItem)
+    function it_normalizes_itself(AssetItem $assetItem)
     {
-        $this->beConstructedWith([$recordItem], 1, 2);
-        $recordItem->normalize()->willReturn(['identifier' => 'record_identifier']);
+        $this->beConstructedWith([$assetItem], 1, 2);
+        $assetItem->normalize()->willReturn(['identifier' => 'asset_identifier']);
         $this->normalize()->shouldReturn([
             'items'         => [
                 [
-                    'identifier' => 'record_identifier',
+                    'identifier' => 'asset_identifier',
                 ],
             ],
             'matches_count' => 1,
@@ -31,7 +31,7 @@ class SearchRecordResultSpec extends ObjectBehavior
         ]);
     }
 
-    function it_can_be_constructed_only_with_a_list_of_record_items()
+    function it_can_be_constructed_only_with_a_list_of_asset_items()
     {
         $this->beConstructedWith([1], 5, 10);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

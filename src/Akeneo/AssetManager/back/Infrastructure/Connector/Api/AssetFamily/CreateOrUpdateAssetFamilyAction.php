@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\File\FindFileDataByFileKeyInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema\ReferenceEntityValidator;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\File\FindFileDataByFileKeyInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema\AssetFamilyValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,112 +33,112 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CreateOrUpdateReferenceEntityAction
+class CreateOrUpdateAssetFamilyAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
-    /** @var EditReferenceEntityHandler */
-    private $editReferenceEntityHandler;
+    /** @var EditAssetFamilyHandler */
+    private $editAssetFamilyHandler;
 
     /** @var Router */
     private $router;
 
-    /** @var ReferenceEntityValidator */
+    /** @var AssetFamilyValidator */
     private $jsonSchemaValidator;
 
     /** @var FindFileDataByFileKeyInterface */
     private $findFileData;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
+        AssetFamilyExistsInterface $assetFamilyExists,
         ValidatorInterface $validator,
-        CreateReferenceEntityHandler $createReferenceEntityHandler,
-        EditReferenceEntityHandler $editReferenceEntityHandler,
+        CreateAssetFamilyHandler $createAssetFamilyHandler,
+        EditAssetFamilyHandler $editAssetFamilyHandler,
         Router $router,
-        ReferenceEntityValidator $jsonSchemaValidator,
+        AssetFamilyValidator $jsonSchemaValidator,
         FindFileDataByFileKeyInterface $findFileData,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository
+        AssetFamilyRepositoryInterface $assetFamilyRepository
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
+        $this->assetFamilyExists = $assetFamilyExists;
         $this->validator = $validator;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
-        $this->editReferenceEntityHandler = $editReferenceEntityHandler;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
+        $this->editAssetFamilyHandler = $editAssetFamilyHandler;
         $this->router = $router;
         $this->jsonSchemaValidator = $jsonSchemaValidator;
         $this->findFileData = $findFileData;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier): Response
+    public function __invoke(Request $request, string $assetFamilyIdentifier): Response
     {
         try {
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        $normalizedReferenceEntity = $this->getNormalizedReferenceEntity($request->getContent());
-        $invalidFormatErrors = $this->validateReferenceEntityFormat($referenceEntityIdentifier, $normalizedReferenceEntity);
+        $normalizedAssetFamily = $this->getNormalizedAssetFamily($request->getContent());
+        $invalidFormatErrors = $this->validateAssetFamilyFormat($assetFamilyIdentifier, $normalizedAssetFamily);
 
         if (!empty($invalidFormatErrors)) {
             return new JsonResponse([
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'The reference entity has an invalid format.',
+                'message' => 'The asset family has an invalid format.',
                 'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $createReferenceEntityCommand = null;
-        $shouldBeCreated = !$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
+        $createAssetFamilyCommand = null;
+        $shouldBeCreated = !$this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
         if (true === $shouldBeCreated) {
-            $createReferenceEntityCommand = new CreateReferenceEntityCommand(
-                $normalizedReferenceEntity['code'],
-                $normalizedReferenceEntity['labels'] ?? []
+            $createAssetFamilyCommand = new CreateAssetFamilyCommand(
+                $normalizedAssetFamily['code'],
+                $normalizedAssetFamily['labels'] ?? []
             );
 
-            $violations = $this->validator->validate($createReferenceEntityCommand);
+            $violations = $this->validator->validate($createAssetFamilyCommand);
             if ($violations->count() > 0) {
-                throw new ViolationHttpException($violations, 'The reference entity has data that does not comply with the business rules.');
+                throw new ViolationHttpException($violations, 'The asset family has data that does not comply with the business rules.');
             }
         }
 
-        $editReferenceEntityCommand = new EditReferenceEntityCommand(
-            $normalizedReferenceEntity['code'],
-            $normalizedReferenceEntity['labels'] ?? [],
+        $editAssetFamilyCommand = new EditAssetFamilyCommand(
+            $normalizedAssetFamily['code'],
+            $normalizedAssetFamily['labels'] ?? [],
             null
         );
 
-        if (array_key_exists('image', $normalizedReferenceEntity)) {
-            $editReferenceEntityCommand->image = null !== $normalizedReferenceEntity['image'] ? $this->getImageData($normalizedReferenceEntity['image']) : null;
+        if (array_key_exists('image', $normalizedAssetFamily)) {
+            $editAssetFamilyCommand->image = null !== $normalizedAssetFamily['image'] ? $this->getImageData($normalizedAssetFamily['image']) : null;
         } elseif (false === $shouldBeCreated) {
-            $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-            $editReferenceEntityCommand->image = $referenceEntity->getImage()->normalize();
+            $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+            $editAssetFamilyCommand->image = $assetFamily->getImage()->normalize();
         }
 
-        $violations = $this->validator->validate($editReferenceEntityCommand);
+        $violations = $this->validator->validate($editAssetFamilyCommand);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException($violations, 'The reference entity has data that does not comply with the business rules.');
+            throw new ViolationHttpException($violations, 'The asset family has data that does not comply with the business rules.');
         }
 
         if (true === $shouldBeCreated) {
-            ($this->createReferenceEntityHandler)($createReferenceEntityCommand);
+            ($this->createAssetFamilyHandler)($createAssetFamilyCommand);
         }
 
-        ($this->editReferenceEntityHandler)($editReferenceEntityCommand);
+        ($this->editAssetFamilyHandler)($editAssetFamilyCommand);
 
         $headers = [
-            'location' => $this->router->generate('akeneo_reference_entities_reference_entity_rest_connector_get', [
-                'code' => (string) $referenceEntityIdentifier,
+            'location' => $this->router->generate('akeneo_asset_manager_asset_family_rest_connector_get', [
+                'code' => (string) $assetFamilyIdentifier,
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
@@ -147,26 +147,26 @@ class CreateOrUpdateReferenceEntityAction
         return Response::create('', $responseStatusCode, $headers);
     }
 
-    private function getNormalizedReferenceEntity(string $content): array
+    private function getNormalizedAssetFamily(string $content): array
     {
-        $normalizedReferenceEntity = json_decode($content, true);
-        if (null === $normalizedReferenceEntity) {
+        $normalizedAssetFamily = json_decode($content, true);
+        if (null === $normalizedAssetFamily) {
             throw new BadRequestHttpException('Invalid json message received');
         }
 
-        return $normalizedReferenceEntity;
+        return $normalizedAssetFamily;
     }
 
-    private function validateReferenceEntityFormat(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        array $normalizedReferenceEntity
+    private function validateAssetFamilyFormat(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        array $normalizedAssetFamily
     ): array {
-        $invalidFormatErrors = $this->jsonSchemaValidator->validate($normalizedReferenceEntity);
+        $invalidFormatErrors = $this->jsonSchemaValidator->validate($normalizedAssetFamily);
 
         if (empty($invalidFormatErrors)) {
-            $inBodyReferenceEntityIdentifier = $normalizedReferenceEntity['code'] ?? null;
-            if ((string) $referenceEntityIdentifier !== $inBodyReferenceEntityIdentifier) {
-                throw new UnprocessableEntityHttpException('The code of the reference entity provided in the URI must be the same as the one provided in the request body.');
+            $inBodyAssetFamilyIdentifier = $normalizedAssetFamily['code'] ?? null;
+            if ((string) $assetFamilyIdentifier !== $inBodyAssetFamilyIdentifier) {
+                throw new UnprocessableEntityHttpException('The code of the asset family provided in the URI must be the same as the one provided in the request body.');
             }
         }
 

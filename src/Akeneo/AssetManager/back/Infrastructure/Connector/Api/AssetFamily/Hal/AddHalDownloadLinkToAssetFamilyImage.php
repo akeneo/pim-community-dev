@@ -11,13 +11,13 @@ declare(strict_types=1);
 * file that was distributed with this source code.
 */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal;
 
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 
-class AddHalDownloadLinkToReferenceEntityImage
+class AddHalDownloadLinkToAssetFamilyImage
 {
     /** @var Router */
     private $router;
@@ -28,21 +28,21 @@ class AddHalDownloadLinkToReferenceEntityImage
         $this->router = $router;
     }
 
-    public function __invoke(array $normalizedReferenceEntity): array
+    public function __invoke(array $normalizedAssetFamily): array
     {
-        if (!empty($normalizedReferenceEntity['image'])) {
-            $imageUrl = $this->generateImageUrl($normalizedReferenceEntity['image']);
+        if (!empty($normalizedAssetFamily['image'])) {
+            $imageUrl = $this->generateImageUrl($normalizedAssetFamily['image']);
             $imageLink = new Link('image_download', $imageUrl);
-            $normalizedReferenceEntity['_links'] = ($normalizedReferenceEntity['_links'] ?? []) + $imageLink->toArray();
+            $normalizedAssetFamily['_links'] = ($normalizedAssetFamily['_links'] ?? []) + $imageLink->toArray();
         }
 
-        return $normalizedReferenceEntity;
+        return $normalizedAssetFamily;
     }
 
     private function generateImageUrl(string $imageCode): string
     {
         return $this->router->generate(
-            'akeneo_reference_entities_media_file_rest_connector_download',
+            'akeneo_asset_manager_media_file_rest_connector_download',
             ['fileCode' => $imageCode],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

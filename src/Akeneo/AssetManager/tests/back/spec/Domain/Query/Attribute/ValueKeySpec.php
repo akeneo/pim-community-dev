@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use PhpSpec\ObjectBehavior;
 
 class ValueKeySpec extends ObjectBehavior

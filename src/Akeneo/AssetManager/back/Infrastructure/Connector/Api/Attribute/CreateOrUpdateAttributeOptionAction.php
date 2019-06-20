@@ -1,21 +1,21 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeSupportsOptions;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand;
+use Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler;
+use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeSupportsOptions;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,8 +38,8 @@ class CreateOrUpdateAttributeOptionAction
     /** @var ValidatorInterface */
     private $businessRulesValidator;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     /** @var AttributeExistsInterface */
     private $attributeExists;
@@ -63,7 +63,7 @@ class CreateOrUpdateAttributeOptionAction
         Router $router,
         AttributeOptionValidator $jsonSchemaValidator,
         ValidatorInterface $businessRulesValidator,
-        ReferenceEntityExistsInterface $referenceEntityExists,
+        AssetFamilyExistsInterface $assetFamilyExists,
         AttributeExistsInterface $attributeExists,
         AttributeSupportsOptions $attributeSupportsOptions,
         GetAttributeIdentifierInterface $getAttributeIdentifier,
@@ -74,7 +74,7 @@ class CreateOrUpdateAttributeOptionAction
         $this->router = $router;
         $this->jsonSchemaValidator = $jsonSchemaValidator;
         $this->businessRulesValidator = $businessRulesValidator;
-        $this->referenceEntityExists = $referenceEntityExists;
+        $this->assetFamilyExists = $assetFamilyExists;
         $this->attributeExists = $attributeExists;
         $this->attributeSupportsOptions = $attributeSupportsOptions;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
@@ -83,10 +83,10 @@ class CreateOrUpdateAttributeOptionAction
         $this->appendAttributeOptionHandler = $appendAttributeOptionHandler;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode): Response
+    public function __invoke(Request $request, string $assetFamilyIdentifier, string $attributeCode, string $optionCode): Response
     {
         try {
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
             $attributeCode = AttributeCode::fromString($attributeCode);
             $optionCode = OptionCode::fromString($optionCode);
         } catch (\Exception $e) {
@@ -113,43 +113,43 @@ class CreateOrUpdateAttributeOptionAction
             throw new UnprocessableEntityHttpException('The code of the attribute option provided in the URI must be the same as the one provided in the request body.');
         }
 
-        $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
+        $assetFamilyExists = $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
 
-        if (false === $referenceEntityExists) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        if (false === $assetFamilyExists) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
-        $attributeExists = $this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
+        $attributeExists = $this->attributeExists->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
 
         if (false === $attributeExists) {
             throw new NotFoundHttpException(sprintf(
-                'Attribute "%s" does not exist for reference entity "%s".',
+                'Attribute "%s" does not exist for asset family "%s".',
                 (string) $attributeCode,
-                (string) $referenceEntityIdentifier
+                (string) $assetFamilyIdentifier
             ));
         }
 
-        $attributeSupportsOptions = $this->attributeSupportsOptions->supports($referenceEntityIdentifier, $attributeCode);
+        $attributeSupportsOptions = $this->attributeSupportsOptions->supports($assetFamilyIdentifier, $attributeCode);
 
         if (false === $attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 
-        $optionExists = $this->isOptionExisting($referenceEntityIdentifier, $attributeCode, $optionCode);
+        $optionExists = $this->isOptionExisting($assetFamilyIdentifier, $attributeCode, $optionCode);
 
         return $optionExists ?
-            $this->editOption($referenceEntityIdentifier, $attributeCode, $optionCode, $option) :
-            $this->createOption($referenceEntityIdentifier, $attributeCode, $optionCode, $option);
+            $this->editOption($assetFamilyIdentifier, $attributeCode, $optionCode, $option) :
+            $this->createOption($assetFamilyIdentifier, $attributeCode, $optionCode, $option);
     }
 
     public function editOption(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode,
         OptionCode $optionCode,
         array $option
     ): Response {
         $command = new EditAttributeOptionCommand(
-            (string) $referenceEntityIdentifier,
+            (string) $assetFamilyIdentifier,
             (string) $attributeCode,
             (string) $optionCode,
             $option['labels'] ?? []
@@ -163,8 +163,8 @@ class CreateOrUpdateAttributeOptionAction
         ($this->editAttributeOptionHandler)($command);
 
         $headers = [
-            'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get', [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+            'Location' => $this->router->generate('akeneo_asset_manager_asset_family_attribute_option_rest_connector_get', [
+                'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
                 'attributeCode' => (string) $attributeCode,
                 'optionCode' => (string) $optionCode
             ], UrlGeneratorInterface::ABSOLUTE_URL)
@@ -174,13 +174,13 @@ class CreateOrUpdateAttributeOptionAction
     }
 
     public function createOption(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode,
         OptionCode $optionCode,
         array $option
     ): Response {
         $command = new AppendAttributeOptionCommand(
-            (string)$referenceEntityIdentifier,
+            (string)$assetFamilyIdentifier,
             (string)$attributeCode,
             (string)$optionCode,
             $option['labels'] ?? []
@@ -194,8 +194,8 @@ class CreateOrUpdateAttributeOptionAction
         ($this->appendAttributeOptionHandler)($command);
 
         $headers = [
-            'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get', [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+            'Location' => $this->router->generate('akeneo_asset_manager_asset_family_attribute_option_rest_connector_get', [
+                'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
                 'attributeCode' => (string) $attributeCode,
                 'optionCode' => (string) $optionCode
             ], UrlGeneratorInterface::ABSOLUTE_URL)
@@ -205,11 +205,11 @@ class CreateOrUpdateAttributeOptionAction
     }
 
     public function isOptionExisting(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode,
         OptionCode $optionCode
     ): bool {
-        $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
+        $attributeIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
         $optionExists = $attribute->hasAttributeOption($optionCode);

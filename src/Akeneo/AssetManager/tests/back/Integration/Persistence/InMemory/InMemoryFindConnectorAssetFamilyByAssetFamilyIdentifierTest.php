@@ -11,33 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest extends TestCase
+class InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier */
+    /** @var InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier */
     private $query;
 
     public function setUp(): void
     {
-        $this->query = new InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier();
+        $this->query = new InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier();
     }
 
     /**
      * @test
      */
-    public function it_returns_null_when_finding_a_non_existent_reference_entity()
+    public function it_returns_null_when_finding_a_non_existent_asset_family()
     {
         $result = $this->query->find(
-            ReferenceEntityIdentifier::fromString('non_existent_reference_entity_identifier')
+            AssetFamilyIdentifier::fromString('non_existent_asset_family_identifier')
         );
 
         Assert::assertNull($result);
@@ -46,27 +46,27 @@ class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest extend
     /**
      * @test
      */
-    public function it_returns_the_reference_entity_when_finding_an_existing_reference_entity()
+    public function it_returns_the_asset_family_when_finding_an_existing_asset_family()
     {
-        $referenceEntity = new ConnectorReferenceEntity(
-            ReferenceEntityIdentifier::fromString('reference_entity_identifier'),
+        $assetFamily = new ConnectorAssetFamily(
+            AssetFamilyIdentifier::fromString('asset_family_identifier'),
             LabelCollection::fromArray([]),
             Image::createEmpty()
         );
 
         $this->query->save(
-            ReferenceEntityIdentifier::fromString('reference_entity_identifier'),
-            $referenceEntity
+            AssetFamilyIdentifier::fromString('asset_family_identifier'),
+            $assetFamily
         );
 
         $result = $this->query->find(
-            ReferenceEntityIdentifier::fromString('reference_entity_identifier')
+            AssetFamilyIdentifier::fromString('asset_family_identifier')
         );
 
         Assert::assertNotNull($result);
         Assert::assertEquals(
-            $referenceEntity->normalize(),
-            $referenceEntity->normalize()
+            $assetFamily->normalize(),
+            $assetFamily->normalize()
         );
     }
 }

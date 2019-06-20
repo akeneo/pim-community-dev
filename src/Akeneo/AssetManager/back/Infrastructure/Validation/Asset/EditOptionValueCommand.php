@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditOptionValueCommand extends Constraint
 {
-    public const OPTION_DOES_NOT_EXIST = 'pim_reference_entity.record.validation.option.code_does_not_exist';
+    public const OPTION_DOES_NOT_EXIST = 'pim_asset_manager.asset.validation.option.code_does_not_exist';
 
     public function getTargets()
     {

@@ -1,6 +1,6 @@
-import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 
-describe('akeneo > reference entity > domain > model --- channel reference', () => {
+describe('akeneo > asset family > domain > model --- channel reference', () => {
   test('I can create a new channel reference with a string value', () => {
     expect(createChannelReference('ecommerce').stringValue()).toBe('ecommerce');
   });

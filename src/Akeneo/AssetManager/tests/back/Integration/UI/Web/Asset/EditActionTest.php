@@ -11,45 +11,45 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
+namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -57,7 +57,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends ControllerIntegrationTestCase
 {
-    private const RECORD_EDIT_ROUTE = 'akeneo_reference_entities_record_edit_rest';
+    private const ASSET_EDIT_ROUTE = 'akeneo_asset_manager_asset_edit_rest';
 
     /** @var Client */
     private $client;
@@ -78,25 +78,25 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
-        $this->fileExists = $this->get('akeneo_referenceentity.infrastructure.persistence.query.file_exists');
-        $this->findFileData = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
+        $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
+        $this->findFileData = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key');
     }
 
     /**
      * @test
      */
-    public function it_edits_a_record_details(): void
+    public function it_edits_a_asset_details(): void
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/details_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/details_ok.json');
     }
 
     /**
      * @test
      */
-    public function it_edits_a_record_details_by_removing_the_default_image(): void
+    public function it_edits_a_asset_details_by_removing_the_default_image(): void
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/remove_image_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/remove_image_ok.json');
     }
 
     /**
@@ -107,10 +107,10 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::RECORD_EDIT_ROUTE,
+            self::ASSET_EDIT_ROUTE,
             [
-                'recordCode'                => 'celine_dion',
-                'referenceEntityIdentifier' => 'singer',
+                'assetCode'                => 'celine_dion',
+                'assetFamilyIdentifier' => 'singer',
             ],
             'POST'
         );
@@ -124,16 +124,16 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body()
     {
         $this->webClientHelper->assertRequest($this->client,
-            'Record/Edit/unsynchronised_record_identifier.json');
+            'Asset/Edit/unsynchronised_asset_identifier.json');
     }
 
     /**
      * @test
      */
-    public function it_returns_an_error_if_the_reference_entity_identifier_provided_in_the_route_is_different_from_the_body()
+    public function it_returns_an_error_if_the_asset_family_identifier_provided_in_the_route_is_different_from_the_body()
     {
         $this->webClientHelper->assertRequest($this->client,
-            'Record/Edit/unsynchronised_reference_entity_identifier.json');
+            'Asset/Edit/unsynchronised_asset_family_identifier.json');
     }
 
     /**
@@ -141,7 +141,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_text_value()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/text_value_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/text_value_ok.json');
     }
 
     /**
@@ -149,7 +149,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_we_send_an_invalid_text_value()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_text_value.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/invalid_text_value.json');
     }
 
     /**
@@ -166,7 +166,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'extension' => 'png',
         ];
         $this->findFileData->save($fileData);
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/image_value_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/image_value_ok.json');
     }
 
     /**
@@ -174,7 +174,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_we_send_an_invalid_file_value()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_image_value.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/invalid_image_value.json');
     }
 
     /**
@@ -182,54 +182,54 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_we_send_a_number_out_of_range()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_number_out_of_range.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/invalid_number_out_of_range.json');
     }
 
     /**
      * @test
      */
-    public function it_edits_a_record_value()
+    public function it_edits_a_asset_value()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/record_value_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/asset_value_ok.json');
     }
 
     /**
      * @test
      */
-    public function it_returns_an_error_if_we_send_an_invalid_record_value()
+    public function it_returns_an_error_if_we_send_an_invalid_asset_value()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_record_value.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/invalid_asset_value.json');
     }
 
     /**
      * @test
      */
-    public function it_edits_a_record_collection_value()
+    public function it_edits_a_asset_collection_value()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/record_collection_value_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/asset_collection_value_ok.json');
     }
 
     /**
      * @test
      */
-    public function it_returns_an_error_if_we_send_an_invalid_record_collection_value()
+    public function it_returns_an_error_if_we_send_an_invalid_asset_collection_value()
     {
         $this->webClientHelper->assertRequest($this->client,
-            'Record/Edit/invalid_record_collection_value.json');
+            'Asset/Edit/invalid_asset_collection_value.json');
     }
 
     /**
      * @test
      */
-    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_reference_entity()
+    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_asset_family()
     {
         $this->forbidsEdit();
         $this->webClientHelper->callRoute(
             $this->client,
-            self::RECORD_EDIT_ROUTE,
+            self::ASSET_EDIT_ROUTE,
             [
-                'recordCode'                => 'celine_dion',
-                'referenceEntityIdentifier' => 'singer',
+                'assetCode'                => 'celine_dion',
+                'assetFamilyIdentifier' => 'singer',
             ],
             'POST',
             [
@@ -241,21 +241,21 @@ class EditActionTest extends ControllerIntegrationTestCase
 
     private function forbidsEdit(): void
     {
-        $this->get('akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler')
+        $this->get('akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler')
             ->forbid();
     }
 
-    private function getRecordRepository(): RecordRepositoryInterface
+    private function getAssetRepository(): AssetRepositoryInterface
     {
-        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        return $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
     }
 
     private function loadFixtures(): void
     {
-        $repository = $this->getRecordRepository();
+        $repository = $this->getAssetRepository();
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('starck');
 
         $imageInfo = new FileInfo();
         $imageInfo
@@ -280,10 +280,10 @@ class EditActionTest extends ControllerIntegrationTestCase
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('Philippe Starck')
         );
-        $entityItem = Record::create(
-            RecordIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392'),
-            $referenceEntityIdentifier,
-            $recordCode,
+        $entityItem = Asset::create(
+            AssetIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392'),
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $image])
         );
         $repository->create($entityItem);
@@ -292,7 +292,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $textAttributeIdentifier = AttributeIdentifier::create('designer', 'name', 'fingerprint');
         $textAttribute = TextAttribute::createText(
             $textAttributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
@@ -303,14 +303,14 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($textAttribute);
 
         // textarea attribute
         $textareaAttributeIdentifier = AttributeIdentifier::create('designer', 'description', 'fingerprint');
         $textareaAttribute = TextAttribute::createTextarea(
             $textareaAttributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['fr_FR' => 'Description']),
             AttributeOrder::fromInteger(1),
@@ -320,14 +320,14 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeMaxLength::fromInteger(25),
             AttributeIsRichTextEditor::fromBoolean(true)
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($textareaAttribute);
 
         //website attribute
         $websiteAttributeIdentifier = AttributeIdentifier::create('designer', 'website', 'fingerprint');
         $websiteAttribute = TextAttribute::createText(
             $websiteAttributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('website'),
             LabelCollection::fromArray(['fr_FR' => 'Website']),
             AttributeOrder::fromInteger(2),
@@ -338,13 +338,13 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeValidationRule::fromString(AttributeValidationRule::URL),
             AttributeRegularExpression::createEmpty()
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($websiteAttribute);
 
         // image attribute
         $portraitAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'portrait', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(3),
@@ -354,36 +354,36 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeMaxFileSize::noLimit(),
             AttributeAllowedExtensions::fromList(['png'])
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($portraitAttribute);
 
-        $ikeaRecord = Record::create(
-            RecordIdentifier::create('brand', 'ikea', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('ikea'),
+        $ikeaAsset = Asset::create(
+            AssetIdentifier::create('brand', 'ikea', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('brand'),
+            AssetCode::fromString('ikea'),
             ValueCollection::fromValues([])
         );
-        $repository->create($ikeaRecord);
+        $repository->create($ikeaAsset);
 
-        // record attribute
-        $numberAttribute = RecordAttribute::create(
+        // asset attribute
+        $numberAttribute = AssetAttribute::create(
             AttributeIdentifier::create('designer', 'linked_brand', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('linked_brand'),
             LabelCollection::fromArray(['fr_FR' => 'Marque liée', 'en_US' => 'Linked brand']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
-            ReferenceEntityIdentifier::fromString('brand')
+            AssetFamilyIdentifier::fromString('brand')
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($numberAttribute);
 
-        // record attribute
+        // asset attribute
         $numberAttribute = NumberAttribute::create(
             AttributeIdentifier::create('designer', 'age', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('age'),
             LabelCollection::fromArray(['en_US' => 'Linked brand']),
             AttributeOrder::fromInteger(6),
@@ -394,48 +394,48 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeLimit::fromString('-10'),
             AttributeLimit::fromString('10')
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($numberAttribute);
 
 
-        $parisRecord = Record::create(
-            RecordIdentifier::create('city', 'paris', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('city'),
-            RecordCode::fromString('paris'),
+        $parisAsset = Asset::create(
+            AssetIdentifier::create('city', 'paris', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('city'),
+            AssetCode::fromString('paris'),
             ValueCollection::fromValues([])
         );
-        $repository->create($parisRecord);
-        $lisbonneRecord = Record::create(
-            RecordIdentifier::create('city', 'lisbonne', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('city'),
-            RecordCode::fromString('lisbonne'),
+        $repository->create($parisAsset);
+        $lisbonneAsset = Asset::create(
+            AssetIdentifier::create('city', 'lisbonne', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('city'),
+            AssetCode::fromString('lisbonne'),
             ValueCollection::fromValues([])
         );
-        $repository->create($lisbonneRecord);
-        $moscouRecord = Record::create(
-            RecordIdentifier::create('city', 'moscou', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('city'),
-            RecordCode::fromString('moscou'),
+        $repository->create($lisbonneAsset);
+        $moscouAsset = Asset::create(
+            AssetIdentifier::create('city', 'moscou', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('city'),
+            AssetCode::fromString('moscou'),
             ValueCollection::fromValues([])
         );
-        $repository->create($moscouRecord);
+        $repository->create($moscouAsset);
 
-        // record collection attribute
-        $recordCollectionAttribute = RecordCollectionAttribute::create(
+        // asset collection attribute
+        $assetCollectionAttribute = AssetCollectionAttribute::create(
             AttributeIdentifier::create('designer', 'linked_cities', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('linked_cities'),
             LabelCollection::fromArray(['fr_FR' => 'Ville', 'en_US' => 'Cities']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
-            ReferenceEntityIdentifier::fromString('city')
+            AssetFamilyIdentifier::fromString('city')
         );
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->create($recordCollectionAttribute);
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->create($assetCollectionAttribute);
 
-        $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $activatedLocales = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
     }

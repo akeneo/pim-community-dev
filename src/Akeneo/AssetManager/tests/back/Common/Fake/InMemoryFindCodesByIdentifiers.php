@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
 
 class InMemoryFindCodesByIdentifiers implements FindCodesByIdentifiersInterface
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    public function __construct(InMemoryRecordRepository $recordRepository)
+    public function __construct(InMemoryAssetRepository $assetRepository)
     {
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
     }
 
     /**
@@ -24,13 +24,13 @@ class InMemoryFindCodesByIdentifiers implements FindCodesByIdentifiersInterface
     {
         $indexedCodes = [];
 
-        /** @var Record $record */
-        foreach ($this->recordRepository->all() as $record) {
-            $recordIdentifier = $record->getIdentifier()->normalize();
-            $recordCode = $record->getCode()->normalize();
+        /** @var Asset $asset */
+        foreach ($this->assetRepository->all() as $asset) {
+            $assetIdentifier = $asset->getIdentifier()->normalize();
+            $assetCode = $asset->getCode()->normalize();
 
-            if (in_array($recordIdentifier, $identifiers)) {
-                $indexedCodes[$recordIdentifier] = $recordCode;
+            if (in_array($assetIdentifier, $identifiers)) {
+                $indexedCodes[$assetIdentifier] = $assetCode;
             }
         }
 

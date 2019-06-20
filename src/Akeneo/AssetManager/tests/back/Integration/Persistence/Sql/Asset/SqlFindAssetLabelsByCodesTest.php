@@ -2,44 +2,44 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLabelsByCodes;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByCodes;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class SqlFindRecordLabelsByCodesTest extends SqlIntegrationTestCase
+class SqlFindAssetLabelsByCodesTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindRecordLabelsByCodes */
-    private $findRecordLabelsByCodeQuery;
+    /** @var SqlFindAssetLabelsByCodes */
+    private $findAssetLabelsByCodeQuery;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findRecordLabelsByCodeQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes');
+        $this->findAssetLabelsByCodeQuery = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_codes');
         $this->resetDB();
-        $this->loadReferenceEntityAndRecords();
+        $this->loadAssetFamilyAndAssets();
     }
 
     /**
      * @test
      */
-    public function it_finds_labels_for_given_record_codes()
+    public function it_finds_labels_for_given_asset_codes()
     {
-        $labels = $this->findRecordLabelsByCodeQuery->find(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $labels = $this->findAssetLabelsByCodeQuery->find(
+            AssetFamilyIdentifier::fromString('designer'),
             ['starck', 'dyson', 'michael']
         );
 
@@ -64,75 +64,75 @@ class SqlFindRecordLabelsByCodesTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntityAndRecords(): void
+    private function loadAssetFamilyAndAssets(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
-        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $assetFamilyRepository->create($assetFamily);
+        $assetFamily = $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
 
-        // Starck record
-        $starckCode = RecordCode::fromString('starck');
-        $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $starckCode);
+        // Starck asset
+        $starckCode = AssetCode::fromString('starck');
+        $assetIdentifier = $assetRepository->nextIdentifier($assetFamilyIdentifier, $starckCode);
         $labelValueFR = Value::create(
-            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Philippe Starck')
         );
         $labelValueUS = Value::create(
-            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('Philippe Starck')
         );
-        $recordRepository->create(
-            Record::create(
-                $recordIdentifier,
-                $referenceEntityIdentifier,
+        $assetRepository->create(
+            Asset::create(
+                $assetIdentifier,
+                $assetFamilyIdentifier,
                 $starckCode,
                 ValueCollection::fromValues([$labelValueFR, $labelValueUS])
             )
         );
 
-        // Dyson record
-        $dysonCode = RecordCode::fromString('dyson');
-        $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $dysonCode);
+        // Dyson asset
+        $dysonCode = AssetCode::fromString('dyson');
+        $assetIdentifier = $assetRepository->nextIdentifier($assetFamilyIdentifier, $dysonCode);
         $labelValueFR = Value::create(
-            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Dyson')
         );
-        $recordRepository->create(
-            Record::create(
-                $recordIdentifier,
-                $referenceEntityIdentifier,
+        $assetRepository->create(
+            Asset::create(
+                $assetIdentifier,
+                $assetFamilyIdentifier,
                 $dysonCode,
                 ValueCollection::fromValues([$labelValueFR])
             )
         );
 
-        // Michael record
-        $michaelCode = RecordCode::fromString('michael');
-        $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $michaelCode);
-        $recordRepository->create(
-            Record::create(
-                $recordIdentifier,
-                $referenceEntityIdentifier,
+        // Michael asset
+        $michaelCode = AssetCode::fromString('michael');
+        $assetIdentifier = $assetRepository->nextIdentifier($assetFamilyIdentifier, $michaelCode);
+        $assetRepository->create(
+            Asset::create(
+                $assetIdentifier,
+                $assetFamilyIdentifier,
                 $michaelCode,
                 ValueCollection::fromValues([])
             )

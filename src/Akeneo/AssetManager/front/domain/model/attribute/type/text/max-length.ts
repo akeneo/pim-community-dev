@@ -1,4 +1,4 @@
-import {InvalidArgumentError} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {InvalidArgumentError} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 export type NormalizedMaxLength = number | null;
 

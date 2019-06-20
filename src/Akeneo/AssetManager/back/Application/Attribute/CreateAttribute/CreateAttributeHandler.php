@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -47,12 +47,12 @@ class CreateAttributeHandler
     public function __invoke(AbstractCreateAttributeCommand $command): void
     {
         $identifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier),
             AttributeCode::fromString($command->code)
         );
 
-        $order = $this->attributeNextOrder->withReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier)
+        $order = $this->attributeNextOrder->withAssetFamilyIdentifier(
+            AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier)
         );
 
         $attribute = $this->attributeFactoryRegistry->getFactory($command)->create($command, $identifier, $order);

@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Tells if an Reference Entity is linked to at least one product attribute
+ * Tells if an Asset Family is linked to at least one product attribute
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface
+interface AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface
 {
-    public function isLinked(ReferenceEntityIdentifier $identifier): bool;
+    public function isLinked(AssetFamilyIdentifier $identifier): bool;
 }

@@ -2,57 +2,57 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Helper;
+namespace Akeneo\AssetManager\Common\Helper;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\DecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\Attribute\DecimalsAllowed;
 
 class FixturesLoader
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
     /** @var ValueHydratorInterface */
     private $valueHydrator;
@@ -64,27 +64,27 @@ class FixturesLoader
     private $loadedAttributes = [];
 
     /** @var string */
-    private $loadedRecordRefEntity;
+    private $loadedAssetRefEntity;
 
     /** @var string */
-    private $loadedRecordCode;
+    private $loadedAssetCode;
 
     /** @var array */
     private $loadedValues;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        RecordRepositoryInterface $recordRepository,
+        AssetRepositoryInterface $assetRepository,
         ValueHydratorInterface $valueHydrator
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
         $this->valueHydrator = $valueHydrator;
     }
 
-    public function referenceEntity(string $identifier): self
+    public function assetFamily(string $identifier): self
     {
         $this->loadedRefEntity = $identifier;
         $this->loadedAttributes = [];
@@ -92,10 +92,10 @@ class FixturesLoader
         return $this;
     }
 
-    public function record(string $referenceEntityIdentifier, string $recordCode): self
+    public function asset(string $assetFamilyIdentifier, string $assetCode): self
     {
-        $this->loadedRecordRefEntity = $referenceEntityIdentifier;
-        $this->loadedRecordCode = $recordCode;
+        $this->loadedAssetRefEntity = $assetFamilyIdentifier;
+        $this->loadedAssetCode = $assetCode;
         $this->loadedValues = [];
 
         return $this;
@@ -111,7 +111,7 @@ class FixturesLoader
     public function withAttributes(array $attributeCodes): self
     {
         if (null === $this->loadedRefEntity) {
-            throw new \LogicException('You need to call "referenceEntity()" first before calling "withAttributes()"');
+            throw new \LogicException('You need to call "assetFamily()" first before calling "withAttributes()"');
         }
 
         $this->loadedAttributes = $attributeCodes;
@@ -122,30 +122,30 @@ class FixturesLoader
     public function load(): array
     {
         if (null !== $this->loadedRefEntity) {
-            $referenceEntity = $this->loadReferenceEntity();
-            $attributes = $this->loadAttributes($referenceEntity->getIdentifier());
+            $assetFamily = $this->loadAssetFamily();
+            $attributes = $this->loadAttributes($assetFamily->getIdentifier());
         }
 
-        if (null !== $this->loadedRecordCode) {
-            $record = $this->loadRecord();
-            $this->loadValues($record->getIdentifier());
+        if (null !== $this->loadedAssetCode) {
+            $asset = $this->loadAsset();
+            $this->loadValues($asset->getIdentifier());
         }
 
         $this->loadedRefEntity = null;
         $this->loadedAttributes = [];
-        $this->loadedRecordRefEntity = null;
-        $this->loadedRecordCode = null;
+        $this->loadedAssetRefEntity = null;
+        $this->loadedAssetCode = null;
 
         return [
-            'reference_entity' => $referenceEntity ?? null,
+            'asset_family' => $assetFamily ?? null,
             'attributes' => $attributes ?? []
         ];
     }
 
-    private function loadReferenceEntity(): ReferenceEntity
+    private function loadAssetFamily(): AssetFamily
     {
-        $designer = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $designer = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur',
@@ -153,8 +153,8 @@ class FixturesLoader
             Image::createEmpty()
         );
 
-        $brand = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $brand = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [
                 'en_US' => 'Brand',
                 'fr_FR' => 'Marque',
@@ -162,8 +162,8 @@ class FixturesLoader
             Image::createEmpty()
         );
 
-        $country = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('country'),
+        $country = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('country'),
             [
                 'en_US' => 'Country',
                 'fr_FR' => 'Pays',
@@ -173,21 +173,21 @@ class FixturesLoader
 
         switch ($this->loadedRefEntity) {
             case 'designer':
-                $this->referenceEntityRepository->create($designer);
+                $this->assetFamilyRepository->create($designer);
 
                 return $designer;
             case 'brand':
-                $this->referenceEntityRepository->create($brand);
+                $this->assetFamilyRepository->create($brand);
 
                 return $brand;
             case 'country':
-                $this->referenceEntityRepository->create($country);
+                $this->assetFamilyRepository->create($country);
 
                 return $country;
             default:
                 throw new \LogicException(
                     sprintf(
-                        'Fixtures Loader has no fixtures for reference entity with identifier %s',
+                        'Fixtures Loader has no fixtures for asset family with identifier %s',
                         $this->loadedRefEntity
                     )
                 );
@@ -195,11 +195,11 @@ class FixturesLoader
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
      * @return AbstractAttribute[]
      */
-    private function loadAttributes(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function loadAttributes(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $attributes = [];
 
@@ -207,10 +207,10 @@ class FixturesLoader
         if (in_array('name', $this->loadedAttributes)) {
             $attributes['name'] = TextAttribute::createText(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('name')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray([
                     'en_US' => 'Name',
@@ -230,10 +230,10 @@ class FixturesLoader
         if (in_array('email', $this->loadedAttributes)) {
             $attributes['email'] = TextAttribute::createText(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('email')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('email'),
                 LabelCollection::fromArray([
                     'en_US' => 'Email',
@@ -253,10 +253,10 @@ class FixturesLoader
         if (in_array('regex', $this->loadedAttributes)) {
             $attributes['regex'] = TextAttribute::createText(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('regex')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('regex'),
                 LabelCollection::fromArray([
                     'en_US' => 'Regex',
@@ -275,10 +275,10 @@ class FixturesLoader
         if (in_array('long_description', $this->loadedAttributes)) {
             $attributes['long_description'] = TextAttribute::createTextarea(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('long_description')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('long_description'),
                 LabelCollection::fromArray([
                     'en_US' => 'Long description',
@@ -296,10 +296,10 @@ class FixturesLoader
         if (in_array('main_image', $this->loadedAttributes)) {
             $attributes['main_image'] = ImageAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('main_image')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('main_image'),
                 LabelCollection::fromArray([
                     'en_US' => 'Portrait',
@@ -315,12 +315,12 @@ class FixturesLoader
 
         // COUNTRY
         if (in_array('country', $this->loadedAttributes)) {
-            $attributes['country'] = RecordAttribute::create(
+            $attributes['country'] = AssetAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('country')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('country'),
                 LabelCollection::fromArray([
                     'fr_FR' => 'Pays',
@@ -329,18 +329,18 @@ class FixturesLoader
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                ReferenceEntityIdentifier::fromString('country')
+                AssetFamilyIdentifier::fromString('country')
             );
         }
 
         // BRAND
         if (in_array('brand', $this->loadedAttributes)) {
-            $attributes['brand'] = RecordAttribute::create(
+            $attributes['brand'] = AssetAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('brand')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('brand'),
                 LabelCollection::fromArray([
                     'fr_FR' => 'Marque',
@@ -349,18 +349,18 @@ class FixturesLoader
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                ReferenceEntityIdentifier::fromString('brand')
+                AssetFamilyIdentifier::fromString('brand')
             );
         }
 
         // BRANDS
         if (in_array('brands', $this->loadedAttributes)) {
-            $attributes['brands'] = RecordCollectionAttribute::create(
+            $attributes['brands'] = AssetCollectionAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('brands')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('brands'),
                 LabelCollection::fromArray([
                     'fr_FR' => 'Marques',
@@ -369,18 +369,18 @@ class FixturesLoader
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                ReferenceEntityIdentifier::fromString('brand')
+                AssetFamilyIdentifier::fromString('brand')
             );
         }
 
         // DESIGNERS
         if (in_array('designers', $this->loadedAttributes)) {
-            $attributes['designers'] = RecordCollectionAttribute::create(
+            $attributes['designers'] = AssetCollectionAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('designers')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('designers'),
                 LabelCollection::fromArray([
                     'en_US' => 'Designers',
@@ -390,7 +390,7 @@ class FixturesLoader
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
-                ReferenceEntityIdentifier::fromString('designer')
+                AssetFamilyIdentifier::fromString('designer')
             );
         }
 
@@ -398,10 +398,10 @@ class FixturesLoader
         if (in_array('materials', $this->loadedAttributes)) {
             $attributes['materials'] = OptionCollectionAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('materials')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('materials'),
                 LabelCollection::fromArray([
                     'fr_FR' => 'Materiaux',
@@ -417,10 +417,10 @@ class FixturesLoader
         if (in_array('nickname', $this->loadedAttributes)) {
             $attributes['nickname'] = TextAttribute::createText(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('nickname')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('nickname'),
                 LabelCollection::fromArray([
                     'en_US' => 'Nickname',
@@ -439,10 +439,10 @@ class FixturesLoader
         if (in_array('year', $this->loadedAttributes)) {
             $attributes['year'] = NumberAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('year')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('year'),
                 LabelCollection::fromArray([
                     'en_US' => 'Year',
@@ -461,10 +461,10 @@ class FixturesLoader
         if (in_array('main_material', $this->loadedAttributes)) {
             $attributes['main_material'] = OptionAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('main_material')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('main_material'),
                 LabelCollection::fromArray([
                     'en_US' => 'Main material',
@@ -480,10 +480,10 @@ class FixturesLoader
         if (in_array('website', $this->loadedAttributes)) {
             $attributes['website'] = UrlAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('website')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('website'),
                 LabelCollection::fromArray([
                     'en_US' => 'Nickname',
@@ -502,10 +502,10 @@ class FixturesLoader
         if (in_array('video', $this->loadedAttributes)) {
             $attributes['video'] = UrlAttribute::create(
                 $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     AttributeCode::fromString('video')
                 ),
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeCode::fromString('video'),
                 LabelCollection::fromArray([
                    'en_US' => 'Video',
@@ -527,30 +527,30 @@ class FixturesLoader
         return $attributes;
     }
 
-    private function loadRecord(): Record
+    private function loadAsset(): Asset
     {
-        $recordIdentifier = $this->recordRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($this->loadedRecordRefEntity),
-            RecordCode::fromString($this->loadedRecordCode)
+        $assetIdentifier = $this->assetRepository->nextIdentifier(
+            AssetFamilyIdentifier::fromString($this->loadedAssetRefEntity),
+            AssetCode::fromString($this->loadedAssetCode)
         );
 
-        $record = Record::create(
-            $recordIdentifier,
-            ReferenceEntityIdentifier::fromString($this->loadedRecordRefEntity),
-            RecordCode::fromString($this->loadedRecordCode),
+        $asset = Asset::create(
+            $assetIdentifier,
+            AssetFamilyIdentifier::fromString($this->loadedAssetRefEntity),
+            AssetCode::fromString($this->loadedAssetCode),
             ValueCollection::fromValues([])
         );
 
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
 
-        return $record;
+        return $asset;
     }
 
-    private function loadValues(RecordIdentifier $recordIdentifier): void
+    private function loadValues(AssetIdentifier $assetIdentifier): void
     {
-        $record = $this->recordRepository->getByIdentifier($recordIdentifier);
-        $attributes = $this->attributeRepository->findByReferenceEntity(
-            ReferenceEntityIdentifier::fromString($this->loadedRecordRefEntity)
+        $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
+        $attributes = $this->attributeRepository->findByAssetFamily(
+            AssetFamilyIdentifier::fromString($this->loadedAssetRefEntity)
         );
 
         foreach ($this->loadedValues as $attributeCode => $values) {
@@ -559,11 +559,11 @@ class FixturesLoader
             }));
 
             foreach ($values as $value) {
-                $record->setValue($this->valueHydrator->hydrate($value, $attribute));
+                $asset->setValue($this->valueHydrator->hydrate($value, $attribute));
             }
         }
 
-        $this->recordRepository->update($record);
+        $this->assetRepository->update($asset);
     }
 
     private function getOrderForAttribute(string $code): AttributeOrder

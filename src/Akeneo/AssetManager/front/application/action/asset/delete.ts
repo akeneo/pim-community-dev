@@ -1,65 +1,65 @@
 import {
-  notifyRecordWellDeleted,
-  notifyRecordDeleteFailed,
-  notifyRecordDeletionErrorOccured,
-  notifyAllRecordsWellDeleted,
-  notifyAllRecordsDeletionFailed,
-} from 'akeneoreferenceentity/application/action/record/notify';
-import recordRemover from 'akeneoreferenceentity/infrastructure/remover/record';
-import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
-import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
-import {redirectToRecordIndex} from 'akeneoreferenceentity/application/action/record/router';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {closeDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
+  notifyAssetWellDeleted,
+  notifyAssetDeleteFailed,
+  notifyAssetDeletionErrorOccured,
+  notifyAllAssetsWellDeleted,
+  notifyAllAssetsDeletionFailed,
+} from 'akeneoassetmanager/application/action/asset/notify';
+import assetRemover from 'akeneoassetmanager/infrastructure/remover/asset';
+import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {updateAssetResults} from 'akeneoassetmanager/application/action/asset/search';
+import {redirectToAssetIndex} from 'akeneoassetmanager/application/action/asset/router';
+import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {closeDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
-export const deleteRecord = (
-  referenceEntityIdentifier: ReferenceEntityIdentifier,
-  recordCode: RecordCode,
-  updateRecordList: boolean = false
+export const deleteAsset = (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  assetCode: AssetCode,
+  updateAssetList: boolean = false
 ) => async (dispatch: any): Promise<void> => {
   try {
-    const errors = await recordRemover.remove(referenceEntityIdentifier, recordCode);
+    const errors = await assetRemover.remove(assetFamilyIdentifier, assetCode);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyRecordDeletionErrorOccured(validationErrors));
+      dispatch(notifyAssetDeletionErrorOccured(validationErrors));
 
       return;
     }
 
-    dispatch(notifyRecordWellDeleted(recordCode));
-    dispatch(redirectToRecordIndex(referenceEntityIdentifier));
+    dispatch(notifyAssetWellDeleted(assetCode));
+    dispatch(redirectToAssetIndex(assetFamilyIdentifier));
     dispatch(closeDeleteModal());
-    if (true === updateRecordList) {
-      dispatch(updateRecordResults());
+    if (true === updateAssetList) {
+      dispatch(updateAssetResults());
     }
   } catch (error) {
-    dispatch(notifyRecordDeleteFailed());
+    dispatch(notifyAssetDeleteFailed());
 
     throw error;
   }
 };
 
-export const deleteAllReferenceEntityRecords = (referenceEntity: ReferenceEntity) => async (
+export const deleteAllAssetFamilyAssets = (assetFamily: AssetFamily) => async (
   dispatch: any
 ): Promise<void> => {
   try {
-    const errors = await recordRemover.removeAll(referenceEntity.getIdentifier());
+    const errors = await assetRemover.removeAll(assetFamily.getIdentifier());
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyRecordDeletionErrorOccured(validationErrors));
+      dispatch(notifyAssetDeletionErrorOccured(validationErrors));
 
       return;
     }
 
-    dispatch(notifyAllRecordsWellDeleted(referenceEntity.getIdentifier()));
-    dispatch(updateRecordResults());
+    dispatch(notifyAllAssetsWellDeleted(assetFamily.getIdentifier()));
+    dispatch(updateAssetResults());
     dispatch(closeDeleteModal());
   } catch (error) {
-    dispatch(notifyAllRecordsDeletionFailed());
+    dispatch(notifyAllAssetsDeletionFailed());
 
     throw error;
   }

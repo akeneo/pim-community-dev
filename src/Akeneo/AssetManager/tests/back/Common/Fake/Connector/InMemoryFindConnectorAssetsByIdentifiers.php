@@ -11,60 +11,60 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
+namespace Akeneo\AssetManager\Common\Fake\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetsByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIdentifiersInterface
+class InMemoryFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdentifiersInterface
 {
-    /** @var ConnectorRecord[] */
-    private $recordsByIdentifier;
+    /** @var ConnectorAsset[] */
+    private $assetsByIdentifier;
 
     public function __construct()
     {
-        $this->recordsByIdentifier = [];
+        $this->assetsByIdentifier = [];
     }
 
-    public function save(RecordIdentifier $recordIdentifier, ConnectorRecord $connectorRecord): void
+    public function save(AssetIdentifier $assetIdentifier, ConnectorAsset $connectorAsset): void
     {
-        $this->recordsByIdentifier[(string) $recordIdentifier] = $connectorRecord;
+        $this->assetsByIdentifier[(string) $assetIdentifier] = $connectorAsset;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(array $identifiers, RecordQuery $recordQuery): array
+    public function find(array $identifiers, AssetQuery $assetQuery): array
     {
-        $records = [];
+        $assets = [];
 
         foreach ($identifiers as $identifier) {
-            if (isset($this->recordsByIdentifier[$identifier])) {
-                $records[] = $this->filterRecordValues($this->recordsByIdentifier[$identifier], $recordQuery);
+            if (isset($this->assetsByIdentifier[$identifier])) {
+                $assets[] = $this->filterAssetValues($this->assetsByIdentifier[$identifier], $assetQuery);
             }
         }
 
-        return $records;
+        return $assets;
     }
 
-    private function filterRecordValues(ConnectorRecord $connectorRecord, RecordQuery $recordQuery): ConnectorRecord
+    private function filterAssetValues(ConnectorAsset $connectorAsset, AssetQuery $assetQuery): ConnectorAsset
     {
-        $channelReference = $recordQuery->getChannelReferenceValuesFilter();
+        $channelReference = $assetQuery->getChannelReferenceValuesFilter();
         if (!$channelReference->isEmpty()) {
-            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnChannel($channelReference->getIdentifier());
+            $connectorAsset = $connectorAsset->getAssetWithValuesFilteredOnChannel($channelReference->getIdentifier());
         }
 
-        $localesIdentifiers = $recordQuery->getLocaleIdentifiersValuesFilter();
+        $localesIdentifiers = $assetQuery->getLocaleIdentifiersValuesFilter();
         if (!$localesIdentifiers->isEmpty()) {
-            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnLocales($localesIdentifiers);
+            $connectorAsset = $connectorAsset->getAssetWithValuesFilteredOnLocales($localesIdentifiers);
         }
 
-        return $connectorRecord;
+        return $connectorAsset;
     }
 }

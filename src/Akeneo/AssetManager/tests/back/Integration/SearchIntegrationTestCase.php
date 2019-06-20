@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration;
+namespace Akeneo\AssetManager\Integration;
 
-use Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchRecordIndexHelper;
+use Akeneo\AssetManager\Integration\Persistence\Helper\SearchAssetIndexHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -30,8 +30,8 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     /** @var KernelInterface|null */
     protected $testKernel;
 
-    /** @var SearchRecordIndexHelper */
-    protected $searchRecordIndexHelper;
+    /** @var SearchAssetIndexHelper */
+    protected $searchAssetIndexHelper;
 
     /**
      * {@inheritdoc}
@@ -41,8 +41,8 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
         if (null === $this->testKernel) {
             $this->bootTestKernel();
         }
-        $this->searchRecordIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
-        $this->searchRecordIndexHelper->resetIndex();
+        $this->searchAssetIndexHelper = $this->get('akeneoasset_manager.tests.helper.search_index_helper');
+        $this->searchAssetIndexHelper->resetIndex();
     }
 
     protected function bootTestKernel(): void

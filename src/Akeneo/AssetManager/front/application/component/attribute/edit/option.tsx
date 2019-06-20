@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {getLabel} from 'pimui/js/i18n';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   optionEditionStart,
   optionEditionCancel,
@@ -12,20 +12,20 @@ import {
   optionEditionSelected,
   optionEditionLabelUpdated,
   optionEditionDelete,
-} from 'akeneoreferenceentity/domain/event/attribute/option';
-import Key from 'akeneoreferenceentity/tools/key';
-import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import hydrateAttribute from 'akeneoreferenceentity/application/hydrator/attribute';
-import {AttributeWithOptions} from 'akeneoreferenceentity/domain/model/attribute/type/option';
-import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/locale-switcher';
-import {catalogLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
-import Locale from 'akeneoreferenceentity/domain/model/locale';
-import {saveOptions} from 'akeneoreferenceentity/application/action/attribute/edit';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import Close from 'akeneoreferenceentity/application/component/app/icon/close';
-import Flag from 'akeneoreferenceentity/tools/component/flag';
-import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+} from 'akeneoassetmanager/domain/event/attribute/option';
+import Key from 'akeneoassetmanager/tools/key';
+import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
+import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
+import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import {saveOptions} from 'akeneoassetmanager/application/action/attribute/edit';
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import Close from 'akeneoassetmanager/application/component/app/icon/close';
+import Flag from 'akeneoassetmanager/tools/component/flag';
+import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 const securityContext = require('pim/security-context');
 
@@ -34,7 +34,7 @@ const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) 
     <div className="AknFieldContainer AknFieldContainer--packed">
       <div className="AknFieldContainer-header">
         <button onClick={onOptionEditionStart} className="AknButton" data-code="manageOption">
-          {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
+          {__('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
         </button>
       </div>
     </div>
@@ -76,7 +76,7 @@ type StateProps = {
   structure: {
     locales: Locale[];
   };
-  referenceEntity: NormalizedReferenceEntity;
+  assetFamily: NormalizedAssetFamily;
   catalogLocale: string;
   numberOfLockedOptions: any;
 };
@@ -161,12 +161,12 @@ const optionRow = ({
                   ref={labelInputReference}
                   placeholder={
                     isLastRow && canEditLabel
-                      ? __('pim_reference_entity.attribute.edit.input.manage_options.option.label.placeholder')
+                      ? __('pim_asset_manager.attribute.edit.input.manage_options.option.label.placeholder')
                       : ''
                   }
                   type="text"
                   className={labelClassName}
-                  id={`pim_reference_entity.attribute.edit.input.${code}_${index}.label`}
+                  id={`pim_asset_manager.attribute.edit.input.${code}_${index}.label`}
                   name="label"
                   value={undefined === label ? '' : label}
                   onFocus={() => {
@@ -202,7 +202,7 @@ const optionRow = ({
                     (index <= numberOfLockedOptions - 1 && !rights.attribute.edit ? ' AknTextField--disabled' : '')
                   }
                   tabIndex={index <= numberOfLockedOptions - 1 ? -1 : 0}
-                  id={`pim_reference_entity.attribute.edit.input.${code}_${index}.code`}
+                  id={`pim_asset_manager.attribute.edit.input.${code}_${index}.code`}
                   name="code"
                   value={undefined === code ? '' : code}
                   onFocus={() => {
@@ -362,10 +362,10 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                 <div className="AknFullPage-content">
                   <div className="AknFullPage-titleContainer">
                     <div className="AknFullPage-subTitle">
-                      {__('pim_reference_entity.attribute.options.sub_title')} / {this.props.referenceEntity.code}
+                      {__('pim_asset_manager.attribute.options.sub_title')} / {this.props.assetFamily.code}
                     </div>
                     <div className="AknFullPage-title">
-                      {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
+                      {__('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
                     </div>
                   </div>
                   <div className="AknOptionEditor">
@@ -388,7 +388,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                             </th>
                             <th className="AknOptionEditor-headCell">
                               <label className="AknOptionEditor-headCellLabel">
-                                {__('pim_reference_entity.attribute.edit.input.code')}
+                                {__('pim_asset_manager.attribute.edit.input.code')}
                               </label>
                             </th>
                             <th className="AknOptionEditor-headCell">
@@ -426,7 +426,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                     <div className="AknOptionEditor-helper">
                       <div className="AknSubsection-title AknSubsection-title--light">
                         <span className="AknSubsection-titleLabel">
-                          {__('pim_reference_entity.attribute.options.helper.title')}
+                          {__('pim_asset_manager.attribute.options.helper.title')}
                         </span>
                       </div>
                       <div className="AknOptionEditor-labelList">
@@ -452,11 +452,11 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                   className="AknButton AknButton--apply AknFullPage-ok ok confirm"
                   onClick={this.props.events.onOptionEditionSubmission}
                 >
-                  {__('pim_reference_entity.attribute.create.confirm')}
+                  {__('pim_asset_manager.attribute.create.confirm')}
                 </button>
               ) : null}
               <div
-                title={__('pim_reference_entity.attribute.create.cancel')}
+                title={__('pim_asset_manager.attribute.create.cancel')}
                 className="AknFullPage-cancel cancel"
                 onClick={this.cancelManageOptions.bind(this)}
                 tabIndex={0}
@@ -483,18 +483,18 @@ export default connect(
       attribute: state.attribute.data,
       isDirty: state.options.isDirty,
       numberOfLockedOptions: state.options.numberOfLockedOptions,
-      referenceEntity: state.form.data,
+      assetFamily: state.form.data,
       catalogLocale: state.user.defaultCatalogLocale,
       rights: {
         locale: {
           edit: ownProps.rights.locale.edit,
         },
         attribute: {
-          edit: ownProps.rights.attribute.edit && securityContext.isGranted('akeneo_referenceentity_option_edit'),
+          edit: ownProps.rights.attribute.edit && securityContext.isGranted('akeneo_assetmanager_option_edit'),
           delete:
             ownProps.rights.attribute.edit &&
-            securityContext.isGranted('akeneo_referenceentity_option_delete') &&
-            securityContext.isGranted('akeneo_referenceentity_option_edit'),
+            securityContext.isGranted('akeneo_assetmanager_option_delete') &&
+            securityContext.isGranted('akeneo_assetmanager_option_edit'),
         },
       },
     };

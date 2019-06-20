@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
+namespace Akeneo\AssetManager\Infrastructure\PublicApi\Analytics;
 
 use Doctrine\DBAL\Connection;
 
@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlAverageMaxNumberOfRecordsPerReferenceEntity
+class SqlAverageMaxNumberOfAssetsPerAssetFamily
 {
     /** @var Connection */
     private $sqlConnection;
@@ -25,14 +25,14 @@ class SqlAverageMaxNumberOfRecordsPerReferenceEntity
         $sql = <<<SQL
 
 SELECT
-	MAX(number_of_records_per_reference_entity) as max,
-	CEIL(AVG(number_of_records_per_reference_entity)) as average
+  MAX(number_of_assets_per_asset_family) as max,
+  CEIL(AVG(number_of_assets_per_asset_family)) as average
 FROM (
-	SELECT reference_entity.identifier, COUNT(code) as number_of_records_per_reference_entity
-	FROM akeneo_reference_entity_reference_entity reference_entity
-		LEFT JOIN akeneo_reference_entity_record record
-		ON reference_entity.identifier = record.reference_entity_identifier
-	GROUP BY reference_entity.identifier
+  SELECT asset_family.identifier, COUNT(code) as number_of_assets_per_asset_family
+  FROM akeneo_asset_manager_asset_family asset_family
+    LEFT JOIN akeneo_asset_manager_asset asset
+    ON asset_family.identifier = asset.asset_family_identifier
+  GROUP BY asset_family.identifier
 ) as rec;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();

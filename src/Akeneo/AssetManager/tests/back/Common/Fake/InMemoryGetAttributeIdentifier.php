@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 
 class InMemoryGetAttributeIdentifier implements GetAttributeIdentifierInterface
 {
@@ -28,26 +28,26 @@ class InMemoryGetAttributeIdentifier implements GetAttributeIdentifierInterface
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function withReferenceEntityAndCode(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+    public function withAssetFamilyAndCode(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode
     ): AttributeIdentifier {
         $attributes = $this->attributeRepository->getAttributes();
 
         foreach ($attributes as $attribute) {
-            $sameReferenceEntity = $attribute->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier);
+            $sameAssetFamily = $attribute->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier);
             $sameCode = $attribute->getCode()->equals($attributeCode);
 
-            if ($sameReferenceEntity && $sameCode) {
+            if ($sameAssetFamily && $sameCode) {
                 return $attribute->getIdentifier();
             }
         }
 
         throw new \LogicException(
             sprintf(
-                'Attribute identifier not found for "%s" attribute code and "%s" reference entity identifier.',
+                'Attribute identifier not found for "%s" attribute code and "%s" asset family identifier.',
                 $attributeCode,
-                $referenceEntityIdentifier
+                $assetFamilyIdentifier
             )
         );
     }

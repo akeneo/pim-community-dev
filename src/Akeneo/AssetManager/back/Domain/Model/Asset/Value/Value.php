@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

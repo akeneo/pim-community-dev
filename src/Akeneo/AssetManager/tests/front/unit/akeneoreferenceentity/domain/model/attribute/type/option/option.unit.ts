@@ -1,6 +1,6 @@
-import {Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 
 const normalizedColors = {
   code: 'red',

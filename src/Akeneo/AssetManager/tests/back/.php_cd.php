@@ -12,18 +12,18 @@ $rules = [
         'Akeneo\Tool\Component',
         'Webmozart\Assert\Assert',
         'Symfony\Component\EventDispatcher\Event'
-    ])->in('Akeneo\ReferenceEntity\Domain'),
+    ])->in('Akeneo\AssetManager\Domain'),
     $builder->only([
-        'Akeneo\ReferenceEntity\Domain',
+        'Akeneo\AssetManager\Domain',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
         'Symfony\Component\EventDispatcher\Event',
         'Webmozart\Assert\Assert',
-    ])->in('Akeneo\ReferenceEntity\Application'),
+    ])->in('Akeneo\AssetManager\Application'),
     $builder->only([
-        'Akeneo\ReferenceEntity\Application',
-        'Akeneo\ReferenceEntity\Domain',
+        'Akeneo\AssetManager\Application',
+        'Akeneo\AssetManager\Domain',
         'Akeneo\Tool\Component',
         'Akeneo\Tool\Bundle\ElasticsearchBundle',
         'Doctrine\DBAL',
@@ -37,9 +37,9 @@ $rules = [
         'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
         'Liip\ImagineBundle',
 
-        // TODO: reference entities should not depend on PIM
-        'Akeneo\Pim\Enrichment\ReferenceEntity\Component'
-    ])->in('Akeneo\ReferenceEntity\Infrastructure'),
+        // TODO: asset families should not depend on PIM
+        'Akeneo\Pim\Enrichment\AssetManager\Component'
+    ])->in('Akeneo\AssetManager\Infrastructure'),
 ];
 
 $config = new Configuration($rules, $finder);

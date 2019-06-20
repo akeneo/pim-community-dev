@@ -1,5 +1,5 @@
-import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 
 export class InvalidArgument extends Error {}
 
@@ -49,7 +49,7 @@ export const getTypes = (config: AttributeConfig) => (): AttributeType[] => {
   return Object.keys(config).map((identifier: string) => {
     return {
       identifier,
-      label: `pim_reference_entity.attribute.type.${identifier}`,
+      label: `pim_asset_manager.attribute.type.${identifier}`,
       icon: config[identifier].icon,
     };
   });
@@ -67,7 +67,7 @@ export const getDenormalizer = (config: AttributeConfig) => (
   if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
     const expectedConfiguration = `config:
     config:
-        akeneoreferenceentity/application/configuration/attribute:
+        akeneoassetmanager/application/configuration/attribute:
             ${normalizedAttribute.type}:
                 denormalize: '@my_attribute_denormalizer'`;
 
@@ -105,7 +105,7 @@ export const getReducer = (config: AttributeConfig) => (normalizedAttribute: Nor
   if (undefined === typeConfiguration || undefined === typeConfiguration.reducer) {
     const expectedConfiguration = `config:
     config:
-        akeneoreferenceentity/application/configuration/attribute:
+        akeneoassetmanager/application/configuration/attribute:
             ${normalizedAttribute.type}:
                 reducer: '@my_attribute_reducer'`;
 
@@ -154,7 +154,7 @@ export const getView = (config: AttributeConfig) => (attribute: Attribute): View
   if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
     const expectedConfiguration = `config:
     config:
-        akeneoreferenceentity/application/configuration/attribute:
+        akeneoassetmanager/application/configuration/attribute:
             ${attribute.getType()}:
                 view: '@my_attribute_view'`;
 
@@ -188,15 +188,15 @@ const ${capitalizedAttributeType}View = ({
     <React.Fragment>
       <div className="AknFieldContainer" data-code="canBeNull">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.can_be_null">
-            {__('pim_reference_entity.attribute.edit.input.can_be_null')}
+          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.can_be_null">
+            {__('pim_asset_manager.attribute.edit.input.can_be_null')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
             className="AknTextField AknTextField--light"
-            id="pim_reference_entity.attribute.edit.input.can_be_null"
+            id="pim_asset_manager.attribute.edit.input.can_be_null"
             name="can_be_null"
             value={attribute.canBeNull.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {

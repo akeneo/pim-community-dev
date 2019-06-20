@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditMaxLengthCommandFactorySpec extends ObjectBehavior
@@ -48,7 +48,7 @@ class EditMaxLengthCommandFactorySpec extends ObjectBehavior
                 [
                     'identifier'     => [
                         'identifier'                 => 'portrait',
-                        'reference_entity_identifier' => 'designer',
+                        'asset_family_identifier' => 'designer',
                     ],
                     'wrong_property' => 10,
                 ],

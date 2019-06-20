@@ -1,13 +1,13 @@
 import * as React from 'react';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import Select2 from 'akeneoreferenceentity/application/component/app/select2';
-import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import OptionCollectionData, {
   denormalize as denormalizeOptionCollectionData,
-} from 'akeneoreferenceentity/domain/model/record/data/option-collection';
-import {OptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
-import __ from 'akeneoreferenceentity/tools/translator';
+} from 'akeneoassetmanager/domain/model/asset/data/option-collection';
+import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import __ from 'akeneoassetmanager/tools/translator';
 
 const View = ({
   value,
@@ -38,7 +38,7 @@ const View = ({
   return (
     <div className="option-collection-selector-container AknSelectField">
       <Select2
-        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
         className="AknSelectField"
         data={formatedOptions}
         value={data.isEmpty() ? [] : data.normalize()}
@@ -46,7 +46,7 @@ const View = ({
         readOnly={!canEditData}
         configuration={{
           allowClear: true,
-          placeholder: __('pim_reference_entity.attribute.options.no_value'),
+          placeholder: __('pim_asset_manager.attribute.options.no_value'),
         }}
         onChange={(optionCodes: string[]) => {
           const newData = denormalizeOptionCollectionData(optionCodes, attribute);

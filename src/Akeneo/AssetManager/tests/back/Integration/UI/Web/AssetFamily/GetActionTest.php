@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -42,24 +42,24 @@ class GetActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_returns_a_reference_entity_details(): void
+    public function it_returns_an_asset_family_details(): void
     {
-        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntity/ReferenceEntityDetails/ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'AssetFamily/AssetFamilyDetails/ok.json');
     }
 
     /**
      * @test
      */
-    public function it_returns_a_reference_entity_details_for_which_edition_is_not_allowed(): void
+    public function it_returns_an_asset_family_details_for_which_edition_is_not_allowed(): void
     {
         $this->forbidEdition();
-        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntity/ReferenceEntityDetails/ok_not_allowed_to_edit.json');
+        $this->webClientHelper->assertRequest($this->client, 'AssetFamily/AssetFamilyDetails/ok_not_allowed_to_edit.json');
     }
 
     /**
@@ -67,31 +67,31 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_404_not_found_when_the_identifier_does_not_exist(): void
     {
-        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntity/ReferenceEntityDetails/not_found.json');
+        $this->webClientHelper->assertRequest($this->client, 'AssetFamily/AssetFamilyDetails/not_found.json');
     }
 
     private function loadFixtures(): void
     {
-        $queryHandler = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details');
+        $queryHandler = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details');
 
         $file = new FileInfo();
         $file->setKey('5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_designer.jpg');
         $file->setOriginalFilename('designer.jpg');
 
-        $entityItem = new ReferenceEntityDetails();
-        $entityItem->identifier = (ReferenceEntityIdentifier::fromString('designer'));
+        $entityItem = new AssetFamilyDetails();
+        $entityItem->identifier = (AssetFamilyIdentifier::fromString('designer'));
         $entityItem->labels = LabelCollection::fromArray([
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
         ]);
         $entityItem->image = Image::fromFileInfo($file);
-        $entityItem->recordCount = 123;
+        $entityItem->assetCount = 123;
         $entityItem->attributeAsImage = AttributeAsImageReference::createFromNormalized('designer_portrait_123456');
         $entityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized('designer_name_123456');
 
         $name = new AttributeDetails();
         $name->identifier = 'designer_name_123456';
-        $name->referenceEntityIdentifier = 'designer';
+        $name->assetFamilyIdentifier = 'designer';
         $name->code = 'name';
         $name->isRequired = false;
         $name->order = 0;
@@ -109,7 +109,7 @@ class GetActionTest extends ControllerIntegrationTestCase
 
         $bio = new AttributeDetails();
         $bio->identifier = 'designer_bio_123456';
-        $bio->referenceEntityIdentifier = 'designer';
+        $bio->assetFamilyIdentifier = 'designer';
         $bio->code = 'bio';
         $bio->isRequired = false;
         $bio->order = 1;
@@ -127,7 +127,7 @@ class GetActionTest extends ControllerIntegrationTestCase
 
         $portrait = new AttributeDetails();
         $portrait->identifier = 'designer_portrait_123456';
-        $portrait->referenceEntityIdentifier = 'designer';
+        $portrait->assetFamilyIdentifier = 'designer';
         $portrait->code = 'portrait';
         $portrait->isRequired = false;
         $portrait->order = 2;
@@ -142,7 +142,7 @@ class GetActionTest extends ControllerIntegrationTestCase
 
         $favoriteColor = new AttributeDetails();
         $favoriteColor->identifier = 'favorite_color_designer_52609e00b7ee307e79eb100099b9a8bf';
-        $favoriteColor->referenceEntityIdentifier = 'designer';
+        $favoriteColor->assetFamilyIdentifier = 'designer';
         $favoriteColor->code = 'favorite_color';
         $favoriteColor->isRequired = true;
         $favoriteColor->order = 3;
@@ -165,7 +165,7 @@ class GetActionTest extends ControllerIntegrationTestCase
 
         $colors = new AttributeDetails();
         $colors->identifier = 'colors_designer_52609e00b7ee307e79eb100099b9a8bf';
-        $colors->referenceEntityIdentifier = 'designer';
+        $colors->assetFamilyIdentifier = 'designer';
         $colors->code = 'colors';
         $colors->isRequired = true;
         $colors->order = 4;
@@ -188,21 +188,21 @@ class GetActionTest extends ControllerIntegrationTestCase
 
         $city = new AttributeDetails();
         $city->identifier = 'city_designer_79eb100099b9a8bf52609e00b7ee307e';
-        $city->referenceEntityIdentifier = 'designer';
+        $city->assetFamilyIdentifier = 'designer';
         $city->code = 'city';
         $city->isRequired = false;
         $city->order = 5;
         $city->valuePerChannel = false;
         $city->valuePerLocale = false;
-        $city->type = 'record';
+        $city->type = 'asset';
         $city->labels = ['en_US' => 'City'];
         $city->additionalProperties = [
-            'record_type' => 'city'
+            'asset_type' => 'city'
         ];
 
         $birthdate = new AttributeDetails();
         $birthdate->identifier = 'year_of_birth_designer_79eb100099b9a8bf52609e00b7ee307e';
-        $birthdate->referenceEntityIdentifier = 'designer';
+        $birthdate->assetFamilyIdentifier = 'designer';
         $birthdate->code = 'year_of_birth';
         $birthdate->isRequired = false;
         $birthdate->order = 6;
@@ -234,7 +234,7 @@ class GetActionTest extends ControllerIntegrationTestCase
 
     private function forbidEdition(): void
     {
-        $this->get('akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler')
+        $this->get('akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler')
             ->forbid();
     }
 }

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 
-interface SelectRecordIdentifiersInterface
+interface SelectAssetIdentifiersInterface
 {
     /**
-     * @return RecordIdentifier[]
+     * @return AssetIdentifier[]
      */
     public function fetch(): \Iterator;
 }

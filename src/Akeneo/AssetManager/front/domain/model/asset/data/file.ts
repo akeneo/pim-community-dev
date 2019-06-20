@@ -1,5 +1,5 @@
-import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
-import ValueData from 'akeneoreferenceentity/domain/model/record/data';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import ValueData from 'akeneoassetmanager/domain/model/asset/data';
 
 class InvalidTypeError extends Error {}
 

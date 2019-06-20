@@ -1,6 +1,6 @@
-import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/number';
+import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/number';
 
-describe('akeneo > reference entity > domain > model > record > data --- number', () => {
+describe('akeneo > asset family > domain > model > asset > data --- number', () => {
   test('I can create a new NumberData with a string', () => {
     expect(create('155').normalize()).toEqual('155');
   });

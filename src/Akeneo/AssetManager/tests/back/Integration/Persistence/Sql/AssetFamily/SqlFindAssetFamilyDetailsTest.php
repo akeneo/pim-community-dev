@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
-class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
+class SqlFindAssetFamilyDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindReferenceEntityDetailsInterface */
-    private $findReferenceEntityDetails;
+    /** @var FindAssetFamilyDetailsInterface */
+    private $findAssetFamilyDetails;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findReferenceEntityDetails = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details');
+        $this->findAssetFamilyDetails = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details');
         $this->resetDB();
-        $this->loadReferenceEntity();
+        $this->loadAssetFamily();
     }
 
     /**
@@ -41,46 +41,46 @@ class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
      */
     public function it_returns_null_when_there_is_no_result_for_the_given_identifier()
     {
-        $result = $this->findReferenceEntityDetails->find(ReferenceEntityIdentifier::fromString('unknown_reference_entity'));
+        $result = $this->findAssetFamilyDetails->find(AssetFamilyIdentifier::fromString('unknown_asset_family'));
         Assert::assertNull($result);
     }
 
     /**
      * @test
      */
-    public function it_finds_one_reference_entity_by_its_identifier()
+    public function it_finds_one_asset_family_by_its_identifier()
     {
-        $entity = $this->findReferenceEntityDetails->find(ReferenceEntityIdentifier::fromString('designer'));
+        $entity = $this->findAssetFamilyDetails->find(AssetFamilyIdentifier::fromString('designer'));
 
-        $designer = new ReferenceEntityDetails();
-        $designer->identifier = ReferenceEntityIdentifier::fromString('designer');
+        $designer = new AssetFamilyDetails();
+        $designer->identifier = AssetFamilyIdentifier::fromString('designer');
         $designer->labels = LabelCollection::fromArray(['fr_FR' => 'Concepteur', 'en_US' => 'Designer']);
 
-        $this->assertReferenceEntityItem($designer, $entity);
+        $this->assertAssetFamilyItem($designer, $entity);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntity(): void
+    private function loadAssetFamily(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
     }
 
-    private function assertReferenceEntityItem(ReferenceEntityDetails $expected, ReferenceEntityDetails $actual): void
+    private function assertAssetFamilyItem(AssetFamilyDetails $expected, AssetFamilyDetails $actual): void
     {
-        $this->assertTrue($expected->identifier->equals($actual->identifier), 'Reference entity identifiers are not equal');
+        $this->assertTrue($expected->identifier->equals($actual->identifier), 'Asset family identifiers are not equal');
         $expectedLabels = $expected->labels->normalize();
         $actualLabels = $actual->labels->normalize();
         $this->assertEmpty(
@@ -88,7 +88,7 @@ class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
                 array_diff($expectedLabels, $actualLabels),
                 array_diff($actualLabels, $expectedLabels)
             ),
-            'Labels for the reference entity items are not the same'
+            'Labels for the asset family items are not the same'
         );
     }
 }

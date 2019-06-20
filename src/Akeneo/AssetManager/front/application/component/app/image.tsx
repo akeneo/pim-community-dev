@@ -1,13 +1,13 @@
 import * as React from 'react';
-import FileModel from 'akeneoreferenceentity/domain/model/file';
-import {getImageShowUrl, getImageDownloadUrl} from 'akeneoreferenceentity/tools/media-url-generator';
-import imageUploader from 'akeneoreferenceentity/infrastructure/uploader/image';
-import loadImage from 'akeneoreferenceentity/tools/image-loader';
-import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
-import __ from 'akeneoreferenceentity/tools/translator';
-import Download from 'akeneoreferenceentity/application/component/app/icon/download';
-import Import from 'akeneoreferenceentity/application/component/app/illustration/import';
-import Key from 'akeneoreferenceentity/tools/key';
+import FileModel from 'akeneoassetmanager/domain/model/file';
+import {getImageShowUrl, getImageDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
+import loadImage from 'akeneoassetmanager/tools/image-loader';
+import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
+import __ from 'akeneoassetmanager/tools/translator';
+import Download from 'akeneoassetmanager/application/component/app/icon/download';
+import Import from 'akeneoassetmanager/application/component/app/illustration/import';
+import Key from 'akeneoassetmanager/tools/key';
 
 class Image extends React.Component<
   {
@@ -157,13 +157,13 @@ class Image extends React.Component<
             {!this.props.readOnly ? (
               <span className="AknImage-actionItem" onClick={this.remove.bind(this)}>
                 <Trash color="#ffffff" className="AknImage-actionItemIcon" />{' '}
-                {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.remove`)}
+                {__(`pim_asset_manager.app.image.${this.props.wide ? 'wide' : 'small'}.remove`)}
               </span>
             ) : null}
             {this.props.image.isInStorage() ? (
               <a className="AknImage-actionItem" href={getImageDownloadUrl(this.props.image)} tabIndex={-1}>
                 <Download color="#ffffff" className="AknImage-actionItemIcon" />{' '}
-                {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.download`)}
+                {__(`pim_asset_manager.app.image.${this.props.wide ? 'wide' : 'small'}.download`)}
               </a>
             ) : null}
           </div>
@@ -187,7 +187,7 @@ class Image extends React.Component<
           <div className="AknImage-uploader">
             <Import className="AknImage-uploaderIllustration" />
             <span className="AknImage-uploaderHelper">
-              {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.upload`)}
+              {__(`pim_asset_manager.app.image.${this.props.wide ? 'wide' : 'small'}.upload`)}
             </span>
           </div>
         ) : null}

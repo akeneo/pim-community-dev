@@ -1,4 +1,4 @@
-const Edit = require('../../decorators/reference-entity/edit.decorator');
+const Edit = require('../../decorators/asset-family/edit.decorator');
 const path = require('path');
 
 const {

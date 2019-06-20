@@ -1,11 +1,11 @@
-import Record from 'akeneoreferenceentity/domain/model/record/record';
-import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
-import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
+import Asset from 'akeneoassetmanager/domain/model/asset/asset';
+import {validateKeys} from 'akeneoassetmanager/application/hydrator/hydrator';
+import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';
 
-export default (backendRecord: any): Record => {
-  const expectedKeys = ['identifier', 'reference_entity_identifier', 'code', 'labels', 'image', 'values'];
+export default (backendAsset: any): Asset => {
+  const expectedKeys = ['identifier', 'asset_family_identifier', 'code', 'labels', 'image', 'values'];
 
-  validateKeys(backendRecord, expectedKeys, 'The provided raw record seems to be malformed.');
+  validateKeys(backendAsset, expectedKeys, 'The provided raw asset seems to be malformed.');
 
-  return denormalizeRecord(backendRecord);
+  return denormalizeAsset(backendAsset);
 };

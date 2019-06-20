@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository as InMemoryProductAttributeRepository;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute implements ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface
+class InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute implements AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface
 {
     /** @var InMemoryProductAttributeRepository */
     private $inMemoryAttributeRepository;
@@ -33,18 +33,18 @@ class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute implements Ref
         $this->inMemoryAttributeRepository = $inMemoryAttributeRepository;
     }
 
-    public function isLinked(ReferenceEntityIdentifier $identifier): bool
+    public function isLinked(AssetFamilyIdentifier $identifier): bool
     {
         $attributes = $this->inMemoryAttributeRepository->findBy([
-            'attributeType' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
+            'attributeType' => AssetMultipleLinkType::ASSET_MULTIPLE_LINK,
         ]);
 
-        $linkedEntities = [];
+        $linkedAssets = [];
         /** @var AttributeInterface $attribute */
         foreach ($attributes as $attribute) {
-            $linkedEntities[] = $attribute->getProperty('reference_data_name');
+            $linkedAssets[] = $attribute->getProperty('reference_data_name');
         }
 
-        return in_array((string) $identifier, array_filter(array_unique($linkedEntities)));
+        return in_array((string) $identifier, array_filter(array_unique($linkedAssets)));
     }
 }

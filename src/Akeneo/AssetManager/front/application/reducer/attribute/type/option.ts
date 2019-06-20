@@ -1,8 +1,8 @@
-import {NormalizedOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
-import {NormalizedOptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
-import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import sanitize from 'akeneoreferenceentity/tools/sanitize';
+import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {NormalizedOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import sanitize from 'akeneoassetmanager/tools/sanitize';
 
 const optionAttributeReducer = (
   normalizedAttribute: NormalizedOptionAttribute | NormalizedOptionCollectionAttribute

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\NumberAttributeHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\NumberAttributeHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
@@ -38,7 +38,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
         $number = $this->hydrate([
             'identifier'                 => 'area_city_fingerprint',
             'code'                       => 'area',
-            'reference_entity_identifier' => 'city',
+            'asset_family_identifier' => 'city',
             'labels'                     => json_encode(['fr_FR' => 'Superficie']),
             'attribute_type'             => 'number',
             'attribute_order'            => '0',
@@ -54,7 +54,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
         $number->shouldBeAnInstanceOf(NumberAttribute::class);
         $number->normalize()->shouldBe([
                 'identifier'                  => 'area_city_fingerprint',
-                'reference_entity_identifier' => 'city',
+                'asset_family_identifier' => 'city',
                 'code'                        => 'area',
                 'labels'                      => ['fr_FR' => 'Superficie'],
                 'order'                       => 0,
@@ -75,7 +75,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
             [
                 'identifier'                  => 'area_city_fingerprint',
                 'code'                        => 'area',
-                'reference_entity_identifier' => 'city',
+                'asset_family_identifier' => 'city',
                 'labels'                      => json_encode(['fr_FR' => 'Superficie']),
                 'attribute_type'              => 'number',
                 'attribute_order'             => '0',
@@ -95,7 +95,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
         $number->normalize()->shouldBe(
             [
                 'identifier'                  => 'area_city_fingerprint',
-                'reference_entity_identifier' => 'city',
+                'asset_family_identifier' => 'city',
                 'code'                        => 'area',
                 'labels'                      => ['fr_FR' => 'Superficie'],
                 'order'                       => 0,

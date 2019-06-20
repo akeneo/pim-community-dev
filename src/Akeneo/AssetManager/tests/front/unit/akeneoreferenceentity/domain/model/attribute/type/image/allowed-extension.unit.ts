@@ -1,4 +1,4 @@
-import {AllowedExtensions} from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
+import {AllowedExtensions} from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
 
 describe('akeneo > attribute > domain > model > attribute > type > image --- AllowedExtensions', () => {
   test('I can create a AllowedExtensions from normalized', () => {

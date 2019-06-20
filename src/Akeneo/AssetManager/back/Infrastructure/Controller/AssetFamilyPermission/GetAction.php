@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamilyPermission;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\FindReferenceEntityPermissionsDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\PermissionDetails;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\FindAssetFamilyPermissionsDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\PermissionDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,39 +17,39 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GetAction
 {
-    /** @var FindReferenceEntityPermissionsDetailsInterface */
-    private $findReferenceEntityPermissionsDetails;
+    /** @var FindAssetFamilyPermissionsDetailsInterface */
+    private $findAssetFamilyPermissionsDetails;
 
-    public function __construct(FindReferenceEntityPermissionsDetailsInterface $findReferenceEntityPermissionsDetails)
+    public function __construct(FindAssetFamilyPermissionsDetailsInterface $findAssetFamilyPermissionsDetails)
     {
-        $this->findReferenceEntityPermissionsDetails = $findReferenceEntityPermissionsDetails;
+        $this->findAssetFamilyPermissionsDetails = $findAssetFamilyPermissionsDetails;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
+    public function __invoke(Request $request, string $assetFamilyIdentifier): JsonResponse
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $referenceEntityPermissionDetails = $this->findReferenceEntityPermissionsDetails->find($referenceEntityIdentifier);
-        $result = $this->normalizePermissionDetails($referenceEntityPermissionDetails);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
+        $assetFamilyPermissionDetails = $this->findAssetFamilyPermissionsDetails->find($assetFamilyIdentifier);
+        $result = $this->normalizePermissionDetails($assetFamilyPermissionDetails);
 
         return new JsonResponse($result);
     }
 
-    private function getReferenceEntityIdentifierOr404(string $identifier): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifierOr404(string $identifier): AssetFamilyIdentifier
     {
         try {
-            return ReferenceEntityIdentifier::fromString($identifier);
+            return AssetFamilyIdentifier::fromString($identifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
     }
 
     /**
-     * @param PermissionDetails[] $referenceEntityPermissionDetails
+     * @param PermissionDetails[] $assetFamilyPermissionDetails
      */
-    private function normalizePermissionDetails(array $referenceEntityPermissionDetails): array
+    private function normalizePermissionDetails(array $assetFamilyPermissionDetails): array
     {
         return array_map(function (PermissionDetails $permissionDetails) {
             return $permissionDetails->normalize();
-        }, $referenceEntityPermissionDetails);
+        }, $assetFamilyPermissionDetails);
     }
 }

@@ -1,15 +1,15 @@
-import Value, {createValue, NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import Value, {createValue, NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {
   getDataDenormalizer,
   Denormalizer as DataDenormalizer,
-} from 'akeneoreferenceentity/application/configuration/value';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+} from 'akeneoassetmanager/application/configuration/value';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
   Denormalizer as AttributeDenormalizer,
   getAttributeDenormalizer,
-} from 'akeneoreferenceentity/application/configuration/attribute';
+} from 'akeneoassetmanager/application/configuration/attribute';
 
 export const getValueDenormalizer = (
   getDataDenormalizer: (normalizedValue: NormalizedValue) => DataDenormalizer,

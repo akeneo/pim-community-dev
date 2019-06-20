@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetConnectorReferenceEntityContext implements Context
+class GetConnectorAssetFamilyContext implements Context
 {
-    private const REQUEST_CONTRACT_DIR = 'ReferenceEntity/Connector/Distribute/';
+    private const REQUEST_CONTRACT_DIR = 'AssetFamily/Connector/Distribute/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -36,78 +36,78 @@ class GetConnectorReferenceEntityContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier */
-    private $findConnectorReferenceEntity;
+    /** @var InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier */
+    private $findConnectorAssetFamily;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var null|Response */
-    private $existentReferenceEntity;
+    private $existentAssetFamily;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier $findConnectorReferenceEntity,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository
+        InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier $findConnectorAssetFamily,
+        AssetFamilyRepositoryInterface $assetFamilyRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->findConnectorAssetFamily = $findConnectorAssetFamily;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     /**
-     * @Given /^the Brand reference entity$/
+     * @Given /^the Brand asset family$/
      */
-    public function theBrandReferenceEntity(): void
+    public function theBrandAssetFamily(): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
         $imageInfo = new FileInfo();
         $imageInfo
             ->setOriginalFilename('brand.jpg')
             ->setKey('5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg');
 
-        $referenceEntity = new ConnectorReferenceEntity(
-            $referenceEntityIdentifier,
+        $assetFamily = new ConnectorAssetFamily(
+            $assetFamilyIdentifier,
             LabelCollection::fromArray(['fr_FR' => 'Marque']),
             Image::fromFileInfo($imageInfo)
         );
 
-        $this->findConnectorReferenceEntity->save(
-            $referenceEntityIdentifier,
-            $referenceEntity
+        $this->findConnectorAssetFamily->save(
+            $assetFamilyIdentifier,
+            $assetFamily
         );
 
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             [],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @When /^the connector requests the Brand reference entity$/
+     * @When /^the connector requests the Brand asset family$/
      */
-    public function theConnectorRequestsTheBrandReferenceEntity(): void
+    public function theConnectorRequestsTheBrandAssetFamily(): void
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->existentReferenceEntity = $this->webClientHelper->requestFromFile(
+        $this->existentAssetFamily = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR ."successful_brand_reference_entity.json"
+            self::REQUEST_CONTRACT_DIR ."successful_brand_asset_family.json"
         );
     }
 
     /**
-     * @Then /^the PIM returns the label and image properties Brand reference entity$/
+     * @Then /^the PIM returns the label and image properties Brand asset family$/
      */
-    public function thePIMReturnsTheBrandReferenceEntity(): void
+    public function thePIMReturnsTheBrandAssetFamily(): void
     {
         $this->webClientHelper->assertJsonFromFile(
-            $this->existentReferenceEntity,
-            self::REQUEST_CONTRACT_DIR . "successful_brand_reference_entity.json"
+            $this->existentAssetFamily,
+            self::REQUEST_CONTRACT_DIR . "successful_brand_asset_family.json"
         );
     }
 }

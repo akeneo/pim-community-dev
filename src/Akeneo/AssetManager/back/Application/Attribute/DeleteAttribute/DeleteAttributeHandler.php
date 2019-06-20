@@ -10,15 +10,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute;
+namespace Akeneo\AssetManager\Application\Attribute\DeleteAttribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsImageInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsImageInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -26,22 +26,22 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class DeleteAttributeHandler
 {
-    /** @var FindReferenceEntityAttributeAsLabelInterface */
-    private $findReferenceEntityAttributeAsLabel;
+    /** @var FindAssetFamilyAttributeAsLabelInterface */
+    private $findAssetFamilyAttributeAsLabel;
 
-    /** @var FindReferenceEntityAttributeAsImageInterface */
-    private $findReferenceEntityAttributeAsImage;
+    /** @var FindAssetFamilyAttributeAsImageInterface */
+    private $findAssetFamilyAttributeAsImage;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     public function __construct(
-        FindReferenceEntityAttributeAsLabelInterface $findReferenceEntityAttributeAsLabel,
-        FindReferenceEntityAttributeAsImageInterface $findReferenceEntityAttributeAsImage,
+        FindAssetFamilyAttributeAsLabelInterface $findAssetFamilyAttributeAsLabel,
+        FindAssetFamilyAttributeAsImageInterface $findAssetFamilyAttributeAsImage,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->findReferenceEntityAttributeAsLabel = $findReferenceEntityAttributeAsLabel;
-        $this->findReferenceEntityAttributeAsImage = $findReferenceEntityAttributeAsImage;
+        $this->findAssetFamilyAttributeAsLabel = $findAssetFamilyAttributeAsLabel;
+        $this->findAssetFamilyAttributeAsImage = $findAssetFamilyAttributeAsImage;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -50,24 +50,24 @@ class DeleteAttributeHandler
         $attributeIdentifier = AttributeIdentifier::fromString($deleteAttributeCommand->attributeIdentifier);
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
-        $labelReference = $this->findAttributeAsLabel($attribute->getReferenceEntityIdentifier());
+        $labelReference = $this->findAttributeAsLabel($attribute->getAssetFamilyIdentifier());
         if (!$labelReference->isEmpty() && $labelReference->getIdentifier()->equals($attributeIdentifier)) {
             throw new \LogicException(
                 sprintf(
-                    'Attribute "%s" cannot be deleted for the reference entity "%s"  as it is used as attribute as label.',
+                    'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as label.',
                     $attributeIdentifier,
-                    $attribute->getReferenceEntityIdentifier()
+                    $attribute->getAssetFamilyIdentifier()
                 )
             );
         }
 
-        $imageReference = $this->findAttributeAsImage($attribute->getReferenceEntityIdentifier());
+        $imageReference = $this->findAttributeAsImage($attribute->getAssetFamilyIdentifier());
         if (!$imageReference->isEmpty() && $imageReference->getIdentifier()->equals($attributeIdentifier)) {
             throw new \LogicException(
                 sprintf(
-                    'Attribute "%s" cannot be deleted for the reference entity "%s"  as it is used as attribute as image.',
+                    'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as image.',
                     $attributeIdentifier,
-                    $attribute->getReferenceEntityIdentifier()
+                    $attribute->getAssetFamilyIdentifier()
                 )
             );
         }
@@ -75,13 +75,13 @@ class DeleteAttributeHandler
         $this->attributeRepository->deleteByIdentifier($attributeIdentifier);
     }
 
-    private function findAttributeAsLabel(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
+    private function findAttributeAsLabel(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsLabelReference
     {
-        return $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier);
+        return $this->findAssetFamilyAttributeAsLabel->find($assetFamilyIdentifier);
     }
 
-    private function findAttributeAsImage(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference
+    private function findAttributeAsImage(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsImageReference
     {
-        return $this->findReferenceEntityAttributeAsImage->find($referenceEntityIdentifier);
+        return $this->findAssetFamilyAttributeAsImage->find($assetFamilyIdentifier);
     }
 }

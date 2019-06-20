@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordByReferenceEntityAndCodeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\Hal\AddHalDownloadLinkToRecordImages;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetByAssetFamilyAndCodeInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -26,24 +26,24 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @author Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class GetConnectorRecordAction
+class GetConnectorAssetAction
 {
-    /** @var FindConnectorRecordByReferenceEntityAndCodeInterface */
-    private $findConnectorRecord;
+    /** @var FindConnectorAssetByAssetFamilyAndCodeInterface */
+    private $findConnectorAsset;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
-    /** @var AddHalDownloadLinkToRecordImages */
+    /** @var AddHalDownloadLinkToAssetImages */
     private $addHalLinksToImageValues;
 
     public function __construct(
-        FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues
+        FindConnectorAssetByAssetFamilyAndCodeInterface $findConnectorAsset,
+        AssetFamilyExistsInterface $assetFamilyExists,
+        AddHalDownloadLinkToAssetImages $addHalLinksToImageValues
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorRecord = $findConnectorRecord;
+        $this->assetFamilyExists = $assetFamilyExists;
+        $this->findConnectorAsset = $findConnectorAsset;
         $this->addHalLinksToImageValues = $addHalLinksToImageValues;
     }
 
@@ -51,28 +51,28 @@ class GetConnectorRecordAction
      * @throws UnprocessableEntityHttpException
      * @throws NotFoundHttpException
      */
-    public function __invoke(string $referenceEntityIdentifier, string $code): JsonResponse
+    public function __invoke(string $assetFamilyIdentifier, string $code): JsonResponse
     {
         try {
-            $recordCode = RecordCode::fromString($code);
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $assetCode = AssetCode::fromString($code);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        if (false === $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
-        $record = $this->findConnectorRecord->find($referenceEntityIdentifier, $recordCode);
+        $asset = $this->findConnectorAsset->find($assetFamilyIdentifier, $assetCode);
 
-        if (null === $record) {
-            throw new NotFoundHttpException(sprintf('Record "%s" does not exist for the reference entity "%s".', $recordCode, $referenceEntityIdentifier));
+        if (null === $asset) {
+            throw new NotFoundHttpException(sprintf('Asset "%s" does not exist for the asset family "%s".', $assetCode, $assetFamilyIdentifier));
         }
 
-        $normalizedRecord = $record->normalize();
-        $normalizedRecord = current(($this->addHalLinksToImageValues)($referenceEntityIdentifier, [$normalizedRecord]));
+        $normalizedAsset = $asset->normalize();
+        $normalizedAsset = current(($this->addHalLinksToImageValues)($assetFamilyIdentifier, [$normalizedAsset]));
 
-        return new JsonResponse($normalizedRecord);
+        return new JsonResponse($normalizedAsset);
     }
 }

@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsTextarea;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsTextarea;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
 class TextAttributeSpec extends ObjectBehavior
@@ -35,7 +35,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -56,7 +56,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -72,7 +72,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -89,7 +89,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -106,7 +106,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('createText', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -129,7 +129,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
                 'identifier'                 => 'name_designer_test',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
@@ -150,7 +150,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -162,7 +162,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeRegularExpression::fromString('/\w+-[0-9]/')
         )->normalize()->shouldReturn([
                 'identifier'                 => 'name_designer_test',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
@@ -187,7 +187,7 @@ class TextAttributeSpec extends ObjectBehavior
         ]));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'name_designer_test',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Désignation', 'en_US' => 'Name', 'de_DE' => 'Bezeichnung'],
                 'order'                      => 0,
@@ -209,7 +209,7 @@ class TextAttributeSpec extends ObjectBehavior
         $this->setMaxLength(AttributeMaxLength::fromInteger(100));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'name_designer_test',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
@@ -231,7 +231,7 @@ class TextAttributeSpec extends ObjectBehavior
         $this->setIsRequired(AttributeIsRequired::fromBoolean(false));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'name_designer_test',
-                'reference_entity_identifier' => 'designer',
+                'asset_family_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
@@ -252,7 +252,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -275,7 +275,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -297,7 +297,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -317,7 +317,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -339,7 +339,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -361,7 +361,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -378,7 +378,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -396,7 +396,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -414,7 +414,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -436,7 +436,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -453,7 +453,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -471,7 +471,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -488,7 +488,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -508,7 +508,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -526,7 +526,7 @@ class TextAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamilyPermission;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\PermissionDetails;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\PermissionDetails;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
@@ -24,7 +24,7 @@ class GetActionTest extends ControllerIntegrationTestCase
 
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
     /**
@@ -33,7 +33,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     public function it_shows_the_list_of_permissions_for_an_enriched_entity()
     {
         $this->loadFixtures();
-        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntityPermission/show.json');
+        $this->webClientHelper->assertRequest($this->client, 'AssetFamilyPermission/show.json');
     }
 
     /**
@@ -41,12 +41,12 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_shows_an_empty_list_of_permissions()
     {
-        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntityPermission/show_empty.json');
+        $this->webClientHelper->assertRequest($this->client, 'AssetFamilyPermission/show_empty.json');
     }
 
     private function loadFixtures(): void
     {
-        $query = $this->get('akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details');
+        $query = $this->get('akeneoassetmanager.infrastructure.persistence.query.find_asset_family_permissions_details');
         $permission = new PermissionDetails();
         $permission->userGroupIdentifier = 1;
         $permission->userGroupName = 'Catalog Manager';

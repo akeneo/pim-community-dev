@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Permission;
+namespace spec\Akeneo\AssetManager\Domain\Model\Permission;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
 use PhpSpec\ObjectBehavior;
 
 class RightLevelSpec extends ObjectBehavior

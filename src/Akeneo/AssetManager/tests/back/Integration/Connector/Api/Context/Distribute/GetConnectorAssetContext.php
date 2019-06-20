@@ -11,42 +11,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordByReferenceEntityAndCode;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetByAssetFamilyAndCode;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryMediaFileRepository;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class GetConnectorRecordContext implements Context
+class GetConnectorAssetContext implements Context
 {
-    private const REQUEST_CONTRACT_DIR = 'Record/Connector/Distribute/';
+    private const REQUEST_CONTRACT_DIR = 'Asset/Connector/Distribute/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -54,17 +54,17 @@ class GetConnectorRecordContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorRecordByReferenceEntityAndCode */
-    private $findConnectorRecord;
+    /** @var InMemoryFindConnectorAssetByAssetFamilyAndCode */
+    private $findConnectorAsset;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
-
-    /** @var null|Response */
-    private $existentRecord;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var null|Response */
-    private $nonExistentRecord;
+    private $existentAsset;
+
+    /** @var null|Response */
+    private $nonExistentAsset;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
@@ -87,28 +87,28 @@ class GetConnectorRecordContext implements Context
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindConnectorRecordByReferenceEntityAndCode $findConnectorRecord,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        InMemoryFindConnectorAssetByAssetFamilyAndCode $findConnectorAsset,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
         InMemoryFilesystemProviderStub $filesystemProvider
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->findConnectorRecord = $findConnectorRecord;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->findConnectorAsset = $findConnectorAsset;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->mediaFileRepository = $mediaFileRepository;
         $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
-     * @Given /^the ([\S]+) record for the ([\S]+) reference entity$/
+     * @Given /^the ([\S]+) asset for the ([\S]+) asset family$/
      */
-    public function theRecordForTheReferenceEntity(string $referenceCode, string $referenceEntityIdentifier): void
+    public function theAssetForTheAssetFamily(string $referenceCode, string $assetFamilyIdentifier): void
     {
-        $record = new ConnectorRecord(
-            RecordCode::fromString($referenceCode),
+        $asset = new ConnectorAsset(
+            AssetCode::fromString($referenceCode),
             [
                 'label' => [
                     [
@@ -138,122 +138,122 @@ class GetConnectorRecordContext implements Context
                 ]
             ]
         );
-        $this->findConnectorRecord->save(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            RecordCode::fromString($referenceCode),
-            $record
+        $this->findConnectorAsset->save(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AssetCode::fromString($referenceCode),
+            $asset
         );
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             [],
             Image::createEmpty()
         );
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
 
         $this->loadNameAttribute();
         $this->loadCoverImageAttribute();
     }
 
     /**
-     * @When /^the connector requests the ([\S]+) record for the ([\S]+) reference entity$/
+     * @When /^the connector requests the ([\S]+) asset for the ([\S]+) asset family$/
      */
-    public function theConnectorRequestsRecordForReferenceEntity(string $referenceCode, string $referenceEntityIdentifier): void
+    public function theConnectorRequestsAssetForAssetFamily(string $referenceCode, string $assetFamilyIdentifier): void
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->existentRecord = $this->webClientHelper->requestFromFile(
+        $this->existentAsset = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . sprintf("successful_%s_record.json", strtolower($referenceCode))
+            self::REQUEST_CONTRACT_DIR . sprintf("successful_%s_asset.json", strtolower($referenceCode))
         );
     }
 
     /**
-     * @Then /^the PIM returns the ([\S]+) record of the ([\S]+) reference entity$/
+     * @Then /^the PIM returns the ([\S]+) asset of the ([\S]+) asset family$/
      */
-    public function thePimReturnsReferenceEntity(string $referenceCode)
+    public function thePimReturnsAssetFamily(string $referenceCode)
     {
         $this->webClientHelper->assertJsonFromFile(
-            $this->existentRecord,
-            self::REQUEST_CONTRACT_DIR . sprintf("successful_%s_record.json", strtolower($referenceCode))
+            $this->existentAsset,
+            self::REQUEST_CONTRACT_DIR . sprintf("successful_%s_asset.json", strtolower($referenceCode))
         );
     }
 
     /**
-     * @Given /^the ([\S]+) reference entity with some records$/
+     * @Given /^the ([\S]+) asset family with some assets$/
      */
-    public function theReferenceEntityWithSomeRecords(string $referenceEntityIdentifier): void
+    public function theAssetFamilyWithSomeAssets(string $assetFamilyIdentifier): void
     {
-        $referenceEntityIdentifier = strtolower($referenceEntityIdentifier);
+        $assetFamilyIdentifier = strtolower($assetFamilyIdentifier);
         for ($i = 0; $i < 10 ; $i++) {
-            $record = new ConnectorRecord(
-                RecordCode::fromString('record_code_' . $i),
+            $asset = new ConnectorAsset(
+                AssetCode::fromString('asset_code_' . $i),
                 []
             );
-            $this->findConnectorRecord->save(
-                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-                RecordCode::fromString('record_code_' . $i),
-                $record
+            $this->findConnectorAsset->save(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AssetCode::fromString('asset_code_' . $i),
+                $asset
             );
         }
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             [],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @When /^the connector requests for a non-existent record for the ([\S]+) reference entity$/
+     * @When /^the connector requests for a non-existent asset for the ([\S]+) asset family$/
      */
-    public function theConnectorRequestsForANonExistentRecordForTheReferenceEntity(): void
+    public function theConnectorRequestsForANonExistentAssetForTheAssetFamily(): void
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->nonExistentRecord = $this->webClientHelper->requestFromFile($client, self::REQUEST_CONTRACT_DIR . "not_found_record.json");
+        $this->nonExistentAsset = $this->webClientHelper->requestFromFile($client, self::REQUEST_CONTRACT_DIR . "not_found_asset.json");
     }
 
     /**
-     * @Then the PIM notifies the connector about an error indicating that the record does not exist
+     * @Then the PIM notifies the connector about an error indicating that the asset does not exist
      */
-    public function thePIMNotifiesAnErrorIndicatingThatTheRecordDoesNotExist(): void
+    public function thePIMNotifiesAnErrorIndicatingThatTheAssetDoesNotExist(): void
     {
-        $this->webClientHelper->assertJsonFromFile($this->nonExistentRecord, self::REQUEST_CONTRACT_DIR . "not_found_record.json");
+        $this->webClientHelper->assertJsonFromFile($this->nonExistentAsset, self::REQUEST_CONTRACT_DIR . "not_found_asset.json");
     }
 
     /**
-     * @Given some reference entities with some records
+     * @Given some asset families with some assets
      */
-    public function someReferenceEntitiesWithSomeRecords(): void
+    public function someAssetFamiliesWithSomeAssets(): void
     {
         for ($i = 0; $i < 10 ; $i++) {
             for ($j = 0; $j < 10 ; $j++) {
-                $record = new ConnectorRecord(
-                    RecordCode::fromString(sprintf('record_code_%s_%s', $i, $j)),
+                $asset = new ConnectorAsset(
+                    AssetCode::fromString(sprintf('asset_code_%s_%s', $i, $j)),
                     []
                 );
-                $this->findConnectorRecord->save(
-                    ReferenceEntityIdentifier::fromString(sprintf('reference_entity_%s', $i)),
-                    RecordCode::fromString(sprintf('record_code_%s_%s', $i, $j)),
-                    $record
+                $this->findConnectorAsset->save(
+                    AssetFamilyIdentifier::fromString(sprintf('asset_family_%s', $i)),
+                    AssetCode::fromString(sprintf('asset_code_%s_%s', $i, $j)),
+                    $asset
                 );
             }
 
-            $referenceEntity = ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString(sprintf('reference_entity_%s', $i)),
+            $assetFamily = AssetFamily::create(
+                AssetFamilyIdentifier::fromString(sprintf('asset_family_%s', $i)),
                 [],
                 Image::createEmpty()
             );
 
-            $this->referenceEntityRepository->create($referenceEntity);
+            $this->assetFamilyRepository->create($assetFamily);
         }
     }
 
     /**
-     * @Given /^the Kartell record of the Brand reference entity with a media file in an attribute value$/
+     * @Given /^the Kartell asset of the Brand asset family with a media file in an attribute value$/
      */
-    public function theKartellRecordOfTheBrandReferenceEntityWithAMediaFileInAnAttributeValue()
+    public function theKartellAssetOfTheBrandAssetFamilyWithAMediaFileInAnAttributeValue()
     {
         $imageFile = new FileInfo();
         $imageFile->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
@@ -276,7 +276,7 @@ class GetConnectorRecordContext implements Context
         ob_start();
         $this->mediaFileDownloadResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR ."successful_kartell_record_media_file_download.json"
+            self::REQUEST_CONTRACT_DIR ."successful_kartell_asset_media_file_download.json"
         );
 
         $this->downloadedMediaFile = ob_get_clean();
@@ -290,7 +290,7 @@ class GetConnectorRecordContext implements Context
         $this->webClientHelper->assertStreamedResponseFromFile(
             $this->mediaFileDownloadResponse,
             $this->downloadedMediaFile,
-            self::REQUEST_CONTRACT_DIR ."successful_kartell_record_media_file_download.json"
+            self::REQUEST_CONTRACT_DIR ."successful_kartell_asset_media_file_download.json"
         );
     }
 
@@ -322,7 +322,7 @@ class GetConnectorRecordContext implements Context
     {
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
@@ -341,7 +341,7 @@ class GetConnectorRecordContext implements Context
     {
         $image = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'cover_image', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('cover_image'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(3),

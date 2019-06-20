@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Webmozart\Assert\Assert;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class RecordCollectionData implements ValueDataInterface
+class AssetCollectionData implements ValueDataInterface
 {
     /** @var string[] */
-    private $recordCodes;
+    private $assetCodes;
 
-    private function __construct(array $recordCodes)
+    private function __construct(array $assetCodes)
     {
-        Assert::notEmpty($recordCodes, 'Record codes should be a non empty array');
+        Assert::notEmpty($assetCodes, 'Asset codes should be a non empty array');
 
-        $this->recordCodes = $recordCodes;
+        $this->assetCodes = $assetCodes;
     }
 
     /**
@@ -37,26 +37,26 @@ class RecordCollectionData implements ValueDataInterface
      */
     public function normalize()
     {
-        return $this->recordCodes;
+        return $this->assetCodes;
     }
 
     public static function createFromNormalize($normalizedData): ValueDataInterface
     {
-        Assert::allString($normalizedData, 'Each record codes should be a string');
+        Assert::allString($normalizedData, 'Each asset codes should be a string');
 
         return new self($normalizedData);
     }
 
-    public static function fromRecordCodes(array $recordCodes): RecordCollectionData
+    public static function fromAssetCodes(array $assetCodes): AssetCollectionData
     {
         Assert::allIsInstanceOf(
-            $recordCodes,
-            RecordCode::class,
-            sprintf('Each record codes should be an instance of "%s"', RecordCode::class)
+            $assetCodes,
+            AssetCode::class,
+            sprintf('Each asset codes should be an instance of "%s"', AssetCode::class)
         );
 
-        $recordCodesString = array_map('strval', $recordCodes);
+        $assetCodesString = array_map('strval', $assetCodes);
 
-        return new self($recordCodesString);
+        return new self($assetCodesString);
     }
 }

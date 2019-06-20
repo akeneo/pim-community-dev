@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class MinMaxValue extends Constraint
 {
-    public const MESSAGE_SHOULD_BE_A_NUMBER = 'pim_reference_entity.attribute.validation.min_value.should_be_a_number';
-    public const MESSAGE_MIN_CANNOT_BE_GREATER_THAN_MAX = 'pim_reference_entity.attribute.validation.min_value.cannot_be_greater_than_max';
+    public const MESSAGE_SHOULD_BE_A_NUMBER = 'pim_asset_manager.attribute.validation.min_value.should_be_a_number';
+    public const MESSAGE_MIN_CANNOT_BE_GREATER_THAN_MAX = 'pim_asset_manager.attribute.validation.min_value.cannot_be_greater_than_max';
 
     public function getTargets()
     {

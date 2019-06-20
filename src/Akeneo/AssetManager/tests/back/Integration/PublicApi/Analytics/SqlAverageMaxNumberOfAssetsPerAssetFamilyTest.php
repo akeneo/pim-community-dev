@@ -11,74 +11,74 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics;
+namespace Akeneo\AssetManager\Integration\PublicApi\Analytics;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfRecordsPerReferenceEntity;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlAverageMaxNumberOfRecordsPerReferenceEntityTest extends SqlIntegrationTestCase
+class SqlAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegrationTestCase
 {
-    /** @var SqlAverageMaxNumberOfRecordsPerReferenceEntity */
-    private $averageMaxNumberOfRecordsPerReferenceEntity;
+    /** @var SqlAverageMaxNumberOfAssetsPerAssetFamily */
+    private $averageMaxNumberOfAssetsPerAssetFamily;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->averageMaxNumberOfRecordsPerReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity');
+        $this->averageMaxNumberOfAssetsPerAssetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family');
         $this->resetDB();
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
      * @test
      */
-    public function it_returns_the_average_and_max_number_of_records_per_reference_entity()
+    public function it_returns_the_average_and_max_number_of_assets_per_asset_family()
     {
-        $this->loadRecordsForReferenceEntity(2);
-        $this->loadRecordsForReferenceEntity(4);
-        $this->loadRecordsForReferenceEntity(0);
+        $this->loadAssetsForAssetFamily(2);
+        $this->loadAssetsForAssetFamily(4);
+        $this->loadAssetsForAssetFamily(0);
 
-        $volume = $this->averageMaxNumberOfRecordsPerReferenceEntity->fetch();
+        $volume = $this->averageMaxNumberOfAssetsPerAssetFamily->fetch();
 
         $this->assertEquals('4', $volume->getMaxVolume());
         $this->assertEquals('2', $volume->getAverageVolume());
     }
 
-    private function loadRecordsForReferenceEntity(int $numberOfRecordsPerReferenceEntitiestoLoad): void
+    private function loadAssetsForAssetFamily(int $numberOfAssetsPerAssetFamiliestoLoad): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($this->getRandomIdentifier());
-        $referenceEntityRepository->create(ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($this->getRandomIdentifier());
+        $assetFamilyRepository->create(AssetFamily::create(
+            $assetFamilyIdentifier,
             [],
             Image::createEmpty()
         ));
 
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
 
-        for ($i = 0; $i < $numberOfRecordsPerReferenceEntitiestoLoad; $i++) {
-            $recordRepository->create(
-                Record::create(
-                    RecordIdentifier::fromString(sprintf('%s', $this->getRandomIdentifier())),
-                    $referenceEntityIdentifier,
-                    RecordCode::fromString(sprintf('%s_%d', $i, $referenceEntityIdentifier->normalize())),
+        for ($i = 0; $i < $numberOfAssetsPerAssetFamiliestoLoad; $i++) {
+            $assetRepository->create(
+                Asset::create(
+                    AssetIdentifier::fromString(sprintf('%s', $this->getRandomIdentifier())),
+                    $assetFamilyIdentifier,
+                    AssetCode::fromString(sprintf('%s_%d', $i, $assetFamilyIdentifier->normalize())),
                     ValueCollection::fromValues([])
                 )
             );

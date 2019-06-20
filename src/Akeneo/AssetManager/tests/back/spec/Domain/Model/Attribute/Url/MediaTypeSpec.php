@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute\Url;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute\Url;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
 use PhpSpec\ObjectBehavior;
 
 

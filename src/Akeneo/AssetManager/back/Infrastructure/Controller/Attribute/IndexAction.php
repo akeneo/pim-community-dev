@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Controller\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -31,21 +31,21 @@ class IndexAction
     /** @var FindAttributesDetailsInterface */
     private $findAttributesDetails;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     public function __construct(
         FindAttributesDetailsInterface $findAttributesDetails,
-        ReferenceEntityExistsInterface $referenceEntityExists
+        AssetFamilyExistsInterface $assetFamilyExists
     ) {
         $this->findAttributesDetails = $findAttributesDetails;
-        $this->referenceEntityExists = $referenceEntityExists;
+        $this->assetFamilyExists = $assetFamilyExists;
     }
 
-    public function __invoke(string $referenceEntityIdentifier): JsonResponse
+    public function __invoke(string $assetFamilyIdentifier): JsonResponse
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $attributesDetails = $this->findAttributesDetails->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
+        $attributesDetails = $this->findAttributesDetails->find($assetFamilyIdentifier);
         $normalizedAttributesDetails = $this->normalizeAttributesDetails($attributesDetails);
 
         return new JsonResponse($normalizedAttributesDetails);
@@ -54,19 +54,19 @@ class IndexAction
     /**
      * @throws NotFoundHttpException
      */
-    private function getReferenceEntityIdentifierOr404(string $identifier): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifierOr404(string $identifier): AssetFamilyIdentifier
     {
         try {
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($identifier);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($identifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        if (!$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
+        if (!$this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
             throw new NotFoundHttpException();
         }
 
-        return $referenceEntityIdentifier;
+        return $assetFamilyIdentifier;
     }
 
     /**

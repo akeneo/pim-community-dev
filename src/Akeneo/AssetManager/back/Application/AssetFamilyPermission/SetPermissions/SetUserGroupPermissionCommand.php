@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions;
+namespace Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions;
 
 /**
  * This command represent a permission set for a user group

@@ -11,55 +11,55 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryGetAttributeIdentifier;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateOrUpdateRecordContext implements Context
+class CreateOrUpdateAssetContext implements Context
 {
-    private const REQUEST_CONTRACT_DIR = 'Record/Connector/Collect/';
+    private const REQUEST_CONTRACT_DIR = 'Asset/Connector/Collect/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -67,8 +67,8 @@ class CreateOrUpdateRecordContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var null|Response */
     private $pimResponse;
@@ -76,8 +76,8 @@ class CreateOrUpdateRecordContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
     /** @var null|string */
     private $requestContract;
@@ -106,9 +106,9 @@ class CreateOrUpdateRecordContext implements Context
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        RecordRepositoryInterface $recordRepository,
+        AssetRepositoryInterface $assetRepository,
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
@@ -118,9 +118,9 @@ class CreateOrUpdateRecordContext implements Context
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
         $this->channelExists = $channelExists;
         $this->activatedLocales = $activatedLocales;
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
@@ -130,11 +130,11 @@ class CreateOrUpdateRecordContext implements Context
     }
 
     /**
-     * @Given a record of the Brand reference entity existing in the ERP but not in the PIM
+     * @Given a asset of the Brand asset family existing in the ERP but not in the PIM
      */
-    public function aRecordOfTheBrandReferenceEntityExistingInTheErpButNotInThePim()
+    public function aAssetOfTheBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->requestContract = 'successful_kartell_record_creation.json';
+        $this->requestContract = 'successful_kartell_asset_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
@@ -142,13 +142,13 @@ class CreateOrUpdateRecordContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
         $this->loadDescriptionAttribute();
-        $this->loadBrandReferenceEntity();
+        $this->loadBrandAssetFamily();
     }
 
     /**
-     * @When the connector collects this record from the ERP to synchronize it with the PIM
+     * @When the connector collects this asset from the ERP to synchronize it with the PIM
      */
-    public function theConnectorCollectsThisRecordFromTheErpToSynchronizeItWithThePim()
+    public function theConnectorCollectsThisAssetFromTheErpToSynchronizeItWithThePim()
     {
         Assert::assertNotNull($this->requestContract, 'The request contract must be defined first.');
 
@@ -160,30 +160,30 @@ class CreateOrUpdateRecordContext implements Context
     }
 
     /**
-     * @Then the record is created in the PIM with the information from the ERP
+     * @Then the asset is created in the PIM with the information from the ERP
      */
-    public function theRecordIsCreatedInThePimWithTheInformationFromTheErp()
+    public function theAssetIsCreatedInThePimWithTheInformationFromTheErp()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_kartell_record_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_kartell_asset_creation.json'
         );
 
-        $kartellRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('kartell')
+        $kartellAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('brand'),
+            AssetCode::fromString('kartell')
         );
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
 
-        $expectedRecord = Record::create(
-            $kartellRecord->getIdentifier(),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('kartell'),
+        $expectedAsset = Asset::create(
+            $kartellAsset->getIdentifier(),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('kartell'),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
@@ -212,21 +212,21 @@ class CreateOrUpdateRecordContext implements Context
             ])
         );
 
-        Assert::assertEquals($expectedRecord, $kartellRecord);
+        Assert::assertEquals($expectedAsset, $kartellAsset);
     }
 
     /**
-     * @Given a record of the Brand reference entity existing in the ERP and the PIM with different information
+     * @Given a asset of the Brand asset family existing in the ERP and the PIM with different information
      */
-    public function aRecordOfTheBrandReferenceEntityExistingInTheErpAndThePimWithDifferentInformation()
+    public function aAssetOfTheBrandAssetFamilyExistingInTheErpAndThePimWithDifferentInformation()
     {
-        $this->requestContract = 'successful_kartell_record_update.json';
+        $this->requestContract = 'successful_kartell_asset_update.json';
 
-        $this->loadBrandReferenceEntity();
+        $this->loadBrandAssetFamily();
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
         $this->loadCoverImageAttribute();
-        $this->loadBrandKartellRecord();
+        $this->loadBrandKartellAsset();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
@@ -242,27 +242,27 @@ class CreateOrUpdateRecordContext implements Context
     }
 
     /**
-     * @Then the record is correctly synchronized in the PIM with the information from the ERP
+     * @Then the asset is correctly synchronized in the PIM with the information from the ERP
      */
-    public function theRecordIsCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
+    public function theAssetIsCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_kartell_record_update.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_kartell_asset_update.json'
         );
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $kartellRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            RecordCode::fromString('kartell')
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $kartellAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            $assetFamilyIdentifier,
+            AssetCode::fromString('kartell')
         );
 
-        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
 
@@ -278,10 +278,10 @@ class CreateOrUpdateRecordContext implements Context
             ->setOriginalFilename('kartell.jpg')
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
 
-        $expectedKartellRecord = Record::create(
-            RecordIdentifier::fromString('brand_kartell_fingerprint'),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('kartell'),
+        $expectedKartellAsset = Asset::create(
+            AssetIdentifier::fromString('brand_kartell_fingerprint'),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('kartell'),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
@@ -322,38 +322,38 @@ class CreateOrUpdateRecordContext implements Context
             ])
         );
 
-        Assert::assertEquals($expectedKartellRecord, $kartellRecord);
+        Assert::assertEquals($expectedKartellAsset, $kartellAsset);
     }
 
     /**
-     * @When the connector collects a record that has an invalid format
+     * @When the connector collects a asset that has an invalid format
      */
-    public function theConnectorCollectsARecordThatHasAnInvalidFormat()
+    public function theConnectorCollectsAAssetThatHasAnInvalidFormat()
     {
         $this->loadNameAttribute();
         $client = $this->clientFactory->logIn('julia');
 
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_format.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_asset_for_invalid_format.json'
         );
     }
 
     /**
-     * @Then the PIM notifies the connector about an error indicating that the record has an invalid format
+     * @Then the PIM notifies the connector about an error indicating that the asset has an invalid format
      */
-    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheRecordHasAnInvalidFormat()
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheAssetHasAnInvalidFormat()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_format.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_asset_for_invalid_format.json'
         );
     }
 
     /**
-     * @When the connector collects a record whose data does not comply with the business rules
+     * @When the connector collects a asset whose data does not comply with the business rules
      */
-    public function theConnectorCollectsARecordWhoseDataDoesNotComplyWithTheBusinessRules()
+    public function theConnectorCollectsAAssetWhoseDataDoesNotComplyWithTheBusinessRules()
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['fr_FR', 'en_US']);
@@ -364,27 +364,27 @@ class CreateOrUpdateRecordContext implements Context
 
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_data.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_asset_for_invalid_data.json'
         );
     }
 
     /**
-     * @Then the PIM notifies the connector about an error indicating that the record has data that does not comply with the business rules
+     * @Then the PIM notifies the connector about an error indicating that the asset has data that does not comply with the business rules
      */
-    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheRecordHasDataThatDoesNotComplyWithTheBusinessRules()
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheAssetHasDataThatDoesNotComplyWithTheBusinessRules()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_data.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_asset_for_invalid_data.json'
         );
     }
 
     /**
-     * @Given some records of the Brand reference entity existing in the ERP but not in the PIM
+     * @Given some assets of the Brand asset family existing in the ERP but not in the PIM
      */
-    public function someRecordsOfTheBrandReferenceEntityExistingInTheErpButNotInThePim()
+    public function someAssetsOfTheBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->loadBrandReferenceEntity();
+        $this->loadBrandAssetFamily();
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
@@ -394,51 +394,51 @@ class CreateOrUpdateRecordContext implements Context
     }
 
     /**
-     * @Given some records of the Brand reference entity existing in the ERP and in the PIM but with different information
+     * @Given some assets of the Brand asset family existing in the ERP and in the PIM but with different information
      */
-    public function someRecordsOfTheBrandReferenceEntityExistingInTheErpAndInThePimButWithDifferentInformation()
+    public function someAssetsOfTheBrandAssetFamilyExistingInTheErpAndInThePimButWithDifferentInformation()
     {
-        $this->loadBrandKartellRecord();
-        $this->loadBrandLexonRecord();
+        $this->loadBrandKartellAsset();
+        $this->loadBrandLexonAsset();
     }
 
     /**
-     * @When the connector collects these records from the ERP to synchronize them with the PIM
+     * @When the connector collects these assets from the ERP to synchronize them with the PIM
      */
-    public function theConnectorCollectsTheseRecordsFromTheErpToSynchronizeThemWithThePim()
+    public function theConnectorCollectsTheseAssetsFromTheErpToSynchronizeThemWithThePim()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_synchronization.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_synchronization.json'
         );
     }
 
     /**
-     * @Then the records that existed only in the ERP are correctly created in the PIM
+     * @Then the assets that existed only in the ERP are correctly created in the PIM
      */
-    public function theRecordsThatExistedOnlyInTheErpAreCorrectlyCreatedInThePim()
+    public function theAssetsThatExistedOnlyInTheErpAreCorrectlyCreatedInThePim()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_synchronization.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_synchronization.json'
         );
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $fatboyRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            RecordCode::fromString('fatboy')
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $fatboyAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            $assetFamilyIdentifier,
+            AssetCode::fromString('fatboy')
         );
 
-        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
 
-        $expectedFatboyRecord = Record::create(
-            $fatboyRecord->getIdentifier(),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('fatboy'),
+        $expectedFatboyAsset = Asset::create(
+            $fatboyAsset->getIdentifier(),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('fatboy'),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
@@ -455,21 +455,21 @@ class CreateOrUpdateRecordContext implements Context
             ])
         );
 
-        Assert::assertEquals($expectedFatboyRecord, $fatboyRecord);
+        Assert::assertEquals($expectedFatboyAsset, $fatboyAsset);
     }
 
     /**
-     * @Then the records existing both in the ERP and the PIM are correctly synchronized in the PIM with the information from the ERP
+     * @Then the assets existing both in the ERP and the PIM are correctly synchronized in the PIM with the information from the ERP
      */
-    public function theRecordsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
+    public function theAssetsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
 
@@ -478,10 +478,10 @@ class CreateOrUpdateRecordContext implements Context
             ->setOriginalFilename('kartell.jpg')
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
 
-        $expectedKartellRecord = Record::create(
-            RecordIdentifier::fromString('brand_kartell_fingerprint'),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('kartell'),
+        $expectedKartellAsset = Asset::create(
+            AssetIdentifier::fromString('brand_kartell_fingerprint'),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('kartell'),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
@@ -516,17 +516,17 @@ class CreateOrUpdateRecordContext implements Context
             ])
         );
 
-        $kartellRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('kartell')
+        $kartellAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('brand'),
+            AssetCode::fromString('kartell')
         );
 
-        Assert::assertEquals($expectedKartellRecord, $kartellRecord);
+        Assert::assertEquals($expectedKartellAsset, $kartellAsset);
 
-        $expectedLexonRecord = Record::create(
-            RecordIdentifier::fromString('brand_lexon_fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('lexon'),
+        $expectedLexonAsset = Asset::create(
+            AssetIdentifier::fromString('brand_lexon_fingerprint'),
+            AssetFamilyIdentifier::fromString('brand'),
+            AssetCode::fromString('lexon'),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
@@ -543,74 +543,74 @@ class CreateOrUpdateRecordContext implements Context
             ])
         );
 
-        $lexonRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('lexon')
+        $lexonAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('brand'),
+            AssetCode::fromString('lexon')
         );
 
-        Assert::assertEquals($expectedLexonRecord, $lexonRecord);
+        Assert::assertEquals($expectedLexonAsset, $lexonAsset);
     }
 
     /**
-     * @When the connector collects records from the ERP among which some records have data that do not comply with the business rules
+     * @When the connector collects assets from the ERP among which some assets have data that do not comply with the business rules
      */
-    public function theConnectorCollectsRecordsFromTheErpAmongWhichSomeRecordsHaveDataThatDoNotComplyWithTheBusinessRules()
+    public function theConnectorCollectsAssetsFromTheErpAmongWhichSomeAssetsHaveDataThatDoNotComplyWithTheBusinessRules()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'collect_brand_records_with_unprocessable_records.json'
+            self::REQUEST_CONTRACT_DIR . 'collect_brand_assets_with_unprocessable_assets.json'
         );
     }
 
     /**
-     * @Then the PIM notifies the connector which records have data that do not comply with the business rules and what are the errors
+     * @Then the PIM notifies the connector which assets have data that do not comply with the business rules and what are the errors
      */
-    public function thePimNotifiesTheConnectorWhichRecordsHaveDataThatDoNotComplyWithTheBusinessRulesAndWhatAreTheErrors()
+    public function thePimNotifiesTheConnectorWhichAssetsHaveDataThatDoNotComplyWithTheBusinessRulesAndWhatAreTheErrors()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'collect_brand_records_with_unprocessable_records.json'
+            self::REQUEST_CONTRACT_DIR . 'collect_brand_assets_with_unprocessable_assets.json'
         );
     }
 
     /**
-     * @When the connector collects a number of records exceeding the maximum number of records in one request
+     * @When the connector collects a number of assets exceeding the maximum number of assets in one request
      */
-    public function theConnectorCollectsANumberOfRecordsExceedingTheMaximumNumberOfRecordsInOneRequest()
+    public function theConnectorCollectsANumberOfAssetsExceedingTheMaximumNumberOfAssetsInOneRequest()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'too_many_records_to_process.json'
+            self::REQUEST_CONTRACT_DIR . 'too_many_assets_to_process.json'
         );
     }
 
     /**
-     * @Then the PIM notifies the connector that there were too many records to collect in one request
+     * @Then the PIM notifies the connector that there were too many assets to collect in one request
      */
-    public function thePimNotifiesTheConnectorThatThereWereTooManyRecordsToCollectInOneRequest()
+    public function thePimNotifiesTheConnectorThatThereWereTooManyAssetsToCollectInOneRequest()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'too_many_records_to_process.json'
+            self::REQUEST_CONTRACT_DIR . 'too_many_assets_to_process.json'
         );
     }
 
     /**
-     * @Given /^the Kartell record of the Brand reference entity without any media file$/
+     * @Given /^the Kartell asset of the Brand asset family without any media file$/
      */
-    public function theKartellRecordOfTheBrandReferenceEntityWithoutAnyMediaFile()
+    public function theKartellAssetOfTheBrandAssetFamilyWithoutAnyMediaFile()
     {
-        $this->loadBrandReferenceEntity();
+        $this->loadBrandAssetFamily();
         $this->loadCoverImageAttribute();
-        $this->loadBrandKartellRecord();
+        $this->loadBrandKartellAsset();
     }
 
     /**
-     * @When /^the connector collects a media file for the Kartell record from the DAM to synchronize it with the PIM$/
+     * @When /^the connector collects a media file for the Kartell asset from the DAM to synchronize it with the PIM$/
      */
-    public function theConnectorCollectsAMediaFileForTheKartellRecordFromTheDAMToSynchronizeItWithThePIM()
+    public function theConnectorCollectsAMediaFileForTheKartellAssetFromTheDAMToSynchronizeItWithThePIM()
     {
         $client = $this->clientFactory->logIn('julia');
 
@@ -621,9 +621,9 @@ class CreateOrUpdateRecordContext implements Context
     }
 
     /**
-     * @Then /^the Kartell record is correctly synchronized with the uploaded media file$/
+     * @Then /^the Kartell asset is correctly synchronized with the uploaded media file$/
      */
-    public function theKartellRecordIsCorrectlySynchronizedWithTheUploadedMediaFile()
+    public function theKartellAssetIsCorrectlySynchronizedWithTheUploadedMediaFile()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->uploadImageResponse,
@@ -631,22 +631,22 @@ class CreateOrUpdateRecordContext implements Context
         );
     }
 
-    private function loadBrandReferenceEntity(): void
+    private function loadBrandAssetFamily(): void
     {
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             ['en_US' => 'Brand'],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     private function loadDescriptionAttribute(): void
     {
         $name = TextAttribute::createText(
             AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description']),
             AttributeOrder::fromInteger(3),
@@ -665,7 +665,7 @@ class CreateOrUpdateRecordContext implements Context
     {
         $name = TextAttribute::createText(
             AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(4),
@@ -684,7 +684,7 @@ class CreateOrUpdateRecordContext implements Context
     {
         $image = ImageAttribute::create(
             AttributeIdentifier::create('brand', 'cover_image', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('cover_image'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(5),
@@ -698,27 +698,27 @@ class CreateOrUpdateRecordContext implements Context
         $this->attributeRepository->create($image);
     }
 
-    private function loadBrandKartellRecord(): void
+    private function loadBrandKartellAsset(): void
     {
         $mainImageInfo = new FileInfo();
         $mainImageInfo
             ->setOriginalFilename('kartell.jpg')
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
 
-        $record = Record::create(
-            RecordIdentifier::fromString('brand_kartell_fingerprint'),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('kartell'),
+        $asset = Asset::create(
+            AssetIdentifier::fromString('brand_kartell_fingerprint'),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('kartell'),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
@@ -747,21 +747,21 @@ class CreateOrUpdateRecordContext implements Context
             ])
         );
 
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
     }
 
-    private function loadBrandLexonRecord(): void
+    private function loadBrandLexonAsset(): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
 
-        $record = Record::create(
-            RecordIdentifier::fromString('brand_lexon_fingerprint'),
-            $referenceEntityIdentifier,
-            RecordCode::fromString('lexon'),
+        $asset = Asset::create(
+            AssetIdentifier::fromString('brand_lexon_fingerprint'),
+            $assetFamilyIdentifier,
+            AssetCode::fromString('lexon'),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
@@ -784,6 +784,6 @@ class CreateOrUpdateRecordContext implements Context
             ])
         );
 
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
     }
 }

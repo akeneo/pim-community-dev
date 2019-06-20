@@ -1,41 +1,41 @@
 import * as React from 'react';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
+import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 const router = require('pim/router');
 
 export default ({
-  referenceEntity,
+  assetFamily,
   locale,
   isLoading = false,
-  onRedirectToReferenceEntity,
+  onRedirectToAssetFamily,
 }: {
-  referenceEntity: ReferenceEntity;
+  assetFamily: AssetFamily;
   locale: string;
   isLoading?: boolean;
   position: number;
 } & {
-  onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => void;
+  onRedirectToAssetFamily: (assetFamily: AssetFamily) => void;
 }) => {
   const path =
-    '' !== referenceEntity.getIdentifier().stringValue()
-      ? `#${router.generate('akeneo_reference_entities_reference_entity_edit', {
-          identifier: referenceEntity.getIdentifier().stringValue(),
-          tab: 'record',
+    '' !== assetFamily.getIdentifier().stringValue()
+      ? `#${router.generate('akeneo_asset_manager_asset_family_edit', {
+          identifier: assetFamily.getIdentifier().stringValue(),
+          tab: 'asset',
         })}`
       : '';
 
   return (
     <a
       href={path}
-      title={referenceEntity.getLabel(locale)}
+      title={assetFamily.getLabel(locale)}
       className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${
         isLoading ? 'AknLoadingPlaceHolder' : ''
       }`}
-      data-identifier={referenceEntity.getIdentifier().stringValue()}
+      data-identifier={assetFamily.getIdentifier().stringValue()}
       onClick={event => {
         event.preventDefault();
 
-        onRedirectToReferenceEntity(referenceEntity);
+        onRedirectToAssetFamily(assetFamily);
 
         return false;
       }}
@@ -43,11 +43,11 @@ export default ({
       <span
         className="AknGrid-fullImage"
         style={{
-          backgroundImage: `url("${getImageShowUrl(referenceEntity.getImage(), 'thumbnail')}")`,
+          backgroundImage: `url("${getImageShowUrl(assetFamily.getImage(), 'thumbnail')}")`,
         }}
       />
-      <span className="AknGrid-title">{referenceEntity.getLabel(locale)}</span>
-      <span className="AknGrid-subTitle">{referenceEntity.getIdentifier().stringValue()}</span>
+      <span className="AknGrid-title">{assetFamily.getLabel(locale)}</span>
+      <span className="AknGrid-subTitle">{assetFamily.getIdentifier().stringValue()}</span>
       <span className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox" />
       <span className="AknGrid-bodyCell AknGrid-bodyCell--actions">
         <div className="AknButtonList AknButtonList--right AknButtonList--expanded" />

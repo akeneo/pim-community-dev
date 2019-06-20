@@ -1,13 +1,13 @@
-akeneo_referenceentity:
+akeneo_assetmanager:
   acl_group:
-    reference_entity: Entitats de referència
+    asset_family: Entitats de referència
   acl:
-    reference_entity:
+    asset_family:
       create: Crear una entitat
       edit: Editar les propietats d'entitat
       delete: Suprimir una entitat
       manage_permission: Gestionar permisos d'entitat de referència
-    record:
+    asset:
       create: Crear registre
       edit: Editar els registres
       delete: Suprimeix un registre
@@ -21,6 +21,6 @@ akeneo_referenceentity:
       delete: Elimina una opció
 pim_analytics:
   info_type:
-    nb_reference_entities: Nombre d'entitats de referència
-    max_number_of_records_per_reference_entity: Nombre màxim de registres per entitat de referència
-    max_number_of_attributes_per_reference_entity: Nombre màxim d'atributs per entitat de referència
+    nb_asset_families: Nombre d'entitats de referència
+    max_number_of_assets_per_asset_family: Nombre màxim de registres per entitat de referència
+    max_number_of_attributes_per_asset_family: Nombre màxim d'atributs per entitat de referència

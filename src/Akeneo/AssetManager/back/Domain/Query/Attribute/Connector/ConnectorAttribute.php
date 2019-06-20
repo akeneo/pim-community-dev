@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector;
+namespace Akeneo\AssetManager\Domain\Query\Attribute\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
 /**
  * @author    Tamara Robichet <elodie.raposo@akeneo.com>
@@ -27,8 +27,8 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 class ConnectorAttribute
 {
     private const ATTRIBUTE_TYPES = [
-        'record' => 'reference_entity_single_link',
-        'record_collection' => 'reference_entity_multiple_links',
+        'asset' => 'asset_family_single_link',
+        'asset_collection' => 'asset_family_multiple_links',
         'option' => 'single_option',
         'option_collection' => 'multiple_options'
     ];
@@ -36,7 +36,7 @@ class ConnectorAttribute
     private const ATTRIBUTE_NAMES = [
         'max_length' => 'max_characters',
         'regular_expression' => 'validation_regexp',
-        'record_type' => 'reference_entity_code'
+        'asset_type' => 'asset_family_code'
     ];
 
     /** @var AttributeIdentifier */

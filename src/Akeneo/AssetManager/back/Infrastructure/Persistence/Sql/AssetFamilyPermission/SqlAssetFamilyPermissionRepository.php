@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupPermission;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
 
-class SqlReferenceEntityPermissionRepository implements ReferenceEntityPermissionRepositoryInterface
+class SqlAssetFamilyPermissionRepository implements AssetFamilyPermissionRepositoryInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -24,65 +24,65 @@ class SqlReferenceEntityPermissionRepository implements ReferenceEntityPermissio
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function save(ReferenceEntityPermission $referenceEntityPermission): void
+    public function save(AssetFamilyPermission $assetFamilyPermission): void
     {
-        $userPermissions = $referenceEntityPermission->getPermissions();
-        $referenceEntityIdentifier = $referenceEntityPermission->getReferenceEntityIdentifier()->normalize();
+        $userPermissions = $assetFamilyPermission->getPermissions();
+        $assetFamilyIdentifier = $assetFamilyPermission->getAssetFamilyIdentifier()->normalize();
 
         $normalizedPermissions = [];
         foreach ($userPermissions as $userPermission) {
             $normalizedPermission = $userPermission->normalize();
-            $normalizedPermission['reference_entity_identifier'] = $referenceEntityIdentifier;
+            $normalizedPermission['asset_family_identifier'] = $assetFamilyIdentifier;
 
             $normalizedPermissions[] = $normalizedPermission;
         }
 
-        $this->sqlConnection->transactional(function (Connection $connection) use ($normalizedPermissions, $referenceEntityIdentifier) {
+        $this->sqlConnection->transactional(function (Connection $connection) use ($normalizedPermissions, $assetFamilyIdentifier) {
             $deleteSql = <<<SQL
-                DELETE FROM akeneo_reference_entity_reference_entity_permissions
-                WHERE reference_entity_identifier = :reference_entity_identifier;
+                DELETE FROM akeneo_asset_manager_asset_family_permissions
+                WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
             $connection->executeUpdate(
                 $deleteSql,
                 [
-                    'reference_entity_identifier' => $referenceEntityIdentifier
+                    'asset_family_identifier' => $assetFamilyIdentifier
                 ]
             );
 
             foreach ($normalizedPermissions as $normalizedPermission) {
                 $insertSql = <<<SQL
-                    INSERT INTO akeneo_reference_entity_reference_entity_permissions
-                        (reference_entity_identifier, user_group_identifier, right_level)
+                    INSERT INTO akeneo_asset_manager_asset_family_permissions
+                        (asset_family_identifier, user_group_identifier, right_level)
                     VALUES 
-                        (:reference_entity_identifier, :user_group_identifier, :right_level);
+                        (:asset_family_identifier, :user_group_identifier, :right_level);
 SQL;
                 $affectedRows = $this->sqlConnection->executeUpdate(
                     $insertSql,
                     $normalizedPermission
                 );
                 if ($affectedRows === 0) {
-                    throw new \RuntimeException('Expected to create reference entity permissions, but none were inserted.');
+                    throw new \RuntimeException('Expected to create asset family permissions, but none were inserted.');
                 }
             }
         });
     }
 
-    public function getByReferenceEntityIdentifier(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
-    ): ReferenceEntityPermission {
+    public function getByAssetFamilyIdentifier(
+        AssetFamilyIdentifier $assetFamilyIdentifier
+    ): AssetFamilyPermission {
         $fetch = <<<SQL
-        SELECT reference_entity_identifier, user_group_identifier, right_level
-        FROM akeneo_reference_entity_reference_entity_permissions
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        SELECT asset_family_identifier, user_group_identifier, right_level
+        FROM akeneo_asset_manager_asset_family_permissions
+        WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
-            ['reference_entity_identifier' => (string) $referenceEntityIdentifier]
+            ['asset_family_identifier' => (string) $assetFamilyIdentifier]
         );
 
         $userGroupPermissions = $this->hydrateUserGroupPermissions($statement);
 
-        return ReferenceEntityPermission::create($referenceEntityIdentifier, $userGroupPermissions);
+        return AssetFamilyPermission::create($assetFamilyIdentifier, $userGroupPermissions);
     }
 
     /**

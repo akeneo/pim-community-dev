@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\JsonSchema;
+namespace Akeneo\AssetManager\Integration\Connector\Api\JsonSchema;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class RecordValidatorTest extends SqlIntegrationTestCase
+class AssetValidatorTest extends SqlIntegrationTestCase
 {
-    /** @var RecordValidator */
-    private $recordValidator;
+    /** @var AssetValidator */
+    private $assetValidator;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var int */
     private $attributeOrder;
@@ -38,9 +38,9 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->recordValidator = $this->get('akeneo_referenceentity.infrastructure.connector.api.record_validator');
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $this->assetValidator = $this->get('akeneo_assetmanager.infrastructure.connector.api.asset_validator');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
+        $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $this->attributeOrder = 2;
 
         $this->resetDB();
@@ -50,19 +50,19 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     private function loadFixtures(): void
     {
         $this->fixturesLoader
-            ->referenceEntity('country')
+            ->assetFamily('country')
             ->load();
 
         $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->load();
 
         $this->fixturesLoader
-            ->referenceEntity('brand')
+            ->assetFamily('brand')
             ->withAttributes([
                 'long_description',     // text
-                'country',              // record
-                'designers',            // record collection
+                'country',              // asset
+                'designers',            // asset collection
                 'main_image',           // image
                 'main_material',        // option
                 'materials',            // option collection
@@ -75,9 +75,9 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_if_the_record_structure_is_valid()
+    public function it_returns_an_empty_array_if_the_asset_structure_is_valid()
     {
-        $record = [
+        $asset = [
             'code' => 'kartell',
             'values' => [
                 'label' => [
@@ -160,7 +160,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             ],
         ];
 
-        $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
+        $errors = $this->assetValidator->validate(AssetFamilyIdentifier::fromString('brand'), $asset);
 
         $this->assertSame([], $errors);
     }
@@ -168,9 +168,9 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_all_the_validation_errors_of_the_record_values()
+    public function it_returns_all_the_validation_errors_of_the_asset_values()
     {
-        $record = [
+        $asset = [
             'code' => 'kartell',
             'values' => [
                 'label' => [
@@ -245,7 +245,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             ],
         ];
 
-        $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
+        $errors = $this->assetValidator->validate(AssetFamilyIdentifier::fromString('brand'), $asset);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
         $this->assertCount(8, $errors);
@@ -312,7 +312,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
      */
     public function it_does_not_validate_values_if_the_main_structure_is_invalid()
     {
-        $record = [
+        $asset = [
             'values' => [
                 'foo' => 'bar',
                 'description' => [
@@ -323,7 +323,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                 ],
             ],
         ];
-        $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
+        $errors = $this->assetValidator->validate(AssetFamilyIdentifier::fromString('brand'), $asset);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
         $this->assertCount(2, $errors);
@@ -345,6 +345,6 @@ class RecordValidatorTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 }

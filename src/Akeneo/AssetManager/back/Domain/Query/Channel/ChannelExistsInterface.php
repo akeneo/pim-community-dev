@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Channel;
+namespace Akeneo\AssetManager\Domain\Query\Channel;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 
 /**
  * Determine if a channel exists.

@@ -2,62 +2,62 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record\RefreshRecords;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset\RefreshAssets;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\FindAllAssetIdentifiers;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class FindAllRecordIdentifiersTest extends SqlIntegrationTestCase
+class FindAllAssetIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var FindAllRecordIdentifiers */
-    private $allRecordIdentifiers;
+    /** @var FindAllAssetIdentifiers */
+    private $allAssetIdentifiers;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->allRecordIdentifiers = $this->get('akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers');
+        $this->allAssetIdentifiers = $this->get('akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers');
         $this->resetDB();
     }
 
     /**
      * @test
      */
-    public function it_returns_no_record_identifiers(): void
+    public function it_returns_no_asset_identifiers(): void
     {
-        $this->assertEmpty(iterator_to_array($this->allRecordIdentifiers->fetch()));
+        $this->assertEmpty(iterator_to_array($this->allAssetIdentifiers->fetch()));
     }
 
     /**
      * @test
      */
-    public function it_returns_all_record_identifiers(): void
+    public function it_returns_all_asset_identifiers(): void
     {
-        $this->createRecords(['red', 'blue']);
-        $this->assertRecordsIdentifiers(['red', 'blue'], iterator_to_array($this->allRecordIdentifiers->fetch()));
+        $this->createAssets(['red', 'blue']);
+        $this->assertAssetsIdentifiers(['red', 'blue'], iterator_to_array($this->allAssetIdentifiers->fetch()));
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function createRecords(array $recordCodes): void
+    private function createAssets(array $assetCodes): void
     {
-        /** @var ReferenceEntityRepositoryInterface $referenceEntityRepository */
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                $referenceEntityIdentifier,
+        /** @var AssetFamilyRepositoryInterface $assetFamilyRepository */
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                $assetFamilyIdentifier,
                 [
                     'fr_FR' => 'Concepteur',
                     'en_US' => 'Designer',
@@ -66,13 +66,13 @@ class FindAllRecordIdentifiersTest extends SqlIntegrationTestCase
             )
         );
 
-        foreach ($recordCodes as $recordCode) {
-            $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-            $recordRepository->create(
-                Record::create(
-                    RecordIdentifier::fromString($recordCode),
-                    $referenceEntityIdentifier,
-                    RecordCode::fromString($recordCode),
+        foreach ($assetCodes as $assetCode) {
+            $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+            $assetRepository->create(
+                Asset::create(
+                    AssetIdentifier::fromString($assetCode),
+                    $assetFamilyIdentifier,
+                    AssetCode::fromString($assetCode),
                     ValueCollection::fromValues([])
                 )
             );
@@ -81,11 +81,11 @@ class FindAllRecordIdentifiersTest extends SqlIntegrationTestCase
 
     /**
      * @param array $expectedIdentifiers
-     * @param RecordIdentifier[] $actualIdentifiers
+     * @param AssetIdentifier[] $actualIdentifiers
      */
-    private function assertRecordsIdentifiers(array $expectedIdentifiers, array $actualIdentifiers): void
+    private function assertAssetsIdentifiers(array $expectedIdentifiers, array $actualIdentifiers): void
     {
-        $normalizedIdentifiers = array_map(function (RecordIdentifier $identifier) {
+        $normalizedIdentifiers = array_map(function (AssetIdentifier $identifier) {
             return $identifier->normalize();
         }, $actualIdentifiers);
         sort($normalizedIdentifiers);

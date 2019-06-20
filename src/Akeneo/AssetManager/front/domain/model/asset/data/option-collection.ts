@@ -1,14 +1,14 @@
-import ValueData from 'akeneoreferenceentity/domain/model/record/data';
-import OptionCode from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
-import {OptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
-import {Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import ValueData from 'akeneoassetmanager/domain/model/asset/data';
+import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 class InvalidTypeError extends Error {}
 
 type NormalizedOptionCollectionData = string[];
 
 /**
- * Data representing an Option Collection, used for Record Values for Attribute with type "Option Collection"
+ * Data representing an Option Collection, used for Asset Values for Attribute with type "Option Collection"
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

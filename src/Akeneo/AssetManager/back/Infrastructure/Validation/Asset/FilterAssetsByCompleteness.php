@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
-class FilterRecordsByCompleteness extends Constraint
+class FilterAssetsByCompleteness extends Constraint
 {
     public const CHANNEL_SHOULD_EXIST = 'Channel "channel_identifier" does not exist.';
 
@@ -29,6 +29,6 @@ class FilterRecordsByCompleteness extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.infrastructure.validation.record.filter_records_by_completeness';
+        return 'akeneo_assetmanager.infrastructure.validation.asset.filter_assets_by_completeness';
     }
 }

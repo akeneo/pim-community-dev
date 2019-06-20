@@ -1,7 +1,7 @@
-import reducer from 'akeneoreferenceentity/application/reducer/attribute/create';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import reducer from 'akeneoassetmanager/application/reducer/attribute/create';
+import {AttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
 
-describe('akeneo > reference entity > application > reducer > attribute --- create', () => {
+describe('akeneo > asset family > application > reducer > attribute --- create', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
@@ -24,7 +24,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
-        record_type: null,
+        asset_type: null,
       },
       errors: [],
     });
@@ -54,7 +54,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
-        record_type: null,
+        asset_type: null,
       },
       errors: [],
     });
@@ -150,13 +150,13 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
     });
   });
 
-  test('I can reset the record type after updating the type of the attribute', () => {
+  test('I can reset the asset type after updating the type of the attribute', () => {
     const state = {
       active: false,
       data: {
         code: '',
         type: 'text',
-        record_type: null,
+        asset_type: null,
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -173,7 +173,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       data: {
         code: '',
         type: 'image',
-        record_type: null,
+        asset_type: null,
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -188,7 +188,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       data: {
         code: '',
         type: 'text',
-        record_type: null,
+        asset_type: null,
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -197,15 +197,15 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
     };
     const newState = reducer(state, {
       type: 'ATTRIBUTE_CREATION_TYPE_UPDATED',
-      attribute_type: 'record',
+      attribute_type: 'asset',
     });
 
     expect(newState).toEqual({
       active: false,
       data: {
         code: '',
-        type: 'record',
-        record_type: null,
+        type: 'asset',
+        asset_type: null,
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -214,12 +214,12 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
     });
   });
 
-  test('I can update the record type of the attribute', () => {
+  test('I can update the asset type of the attribute', () => {
     const state = {
       active: false,
       data: {
         code: '',
-        type: 'record',
+        type: 'asset',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -227,16 +227,16 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED',
-      record_type: 'brand',
+      type: 'ATTRIBUTE_CREATION_ASSET_TYPE_UPDATED',
+      asset_type: 'brand',
     });
 
     expect(newState).toEqual({
       active: false,
       data: {
         code: '',
-        type: 'record',
-        record_type: 'brand',
+        type: 'asset',
+        asset_type: 'brand',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},

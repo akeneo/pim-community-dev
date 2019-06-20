@@ -1,4 +1,4 @@
-import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
+import {MaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
 
 describe('akeneo > attribute > domain > model > attribute > type > text --- MaxLength', () => {
   test('I can create a MaxLength from normalized', () => {

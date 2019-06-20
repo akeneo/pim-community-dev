@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
+namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Listen to deleted records events in order to remove them from the search engine index.
+ * Listen to deleted assets events in order to remove them from the search engine index.
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
+class RemoveAssetFromIndexSubscriber implements EventSubscriberInterface
 {
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
+    /** @var AssetIndexerInterface */
+    private $assetIndexer;
 
-    public function __construct(RecordIndexerInterface $recordIndexer)
+    public function __construct(AssetIndexerInterface $assetIndexer)
     {
-        $this->recordIndexer = $recordIndexer;
+        $this->assetIndexer = $assetIndexer;
     }
 
     /**
@@ -31,23 +31,23 @@ class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RecordDeletedEvent::class => 'whenRecordDeleted',
-            ReferenceEntityRecordsDeletedEvent::class => 'whenAllRecordsDeleted',
+            AssetDeletedEvent::class => 'whenAssetDeleted',
+            AssetFamilyAssetsDeletedEvent::class => 'whenAllAssetsDeleted',
         ];
     }
 
-    public function whenRecordDeleted(RecordDeletedEvent $recordDeletedEvent): void
+    public function whenAssetDeleted(AssetDeletedEvent $assetDeletedEvent): void
     {
-        $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode(
-            (string) $recordDeletedEvent->getReferenceEntityIdentifier(),
-            (string) $recordDeletedEvent->getRecordCode()
+        $this->assetIndexer->removeAssetByAssetFamilyIdentifierAndCode(
+            (string) $assetDeletedEvent->getAssetFamilyIdentifier(),
+            (string) $assetDeletedEvent->getAssetCode()
         );
     }
 
-    public function whenAllRecordsDeleted(ReferenceEntityRecordsDeletedEvent $recordDeletedEvent): void
+    public function whenAllAssetsDeleted(AssetFamilyAssetsDeletedEvent $assetDeletedEvent): void
     {
-        $this->recordIndexer->removeByReferenceEntityIdentifier(
-            (string) $recordDeletedEvent->getReferenceEntityIdentifier()
+        $this->assetIndexer->removeByAssetFamilyIdentifier(
+            (string) $assetDeletedEvent->getAssetFamilyIdentifier()
         );
     }
 }

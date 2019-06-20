@@ -1,8 +1,8 @@
 pim_title:
-  akeneo_reference_entities_reference_entity_index: Crea una nuova entità
-  akeneo_reference_entities_reference_entity_edit: Modifica un entità di riferimento
-  akeneo_reference_entities_record_edit: Modifica riga
-pim_reference_entity:
+  akeneo_asset_manager_asset_family_index: Crea una nuova entità
+  akeneo_asset_manager_asset_family_edit: Modifica un entità di riferimento
+  akeneo_asset_manager_asset_edit: Modifica riga
+pim_asset_manager:
   app:
     image:
       wide:
@@ -13,12 +13,12 @@ pim_reference_entity:
         remove: Rimuovere
         download: Scarica
         upload: Trascina e rilascia per caricare
-  reference_entity:
+  asset_family:
     validation:
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
         should_be_unique: 'Questo codice è già esistente per questa entità.'
-        limit_reached: 'Non puoi creare l''entità di riferimento "{{ %reference_entity_label% }}" perché hai raggiunto il limite di {{ %limit% }} entità di riferimento'
+        limit_reached: 'Non puoi creare l''entità di riferimento "{{ %asset_family_label% }}" perché hai raggiunto il limite di {{ %limit% }} entità di riferimento'
     button:
       save: Salva
       save_permission: Salva
@@ -29,7 +29,7 @@ pim_reference_entity:
     breadcrumb: Entità di riferimento
     img: Immagine principale dell'entità di riferimento denominata "{{ label }}"
     tab:
-      records: Record
+      assets: Asset
       attribute: Attributi
       properties: Proprietà
       permission: Autorizzazioni
@@ -39,7 +39,7 @@ pim_reference_entity:
       label: Etichetta
       image: Immagine
     attribute:
-      title: Attributi del record
+      title: Attributi del asset
       attribute:
         error:
           render_list: 'Si è verificato un errore durante il rendering dell''attributo "{{ %attribute_code% }}"'
@@ -55,7 +55,7 @@ pim_reference_entity:
           title: 'Benvenuto alle entità di riferimenti!'
           description_part_one: Arricchisci informazioni rilevanti relative ai prodotti (es. marchi, produttori, colori, materiali, ingredienti...).
           description_part_two: Ti permetterà di fornire un'esperienza di prodotto migliore ai tuoi clienti.
-          description_part_three: Fai clic sul pulsante "Crea" per creare la tua prima entità riferimento, impostare i suoi attributi e record.
+          description_part_three: Fai clic sul pulsante "Crea" per creare la tua prima entità riferimento, impostare i suoi attributi e asset.
           description_part_four: Poi, per collegarla ai prodotti, crea un tipo di attributo prodotto correlato a questa entità di riferimento.
           description_part_five: Per ulteriori dettagli, ti invitiamo a leggere questo articolo.
     create:
@@ -68,7 +68,7 @@ pim_reference_entity:
         code: Codice (richiesto)
       confirm: Salva
     delete:
-      message: Sei sicuro di voler eliminare l'entità "{{ referenceEntityLabel }}"?
+      message: Sei sicuro di voler eliminare l'entità "{{ assetFamilyLabel }}"?
       title: Attributo
     notification:
       save:
@@ -89,33 +89,33 @@ pim_reference_entity:
       title: Non hai nessun gruppo utente
       subtitle: Per gestire i permessi sulle entità di riferimento devi avere almeno un gruppo utente.
       link: Fai clic qui per aggiungere il tuo primo gruppo
-  record:
+  asset:
     validation:
-      limit_reached: 'Non puoi creare il record "%record_label%" perché hai raggiunto il limite di {{ %limit% }} record per questa entità di riferimento'
+      limit_reached: 'Non puoi creare il asset "%asset_label%" perché hai raggiunto il limite di {{ %limit% }} asset per questa entità di riferimento'
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
         should_be_unique: 'Questo codice è già esistente per questa entità.'
     no_data:
-      title: Non ci sono record per {{ entityLabel }}
-      subtitle: Fai clic sul pulsante "Aggiungi nuovo" per creare il primo record
+      title: Non ci sono asset per {{ entityLabel }}
+      subtitle: Fai clic sul pulsante "Aggiungi nuovo" per creare il primo asset
     no_result:
       title: Non ci sono risultati per la tua ricerca
       subtitle: Riprova con nuovi criteri di ricerca.
     selector:
-      no_value: Clicca qui per selezionare un record.
+      no_value: Clicca qui per selezionare un asset.
     error:
       value: Oops, sembra che il rendering del campo "{{ fieldName }}" non sia riuscito. Vedi la console per sviluppatori per maggiori dettagli.
     button:
       save: Salva
       create: Aggiungi nuovo
       delete: Eliminare
-      delete_all: Elimina tutti i record
+      delete_all: Elimina tutti i asset
       back: Torna all'elenco
     enrich:
-      title: Attributi del record
+      title: Attributi del asset
       code: Codice
       label: Etichetta
-    title: Record
+    title: Asset
     create:
       header:
         title: Crea
@@ -124,13 +124,13 @@ pim_reference_entity:
       input:
         label: Etichetta
         code: Codice (richiesto)
-        create_another: Crea un altro record
+        create_another: Crea un altro asset
       confirm: Salva
     delete:
-      message: Sei sicuro di voler eliminare il record "{{ recordLabel }}"? Se è collegato a prodotti o record, i collegamenti verranno rimossi.
-      title: Record
+      message: Sei sicuro di voler eliminare il asset "{{ assetLabel }}"? Se è collegato a prodotti o asset, i collegamenti verranno rimossi.
+      title: Asset
     delete_all:
-      confirm: Sei sicuro di voler eliminare tutti i record di "{{ entityIdentifier }}"? Se sono collegati ai prodotti, i collegamenti ai prodotti saranno rimossi.
+      confirm: Sei sicuro di voler eliminare tutti i asset di "{{ entityIdentifier }}"? Se sono collegati ai prodotti, i collegamenti ai prodotti saranno rimossi.
     grid:
       search: Cerca nell'etichetta, nel codice e nel testo degli attributi
       filter:
@@ -151,7 +151,7 @@ pim_reference_entity:
         action: Azioni
       more_result:
         title: Non è così!
-        description: Hai appena visto i primi 500 risultati di {{ total }} record. Per vederne di più, utilizza criteri di ricerca più specifici.
+        description: Hai appena visto i primi 500 risultati di {{ total }} asset. Per vederne di più, utilizza criteri di ricerca più specifici.
       completeness:
         title_no_required: Nessun attributo richiesto
         title_non_complete: 0 su {{ required }} attributi completati
@@ -161,18 +161,18 @@ pim_reference_entity:
       enrich: Catalogo
     notification:
       save:
-        success: Record aggiornato correttamente.
-        fail: Si è verificato un errore durante il salvataggio del record
-        validation_error: Il record non può essere aggiornato
+        success: Asset aggiornato correttamente.
+        fail: Si è verificato un errore durante il salvataggio del asset
+        validation_error: Il asset non può essere aggiornato
       create:
-        success: Record creato correttamente.
-        fail: Si è verificato un errore durante la creazione del record
+        success: Asset creato correttamente.
+        fail: Si è verificato un errore durante la creazione del asset
       delete:
-        success: Record "{{ code }}" eliminato correttamente.
-        fail: Si è verificato un errore durante l'eliminazione del record
+        success: Asset "{{ code }}" eliminato correttamente.
+        fail: Si è verificato un errore durante l'eliminazione del asset
       delete_all:
-        success: Tutti i record di "{{ entityIdentifier }}" sono stati eliminati correttamente.
-        fail: Si è verificato un errore durante la cancellazione di tutti i record dell'entità di riferimento
+        success: Tutti i asset di "{{ entityIdentifier }}" sono stati eliminati correttamente.
+        fail: Si è verificato un errore durante la cancellazione di tutti i asset dell'entità di riferimento
     completeness:
       label: Completo
   attribute:
@@ -185,8 +185,8 @@ pim_reference_entity:
     type:
       text: Testo
       image: Immagine
-      record: Collegamento singolo entità di riferimento
-      record_collection: Collegamenti multipli entità di riferimento
+      asset: Collegamento singolo entità di riferimento
+      asset_collection: Collegamenti multipli entità di riferimento
       option: Singola opzione
       option_collection: Opzioni multipli
     is_required: richiesto per la completezza
@@ -205,11 +205,11 @@ pim_reference_entity:
         code: Codice (richiesto)
         label: Etichetta
         type: Tipo di attributo
-        record_type: Entità di riferimento da collegare (obbligatorio)
+        asset_type: Entità di riferimento da collegare (obbligatorio)
         value_per_locale: Valore per impostazioni internazionali
         value_per_channel: Valore per canale
       placeholder:
-        record_type: Seleziona la tua entità di riferimento collegata
+        asset_type: Seleziona la tua entità di riferimento collegata
       confirm: Salva
     edit:
       delete: Elimina l'attributo
@@ -220,7 +220,7 @@ pim_reference_entity:
         code: Codice (richiesto)
         label: Etichetta
         type: Tipo di attributo
-        record_type: Entità di riferimento correlata (richiesto)
+        asset_type: Entità di riferimento correlata (richiesto)
         value_per_locale: Valore per impostazioni internazionali
         value_per_channel: Valore per canale
         is_required: Richiesto per la completezza
@@ -280,15 +280,15 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Collegamenti multipli entità di riferimento
-          akeneo_reference_entity: Collegamento singolo entità di riferimento
+          akeneo_asset_multiple_link: Collegamenti multipli entità di riferimento
+          akeneo_asset_single_link: Collegamento singolo entità di riferimento
         section:
           type_specific: Digita parametri specifici
-        reference_entity:
+        asset_family:
           identifier: Entità di riferimento correlata (richiesto)
           default_label: Si prega di seleziona un'entità di riferimento
 permission:
   mass_action: Applica il diritto {{ rightLevel }} a tutti i gruppi
 pim_catalog_volume:
   axis:
-    count_reference_entity: Entità riferimenti
+    count_asset_family: Entità riferimenti

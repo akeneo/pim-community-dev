@@ -1,8 +1,8 @@
 parameters:
     level: 1
     paths:
-        - %rootDir%/../../../src/Akeneo/ReferenceEntity
+        - %rootDir%/../../../src/Akeneo/AssetManager
     excludes_analyse:
-        - %rootDir%/../../../src/Akeneo/ReferenceEntity/tests/back/spec/*
-        - %rootDir%/../../../src/Akeneo/ReferenceEntity/tests/check-requests-contracts.php
-        - %rootDir%/../../../src/Akeneo/ReferenceEntity/tests/check-fake-implementations.php
+        - %rootDir%/../../../src/Akeneo/AssetManager/tests/back/spec/*
+        - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-requests-contracts.php
+        - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-fake-implementations.php

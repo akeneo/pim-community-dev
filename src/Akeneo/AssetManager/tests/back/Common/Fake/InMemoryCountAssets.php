@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\CountRecordsInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 
-class InMemoryCountRecords implements CountRecordsInterface
+class InMemoryCountAssets implements CountAssetsInterface
 {
-    public function forReferenceEntity(ReferenceEntityIdentifier $identifierToMatch): int
+    public function forAssetFamily(AssetFamilyIdentifier $identifierToMatch): int
     {
         return 3;
     }

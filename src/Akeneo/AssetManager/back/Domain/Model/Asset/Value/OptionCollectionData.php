@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Webmozart\Assert\Assert;
 
 /**
- * Collection of options stored in a record value, for "option collection" attributes.
+ * Collection of options stored in a asset value, for "option collection" attributes.
  *
- * @see \Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute
+ * @see \Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)

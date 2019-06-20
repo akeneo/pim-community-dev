@@ -1,6 +1,6 @@
-import {reducer} from 'akeneoreferenceentity/application/reducer/attribute/type/image';
+import {reducer} from 'akeneoassetmanager/application/reducer/attribute/type/image';
 
-describe('akeneo > reference entity > application > reducer > attribute --- edit', () => {
+describe('akeneo > asset family > application > reducer > attribute --- edit', () => {
   test('I can update the max file size property of the attribute', () => {
     const state = {type: 'image'};
     const newState = reducer(state, 'max_file_size', '12.3');

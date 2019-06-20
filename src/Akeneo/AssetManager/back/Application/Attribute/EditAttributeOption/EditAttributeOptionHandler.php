@@ -1,15 +1,15 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption;
+namespace Akeneo\AssetManager\Application\Attribute\EditAttributeOption;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 class EditAttributeOptionHandler
@@ -30,8 +30,8 @@ class EditAttributeOptionHandler
 
     public function __invoke(EditAttributeOptionCommand $command): void
     {
-        $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
+        $attributeIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier),
             AttributeCode::fromString($command->attributeCode)
         );
 

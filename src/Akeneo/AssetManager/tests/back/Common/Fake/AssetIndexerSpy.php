@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use PHPUnit\Framework\Assert;
 
 /**
- * Record indexer spy used for tests to check if it has been called with the right parameters.
+ * Asset indexer spy used for tests to check if it has been called with the right parameters.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordIndexerSpy implements RecordIndexerInterface
+class AssetIndexerSpy implements AssetIndexerInterface
 {
     /** @var array */
-    private $indexedReferenceEntities = [];
+    private $indexedAssetFamilies = [];
 
     /** @var bool */
     private $isIndexRefreshed = false;
 
     /**
-     * Indexes all records belonging to the given reference entity.
+     * Indexes all assets belonging to the given asset family.
      */
-    public function indexByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
+    public function indexByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        $this->indexedReferenceEntities[] = $referenceEntityIdentifier->normalize();
+        $this->indexedAssetFamilies[] = $assetFamilyIdentifier->normalize();
     }
 
     public function refresh(): void
@@ -37,14 +37,14 @@ class RecordIndexerSpy implements RecordIndexerInterface
         $this->isIndexRefreshed = true;
     }
 
-    public function assertReferenceEntityNotIndexed(string $referenceEntityIdentifier)
+    public function assertAssetFamilyNotIndexed(string $assetFamilyIdentifier)
     {
-        Assert::assertNotContains($referenceEntityIdentifier, $this->indexedReferenceEntities);
+        Assert::assertNotContains($assetFamilyIdentifier, $this->indexedAssetFamilies);
     }
 
-    public function assertReferenceEntityIndexed(string $referenceEntityIdentifier)
+    public function assertAssetFamilyIndexed(string $assetFamilyIdentifier)
     {
-        Assert::assertContains($referenceEntityIdentifier, $this->indexedReferenceEntities);
+        Assert::assertContains($assetFamilyIdentifier, $this->indexedAssetFamilies);
     }
 
     public function assertIndexRefreshed()
@@ -52,23 +52,23 @@ class RecordIndexerSpy implements RecordIndexerInterface
         Assert::assertTrue($this->isIndexRefreshed, 'Index should be refreshed');
     }
 
-    public function index(RecordIdentifier $recordIdentifier)
+    public function index(AssetIdentifier $assetIdentifier)
     {
     }
 
     /**
-     * Remove all records belonging to a reference entity
+     * Remove all assets belonging to an asset family
      */
-    public function removeByReferenceEntityIdentifier(string $referenceEntityIdentifier)
+    public function removeByAssetFamilyIdentifier(string $assetFamilyIdentifier)
     {
     }
 
     /**
-     * Remove a record from the index
+     * Remove a asset from the index
      */
-    public function removeRecordByReferenceEntityIdentifierAndCode(
-        string $referenceEntityIdentifier,
-        string $recordCode
+    public function removeAssetByAssetFamilyIdentifierAndCode(
+        string $assetFamilyIdentifier,
+        string $assetCode
     ) {
     }
 }

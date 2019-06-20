@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class InMemoryReferenceEntityRepositoryTest extends TestCase
+class InMemoryAssetFamilyRepositoryTest extends TestCase
 {
-    /** @var InMemoryReferenceEntityRepository */
-    private $referenceEntityRepository;
+    /** @var InMemoryAssetFamilyRepository */
+    private $assetFamilyRepository;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->referenceEntityRepository = new InMemoryReferenceEntityRepository(
+        $this->assetFamilyRepository = new InMemoryAssetFamilyRepository(
             new EventDispatcher()
         );
     }
@@ -39,87 +39,87 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_reference_entity_and_returns_it()
+    public function it_creates_an_asset_family_and_returns_it()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $referenceEntity = ReferenceEntity::create($identifier, [], Image::createEmpty());
+        $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty());
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
 
-        $referenceEntityFound = $this->referenceEntityRepository->getByIdentifier($identifier);
-        Assert::assertTrue($referenceEntity->equals($referenceEntityFound));
+        $assetFamilyFound = $this->assetFamilyRepository->getByIdentifier($identifier);
+        Assert::assertTrue($assetFamily->equals($assetFamilyFound));
     }
 
     /**
      * @test
      */
-    public function it_throws_when_creating_a_reference_entity_with_the_same_identifier()
+    public function it_throws_when_creating_an_asset_family_with_the_same_identifier()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $referenceEntity = ReferenceEntity::create($identifier, [], Image::createEmpty());
-        $this->referenceEntityRepository->create($referenceEntity);
+        $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty());
+        $this->assetFamilyRepository->create($assetFamily);
 
         $this->expectException(\RuntimeException::class);
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
      * @test
      */
-    public function it_updates_a_reference_entity_and_returns_it()
+    public function it_updates_an_asset_family_and_returns_it()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $referenceEntity = ReferenceEntity::create($identifier, [], Image::createEmpty());
-        $this->referenceEntityRepository->create($referenceEntity);
-        $referenceEntity->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Styliste']));
+        $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty());
+        $this->assetFamilyRepository->create($assetFamily);
+        $assetFamily->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Styliste']));
 
-        $this->referenceEntityRepository->update($referenceEntity);
+        $this->assetFamilyRepository->update($assetFamily);
 
-        $referenceEntityFound = $this->referenceEntityRepository->getByIdentifier($identifier);
-        Assert::assertTrue($referenceEntity->equals($referenceEntityFound));
+        $assetFamilyFound = $this->assetFamilyRepository->getByIdentifier($identifier);
+        Assert::assertTrue($assetFamily->equals($assetFamilyFound));
     }
 
     /**
      * @test
      */
-    public function it_returns_all_reference_entities()
+    public function it_returns_all_asset_families()
     {
-        $designer = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('designer'), [], Image::createEmpty());
-        $brand = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('brand'), [], Image::createEmpty());
-        $this->referenceEntityRepository->create($designer);
-        $this->referenceEntityRepository->create($brand);
+        $designer = AssetFamily::create(AssetFamilyIdentifier::fromString('designer'), [], Image::createEmpty());
+        $brand = AssetFamily::create(AssetFamilyIdentifier::fromString('brand'), [], Image::createEmpty());
+        $this->assetFamilyRepository->create($designer);
+        $this->assetFamilyRepository->create($brand);
 
-        $referenceEntities = iterator_to_array($this->referenceEntityRepository->all());
-        Assert::assertSame($designer, $referenceEntities[0]);
-        Assert::assertSame($brand, $referenceEntities[1]);
+        $assetFamilies = iterator_to_array($this->assetFamilyRepository->all());
+        Assert::assertSame($designer, $assetFamilies[0]);
+        Assert::assertSame($brand, $assetFamilies[1]);
     }
 
     /**
      * @test
      */
-    public function it_tells_if_the_repository_has_the_reference_entity()
+    public function it_tells_if_the_repository_has_the_asset_family()
     {
-        $anotherIdentifier = ReferenceEntityIdentifier::fromString('another_identifier');
-        $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $this->referenceEntityRepository->create(ReferenceEntity::create($identifier, [], Image::createEmpty()));
-        Assert::assertTrue($this->referenceEntityRepository->hasReferenceEntity($identifier));
-        Assert::assertFalse($this->referenceEntityRepository->hasReferenceEntity($anotherIdentifier));
+        $anotherIdentifier = AssetFamilyIdentifier::fromString('another_identifier');
+        $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $this->assetFamilyRepository->create(AssetFamily::create($identifier, [], Image::createEmpty()));
+        Assert::assertTrue($this->assetFamilyRepository->hasAssetFamily($identifier));
+        Assert::assertFalse($this->assetFamilyRepository->hasAssetFamily($anotherIdentifier));
     }
 
     /**
      * @test
      */
-    public function it_throws_when_udpating_a_non_existing_reference_entity()
+    public function it_throws_when_udpating_a_non_existing_asset_family()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
-        $referenceEntity = ReferenceEntity::create($identifier, [], Image::createEmpty());
-        $this->referenceEntityRepository->create($referenceEntity);
-        $referenceEntity->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Styliste']));
+        $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty());
+        $this->assetFamilyRepository->create($assetFamily);
+        $assetFamily->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Styliste']));
 
-        $this->referenceEntityRepository->update($referenceEntity);
+        $this->assetFamilyRepository->update($assetFamily);
 
-        $referenceEntityFound = $this->referenceEntityRepository->getByIdentifier($identifier);
-        Assert::assertTrue($referenceEntity->equals($referenceEntityFound));
+        $assetFamilyFound = $this->assetFamilyRepository->getByIdentifier($identifier);
+        Assert::assertTrue($assetFamily->equals($assetFamilyFound));
     }
 
     /**
@@ -127,55 +127,55 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
      */
     public function it_throws_if_the_identifier_is_not_found()
     {
-        $this->expectException(ReferenceEntityNotFoundException::class);
-        $this->referenceEntityRepository->getByIdentifier(
-            ReferenceEntityIdentifier::fromString('unknown_identifier')
+        $this->expectException(AssetFamilyNotFoundException::class);
+        $this->assetFamilyRepository->getByIdentifier(
+            AssetFamilyIdentifier::fromString('unknown_identifier')
         );
     }
 
     /**
      * @test
      */
-    public function it_deletes_a_reference_entity_given_an_identifier()
+    public function it_deletes_an_asset_family_given_an_identifier()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('identifier');
-        $referenceEntity = ReferenceEntity::create(
+        $identifier = AssetFamilyIdentifier::fromString('identifier');
+        $assetFamily = AssetFamily::create(
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty()
         );
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
 
-        $this->referenceEntityRepository->deleteByIdentifier($identifier);
+        $this->assetFamilyRepository->deleteByIdentifier($identifier);
 
-        $this->expectException(ReferenceEntityNotFoundException::class);
-        $this->referenceEntityRepository->getByIdentifier($identifier);
+        $this->expectException(AssetFamilyNotFoundException::class);
+        $this->assetFamilyRepository->getByIdentifier($identifier);
     }
 
     /**
      * @test
      */
-    public function it_throws_an_exception_if_it_tries_to_delete_an_unknown_reference_entity()
+    public function it_throws_an_exception_if_it_tries_to_delete_an_unknown_asset_family()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('unknown');
+        $identifier = AssetFamilyIdentifier::fromString('unknown');
 
-        $this->expectException(ReferenceEntityNotFoundException::class);
-        $this->referenceEntityRepository->deleteByIdentifier($identifier);
+        $this->expectException(AssetFamilyNotFoundException::class);
+        $this->assetFamilyRepository->deleteByIdentifier($identifier);
     }
 
     /**
      * @test
      */
-    public function it_counts_the_total_of_reference_entities()
+    public function it_counts_the_total_of_asset_families()
     {
-        $this->assertEquals(0, $this->referenceEntityRepository->count());
+        $this->assertEquals(0, $this->assetFamilyRepository->count());
 
-        $refOne = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('one'), ['en_US' => 'one'], Image::createEmpty());
-        $refTwo = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('two'), ['en_US' => 'two'], Image::createEmpty());
-        $refThree = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('three'), ['en_US' => 'three'], Image::createEmpty());
-        $this->referenceEntityRepository->create($refOne);
-        $this->referenceEntityRepository->create($refTwo);
-        $this->referenceEntityRepository->create($refThree);
-        $this->assertEquals(3, $this->referenceEntityRepository->count());
+        $refOne = AssetFamily::create(AssetFamilyIdentifier::fromString('one'), ['en_US' => 'one'], Image::createEmpty());
+        $refTwo = AssetFamily::create(AssetFamilyIdentifier::fromString('two'), ['en_US' => 'two'], Image::createEmpty());
+        $refThree = AssetFamily::create(AssetFamilyIdentifier::fromString('three'), ['en_US' => 'three'], Image::createEmpty());
+        $this->assetFamilyRepository->create($refOne);
+        $this->assetFamilyRepository->create($refTwo);
+        $this->assetFamilyRepository->create($refThree);
+        $this->assertEquals(3, $this->assetFamilyRepository->count());
     }
 }

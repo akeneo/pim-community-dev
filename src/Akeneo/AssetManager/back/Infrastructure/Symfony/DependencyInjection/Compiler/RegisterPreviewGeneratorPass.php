@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,8 +23,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterPreviewGeneratorPass implements CompilerPassInterface
 {
-    private const PREVIEW_GENERATOR_REGISTRY = 'akeneo_referenceentity.application.registry.preview_generator';
-    private const PREVIEW_GENERATOR_TAG = 'akeneo_referenceentity.preview_generator';
+    private const PREVIEW_GENERATOR_REGISTRY = 'akeneo_assetmanager.application.registry.preview_generator';
+    private const PREVIEW_GENERATOR_TAG = 'akeneo_assetmanager.preview_generator';
 
     public function process(ContainerBuilder $container)
     {

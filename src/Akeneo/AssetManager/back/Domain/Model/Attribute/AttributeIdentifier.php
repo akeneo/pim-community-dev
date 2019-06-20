@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace Akeneo\AssetManager\Domain\Model\Attribute;
 
 use Webmozart\Assert\Assert;
 
@@ -52,14 +52,14 @@ class AttributeIdentifier
         return new self($identifier);
     }
 
-    public static function create(string $referenceEntityIdentifier, string $attributeCode, string $fingerprint): self
+    public static function create(string $assetFamilyIdentifier, string $attributeCode, string $fingerprint): self
     {
-        Assert::stringNotEmpty($referenceEntityIdentifier, 'Reference entity identifier cannot be empty');
+        Assert::stringNotEmpty($assetFamilyIdentifier, 'Asset family identifier cannot be empty');
         Assert::regex(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
-                'Reference entity identifier may contain only letters, numbers and underscores. "%s" given',
+                'Asset family identifier may contain only letters, numbers and underscores. "%s" given',
                 $attributeCode
             )
         );
@@ -88,7 +88,7 @@ class AttributeIdentifier
             sprintf(
                 '%s_%s_%s',
                 substr($attributeCode, 0, 20),
-                substr($referenceEntityIdentifier, 0, 20),
+                substr($assetFamilyIdentifier, 0, 20),
                 $fingerprint
             )
         );

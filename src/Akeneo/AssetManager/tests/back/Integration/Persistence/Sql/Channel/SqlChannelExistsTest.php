@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Channel;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Channel;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlChannelExistsTest extends SqlIntegrationTestCase
 {
@@ -26,8 +26,8 @@ class SqlChannelExistsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->channelExist = $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel_exists');
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->channelExist = $this->get('akeneo_assetmanager.infrastructure.persistence.query.channel_exists');
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**

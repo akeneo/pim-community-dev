@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydratorInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\GenerateEmptyValuesInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetDetailsHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -28,13 +28,13 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordDetails implements FindRecordDetailsInterface
+class SqlFindAssetDetails implements FindAssetDetailsInterface
 {
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var RecordDetailsHydratorInterface */
-    private $recordDetailsHydrator;
+    /** @var AssetDetailsHydratorInterface */
+    private $assetDetailsHydrator;
 
     /** @var GenerateEmptyValuesInterface */
     private $generateEmptyValues;
@@ -47,13 +47,13 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
 
     public function __construct(
         Connection $sqlConnection,
-        RecordDetailsHydratorInterface $recordDetailsHydrator,
+        AssetDetailsHydratorInterface $assetDetailsHydrator,
         GenerateEmptyValuesInterface $generateEmptyValues,
         FindValueKeyCollectionInterface $findValueKeyCollection,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
         $this->sqlConnection = $sqlConnection;
-        $this->recordDetailsHydrator = $recordDetailsHydrator;
+        $this->assetDetailsHydrator = $assetDetailsHydrator;
         $this->generateEmptyValues = $generateEmptyValues;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
@@ -62,37 +62,37 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?AssetDetails
     {
-        $result = $this->fetchResult($referenceEntityIdentifier, $recordCode);
+        $result = $this->fetchResult($assetFamilyIdentifier, $assetCode);
 
         if (empty($result)) {
             return null;
         }
 
-        $recordDetails = $this->hydrateRecordDetails($result);
+        $assetDetails = $this->hydrateAssetDetails($result);
 
-        return $recordDetails;
+        return $assetDetails;
     }
 
-    private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): array
+    private function fetchResult(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): array
     {
         $query = <<<SQL
         SELECT
-            record.identifier,
-            record.code,
-            record.reference_entity_identifier,
-            record.value_collection,
+            asset.identifier,
+            asset.code,
+            asset.asset_family_identifier,
+            asset.value_collection,
             reference.attribute_as_image,
             reference.attribute_as_label
-        FROM akeneo_reference_entity_record AS record
-        INNER JOIN akeneo_reference_entity_reference_entity AS reference
-            ON reference.identifier = record.reference_entity_identifier
-        WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
+        FROM akeneo_asset_manager_asset AS asset
+        INNER JOIN akeneo_asset_manager_asset_family AS reference
+            ON reference.identifier = asset.asset_family_identifier
+        WHERE code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'code' => (string) $recordCode,
-            'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+            'code' => (string) $assetCode,
+            'asset_family_identifier' => (string) $assetFamilyIdentifier,
         ]);
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
@@ -100,27 +100,27 @@ SQL;
         return !$result ? [] : $result;
     }
 
-    private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier
     {
-        if (!isset($result['reference_entity_identifier'])) {
-            throw new \LogicException('The record should have a reference entity identifier');
+        if (!isset($result['asset_family_identifier'])) {
+            throw new \LogicException('The asset should have an asset family identifier');
         }
-        $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
-            $result['reference_entity_identifier'],
+        $normalizedAssetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+            $result['asset_family_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );
 
-        return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
+        return AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
     }
 
-    private function hydrateRecordDetails($result): RecordDetails
+    private function hydrateAssetDetails($result): AssetDetails
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
-        $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
-        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
-        $emptyValues = $this->generateEmptyValues->generate($referenceEntityIdentifier);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifier($result);
+        $valueKeyCollection = $this->findValueKeyCollection->find($assetFamilyIdentifier);
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
+        $emptyValues = $this->generateEmptyValues->generate($assetFamilyIdentifier);
 
-        return $this->recordDetailsHydrator->hydrate(
+        return $this->assetDetailsHydrator->hydrate(
             $result,
             $emptyValues,
             $valueKeyCollection,

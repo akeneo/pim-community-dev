@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\GenerateEmptyValuesInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
@@ -26,7 +26,7 @@ class InMemoryGenerateEmptyValues implements GenerateEmptyValuesInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ReferenceEntityIdentifier $identifier): array
+    public function generate(AssetFamilyIdentifier $identifier): array
     {
         throw new NotImplementedException('__invoke');
     }

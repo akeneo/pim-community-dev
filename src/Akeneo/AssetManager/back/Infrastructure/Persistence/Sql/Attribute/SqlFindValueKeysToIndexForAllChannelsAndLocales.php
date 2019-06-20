@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -34,23 +34,23 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
         $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
     }
 
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        if (!isset($this->cachedResult[$referenceEntityIdentifier->normalize()])) {
-            $this->cachedResult[$referenceEntityIdentifier->normalize()] = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
+        if (!isset($this->cachedResult[$assetFamilyIdentifier->normalize()])) {
+            $this->cachedResult[$assetFamilyIdentifier->normalize()] = $this->generateSearchMatrixWithValueKeys($assetFamilyIdentifier);
         }
 
-        return $this->cachedResult[$referenceEntityIdentifier->normalize()];
+        return $this->cachedResult[$assetFamilyIdentifier->normalize()];
     }
 
-    private function generateSearchMatrixWithValueKeys(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function generateSearchMatrixWithValueKeys(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $matrixLocalesPerChannels = $this->findActivatedLocalesPerChannels->findAll();
         $matrix = [];
         foreach ($matrixLocalesPerChannels as $channelCode => $locales) {
             foreach ($locales as $localeCode) {
                 $valueKeys = $this->fetchValueKeys(
-                    $referenceEntityIdentifier,
+                    $assetFamilyIdentifier,
                     ChannelIdentifier::fromCode($channelCode),
                     LocaleIdentifier::fromCode($localeCode)
                 );
@@ -62,7 +62,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
     }
 
     private function fetchValueKeys(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         ChannelIdentifier $channelIdentifier,
         LocaleIdentifier $localeIdentifier
     ): array {
@@ -81,7 +81,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
                     COALESCE(c.code, locale_channel.channel_code) as channel_code,
                     COALESCE(l.code, locale_channel.locale_code) as locale_code
                 FROM
-                    (SELECT * FROM akeneo_reference_entity_attribute WHERE attribute_type = 'text') as a
+                    (SELECT * FROM akeneo_asset_manager_attribute WHERE attribute_type = 'text') as a
                     LEFT JOIN (SELECT * FROM pim_catalog_channel WHERE code = :channel_code) c ON value_per_channel = 1 AND value_per_locale = 0
                     LEFT JOIN (SELECT * FROM pim_catalog_locale WHERE code = :locale_code) l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
                     LEFT JOIN (
@@ -95,11 +95,11 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
                         WHERE c.code = :channel_code  AND l.code = :locale_code
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
-                    reference_entity_identifier = :reference_entity_identifier
+                    asset_family_identifier = :asset_family_identifier
             ) as mask;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'reference_entity_identifier' => $referenceEntityIdentifier,
+            'asset_family_identifier' => $assetFamilyIdentifier,
             'channel_code'                => $channelIdentifier->normalize(),
             'locale_code'                 => $localeIdentifier->normalize(),
         ]);

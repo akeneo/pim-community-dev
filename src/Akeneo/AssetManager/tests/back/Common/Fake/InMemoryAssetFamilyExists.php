@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 
 /**
  * Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryReferenceEntityExists implements ReferenceEntityExistsInterface
+class InMemoryAssetFamilyExists implements AssetFamilyExistsInterface
 {
-    /** @var InMemoryReferenceEntityRepository */
-    private $referenceEntityRepository;
+    /** @var InMemoryAssetFamilyRepository */
+    private $assetFamilyRepository;
 
-    public function __construct(InMemoryReferenceEntityRepository $referenceEntityRepository)
+    public function __construct(InMemoryAssetFamilyRepository $assetFamilyRepository)
     {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
-    public function withIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): bool
+    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): bool
     {
-        return $this->referenceEntityRepository->hasReferenceEntity($referenceEntityIdentifier);
+        return $this->assetFamilyRepository->hasAssetFamily($assetFamilyIdentifier);
     }
 }

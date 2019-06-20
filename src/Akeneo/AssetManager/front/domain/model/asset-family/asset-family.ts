@@ -1,15 +1,15 @@
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
-} from 'akeneoreferenceentity/domain/model/label-collection';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+} from 'akeneoassetmanager/domain/model/label-collection';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier, {
   createIdentifier as createAttributeIdentifier,
   NormalizedAttributeIdentifier,
-} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
-export interface NormalizedReferenceEntity {
+export interface NormalizedAssetFamily {
   identifier: string;
   code: string;
   labels: NormalizedLabelCollection;
@@ -18,19 +18,19 @@ export interface NormalizedReferenceEntity {
   attribute_as_image: NormalizedAttributeIdentifier;
 }
 
-export default interface ReferenceEntity {
+export default interface AssetFamily {
   getIdentifier: () => Identifier;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
   getAttributeAsLabel: () => AttributeIdentifier;
   getAttributeAsImage: () => AttributeIdentifier;
-  equals: (referenceEntity: ReferenceEntity) => boolean;
-  normalize: () => NormalizedReferenceEntity;
+  equals: (assetFamily: AssetFamily) => boolean;
+  normalize: () => NormalizedAssetFamily;
 }
 class InvalidArgumentError extends Error {}
 
-class ReferenceEntityImplementation implements ReferenceEntity {
+class AssetFamilyImplementation implements AssetFamily {
   private constructor(
     private identifier: Identifier,
     private labelCollection: LabelCollection,
@@ -39,19 +39,19 @@ class ReferenceEntityImplementation implements ReferenceEntity {
     private attributeAsImage: AttributeIdentifier
   ) {
     if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('ReferenceEntity expects an ReferenceEntityIdentifier as identifier argument');
+      throw new InvalidArgumentError('AssetFamily expects an AssetFamilyIdentifier as identifier argument');
     }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('ReferenceEntity expects a LabelCollection as labelCollection argument');
+      throw new InvalidArgumentError('AssetFamily expects a LabelCollection as labelCollection argument');
     }
     if (!(image instanceof File)) {
-      throw new InvalidArgumentError('ReferenceEntity expects a File as image argument');
+      throw new InvalidArgumentError('AssetFamily expects a File as image argument');
     }
     if (!(attributeAsLabel instanceof AttributeIdentifier)) {
-      throw new InvalidArgumentError('ReferenceEntity expects a AttributeIdentifier as attributeAsLabel argument');
+      throw new InvalidArgumentError('AssetFamily expects a AttributeIdentifier as attributeAsLabel argument');
     }
     if (!(attributeAsImage instanceof AttributeIdentifier)) {
-      throw new InvalidArgumentError('ReferenceEntity expects a AttributeIdentifier as attributeAsImage argument');
+      throw new InvalidArgumentError('AssetFamily expects a AttributeIdentifier as attributeAsImage argument');
     }
 
     Object.freeze(this);
@@ -63,18 +63,18 @@ class ReferenceEntityImplementation implements ReferenceEntity {
     image: File,
     attributeAsLabel: AttributeIdentifier,
     attributeAsImage: AttributeIdentifier
-  ): ReferenceEntity {
-    return new ReferenceEntityImplementation(identifier, labelCollection, image, attributeAsLabel, attributeAsImage);
+  ): AssetFamily {
+    return new AssetFamilyImplementation(identifier, labelCollection, image, attributeAsLabel, attributeAsImage);
   }
 
-  public static createFromNormalized(normalizedReferenceEntity: NormalizedReferenceEntity): ReferenceEntity {
-    const identifier = createIdentifier(normalizedReferenceEntity.identifier);
-    const labelCollection = createLabelCollection(normalizedReferenceEntity.labels);
-    const image = denormalizeFile(normalizedReferenceEntity.image);
-    const attributeAsLabel = createAttributeIdentifier(normalizedReferenceEntity.attribute_as_label);
-    const attributeAsImage = createAttributeIdentifier(normalizedReferenceEntity.attribute_as_image);
+  public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamily): AssetFamily {
+    const identifier = createIdentifier(normalizedAssetFamily.identifier);
+    const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
+    const image = denormalizeFile(normalizedAssetFamily.image);
+    const attributeAsLabel = createAttributeIdentifier(normalizedAssetFamily.attribute_as_label);
+    const attributeAsImage = createAttributeIdentifier(normalizedAssetFamily.attribute_as_image);
 
-    return ReferenceEntityImplementation.create(identifier, labelCollection, image, attributeAsLabel, attributeAsImage);
+    return AssetFamilyImplementation.create(identifier, labelCollection, image, attributeAsLabel, attributeAsImage);
   }
 
   public getIdentifier(): Identifier {
@@ -105,11 +105,11 @@ class ReferenceEntityImplementation implements ReferenceEntity {
     return this.attributeAsImage;
   }
 
-  public equals(referenceEntity: ReferenceEntity): boolean {
-    return referenceEntity.getIdentifier().equals(this.identifier);
+  public equals(assetFamily: AssetFamily): boolean {
+    return assetFamily.getIdentifier().equals(this.identifier);
   }
 
-  public normalize(): NormalizedReferenceEntity {
+  public normalize(): NormalizedAssetFamily {
     return {
       identifier: this.getIdentifier().stringValue(),
       code: this.getIdentifier().stringValue(),
@@ -121,5 +121,5 @@ class ReferenceEntityImplementation implements ReferenceEntity {
   }
 }
 
-export const createReferenceEntity = ReferenceEntityImplementation.create;
-export const denormalizeReferenceEntity = ReferenceEntityImplementation.createFromNormalized;
+export const createAssetFamily = AssetFamilyImplementation.create;
+export const denormalizeAssetFamily = AssetFamilyImplementation.createFromNormalized;

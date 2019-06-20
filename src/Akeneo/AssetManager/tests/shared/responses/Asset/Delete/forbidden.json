@@ -1,10 +1,10 @@
 {
   "request": {
     "method": "DELETE",
-    "route": "akeneo_reference_entities_record_delete_rest",
+    "route": "akeneo_asset_manager_asset_delete_rest",
     "query": {
-      "referenceEntityIdentifier": "designer",
-      "recordCode": "starck"
+      "assetFamilyIdentifier": "designer",
+      "assetCode": "starck"
     }
   },
   "response": {

@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
-class AttributeRecordTypeReferenceEntityShouldExist extends Constraint
+class AttributeAssetTypeAssetFamilyShouldExist extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.attribute.validation.record_type.reference_entity_should_exist';
+    public const ERROR_MESSAGE = 'pim_asset_manager.attribute.validation.asset_type.asset_family_should_exist';
 
     public function getTargets()
     {
@@ -26,6 +26,6 @@ class AttributeRecordTypeReferenceEntityShouldExist extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.attribute.attribute_record_type_reference_entity_should_exist';
+        return 'akeneo_assetmanager.validator.attribute.attribute_asset_type_asset_family_should_exist';
     }
 }

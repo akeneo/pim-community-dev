@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -28,7 +28,7 @@ class EditValueCommandFactoryRegistry implements EditValueCommandFactoryRegistry
 
         throw new \RuntimeException(
             sprintf(
-                'There was no factory found to create the edit record value command of the attribute "%s"',
+                'There was no factory found to create the edit asset value command of the attribute "%s"',
                 $attribute->getIdentifier()->normalize()
             )
         );

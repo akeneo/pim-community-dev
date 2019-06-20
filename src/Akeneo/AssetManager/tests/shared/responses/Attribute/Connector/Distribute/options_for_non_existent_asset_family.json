@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_get",
+    "route": "akeneo_asset_manager_asset_family_attribute_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "whatever",
+      "assetFamilyIdentifier": "whatever",
       "code": "whatever2"
     }
   },
@@ -11,7 +11,7 @@
     "status": 404,
     "body": {
       "code": 404,
-      "message": "Reference entity \"whatever\" does not exist."
+      "message": "Asset family \"whatever\" does not exist."
     }
   }
 }

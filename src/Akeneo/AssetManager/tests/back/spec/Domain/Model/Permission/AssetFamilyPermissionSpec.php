@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Permission;
+namespace spec\Akeneo\AssetManager\Domain\Model\Permission;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupPermission;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityPermissionSpec extends ObjectBehavior
+class AssetFamilyPermissionSpec extends ObjectBehavior
 {
     function it_normalizes_itself()
     {
         $this->beConstructedThrough('create', [
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 UserGroupPermission::create(UserGroupIdentifier::fromInteger(12), RightLevel::fromString('edit')),
                 UserGroupPermission::create(UserGroupIdentifier::fromInteger(5), RightLevel::fromString('view')),
@@ -24,7 +24,7 @@ class ReferenceEntityPermissionSpec extends ObjectBehavior
         ]);
 
         $this->normalize()->shouldReturn([
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'permissions'                 => [
                 [
                     'user_group_identifier' => 12,
@@ -42,18 +42,18 @@ class ReferenceEntityPermissionSpec extends ObjectBehavior
         ]);
     }
 
-    function it_allows_to_edit_a_reference_entity_if_there_are_no_permissions_set_for_it()
+    function it_allows_to_edit_an_asset_family_if_there_are_no_permissions_set_for_it()
     {
-        $this->beConstructedThrough('create', [ReferenceEntityIdentifier::fromString('designer'), []]);
+        $this->beConstructedThrough('create', [AssetFamilyIdentifier::fromString('designer'), []]);
 
         $this->isAllowedToEdit([UserGroupIdentifier::fromInteger(1)])->shouldReturn(true);
         $this->isAllowedToEdit([UserGroupIdentifier::fromInteger(2)])->shouldReturn(true);
     }
 
-    function it_allows_to_edit_a_reference_entity_if_the_user_is_member_of_at_least_one_group_that_is_allowed_to_edit()
+    function it_allows_to_edit_an_asset_family_if_the_user_is_member_of_at_least_one_group_that_is_allowed_to_edit()
     {
         $this->beConstructedThrough('create', [
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 UserGroupPermission::create(UserGroupIdentifier::fromInteger(1), RightLevel::fromString('edit')),
                 UserGroupPermission::create(UserGroupIdentifier::fromInteger(2), RightLevel::fromString('view')),
@@ -74,7 +74,7 @@ class ReferenceEntityPermissionSpec extends ObjectBehavior
 
     function it_throws_if_the_given_parameters_is_not_an_array_of_group_identifiers_for_to_check_rights()
     {
-        $this->beConstructedThrough('create', [ReferenceEntityIdentifier::fromString('designer'), []]);
+        $this->beConstructedThrough('create', [AssetFamilyIdentifier::fromString('designer'), []]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('isAllowedToEdit', [[1, 2]]);
         $this->shouldThrow(\InvalidArgumentException::class)->during('isAllowedToEdit', [[new \stdClass()]]);
@@ -83,7 +83,7 @@ class ReferenceEntityPermissionSpec extends ObjectBehavior
     function it_throws_an_error_if_the_same_user_group_is_used_twice()
     {
         $this->beConstructedThrough('create', [
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 UserGroupPermission::create(UserGroupIdentifier::fromInteger(12), RightLevel::fromString('edit')),
                 UserGroupPermission::create(UserGroupIdentifier::fromInteger(5), RightLevel::fromString('view')),
@@ -97,7 +97,7 @@ class ReferenceEntityPermissionSpec extends ObjectBehavior
     function it_throws_an_exception_if_permissions_are_of_the_wrong_type()
     {
         $this->beConstructedThrough('create', [
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 new \stdClass(),
                 UserGroupPermission::create(UserGroupIdentifier::fromInteger(12), RightLevel::fromString('edit')),

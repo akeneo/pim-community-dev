@@ -1,15 +1,15 @@
 - See if it's possible to have the routing declared only in our bundle (we will see later with black hawks how to do it)
-- Application/ReferenceEntity/Show/ShowReferenceEntityHandler should handle only one command it should maybe return only a ReadModel
-- Discuss about Domain/Model/ReferenceEntity/ReferenceEntity getters: they break the tell don't ask principle.
-- rename Domain/Model/ReferenceEntity/ReferenceEntityIdentifier:fromString to create: we cannot create them another way
+- Application/AssetFamily/Show/ShowAssetFamilyHandler should handle only one command it should maybe return only a ReadModel
+- Discuss about Domain/Model/AssetFamily/AssetFamily getters: they break the tell don't ask principle.
+- rename Domain/Model/AssetFamily/AssetFamilyIdentifier:fromString to create: we cannot create them another way
 - Move the InMemory repository in the business code
 - Create builders for entities in the backend
-- Create LabelCollection from outside the domain object ReferenceEntity
+- Create LabelCollection from outside the domain object AssetFamily
 - What to do in a show command handler if the entity is not found? Throw an exception? null?
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
-- add normalizer for reference entity
+- add normalizer for asset family
 - test integration controller edit
-- add pqb filter, grid filter and peb filter for the reference entity value
+- add pqb filter, grid filter and peb filter for the asset family value
 - Add remaining ACLs
 - Change read models to enforce properties are coherent (front)
 - switch the rest of entities to models for the views (like attribute edit) (front)
@@ -17,15 +17,15 @@
 - split create and edit model in files
 - add acceptance test for attribute edit validation (front)
 - for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
-  (See validation of "Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
+  (See validation of "Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
 - rework constructors to receive domain models (label collection)
-- fix the reference entity field on the pef to be able to search when the search will work (front)
+- fix the asset family field on the pef to be able to search when the search will work (front)
 - PIM-7677: Better storage management. https://akeneo.atlassian.net/browse/PIM-7677
 - Add builder for our backend tests
 
 DONE:
 
-- rename "I get a reference entity" acceptance step [DONE]
+- rename "I get an asset family" acceptance step [DONE]
 - manage breadcrumb [DONE]
 - add loading placeholder [DONE]
 - rename hidrate -> hydrate [DONE]
@@ -44,6 +44,6 @@ DONE:
 - add session storage for tab situation [FIXED BY URL]
 - remove index in error throw by the model constructor (front) [DONE]
 - switch to view models [DONE]
-- Extract the buttons of the edit reference entity view so it comes from each of the tabs [DONE]
+- Extract the buttons of the edit asset family view so it comes from each of the tabs [DONE]
 - fix the form to take into account what the backend answered [DONE]
 - create a read model for the read cases [DONE]

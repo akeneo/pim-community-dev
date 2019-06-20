@@ -1,39 +1,39 @@
-import {ConcreteRecordCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record-collection';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {RecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
+import {ConcreteAssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {AssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 const normalizedBrand = {
   identifier: 'brand',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'brand',
   labels: {en_US: 'Brand'},
-  type: 'record_collection',
+  type: 'asset_collection',
   order: 0,
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
-  record_type: 'brand',
+  asset_type: 'brand',
 };
 
-describe('akeneo > attribute > domain > model > attribute > type --- RecordCollectionAttribute', () => {
-  test('I can create a ConcreteRecordCollectionAttribute from normalized', () => {
-    expect(ConcreteRecordCollectionAttribute.createFromNormalized(normalizedBrand).normalize()).toEqual(
+describe('akeneo > attribute > domain > model > attribute > type --- AssetCollectionAttribute', () => {
+  test('I can create a ConcreteAssetCollectionAttribute from normalized', () => {
+    expect(ConcreteAssetCollectionAttribute.createFromNormalized(normalizedBrand).normalize()).toEqual(
       normalizedBrand
     );
   });
-  test('I can create get a record type', () => {
-    expect(ConcreteRecordCollectionAttribute.createFromNormalized(normalizedBrand).getRecordType()).toEqual(
-      RecordType.createFromString('brand')
+  test('I can create get a asset type', () => {
+    expect(ConcreteAssetCollectionAttribute.createFromNormalized(normalizedBrand).getAssetType()).toEqual(
+      AssetType.createFromString('brand')
     );
   });
-  test('I cannot create an invalid ConcreteRecordCollectionAttribute', () => {
+  test('I cannot create an invalid ConcreteAssetCollectionAttribute', () => {
     expect(() => {
-      new ConcreteRecordCollectionAttribute(
+      new ConcreteAssetCollectionAttribute(
         createIdentifier('designer', 'brand'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('brand'),
         createLabelCollection({en_US: 'Front View'}),
         true,
@@ -41,6 +41,6 @@ describe('akeneo > attribute > domain > model > attribute > type --- RecordColle
         0,
         true
       );
-    }).toThrow('Attribute expects a RecordType as recordType');
+    }).toThrow('Attribute expects a AssetType as assetType');
   });
 });

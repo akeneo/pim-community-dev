@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 
 /**
- * Transform a normalized record value to a normalized record value for connector.
+ * Transform a normalized asset value to a normalized asset value for connector.
  *
- * The transformation returns null if the value is irrelevant (e.g. a record that doesn't exists for a record type value)
+ * The transformation returns null if the value is irrelevant (e.g. a asset that doesn't exists for a asset type value)
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

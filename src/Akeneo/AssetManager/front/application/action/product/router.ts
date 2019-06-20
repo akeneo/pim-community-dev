@@ -1,5 +1,5 @@
-import {redirectToRoute} from 'akeneoreferenceentity/application/event/router';
-import Product from 'akeneoreferenceentity/domain/model/product/product';
+import {redirectToRoute} from 'akeneoassetmanager/application/event/router';
+import Product from 'akeneoassetmanager/domain/model/product/product';
 
 export const redirectToProduct = (product: Product) => {
   return redirectToRoute(`pim_enrich_${product.getType()}_edit`, {
@@ -8,5 +8,5 @@ export const redirectToProduct = (product: Product) => {
 };
 
 export const redirectToAttributeCreation = () => {
-  return redirectToRoute(`pim_enrich_attribute_create`, {attribute_type: 'akeneo_reference_entity'});
+  return redirectToRoute(`pim_enrich_attribute_create`, {attribute_type: 'akeneo_asset'});
 };

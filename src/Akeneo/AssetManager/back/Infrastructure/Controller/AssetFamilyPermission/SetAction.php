@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamilyPermission;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetUserGroupPermissionCommand;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsCommand;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetUserGroupPermissionCommand;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,11 +34,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SetAction
 {
-    /** @var SetReferenceEntityPermissionsHandler */
-    private $setReferenceEntityPermissionsHandler;
+    /** @var SetAssetFamilyPermissionsHandler */
+    private $setAssetFamilyPermissionsHandler;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
@@ -53,27 +53,27 @@ class SetAction
     private $serializer;
 
     public function __construct(
-        SetReferenceEntityPermissionsHandler $setReferenceEntityPermissionsHandler,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         SecurityFacade $securityFacade,
         ValidatorInterface $validator,
         Serializer $serializer
     ) {
-        $this->setReferenceEntityPermissionsHandler = $setReferenceEntityPermissionsHandler;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->setAssetFamilyPermissionsHandler = $setAssetFamilyPermissionsHandler;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->securityFacade = $securityFacade;
         $this->validator = $validator;
         $this->serializer = $serializer;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier)
+    public function __invoke(Request $request, string $assetFamilyIdentifier)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->isUserAllowedToEdit($referenceEntityIdentifier)) {
+        if (!$this->isUserAllowedToEdit($assetFamilyIdentifier)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -88,8 +88,8 @@ class SetAction
             $userGroupPermissionCommands[] = $command;
         }
 
-        $setPermissionsCommand = new SetReferenceEntityPermissionsCommand(
-            $referenceEntityIdentifier,
+        $setPermissionsCommand = new SetAssetFamilyPermissionsCommand(
+            $assetFamilyIdentifier,
             $userGroupPermissionCommands
         );
 
@@ -101,19 +101,19 @@ class SetAction
             );
         }
 
-        ($this->setReferenceEntityPermissionsHandler)($setPermissionsCommand);
+        ($this->setAssetFamilyPermissionsHandler)($setPermissionsCommand);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToEdit(string $assetFamilyIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery(
-            $referenceEntityIdentifier,
+        $query = new CanEditAssetFamilyQuery(
+            $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
-        $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
+        $isAllowedToEdit = ($this->canEditAssetFamilyQueryHandler)($query);
 
-        return $this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_manage_permission') && $isAllowedToEdit;
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_manage_permission') && $isAllowedToEdit;
     }
 }

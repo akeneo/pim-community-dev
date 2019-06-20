@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\GenerateEmptyValuesInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 
 /**
- * Query to generate all empty values given the structure of a reference entity
+ * Query to generate all empty values given the structure of an asset family
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
@@ -39,7 +39,7 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
     }
 
     /**
-     * Return an array of all empty values combination (structure) for the given $referenceEntityIdentifier.
+     * Return an array of all empty values combination (structure) for the given $assetFamilyIdentifier.
      * [
      *    'value_key1' => [
      *        'attribute' => [],        // fully normalized attribute
@@ -52,7 +52,7 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
      *
      *
      */
-    public function generate(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function generate(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $query = <<<SQL
             SELECT
@@ -69,7 +69,7 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
                     COALESCE(c.code, locale_channel.channel_code) as channel_code,
                     COALESCE(l.code, locale_channel.locale_code) as locale_code
                 FROM
-                    akeneo_reference_entity_attribute as a
+                    akeneo_asset_manager_attribute as a
                     LEFT JOIN pim_catalog_channel c ON value_per_channel = 1 AND value_per_locale = 0
                     LEFT JOIN pim_catalog_locale l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
                     LEFT JOIN (
@@ -84,12 +84,12 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
                             l.is_activated = 1
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
-                    reference_entity_identifier = :reference_entity_identifier
+                    asset_family_identifier = :asset_family_identifier
             ) as mask;
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($query, [
-            'reference_entity_identifier' => $referenceEntityIdentifier,
+            'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
 
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);

@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-interface FindIdentifiersByReferenceEntityAndCodesInterface
+interface FindIdentifiersByAssetFamilyAndCodesInterface
 {
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
-     * @param RecordCode[]              $recordCodes
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
+     * @param AssetCode[]              $assetCodes
      *
-     * @return RecordIdentifier[]
+     * @return AssetIdentifier[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array;
 }

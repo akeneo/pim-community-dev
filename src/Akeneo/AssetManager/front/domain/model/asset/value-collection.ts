@@ -1,7 +1,7 @@
-import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoreferenceentity/domain/model/record/value';
-import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 class InvalidTypeError extends Error {}
 

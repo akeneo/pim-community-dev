@@ -1,8 +1,8 @@
-import {ConcreteChannel, denormalizeChannel} from 'akeneoreferenceentity/domain/model/channel';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {denormalizeLocale} from 'akeneoreferenceentity/domain/model/locale';
+import {ConcreteChannel, denormalizeChannel} from 'akeneoassetmanager/domain/model/channel';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {denormalizeLocale} from 'akeneoassetmanager/domain/model/locale';
 
-describe('akeneo > reference entity > domain > model --- channel', () => {
+describe('akeneo > asset family > domain > model --- channel', () => {
   test('I can create a new channel from a normalized one', () => {
     const channel = denormalizeChannel({
       code: 'ecommerce',

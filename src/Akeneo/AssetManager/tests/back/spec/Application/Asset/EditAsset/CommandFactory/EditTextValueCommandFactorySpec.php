@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommandFactory;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommandFactory;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
 class EditTextValueCommandFactorySpec extends ObjectBehavior

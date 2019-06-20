@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,20 +24,20 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ThereShouldBeLessRecordsThanLimitValidator extends ConstraintValidator
+class ThereShouldBeLessAssetsThanLimitValidator extends ConstraintValidator
 {
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
     /** @var int */
-    private $recordsLimit;
+    private $assetsLimit;
 
     public function __construct(
-        RecordRepositoryInterface $recordRepository,
-        int $recordsLimit
+        AssetRepositoryInterface $assetRepository,
+        int $assetsLimit
     ) {
-        $this->recordRepository = $recordRepository;
-        $this->recordsLimit = $recordsLimit;
+        $this->assetRepository = $assetRepository;
+        $this->assetsLimit = $assetsLimit;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -52,11 +52,11 @@ class ThereShouldBeLessRecordsThanLimitValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof CreateRecordCommand) {
+        if (!$command instanceof CreateAssetCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
-                    CreateRecordCommand::class,
+                    CreateAssetCommand::class,
                     get_class($command)
                 )
             );
@@ -68,20 +68,20 @@ class ThereShouldBeLessRecordsThanLimitValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof ThereShouldBeLessRecordsThanLimit) {
+        if (!$constraint instanceof ThereShouldBeLessAssetsThanLimit) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(CreateRecordCommand $command): void
+    private function validateCommand(CreateAssetCommand $command): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-        $total = $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier);
+        $total = $this->assetRepository->countByAssetFamily($assetFamilyIdentifier);
 
-        if ($total >= $this->recordsLimit) {
-            $this->context->buildViolation(ThereShouldBeLessRecordsThanLimit::ERROR_MESSAGE)
-                ->setParameter('%record_label%', current($command->labels))
-                ->setParameter('%limit%', $this->recordsLimit)
+        if ($total >= $this->assetsLimit) {
+            $this->context->buildViolation(ThereShouldBeLessAssetsThanLimit::ERROR_MESSAGE)
+                ->setParameter('%asset_label%', current($command->labels))
+                ->setParameter('%limit%', $this->assetsLimit)
                 ->atPath('labels')
                 ->addViolation();
         }

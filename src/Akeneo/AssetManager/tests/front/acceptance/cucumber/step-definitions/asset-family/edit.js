@@ -1,8 +1,8 @@
-const Edit = require('../../decorators/reference-entity/edit.decorator');
-const Header = require('../../decorators/reference-entity/app/header.decorator');
+const Edit = require('../../decorators/asset-family/edit.decorator');
+const Header = require('../../decorators/asset-family/app/header.decorator');
 const Modal = require('../../decorators/delete/modal.decorator');
 const path = require('path');
-const {askForReferenceEntity} = require('../../tools');
+const {askForAssetFamily} = require('../../tools');
 
 const {
   decorators: {createElementDecorator},
@@ -30,7 +30,7 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const changeReferenceEntity = async function(editPage, identifier, updates) {
+  const changeAssetFamily = async function(editPage, identifier, updates) {
     const properties = await editPage.getProperties();
 
     const labels = convertDataTable(updates).labels;
@@ -43,21 +43,21 @@ module.exports = async function(cucumber) {
     }
   };
 
-  const savedReferenceEntityWillBe = function(page, identifier, updates) {
+  const savedAssetFamilyWillBe = function(page, identifier, updates) {
     page.on('request', request => {
-      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'POST' === request.method()) {
+      if (`http://pim.com/rest/asset_manager/${identifier}` === request.url() && 'POST' === request.method()) {
         answerJson(request, {}, 204);
       }
 
-      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'GET' === request.method()) {
-        answerJson(request, {...convertItemTable(updates)[0], record_count: 123, attributes: []}, 200);
+      if (`http://pim.com/rest/asset_manager/${identifier}` === request.url() && 'GET' === request.method()) {
+        answerJson(request, {...convertItemTable(updates)[0], asset_count: 123, attributes: []}, 200);
       }
     });
   };
 
-  When('the user asks for the reference entity {string}', askForReferenceEntity);
+  When('the user asks for the asset family {string}', askForAssetFamily);
 
-  When('the user gets the reference entity {string} with label {string}', async function(
+  When('the user gets the asset family {string} with label {string}', async function(
     expectedIdentifier,
     expectedLabel
   ) {
@@ -70,44 +70,44 @@ module.exports = async function(cucumber) {
     assert.strictEqual(labelValue, expectedLabel);
   });
 
-  When('the user updates the reference entity {string} with:', async function(identifier, updates) {
-    await askForReferenceEntity.apply(this, [identifier]);
+  When('the user updates the asset family {string} with:', async function(identifier, updates) {
+    await askForAssetFamily.apply(this, [identifier]);
 
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     await properties.isLoaded();
-    await changeReferenceEntity(editPage, identifier, updates);
-    await savedReferenceEntityWillBe(this.page, identifier, updates);
+    await changeAssetFamily(editPage, identifier, updates);
+    await savedAssetFamilyWillBe(this.page, identifier, updates);
     await editPage.save();
   });
 
-  When('the user changes the reference entity {string} with:', async function(identifier, updates) {
-    await askForReferenceEntity.apply(this, [identifier]);
+  When('the user changes the asset family {string} with:', async function(identifier, updates) {
+    await askForAssetFamily.apply(this, [identifier]);
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     await properties.isLoaded();
 
-    await changeReferenceEntity.apply(this, [editPage, identifier, updates]);
+    await changeAssetFamily.apply(this, [editPage, identifier, updates]);
   });
 
-  Then('the reference entity {string} should be:', async function(identifier, updates) {
-    const referenceEntity = convertItemTable(updates)[0];
+  Then('the asset family {string} should be:', async function(identifier, updates) {
+    const assetFamily = convertItemTable(updates)[0];
 
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const identifierValue = await properties.getIdentifier();
-    assert.strictEqual(identifierValue, referenceEntity.identifier);
+    assert.strictEqual(identifierValue, assetFamily.identifier);
 
-    for (const locale in referenceEntity.labels) {
-      const label = referenceEntity.labels[locale];
+    for (const locale in assetFamily.labels) {
+      const label = assetFamily.labels[locale];
       await (await editPage.getLocaleSwitcher()).switchLocale(locale);
       const labelValue = await properties.getLabel();
       assert.strictEqual(labelValue, label);
     }
   });
 
-  Then('the saved reference entity {string} will be:', async function(identifier, updates) {
-    await savedReferenceEntityWillBe(this.page, identifier, updates);
+  Then('the saved asset family {string} will be:', async function(identifier, updates) {
+    await savedAssetFamilyWillBe(this.page, identifier, updates);
   });
 
   Then('the user saves the changes', async function() {
@@ -122,9 +122,9 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasSuccessNotification, true);
   });
 
-  Then('the reference entity {string} save will fail', function(identifier) {
+  Then('the asset family {string} save will fail', function(identifier) {
     this.page.on('request', request => {
-      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'POST' === request.method()) {
+      if (`http://pim.com/rest/asset_manager/${identifier}` === request.url() && 'POST' === request.method()) {
         request.respond({
           status: 500,
           contentType: 'text/plain',
@@ -141,13 +141,13 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasErrorNotification, true);
   });
 
-  When('the user deletes the reference entity {string}', async function(identifier) {
+  When('the user deletes the asset family {string}', async function(identifier) {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
 
     this.page.once('request', request => {
-      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
+      if (`http://pim.com/rest/asset_manager/${identifier}` === request.url() && 'DELETE' === request.method()) {
         request.respond({
           status: 204,
           contentType: 'application/json',
@@ -162,16 +162,16 @@ module.exports = async function(cucumber) {
     await modalPage.confirmDeletion();
   });
 
-  When('the user fails to delete the reference entity {string}', async function(identifier) {
+  When('the user fails to delete the asset family {string}', async function(identifier) {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
     const response = JSON.stringify([
       {
-        messageTemplate: 'pim_reference_entity.reference_entity.validation.records.should_have_no_record',
-        parameters: {'%reference_entity_identifier%': []},
+        messageTemplate: 'pim_asset_manager.asset_family.validation.assets.should_have_no_asset',
+        parameters: {'%asset_family_identifier%': []},
         plural: null,
-        message: 'You cannot delete this entity because records exist for this entity',
+        message: 'You cannot delete this entity because assets exist for this entity',
         root: {identifier: `${identifier}`},
         propertyPath: '',
         invalidValue: {identifier: `${identifier}`},
@@ -182,7 +182,7 @@ module.exports = async function(cucumber) {
     ]);
 
     this.page.once('request', request => {
-      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
+      if (`http://pim.com/rest/asset_manager/${identifier}` === request.url() && 'DELETE' === request.method()) {
         request.respond({
           status: 400,
           contentType: 'application/json',
@@ -197,7 +197,7 @@ module.exports = async function(cucumber) {
     await modalPage.confirmDeletion();
   });
 
-  When('the user refuses to delete the current reference entity', async function() {
+  When('the user refuses to delete the current asset family', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
@@ -239,8 +239,8 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isDeleteButtonVisible, false);
   });
 
-  Then('the label of the reference entity {string} should be read only', async function(identifier) {
-    await askForReferenceEntity.apply(this, [identifier]);
+  Then('the label of the asset family {string} should be read only', async function(identifier) {
+    await askForAssetFamily.apply(this, [identifier]);
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     await properties.isLoaded();

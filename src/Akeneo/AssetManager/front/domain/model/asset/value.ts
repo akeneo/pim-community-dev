@@ -1,16 +1,16 @@
-import ChannelReference, {NormalizedChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import LocaleReference, {NormalizedLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import Data from 'akeneoreferenceentity/domain/model/record/data';
+import ChannelReference, {NormalizedChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference, {NormalizedLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import Data from 'akeneoassetmanager/domain/model/asset/data';
 import {
   ConcreteAttribute,
   Attribute,
   NormalizedAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 type NormalizedContext = {
   labels: {
-    [recordCode: string]: {
+    [assetCode: string]: {
       [localeCode: string]: string;
     };
   };

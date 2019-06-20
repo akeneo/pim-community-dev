@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace spec\Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
 use PhpSpec\ObjectBehavior;
 
-class RecordDataSpec extends ObjectBehavior
+class AssetDataSpec extends ObjectBehavior
 {
-    public function let(RecordCode $recordCode)
+    public function let(AssetCode $assetCode)
     {
-        $recordCode->__toString()->willReturn('starck');
+        $assetCode->__toString()->willReturn('starck');
 
-        $this->beConstructedThrough('fromRecordCode', [$recordCode]);
+        $this->beConstructedThrough('fromAssetCode', [$assetCode]);
     }
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(RecordData::class);
+        $this->shouldHaveType(AssetData::class);
     }
 
     public function it_can_be_constructed_through_normalized_data()
     {
         $this->beConstructedThrough('createFromNormalize', ['breuer']);
-        $this->shouldBeAnInstanceOf(RecordData::class);
+        $this->shouldBeAnInstanceOf(AssetData::class);
     }
 
     public function it_cannot_be_constructed_with_something_else_than_a_normalized_string()
@@ -34,7 +34,7 @@ class RecordDataSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
-    public function it_cannot_be_constructed_with_an_empty_record_code()
+    public function it_cannot_be_constructed_with_an_empty_asset_code()
     {
         $this->beConstructedThrough('createFromNormalize', ['']);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();

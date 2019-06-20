@@ -10,73 +10,73 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\CreateRecord;
+namespace Akeneo\AssetManager\Application\Asset\CreateAsset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CreateRecordHandler
+class CreateAssetHandler
 {
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
-    /** @var FindReferenceEntityAttributeAsLabelInterface */
+    /** @var FindAssetFamilyAttributeAsLabelInterface */
     private $findAttributeAsLabel;
 
     public function __construct(
-        RecordRepositoryInterface $recordRepository,
-        FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
+        AssetRepositoryInterface $assetRepository,
+        FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel
     ) {
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
         $this->findAttributeAsLabel = $findAttributeAsLabel;
     }
 
-    public function __invoke(CreateRecordCommand $createRecordCommand): void
+    public function __invoke(CreateAssetCommand $createAssetCommand): void
     {
-        $code = RecordCode::fromString($createRecordCommand->code);
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($createRecordCommand->referenceEntityIdentifier);
-        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $code);
-        $labelValues = $this->getLabelValues($createRecordCommand, $referenceEntityIdentifier);
+        $code = AssetCode::fromString($createAssetCommand->code);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($createAssetCommand->assetFamilyIdentifier);
+        $identifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $code);
+        $labelValues = $this->getLabelValues($createAssetCommand, $assetFamilyIdentifier);
 
-        $record = Record::create(
+        $asset = Asset::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             ValueCollection::fromValues($labelValues)
         );
 
-        $this->recordRepository->create($record);
+        $this->assetRepository->create($asset);
     }
 
-    private function getLabelValues(CreateRecordCommand $createRecordCommand, ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function getLabelValues(CreateAssetCommand $createAssetCommand, AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        if (empty($createRecordCommand->labels)) {
+        if (empty($createAssetCommand->labels)) {
             return [];
         }
 
         /** @var AttributeAsLabelReference $attributeAsLabelReference */
-        $attributeAsLabelReference = $this->findAttributeAsLabel->find($referenceEntityIdentifier);
+        $attributeAsLabelReference = $this->findAttributeAsLabel->find($assetFamilyIdentifier);
         if ($attributeAsLabelReference->isEmpty()) {
             return [];
         }
 
         $labelValues = [];
-        foreach ($createRecordCommand->labels as $locale => $label) {
+        foreach ($createAssetCommand->labels as $locale => $label) {
             $labelValues[] = Value::create(
                 $attributeAsLabelReference->getIdentifier(),
                 ChannelReference::noReference(),

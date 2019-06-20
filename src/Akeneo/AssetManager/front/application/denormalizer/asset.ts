@@ -1,21 +1,21 @@
-import Record, {NormalizedRecord, createRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
-import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
-import denormalizeValue from 'akeneoreferenceentity/application/denormalizer/record/value';
-import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+import Asset, {NormalizedAsset, createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset/identifier';
+import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import denormalizeValue from 'akeneoassetmanager/application/denormalizer/asset/value';
+import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 
-const denormalizeRecord = (normalizedRecord: NormalizedRecord): Record => {
-  const identifier = createIdentifier(normalizedRecord.identifier);
-  const code = createCode(normalizedRecord.code);
-  const referenceEntityIdentifier = createReferenceEntityIdentifier(normalizedRecord.reference_entity_identifier);
-  const labelCollection = createLabelCollection(normalizedRecord.labels);
-  const image = denormalizeFile(normalizedRecord.image);
-  const valueCollection = createValueCollection(normalizedRecord.values.map(denormalizeValue));
+const denormalizeAsset = (normalizedAsset: NormalizedAsset): Asset => {
+  const identifier = createIdentifier(normalizedAsset.identifier);
+  const code = createCode(normalizedAsset.code);
+  const assetFamilyIdentifier = createAssetFamilyIdentifier(normalizedAsset.asset_family_identifier);
+  const labelCollection = createLabelCollection(normalizedAsset.labels);
+  const image = denormalizeFile(normalizedAsset.image);
+  const valueCollection = createValueCollection(normalizedAsset.values.map(denormalizeValue));
 
-  return createRecord(identifier, referenceEntityIdentifier, code, labelCollection, image, valueCollection);
+  return createAsset(identifier, assetFamilyIdentifier, code, labelCollection, image, valueCollection);
 };
 
-export default denormalizeRecord;
+export default denormalizeAsset;

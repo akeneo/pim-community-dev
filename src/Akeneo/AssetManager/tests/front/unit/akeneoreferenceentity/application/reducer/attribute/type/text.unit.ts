@@ -1,6 +1,6 @@
-import {reducer} from 'akeneoreferenceentity/application/reducer/attribute/type/text';
+import {reducer} from 'akeneoassetmanager/application/reducer/attribute/type/text';
 
-describe('akeneo > reference entity > application > reducer > attribute --- edit', () => {
+describe('akeneo > asset family > application > reducer > attribute --- edit', () => {
   test('I can update the textarea property of the attribute', () => {
     const state = {
       type: 'text',

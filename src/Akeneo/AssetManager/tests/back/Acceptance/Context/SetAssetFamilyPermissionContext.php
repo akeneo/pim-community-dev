@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetUserGroupPermissionCommand;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityPermissionRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsCommand;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetUserGroupPermissionCommand;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyPermissionRepository;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -26,19 +26,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-final class SetReferenceEntityPermissionContext implements Context
+final class SetAssetFamilyPermissionContext implements Context
 {
     private const USER_GROUPS = ['IT support' => 154, 'Catalog Manager' => 122];
-    private const REFERENCE_ENTITY_IDENTIFIER = 'designer';
+    private const ASSET_FAMILY_IDENTIFIER = 'designer';
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
-    /** @var InMemoryReferenceEntityPermissionRepository */
-    private $referenceEntityPermissionRepository;
+    /** @var InMemoryAssetFamilyPermissionRepository */
+    private $assetFamilyPermissionRepository;
 
-    /** @var SetReferenceEntityPermissionsHandler */
-    private $setReferenceEntityPermissionsHandler;
+    /** @var SetAssetFamilyPermissionsHandler */
+    private $setAssetFamilyPermissionsHandler;
 
     /** @var ExceptionContext */
     private $exceptionContext;
@@ -46,44 +46,44 @@ final class SetReferenceEntityPermissionContext implements Context
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository,
-        SetReferenceEntityPermissionsHandler $setReferenceEntityPermissionsHandler,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository,
+        SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,
         ExceptionContext $exceptionContext,
         ValidatorInterface $validator,
-        CreateReferenceEntityHandler $createReferenceEntityHandler
+        CreateAssetFamilyHandler $createAssetFamilyHandler
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->referenceEntityPermissionRepository = $referenceEntityPermissionRepository;
-        $this->setReferenceEntityPermissionsHandler = $setReferenceEntityPermissionsHandler;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->assetFamilyPermissionRepository = $assetFamilyPermissionRepository;
+        $this->setAssetFamilyPermissionsHandler = $setAssetFamilyPermissionsHandler;
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
     }
 
     /**
-     * @Given /^a reference entity without permissions$/
+     * @Given /^an asset family without permissions$/
      */
-    public function aReferenceEntityWithoutPermissions()
+    public function aAssetFamilyWithoutPermissions()
     {
-        $createCommand = new CreateReferenceEntityCommand(self::REFERENCE_ENTITY_IDENTIFIER, []);
+        $createCommand = new CreateAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
         }
 
-        ($this->createReferenceEntityHandler)($createCommand);
+        ($this->createAssetFamilyHandler)($createCommand);
     }
 
     /**
-     * @When /^the user sets the following permissions for the reference entity:$/
+     * @When /^the user sets the following permissions for the asset family:$/
      */
-    public function theUserSetsTheFollowingPermissionsForTheReferenceEntity(TableNode $userGroupPermissions)
+    public function theUserSetsTheFollowingPermissionsForTheAssetFamily(TableNode $userGroupPermissions)
     {
         $permissionsByUserGroupCommands = [];
         foreach ($userGroupPermissions->getColumnsHash() as $userGroupPermission) {
@@ -94,30 +94,30 @@ final class SetReferenceEntityPermissionContext implements Context
             $permissionsByUserGroupCommands[] = $command;
         }
 
-        $setPermissionsCommand = new SetReferenceEntityPermissionsCommand(
-            self::REFERENCE_ENTITY_IDENTIFIER,
+        $setPermissionsCommand = new SetAssetFamilyPermissionsCommand(
+            self::ASSET_FAMILY_IDENTIFIER,
             $permissionsByUserGroupCommands
         );
         
         try {
-            ($this->setReferenceEntityPermissionsHandler)($setPermissionsCommand);
+            ($this->setAssetFamilyPermissionsHandler)($setPermissionsCommand);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
     }
 
     /**
-     * @Then /^there should be a \'([^\']*)\' permission right for the user group \'([^\']*)\' on the reference entity$/
+     * @Then /^there should be a \'([^\']*)\' permission right for the user group \'([^\']*)\' on the asset family$/
      */
-    public function thereShouldBeAPermissionRightForTheUserGroupOnTheReferenceEntity($rightLevel, $userGroupName)
+    public function thereShouldBeAPermissionRightForTheUserGroupOnTheAssetFamily($rightLevel, $userGroupName)
     {
         $userGroupIdentifier = self::USER_GROUPS[$userGroupName];
 
         $userGroupIdentifier = UserGroupIdentifier::fromInteger($userGroupIdentifier);
         $rightLevel = RightLevel::fromString($rightLevel);
 
-        $hasPermission = $this->referenceEntityPermissionRepository->hasPermission(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+        $hasPermission = $this->assetFamilyPermissionRepository->hasPermission(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             $userGroupIdentifier,
             $rightLevel
         );

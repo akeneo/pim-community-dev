@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,150 +39,150 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CreateOrUpdateRecordAction
+class CreateOrUpdateAssetAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    /** @var AssetExistsInterface */
+    private $assetExists;
 
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
+    /** @var EditAssetCommandFactory */
+    private $editAssetCommandFactory;
 
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
+    /** @var EditAssetHandler */
+    private $editAssetHandler;
 
-    /** @var CreateRecordHandler */
-    private $createRecordHandler;
+    /** @var CreateAssetHandler */
+    private $createAssetHandler;
 
     /** @var Router */
     private $router;
 
-    /** @var RecordValidator */
-    private $recordStructureValidator;
+    /** @var AssetValidator */
+    private $assetStructureValidator;
 
     /** @var ValidatorInterface */
-    private $recordDataValidator;
+    private $assetDataValidator;
 
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        RecordExistsInterface $recordExists,
-        EditRecordCommandFactory $editRecordCommandFactory,
-        EditRecordHandler $editRecordHandler,
-        CreateRecordHandler $createRecordHandler,
+        AssetFamilyExistsInterface $assetFamilyExists,
+        AssetExistsInterface $assetExists,
+        EditAssetCommandFactory $editAssetCommandFactory,
+        EditAssetHandler $editAssetHandler,
+        CreateAssetHandler $createAssetHandler,
         Router $router,
-        RecordValidator $recordStructureValidator,
-        ValidatorInterface $recordDataValidator
+        AssetValidator $assetStructureValidator,
+        ValidatorInterface $assetDataValidator
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->recordExists = $recordExists;
-        $this->editRecordCommandFactory = $editRecordCommandFactory;
-        $this->editRecordHandler = $editRecordHandler;
-        $this->createRecordHandler = $createRecordHandler;
+        $this->assetFamilyExists = $assetFamilyExists;
+        $this->assetExists = $assetExists;
+        $this->editAssetCommandFactory = $editAssetCommandFactory;
+        $this->editAssetHandler = $editAssetHandler;
+        $this->createAssetHandler = $createAssetHandler;
         $this->router = $router;
-        $this->recordStructureValidator = $recordStructureValidator;
-        $this->recordDataValidator = $recordDataValidator;
+        $this->assetStructureValidator = $assetStructureValidator;
+        $this->assetDataValidator = $assetDataValidator;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier, string $code): Response
+    public function __invoke(Request $request, string $assetFamilyIdentifier, string $code): Response
     {
         try {
-            $recordCode = RecordCode::fromString($code);
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $assetCode = AssetCode::fromString($code);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        if (!$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        if (!$this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
-        $normalizedRecord = $this->getNormalizedRecordFromRequest($request);
-        $structureErrors = $this->recordStructureValidator->validate($referenceEntityIdentifier, $normalizedRecord);
+        $normalizedAsset = $this->getNormalizedAssetFromRequest($request);
+        $structureErrors = $this->assetStructureValidator->validate($assetFamilyIdentifier, $normalizedAsset);
 
         if (!empty($structureErrors)) {
             return new JsonResponse([
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'The record has an invalid format.',
+                'message' => 'The asset has an invalid format.',
                 'errors' => JsonSchemaErrorsFormatter::format($structureErrors),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $createRecordCommand = $this->createValidatedRecordCommandIfNeeded($referenceEntityIdentifier, $recordCode);
-        $editRecordCommand = $this->createValidatedEditCommand($referenceEntityIdentifier, $normalizedRecord);
+        $createAssetCommand = $this->createValidatedAssetCommandIfNeeded($assetFamilyIdentifier, $assetCode);
+        $editAssetCommand = $this->createValidatedEditCommand($assetFamilyIdentifier, $normalizedAsset);
 
         $responseStatusCode = Response::HTTP_NO_CONTENT;
 
-        if (null !== $createRecordCommand) {
+        if (null !== $createAssetCommand) {
             $responseStatusCode = Response::HTTP_CREATED;
-            ($this->createRecordHandler)($createRecordCommand);
+            ($this->createAssetHandler)($createAssetCommand);
         }
 
-        ($this->editRecordHandler)($editRecordCommand);
+        ($this->editAssetHandler)($editAssetCommand);
 
-        return $this->createResponse($responseStatusCode, $referenceEntityIdentifier, $recordCode);
+        return $this->createResponse($responseStatusCode, $assetFamilyIdentifier, $assetCode);
     }
 
-    private function createValidatedRecordCommandIfNeeded(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?CreateRecordCommand
+    private function createValidatedAssetCommandIfNeeded(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?CreateAssetCommand
     {
-        if ($this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode)) {
+        if ($this->assetExists->withAssetFamilyAndCode($assetFamilyIdentifier, $assetCode)) {
             return null;
         }
 
-        $command = new CreateRecordCommand(
-            $referenceEntityIdentifier->normalize(),
-            $recordCode->normalize(),
+        $command = new CreateAssetCommand(
+            $assetFamilyIdentifier->normalize(),
+            $assetCode->normalize(),
             []
         );
 
-        $violations = $this->recordDataValidator->validate($command);
+        $violations = $this->assetDataValidator->validate($command);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
+            throw new ViolationHttpException($violations, 'The asset has data that does not comply with the business rules.');
         }
 
         return $command;
     }
 
-    private function createValidatedEditCommand(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): EditRecordCommand
+    private function createValidatedEditCommand(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): EditAssetCommand
     {
         try {
-            $editRecordCommand = $this->editRecordCommandFactory->create($referenceEntityIdentifier, $normalizedRecord);
+            $editAssetCommand = $this->editAssetCommandFactory->create($assetFamilyIdentifier, $normalizedAsset);
         } catch (\InvalidArgumentException $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        $violations = $this->recordDataValidator->validate($editRecordCommand);
+        $violations = $this->assetDataValidator->validate($editAssetCommand);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
+            throw new ViolationHttpException($violations, 'The asset has data that does not comply with the business rules.');
         }
 
-        return $editRecordCommand;
+        return $editAssetCommand;
     }
 
-    private function getNormalizedRecordFromRequest(Request $request): array
+    private function getNormalizedAssetFromRequest(Request $request): array
     {
-        $normalizedRecord = json_decode($request->getContent(), true);
+        $normalizedAsset = json_decode($request->getContent(), true);
 
-        if (null === $normalizedRecord) {
+        if (null === $normalizedAsset) {
             throw new BadRequestHttpException('Invalid json message received');
         }
 
         $code = $request->get('code');
-        $codeInBody = $normalizedRecord['code'] ?? null;
+        $codeInBody = $normalizedAsset['code'] ?? null;
         if ($codeInBody !== $code) {
-            throw new UnprocessableEntityHttpException('The code of the record provided in the URI must be the same as the one provided in the request body.');
+            throw new UnprocessableEntityHttpException('The code of the asset provided in the URI must be the same as the one provided in the request body.');
         }
 
-        return $normalizedRecord;
+        return $normalizedAsset;
     }
 
-    private function createResponse(int $responseStatusCode, ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): Response
+    private function createResponse(int $responseStatusCode, AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): Response
     {
         $headers = [
-            'location' => $this->router->generate('akeneo_reference_entities_record_rest_connector_get', [
-                'referenceEntityIdentifier' => $referenceEntityIdentifier->normalize(),
-                'code' => $recordCode->normalize(),
+            'location' => $this->router->generate('akeneo_asset_manager_asset_rest_connector_get', [
+                'assetFamilyIdentifier' => $assetFamilyIdentifier->normalize(),
+                'code' => $assetCode->normalize(),
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 

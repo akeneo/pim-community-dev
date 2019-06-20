@@ -1,14 +1,14 @@
-import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {denormalize as denormalizeImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
-import {ConcreteImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
-import {createIdentifier as denormalizeAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {denormalize as denormalizeImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {ConcreteImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {createIdentifier as denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
 const description = denormalizeTextAttribute({
   identifier: 'description_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -24,7 +24,7 @@ const description = denormalizeTextAttribute({
 });
 const frontView = denormalizeImageAttribute({
   identifier: 'front_view_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'front_view',
   labels: {en_US: 'Front view'},
   type: 'image',
@@ -50,7 +50,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
     expect(() => {
       new ConcreteImageAttribute(
         denormalizeAttributeIdentifier('front_view_1234'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'}),
         true,
@@ -62,7 +62,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
     expect(() => {
       new ConcreteImageAttribute(
         denormalizeAttributeIdentifier('front_view_1234'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'}),
         true,
@@ -73,7 +73,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
     expect(() => {
       new ConcreteImageAttribute(
         'front_view_1234',
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'}),
         true,

@@ -11,26 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record;
+namespace spec\Akeneo\AssetManager\Domain\Model\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use PhpSpec\ObjectBehavior;
 
-class RecordIdentifierSpec extends ObjectBehavior
+class AssetIdentifierSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('create', ['a_reference_entity_identifier', 'a_record_identifier', 'fingerprint']);
+        $this->beConstructedThrough('create', ['an_asset_family_identifier', 'a_asset_identifier', 'fingerprint']);
     }
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(RecordIdentifier::class);
+        $this->shouldHaveType(AssetIdentifier::class);
     }
 
     public function it_should_contain_only_letters_numbers_dashes_and_underscores()
     {
-        $this->beConstructedThrough('fromString', ['record_identifier!']);
+        $this->beConstructedThrough('fromString', ['asset_identifier!']);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
 
         $this->beConstructedThrough('create', ['valid_identifier', 'badId!', 'fingerprint/']);
@@ -47,24 +47,24 @@ class RecordIdentifierSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', [str_repeat('a', 256)]);
     }
 
-    public function it_cannot_be_created_with_an_empty_reference_entity_identifier()
+    public function it_cannot_be_created_with_an_empty_asset_family_identifier()
     {
         $this->shouldThrow('\InvalidArgumentException')->during('create', ['', 'starck', 'fingerprint']);
     }
 
-    public function it_cannot_be_created_with_an_invalid_reference_entity_identifier()
+    public function it_cannot_be_created_with_an_invalid_asset_family_identifier()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('create', ['invalid_reference_entity!', 'starck', 'fingerprint']);
+        $this->shouldThrow('\InvalidArgumentException')->during('create', ['invalid_asset_family!', 'starck', 'fingerprint']);
     }
 
-    public function it_cannot_be_created_with_an_empty_record_code()
+    public function it_cannot_be_created_with_an_empty_asset_code()
     {
         $this->shouldThrow('\InvalidArgumentException')->during('create', ['designer', '', 'fingerprint']);
     }
 
-    public function it_cannot_be_created_with_an_invalid_record_code()
+    public function it_cannot_be_created_with_an_invalid_asset_code()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('create', ['designer', 'invalid_record!', 'fingerprint']);
+        $this->shouldThrow('\InvalidArgumentException')->during('create', ['designer', 'invalid_asset!', 'fingerprint']);
     }
 
     public function it_cannot_be_created_with_an_empty_fingerprint()
@@ -79,14 +79,14 @@ class RecordIdentifierSpec extends ObjectBehavior
 
     public function it_is_possible_to_compare_it()
     {
-        $sameIdentifier = RecordIdentifier::create(
-            'a_reference_entity_identifier',
-            'a_record_identifier',
+        $sameIdentifier = AssetIdentifier::create(
+            'an_asset_family_identifier',
+            'a_asset_identifier',
             'fingerprint'
         );
-        $differentIdentifier = RecordIdentifier::create(
-            'an_other_reference_entity_identifier',
-            'other_record_identifier',
+        $differentIdentifier = AssetIdentifier::create(
+            'an_other_asset_family_identifier',
+            'other_asset_identifier',
             'other_fingerprint'
         );
         $this->equals($sameIdentifier)->shouldReturn(true);
@@ -95,11 +95,11 @@ class RecordIdentifierSpec extends ObjectBehavior
 
     public function it_normalize_itself()
     {
-        $this->normalize()->shouldReturn('a_reference_entity_i_a_record_identifier_fingerprint');
+        $this->normalize()->shouldReturn('an_asset_family_iden_a_asset_identifier_fingerprint');
     }
 
     public function it_can_be_transformed_into_a_string()
     {
-        $this->__toString()->shouldReturn('a_reference_entity_i_a_record_identifier_fingerprint');
+        $this->__toString()->shouldReturn('an_asset_family_iden_a_asset_identifier_fingerprint');
     }
 }

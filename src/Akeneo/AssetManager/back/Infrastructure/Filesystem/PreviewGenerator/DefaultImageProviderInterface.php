@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator;
+namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

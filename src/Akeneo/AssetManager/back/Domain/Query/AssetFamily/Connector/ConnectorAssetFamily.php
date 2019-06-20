@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ConnectorReferenceEntity
+class ConnectorAssetFamily
 {
-    /** @var ReferenceEntityIdentifier */
+    /** @var AssetFamilyIdentifier */
     private $identifier;
 
     /** @var LabelCollection */
@@ -33,7 +33,7 @@ class ConnectorReferenceEntity
     private $image;
 
     public function __construct(
-        ReferenceEntityIdentifier $identifier,
+        AssetFamilyIdentifier $identifier,
         LabelCollection $labelCollection,
         Image $image
     ) {
@@ -52,7 +52,7 @@ class ConnectorReferenceEntity
         ];
     }
 
-    public function getIdentifier(): ReferenceEntityIdentifier
+    public function getIdentifier(): AssetFamilyIdentifier
     {
         return $this->identifier;
     }

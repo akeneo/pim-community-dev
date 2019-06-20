@@ -1,6 +1,6 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import Key from 'akeneoreferenceentity/tools/key';
+import __ from 'akeneoassetmanager/tools/translator';
+import Key from 'akeneoassetmanager/tools/key';
 
 interface Props {
   message: string;
@@ -37,7 +37,7 @@ class DeleteModal extends React.Component<Props> {
             <div>
               <div className="AknFullPage-titleContainer">
                 <div className="AknFullPage-subTitle">{title}</div>
-                <div className="AknFullPage-title">{__('pim_reference_entity.modal.delete.subtitle')}</div>
+                <div className="AknFullPage-title">{__('pim_asset_manager.modal.delete.subtitle')}</div>
                 <div className="AknFullPage-description AknFullPage-description--bottom">{message}</div>
               </div>
               <div className="AknButtonList">
@@ -49,11 +49,11 @@ class DeleteModal extends React.Component<Props> {
                   }}
                   onClick={onCancel}
                 >
-                  {__('pim_reference_entity.modal.delete.button.cancel')}
+                  {__('pim_asset_manager.modal.delete.button.cancel')}
                 </button>
 
                 <button className="AknButtonList-item AknButton AknButton--important ok" onClick={onConfirm}>
-                  {__('pim_reference_entity.modal.delete.button.confirm')}
+                  {__('pim_asset_manager.modal.delete.button.confirm')}
                 </button>
               </div>
             </div>

@@ -1,34 +1,34 @@
 import {
-  notifyRecordCreateFailed,
-  notifyRecordWellCreated,
-} from 'akeneoreferenceentity/application/action/record/notify';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+  notifyAssetCreateFailed,
+  notifyAssetWellCreated,
+} from 'akeneoassetmanager/application/action/asset/notify';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
-  recordCreationErrorOccured,
-  recordCreationSucceeded,
-  recordCreationStart,
-} from 'akeneoreferenceentity/domain/event/record/create';
-import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
-import {createRecord as recordFactory} from 'akeneoreferenceentity/domain/model/record/record';
-import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
-import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
-import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
-import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
-import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
-import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
+  assetCreationErrorOccured,
+  assetCreationSucceeded,
+  assetCreationStart,
+} from 'akeneoassetmanager/domain/event/asset/create';
+import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset/identifier';
+import {createAsset as assetFactory} from 'akeneoassetmanager/domain/model/asset/asset';
+import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
+import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {redirectToAsset} from 'akeneoassetmanager/application/action/asset/router';
+import {updateAssetResults} from 'akeneoassetmanager/application/action/asset/search';
 
-export const createRecord = (createAnother: boolean) => async (
+export const createAsset = (createAnother: boolean) => async (
   dispatch: any,
   getState: () => EditState
 ): Promise<void> => {
-  const referenceEntity = getState().form.data;
-  const {code, labels} = getState().createRecord.data;
-  const record = recordFactory(
+  const assetFamily = getState().form.data;
+  const {code, labels} = getState().createAsset.data;
+  const asset = assetFactory(
     createIdentifier(code),
-    createReferenceEntityIdentifier(referenceEntity.identifier),
+    createAssetFamilyIdentifier(assetFamily.identifier),
     createCode(code),
     createLabelCollection(labels),
     createEmptyFile(),
@@ -36,27 +36,27 @@ export const createRecord = (createAnother: boolean) => async (
   );
 
   try {
-    let errors = await recordSaver.create(record);
+    let errors = await assetSaver.create(asset);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(recordCreationErrorOccured(validationErrors));
+      dispatch(assetCreationErrorOccured(validationErrors));
 
       return;
     }
   } catch (error) {
-    dispatch(notifyRecordCreateFailed());
+    dispatch(notifyAssetCreateFailed());
 
     return;
   }
 
-  dispatch(notifyRecordWellCreated());
+  dispatch(notifyAssetWellCreated());
   if (createAnother) {
-    dispatch(updateRecordResults());
-    dispatch(recordCreationStart());
+    dispatch(updateAssetResults());
+    dispatch(assetCreationStart());
   } else {
-    dispatch(recordCreationSucceeded());
-    dispatch(redirectToRecord(record.getReferenceEntityIdentifier(), record.getCode()));
+    dispatch(assetCreationSucceeded());
+    dispatch(redirectToAsset(asset.getAssetFamilyIdentifier(), asset.getCode()));
   }
 
   return;

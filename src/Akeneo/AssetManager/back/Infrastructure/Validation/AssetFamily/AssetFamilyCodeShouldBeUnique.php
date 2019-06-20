@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks whether a given reference entity identifier already exists in the data referential
+ * Checks whether a given asset family identifier already exists in the data referential
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityCodeShouldBeUnique extends Constraint
+class AssetFamilyCodeShouldBeUnique extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.code.should_be_unique';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.code.should_be_unique';
 
     public function getTargets()
     {
@@ -32,6 +32,6 @@ class ReferenceEntityCodeShouldBeUnique extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.reference_entity.code_is_unique';
+        return 'akeneo_assetmanager.validator.asset_family.code_is_unique';
     }
 }

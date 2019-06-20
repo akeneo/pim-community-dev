@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetAttributeCommand;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommandFactory
+class CreateAssetAttributeCommandFactory extends AbstractCreateAttributeCommandFactory
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['type']) && 'record' === $normalizedCommand['type'];
+        return isset($normalizedCommand['type']) && 'asset' === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
@@ -32,14 +32,14 @@ class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommand
         $this->checkCommonProperties($normalizedCommand);
         $this->checkAdditionalProperties($normalizedCommand);
 
-        $command = new CreateRecordAttributeCommand(
-            $normalizedCommand['reference_entity_identifier'],
+        $command = new CreateAssetAttributeCommand(
+            $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
             $normalizedCommand['value_per_channel'],
             $normalizedCommand['value_per_locale'],
-            $normalizedCommand['record_type']
+            $normalizedCommand['asset_type']
         );
 
         return $command;
@@ -51,7 +51,7 @@ class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommand
     private function checkAdditionalProperties(array $nomalizedCommand): void
     {
         $keysToCheck = [
-            'record_type',
+            'asset_type',
         ];
 
         foreach ($keysToCheck as $keyToCheck) {

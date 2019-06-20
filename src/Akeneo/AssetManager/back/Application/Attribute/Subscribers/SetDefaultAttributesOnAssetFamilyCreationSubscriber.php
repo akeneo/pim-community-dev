@@ -11,42 +11,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\Subscribers;
+namespace Akeneo\AssetManager\Application\Attribute\Subscribers;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityCreatedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class SetDefaultAttributesOnReferenceEntityCreationSubscriber implements EventSubscriberInterface
+class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscriberInterface
 {
     /** @var CreateAttributeHandler */
     private $createAttributeHandler;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         CreateAttributeHandler $createAttributeHandler
     ) {
         $this->createAttributeHandler = $createAttributeHandler;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -56,23 +56,23 @@ class SetDefaultAttributesOnReferenceEntityCreationSubscriber implements EventSu
     public static function getSubscribedEvents()
     {
         return [
-            ReferenceEntityCreatedEvent::class => 'whenReferenceEntityCreated',
+            AssetFamilyCreatedEvent::class => 'whenAssetFamilyCreated',
         ];
     }
 
-    public function whenReferenceEntityCreated(ReferenceEntityCreatedEvent $referenceEntityCreatedEvent): void
+    public function whenAssetFamilyCreated(AssetFamilyCreatedEvent $assetFamilyCreatedEvent): void
     {
-        $referenceEntityIdentifier = $referenceEntityCreatedEvent->getReferenceEntityIdentifier();
-        $this->createAttributeAsLabel($referenceEntityIdentifier);
-        $this->createAttributeAsImage($referenceEntityIdentifier);
-        $this->updateReferenceEntityWithAttributeAsLabelAndImage($referenceEntityIdentifier);
+        $assetFamilyIdentifier = $assetFamilyCreatedEvent->getAssetFamilyIdentifier();
+        $this->createAttributeAsLabel($assetFamilyIdentifier);
+        $this->createAttributeAsImage($assetFamilyIdentifier);
+        $this->updateAssetFamilyWithAttributeAsLabelAndImage($assetFamilyIdentifier);
     }
 
-    private function createAttributeAsLabel(ReferenceEntityIdentifier $referenceEntityIdentifier): void
+    private function createAttributeAsLabel(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
         $createLabelAttributeCommand = new CreateTextAttributeCommand(
-            $referenceEntityIdentifier->normalize(),
-            ReferenceEntity::DEFAULT_ATTRIBUTE_AS_LABEL_CODE,
+            $assetFamilyIdentifier->normalize(),
+            AssetFamily::DEFAULT_ATTRIBUTE_AS_LABEL_CODE,
             [],
             false,
             false,
@@ -87,11 +87,11 @@ class SetDefaultAttributesOnReferenceEntityCreationSubscriber implements EventSu
         ($this->createAttributeHandler)($createLabelAttributeCommand);
     }
 
-    private function createAttributeAsImage(ReferenceEntityIdentifier $referenceEntityIdentifier): void
+    private function createAttributeAsImage(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
         $createImageAttributeCommand = new CreateImageAttributeCommand(
-            $referenceEntityIdentifier->normalize(),
-            ReferenceEntity::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE,
+            $assetFamilyIdentifier->normalize(),
+            AssetFamily::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE,
             [],
             false,
             false,
@@ -103,24 +103,24 @@ class SetDefaultAttributesOnReferenceEntityCreationSubscriber implements EventSu
         ($this->createAttributeHandler)($createImageAttributeCommand);
     }
 
-    private function updateReferenceEntityWithAttributeAsLabelAndImage(ReferenceEntityIdentifier $referenceEntityIdentifier): void
+    private function updateAssetFamilyWithAttributeAsLabelAndImage(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
 
-        $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
+        $attributes = $this->attributeRepository->findByAssetFamily($assetFamilyIdentifier);
         foreach ($attributes as $attribute) {
-            if (ReferenceEntity::DEFAULT_ATTRIBUTE_AS_LABEL_CODE === (string) $attribute->getCode()) {
-                $referenceEntity->updateAttributeAsLabelReference(
+            if (AssetFamily::DEFAULT_ATTRIBUTE_AS_LABEL_CODE === (string) $attribute->getCode()) {
+                $assetFamily->updateAttributeAsLabelReference(
                     AttributeAsLabelReference::fromAttributeIdentifier($attribute->getIdentifier())
                 );
             }
-            if (ReferenceEntity::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE === (string) $attribute->getCode()) {
-                $referenceEntity->updateAttributeAsImageReference(
+            if (AssetFamily::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE === (string) $attribute->getCode()) {
+                $assetFamily->updateAttributeAsImageReference(
                     AttributeAsImageReference::fromAttributeIdentifier($attribute->getIdentifier())
                 );
             }
         }
 
-        $this->referenceEntityRepository->update($referenceEntity);
+        $this->assetFamilyRepository->update($assetFamily);
     }
 }

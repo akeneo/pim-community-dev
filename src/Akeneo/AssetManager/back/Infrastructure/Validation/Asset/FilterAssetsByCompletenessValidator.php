@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class FilterRecordsByCompletenessValidator extends ConstraintValidator
+class FilterAssetsByCompletenessValidator extends ConstraintValidator
 {
     /** @var FindActivatedLocalesPerChannelsInterface */
     private $findActivatedLocalesPerChannels;
@@ -35,13 +35,13 @@ class FilterRecordsByCompletenessValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($recordQuery, Constraint $constraint)
+    public function validate($assetQuery, Constraint $constraint)
     {
-        $this->checkRecordQueryType($recordQuery);
+        $this->checkAssetQueryType($assetQuery);
         $this->checkConstraintType($constraint);
 
-        if ($recordQuery->hasFilter('complete')) {
-            $filter = $recordQuery->getFilter('complete');
+        if ($assetQuery->hasFilter('complete')) {
+            $filter = $assetQuery->getFilter('complete');
             $this->validateChannel($filter);
             $this->validateLocales($filter);
         }
@@ -49,15 +49,15 @@ class FilterRecordsByCompletenessValidator extends ConstraintValidator
 
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof FilterRecordsByCompleteness) {
-            throw new UnexpectedTypeException($constraint, FilterRecordsByCompleteness::class);
+        if (!$constraint instanceof FilterAssetsByCompleteness) {
+            throw new UnexpectedTypeException($constraint, FilterAssetsByCompleteness::class);
         }
     }
 
-    private function checkRecordQueryType($recordQuery): void
+    private function checkAssetQueryType($assetQuery): void
     {
-        if (!$recordQuery instanceof RecordQuery) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s"', RecordQuery::class));
+        if (!$assetQuery instanceof AssetQuery) {
+            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s"', AssetQuery::class));
         }
     }
 
@@ -67,7 +67,7 @@ class FilterRecordsByCompletenessValidator extends ConstraintValidator
         $channel = $filter['context']['channel'];
 
         if (!array_key_exists($channel, $activatedLocalesPerChannels)) {
-            $this->context->buildViolation(FilterRecordsByCompleteness::CHANNEL_SHOULD_EXIST)
+            $this->context->buildViolation(FilterAssetsByCompleteness::CHANNEL_SHOULD_EXIST)
                 ->setParameter('channel_identifier', $channel)
                 ->atPath('complete.channel')
                 ->addViolation();
@@ -90,8 +90,8 @@ class FilterRecordsByCompletenessValidator extends ConstraintValidator
 
         if (!empty($notActivatedLocales)) {
             $errorMessage = count($notActivatedLocales) > 1
-                ? FilterRecordsByCompleteness::LOCALES_SHOULD_BE_ACTIVATED
-                : FilterRecordsByCompleteness::LOCALE_SHOULD_BE_ACTIVATED;
+                ? FilterAssetsByCompleteness::LOCALES_SHOULD_BE_ACTIVATED
+                : FilterAssetsByCompleteness::LOCALE_SHOULD_BE_ACTIVATED;
 
             $this->context->buildViolation($errorMessage)
                 ->setParameter('locale_identifier', implode('","', $notActivatedLocales))

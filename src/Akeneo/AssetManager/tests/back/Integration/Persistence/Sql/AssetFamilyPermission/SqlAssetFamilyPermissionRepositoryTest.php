@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamilyPermission;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupPermission;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 
-class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
+class SqlAssetFamilyPermissionRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityPermissionRepositoryInterface */
+    /** @var AssetFamilyPermissionRepositoryInterface */
     private $repository;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission');
+        $this->repository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission');
         $this->resetDB();
         $this->loadFixtures();
     }
@@ -33,11 +33,11 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_saves_and_returns_a_reference_entity_permission()
+    public function it_saves_and_returns_an_asset_family_permission()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntityPermission = ReferenceEntityPermission::create(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamilyPermission = AssetFamilyPermission::create(
+            $assetFamilyIdentifier,
             [
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(10),
@@ -50,11 +50,11 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
             ]
         );
 
-        $this->repository->save($referenceEntityPermission);
-        $referenceEntityPermission = $this->repository->getByReferenceEntityIdentifier($referenceEntityIdentifier);
+        $this->repository->save($assetFamilyPermission);
+        $assetFamilyPermission = $this->repository->getByAssetFamilyIdentifier($assetFamilyIdentifier);
 
-        $this->assertEquals($referenceEntityPermission->normalize(), [
-            'reference_entity_identifier' => 'designer',
+        $this->assertEquals($assetFamilyPermission->normalize(), [
+            'asset_family_identifier' => 'designer',
             'permissions'                 => [
                 [
                     'user_group_identifier' => 10,
@@ -71,14 +71,14 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_a_reference_entity_permission_with_no_user_group_permission_when_there_are_no_permissions_set_for_it()
+    public function it_returns_an_asset_family_permission_with_no_user_group_permission_when_there_are_no_permissions_set_for_it()
     {
-        $referenceEntityPermission = $this->repository->getByReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString('designer')
+        $assetFamilyPermission = $this->repository->getByAssetFamilyIdentifier(
+            AssetFamilyIdentifier::fromString('designer')
         );
 
-        $this->assertEquals($referenceEntityPermission->normalize(), [
-            'reference_entity_identifier' => 'designer',
+        $this->assertEquals($assetFamilyPermission->normalize(), [
+            'asset_family_identifier' => 'designer',
             'permissions'                 => [],
         ]);
     }
@@ -86,10 +86,10 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_does_not_add_a_permission_for_a_reference_entity_that_does_not_exist()
+    public function it_does_not_add_a_permission_for_an_asset_family_that_does_not_exist()
     {
-        $referenceEntityPermission = ReferenceEntityPermission::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamilyPermission = AssetFamilyPermission::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(10),
@@ -99,7 +99,7 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->expectException(DBALException::class);
-        $this->repository->save($referenceEntityPermission);
+        $this->repository->save($assetFamilyPermission);
     }
 
     /**
@@ -107,8 +107,8 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_does_not_add_a_permission_for_a_user_group_that_does_not_exist()
     {
-        $referenceEntityPermission = ReferenceEntityPermission::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyPermission = AssetFamilyPermission::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(999),
@@ -118,13 +118,13 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->expectException(DBALException::class);
-        $this->repository->save($referenceEntityPermission);
+        $this->repository->save($assetFamilyPermission);
     }
 
     private function thereShouldBePermissionsInDatabase(array $expectedRows): void
     {
         $stmt = $this->get('database_connection')
-            ->executeQuery('SELECT * FROM akeneo_reference_entity_reference_entity_permissions;');
+            ->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family_permissions;');
         $actualRows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         Assert::assertJsonStringEqualsJsonString(
             json_encode($expectedRows),
@@ -135,15 +135,15 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadFixtures(): void
     {
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->create(
-                ReferenceEntity::create(
-                    ReferenceEntityIdentifier::fromString('designer'),
+                AssetFamily::create(
+                    AssetFamilyIdentifier::fromString('designer'),
                     [],
                     Image::createEmpty()
                 )

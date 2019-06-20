@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\ValidateAttributePropertiesImmutability;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\ValidateAttributePropertiesImmutability;
 use PhpSpec\ObjectBehavior;
 
 class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
@@ -36,9 +36,9 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute,
         ConnectorAttribute $attribute
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($assetFamilyIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -55,7 +55,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
             'is_rich_text_editor' => true
         ]);
 
-        $this->__invoke($referenceEntityIdentifier, $attributeCode, [
+        $this->__invoke($assetFamilyIdentifier, $attributeCode, [
             'code' => 'description',
             'type' => 'text',
             'value_per_channel' => true,
@@ -76,9 +76,9 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute,
         ConnectorAttribute $attribute
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($assetFamilyIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -86,7 +86,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
             'value_per_locale' => true,
         ]);
 
-        $errors = $this->__invoke($referenceEntityIdentifier, $attributeCode, [
+        $errors = $this->__invoke($assetFamilyIdentifier, $attributeCode, [
             'code' => 'description',
             'type' => 'option',
         ]);
@@ -99,9 +99,9 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute,
         ConnectorAttribute $attribute
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($assetFamilyIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -109,7 +109,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
             'value_per_locale' => true,
         ]);
 
-        $errors = $this->__invoke($referenceEntityIdentifier, $attributeCode, [
+        $errors = $this->__invoke($assetFamilyIdentifier, $attributeCode, [
             'code' => 'description',
             'type' => 'text',
             'value_per_channel' => false,
@@ -124,9 +124,9 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute,
         ConnectorAttribute $attribute
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($assetFamilyIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -134,7 +134,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
             'value_per_locale' => false,
         ]);
 
-        $errors = $this->__invoke($referenceEntityIdentifier, $attributeCode, [
+        $errors = $this->__invoke($assetFamilyIdentifier, $attributeCode, [
             'code' => 'description',
             'type' => 'text',
             'value_per_channel' => true,
@@ -145,27 +145,27 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_the_reference_entity_code_is_changed(
+    function it_returns_an_error_when_the_asset_family_code_is_changed(
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute,
         ConnectorAttribute $attribute
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($assetFamilyIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'designer_country',
-            'type' => 'record',
+            'type' => 'asset',
             'value_per_channel' => true,
             'value_per_locale' => false,
-            'reference_entity_code' => 'country'
+            'asset_family_code' => 'country'
         ]);
 
-        $errors = $this->__invoke($referenceEntityIdentifier, $attributeCode, [
+        $errors = $this->__invoke($assetFamilyIdentifier, $attributeCode, [
             'code' => 'designer_country',
-            'type' => 'record',
+            'type' => 'asset',
             'value_per_channel' => true,
             'value_per_locale' => false,
-            'reference_entity_code' => null
+            'asset_family_code' => null
         ]);
 
         $errors->shouldBeArray();
@@ -176,9 +176,9 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute,
         ConnectorAttribute $attribute
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('description');
-        $findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode)->willReturn($attribute);
+        $findConnectorAttribute->find($assetFamilyIdentifier, $attributeCode)->willReturn($attribute);
         $attribute->normalize()->willReturn([
             'code' => 'description',
             'type' => 'text',
@@ -186,7 +186,7 @@ class ValidateAttributePropertiesImmutabilitySpec extends ObjectBehavior
             'value_per_locale' => true,
         ]);
 
-        $errors = $this->__invoke($referenceEntityIdentifier, $attributeCode, [
+        $errors = $this->__invoke($assetFamilyIdentifier, $attributeCode, [
             'code' => 'description',
             'type' => 'text',
             'value_per_channel' => false,

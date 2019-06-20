@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ThereShouldBeLessRecordsThanLimit extends Constraint
+class ThereShouldBeLessAssetsThanLimit extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.record.validation.limit_reached';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset.validation.limit_reached';
 
     public function getTargets()
     {
@@ -30,6 +30,6 @@ class ThereShouldBeLessRecordsThanLimit extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.record.there_should_be_less_records_than_limit';
+        return 'akeneo_assetmanager.validator.asset.there_should_be_less_assets_than_limit';
     }
 }

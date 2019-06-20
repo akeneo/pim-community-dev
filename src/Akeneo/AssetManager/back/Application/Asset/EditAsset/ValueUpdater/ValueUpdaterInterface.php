@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -15,5 +15,5 @@ interface ValueUpdaterInterface
 {
     public function supports(AbstractEditValueCommand $command): bool;
 
-    public function __invoke(Record $record, AbstractEditValueCommand $command): void;
+    public function __invoke(Asset $asset, AbstractEditValueCommand $command): void;
 }

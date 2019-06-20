@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
 /**
- * List reference entity items.
+ * List asset family items.
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindReferenceEntityItemsInterface
+interface FindAssetFamilyItemsInterface
 {
     /**
-     * @return ReferenceEntityItem[]
+     * @return AssetFamilyItem[]
      */
     public function find(): array;
 }

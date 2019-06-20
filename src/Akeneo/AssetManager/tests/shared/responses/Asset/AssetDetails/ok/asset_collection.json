@@ -1,17 +1,17 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_record_get_rest",
+    "route": "akeneo_asset_manager_asset_get_rest",
     "query": {
-      "referenceEntityIdentifier": "designer",
-      "recordCode": "starck"
+      "assetFamilyIdentifier": "designer",
+      "assetCode": "starck"
     }
   },
   "response": {
     "status": 200,
     "body": {
       "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
-      "reference_entity_identifier": "designer",
+      "asset_family_identifier": "designer",
       "code": "starck",
       "labels": {
         "fr_FR": "Philippe Starck"
@@ -21,7 +21,7 @@
         {
           "attribute": {
             "identifier": "linked_cities_designer_fingerprint",
-            "reference_entity_identifier": "designer",
+            "asset_family_identifier": "designer",
             "code": "linked_cities",
             "labels": {
               "fr_FR": "Villes",
@@ -31,8 +31,8 @@
             "is_required": false,
             "value_per_channel": false,
             "value_per_locale": true,
-            "type": "record_collection",
-            "record_type": "cities"
+            "type": "asset_collection",
+            "asset_type": "cities"
           },
           "channel": null,
           "locale": "en_US",

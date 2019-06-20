@@ -1,16 +1,16 @@
-Feature: Reindex the records
-  In order to search through records
+Feature: Reindex the assets
+  In order to search through assets
   As a system administrator
-  I want to re-index the records of the Pim
+  I want to re-index the assets of the Pim
 
   @acceptance-back @success
-  Scenario: Re-index all the records of a specific reference entity
-    Given the reference entity "designers"
-    And none of the records of "designers" are indexed
-    When the system administrator reindexes all the records of "designers"
-    Then the records of the reference entity "designers" have been indexed
+  Scenario: Re-index all the assets of a specific asset family
+    Given the asset family "designers"
+    And none of the assets of "designers" are indexed
+    When the system administrator reindexes all the assets of "designers"
+    Then the assets of the asset family "designers" have been indexed
 
   @acceptance-back @error
-  Scenario: Cannot re-index records with wrong reference entity identifier
-    When the system administrator reindexes the records of a reference entity that does not exist
-    Then there should be a validation error with message 'The reference entity "unknown_reference_entity" was not found.'
+  Scenario: Cannot re-index assets with wrong asset family identifier
+    When the system administrator reindexes the assets of an asset family that does not exist
+    Then there should be a validation error with message 'The asset family "unknown_asset_family" was not found.'

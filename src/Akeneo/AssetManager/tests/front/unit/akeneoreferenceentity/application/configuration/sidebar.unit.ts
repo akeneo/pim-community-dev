@@ -1,9 +1,9 @@
-import {TabsProvider} from 'akeneoreferenceentity/application/configuration/sidebar';
+import {TabsProvider} from 'akeneoassetmanager/application/configuration/sidebar';
 
 jest.mock('require-context', name => {});
-jest.mock('akeneoreferenceentity/tools/security-context', name => {});
+jest.mock('akeneoassetmanager/tools/security-context', name => {});
 
-describe('akeneo > reference entity > application > configuration --- sidebar', () => {
+describe('akeneo > asset family > application > configuration --- sidebar', () => {
   test('I can get the tab list', () => {
     const tabProvider = TabsProvider.create(
       {
@@ -36,7 +36,7 @@ describe('akeneo > reference entity > application > configuration --- sidebar', 
       const confPath = `
 config:
     config:
-        akeneoreferenceentity/application/configuration/sidebar:
+        akeneoassetmanager/application/configuration/sidebar:
             my_view:
                 tabs:
                     tab-code:
@@ -67,7 +67,7 @@ Actual conf: {\"my_view\":{}}`;
       const confPath = `
 config:
     config:
-        akeneoreferenceentity/application/configuration/sidebar:
+        akeneoassetmanager/application/configuration/sidebar:
             my_view:
                 tabs:
                     tab-code:
@@ -122,7 +122,7 @@ config:
       const confPath = `
 config:
     config:
-        akeneoreferenceentity/application/configuration/sidebar:
+        akeneoassetmanager/application/configuration/sidebar:
             my_view:
                 tabs:
                     first:

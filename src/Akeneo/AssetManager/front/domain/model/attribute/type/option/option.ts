@@ -1,9 +1,9 @@
-import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import LabelCollection, {
   createLabelCollection,
   NormalizedLabelCollection,
-} from 'akeneoreferenceentity/domain/model/label-collection';
-import OptionCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
+} from 'akeneoassetmanager/domain/model/label-collection';
+import OptionCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
 export type NormalizedOptionCode = string;
 

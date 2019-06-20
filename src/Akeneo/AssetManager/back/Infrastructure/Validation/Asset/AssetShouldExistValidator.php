@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetCommand;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -17,14 +17,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RecordShouldExistValidator extends ConstraintValidator
+class AssetShouldExistValidator extends ConstraintValidator
 {
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    /** @var AssetExistsInterface */
+    private $assetExists;
 
-    public function __construct(RecordExistsInterface $recordExists)
+    public function __construct(AssetExistsInterface $assetExists)
     {
-        $this->recordExists = $recordExists;
+        $this->assetExists = $assetExists;
     }
 
     public function validate($command, Constraint $constraint)
@@ -32,13 +32,13 @@ class RecordShouldExistValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        $recordExist = $this->recordExists->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
-            RecordCode::fromString($command->recordCode)
+        $assetExist = $this->assetExists->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier),
+            AssetCode::fromString($command->assetCode)
         );
 
-        if (!$recordExist) {
-            $this->context->buildViolation(RecordShouldExist::ERROR_MESSAGE)
+        if (!$assetExist) {
+            $this->context->buildViolation(AssetShouldExist::ERROR_MESSAGE)
                 ->atPath('code')
                 ->addViolation();
         }
@@ -49,9 +49,9 @@ class RecordShouldExistValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof DeleteRecordCommand) {
+        if (!$command instanceof DeleteAssetCommand) {
             throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                DeleteRecordCommand::class, get_class($command)));
+                DeleteAssetCommand::class, get_class($command)));
         }
     }
 
@@ -60,7 +60,7 @@ class RecordShouldExistValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof RecordShouldExist) {
+        if (!$constraint instanceof AssetShouldExist) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }

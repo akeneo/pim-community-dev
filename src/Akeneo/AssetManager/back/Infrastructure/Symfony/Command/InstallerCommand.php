@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\AssetsInstaller;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
+use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\AssetsInstaller;
+use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * This commands reset the database fixtures for the reference entity.
+ * This commands reset the database fixtures for the asset family.
  * It also is an event listener used during the PIM isntallation.
  *
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -29,7 +29,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class InstallerCommand extends ContainerAwareCommand implements EventSubscriberInterface
 {
-    private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
+    private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:asset-manager:reset-fixtures';
 
     /** @var FixturesInstaller */
     private $fixturesInstaller;
@@ -61,7 +61,7 @@ class InstallerCommand extends ContainerAwareCommand implements EventSubscriberI
     {
         $this
             ->setName(self::RESET_FIXTURES_COMMAND_NAME)
-            ->setDescription('Resets the fixtures of the reference entity bounded context.')
+            ->setDescription('Resets the fixtures of the asset family bounded context.')
             ->setHidden(true);
     }
 

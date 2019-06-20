@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\BeforeAttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\BeforeAttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -46,10 +46,10 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
             throw new \RuntimeException('Attribute already exists');
         }
 
-        $attributesForEntity = $this->findByReferenceEntity($attribute->getReferenceEntityIdentifier());
+        $attributesForEntity = $this->findByAssetFamily($attribute->getAssetFamilyIdentifier());
         foreach ($attributesForEntity as $attributeForEntity) {
             if ($attribute->getOrder()->equals($attributeForEntity->getOrder())) {
-                throw new \Exception('An attribute already has this order for this reference entity');
+                throw new \Exception('An attribute already has this order for this asset family');
             }
         }
 
@@ -80,11 +80,11 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function findByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $attributes = [];
         foreach ($this->attributes as $attribute) {
-            if ($attribute->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+            if ($attribute->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
                 $attributes[] = $attribute;
             }
         }
@@ -95,9 +95,9 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
     {
-        return count($this->findByReferenceEntity($referenceEntityIdentifier));
+        return count($this->findByAssetFamily($assetFamilyIdentifier));
     }
 
     /**
@@ -118,7 +118,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         $this->eventDispatcher->dispatch(
             BeforeAttributeDeletedEvent::class,
             new BeforeAttributeDeletedEvent(
-                $this->getReferenceEntityIdentifier($attributeIdentifier),
+                $this->getAssetFamilyIdentifier($attributeIdentifier),
                 $attributeIdentifier
             )
         );
@@ -127,38 +127,38 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
 
         $this->eventDispatcher->dispatch(
             AttributeDeletedEvent::class,
-            new AttributeDeletedEvent($attribute->getReferenceEntityIdentifier(), $attributeIdentifier)
+            new AttributeDeletedEvent($attribute->getAssetFamilyIdentifier(), $attributeIdentifier)
         );
     }
 
     public function nextIdentifier(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode
     ): AttributeIdentifier {
         return AttributeIdentifier::create(
-            (string) $referenceEntityIdentifier,
+            (string) $assetFamilyIdentifier,
             (string) $attributeCode,
-            md5(sprintf('%s_%s', $referenceEntityIdentifier, $attributeCode))
+            md5(sprintf('%s_%s', $assetFamilyIdentifier, $attributeCode))
         );
     }
 
     /**
-     * Find a record by its code and entity.
+     * Find a asset by its code and entity.
      * It's a tooling method not present in the main interface, because we need a way to retrieve attributes by their
      * code only in acceptance test. The real application will always use identifiers.
      *
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      * @param AttributeCode            $code
      *
      * @return AbstractAttribute
      */
-    public function getByReferenceEntityAndCode(string $entityCode, string $attributeCode): AbstractAttribute
+    public function getByAssetFamilyAndCode(string $entityCode, string $attributeCode): AbstractAttribute
     {
-        $entityIdentifier = ReferenceEntityIdentifier::fromString($entityCode);
+        $entityIdentifier = AssetFamilyIdentifier::fromString($entityCode);
         $code = AttributeCode::fromString($attributeCode);
 
         foreach ($this->attributes as $attribute) {
-            if ($attribute->getCode()->equals($code) && $attribute->getReferenceEntityIdentifier()->equals($entityIdentifier)) {
+            if ($attribute->getCode()->equals($code) && $attribute->getAssetFamilyIdentifier()->equals($entityIdentifier)) {
                 return $attribute;
             }
         }
@@ -167,16 +167,16 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         );
     }
 
-    private function getReferenceEntityIdentifier(AttributeIdentifier $attributeIdentifier): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifier(AttributeIdentifier $attributeIdentifier): AssetFamilyIdentifier
     {
         foreach ($this->attributes as $attribute) {
             if ($attribute->getIdentifier()->equals($attributeIdentifier)) {
-                return $attribute->getReferenceEntityIdentifier();
+                return $attribute->getAssetFamilyIdentifier();
             }
         }
 
         throw new \Exception(
-            sprintf('Reference entity identifier not found for attribute %s', (string) $attributeIdentifier)
+            sprintf('Asset family identifier not found for attribute %s', (string) $attributeIdentifier)
         );
     }
 }

@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
@@ -41,9 +41,9 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->getAttributeIdentifier = $this->get('akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier');
+        $this->getAttributeIdentifier = $this->get('akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier');
         $this->resetDB();
-        $this->loadReferenceEntity();
+        $this->loadAssetFamily();
     }
 
     /**
@@ -52,8 +52,8 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
     public function it_returns_true_if_the_attribute_exists_for_the_given_identifier()
     {
         $identifier = $this->loadAttribute('designer', 'name');
-        $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('designer'), AttributeCode::fromString('name')
+        $attributeIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('designer'), AttributeCode::fromString('name')
         );
         Assert::assertEquals($identifier, $attributeIdentifier);
     }
@@ -61,45 +61,45 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_the_attribute_identifier_does_not_exist_for_the_given_reference_entity_identifier_and_attribute_code()
+    public function it_throws_an_exception_if_the_attribute_identifier_does_not_exist_for_the_given_asset_family_identifier_and_attribute_code()
     {
         $this->expectException(\LogicException::class);
-        $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('designer'), AttributeCode::fromString('name')
+        $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('designer'), AttributeCode::fromString('name')
         );
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntity(): void
+    private function loadAssetFamily(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
     }
 
-    private function loadAttribute(string $referenceEntityIdentifier, string $attributeCode, int $order = 2): AttributeIdentifier
+    private function loadAttribute(string $assetFamilyIdentifier, string $attributeCode, int $order = 2): AttributeIdentifier
     {
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray(['fr_FR' => 'dummy label']),
                 AttributeOrder::fromInteger($order),

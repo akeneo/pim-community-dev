@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionCollectionData;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\OptionCollectionDataHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionCollectionData;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\OptionCollectionDataHydrator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

@@ -1,22 +1,22 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import Flag from 'akeneoreferenceentity/tools/component/flag';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import __ from 'akeneoassetmanager/tools/translator';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import Flag from 'akeneoassetmanager/tools/component/flag';
 import {
-  recordCreationRecordCodeUpdated,
-  recordCreationLabelUpdated,
-  recordCreationCancel,
-} from 'akeneoreferenceentity/domain/event/record/create';
-import {createRecord} from 'akeneoreferenceentity/application/action/record/create';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
-import Key from 'akeneoreferenceentity/tools/key';
-import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
+  assetCreationAssetCodeUpdated,
+  assetCreationLabelUpdated,
+  assetCreationCancel,
+} from 'akeneoassetmanager/domain/event/asset/create';
+import {createAsset} from 'akeneoassetmanager/application/action/asset/create';
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
+import AssetFamily, {
+  denormalizeAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
+import Key from 'akeneoassetmanager/tools/key';
+import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 
 interface StateProps {
   context: {
@@ -29,12 +29,12 @@ interface StateProps {
     };
   };
   errors: ValidationError[];
-  referenceEntity: ReferenceEntity;
+  assetFamily: AssetFamily;
 }
 
 interface DispatchProps {
   events: {
-    onRecordCodeUpdated: (value: string) => void;
+    onAssetCodeUpdated: (value: string) => void;
     onLabelUpdated: (value: string, locale: string) => void;
     onCancel: () => void;
     onSubmit: (createAnother: boolean) => void;
@@ -60,8 +60,8 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
     }
   }
 
-  private onRecordCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.events.onRecordCodeUpdated(event.target.value);
+  private onAssetCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.events.onAssetCodeUpdated(event.target.value);
   };
 
   private onLabelUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,15 +79,15 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
           <div className="AknFullPage">
             <div className="AknFullPage-content AknFullPage-content--withIllustration">
               <div>
-                <img src="bundles/pimui/images/illustrations/Records.svg" className="AknFullPage-image" />
+                <img src="bundles/pimui/images/illustrations/Assets.svg" className="AknFullPage-image" />
               </div>
               <div>
                 <div className="AknFormContainer">
                   <div className="AknFullPage-titleContainer">
-                    <div className="AknFullPage-subTitle">{__('pim_reference_entity.record.create.subtitle')}</div>
+                    <div className="AknFullPage-subTitle">{__('pim_asset_manager.asset.create.subtitle')}</div>
                     <div className="AknFullPage-title">
-                      {__('pim_reference_entity.record.create.title', {
-                        entityLabel: this.props.referenceEntity.getLabel(this.props.context.locale).toLowerCase(),
+                      {__('pim_asset_manager.asset.create.title', {
+                        entityLabel: this.props.assetFamily.getLabel(this.props.context.locale).toLowerCase(),
                       })}
                     </div>
                   </div>
@@ -95,9 +95,9 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.record.create.input.label"
+                        htmlFor="pim_asset_manager.asset.create.input.label"
                       >
-                        {__('pim_reference_entity.record.create.input.label')}
+                        {__('pim_asset_manager.asset.create.input.label')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
@@ -106,7 +106,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                         autoComplete="off"
                         type="text"
                         className="AknTextField AknTextField--light"
-                        id="pim_reference_entity.record.create.input.label"
+                        id="pim_asset_manager.asset.create.input.label"
                         name="label"
                         value={
                           undefined === this.props.data.labels[this.props.context.locale]
@@ -128,9 +128,9 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.record.create.input.code"
+                        htmlFor="pim_asset_manager.asset.create.input.code"
                       >
-                        {__('pim_reference_entity.record.create.input.code')}
+                        {__('pim_asset_manager.asset.create.input.code')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
@@ -138,10 +138,10 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                         type="text"
                         autoComplete="off"
                         className="AknTextField AknTextField--light"
-                        id="pim_reference_entity.record.create.input.code"
+                        id="pim_asset_manager.asset.create.input.code"
                         name="code"
                         value={this.props.data.code}
-                        onChange={this.onRecordCodeUpdate}
+                        onChange={this.onAssetCodeUpdate}
                         onKeyPress={this.onKeyPress}
                       />
                     </div>
@@ -151,10 +151,10 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.record.create.input.create_another"
+                        htmlFor="pim_asset_manager.asset.create.input.create_another"
                       >
                         <Checkbox
-                          id="pim_reference_entity.record.create.input.create_another"
+                          id="pim_asset_manager.asset.create.input.create_another"
                           value={this.state.createAnother}
                           onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
                         />
@@ -163,7 +163,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                             this.setState({createAnother: !this.state.createAnother});
                           }}
                         >
-                          {__('pim_reference_entity.record.create.input.create_another')}
+                          {__('pim_asset_manager.asset.create.input.create_another')}
                         </span>
                       </label>
                     </div>
@@ -175,7 +175,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                       this.props.events.onSubmit(this.state.createAnother);
                     }}
                   >
-                    {__('pim_reference_entity.record.create.confirm')}
+                    {__('pim_asset_manager.asset.create.confirm')}
                   </button>
                 </div>
               </div>
@@ -183,7 +183,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
           </div>
         </div>
         <div
-          title="{__('pim_reference_entity.record.create.cancel')}"
+          title="{__('pim_asset_manager.asset.create.cancel')}"
           className="AknFullPage-cancel cancel"
           onClick={this.props.events.onCancel}
         />
@@ -195,28 +195,28 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
 export default connect(
   (state: EditState): StateProps => {
     return {
-      data: state.createRecord.data,
-      errors: state.createRecord.errors,
+      data: state.createAsset.data,
+      errors: state.createAsset.errors,
       context: {
         locale: state.user.catalogLocale,
       },
-      referenceEntity: denormalizeReferenceEntity(state.form.data),
+      assetFamily: denormalizeAssetFamily(state.form.data),
     };
   },
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onRecordCodeUpdated: (value: string) => {
-          dispatch(recordCreationRecordCodeUpdated(value));
+        onAssetCodeUpdated: (value: string) => {
+          dispatch(assetCreationAssetCodeUpdated(value));
         },
         onLabelUpdated: (value: string, locale: string) => {
-          dispatch(recordCreationLabelUpdated(value, locale));
+          dispatch(assetCreationLabelUpdated(value, locale));
         },
         onCancel: () => {
-          dispatch(recordCreationCancel());
+          dispatch(assetCreationCancel());
         },
         onSubmit: (createAnother: boolean) => {
-          dispatch(createRecord(createAnother));
+          dispatch(createAsset(createAnother));
         },
       },
     };

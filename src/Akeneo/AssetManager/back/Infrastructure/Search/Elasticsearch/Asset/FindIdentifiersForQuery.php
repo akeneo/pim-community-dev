@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\IdentifiersForQueryResult;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Elasticsearch\QueryString;
 
@@ -36,11 +36,11 @@ use Akeneo\Tool\Component\Elasticsearch\QueryString;
  */
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
-    private const INDEX_TYPE = 'pimee_reference_entity_record';
+    private const INDEX_TYPE = 'pimee_asset_family_asset';
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
     /** @var Client */
-    private $recordClient;
+    private $assetClient;
 
     /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
@@ -51,49 +51,49 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /** @var AttributeRepositoryInterface  */
     private $attributeRepository;
 
-    /** @var FindIdentifiersByReferenceEntityAndCodesInterface  */
-    private $findIdentifiersByReferenceEntityAndCodes;
+    /** @var FindIdentifiersByAssetFamilyAndCodesInterface  */
+    private $findIdentifiersByAssetFamilyAndCodes;
 
     public function __construct(
-        Client $recordClient,
+        Client $assetClient,
         FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
         SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale,
         AttributeRepositoryInterface $attributeRepository,
-        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes
+        FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes
     ) {
-        $this->recordClient = $recordClient;
+        $this->assetClient = $assetClient;
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
         $this->getValueKeyForAttributeChannelAndLocale = $getValueKeyForAttributeChannelAndLocale;
         $this->attributeRepository = $attributeRepository;
-        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
+        $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(RecordQuery $recordQuery): IdentifiersForQueryResult
+    public function find(AssetQuery $assetQuery): IdentifiersForQueryResult
     {
-        $elasticSearchQuery = $this->getElasticSearchQuery($recordQuery);
-        $matches = $this->recordClient->search(self::INDEX_TYPE, $elasticSearchQuery);
+        $elasticSearchQuery = $this->getElasticSearchQuery($assetQuery);
+        $matches = $this->assetClient->search(self::INDEX_TYPE, $elasticSearchQuery);
         $identifiers = $this->getIdentifiers($matches);
         $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']);
 
         return $queryResult;
     }
 
-    private function getElasticSearchQuery(RecordQuery $recordQuery): array
+    private function getElasticSearchQuery(AssetQuery $assetQuery): array
     {
-        $referenceEntityCode = $recordQuery->getFilter('reference_entity')['value'];
-        $fullTextFilter = ($recordQuery->hasFilter('full_text')) ? $recordQuery->getFilter('full_text') : null;
-        $codeLabelFilter = ($recordQuery->hasFilter('code_label')) ? $recordQuery->getFilter('code_label') : null;
-        $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
-        $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
-        $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
-        $attributeFilters = ($recordQuery->hasFilter('values.*')) ? $recordQuery->getValueFilters() : [];
+        $assetFamilyCode = $assetQuery->getFilter('asset_family')['value'];
+        $fullTextFilter = ($assetQuery->hasFilter('full_text')) ? $assetQuery->getFilter('full_text') : null;
+        $codeLabelFilter = ($assetQuery->hasFilter('code_label')) ? $assetQuery->getFilter('code_label') : null;
+        $codeFilter = ($assetQuery->hasFilter('code')) ? $assetQuery->getFilter('code') : null;
+        $completeFilter = ($assetQuery->hasFilter('complete')) ? $assetQuery->getFilter('complete') : null;
+        $updatedFilter = ($assetQuery->hasFilter('updated')) ? $assetQuery->getFilter('updated') : null;
+        $attributeFilters = ($assetQuery->hasFilter('values.*')) ? $assetQuery->getValueFilters() : [];
 
         $query = [
             '_source' => '_id',
-            'size'    => $recordQuery->getSize(),
+            'size'    => $assetQuery->getSize(),
             'query'   => [
                 'constant_score' => [
                     'filter' => [
@@ -101,7 +101,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                             'filter' => [
                                 [
                                     'term' => [
-                                        'reference_entity_code' => $referenceEntityCode,
+                                        'asset_family_code' => $assetFamilyCode,
                                     ],
                                 ],
                             ],
@@ -111,14 +111,14 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ],
         ];
 
-        if ($recordQuery->isPaginatedUsingOffset()) {
-            $query['from'] = $recordQuery->getSize() * $recordQuery->getPage();
+        if ($assetQuery->isPaginatedUsingOffset()) {
+            $query['from'] = $assetQuery->getSize() * $assetQuery->getPage();
             $query['sort'] = ['updated_at' => 'desc'];
         }
 
-        if ($recordQuery->isPaginatedUsingSearchAfter()) {
-            if (null !== $recordQuery->getSearchAfterCode()) {
-                $query['search_after'] = [$recordQuery->getSearchAfterCode()];
+        if ($assetQuery->isPaginatedUsingSearchAfter()) {
+            if (null !== $assetQuery->getSearchAfterCode()) {
+                $query['search_after'] = [$assetQuery->getSearchAfterCode()];
             }
             $query['sort'] = ['code' => 'asc'];
         }
@@ -127,8 +127,8 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $terms = $this->getTerms($fullTextFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
-                    'default_field' => sprintf('record_full_text_search.%s.%s', $recordQuery->getchannel(),
-                        $recordQuery->getlocale()),
+                    'default_field' => sprintf('asset_full_text_search.%s.%s', $assetQuery->getchannel(),
+                        $assetQuery->getlocale()),
                     'query'         => $terms,
                 ],
             ];
@@ -138,7 +138,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $terms = $this->getTerms($codeLabelFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
-                    'default_field' => sprintf('record_code_label_search.%s', $recordQuery->getlocale()),
+                    'default_field' => sprintf('asset_code_label_search.%s', $assetQuery->getlocale()),
                     'query'         => $terms,
                 ],
             ];
@@ -176,21 +176,21 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                     $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
 
                     $value = $attributeFilter['value'];
-                    if (in_array($attribute->getType(), ['record', 'record_collection'])) {
-                        $recordIdentifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
-                            $attribute->getRecordType(),
+                    if (in_array($attribute->getType(), ['asset', 'asset_collection'])) {
+                        $assetIdentifiers = $this->findIdentifiersByAssetFamilyAndCodes->find(
+                            $attribute->getAssetType(),
                             $attributeFilter['value']
                         );
 
-                        $value = array_values(array_map(function (RecordIdentifier $recordIdentifier) {
-                            return (string) $recordIdentifier;
-                        }, $recordIdentifiers));
+                        $value = array_values(array_map(function (AssetIdentifier $assetIdentifier) {
+                            return (string) $assetIdentifier;
+                        }, $assetIdentifiers));
                     }
 
                     $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
                         AttributeIdentifier::fromString($attributeIdentifier),
-                        ChannelIdentifier::fromCode($recordQuery->getchannel()),
-                        LocaleIdentifier::fromCode($recordQuery->getLocale())
+                        ChannelIdentifier::fromCode($assetQuery->getchannel()),
+                        LocaleIdentifier::fromCode($assetQuery->getLocale())
                     );
                     $path = sprintf('values.%s', (string) $valueKey);
 
@@ -204,7 +204,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         }
 
         if (null !== $completeFilter) {
-            $query = $this->getCompleteFilterQuery($recordQuery, $referenceEntityCode, $completeFilter, $query);
+            $query = $this->getCompleteFilterQuery($assetQuery, $assetFamilyCode, $completeFilter, $query);
         }
 
         return $query;
@@ -230,24 +230,24 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     }
 
     private function getRequiredValueKeys(
-        $referenceEntityCode,
+        $assetFamilyCode,
         ChannelIdentifier $channel,
         LocaleIdentifierCollection $locales
     ): ValueKeyCollection {
         return $this->findRequiredValueKeyCollectionForChannelAndLocale->find(
-            ReferenceEntityIdentifier::fromString($referenceEntityCode),
+            AssetFamilyIdentifier::fromString($assetFamilyCode),
             $channel,
             $locales
         );
     }
 
-    private function getCompleteFilterQuery(RecordQuery $recordQuery, $referenceEntityCode, $completeFilter, $query)
+    private function getCompleteFilterQuery(AssetQuery $assetQuery, $assetFamilyCode, $completeFilter, $query)
     {
-        $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $recordQuery->getChannel();
-        $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$recordQuery->getLocale()];
+        $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $assetQuery->getChannel();
+        $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$assetQuery->getLocale()];
 
         $requiredValueKeys = $this->getRequiredValueKeys(
-            $referenceEntityCode,
+            $assetFamilyCode,
             ChannelIdentifier::fromCode($channel),
             LocaleIdentifierCollection::fromNormalized($locales)
         );

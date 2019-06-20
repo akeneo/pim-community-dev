@@ -10,12 +10,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,15 +26,15 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Validate & save a reference entity
+ * Validate & save an asset family
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class EditAction
 {
-    /** @var EditReferenceEntityHandler */
-    private $editReferenceEntityHandler;
+    /** @var EditAssetFamilyHandler */
+    private $editAssetFamilyHandler;
 
     /** @var Serializer */
     private $serializer;
@@ -42,21 +42,21 @@ class EditAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
-        EditReferenceEntityHandler $editReferenceEntityHandler,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        EditAssetFamilyHandler $editAssetFamilyHandler,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        $this->editReferenceEntityHandler = $editReferenceEntityHandler;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->editAssetFamilyHandler = $editAssetFamilyHandler;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->serializer = $serializer;
         $this->validator = $validator;
@@ -69,7 +69,7 @@ class EditAction
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
             return new JsonResponse(
-                'Reference entity identifier provided in the route and the one given in the body of your request are different',
+                'Asset family identifier provided in the route and the one given in the body of your request are different',
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -77,7 +77,7 @@ class EditAction
             throw new AccessDeniedHttpException();
         }
 
-        $command = $this->serializer->deserialize($request->getContent(), EditReferenceEntityCommand::class, 'json');
+        $command = $this->serializer->deserialize($request->getContent(), EditAssetFamilyCommand::class, 'json');
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
@@ -85,7 +85,7 @@ class EditAction
                 Response::HTTP_BAD_REQUEST);
         }
 
-        ($this->editReferenceEntityHandler)($command);
+        ($this->editAssetFamilyHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -100,13 +100,13 @@ class EditAction
         return $normalizedCommand['identifier'] !== $request->get('identifier');
     }
 
-    private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToEdit(string $assetFamilyIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery(
-            $referenceEntityIdentifier,
+        $query = new CanEditAssetFamilyQuery(
+            $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
-        $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
+        $isAllowedToEdit = ($this->canEditAssetFamilyQueryHandler)($query);
 
         return $isAllowedToEdit; // && add Check of ACLs
     }

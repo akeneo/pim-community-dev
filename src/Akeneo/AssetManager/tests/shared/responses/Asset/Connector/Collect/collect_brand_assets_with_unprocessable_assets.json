@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "PATCH",
-        "route": "akeneo_reference_entities_records_rest_connector_create_or_update",
+        "route": "akeneo_asset_manager_assets_rest_connector_create_or_update",
         "query": {
-            "referenceEntityIdentifier": "brand"
+            "assetFamilyIdentifier": "brand"
         },
         "body": [
             {
@@ -62,7 +62,7 @@
             {
                 "code": 42,
                 "status_code": 422,
-                "message": "The record has an invalid format.",
+                "message": "The asset has an invalid format.",
                 "errors": [
                     {
                         "property": "code",
@@ -81,7 +81,7 @@
             {
                 "code": "fatboy",
                 "status_code": 422,
-                "message": "The record has data that does not comply with the business rules.",
+                "message": "The asset has data that does not comply with the business rules.",
                 "errors": [
                     {
                         "property": "values.label",

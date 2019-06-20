@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistry;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistry;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use PhpSpec\ObjectBehavior;
 
 class AttributeFactoryRegistrySpec extends ObjectBehavior
@@ -39,7 +39,7 @@ class AttributeFactoryRegistrySpec extends ObjectBehavior
     public function it_throws_if_the_corresponding_factory_is_not_found()
     {
         $this->shouldThrow(new \RuntimeException(
-            'There was no attribute factory found for command "Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand"')
+            'There was no attribute factory found for command "Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand"')
         )->during('getFactory', [
             new CreateImageAttributeCommand(
                 'designer',

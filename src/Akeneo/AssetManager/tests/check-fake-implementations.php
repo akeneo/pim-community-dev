@@ -35,15 +35,15 @@ function openFileFromRoot($fileName): string
     return file_get_contents($ROOT . $fileName);
 }
 
-$REFERENCE_FILE = 'src/Akeneo/ReferenceEntity/back/Infrastructure/Symfony/Resources/config/persistence.yml';
+$REFERENCE_FILE = 'src/Akeneo/AssetManager/back/Infrastructure/Symfony/Resources/config/persistence.yml';
 
 $FILES_TO_CHECK = [
-    'src/Akeneo/ReferenceEntity/tests/back/Common/Resources/fake_services.yml',
+    'src/Akeneo/AssetManager/tests/back/Common/Resources/fake_services.yml',
 ];
 
 $referenceContent = openFileFromRoot($REFERENCE_FILE);
 
-$pattern = '/akeneo_referenceentity.infrastructure.persistence.(query|repository)\.(.+):/';
+$pattern = '/akeneo_assetmanager.infrastructure.persistence.(query|repository)\.(.+):/';
 $matches = [];
 preg_match_all($pattern, $referenceContent, $matches);
 

@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CanEditReferenceEntityQueryHandlerStub extends CanEditReferenceEntityQueryHandler
+class CanEditAssetFamilyQueryHandlerStub extends CanEditAssetFamilyQueryHandler
 {
     private $isAllowed = true;
 
-    public function __invoke(CanEditReferenceEntityQuery $query): bool
+    public function __invoke(CanEditAssetFamilyQuery $query): bool
     {
-        Assert::stringNotEmpty($query->referenceEntityIdentifier);
+        Assert::stringNotEmpty($query->assetFamilyIdentifier);
         Assert::stringNotEmpty($query->securityIdentifier);
 
         return $this->isAllowed;

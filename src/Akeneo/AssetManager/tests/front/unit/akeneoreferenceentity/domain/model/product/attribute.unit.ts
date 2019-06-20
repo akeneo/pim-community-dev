@@ -1,25 +1,25 @@
-import {createCode as denormalizeAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createAttribute, denormalizeAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
-import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
-import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+import {createCode as denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createAttribute, denormalizeAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
+import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const frontView = denormalizeAttribute({
   code: 'front_view',
-  type: 'akeneo_reference_entity',
+  type: 'akeneo_asset',
   labels: {en_US: 'My nice attribute'},
   reference_data_name: 'brand',
   useable_as_grid_filter: true,
 });
 const sideView = denormalizeAttribute({
   code: 'side_view',
-  type: 'akeneo_reference_entity',
+  type: 'akeneo_asset',
   labels: {en_US: 'My nice attribute'},
   reference_data_name: 'brand',
   useable_as_grid_filter: true,
 });
 
-describe('akeneo > reference entity > domain > model --- attribute', () => {
+describe('akeneo > asset family > domain > model --- attribute', () => {
   test('I can create a new attribute', () => {
     expect(frontView.getCode()).toEqual(denormalizeAttributeCode('front_view'));
   });
@@ -30,7 +30,7 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
   });
 
   test('I can get the type of an attribute', () => {
-    expect(frontView.getType()).toEqual('akeneo_reference_entity');
+    expect(frontView.getType()).toEqual('akeneo_asset');
   });
 
   test('I can get the label of an attribute', () => {
@@ -50,7 +50,7 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
   test('I can normalize my attribute', () => {
     expect(frontView.normalize()).toEqual({
       code: 'front_view',
-      type: 'akeneo_reference_entity',
+      type: 'akeneo_asset',
       labels: {en_US: 'My nice attribute'},
       reference_data_name: 'brand',
       useable_as_grid_filter: true,
@@ -61,7 +61,7 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
     expect(() => {
       createAttribute(
         'nice_attribute',
-        'akeneo_reference_entity',
+        'akeneo_asset',
         createLabelCollection({en_US: 'My nice attribute'}),
         'brand',
         false
@@ -81,7 +81,7 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
     expect(() => {
       createAttribute(
         denormalizeAttributeCode('nice_attribute'),
-        'akeneo_reference_entity',
+        'akeneo_asset',
         {en_US: 'My nice attribute'},
         'brand',
         false
@@ -91,7 +91,7 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
     expect(() => {
       createAttribute(
         denormalizeAttributeCode('nice_attribute'),
-        'akeneo_reference_entity',
+        'akeneo_asset',
         createLabelCollection({en_US: 'My nice attribute'}),
         null,
         false
@@ -101,7 +101,7 @@ describe('akeneo > reference entity > domain > model --- attribute', () => {
     expect(() => {
       createAttribute(
         denormalizeAttributeCode('nice_attribute'),
-        'akeneo_reference_entity',
+        'akeneo_asset',
         createLabelCollection({en_US: 'My nice attribute'}),
         'brand',
         'false'

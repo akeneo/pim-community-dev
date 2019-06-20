@@ -1,10 +1,10 @@
 services:
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:
-        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.index_asset:
+        class: Akeneo\AssetManager\Common\Fake\EventSubscriberStub
         tags:
             - { name: kernel.event_subscriber }
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.remove_record_from_index:
-        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.remove_asset_from_index:
+        class: Akeneo\AssetManager\Common\Fake\EventSubscriberStub
         tags:
             - { name: kernel.event_subscriber }

@@ -11,37 +11,37 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
+namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -62,8 +62,8 @@ class GetActionTest extends ControllerIntegrationTestCase
 
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
 
         $this->loadFixtures();
     }
@@ -71,17 +71,17 @@ class GetActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_a_records_detail()
+    public function it_returns_a_assets_detail()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/RecordDetails/ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/AssetDetails/ok.json');
     }
 
     /**
      * @test
      */
-    public function it_returns_404_not_found_when_the_record_identifier_does_not_exist()
+    public function it_returns_404_not_found_when_the_asset_identifier_does_not_exist()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/RecordDetails/not_found.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/AssetDetails/not_found.json');
     }
 
     private function loadFixtures(): void
@@ -89,7 +89,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $textAttributeIdentifier = AttributeIdentifier::create('designer', 'name', 'fingerprint');
         $textAttribute = TextAttribute::createText(
             $textAttributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
@@ -105,7 +105,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $textareaAttributeIdentifier = AttributeIdentifier::create('designer', 'description', 'fingerprint');
         $textareaAttribute = TextAttribute::createTextarea(
             $textareaAttributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['fr_FR' => 'Description']),
             AttributeOrder::fromInteger(1),
@@ -120,7 +120,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $websiteAttributeIdentifier = AttributeIdentifier::create('designer', 'website', 'fingerprint');
         $websiteAttribute = TextAttribute::createText(
             $websiteAttributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('website'),
             LabelCollection::fromArray(['fr_FR' => 'Website']),
             AttributeOrder::fromInteger(2),
@@ -136,7 +136,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         // image attribute
         $portraitAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'portrait', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(3),
@@ -151,7 +151,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         // image attribute
         $age = NumberAttribute::create(
             AttributeIdentifier::create('designer', 'age', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('age'),
             LabelCollection::fromArray(['fr_FR' => 'Age', 'en_US' => 'Age']),
             AttributeOrder::fromInteger(4),
@@ -203,17 +203,17 @@ class GetActionTest extends ControllerIntegrationTestCase
             ]
         ];
 
-        $starck = new RecordDetails(
-            RecordIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            RecordCode::fromString('starck'),
+        $starck = new AssetDetails(
+            AssetIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392'),
+            AssetFamilyIdentifier::fromString('designer'),
+            AssetCode::fromString('starck'),
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
             Image::createEmpty(),
             $values,
             true
         );
 
-        $findRecordDetails = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_details');
-        $findRecordDetails->save($starck);
+        $findAssetDetails = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_details');
+        $findAssetDetails->save($starck);
     }
 }

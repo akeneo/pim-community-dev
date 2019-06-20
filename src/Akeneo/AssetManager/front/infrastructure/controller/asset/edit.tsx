@@ -3,28 +3,28 @@ import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
 import {Store} from 'redux';
-import __ from 'akeneoreferenceentity/tools/translator';
-import RecordView from 'akeneoreferenceentity/application/component/record/edit';
-import createStore from 'akeneoreferenceentity/infrastructure/store';
-import recordReducer from 'akeneoreferenceentity/application/reducer/record/edit';
-import recordFetcher, {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';
-import {recordEditionReceived} from 'akeneoreferenceentity/domain/event/record/edit';
+import __ from 'akeneoassetmanager/tools/translator';
+import AssetView from 'akeneoassetmanager/application/component/asset/edit';
+import createStore from 'akeneoassetmanager/infrastructure/store';
+import assetReducer from 'akeneoassetmanager/application/reducer/asset/edit';
+import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import {assetEditionReceived} from 'akeneoassetmanager/domain/event/asset/edit';
 import {
   defaultCatalogLocaleChanged,
   catalogLocaleChanged,
   catalogChannelChanged,
   uiLocaleChanged,
   localePermissionsChanged,
-  referenceEntityPermissionChanged,
-} from 'akeneoreferenceentity/domain/event/user';
-import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
-import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
-import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
-import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
-import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
-import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
-import {updateAttributeList} from 'akeneoreferenceentity/application/action/product/attribute';
+  assetFamilyPermissionChanged,
+} from 'akeneoassetmanager/domain/event/user';
+import {setUpSidebar} from 'akeneoassetmanager/application/action/sidebar';
+import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
+import {updateChannels} from 'akeneoassetmanager/application/action/channel';
+import {updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
+import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
+import {updateAttributeList} from 'akeneoassetmanager/application/action/product/attribute';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -37,35 +37,35 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   }
 };
 
-class RecordEditController extends BaseController {
+class AssetEditController extends BaseController {
   private store: Store<any>;
 
   renderRoute(route: any) {
     const promise = $.Deferred();
 
-    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-asset-family'});
     $(window).on('beforeunload', this.beforeUnload);
 
-    const referenceEntityIdentifier = createReferenceEntityIdentifier(route.params.referenceEntityIdentifier);
+    const assetFamilyIdentifier = createAssetFamilyIdentifier(route.params.assetFamilyIdentifier);
 
-    recordFetcher
+    assetFetcher
       .fetch(
-        createReferenceEntityIdentifier(route.params.referenceEntityIdentifier),
-        createCode(route.params.recordCode)
+        createAssetFamilyIdentifier(route.params.assetFamilyIdentifier),
+        createCode(route.params.assetCode)
       )
-      .then(async (recordResult: RecordResult) => {
-        this.store = createStore(true)(recordReducer);
+      .then(async (assetResult: AssetResult) => {
+        this.store = createStore(true)(assetReducer);
         await this.store.dispatch(updateChannels() as any);
-        this.store.dispatch(recordEditionReceived(recordResult.record));
-        this.store.dispatch(referenceEntityPermissionChanged(recordResult.permission));
+        this.store.dispatch(assetEditionReceived(assetResult.asset));
+        this.store.dispatch(assetFamilyPermissionChanged(assetResult.permission));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-        this.store.dispatch(setUpSidebar('akeneo_reference_entities_record_edit') as any);
+        this.store.dispatch(setUpSidebar('akeneo_asset_manager_asset_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(updateAttributeList(referenceEntityIdentifier) as any);
+        this.store.dispatch(updateAttributeList(assetFamilyIdentifier) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         fetcherRegistry
@@ -77,7 +77,7 @@ class RecordEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <RecordView />
+            <AssetView />
           </Provider>,
           this.el
         );
@@ -97,7 +97,7 @@ class RecordEditController extends BaseController {
 
   beforeUnload = () => {
     if (this.isDirty()) {
-      return __('pim_enrich.confirmation.discard_changes', {entity: 'record'});
+      return __('pim_enrich.confirmation.discard_changes', {entity: 'asset'});
     }
 
     document.removeEventListener('keypress', shortcutDispatcher);
@@ -106,7 +106,7 @@ class RecordEditController extends BaseController {
   };
 
   canLeave() {
-    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'record'});
+    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'asset'});
 
     return this.isDirty() ? confirm(message) : true;
   }
@@ -121,4 +121,4 @@ class RecordEditController extends BaseController {
   }
 }
 
-export = RecordEditController;
+export = AssetEditController;

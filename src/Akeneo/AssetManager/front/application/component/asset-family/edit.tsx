@@ -1,27 +1,27 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState as State} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import Sidebar from 'akeneoreferenceentity/application/component/app/sidebar';
-import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
-import sidebarProvider from 'akeneoreferenceentity/application/configuration/sidebar';
-import CreateRecordModal from 'akeneoreferenceentity/application/component/record/create';
-import __ from 'akeneoreferenceentity/tools/translator';
-import {redirectToReferenceEntityListItem} from 'akeneoreferenceentity/application/action/reference-entity/router';
-import Key from 'akeneoreferenceentity/tools/key';
+import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import Sidebar from 'akeneoassetmanager/application/component/app/sidebar';
+import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
+import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
+import CreateAssetModal from 'akeneoassetmanager/application/component/asset/create';
+import __ from 'akeneoassetmanager/tools/translator';
+import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
+import Key from 'akeneoassetmanager/tools/key';
 
 interface StateProps {
   sidebar: {
     tabs: Tab[];
     currentTab: string;
   };
-  createRecord: {
+  createAsset: {
     active: boolean;
   };
 }
 
 interface DispatchProps {
   events: {
-    backToReferenceEntityList: () => void;
+    backToAssetFamilyList: () => void;
   };
 }
 
@@ -29,33 +29,33 @@ export const breadcrumbConfiguration = [
   {
     action: {
       type: 'redirect',
-      route: 'akeneo_reference_entities_reference_entity_edit',
+      route: 'akeneo_asset_manager_asset_family_edit',
     },
-    label: __('pim_reference_entity.reference_entity.breadcrumb'),
+    label: __('pim_asset_manager.asset_family.breadcrumb'),
   },
 ];
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class ReferenceEntityEditView extends React.Component<EditProps> {
+class AssetFamilyEditView extends React.Component<EditProps> {
   public props: EditProps;
-  private backToReferenceEntityList = () => (
+  private backToAssetFamilyList = () => (
     <span
       role="button"
       tabIndex={0}
       className="AknColumn-navigationLink"
-      onClick={this.props.events.backToReferenceEntityList}
+      onClick={this.props.events.backToAssetFamilyList}
       onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) this.props.events.backToReferenceEntityList();
+        if (Key.Space === event.key) this.props.events.backToAssetFamilyList();
       }}
     >
-      {__('pim_reference_entity.record.button.back')}
+      {__('pim_asset_manager.asset.button.back')}
     </span>
   );
 
   render(): JSX.Element | JSX.Element[] {
     const TabView = sidebarProvider.getView(
-      'akeneo_reference_entities_reference_entity_edit',
+      'akeneo_asset_manager_asset_family_edit',
       this.props.sidebar.currentTab
     );
 
@@ -72,8 +72,8 @@ class ReferenceEntityEditView extends React.Component<EditProps> {
             <TabView code={this.props.sidebar.currentTab} />
           </div>
         </div>
-        <Sidebar backButton={this.backToReferenceEntityList} />
-        {this.props.createRecord.active ? <CreateRecordModal /> : null}
+        <Sidebar backButton={this.backToAssetFamilyList} />
+        {this.props.createAsset.active ? <CreateAssetModal /> : null}
       </div>
     );
   }
@@ -89,18 +89,18 @@ export default connect(
         tabs,
         currentTab,
       },
-      createRecord: {
-        active: state.createRecord.active,
+      createAsset: {
+        active: state.createAsset.active,
       },
     };
   },
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        backToReferenceEntityList: () => {
-          dispatch(redirectToReferenceEntityListItem());
+        backToAssetFamilyList: () => {
+          dispatch(redirectToAssetFamilyListItem());
         },
       },
     };
   }
-)(ReferenceEntityEditView);
+)(AssetFamilyEditView);

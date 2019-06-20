@@ -11,33 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryGetAttributeIdentifier;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateOrUpdateReferenceEntityContext implements Context
+class CreateOrUpdateAssetFamilyContext implements Context
 {
-    private const REQUEST_CONTRACT_DIR = 'ReferenceEntity/Connector/Collect/';
+    private const REQUEST_CONTRACT_DIR = 'AssetFamily/Connector/Collect/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -45,8 +45,8 @@ class CreateOrUpdateReferenceEntityContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var null|Response */
     private $pimResponse;
@@ -75,7 +75,7 @@ class CreateOrUpdateReferenceEntityContext implements Context
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
@@ -85,7 +85,7 @@ class CreateOrUpdateReferenceEntityContext implements Context
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->channelExists = $channelExists;
         $this->activatedLocales = $activatedLocales;
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
@@ -95,11 +95,11 @@ class CreateOrUpdateReferenceEntityContext implements Context
     }
 
     /**
-     * @Given the Brand reference entity existing in the ERP but not in the PIM
+     * @Given the Brand asset family existing in the ERP but not in the PIM
      */
-    public function theBrandReferenceEntityExistingInTheErpButNotInThePim()
+    public function theBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->requestContract = 'successful_brand_reference_entity_creation.json';
+        $this->requestContract = 'successful_brand_asset_family_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
@@ -111,9 +111,9 @@ class CreateOrUpdateReferenceEntityContext implements Context
     }
 
     /**
-     * @When the connector collects the properties of the Brand reference entity from the ERP to synchronize it with the PIM
+     * @When the connector collects the properties of the Brand asset family from the ERP to synchronize it with the PIM
      */
-    public function theConnectorCollectsThePropertiesOfTheBrandReferenceEntityFromTheErpToSynchronizeItWithThePim()
+    public function theConnectorCollectsThePropertiesOfTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePim()
     {
         Assert::assertNotNull($this->requestContract, 'The request contract must be defined first.');
 
@@ -125,28 +125,28 @@ class CreateOrUpdateReferenceEntityContext implements Context
     }
 
     /**
-     * @Then the reference entity is created with its properties in the PIM with the information from the ERP
+     * @Then the asset family is created with its properties in the PIM with the information from the ERP
      */
-    public function theReferenceEntityIsCreated()
+    public function theAssetFamilyIsCreated()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_reference_entity_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_asset_family_creation.json'
         );
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
 
-        $brand = $this->referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('brand'));
-        $expectedBrand = ReferenceEntity::createWithAttributes(
-            $referenceEntityIdentifier,
+        $brand = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('brand'));
+        $expectedBrand = AssetFamily::createWithAttributes(
+            $assetFamilyIdentifier,
             [
                 'en_US' => 'Brand english label',
                 'fr_FR' => 'Brand french label',
@@ -160,11 +160,11 @@ class CreateOrUpdateReferenceEntityContext implements Context
     }
 
     /**
-     * @Given the Brand reference entity existing in the ERP and the PIM with different properties
+     * @Given the Brand asset family existing in the ERP and the PIM with different properties
      */
-    public function theBrandReferenceEntityExistingInTheErpAndInThePimWithDifferentProperties()
+    public function theBrandAssetFamilyExistingInTheErpAndInThePimWithDifferentProperties()
     {
-        $this->requestContract = 'successful_brand_reference_entity_update.json';
+        $this->requestContract = 'successful_brand_asset_family_update.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
@@ -174,21 +174,21 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->fileExists->save($image->getKey());
         $this->findFileData->save($image->normalize());
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [
                 'en_US' => 'It is an english label'
             ],
             $image
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @When the connector collects the Brand reference entity from the ERP to synchronize it with the PIM
+     * @When the connector collects the Brand asset family from the ERP to synchronize it with the PIM
      */
-    public function theConnectorCollectsTheBrandReferenceEntityFromTheErpToSynchronizeItWithThePim()
+    public function theConnectorCollectsTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePim()
     {
         Assert::assertNotNull($this->requestContract, 'The request contract must be defined first.');
 
@@ -200,28 +200,28 @@ class CreateOrUpdateReferenceEntityContext implements Context
     }
 
     /**
-     * @Then the properties of the reference entity are correctly synchronized in the PIM with the information from the ERP
+     * @Then the properties of the asset family are correctly synchronized in the PIM with the information from the ERP
      */
-    public function thePropertiesOfTheReferenceEntityAreCorrectlySynchornizedInThePimWithTheInformationFromTheErp()
+    public function thePropertiesOfTheAssetFamilyAreCorrectlySynchornizedInThePimWithTheInformationFromTheErp()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_reference_entity_update.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_asset_family_update.json'
         );
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
 
-        $brand = $this->referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('brand'));
-        $expectedBrand = ReferenceEntity::createWithAttributes(
-            $referenceEntityIdentifier,
+        $brand = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('brand'));
+        $expectedBrand = AssetFamily::createWithAttributes(
+            $assetFamilyIdentifier,
             [
                 'en_US' => 'Brand english label',
                 'fr_FR' => 'Brand french label',
@@ -235,69 +235,69 @@ class CreateOrUpdateReferenceEntityContext implements Context
     }
 
     /**
-     * @Given some reference entities
+     * @Given some asset families
      */
-    public function someReferenceEntities()
+    public function someAssetFamilies()
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('de_DE'));
 
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [
                 'en_US' => 'It is an english label'
             ],
             Image::createEmpty()
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
     }
 
     /**
-     * @When the connector collects a reference entity that has an invalid format
+     * @When the connector collects an asset family that has an invalid format
      */
-    public function collectAReferenceEntityWithAnInvalidFormat()
+    public function collectAAssetFamilyWithAnInvalidFormat()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_format.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_for_invalid_format.json'
         );
     }
 
     /**
-     * @Then the PIM notifies the connector about an error indicating that the reference entity has an invalid format
+     * @Then the PIM notifies the connector about an error indicating that the asset family has an invalid format
      */
-    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheReferenceEntityHasAnInvalidFormat()
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheAssetFamilyHasAnInvalidFormat()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_format.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_for_invalid_format.json'
         );
     }
 
     /**
-     * @When the connector collects a reference entity whose data does not comply with the business rules
+     * @When the connector collects an asset family whose data does not comply with the business rules
      */
-    public function theConnectorCollectsAReferenceEntityWhoseDataDoesNotComplyWithTheBusinessRules()
+    public function theConnectorCollectsAAssetFamilyWhoseDataDoesNotComplyWithTheBusinessRules()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_data.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_for_invalid_data.json'
         );
     }
 
     /**
-     * @Then the PIM notifies the connector about an error indicating that the reference entity has data that does not comply with the business rules
+     * @Then the PIM notifies the connector about an error indicating that the asset family has data that does not comply with the business rules
      */
-    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheReferenceEntityHasDataThatDoesNotComplyWithTheBusinessRules()
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheAssetFamilyHasDataThatDoesNotComplyWithTheBusinessRules()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_data.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_for_invalid_data.json'
         );
     }
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateNumberAttributeCommandFactory;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateNumberAttributeCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand;
 use PhpSpec\ObjectBehavior;
 
 class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_create_a_number_attribute()
     {
         $command = $this->create([
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
             'is_required' => false,
@@ -34,7 +34,7 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
         ]);
 
         $command->shouldBeAnInstanceOf(CreateNumberAttributeCommand::class);
-        $command->referenceEntityIdentifier->shouldBe('designer');
+        $command->assetFamilyIdentifier->shouldBe('designer');
         $command->code->shouldBe('picture');
         $command->labels->shouldBe(['fr_FR' => 'Portrait']);
         $command->isRequired->shouldBe(false);
@@ -56,7 +56,7 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_with_default_properties_if_some_are_missing()
     {
         $command = $this->create([
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
             'value_per_channel' => false,

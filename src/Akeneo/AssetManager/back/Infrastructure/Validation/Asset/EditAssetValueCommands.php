@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordValueCommands extends Constraint
+class EditAssetValueCommands extends Constraint
 {
     public function getTargets()
     {
@@ -27,6 +27,6 @@ class EditRecordValueCommands extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.record.edit_record_value_commands';
+        return 'akeneo_assetmanager.validator.asset.edit_asset_value_commands';
     }
 }

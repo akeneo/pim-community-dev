@@ -20,7 +20,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="ReferenceEntity_Integration_Test">
+        <testsuite name="AssetFamily_Integration_Test">
             <directory>Integration</directory>
         </testsuite>
     </testsuites>

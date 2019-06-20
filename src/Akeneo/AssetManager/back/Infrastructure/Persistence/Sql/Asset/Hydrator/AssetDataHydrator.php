@@ -10,20 +10,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueDataInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordDataHydrator implements DataHydratorInterface
+class AssetDataHydrator implements DataHydratorInterface
 {
     /** @var FindCodesByIdentifiersInterface */
     private $findCodesByIdentifiers;
@@ -35,7 +35,7 @@ class RecordDataHydrator implements DataHydratorInterface
 
     public function supports(AbstractAttribute $attribute): bool
     {
-        return $attribute instanceof RecordAttribute;
+        return $attribute instanceof AssetAttribute;
     }
 
     public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
@@ -45,7 +45,7 @@ class RecordDataHydrator implements DataHydratorInterface
             return EmptyData::create();
         }
 
-        return RecordData::createFromNormalize($code);
+        return AssetData::createFromNormalize($code);
     }
 
     private function findCode(string $normalizedData): ?string

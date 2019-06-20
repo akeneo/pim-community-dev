@@ -1,27 +1,27 @@
-import {createReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/create';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
+import {createAssetFamily} from 'akeneoassetmanager/application/action/asset-family/create';
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
+import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
 import {
-  referenceEntityCreationCancel,
-  referenceEntityCreationCodeUpdated,
-  referenceEntityCreationLabelUpdated,
-} from 'akeneoreferenceentity/domain/event/reference-entity/create';
-import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import Flag from 'akeneoreferenceentity/tools/component/flag';
-import __ from 'akeneoreferenceentity/tools/translator';
+  assetFamilyCreationCancel,
+  assetFamilyCreationCodeUpdated,
+  assetFamilyCreationLabelUpdated,
+} from 'akeneoassetmanager/domain/event/asset-family/create';
+import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import Flag from 'akeneoassetmanager/tools/component/flag';
+import __ from 'akeneoassetmanager/tools/translator';
 import * as React from 'react';
 import {connect} from 'react-redux';
-import Key from 'akeneoreferenceentity/tools/key';
-import ReferenceEntityCreation, {
-  denormalizeReferenceEntityCreation,
-} from 'akeneoreferenceentity/domain/model/reference-entity/creation';
+import Key from 'akeneoassetmanager/tools/key';
+import AssetFamilyCreation, {
+  denormalizeAssetFamilyCreation,
+} from 'akeneoassetmanager/domain/model/asset-family/creation';
 
 interface StateProps {
   context: {
     locale: string;
   };
-  data: ReferenceEntityCreation;
+  data: AssetFamilyCreation;
   errors: ValidationError[];
 }
 
@@ -70,18 +70,18 @@ class Create extends React.Component<CreateProps> {
               <div>
                 <div className="AknFullPage-titleContainer">
                   <div className="AknFullPage-subTitle">
-                    {__('pim_reference_entity.reference_entity.create.subtitle')}
+                    {__('pim_asset_manager.asset_family.create.subtitle')}
                   </div>
-                  <div className="AknFullPage-title">{__('pim_reference_entity.reference_entity.create.title')}</div>
+                  <div className="AknFullPage-title">{__('pim_asset_manager.asset_family.create.title')}</div>
                 </div>
                 <div className="AknFormContainer">
                   <div className="AknFieldContainer" data-code="label">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.reference_entity.create.input.label"
+                        htmlFor="pim_asset_manager.asset_family.create.input.label"
                       >
-                        {__('pim_reference_entity.reference_entity.create.input.label')}
+                        {__('pim_asset_manager.asset_family.create.input.label')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
@@ -92,7 +92,7 @@ class Create extends React.Component<CreateProps> {
                           this.labelInput = input;
                         }}
                         className="AknTextField AknTextField--light"
-                        id="pim_reference_entity.reference_entity.create.input.label"
+                        id="pim_asset_manager.asset_family.create.input.label"
                         name="label"
                         value={this.props.data.getLabel(this.props.context.locale, false)}
                         onChange={this.onLabelUpdate}
@@ -110,9 +110,9 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.reference_entity.create.input.code"
+                        htmlFor="pim_asset_manager.asset_family.create.input.code"
                       >
-                        {__('pim_reference_entity.reference_entity.create.input.code')}
+                        {__('pim_asset_manager.asset_family.create.input.code')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer field-input">
@@ -120,7 +120,7 @@ class Create extends React.Component<CreateProps> {
                         type="text"
                         autoComplete="off"
                         className="AknTextField AknTextField--light"
-                        id="pim_reference_entity.reference_entity.create.input.code"
+                        id="pim_asset_manager.asset_family.create.input.code"
                         name="code"
                         value={this.props.data.getCode().stringValue()}
                         onChange={this.onCodeUpdate}
@@ -130,7 +130,7 @@ class Create extends React.Component<CreateProps> {
                     {getErrorsView(this.props.errors, 'code')}
                   </div>
                   <button className="AknButton AknButton--apply ok" onClick={this.props.events.onSubmit}>
-                    {__('pim_reference_entity.reference_entity.create.confirm')}
+                    {__('pim_asset_manager.asset_family.create.confirm')}
                   </button>
                 </div>
               </div>
@@ -138,7 +138,7 @@ class Create extends React.Component<CreateProps> {
           </div>
         </div>
         <div
-          title="{__('pim_reference_entity.reference_entity.create.cancel')}"
+          title="{__('pim_asset_manager.asset_family.create.cancel')}"
           className="AknFullPage-cancel cancel"
           onClick={this.props.events.onCancel}
           tabIndex={0}
@@ -151,7 +151,7 @@ class Create extends React.Component<CreateProps> {
 export default connect(
   (state: IndexState): StateProps => {
     return {
-      data: denormalizeReferenceEntityCreation(state.create.data),
+      data: denormalizeAssetFamilyCreation(state.create.data),
       errors: state.create.errors,
       context: {
         locale: state.user.catalogLocale,
@@ -162,16 +162,16 @@ export default connect(
     return {
       events: {
         onCodeUpdated: (value: string) => {
-          dispatch(referenceEntityCreationCodeUpdated(value));
+          dispatch(assetFamilyCreationCodeUpdated(value));
         },
         onLabelUpdated: (value: string, locale: string) => {
-          dispatch(referenceEntityCreationLabelUpdated(value, locale));
+          dispatch(assetFamilyCreationLabelUpdated(value, locale));
         },
         onCancel: () => {
-          dispatch(referenceEntityCreationCancel());
+          dispatch(assetFamilyCreationCancel());
         },
         onSubmit: () => {
-          dispatch(createReferenceEntity());
+          dispatch(createAssetFamily());
         },
       },
     } as DispatchProps;

@@ -2,25 +2,25 @@ import {
   permissionEditionErrorOccured,
   permissionEditionSucceeded,
   permissionEditionReceived,
-} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
+} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {
   notifyPermissionWellSaved,
   notifyPermissionSaveFailed,
-} from 'akeneoreferenceentity/application/action/reference-entity/notify';
-import permissionSaver from 'akeneoreferenceentity/infrastructure/saver/permission';
-import permissionFetcher from 'akeneoreferenceentity/infrastructure/fetcher/permission';
-import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {denormalizePermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
-import {refreshReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/edit';
+} from 'akeneoassetmanager/application/action/asset-family/notify';
+import permissionSaver from 'akeneoassetmanager/infrastructure/saver/permission';
+import permissionFetcher from 'akeneoassetmanager/infrastructure/fetcher/permission';
+import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {denormalizePermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
+import {refreshAssetFamily} from 'akeneoassetmanager/application/action/asset-family/edit';
 
 export const savePermission = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const referenceEntityIdentifier = ReferenceEntityIdentifier.create(getState().form.data.identifier);
+  const assetFamilyIdentifier = AssetFamilyIdentifier.create(getState().form.data.identifier);
   const permission = denormalizePermissionCollection(getState().permission.data);
 
   try {
-    const errors = await permissionSaver.save(referenceEntityIdentifier, permission);
+    const errors = await permissionSaver.save(assetFamilyIdentifier, permission);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
@@ -38,7 +38,7 @@ export const savePermission = () => async (dispatch: any, getState: () => EditSt
   dispatch(permissionEditionSucceeded());
   dispatch(notifyPermissionWellSaved());
 
-  const updatedPermission = await permissionFetcher.fetch(referenceEntityIdentifier);
+  const updatedPermission = await permissionFetcher.fetch(assetFamilyIdentifier);
   dispatch(permissionEditionReceived(updatedPermission));
-  dispatch(refreshReferenceEntity(referenceEntityIdentifier, false));
+  dispatch(refreshAssetFamily(assetFamilyIdentifier, false));
 };

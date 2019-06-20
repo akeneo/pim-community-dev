@@ -1,34 +1,34 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal\AddHalDownloadLinkToReferenceEntityImage;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyByAssetFamilyIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class GetConnectorReferenceEntityAction
+class GetConnectorAssetFamilyAction
 {
-    /** @var FindConnectorReferenceEntityByReferenceEntityIdentifierInterface */
-    private $findConnectorReferenceEntity;
+    /** @var FindConnectorAssetFamilyByAssetFamilyIdentifierInterface */
+    private $findConnectorAssetFamily;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
-    /** @var AddHalDownloadLinkToReferenceEntityImage */
-    private $addHalLinksToReferenceEntityImage;
+    /** @var AddHalDownloadLinkToAssetFamilyImage */
+    private $addHalLinksToAssetFamilyImage;
 
     public function __construct(
-        FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        AddHalDownloadLinkToReferenceEntityImage $addHalLinksToImageValues
+        FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily,
+        AssetFamilyExistsInterface $assetFamilyExists,
+        AddHalDownloadLinkToAssetFamilyImage $addHalLinksToImageValues
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
-        $this->addHalLinksToReferenceEntityImage = $addHalLinksToImageValues;
+        $this->assetFamilyExists = $assetFamilyExists;
+        $this->findConnectorAssetFamily = $findConnectorAssetFamily;
+        $this->addHalLinksToAssetFamilyImage = $addHalLinksToImageValues;
     }
 
     /**
@@ -38,20 +38,20 @@ class GetConnectorReferenceEntityAction
     public function __invoke(string $code): JsonResponse
     {
         try {
-            $code = ReferenceEntityIdentifier::fromString($code);
+            $code = AssetFamilyIdentifier::fromString($code);
         } catch (\Exception $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $referenceEntity = $this->findConnectorReferenceEntity->find($code);
+        $assetFamily = $this->findConnectorAssetFamily->find($code);
 
-        if (null === $referenceEntity) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $code));
+        if (null === $assetFamily) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $code));
         }
 
-        $normalizedReferenceEntity = $referenceEntity->normalize();
-        $normalizedReferenceEntity = ($this->addHalLinksToReferenceEntityImage)($normalizedReferenceEntity);
+        $normalizedAssetFamily = $assetFamily->normalize();
+        $normalizedAssetFamily = ($this->addHalLinksToAssetFamilyImage)($normalizedAssetFamily);
 
-        return new JsonResponse($normalizedReferenceEntity);
+        return new JsonResponse($normalizedAssetFamily);
     }
 }

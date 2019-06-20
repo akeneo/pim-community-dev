@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
 use JsonSchema\Validator;
 

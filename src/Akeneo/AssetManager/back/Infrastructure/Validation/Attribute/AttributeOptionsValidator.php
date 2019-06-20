@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
-use Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;

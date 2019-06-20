@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
+namespace Akeneo\AssetManager\Infrastructure\PublicApi\Analytics;
 
 /**
  * Represents the volume of an axis of limitation.

@@ -11,34 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Permission;
+namespace Akeneo\AssetManager\Domain\Model\Permission;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityPermission
+class AssetFamilyPermission
 {
-    private const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
+    private const ASSET_FAMILY_IDENTIFIER = 'asset_family_identifier';
     private const PERMISSIONS = 'permissions';
 
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
+    /** @var AssetFamilyIdentifier */
+    private $assetFamilyIdentifier;
 
     /** @var UserGroupPermission[] */
     private $permissions;
 
     private function __construct(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         array $permissions
     ) {
         Assert::allIsInstanceOf($permissions, UserGroupPermission::class);
         $this->assertUniquePermissions($permissions);
 
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->permissions = $permissions;
     }
 
@@ -60,29 +60,29 @@ class ReferenceEntityPermission
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      * @param UserGroupPermission[]     $permissions
      */
     public static function create(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         array $permissions
     ): self {
-        return new self($referenceEntityIdentifier, $permissions);
+        return new self($assetFamilyIdentifier, $permissions);
     }
 
     public function normalize(): array
     {
         return [
-            self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
+            self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier->normalize(),
             self::PERMISSIONS                 => array_map(function (UserGroupPermission $userGroupPermission) {
                 return $userGroupPermission->normalize();
             }, $this->permissions),
         ];
     }
 
-    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
     {
-        return $this->referenceEntityIdentifier;
+        return $this->assetFamilyIdentifier;
     }
 
     /**
@@ -108,7 +108,7 @@ class ReferenceEntityPermission
     }
 
     /**
-     * If there are no permissions set for the reference entity (at its creation for instance), it means that every
+     * If there are no permissions set for the asset family (at its creation for instance), it means that every
      * user is allowed to edit.
      */
     private function areAllUserGroupsAllowedToEdit(): bool

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Filesystem\PreviewGenerator;
+namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
-use Akeneo\ReferenceEntity\Integration\PreviewGeneratorIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
+use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -24,7 +24,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     {
         parent::setUp();
 
-        $this->imageGenerator = $this->get('akeneo_referenceentity.application.generator.image_generator');
+        $this->imageGenerator = $this->get('akeneo_assetmanager.application.generator.image_generator');
         $this->loadFixtures();
     }
 
@@ -92,7 +92,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     private function loadFixtures(): void
     {
         $fixtures = $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->withAttributes([
                 'website'
              ])
@@ -100,7 +100,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
         $this->attribute = $fixtures['attributes']['website'];
 
         $this->fixturesLoader
-            ->record('designer', 'starck')
+            ->asset('designer', 'starck')
             ->withValues([
                  'website' => [
                      [

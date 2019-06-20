@@ -1,39 +1,39 @@
-import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
+import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
 import {
-  referenceEntityCreationSucceeded,
-  referenceEntityCreationErrorOccured,
-} from 'akeneoreferenceentity/domain/event/reference-entity/create';
+  assetFamilyCreationSucceeded,
+  assetFamilyCreationErrorOccured,
+} from 'akeneoassetmanager/domain/event/asset-family/create';
 import {
-  notifyReferenceEntityWellCreated,
-  notifyReferenceEntityCreateFailed,
-} from 'akeneoreferenceentity/application/action/reference-entity/notify';
-import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
-import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
-import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/router';
-import {denormalizeReferenceEntityCreation} from 'akeneoreferenceentity/domain/model/reference-entity/creation';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+  notifyAssetFamilyWellCreated,
+  notifyAssetFamilyCreateFailed,
+} from 'akeneoassetmanager/application/action/asset-family/notify';
+import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
+import {redirectToAssetFamily} from 'akeneoassetmanager/application/action/asset-family/router';
+import {denormalizeAssetFamilyCreation} from 'akeneoassetmanager/domain/model/asset-family/creation';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
-export const createReferenceEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
-  const referenceEntity = denormalizeReferenceEntityCreation(getState().create.data);
+export const createAssetFamily = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
+  const assetFamily = denormalizeAssetFamilyCreation(getState().create.data);
 
   try {
-    let errors = await referenceEntitySaver.create(referenceEntity);
+    let errors = await assetFamilySaver.create(assetFamily);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(referenceEntityCreationErrorOccured(validationErrors));
+      dispatch(assetFamilyCreationErrorOccured(validationErrors));
 
       return;
     }
   } catch (error) {
-    dispatch(notifyReferenceEntityCreateFailed());
+    dispatch(notifyAssetFamilyCreateFailed());
 
     return;
   }
 
-  dispatch(referenceEntityCreationSucceeded());
-  dispatch(notifyReferenceEntityWellCreated());
-  dispatch(redirectToReferenceEntity(createIdentifier(referenceEntity.getCode().stringValue()), 'attribute'));
+  dispatch(assetFamilyCreationSucceeded());
+  dispatch(notifyAssetFamilyWellCreated());
+  dispatch(redirectToAssetFamily(createIdentifier(assetFamily.getCode().stringValue()), 'attribute'));
 
   return;
 };

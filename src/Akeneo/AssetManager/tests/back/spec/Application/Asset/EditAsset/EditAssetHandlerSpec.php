@@ -11,54 +11,54 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterInterface;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\ValueUpdaterInterface;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\ValueUpdaterRegistryInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class EditRecordHandlerSpec extends ObjectBehavior
+class EditAssetHandlerSpec extends ObjectBehavior
 {
     function let(
         ValueUpdaterRegistryInterface $valueUpdaterRegistry,
-        RecordRepositoryInterface $recordRepository,
+        AssetRepositoryInterface $assetRepository,
         FileStorerInterface $storer
     ) {
-        $this->beConstructedWith($valueUpdaterRegistry, $recordRepository, $storer);
+        $this->beConstructedWith($valueUpdaterRegistry, $assetRepository, $storer);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditRecordHandler::class);
+        $this->shouldHaveType(EditAssetHandler::class);
     }
 
-    function it_edits_a_record(
+    function it_edits_a_asset(
         ValueUpdaterRegistryInterface $valueUpdaterRegistry,
-        RecordRepositoryInterface $recordRepository,
-        Record $record,
+        AssetRepositoryInterface $assetRepository,
+        Asset $asset,
         ValueUpdaterInterface $textUpdater
     ) {
         $textAttribute = $this->getAttribute();
@@ -70,7 +70,7 @@ class EditRecordHandlerSpec extends ObjectBehavior
             'Sony is a famous electronic company'
         );
 
-        $editRecordCommand = new EditRecordCommand(
+        $editAssetCommand = new EditAssetCommand(
             'brand',
             'sony',
             [],
@@ -78,23 +78,23 @@ class EditRecordHandlerSpec extends ObjectBehavior
             [$editDescriptionCommand]
         );
 
-        $recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('sony')
-        )->willReturn($record);
+        $assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('brand'),
+            AssetCode::fromString('sony')
+        )->willReturn($asset);
         $valueUpdaterRegistry->getUpdater($editDescriptionCommand)->willReturn($textUpdater);
 
-        $textUpdater->__invoke($record, $editDescriptionCommand)->shouldBeCalled();
-        $recordRepository->update($record)->shouldBeCalled();
+        $textUpdater->__invoke($asset, $editDescriptionCommand)->shouldBeCalled();
+        $assetRepository->update($asset)->shouldBeCalled();
 
-        $this->__invoke($editRecordCommand);
+        $this->__invoke($editAssetCommand);
     }
 
     private function getAttribute(): TextAttribute
     {
         $textAttribute = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),

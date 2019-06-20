@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\BeforeAttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\BeforeAttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
@@ -59,10 +59,10 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
         $normalizedAttribute = $attribute->normalize();
         $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $insert = <<<SQL
-        INSERT INTO akeneo_reference_entity_attribute (
+        INSERT INTO akeneo_asset_manager_attribute (
             identifier,
             code,
-            reference_entity_identifier,
+            asset_family_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -74,7 +74,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
         VALUES (
             :identifier,
             :code,
-            :reference_entity_identifier,
+            :asset_family_identifier,
             :labels,
             :attribute_type,
             :attribute_order,
@@ -89,7 +89,7 @@ SQL;
             [
                 'identifier'                  => $normalizedAttribute['identifier'],
                 'code'                        => $normalizedAttribute['code'],
-                'reference_entity_identifier' => $normalizedAttribute['reference_entity_identifier'],
+                'asset_family_identifier' => $normalizedAttribute['asset_family_identifier'],
                 'labels'                      => json_encode($normalizedAttribute['labels']),
                 'attribute_type'              => $normalizedAttribute['type'],
                 'attribute_order'             => $normalizedAttribute['order'],
@@ -117,7 +117,7 @@ SQL;
         $normalizedAttribute = $attribute->normalize();
         $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $update = <<<SQL
-        UPDATE akeneo_reference_entity_attribute SET
+        UPDATE akeneo_asset_manager_attribute SET
             labels = :labels,
             attribute_order = :attribute_order,
             is_required = :is_required,
@@ -128,7 +128,7 @@ SQL;
             $update,
             [
                 'identifier'                  => $normalizedAttribute['identifier'],
-                'reference_entity_identifier' => $normalizedAttribute['reference_entity_identifier'],
+                'asset_family_identifier' => $normalizedAttribute['asset_family_identifier'],
                 'labels'                      => $normalizedAttribute['labels'],
                 'attribute_order'             => $normalizedAttribute['order'],
                 'is_required'                 => $normalizedAttribute['is_required'],
@@ -157,7 +157,7 @@ SQL;
         SELECT
             identifier,
             code,
-            reference_entity_identifier,
+            asset_family_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -165,7 +165,7 @@ SQL;
             value_per_channel,
             value_per_locale,
             additional_properties
-        FROM akeneo_reference_entity_attribute
+        FROM akeneo_asset_manager_attribute
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
@@ -184,18 +184,18 @@ SQL;
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
      * @return AbstractAttribute[]
      * @throws DBALException
      */
-    public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function findByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $fetch = <<<SQL
         SELECT
             identifier,
             code,
-            reference_entity_identifier,
+            asset_family_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -203,13 +203,13 @@ SQL;
             value_per_channel,
             value_per_locale,
             additional_properties
-        FROM akeneo_reference_entity_attribute
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        FROM akeneo_asset_manager_attribute
+        WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'reference_entity_identifier' => $referenceEntityIdentifier,
+                'asset_family_identifier' => $assetFamilyIdentifier,
             ]
         );
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -227,16 +227,16 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
     {
         $fetch = <<<SQL
         SELECT COUNT(*)
-        FROM akeneo_reference_entity_attribute
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        FROM akeneo_asset_manager_attribute
+        WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
-            ['reference_entity_identifier' => $referenceEntityIdentifier,]
+            ['asset_family_identifier' => $assetFamilyIdentifier,]
         );
         $count = $statement->fetchColumn();
 
@@ -246,7 +246,7 @@ SQL;
     private function getAdditionalProperties(array $normalizedAttribute): array
     {
         unset($normalizedAttribute['identifier']);
-        unset($normalizedAttribute['reference_entity_identifier']);
+        unset($normalizedAttribute['asset_family_identifier']);
         unset($normalizedAttribute['code']);
         unset($normalizedAttribute['labels']);
         unset($normalizedAttribute['order']);
@@ -264,15 +264,15 @@ SQL;
      */
     public function deleteByIdentifier(AttributeIdentifier $attributeIdentifier): void
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($attributeIdentifier);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifier($attributeIdentifier);
 
         $this->eventDispatcher->dispatch(
             BeforeAttributeDeletedEvent::class,
-            new BeforeAttributeDeletedEvent($referenceEntityIdentifier, $attributeIdentifier)
+            new BeforeAttributeDeletedEvent($assetFamilyIdentifier, $attributeIdentifier)
         );
 
         $sql = <<<SQL
-        DELETE FROM akeneo_reference_entity_attribute
+        DELETE FROM akeneo_asset_manager_attribute
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -287,26 +287,26 @@ SQL;
 
         $this->eventDispatcher->dispatch(
             AttributeDeletedEvent::class,
-            new AttributeDeletedEvent($referenceEntityIdentifier, $attributeIdentifier)
+            new AttributeDeletedEvent($assetFamilyIdentifier, $attributeIdentifier)
         );
     }
 
     public function nextIdentifier(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode
     ): AttributeIdentifier {
         return AttributeIdentifier::create(
-            (string) $referenceEntityIdentifier,
+            (string) $assetFamilyIdentifier,
             (string) $attributeCode,
             Uuid::uuid4()->toString()
         );
     }
 
-    private function getReferenceEntityIdentifier(AttributeIdentifier $attributeIdentifier): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifier(AttributeIdentifier $attributeIdentifier): AssetFamilyIdentifier
     {
         $query = <<<SQL
-            SELECT reference_entity_identifier
-            FROM akeneo_reference_entity_attribute
+            SELECT asset_family_identifier
+            FROM akeneo_asset_manager_attribute
             WHERE identifier = :identifier
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $attributeIdentifier]);
@@ -315,6 +315,6 @@ SQL;
             throw AttributeNotFoundException::withIdentifier($attributeIdentifier);
         }
 
-        return ReferenceEntityIdentifier::fromString($result['reference_entity_identifier']);
+        return AssetFamilyIdentifier::fromString($result['asset_family_identifier']);
     }
 }

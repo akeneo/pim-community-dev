@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -27,8 +27,8 @@ abstract class AbstractAttribute
     /** @var AttributeIdentifier */
     protected $identifier;
 
-    /** @var ReferenceEntity */
-    protected $referenceEntityIdentifier;
+    /** @var AssetFamily */
+    protected $assetFamilyIdentifier;
 
     /** @var AttributeCode */
     protected $code;
@@ -50,7 +50,7 @@ abstract class AbstractAttribute
 
     protected function __construct(
         AttributeIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -59,7 +59,7 @@ abstract class AbstractAttribute
         AttributeValuePerLocale $valuePerLocale
     ) {
         $this->identifier = $identifier;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->code = $code;
         $this->labelCollection = $labelCollection;
         $this->order = $order;
@@ -73,9 +73,9 @@ abstract class AbstractAttribute
         return $this->identifier;
     }
 
-    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
     {
-        return $this->referenceEntityIdentifier;
+        return $this->assetFamilyIdentifier;
     }
 
     public function getCode(): AttributeCode
@@ -86,7 +86,7 @@ abstract class AbstractAttribute
     public function equals(AbstractAttribute $attribute): bool
     {
         return $this->identifier->equals($attribute->identifier) &&
-            $this->referenceEntityIdentifier->equals($attribute->referenceEntityIdentifier);
+            $this->assetFamilyIdentifier->equals($attribute->assetFamilyIdentifier);
     }
 
     public function getLabel(string $localeCode): ?string
@@ -125,7 +125,7 @@ abstract class AbstractAttribute
     {
         return [
             'identifier' => (string) $this->identifier,
-            'reference_entity_identifier' => (string) $this->referenceEntityIdentifier,
+            'asset_family_identifier' => (string) $this->assetFamilyIdentifier,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'order' => $this->order->intValue(),

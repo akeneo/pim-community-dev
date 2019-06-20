@@ -1,46 +1,46 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import Table from 'akeneoreferenceentity/application/component/record/index/table';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
-import {deleteAllReferenceEntityRecords, deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import Table from 'akeneoassetmanager/application/component/asset/index/table';
+import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import {redirectToAsset} from 'akeneoassetmanager/application/action/asset/router';
+import __ from 'akeneoassetmanager/tools/translator';
+import AssetFamily, {
+  denormalizeAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
+import {assetCreationStart} from 'akeneoassetmanager/domain/event/asset/create';
+import {deleteAllAssetFamilyAssets, deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
+import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import {
   needMoreResults,
   searchUpdated,
-  updateRecordResults,
+  updateAssetResults,
   completenessFilterUpdated,
   filterUpdated,
-} from 'akeneoreferenceentity/application/action/record/search';
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import ReferenceEntityIdentifier, {
+} from 'akeneoassetmanager/application/action/asset/search';
+import {Column} from 'akeneoassetmanager/application/reducer/grid';
+import AssetFamilyIdentifier, {
   createIdentifier as createReferenceIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import RecordCode, {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
-import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode, {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
+import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
+import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import {
   getDataCellView,
   CellView,
   getDataFilterView,
   FilterView,
   hasDataFilterView,
-} from 'akeneoreferenceentity/application/configuration/value';
-import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import Locale from 'akeneoreferenceentity/domain/model/locale';
-import Channel from 'akeneoreferenceentity/domain/model/channel';
-import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
-import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
-import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+} from 'akeneoassetmanager/application/configuration/value';
+import {Filter} from 'akeneoassetmanager/application/reducer/grid';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/domain/event/user';
+import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
+import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
+import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 
 const securityContext = require('pim/security-context');
 
@@ -49,9 +49,9 @@ interface StateProps {
     locale: string;
     channel: string;
   };
-  referenceEntity: ReferenceEntity;
+  assetFamily: AssetFamily;
   grid: {
-    records: NormalizedRecord[];
+    assets: NormalizedAsset[];
     columns: Column[];
     matchesCount: number;
     totalCount: number;
@@ -61,7 +61,7 @@ interface StateProps {
   };
   attributes: NormalizedAttribute[] | null;
   rights: {
-    record: {
+    asset: {
       create: boolean;
       edit: boolean;
       deleteAll: boolean;
@@ -77,19 +77,19 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onRedirectToRecord: (record: NormalizedRecord) => void;
-    onDeleteRecord: (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => void;
+    onRedirectToAsset: (asset: NormalizedAsset) => void;
+    onDeleteAsset: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => void;
     onNeedMoreResults: () => void;
     onSearchUpdated: (userSearch: string) => void;
     onFilterUpdated: (filter: Filter) => void;
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (locale: Channel) => void;
     onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
-    onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
-    onRecordCreationStart: () => void;
+    onDeleteAllAssets: (assetFamily: AssetFamily) => void;
+    onAssetCreationStart: () => void;
     onFirstLoad: () => void;
-    onOpenDeleteAllRecordsModal: () => void;
-    onOpenDeleteRecordModal: (recordCode: RecordCode, label: string) => void;
+    onOpenDeleteAllAssetsModal: () => void;
+    onOpenDeleteAssetModal: (assetCode: AssetCode, label: string) => void;
     onCancelDeleteModal: () => void;
   };
 }
@@ -105,15 +105,15 @@ export type FilterViews = {
   };
 };
 
-const SecondaryAction = ({onOpenDeleteAllRecordsModal}: {onOpenDeleteAllRecordsModal: () => void}) => {
+const SecondaryAction = ({onOpenDeleteAllAssetsModal}: {onOpenDeleteAllAssetsModal: () => void}) => {
   return (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
       <div className="AknDropdown-menu AknDropdown-menu--right">
         <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
         <div>
-          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteAllRecordsModal()}>
-            {__('pim_reference_entity.record.button.delete_all')}
+          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteAllAssetsModal()}>
+            {__('pim_asset_manager.asset.button.delete_all')}
           </button>
         </div>
       </div>
@@ -121,7 +121,7 @@ const SecondaryAction = ({onOpenDeleteAllRecordsModal}: {onOpenDeleteAllRecordsM
   );
 };
 
-class Records extends React.Component<StateProps & DispatchProps, {cellViews: CellViews; filterViews: FilterViews}> {
+class Assets extends React.Component<StateProps & DispatchProps, {cellViews: CellViews; filterViews: FilterViews}> {
   state = {cellViews: {}, filterViews: {}};
 
   componentDidMount() {
@@ -174,25 +174,25 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
   }
 
   render() {
-    const {context, grid, events, referenceEntity, rights, confirmDelete} = this.props;
+    const {context, grid, events, assetFamily, rights, confirmDelete} = this.props;
 
     return (
       <React.Fragment>
         <Header
-          label={referenceEntity.getLabel(context.locale)}
-          image={referenceEntity.getImage()}
+          label={assetFamily.getLabel(context.locale)}
+          image={assetFamily.getImage()}
           primaryAction={() => {
-            return rights.record.create ? (
-              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart}>
-                {__('pim_reference_entity.record.button.create')}
+            return rights.asset.create ? (
+              <button className="AknButton AknButton--action" onClick={events.onAssetCreationStart}>
+                {__('pim_asset_manager.asset.button.create')}
               </button>
             ) : null;
           }}
           secondaryActions={() => {
-            return rights.record.deleteAll ? (
+            return rights.asset.deleteAll ? (
               <SecondaryAction
-                onOpenDeleteAllRecordsModal={() => {
-                  events.onOpenDeleteAllRecordsModal();
+                onOpenDeleteAllAssetsModal={() => {
+                  events.onOpenDeleteAllAssetsModal();
                 }}
               />
             ) : null;
@@ -204,58 +204,58 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
           breadcrumbConfiguration={breadcrumbConfiguration}
           onLocaleChanged={events.onLocaleChanged}
           onChannelChanged={events.onChannelChanged}
-          displayActions={this.props.rights.record.create || this.props.rights.record.deleteAll}
+          displayActions={this.props.rights.asset.create || this.props.rights.asset.deleteAll}
         />
         {0 !== grid.totalCount ? (
           <Table
-            onRedirectToRecord={events.onRedirectToRecord}
-            onDeleteRecord={events.onOpenDeleteRecordModal}
+            onRedirectToAsset={events.onRedirectToAsset}
+            onDeleteAsset={events.onOpenDeleteAssetModal}
             onNeedMoreResults={events.onNeedMoreResults}
             onSearchUpdated={events.onSearchUpdated}
             onFilterUpdated={events.onFilterUpdated}
             onCompletenessFilterUpdated={events.onCompletenessFilterUpdated}
-            recordCount={grid.matchesCount}
+            assetCount={grid.matchesCount}
             locale={context.locale}
             channel={context.channel}
             grid={grid}
             cellViews={this.state.cellViews}
             filterViews={this.state.filterViews}
-            referenceEntity={referenceEntity}
+            assetFamily={assetFamily}
             rights={rights}
           />
         ) : (
           <div className="AknGridContainer-noData">
-            <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--reference-entity" />
+            <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--asset-family" />
             <div className="AknGridContainer-noDataTitle">
-              {__('pim_reference_entity.record.no_data.title', {
-                entityLabel: referenceEntity.getLabel(context.locale),
+              {__('pim_asset_manager.asset.no_data.title', {
+                entityLabel: assetFamily.getLabel(context.locale),
               })}
             </div>
-            <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
+            <div className="AknGridContainer-noDataSubtitle">{__('pim_asset_manager.asset.no_data.subtitle')}</div>
           </div>
         )}
         {confirmDelete.isActive && undefined === confirmDelete.identifier && (
           <DeleteModal
-            message={__('pim_reference_entity.record.delete_all.confirm', {
-              entityIdentifier: referenceEntity.getIdentifier().stringValue(),
+            message={__('pim_asset_manager.asset.delete_all.confirm', {
+              entityIdentifier: assetFamily.getIdentifier().stringValue(),
             })}
-            title={__('pim_reference_entity.record.delete.title')}
+            title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={() => {
-              events.onDeleteAllRecords(referenceEntity);
+              events.onDeleteAllAssets(assetFamily);
             }}
             onCancel={events.onCancelDeleteModal}
           />
         )}
         {confirmDelete.isActive && undefined !== confirmDelete.identifier && (
           <DeleteModal
-            message={__('pim_reference_entity.record.delete.message', {
-              recordLabel: confirmDelete.label,
+            message={__('pim_asset_manager.asset.delete.message', {
+              assetLabel: confirmDelete.label,
             })}
-            title={__('pim_reference_entity.record.delete.title')}
+            title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={() => {
-              events.onDeleteRecord(
-                referenceEntity.getIdentifier(),
-                createRecordCode(confirmDelete.identifier as string)
+              events.onDeleteAsset(
+                assetFamily.getIdentifier(),
+                createAssetCode(confirmDelete.identifier as string)
               );
             }}
             onCancel={events.onCancelDeleteModal}
@@ -268,8 +268,8 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
 
 export default connect(
   (state: EditState): StateProps => {
-    const referenceEntity = denormalizeReferenceEntity(state.form.data);
-    const records = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
+    const assetFamily = denormalizeAssetFamily(state.form.data);
+    const assets = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
     const page = undefined === state.grid || undefined === state.grid.query.page ? 0 : state.grid.query.page;
     const filters = undefined === state.grid || undefined === state.grid.query.filters ? [] : state.grid.query.filters;
     const columns =
@@ -284,9 +284,9 @@ export default connect(
         locale: state.user.catalogLocale,
         channel: state.user.catalogChannel,
       },
-      referenceEntity,
+      assetFamily,
       grid: {
-        records,
+        assets,
         matchesCount,
         totalCount: state.grid.totalCount,
         columns,
@@ -296,23 +296,23 @@ export default connect(
       },
       attributes: state.attributes.attributes,
       rights: {
-        record: {
+        asset: {
           create:
-            securityContext.isGranted('akeneo_referenceentity_record_create') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           edit:
-            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           deleteAll:
-            securityContext.isGranted('akeneo_referenceentity_record_create') &&
-            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_assets_delete_all') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            securityContext.isGranted('akeneo_referenceentity_record_create') &&
-            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
       confirmDelete: state.confirmDelete,
@@ -321,16 +321,16 @@ export default connect(
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onRedirectToRecord: (record: NormalizedRecord) => {
+        onRedirectToAsset: (asset: NormalizedAsset) => {
           dispatch(
-            redirectToRecord(
-              createReferenceIdentifier(record.reference_entity_identifier),
-              createRecordCode(record.code)
+            redirectToAsset(
+              createReferenceIdentifier(asset.asset_family_identifier),
+              createAssetCode(asset.code)
             )
           );
         },
-        onDeleteRecord: (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => {
-          dispatch(deleteRecord(referenceEntityIdentifier, recordCode, true));
+        onDeleteAsset: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
+          dispatch(deleteAsset(assetFamilyIdentifier, assetCode, true));
         },
         onNeedMoreResults: () => {
           dispatch(needMoreResults());
@@ -344,50 +344,50 @@ export default connect(
         onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => {
           dispatch(completenessFilterUpdated(completenessValue));
         },
-        onRecordCreationStart: () => {
-          dispatch(recordCreationStart());
+        onAssetCreationStart: () => {
+          dispatch(assetCreationStart());
         },
-        onDeleteAllRecords: (referenceEntity: ReferenceEntity) => {
-          dispatch(deleteAllReferenceEntityRecords(referenceEntity));
+        onDeleteAllAssets: (assetFamily: AssetFamily) => {
+          dispatch(deleteAllAssetFamilyAssets(assetFamily));
         },
         onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
         },
-        onOpenDeleteAllRecordsModal: () => {
+        onOpenDeleteAllAssetsModal: () => {
           dispatch(openDeleteModal());
         },
-        onOpenDeleteRecordModal: (recordCode: RecordCode, label: string) => {
-          dispatch(openDeleteModal(recordCode.stringValue(), label));
+        onOpenDeleteAssetModal: (assetCode: AssetCode, label: string) => {
+          dispatch(openDeleteModal(assetCode.stringValue(), label));
         },
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));
-          dispatch(updateRecordResults(false));
+          dispatch(updateAssetResults(false));
         },
         onChannelChanged: (channel: Channel) => {
           dispatch(catalogChannelChanged(channel.code));
-          dispatch(updateRecordResults(false));
+          dispatch(updateAssetResults(false));
         },
         onFirstLoad: () => {
-          dispatch(updateRecordResults(false));
+          dispatch(updateAssetResults(false));
         },
       },
     };
   }
-)(Records);
+)(Assets);
 
-interface RecordLabelProps {
+interface AssetLabelProps {
   grid: {
     totalCount: number;
   };
 }
 
-class RecordLabel extends React.Component<RecordLabelProps> {
+class AssetLabel extends React.Component<AssetLabelProps> {
   render() {
     const {grid} = this.props;
 
     return (
       <React.Fragment>
-        {__('pim_reference_entity.reference_entity.tab.records')}
+        {__('pim_asset_manager.asset_family.tab.assets')}
         <span>&nbsp;</span>
         <span className="AknColumn-span">({grid.totalCount})</span>
       </React.Fragment>
@@ -396,7 +396,7 @@ class RecordLabel extends React.Component<RecordLabelProps> {
 }
 
 export const label = connect(
-  (state: EditState): RecordLabelProps => {
+  (state: EditState): AssetLabelProps => {
     return {
       grid: {
         totalCount: state.grid.totalCount,
@@ -406,4 +406,4 @@ export const label = connect(
   () => {
     return {};
   }
-)(RecordLabel);
+)(AssetLabel);

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Channel from 'akeneoreferenceentity/domain/model/channel';
-import __ from 'akeneoreferenceentity/tools/translator';
-import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
-import Key from 'akeneoreferenceentity/tools/key';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import __ from 'akeneoassetmanager/tools/translator';
+import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
+import Key from 'akeneoassetmanager/tools/key';
 
 const ChannelItemView = ({
   isOpen,

@@ -1,29 +1,29 @@
-import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
-import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
-import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
+import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
+import {NormalizedIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 export interface RightState {
   locale: LocalePermission[];
-  referenceEntity: ReferenceEntityPermission;
+  assetFamily: AssetFamilyPermission;
 }
 
 export default (
   state: RightState = {
     locale: [],
-    referenceEntity: {referenceEntityIdentifier: '', edit: false},
+    assetFamily: {assetFamilyIdentifier: '', edit: false},
   },
   action: {
     type: string;
     localePermissions: LocalePermission[];
-    referenceEntityPermission: ReferenceEntityPermission;
+    assetFamilyPermission: AssetFamilyPermission;
   }
 ): RightState => {
   switch (action.type) {
     case 'LOCALE_PERMISSIONS_CHANGED':
       state = {...state, locale: action.localePermissions};
       break;
-    case 'REFERENCE_ENTITY_PERMISSIONS_CHANGED':
-      state = {...state, referenceEntity: action.referenceEntityPermission};
+    case 'ASSET_FAMILY_PERMISSIONS_CHANGED':
+      state = {...state, assetFamily: action.assetFamilyPermission};
       break;
     default:
       break;
@@ -44,13 +44,13 @@ export const canEditLocale = (localesPermission: LocalePermission[], currentLoca
   return localePermission.edit;
 };
 
-export const canEditReferenceEntity = (
-  referenceEntityPermission: ReferenceEntityPermission,
-  referenceEntityIdentifier: NormalizedIdentifier
+export const canEditAssetFamily = (
+  assetFamilyPermission: AssetFamilyPermission,
+  assetFamilyIdentifier: NormalizedIdentifier
 ) => {
-  if (referenceEntityPermission.referenceEntityIdentifier !== referenceEntityIdentifier) {
+  if (assetFamilyPermission.assetFamilyIdentifier !== assetFamilyIdentifier) {
     return false;
   }
 
-  return referenceEntityPermission.edit;
+  return assetFamilyPermission.edit;
 };

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetSingleLinkType;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -24,7 +24,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlReferenceEntityIsLinkedToAtLeastOneProductAttribute implements ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface
+class SqlAssetFamilyIsLinkedToAtLeastOneProductAttribute implements AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -34,9 +34,9 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttribute implements Referenc
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function isLinked(ReferenceEntityIdentifier $identifier): bool
+    public function isLinked(AssetFamilyIdentifier $identifier): bool
     {
-        return $this->isReferenceEntityLinkedToAtLeastOneProductAttribute($identifier);
+        return $this->isAssetFamilyLinkedToAtLeastOneProductAttribute($identifier);
     }
 
     private function fetchResults(): array
@@ -50,8 +50,8 @@ SQL;
             $query,
             [
                 'attribute_types' => [
-                    ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
-                    ReferenceEntityType::REFERENCE_ENTITY,
+                    AssetMultipleLinkType::ASSET_MULTIPLE_LINK,
+                    AssetSingleLinkType::ASSET_SINGLE_LINK,
                 ]
             ],
             [
@@ -65,17 +65,17 @@ SQL;
         return $results;
     }
 
-    private function isReferenceEntityLinkedToAtLeastOneProductAttribute(ReferenceEntityIdentifier $identifier): bool
+    private function isAssetFamilyLinkedToAtLeastOneProductAttribute(AssetFamilyIdentifier $identifier): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $results = $this->fetchResults();
-        $linkedEntities = [];
+        $linkedAssets = [];
 
         foreach ($results as $result) {
             $properties = Type::getType(Type::TARRAY)->convertToPhpValue($result['properties'], $platform);
-            $linkedEntities[] = $properties['reference_data_name'];
+            $linkedAssets[] = $properties['reference_data_name'];
         }
 
-        return in_array((string) $identifier, array_unique($linkedEntities));
+        return in_array((string) $identifier, array_unique($linkedAssets));
     }
 }

@@ -1,10 +1,10 @@
-import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/option-collection';
-import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
-import {denormalize as denormalizeOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
+import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/option-collection';
+import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {denormalize as denormalizeOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 
 const designer = denormalizeOptionAttribute({
   identifier: 'designer_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'designer',
   labels: {en_US: 'Designer'},
   type: 'option',
@@ -28,7 +28,7 @@ const designer = denormalizeOptionAttribute({
   ],
 });
 
-describe('akeneo > reference entity > domain > model > record > data --- option collection', () => {
+describe('akeneo > asset family > domain > model > asset > data --- option collection', () => {
   test('I can create a new OptionData with a OptionCode collection value', () => {
     expect(create([]).normalize()).toEqual([]);
     expect(create([createCode('starck')]).normalize()).toEqual(['starck']);

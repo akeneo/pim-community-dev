@@ -1,6 +1,6 @@
-import {accessProperty} from 'akeneoreferenceentity/tools/property';
+import {accessProperty} from 'akeneoassetmanager/tools/property';
 
-describe('akeneo > reference entity > tools --- property', () => {
+describe('akeneo > asset family > tools --- property', () => {
   test('I can access property', () => {
     expect(
       accessProperty(

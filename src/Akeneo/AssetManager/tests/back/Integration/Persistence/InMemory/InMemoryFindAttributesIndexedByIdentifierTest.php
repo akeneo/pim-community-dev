@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesIndexedByIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAttributesIndexedByIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -54,7 +54,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
         $this->attributeRepository->create($nonScopableLocalizable);
         $this->attributeRepository->create($scopableLocalizable);
 
-        $indexedAttributes = $this->query->find(ReferenceEntityIdentifier::fromString('designer'));
+        $indexedAttributes = $this->query->find(AssetFamilyIdentifier::fromString('designer'));
         Assert::assertSame([
             'name_designer_fingerprint' => $nonScopableNonLocalizable,
             'description_designer_fingerprint' => $nonScopableLocalizable,
@@ -67,7 +67,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
      */
     public function it_returns_an_empty_list()
     {
-        $indexedAttributes = $this->query->find(ReferenceEntityIdentifier::fromString('designer'));
+        $indexedAttributes = $this->query->find(AssetFamilyIdentifier::fromString('designer'));
         Assert::assertSame([], $indexedAttributes);
     }
 
@@ -75,7 +75,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
     {
         return TextAttribute::createTextarea(
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
@@ -91,7 +91,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
     {
         return TextAttribute::createTextarea(
             AttributeIdentifier::fromString('description_designer_fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(1),
@@ -107,7 +107,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
     {
         return TextAttribute::createTextarea(
             AttributeIdentifier::fromString('bio_designer_fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('bio'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(2),

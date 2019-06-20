@@ -1,18 +1,18 @@
-import {redirectToRoute} from 'akeneoreferenceentity/application/event/router';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/identifier';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
+import {redirectToRoute} from 'akeneoassetmanager/application/event/router';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/identifier';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
-export const redirectToRecord = (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => {
-  return redirectToRoute('akeneo_reference_entities_record_edit', {
-    recordCode: recordCode.stringValue(),
-    referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
+export const redirectToAsset = (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
+  return redirectToRoute('akeneo_asset_manager_asset_edit', {
+    assetCode: assetCode.stringValue(),
+    assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
     tab: 'enrich',
   });
 };
 
-export const redirectToRecordIndex = (referenceEntityIdentifier: ReferenceEntityIdentifier) => {
-  return redirectToRoute('akeneo_reference_entities_reference_entity_edit', {
-    identifier: referenceEntityIdentifier.stringValue(),
-    tab: 'record',
+export const redirectToAssetIndex = (assetFamilyIdentifier: AssetFamilyIdentifier) => {
+  return redirectToRoute('akeneo_asset_manager_asset_family_edit', {
+    identifier: assetFamilyIdentifier.stringValue(),
+    tab: 'asset',
   });
 };

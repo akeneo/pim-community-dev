@@ -11,35 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class SqlFindReferenceEntityAttributeAsImageTest extends SqlIntegrationTestCase
+class SqlFindAssetFamilyAttributeAsImageTest extends SqlIntegrationTestCase
 {
-    /** @var FindReferenceEntityAttributeAsLabelInterface */
+    /** @var FindAssetFamilyAttributeAsLabelInterface */
     private $findAttributeAsImage;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findAttributeAsImage = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_image');
+        $this->findAttributeAsImage = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image');
         $this->resetDB();
         $this->loadFixtures();
     }
@@ -47,14 +47,14 @@ class SqlFindReferenceEntityAttributeAsImageTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_finds_the_attribute_as_image_of_a_reference_entity()
+    public function it_finds_the_attribute_as_image_of_an_asset_family()
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
-        $expectedAttributeAsImage = $referenceEntity->getAttributeAsImageReference();
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $attributeAsImage = $this->findAttributeAsImage->find($referenceEntityIdentifier);
+        $expectedAttributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $attributeAsImage = $this->findAttributeAsImage->find($assetFamilyIdentifier);
 
         $this->assertEquals($expectedAttributeAsImage, $attributeAsImage);
     }
@@ -62,27 +62,27 @@ class SqlFindReferenceEntityAttributeAsImageTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_attribute_as_image_if_the_reference_entity_was_not_found()
+    public function it_returns_an_empty_attribute_as_image_if_the_asset_family_was_not_found()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown');
-        $attributeAsImage = $this->findAttributeAsImage->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('unknown');
+        $attributeAsImage = $this->findAttributeAsImage->find($assetFamilyIdentifier);
 
         $this->assertTrue($attributeAsImage->isEmpty());
     }
 
     private function loadFixtures(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 }

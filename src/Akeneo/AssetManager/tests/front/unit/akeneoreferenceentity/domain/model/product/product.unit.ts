@@ -1,8 +1,8 @@
-import {createIdentifier as denormalizeProductIdentifier} from 'akeneoreferenceentity/domain/model/product/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createProduct, denormalizeProduct} from 'akeneoreferenceentity/domain/model/product/product';
-import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
-import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+import {createIdentifier as denormalizeProductIdentifier} from 'akeneoassetmanager/domain/model/product/identifier';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createProduct, denormalizeProduct} from 'akeneoassetmanager/domain/model/product/product';
+import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const product = denormalizeProduct({
   id: '123456',
@@ -21,7 +21,7 @@ const productModel = denormalizeProduct({
   completeness: {completeChildren: 2, comtotalChildrenplete: 4, ratio: 0},
 });
 
-describe('akeneo > reference entity > domain > model --- product', () => {
+describe('akeneo > asset family > domain > model --- product', () => {
   test('I can create a new product', () => {
     expect(product.getIdentifier()).toEqual(denormalizeProductIdentifier('nice_product'));
   });

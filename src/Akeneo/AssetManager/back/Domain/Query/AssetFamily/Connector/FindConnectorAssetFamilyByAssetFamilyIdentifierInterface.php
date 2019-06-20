@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
-interface FindConnectorReferenceEntityByReferenceEntityIdentifierInterface
+interface FindConnectorAssetFamilyByAssetFamilyIdentifierInterface
 {
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): ?ConnectorReferenceEntity;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): ?ConnectorAssetFamily;
 }

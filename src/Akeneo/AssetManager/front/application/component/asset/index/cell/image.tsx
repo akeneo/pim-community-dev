@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
-import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
-import {CellView} from 'akeneoreferenceentity/application/configuration/value';
+import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
+import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {CellView} from 'akeneoassetmanager/application/configuration/value';
 const memo = (React as any).memo;
 
 const ImageCellView: CellView = memo(({value}: {value: NormalizedValue}) => {

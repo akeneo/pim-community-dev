@@ -11,36 +11,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryInterface;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistryInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryInterface;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistryInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class EditRecordCommandFactorySpec extends ObjectBehavior
+class EditAssetCommandFactorySpec extends ObjectBehavior
 {
     function let(
-        EditValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
+        EditValueCommandFactoryRegistryInterface $editAssetValueCommandFactoryRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
-        $this->beConstructedWith($editRecordValueCommandFactoryRegistry, $findAttributesIndexedByIdentifier);
+        $this->beConstructedWith($editAssetValueCommandFactoryRegistry, $findAttributesIndexedByIdentifier);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditRecordCommandFactory::class);
+        $this->shouldHaveType(EditAssetCommandFactory::class);
     }
 
-    function it_creates_an_edit_record_command(
-        EditValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
+    function it_creates_an_edit_asset_command(
+        EditValueCommandFactoryRegistryInterface $editAssetValueCommandFactoryRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         EditValueCommandFactoryInterface $textValueCommandFactory,
         TextAttribute $descriptionAttribute,
@@ -48,7 +48,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         EditTextValueCommand $editDescriptionCommand,
         EditTextValueCommand $editNumericCodeAttributeCommand
     ) {
-        $normalizedRecord = [
+        $normalizedAsset = [
             'code' => 'starck',
             'image' => 'images/starck.jpg',
             'labels' => [
@@ -71,57 +71,57 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
                 ]
             ],
         ];
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $findAttributesIndexedByIdentifier->find(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
+        $findAttributesIndexedByIdentifier->find(Argument::type(AssetFamilyIdentifier::class))->willReturn([
             'desginer_description_fingerprint' => $descriptionAttribute,
             'designer_42_fingerprint' => $numericCodeAttribute
         ]);
         $descriptionAttribute->getCode()->willReturn(AttributeCode::fromString('description'));
         $numericCodeAttribute->getCode()->willReturn(AttributeCode::fromString('42'));
 
-        $editRecordValueCommandFactoryRegistry
-            ->getFactory($descriptionAttribute, $normalizedRecord['values']['description'][0])
+        $editAssetValueCommandFactoryRegistry
+            ->getFactory($descriptionAttribute, $normalizedAsset['values']['description'][0])
             ->willReturn($textValueCommandFactory);
-        $editRecordValueCommandFactoryRegistry
-            ->getFactory($numericCodeAttribute, $normalizedRecord['values']['42'][0])
+        $editAssetValueCommandFactoryRegistry
+            ->getFactory($numericCodeAttribute, $normalizedAsset['values']['42'][0])
             ->willReturn($textValueCommandFactory);
         $textValueCommandFactory
-            ->create($descriptionAttribute, $normalizedRecord['values']['description'][0])
+            ->create($descriptionAttribute, $normalizedAsset['values']['description'][0])
             ->willReturn($editDescriptionCommand);
         $textValueCommandFactory
-            ->create($numericCodeAttribute, $normalizedRecord['values']['42'][0])
+            ->create($numericCodeAttribute, $normalizedAsset['values']['42'][0])
             ->willReturn($editNumericCodeAttributeCommand);
 
-        $command = $this->create($referenceEntityIdentifier, $normalizedRecord);
-        $command->shouldBeAnInstanceOf(EditRecordCommand::class);
-        $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
+        $command = $this->create($assetFamilyIdentifier, $normalizedAsset);
+        $command->shouldBeAnInstanceOf(EditAssetCommand::class);
+        $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('starck');
-        $command->editRecordValueCommands->shouldBeLike([$editDescriptionCommand, $editNumericCodeAttributeCommand]);
+        $command->editAssetValueCommands->shouldBeLike([$editDescriptionCommand, $editNumericCodeAttributeCommand]);
     }
 
-    function it_creates_an_edit_record_command_without_values()
+    function it_creates_an_edit_asset_command_without_values()
     {
-        $normalizedRecord = [
+        $normalizedAsset = [
             'code' => 'starck',
             'labels' => [
                 'en_us' => 'Philippe Starck'
             ]
         ];
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $command = $this->create($referenceEntityIdentifier, $normalizedRecord);
-        $command->shouldBeAnInstanceOf(EditRecordCommand::class);
-        $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
+        $command = $this->create($assetFamilyIdentifier, $normalizedAsset);
+        $command->shouldBeAnInstanceOf(EditAssetCommand::class);
+        $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBe('starck');
-        $command->editRecordValueCommands->shouldBe([]);
+        $command->editAssetValueCommands->shouldBe([]);
     }
 
     function it_throws_an_exception_if_an_attribute_to_edit_does_not_exist(
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         TextAttribute $descriptionAttribute
     ) {
-        $normalizedRecord = [
+        $normalizedAsset = [
             'code' => 'starck',
             'labels' => [
                 'en_us' => 'Philippe Starck'
@@ -139,16 +139,16 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
                 ]
             ]
         ];
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $findAttributesIndexedByIdentifier->find(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
+        $findAttributesIndexedByIdentifier->find(Argument::type(AssetFamilyIdentifier::class))->willReturn([
             'desginer_description_fingerprint' => $descriptionAttribute
         ]);
         $descriptionAttribute->getCode()->willReturn(AttributeCode::fromString('description'));
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('create', [
-            $referenceEntityIdentifier,
-            $normalizedRecord
+            $assetFamilyIdentifier,
+            $normalizedAsset
         ]);
     }
 }

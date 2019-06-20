@@ -1,8 +1,8 @@
-const Edit = require('../../decorators/record/edit.decorator');
-const Product = require('../../decorators/record/product.decorator');
+const Edit = require('../../decorators/asset/edit.decorator');
+const Product = require('../../decorators/asset/product.decorator');
 const {getRequestContract, listenRequest, answerLocaleList, answerChannelList} = require('../../tools');
-const Header = require('../../decorators/reference-entity/app/header.decorator');
-const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
+const Header = require('../../decorators/asset-family/app/header.decorator');
+const Sidebar = require('../../decorators/asset-family/app/sidebar.decorator');
 const Modal = require('../../decorators/delete/modal.decorator');
 const path = require('path');
 
@@ -42,24 +42,24 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  Given('a valid record', async function() {
-    const requestContract = getRequestContract('Record/RecordDetails/ok.json');
+  Given('a valid asset', async function() {
+    const requestContract = getRequestContract('Asset/AssetDetails/ok.json');
     currentRequestContract = requestContract;
 
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid record with an option attribute', async function() {
+  Given('a valid asset with an option attribute', async function() {
     await answerLocaleList.apply(this);
-    const requestContract = getRequestContract('Record/RecordDetails/ok/option.json');
+    const requestContract = getRequestContract('Asset/AssetDetails/ok/option.json');
     currentRequestContract = requestContract;
 
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid record with an option collection attribute', async function() {
+  Given('a valid asset with an option collection attribute', async function() {
     await answerLocaleList.apply(this);
-    const requestContract = getRequestContract('Record/RecordDetails/ok/option_collection.json');
+    const requestContract = getRequestContract('Asset/AssetDetails/ok/option_collection.json');
     currentRequestContract = requestContract;
 
     return await listenRequest(this.page, requestContract);
@@ -67,38 +67,38 @@ module.exports = async function(cucumber) {
 
   Given('the user asks for the list of linked product', async function() {
     await answerLocaleList.apply(this);
-    const productRequestContract = getRequestContract('Record/Product/ok.json');
+    const productRequestContract = getRequestContract('Asset/Product/ok.json');
 
     await listenRequest(this.page, productRequestContract);
-    const attributeRequestContract = getRequestContract('Record/Product/Attribute/ok.json');
+    const attributeRequestContract = getRequestContract('Asset/Product/Attribute/ok.json');
 
     await listenRequest(this.page, attributeRequestContract);
-    return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
+    return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
   });
 
-  Given('the user asks for the list of linked product without any reference entity attribute', async function() {
+  Given('the user asks for the list of linked product without any asset family attribute', async function() {
     await answerLocaleList.apply(this);
-    const productRequestContract = getRequestContract('Record/Product/ok.json');
+    const productRequestContract = getRequestContract('Asset/Product/ok.json');
 
     await listenRequest(this.page, productRequestContract);
-    const attributeRequestContract = getRequestContract('Record/Product/Attribute/empty.json');
+    const attributeRequestContract = getRequestContract('Asset/Product/Attribute/empty.json');
 
     await listenRequest(this.page, attributeRequestContract);
-    return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
+    return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
   });
 
   Given('the user asks for the list of linked product without any linked product', async function() {
     await answerLocaleList.apply(this);
-    const productRequestContract = getRequestContract('Record/Product/empty.json');
+    const productRequestContract = getRequestContract('Asset/Product/empty.json');
 
     await listenRequest(this.page, productRequestContract);
-    const attributeRequestContract = getRequestContract('Record/Product/Attribute/ok.json');
+    const attributeRequestContract = getRequestContract('Asset/Product/Attribute/ok.json');
 
     await listenRequest(this.page, attributeRequestContract);
-    return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
+    return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
   });
 
-  Given('the user should see the list of products linked to the record', async function() {
+  Given('the user should see the list of products linked to the asset', async function() {
     const sidebar = await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('product');
     const products = await getElement(this.page, 'Product');
@@ -127,31 +127,31 @@ module.exports = async function(cucumber) {
     assert.strictEqual(noLinkedAttribute, true);
   });
 
-  Given('an invalid record', async function() {
+  Given('an invalid asset', async function() {
     await answerLocaleList.apply(this);
-    const requestContract = getRequestContract('Record/RecordDetails/not_found.json');
+    const requestContract = getRequestContract('Asset/AssetDetails/not_found.json');
     currentRequestContract = requestContract;
 
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid record with a reference entity single link attribute', async function() {
+  Given('a valid asset with an asset family single link attribute', async function() {
     await answerLocaleList.apply(this);
-    const requestContract = getRequestContract('Record/RecordDetails/ok/record.json');
+    const requestContract = getRequestContract('Asset/AssetDetails/ok/asset.json');
     currentRequestContract = requestContract;
 
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid record with a reference entity multiple link attribute', async function() {
+  Given('a valid asset with an asset family multiple link attribute', async function() {
     await answerLocaleList.apply(this);
-    const requestContract = getRequestContract('Record/RecordDetails/ok/record_collection.json');
+    const requestContract = getRequestContract('Asset/AssetDetails/ok/asset_collection.json');
     currentRequestContract = requestContract;
 
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('the user has the locale permission to edit the record', async function() {
+  Given('the user has the locale permission to edit the asset', async function() {
     const requestContract = getRequestContract('Permission/Locale/ok.json');
 
     return await listenRequest(this.page, requestContract);
@@ -172,16 +172,16 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const askForRecord = async function(recordCode, referenceEntityIdentifier) {
+  const askForAsset = async function(assetCode, assetFamilyIdentifier) {
     await this.page.evaluate(
-      async (referenceEntityIdentifier, recordCode) => {
-        const Controller = require('pim/controller/record/edit');
+      async (assetFamilyIdentifier, assetCode) => {
+        const Controller = require('pim/controller/asset/edit');
         const controller = new Controller();
-        controller.renderRoute({params: {referenceEntityIdentifier, recordCode, tab: 'enrich'}});
+        controller.renderRoute({params: {assetFamilyIdentifier, assetCode, tab: 'enrich'}});
         await document.getElementById('app').appendChild(controller.el);
       },
-      referenceEntityIdentifier,
-      recordCode
+      assetFamilyIdentifier,
+      assetCode
     );
     await this.page.waitFor('.AknDefault-mainContent[data-tab="enrich"] .content');
     const editPage = await await getElement(this.page, 'Edit');
@@ -190,11 +190,11 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isLoaded, true);
   };
 
-  const loadEditRecord = async function(requestContractPath) {
+  const loadEditAsset = async function(requestContractPath) {
     await answerChannelList.apply(this);
-    await askForRecord.apply(this, [
-      currentRequestContract.request.query.recordCode,
-      currentRequestContract.request.query.referenceEntityIdentifier,
+    await askForAsset.apply(this, [
+      currentRequestContract.request.query.assetCode,
+      currentRequestContract.request.query.assetFamilyIdentifier,
     ]);
 
     const requestContract = getRequestContract(requestContractPath);
@@ -202,139 +202,139 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
   };
 
-  When('the user ask for the record', async function() {
+  When('the user ask for the asset', async function() {
     await answerLocaleList.apply(this);
     await answerChannelList.apply(this);
 
-    await askForRecord.apply(this, [
-      currentRequestContract.request.query.recordCode,
-      currentRequestContract.request.query.referenceEntityIdentifier,
+    await askForAsset.apply(this, [
+      currentRequestContract.request.query.assetCode,
+      currentRequestContract.request.query.assetFamilyIdentifier,
     ]);
   });
 
-  Then('the record should be:', async function(updates) {
-    const record = convertItemTable(updates)[0];
+  Then('the asset should be:', async function(updates) {
+    const asset = convertItemTable(updates)[0];
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
 
     await (await editPage.getChannelSwitcher()).switchChannel('mobile');
-    for (let locale in record.labels) {
-      const label = record.labels[locale];
+    for (let locale in asset.labels) {
+      const label = asset.labels[locale];
       await (await editPage.getLocaleSwitcher()).switchLocale(locale);
       const labelValue = await await enrich.getLabel();
       assert.strictEqual(labelValue, label);
     }
   });
 
-  When('the user saves the valid record', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
+  When('the user saves the valid asset', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('pim_reference_entity.record.enrich.name', 'Starck');
+    await enrich.fillField('pim_asset_manager.asset.enrich.name', 'Starck');
     await editPage.save();
   });
 
-  When('the user saves the valid record with a simple text value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/text_value_ok.json']);
+  When('the user saves the valid asset with a simple text value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/text_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('pim_reference_entity.record.enrich.name', 'Starck');
+    await enrich.fillField('pim_asset_manager.asset.enrich.name', 'Starck');
     await editPage.save();
   });
 
-  When('the user saves the valid record with a number value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/number_value_ok.json']);
+  When('the user saves the valid asset with a number value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/number_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('pim_reference_entity.record.enrich.age', '39');
+    await enrich.fillField('pim_asset_manager.asset.enrich.age', '39');
     await editPage.save();
   });
 
-  When('the user saves the valid record with a number out of range', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/invalid_number_out_of_range.json']);
+  When('the user saves the valid asset with a number out of range', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/invalid_number_out_of_range.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('pim_reference_entity.record.enrich.age', '-39');
+    await enrich.fillField('pim_asset_manager.asset.enrich.age', '-39');
     await editPage.save();
   });
 
-  When('the user updates the valid record with an image value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/image_value_ok.json']);
+  When('the user updates the valid asset with an image value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/image_value_ok.json']);
     await answerMedia.apply(this);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillUploadField(
-      'pim_reference_entity.record.enrich.portrait',
+      'pim_asset_manager.asset.enrich.portrait',
       './../../../../common/ressource/philippe_starck.png'
     );
     await editPage.save();
   });
 
-  When('the user saves the valid record with a simple option value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/option_value_ok.json']);
+  When('the user saves the valid asset with a simple option value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/option_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillSelectField('pim_reference_entity.record.enrich.option', 'red');
+    await enrich.fillSelectField('pim_asset_manager.asset.enrich.option', 'red');
     await editPage.save();
   });
 
-  When('the user saves the valid record with a multiple option value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/option_collection_value_ok.json']);
+  When('the user saves the valid asset with a multiple option value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/option_collection_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillSelectField('pim_reference_entity.record.enrich.option_collection', 'red');
+    await enrich.fillSelectField('pim_asset_manager.asset.enrich.option_collection', 'red');
     await editPage.save();
   });
 
-  When('the user saves the valid record with an invalid simple text value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/invalid_text_value.json']);
+  When('the user saves the valid asset with an invalid simple text value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/invalid_text_value.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('pim_reference_entity.record.enrich.website', 'hello world');
+    await enrich.fillField('pim_asset_manager.asset.enrich.website', 'hello world');
     await editPage.save();
   });
 
-  When('the user saves the valid record with an invalid simple option value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/invalid_option_value.json']);
+  When('the user saves the valid asset with an invalid simple option value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/invalid_option_value.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillSelectField('pim_reference_entity.record.enrich.option', 'red');
+    await enrich.fillSelectField('pim_asset_manager.asset.enrich.option', 'red');
     await editPage.save();
   });
 
-  When('the user saves the valid record with an invalid multiple option value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/invalid_option_collection_value.json']);
+  When('the user saves the valid asset with an invalid multiple option value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/invalid_option_collection_value.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillSelectField('pim_reference_entity.record.enrich.option_collection', 'red');
+    await enrich.fillSelectField('pim_asset_manager.asset.enrich.option_collection', 'red');
     await editPage.save();
   });
 
-  When('the user saves the valid record with an invalid image value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/image_value_ok.json']);
+  When('the user saves the valid asset with an invalid image value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/image_value_ok.json']);
     await answerMedia.apply(this);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillUploadField(
-      'pim_reference_entity.record.enrich.portrait',
+      'pim_asset_manager.asset.enrich.portrait',
       './../../../../common/ressource/invalid_image.png'
     );
     await editPage.save();
   });
 
-  When('the user deletes the record', async function() {
-    await loadEditRecord.apply(this, ['Record/Delete/ok.json']);
+  When('the user deletes the asset', async function() {
+    await loadEditAsset.apply(this, ['Asset/Delete/ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
@@ -344,21 +344,21 @@ module.exports = async function(cucumber) {
     await modalPage.confirmDeletion();
   });
 
-  When('the user saves the valid record with a single record linked', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/record_value_ok.json']);
+  When('the user saves the valid asset with a single asset linked', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/asset_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillRecordSelectField('pim_reference_entity.record.enrich.linked_brand', 'ikea');
+    await enrich.fillAssetSelectField('pim_asset_manager.asset.enrich.linked_brand', 'ikea');
     await editPage.save();
   });
 
-  When('the user saves the valid record with a multiple record linked', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/record_collection_value_ok.json']);
+  When('the user saves the valid asset with a multiple asset linked', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/asset_collection_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillRecordSelectField('pim_reference_entity.record.enrich.linked_cities', 'paris,lisbonne,moscou');
+    await enrich.fillAssetSelectField('pim_asset_manager.asset.enrich.linked_cities', 'paris,lisbonne,moscou');
     await editPage.save();
   });
 
@@ -376,9 +376,9 @@ module.exports = async function(cucumber) {
 
   Then('the user should not see the delete button', async function() {
     await answerChannelList.apply(this);
-    await askForRecord.apply(this, [
-      currentRequestContract.request.query.recordCode,
-      currentRequestContract.request.query.referenceEntityIdentifier,
+    await askForAsset.apply(this, [
+      currentRequestContract.request.query.assetCode,
+      currentRequestContract.request.query.assetFamilyIdentifier,
     ]);
 
     const editPage = await await getElement(this.page, 'Edit');
@@ -399,7 +399,7 @@ module.exports = async function(cucumber) {
   When('the user fill the {string} field with: {string}', async function(fieldCode, value) {
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('pim_reference_entity.record.enrich.' + fieldCode, value);
+    await enrich.fillField('pim_asset_manager.asset.enrich.' + fieldCode, value);
   });
 
   Then('the user should not see a completeness bullet point on the required field: {string}', async function(field) {
@@ -417,8 +417,8 @@ module.exports = async function(cucumber) {
     assert.strictEqual(completenessValue, 'Complete: ' + value);
   });
 
-  Then('the user cannot save the record', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
+  Then('the user cannot save the asset', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
 
     const header = await await getElement(this.page, 'Header');
     const isCreateButtonVisible = await header.isCreateButtonVisible();
@@ -427,58 +427,58 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user cannot update the simple text value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/text_value_ok.json']);
+    await loadEditAsset.apply(this, ['Asset/Edit/text_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isDisabledTextField = await enrich.isDisabledTextField('pim_reference_entity.record.enrich.name');
+    const isDisabledTextField = await enrich.isDisabledTextField('pim_asset_manager.asset.enrich.name');
 
     assert.strictEqual(isDisabledTextField, true);
   });
 
   Then('the user cannot update the simple option value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/option_value_ok.json']);
+    await loadEditAsset.apply(this, ['Asset/Edit/option_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isDisabledSelectField = await enrich.isDisabledSelectField('pim_reference_entity.record.enrich.option');
+    const isDisabledSelectField = await enrich.isDisabledSelectField('pim_asset_manager.asset.enrich.option');
 
     assert.strictEqual(isDisabledSelectField, true);
   });
 
   Then('the user cannot update the multiple option value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/option_collection_value_ok.json']);
+    await loadEditAsset.apply(this, ['Asset/Edit/option_collection_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isDisabledSelectField = await enrich.isDisabledSelectField(
-      'pim_reference_entity.record.enrich.option_collection'
+      'pim_asset_manager.asset.enrich.option_collection'
     );
 
     assert.strictEqual(isDisabledSelectField, true);
   });
 
-  Then('the user cannot update the single record linked value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/record_value_ok.json']);
+  Then('the user cannot update the single asset linked value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/asset_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isDisabledRecordSelectField = await enrich.isDisabledRecordSelectField(
-      'pim_reference_entity.record.enrich.linked_brand'
+    const isDisabledAssetSelectField = await enrich.isDisabledAssetSelectField(
+      'pim_asset_manager.asset.enrich.linked_brand'
     );
 
-    assert.strictEqual(isDisabledRecordSelectField, true);
+    assert.strictEqual(isDisabledAssetSelectField, true);
   });
 
-  Then('the user cannot update the multiple record linked value', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/record_collection_value_ok.json']);
+  Then('the user cannot update the multiple asset linked value', async function() {
+    await loadEditAsset.apply(this, ['Asset/Edit/asset_collection_value_ok.json']);
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isDisabledRecordSelectField = await enrich.isDisabledRecordSelectField(
-      'pim_reference_entity.record.enrich.linked_cities'
+    const isDisabledAssetSelectField = await enrich.isDisabledAssetSelectField(
+      'pim_asset_manager.asset.enrich.linked_cities'
     );
 
-    assert.strictEqual(isDisabledRecordSelectField, true);
+    assert.strictEqual(isDisabledAssetSelectField, true);
   });
 };

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistry;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactory;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistry;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,8 +54,8 @@ class CreateOrUpdateAttributeAction
     /** @var Router */
     private $router;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -78,7 +78,7 @@ class CreateOrUpdateAttributeAction
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         EditAttributeCommandFactory $editAttributeCommandFactory,
         EditAttributeHandler $editAttributeHandler,
-        ReferenceEntityExistsInterface $referenceEntityExists,
+        AssetFamilyExistsInterface $assetFamilyExists,
         ValidatorInterface $validator,
         AttributeCreationValidator $jsonSchemaCreateValidator,
         AttributeEditionValidator $jsonSchemaEditValidator,
@@ -92,24 +92,24 @@ class CreateOrUpdateAttributeAction
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->editAttributeCommandFactory = $editAttributeCommandFactory;
         $this->editAttributeHandler = $editAttributeHandler;
-        $this->referenceEntityExists = $referenceEntityExists;
+        $this->assetFamilyExists = $assetFamilyExists;
         $this->validator = $validator;
         $this->jsonSchemaCreateValidator = $jsonSchemaCreateValidator;
         $this->jsonSchemaEditValidator = $jsonSchemaEditValidator;
         $this->validateAttributePropertiesImmutability = $validateAttributePropertiesImmutability;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode): Response
+    public function __invoke(Request $request, string $assetFamilyIdentifier, string $attributeCode): Response
     {
         try {
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
             $attributeCode = AttributeCode::fromString($attributeCode);
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        if (false === $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
         $normalizedAttribute = json_decode($request->getContent(), true);
@@ -119,14 +119,14 @@ class CreateOrUpdateAttributeAction
 
         $inBodyAttributeCode = $normalizedAttribute['code'] ?? null;
         if ((string) $attributeCode !== $inBodyAttributeCode) {
-            throw new UnprocessableEntityHttpException('The code of the reference entity provided in the URI must be the same as the one provided in the request body.');
+            throw new UnprocessableEntityHttpException('The code of the asset family provided in the URI must be the same as the one provided in the request body.');
         }
 
-        $shouldBeCreated = !$this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
+        $shouldBeCreated = !$this->attributeExists->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
 
         return $shouldBeCreated ?
-            $this->createAttribute($referenceEntityIdentifier, $attributeCode, $normalizedAttribute) :
-            $this->editAttribute($referenceEntityIdentifier, $attributeCode, $normalizedAttribute);
+            $this->createAttribute($assetFamilyIdentifier, $attributeCode, $normalizedAttribute) :
+            $this->editAttribute($assetFamilyIdentifier, $attributeCode, $normalizedAttribute);
     }
 
     /**
@@ -135,9 +135,9 @@ class CreateOrUpdateAttributeAction
      */
     private function getNormalizedAttribute(
         array $normalizedAttribute,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ) {
-        $normalizedAttribute['reference_entity_identifier'] = (string) $referenceEntityIdentifier;
+        $normalizedAttribute['asset_family_identifier'] = (string) $assetFamilyIdentifier;
 
         if (array_key_exists('validation_regexp', $normalizedAttribute)) {
             $normalizedAttribute['regular_expression'] = $normalizedAttribute['validation_regexp'];
@@ -154,9 +154,9 @@ class CreateOrUpdateAttributeAction
             unset($normalizedAttribute['max_characters']);
         }
 
-        if (array_key_exists('reference_entity_code', $normalizedAttribute)) {
-            $normalizedAttribute['record_type'] = $normalizedAttribute['reference_entity_code'];
-            unset($normalizedAttribute['reference_entity_code']);
+        if (array_key_exists('asset_family_code', $normalizedAttribute)) {
+            $normalizedAttribute['asset_type'] = $normalizedAttribute['asset_family_code'];
+            unset($normalizedAttribute['asset_family_code']);
         }
 
         if (isset($normalizedAttribute['type'])) {
@@ -167,22 +167,22 @@ class CreateOrUpdateAttributeAction
                 case 'multiple_options':
                     $normalizedAttribute['type'] = 'option_collection';
                     break;
-                case 'reference_entity_single_link':
-                    $normalizedAttribute['type'] = 'record';
+                case 'asset_family_single_link':
+                    $normalizedAttribute['type'] = 'asset';
                     break;
-                case 'reference_entity_multiple_links':
-                    $normalizedAttribute['type'] = 'record_collection';
+                case 'asset_family_multiple_links':
+                    $normalizedAttribute['type'] = 'asset_collection';
                     break;
             }
         }
 
-        $normalizedAttribute['reference_entity_identifier'] = (string) $referenceEntityIdentifier;
+        $normalizedAttribute['asset_family_identifier'] = (string) $assetFamilyIdentifier;
 
         return $normalizedAttribute;
     }
 
     private function createAttribute(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode,
         array $normalizedAttribute
     ): Response {
@@ -196,7 +196,7 @@ class CreateOrUpdateAttributeAction
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $normalizedAttribute = $this->getNormalizedAttribute($normalizedAttribute, $referenceEntityIdentifier);
+        $normalizedAttribute = $this->getNormalizedAttribute($normalizedAttribute, $assetFamilyIdentifier);
 
         $createAttributeCommand = $this->createAttributeCommandFactoryRegistry->getFactory($normalizedAttribute)->create($normalizedAttribute);
 
@@ -208,8 +208,8 @@ class CreateOrUpdateAttributeAction
         ($this->createAttributeHandler)($createAttributeCommand);
 
         $headers = [
-            'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_rest_connector_get', [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+            'Location' => $this->router->generate('akeneo_asset_manager_asset_family_attribute_rest_connector_get', [
+                'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
                 'code' => (string) $attributeCode,
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
@@ -218,12 +218,12 @@ class CreateOrUpdateAttributeAction
     }
 
     private function editAttribute(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode,
         array $normalizedAttribute
     ): Response {
         $invalidFormatErrors = $this->jsonSchemaEditValidator->validate(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $attributeCode,
             $normalizedAttribute
         );
@@ -237,7 +237,7 @@ class CreateOrUpdateAttributeAction
         }
 
         $invalidImmutablePropertiesErrors = ($this->validateAttributePropertiesImmutability)(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $attributeCode,
             $normalizedAttribute
         );
@@ -250,9 +250,9 @@ class CreateOrUpdateAttributeAction
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $normalizedAttribute = $this->getNormalizedAttribute($normalizedAttribute, $referenceEntityIdentifier);
-        $normalizedAttribute['identifier'] = (string) $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
+        $normalizedAttribute = $this->getNormalizedAttribute($normalizedAttribute, $assetFamilyIdentifier);
+        $normalizedAttribute['identifier'] = (string) $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamilyIdentifier,
             $attributeCode
         );
         $editAttributeCommand = $this->editAttributeCommandFactory->create($normalizedAttribute);
@@ -265,8 +265,8 @@ class CreateOrUpdateAttributeAction
         ($this->editAttributeHandler)($editAttributeCommand);
 
         $headers = [
-            'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_rest_connector_get', [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+            'Location' => $this->router->generate('akeneo_asset_manager_asset_family_attribute_rest_connector_get', [
+                'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
                 'code' => (string) $attributeCode,
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];

@@ -1,6 +1,6 @@
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset/identifier';
 
-describe('akeneo > reference entity > domain > model --- identifier', () => {
+describe('akeneo > asset family > domain > model --- identifier', () => {
   test('I can create a new identifier with a string value', () => {
     expect(createIdentifier('michel').identifier).toBe('michel');
   });
@@ -9,10 +9,10 @@ describe('akeneo > reference entity > domain > model --- identifier', () => {
     expect(createIdentifier('michel').stringValue()).toBe('michel');
   });
 
-  test('I cannot create a new identifier with a value for reference entity identifier other than a string', () => {
+  test('I cannot create a new identifier with a value for asset family identifier other than a string', () => {
     expect(() => {
       createIdentifier(12);
-    }).toThrow('RecordIdentifier expects a string as parameter to be created');
+    }).toThrow('AssetIdentifier expects a string as parameter to be created');
   });
 
   test('I can compare two identifiers', () => {

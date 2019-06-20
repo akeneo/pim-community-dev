@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\IdentifiersForQueryResult;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -25,36 +25,36 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @author    Julien Sanchez <julienakeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryInterface
+class InMemoryFindAssetIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
     private const API_REST_PREFIX_URL = '/api/rest/';
 
     /** @var string[] */
     private $requestContracts = [
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/city_and_color_filtered.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/code_filtered.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/code_filtered_with_not_in_operator.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/color_filtered.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/desynchronized_reference_entity_identifier.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/no_result.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/not_filtered.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/uncomplete_filtered.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/city_filtered.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/code_label_and_code_filtered.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/complete_filtered.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/no_result_fr.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/ok.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/city_and_color_filtered.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/code_filtered.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/code_filtered_with_not_in_operator.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/color_filtered.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/desynchronized_asset_family_identifier.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/no_result.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/not_filtered.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/uncomplete_filtered.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/city_filtered.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/code_label_and_code_filtered.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/complete_filtered.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/no_result_fr.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/ok.json',
     ];
 
     /** @var string[] */
     private $requestContractsApi = [
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_for_ecommerce_channel.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_complete_brand_records.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_1.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_2.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_3.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_4.json',
-        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/updated_since_brand_records_page_1.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_for_ecommerce_channel.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_complete_brand_assets.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_page_1.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_page_2.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_page_3.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_page_4.json',
+        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/updated_since_brand_assets_page_1.json',
     ];
 
     /**
@@ -69,14 +69,14 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /**
      * {@inheritdoc}
      */
-    public function find(RecordQuery $query): IdentifiersForQueryResult
+    public function find(AssetQuery $query): IdentifiersForQueryResult
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
         if (null !== $currentRequest && self::API_REST_PREFIX_URL === substr($currentRequest->getPathInfo(), 0, 10)) {
             $queryParameters = $this->getQueryParametersFromRequest($currentRequest);
             $items = $this->getItemsForQueryParameters($queryParameters);
             $identifiers = array_map(function ($item) {
-                return RecordIdentifier::fromString(sprintf('%s_fingerprint', $item['code']))->normalize();
+                return AssetIdentifier::fromString(sprintf('%s_fingerprint', $item['code']))->normalize();
             }, $items);
         } else {
             $items = $this->getItemsForFilters($query->getFilters());
@@ -117,7 +117,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     private function getQueryParametersFromRequest(Request $request): array
     {
         $queryParameters = [];
-        $queryParameters['referenceEntityIdentifier'] = $request->get('referenceEntityIdentifier');
+        $queryParameters['assetFamilyIdentifier'] = $request->get('assetFamilyIdentifier');
         $search = $request->get('search', null);
         if (null !== $search) {
             $queryParameters['search'] = $search;

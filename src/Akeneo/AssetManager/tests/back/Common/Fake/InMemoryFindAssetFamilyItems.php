@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyItem;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindReferenceEntityItems implements FindReferenceEntityItemsInterface
+class InMemoryFindAssetFamilyItems implements FindAssetFamilyItemsInterface
 {
-    /** @var ReferenceEntityItem[] */
+    /** @var AssetFamilyItem[] */
     private $results = [];
 
-    public function save(ReferenceEntityItem $referenceEntityDetails)
+    public function save(AssetFamilyItem $assetFamilyDetails)
     {
-        $this->results[] = $referenceEntityDetails;
+        $this->results[] = $assetFamilyDetails;
     }
 
     /**

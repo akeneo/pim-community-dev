@@ -1,4 +1,4 @@
-import ProductIdentifier from 'akeneoreferenceentity/domain/model/identifier';
-export * from 'akeneoreferenceentity/domain/model/identifier';
+import ProductIdentifier from 'akeneoassetmanager/domain/model/identifier';
+export * from 'akeneoassetmanager/domain/model/identifier';
 
 export default ProductIdentifier;

@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -40,8 +40,8 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
     {
         parent::setUp();
 
-        $this->findValuesToIndexForChannelAndLocale = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale');
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->findValuesToIndexForChannelAndLocale = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_values_to_index_for_channel_and_locale');
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
@@ -49,7 +49,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
      */
     public function it_generates_an_empty_list()
     {
-        $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(ReferenceEntityIdentifier::fromString('designer'),
+        $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(AssetFamilyIdentifier::fromString('designer'),
             ChannelIdentifier::fromCode('ecommerce'), LocaleIdentifier::fromCode('en_US'));
         Assert::assertEquals(
             [
@@ -66,17 +66,17 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
      */
     public function it_generates_a_list_of_value_keys_of_text_attributes_only()
     {
-        $this->loadReferenceEntityAndAttributes();
+        $this->loadAssetFamilyAndAttributes();
         $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             ChannelIdentifier::fromCode('ecommerce'),
             LocaleIdentifier::fromCode('en_US')
         );
 
-        /** @var ReferenceEntity $referenceEntity */
-        $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
-            ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
-        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
+        /** @var AssetFamily $assetFamily */
+        $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
+            ->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
+        $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
 
         Assert::assertEquals(
             [
@@ -108,23 +108,23 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
     }
 
 
-    private function loadReferenceEntityAndAttributes(): void
+    private function loadAssetFamilyAndAttributes(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
 
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $name = TextAttribute::createText(
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
@@ -139,7 +139,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
 
         $image = ImageAttribute::create(
             AttributeIdentifier::fromString('main_image_designer_fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('main_image'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),

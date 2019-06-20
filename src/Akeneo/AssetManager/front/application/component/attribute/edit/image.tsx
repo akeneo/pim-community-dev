@@ -1,15 +1,15 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import Select2 from 'akeneoreferenceentity/application/component/app/select2';
-import {ImageAttribute, ImageAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/type/image';
+import __ from 'akeneoassetmanager/tools/translator';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
+import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import {ImageAttribute, ImageAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/type/image';
 import {
   AllowedExtensionsOptions,
   AllowedExtensions,
-} from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
-import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
-import Key from 'akeneoreferenceentity/tools/key';
+} from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
+import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
+import Key from 'akeneoassetmanager/tools/key';
 
 const ImageView = ({
   attribute,
@@ -38,8 +38,8 @@ const ImageView = ({
     <React.Fragment>
       <div className="AknFieldContainer" data-code="maxFileSize">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.max_file_size">
-            {__('pim_reference_entity.attribute.edit.input.max_file_size')}
+          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.max_file_size">
+            {__('pim_asset_manager.attribute.edit.input.max_file_size')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
@@ -47,7 +47,7 @@ const ImageView = ({
             type="text"
             autoComplete="off"
             className={inputTextClassName}
-            id="pim_reference_entity.attribute.edit.input.max_file_size"
+            id="pim_asset_manager.attribute.edit.input.max_file_size"
             name="max_file_size"
             value={attribute.maxFileSize.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -71,14 +71,14 @@ const ImageView = ({
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label"
-            htmlFor="pim_reference_entity.attribute.edit.input.allowed_extensions"
+            htmlFor="pim_asset_manager.attribute.edit.input.allowed_extensions"
           >
-            {__('pim_reference_entity.attribute.edit.input.allowed_extensions')}
+            {__('pim_asset_manager.attribute.edit.input.allowed_extensions')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <Select2
-            id="pim_reference_entity.attribute.edit.input.allowed_extensions"
+            id="pim_asset_manager.attribute.edit.input.allowed_extensions"
             name="allowed_extensions"
             data={(AllowedExtensionsOptions as any) as {[choiceValue: string]: string}}
             value={attribute.allowedExtensions.arrayValue()}

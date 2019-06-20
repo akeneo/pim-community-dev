@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCollectionValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordCollectionValueCommand as EditRecordCollectionValueCommandConstraint;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCollectionValueCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindExistingAssetCodesInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetCollectionValueCommand as EditAssetCollectionValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -25,14 +25,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordCollectionValueCommandValidator extends ConstraintValidator
+class EditAssetCollectionValueCommandValidator extends ConstraintValidator
 {
-    /** @var FindExistingRecordCodesInterface */
-    private $existingRecordCodes;
+    /** @var FindExistingAssetCodesInterface */
+    private $existingAssetCodes;
 
-    public function __construct(FindExistingRecordCodesInterface $existingRecordCodes)
+    public function __construct(FindExistingAssetCodesInterface $existingAssetCodes)
     {
-        $this->existingRecordCodes = $existingRecordCodes;
+        $this->existingAssetCodes = $existingAssetCodes;
     }
 
     public function validate($command, Constraint $constraint)
@@ -47,10 +47,10 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof EditRecordCollectionValueCommand) {
+        if (!$command instanceof EditAssetCollectionValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditRecordCollectionValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given', EditAssetCollectionValueCommand::class,
                     get_class($command)
                 )
             );
@@ -62,24 +62,24 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EditRecordCollectionValueCommandConstraint) {
-            throw new UnexpectedTypeException($constraint, EditRecordCollectionValueCommandConstraint::class);
+        if (!$constraint instanceof EditAssetCollectionValueCommandConstraint) {
+            throw new UnexpectedTypeException($constraint, EditAssetCollectionValueCommandConstraint::class);
         }
     }
 
-    private function validateCommand(EditRecordCollectionValueCommand $command): void
+    private function validateCommand(EditAssetCollectionValueCommand $command): void
     {
-        $foundRecords = $this->existingRecordCodes->find(
-            ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
-            $command->recordCodes
+        $foundAssets = $this->existingAssetCodes->find(
+            AssetFamilyIdentifier::fromString($command->attribute->getAssetType()->normalize()),
+            $command->assetCodes
         );
 
-        $missingRecords = array_diff($command->recordCodes, $foundRecords);
+        $missingAssets = array_diff($command->assetCodes, $foundAssets);
 
-        if (!empty($missingRecords)) {
-            $this->context->buildViolation(EditRecordCollectionValueCommandConstraint::ERROR_MESSAGE)
+        if (!empty($missingAssets)) {
+            $this->context->buildViolation(EditAssetCollectionValueCommandConstraint::ERROR_MESSAGE)
                 ->atPath((string) $command->attribute->getCode())
-                ->setParameter('%record_codes%', implode(',', $missingRecords))
+                ->setParameter('%asset_codes%', implode(',', $missingAssets))
                 ->addViolation();
         }
     }

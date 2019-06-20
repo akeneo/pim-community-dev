@@ -1,6 +1,6 @@
-import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/text';
+import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/text';
 
-describe('akeneo > reference entity > domain > model > record > data --- text', () => {
+describe('akeneo > asset family > domain > model > asset > data --- text', () => {
   test('I can create a new TextData with a string', () => {
     expect(create('nice value').normalize()).toEqual('nice value');
   });

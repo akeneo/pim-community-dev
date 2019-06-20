@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Image from 'akeneoreferenceentity/application/component/app/image';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import FileData, {create} from 'akeneoreferenceentity/domain/model/record/data/file';
-import __ from 'akeneoreferenceentity/tools/translator';
-import File from 'akeneoreferenceentity/domain/model/file';
+import Image from 'akeneoassetmanager/application/component/app/image';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import FileData, {create} from 'akeneoassetmanager/domain/model/asset/data/file';
+import __ from 'akeneoassetmanager/tools/translator';
+import File from 'akeneoassetmanager/domain/model/file';
 
 const View = ({
   value,
@@ -20,8 +20,8 @@ const View = ({
 
   return (
     <Image
-      id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
-      alt={__('pim_reference_entity.record.value.file', {
+      id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+      alt={__('pim_asset_manager.asset.value.file', {
         '{{ attribute_code }}': value.attribute.getLabel(value.locale.stringValue()),
       })}
       image={value.data.getFile()}

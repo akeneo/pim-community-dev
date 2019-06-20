@@ -2,16 +2,16 @@ import * as $ from 'jquery';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
-import ReferenceEntityView from 'akeneoreferenceentity/application/component/reference-entity/index';
-import createStore from 'akeneoreferenceentity/infrastructure/store';
-import referenceEntityReducer from 'akeneoreferenceentity/application/reducer/reference-entity/index';
-import {updateReferenceEntityResults} from 'akeneoreferenceentity/application/action/reference-entity/search';
+import AssetFamilyView from 'akeneoassetmanager/application/component/asset-family/index';
+import createStore from 'akeneoassetmanager/infrastructure/store';
+import assetFamilyReducer from 'akeneoassetmanager/application/reducer/asset-family/index';
+import {updateAssetFamilyResults} from 'akeneoassetmanager/application/action/asset-family/search';
 import {
   defaultCatalogLocaleChanged,
   catalogLocaleChanged,
   catalogChannelChanged,
   uiLocaleChanged,
-} from 'akeneoreferenceentity/domain/event/user';
+} from 'akeneoassetmanager/domain/event/user';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -23,21 +23,21 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   }
 };
 
-class ReferenceEntityListController extends BaseController {
+class AssetFamilyListController extends BaseController {
   renderRoute() {
-    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-asset-family'});
 
-    const store = createStore(true)(referenceEntityReducer);
+    const store = createStore(true)(assetFamilyReducer);
     store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
     store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
     store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
     store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-    store.dispatch(updateReferenceEntityResults());
+    store.dispatch(updateAssetFamilyResults());
     document.addEventListener('keydown', shortcutDispatcher(store));
 
     ReactDOM.render(
       <Provider store={store}>
-        <ReferenceEntityView />
+        <AssetFamilyView />
       </Provider>,
       this.el
     );
@@ -52,4 +52,4 @@ class ReferenceEntityListController extends BaseController {
   };
 }
 
-export = ReferenceEntityListController;
+export = AssetFamilyListController;

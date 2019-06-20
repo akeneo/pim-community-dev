@@ -10,23 +10,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\DeleteRecord;
+namespace Akeneo\AssetManager\Application\Asset\DeleteAsset;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteRecordCommand
+class DeleteAssetCommand
 {
     /** @var string */
-    public $recordCode;
+    public $assetCode;
 
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
-    public function __construct(string $recordCode, string $referenceEntityIdentifier)
+    public function __construct(string $assetCode, string $assetFamilyIdentifier)
     {
-        $this->recordCode = $recordCode;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetCode = $assetCode;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 }

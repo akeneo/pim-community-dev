@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
 /**
- * Read model representing a record within the list.
+ * Read model representing a asset within the list.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordItem
+class AssetItem
 {
     private const IDENTIFIER = 'identifier';
-    private const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
+    private const ASSET_FAMILY_IDENTIFIER = 'asset_family_identifier';
     private const CODE = 'code';
     private const LABELS = 'labels';
     private const IMAGE = 'image';
@@ -33,7 +33,7 @@ class RecordItem
     public $identifier;
 
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
     /** @var string */
     public $code;
@@ -54,7 +54,7 @@ class RecordItem
     {
         return [
             self::IDENTIFIER                  => $this->identifier,
-            self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier,
+            self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier,
             self::CODE                        => $this->code,
             self::LABELS                      => $this->labels,
             self::IMAGE                       => $this->image,

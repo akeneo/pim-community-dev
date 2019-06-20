@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -20,7 +20,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 class AttributeDetails
 {
     public const IDENTIFIER = 'identifier';
-    public const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
+    public const ASSET_FAMILY_IDENTIFIER = 'asset_family_identifier';
     public const CODE = 'code';
     public const LABELS = 'labels';
     public const IS_REQUIRED = 'is_required';
@@ -36,7 +36,7 @@ class AttributeDetails
     public $identifier;
 
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
     /** @var string */
     public $code;
@@ -64,7 +64,7 @@ class AttributeDetails
         $commonProperties = [
             self::TYPE => $this->type,
             self::IDENTIFIER => $this->identifier,
-            self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier,
+            self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier,
             self::CODE => $this->code,
             self::LABELS => $this->labels,
             self::IS_REQUIRED => $this->isRequired,

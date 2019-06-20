@@ -1,4 +1,4 @@
-import Value from 'akeneoreferenceentity/domain/model/record/value';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
 
 export type NormalizedCompleteness = {complete: number; required: number};
 

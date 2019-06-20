@@ -3,38 +3,38 @@ import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
 import {Store} from 'redux';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ReferenceEntityView from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import createStore from 'akeneoreferenceentity/infrastructure/store';
-import referenceEntityReducer from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import referenceEntityFetcher, {
-  ReferenceEntityResult,
-} from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
-import permissionFetcher from 'akeneoreferenceentity/infrastructure/fetcher/permission';
+import __ from 'akeneoassetmanager/tools/translator';
+import AssetFamilyView from 'akeneoassetmanager/application/component/asset-family/edit';
+import createStore from 'akeneoassetmanager/infrastructure/store';
+import assetFamilyReducer from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import assetFamilyFetcher, {
+  AssetFamilyResult,
+} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import permissionFetcher from 'akeneoassetmanager/infrastructure/fetcher/permission';
 import {
-  referenceEntityEditionReceived,
-  referenceEntityRecordCountUpdated,
-} from 'akeneoreferenceentity/domain/event/reference-entity/edit';
+  assetFamilyEditionReceived,
+  assetFamilyAssetCountUpdated,
+} from 'akeneoassetmanager/domain/event/asset-family/edit';
 import {
   defaultCatalogLocaleChanged,
   catalogLocaleChanged,
   catalogChannelChanged,
   localePermissionsChanged,
   uiLocaleChanged,
-  referenceEntityPermissionChanged,
-} from 'akeneoreferenceentity/domain/event/user';
-import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
-import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
-import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
-import {attributeListGotUpdated} from 'akeneoreferenceentity/application/action/attribute/list';
-import {PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
-import {permissionEditionReceived} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
-import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
-import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import {restoreFilters} from 'akeneoreferenceentity/application/action/record/search';
-import {gridStateStoragePath} from 'akeneoreferenceentity/infrastructure/middleware/grid';
+  assetFamilyPermissionChanged,
+} from 'akeneoassetmanager/domain/event/user';
+import {setUpSidebar} from 'akeneoassetmanager/application/action/sidebar';
+import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
+import {updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {updateChannels} from 'akeneoassetmanager/application/action/channel';
+import {attributeListGotUpdated} from 'akeneoassetmanager/application/action/attribute/list';
+import {PermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
+import {permissionEditionReceived} from 'akeneoassetmanager/domain/event/asset-family/permission';
+import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
+import {Filter} from 'akeneoassetmanager/application/reducer/grid';
+import {restoreFilters} from 'akeneoassetmanager/application/action/asset/search';
+import {gridStateStoragePath} from 'akeneoassetmanager/infrastructure/middleware/grid';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -46,24 +46,24 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   }
 };
 
-class ReferenceEntityEditController extends BaseController {
+class AssetFamilyEditController extends BaseController {
   private store: Store<any>;
 
   renderRoute(route: any) {
     const promise = $.Deferred();
 
-    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-asset-family'});
     $(window).on('beforeunload', this.beforeUnload);
 
-    referenceEntityFetcher
+    assetFamilyFetcher
       .fetch(createIdentifier(route.params.identifier))
-      .then(async (referenceEntityResult: ReferenceEntityResult) => {
-        this.store = createStore(true)(referenceEntityReducer);
-        const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
-        const filters = this.getFilters(referenceEntityIdentifier);
+      .then(async (assetFamilyResult: AssetFamilyResult) => {
+        this.store = createStore(true)(assetFamilyReducer);
+        const assetFamilyIdentifier = assetFamilyResult.assetFamily.getIdentifier().stringValue();
+        const filters = this.getFilters(assetFamilyIdentifier);
 
         permissionFetcher
-          .fetch(referenceEntityResult.referenceEntity.getIdentifier())
+          .fetch(assetFamilyResult.assetFamily.getIdentifier())
           .then((permissions: PermissionCollection) => {
             this.store.dispatch(permissionEditionReceived(permissions));
           });
@@ -71,17 +71,17 @@ class ReferenceEntityEditController extends BaseController {
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);
         this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(referenceEntityEditionReceived(referenceEntityResult.referenceEntity.normalize()));
-        this.store.dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
+        this.store.dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily.normalize()));
+        this.store.dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-        this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
+        this.store.dispatch(setUpSidebar('akeneo_asset_manager_asset_family_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(restoreFilters(filters) as any);
-        this.store.dispatch(attributeListGotUpdated(referenceEntityResult.attributes) as any);
-        this.store.dispatch(referenceEntityPermissionChanged(referenceEntityResult.permission));
+        this.store.dispatch(attributeListGotUpdated(assetFamilyResult.attributes) as any);
+        this.store.dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
 
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
@@ -94,7 +94,7 @@ class ReferenceEntityEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <ReferenceEntityView />
+            <AssetFamilyView />
           </Provider>,
           this.el
         );
@@ -112,15 +112,15 @@ class ReferenceEntityEditController extends BaseController {
     return promise.promise();
   }
 
-  getFilters = (referenceEntityIdentifier: string): Filter[] => {
-    return null !== sessionStorage.getItem(`${gridStateStoragePath}.${referenceEntityIdentifier}`)
-      ? JSON.parse(sessionStorage.getItem(`${gridStateStoragePath}.${referenceEntityIdentifier}`) as string)
+  getFilters = (assetFamilyIdentifier: string): Filter[] => {
+    return null !== sessionStorage.getItem(`${gridStateStoragePath}.${assetFamilyIdentifier}`)
+      ? JSON.parse(sessionStorage.getItem(`${gridStateStoragePath}.${assetFamilyIdentifier}`) as string)
       : [];
   };
 
   beforeUnload = () => {
     if (this.isDirty()) {
-      return __('pim_enrich.confirmation.discard_changes', {entity: 'reference entity'});
+      return __('pim_enrich.confirmation.discard_changes', {entity: 'asset family'});
     }
 
     document.removeEventListener('keypress', shortcutDispatcher);
@@ -129,7 +129,7 @@ class ReferenceEntityEditController extends BaseController {
   };
 
   canLeave() {
-    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'reference entity'});
+    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'asset family'});
 
     return this.isDirty() ? confirm(message) : true;
   }
@@ -147,4 +147,4 @@ class ReferenceEntityEditController extends BaseController {
   }
 }
 
-export = ReferenceEntityEditController;
+export = AssetFamilyEditController;

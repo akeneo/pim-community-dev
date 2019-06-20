@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -12,20 +12,20 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
  * file that was distributed with this source code.
  */
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommand;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 
 /**
- * Empty the value of record
+ * Empty the value of asset
  *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -37,10 +37,10 @@ class EmptyUpdater implements ValueUpdaterInterface
         return $command instanceof EmptyValueCommand;
     }
 
-    public function __invoke(Record $record, AbstractEditValueCommand $command): void
+    public function __invoke(Asset $asset, AbstractEditValueCommand $command): void
     {
         if (!$this->supports($command)) {
-            throw new \RuntimeException('Impossible to update the value of the record with the given command.');
+            throw new \RuntimeException('Impossible to update the value of the asset with the given command.');
         }
 
         $attribute = $command->attribute->getIdentifier();
@@ -53,6 +53,6 @@ class EmptyUpdater implements ValueUpdaterInterface
         $emptyData = EmptyData::create();
 
         $value = Value::create($attribute, $channelReference, $localeReference, $emptyData);
-        $record->setValue($value);
+        $asset->setValue($value);
     }
 }

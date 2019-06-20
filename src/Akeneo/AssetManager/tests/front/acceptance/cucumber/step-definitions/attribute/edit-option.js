@@ -1,8 +1,8 @@
 const path = require('path');
 const {getRequestContract, listenRequest} = require('../../tools');
-const AttributeEdit = require('../../decorators/reference-entity/edit/attribute/edit.decorator');
-const ManageOptionModal = require('../../decorators/reference-entity/edit/attribute/manage-option-modal.decorator');
-const LocaleSwitcher = require('../../decorators/reference-entity/app/locale-switcher.decorator');
+const AttributeEdit = require('../../decorators/asset-family/edit/attribute/edit.decorator');
+const ManageOptionModal = require('../../decorators/asset-family/edit/attribute/manage-option-modal.decorator');
+const LocaleSwitcher = require('../../decorators/asset-family/app/locale-switcher.decorator');
 
 const {
   decorators: {createElementDecorator},
@@ -29,7 +29,7 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  Given('the reference entity designer', async function() {
+  Given('the asset family designer', async function() {
     const requestContract = getRequestContract('Attribute/ListDetails/Ok/designer.json');
     await listenRequest(this.page, requestContract);
   });

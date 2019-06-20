@@ -11,73 +11,73 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record;
+namespace Akeneo\AssetManager\Domain\Model\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class Record
+class Asset
 {
-    /** @var RecordIdentifier */
+    /** @var AssetIdentifier */
     private $identifier;
 
-    /** @var RecordCode */
+    /** @var AssetCode */
     private $code;
 
-    /** @var ReferenceEntity */
-    private $referenceEntityIdentifier;
+    /** @var AssetFamily */
+    private $assetFamilyIdentifier;
 
     /** @var ValueCollection */
     private $valueCollection;
 
     private function __construct(
-        RecordIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code,
+        AssetIdentifier $identifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code,
         ValueCollection $valueCollection
     ) {
         $this->identifier = $identifier;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->code = $code;
         $this->valueCollection = $valueCollection;
     }
 
     public static function create(
-        RecordIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code,
+        AssetIdentifier $identifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code,
         ValueCollection $valueCollection
     ): self {
-        return new self($identifier, $referenceEntityIdentifier, $code, $valueCollection);
+        return new self($identifier, $assetFamilyIdentifier, $code, $valueCollection);
     }
 
-    public function getIdentifier(): RecordIdentifier
+    public function getIdentifier(): AssetIdentifier
     {
         return $this->identifier;
     }
 
-    public function getCode(): RecordCode
+    public function getCode(): AssetCode
     {
         return $this->code;
     }
 
-    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
     {
-        return $this->referenceEntityIdentifier;
+        return $this->assetFamilyIdentifier;
     }
 
-    public function equals(Record $record): bool
+    public function equals(Asset $asset): bool
     {
-        return $this->identifier->equals($record->identifier);
+        return $this->identifier->equals($asset->identifier);
     }
 
     public function getValues(): ValueCollection
@@ -100,7 +100,7 @@ class Record
         return [
             'identifier' => $this->identifier->normalize(),
             'code' => $this->code->normalize(),
-            'referenceEntityIdentifier' => $this->referenceEntityIdentifier->normalize(),
+            'assetFamilyIdentifier' => $this->assetFamilyIdentifier->normalize(),
             'values' => $this->valueCollection->normalize(),
         ];
     }

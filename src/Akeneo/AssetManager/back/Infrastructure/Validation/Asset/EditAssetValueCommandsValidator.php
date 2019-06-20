@@ -10,9 +10,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordValueCommandsValidator extends ConstraintValidator
+class EditAssetValueCommandsValidator extends ConstraintValidator
 {
     /** @var ValidatorInterface */
     private $validator;
@@ -34,17 +34,17 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
         $this->validator = $validator;
     }
 
-    public function validate($editRecordCommand, Constraint $constraint)
+    public function validate($editAssetCommand, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
-        $this->checkCommandType($editRecordCommand);
-        $editRecordValueCommands = $editRecordCommand->editRecordValueCommands;
+        $this->checkCommandType($editAssetCommand);
+        $editAssetValueCommands = $editAssetCommand->editAssetValueCommands;
 
-        if (!$this->isArray($editRecordValueCommands)) {
+        if (!$this->isArray($editAssetValueCommands)) {
             return;
         }
 
-        foreach ($editRecordValueCommands as $editValueCommand) {
+        foreach ($editAssetValueCommands as $editValueCommand) {
             $violations = $this->validator->validate($editValueCommand);
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
@@ -58,10 +58,10 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
         }
     }
 
-    private function isArray($editRecordValueCommands): bool
+    private function isArray($editAssetValueCommands): bool
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($editRecordValueCommands, new Assert\Type('array'));
+        $violations = $validator->validate($editAssetValueCommands, new Assert\Type('array'));
         $hasViolations = $violations->count() > 0;
 
         if ($hasViolations) {
@@ -81,7 +81,7 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EditRecordValueCommands) {
+        if (!$constraint instanceof EditAssetValueCommands) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
@@ -91,7 +91,7 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
      */
     private function checkCommandType($command)
     {
-        if (!$command instanceof EditRecordCommand) {
+        if (!$command instanceof EditAssetCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given', EditTextValueCommand::class,

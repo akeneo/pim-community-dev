@@ -11,32 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ValueKey;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\ValueKey;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestCase
 {
@@ -50,10 +50,10 @@ class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestC
     {
         parent::setUp();
 
-        $this->getValueKeyForAttributeChannelAndLocale = $this->get('akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale');
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->getValueKeyForAttributeChannelAndLocale = $this->get('akeneo_assetmanager.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $this->resetDB();
-        $this->loadReferenceEntities();
+        $this->loadAssetFamilies();
     }
 
     /**
@@ -127,35 +127,35 @@ class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestC
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntities(): void
+    private function loadAssetFamilies(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $designer = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $designer = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($designer);
+        $assetFamilyRepository->create($designer);
     }
 
     private function loadAttributeWithoutValuePerChannelOrLocale(string $attributeIdentifier): void
     {
-        $attribute = RecordAttribute::create(
+        $attribute = AssetAttribute::create(
             AttributeIdentifier::fromString($attributeIdentifier),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('country')
+            AssetFamilyIdentifier::fromString('country')
         );
 
         $this->attributeRepository->create($attribute);
@@ -165,7 +165,7 @@ class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestC
     {
         $attribute = ImageAttribute::create(
             AttributeIdentifier::fromString($attributeIdentifier),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger(2),
@@ -183,7 +183,7 @@ class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestC
     {
         $attribute = OptionCollectionAttribute::create(
             AttributeIdentifier::fromString($attributeIdentifier),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger(2),
@@ -199,7 +199,7 @@ class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestC
     {
         $attribute = TextAttribute::createText(
             AttributeIdentifier::fromString($attributeIdentifier),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger(2),

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;

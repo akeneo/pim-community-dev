@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -35,7 +35,7 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
     public $regularExpression;
 
     public function __construct(
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         string $code,
         array $labels,
         bool $isRequired,
@@ -48,7 +48,7 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
         ?string $regularExpression
     ) {
         parent::__construct(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labels,
             $isRequired,

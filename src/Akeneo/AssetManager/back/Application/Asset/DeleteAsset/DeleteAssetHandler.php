@@ -10,31 +10,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\DeleteRecord;
+namespace Akeneo\AssetManager\Application\Asset\DeleteAsset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteRecordHandler
+class DeleteAssetHandler
 {
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
-    public function __construct(RecordRepositoryInterface $recordRepository)
+    public function __construct(AssetRepositoryInterface $assetRepository)
     {
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
     }
 
-    public function __invoke(DeleteRecordCommand $deleteRecordCommand): void
+    public function __invoke(DeleteAssetCommand $deleteAssetCommand): void
     {
-        $recordCode = RecordCode::fromString($deleteRecordCommand->recordCode);
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($deleteRecordCommand->referenceEntityIdentifier);
+        $assetCode = AssetCode::fromString($deleteAssetCommand->assetCode);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($deleteAssetCommand->assetFamilyIdentifier);
 
-        $this->recordRepository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
+        $this->assetRepository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
     }
 }

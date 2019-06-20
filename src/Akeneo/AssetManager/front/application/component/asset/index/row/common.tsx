@@ -1,25 +1,25 @@
 import * as React from 'react';
-import {NormalizedItemRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
-import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
-import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
-import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
+import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
+import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
 
 const memo = (React as any).memo;
 
 const CommonRow = memo(
   ({
-    record,
+    asset,
     locale,
     placeholder = false,
-    onRedirectToRecord,
+    onRedirectToAsset,
   }: {
-    record: NormalizedItemRecord;
+    asset: NormalizedItemAsset;
     locale: string;
     placeholder?: boolean;
   } & {
-    onRedirectToRecord: (record: NormalizedItemRecord) => void;
+    onRedirectToAsset: (asset: NormalizedItemAsset) => void;
   }) => {
     if (true === placeholder) {
       return (
@@ -34,16 +34,16 @@ const CommonRow = memo(
       );
     }
 
-    const label = getLabel(record.labels, locale, record.code);
+    const label = getLabel(asset.labels, locale, asset.code);
 
     return (
       <tr
         className="AknGrid-bodyRow"
-        data-identifier={record.identifier}
+        data-identifier={asset.identifier}
         onClick={event => {
           event.preventDefault();
 
-          onRedirectToRecord(record);
+          onRedirectToAsset(asset);
 
           return false;
         }}
@@ -53,17 +53,17 @@ const CommonRow = memo(
             className="AknGrid-image AknLoadingPlaceHolder"
             width="44"
             height="44"
-            src={getImageShowUrl(denormalizeFile(record.image), 'thumbnail_small')}
+            src={getImageShowUrl(denormalizeFile(asset.image), 'thumbnail_small')}
           />
         </td>
         <td className="AknGrid-bodyCell" title={label}>
           {label}
         </td>
-        <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier" title={record.code}>
-          {record.code}
+        <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier" title={asset.code}>
+          {asset.code}
         </td>
         <td className="AknGrid-bodyCell">
-          <CompletenessLabel completeness={Completeness.createFromNormalized(record.completeness)} expanded={false} />
+          <CompletenessLabel completeness={Completeness.createFromNormalized(asset.completeness)} expanded={false} />
         </td>
       </tr>
     );
@@ -72,23 +72,23 @@ const CommonRow = memo(
 
 const CommonRows = memo(
   ({
-    records,
+    assets,
     locale,
     placeholder,
-    onRedirectToRecord,
-    recordCount,
+    onRedirectToAsset,
+    assetCount,
   }: {
-    records: NormalizedItemRecord[];
+    assets: NormalizedItemAsset[];
     locale: string;
     placeholder: boolean;
-    onRedirectToRecord: (record: NormalizedItemRecord) => void;
+    onRedirectToAsset: (asset: NormalizedItemAsset) => void;
     nextItemToAddPosition: number;
-    recordCount: number;
+    assetCount: number;
   }) => {
     if (placeholder) {
-      const record = {
+      const asset = {
         identifier: '',
-        reference_entity_identifier: '',
+        asset_family_identifier: '',
         code: '',
         labels: {},
         image: null,
@@ -96,21 +96,21 @@ const CommonRows = memo(
         completeness: {},
       };
 
-      const placeholderCount = recordCount < 30 ? recordCount : 30;
+      const placeholderCount = assetCount < 30 ? assetCount : 30;
 
       return Array.from(Array(placeholderCount).keys()).map(key => (
-        <CommonRow placeholder={placeholder} key={key} record={record} locale={locale} onRedirectToRecord={() => {}} />
+        <CommonRow placeholder={placeholder} key={key} asset={asset} locale={locale} onRedirectToAsset={() => {}} />
       ));
     }
 
-    return records.map((record: NormalizedItemRecord) => {
+    return assets.map((asset: NormalizedItemAsset) => {
       return (
         <CommonRow
           placeholder={false}
-          key={record.identifier}
-          record={record}
+          key={asset.identifier}
+          asset={asset}
           locale={locale}
-          onRedirectToRecord={onRedirectToRecord}
+          onRedirectToAsset={onRedirectToAsset}
         />
       );
     });

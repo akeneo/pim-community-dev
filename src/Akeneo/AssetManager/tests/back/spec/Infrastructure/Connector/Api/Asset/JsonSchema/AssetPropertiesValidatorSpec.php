@@ -11,34 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordPropertiesValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetPropertiesValidator;
 use PhpSpec\ObjectBehavior;
 
-class RecordPropertiesValidatorSpec extends ObjectBehavior
+class AssetPropertiesValidatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordPropertiesValidator::class);
+        $this->shouldHaveType(AssetPropertiesValidator::class);
     }
 
-    function it_returns_all_the_errors_of_invalid_record_properties()
+    function it_returns_all_the_errors_of_invalid_asset_properties()
     {
-        $record = [
+        $asset = [
             'values' => null,
             'foo' => 'bar',
         ];
 
-        $errors = $this->validate($record);
+        $errors = $this->validate($asset);
         $errors->shouldBeArray();
         $errors->shouldHaveCount(3);
     }
 
 
-    function it_returns_an_empty_array_if_all_the_record_properties_are_valid()
+    function it_returns_an_empty_array_if_all_the_asset_properties_are_valid()
     {
-        $record = [
+        $asset = [
             'code' => 'starck',
             'values' => [
                 'favorite_color' => [
@@ -51,20 +51,20 @@ class RecordPropertiesValidatorSpec extends ObjectBehavior
             ],
         ];
 
-        $this->validate($record)->shouldReturn([]);
+        $this->validate($asset)->shouldReturn([]);
     }
 
-    function it_accepts_links_in_order_to_update_a_record_previously_requested_with_the_api()
+    function it_accepts_links_in_order_to_update_a_asset_previously_requested_with_the_api()
     {
-        $record = [
+        $asset = [
             'code' => 'starck',
             '_links' => [
                 'self' => [
-                    'href' => 'http://localhost:8082/api/rest/v1/reference-entities/ref_test_2/records/0000747832346'
+                    'href' => 'http://localhost:8082/api/rest/v1/asset-families/ref_test_2/assets/0000747832346'
                 ]
             ]
         ];
 
-        $this->validate($record)->shouldReturn([]);
+        $this->validate($asset)->shouldReturn([]);
     }
 }

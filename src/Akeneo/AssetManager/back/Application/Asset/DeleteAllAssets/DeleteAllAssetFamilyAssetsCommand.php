@@ -10,21 +10,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords;
+namespace Akeneo\AssetManager\Application\Asset\DeleteAllAssets;
 
 /**
- * Command used to delete all records belonging to a reference entity
+ * Command used to delete all assets belonging to an asset family
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteAllReferenceEntityRecordsCommand
+class DeleteAllAssetFamilyAssetsCommand
 {
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
-    public function __construct(string $referenceEntityIdentifier)
+    public function __construct(string $assetFamilyIdentifier)
     {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 }

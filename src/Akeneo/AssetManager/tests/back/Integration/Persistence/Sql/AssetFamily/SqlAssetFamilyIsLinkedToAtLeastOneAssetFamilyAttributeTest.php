@@ -11,108 +11,108 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeTest extends SqlIntegrationTestCase
+class SqlAssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface */
+    /** @var AssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeInterface */
     private $query;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_reference_entity_attribute');
+        $this->query = $this->get('akeneo_assetmanager.infrastructure.persistence.query.asset_family_is_linked_to_at_least_one_asset_family_attribute');
         $this->resetDB();
-        $this->loadReferenceEntity();
+        $this->loadAssetFamily();
     }
 
     /**
      * @test
      */
-    public function it_tells_if_a_reference_entity_is_linked_to_at_least_one_reference_entity_attribute()
+    public function it_tells_if_an_asset_family_is_linked_to_at_least_one_asset_family_attribute()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = AssetFamilyIdentifier::fromString('designer');
         $isLinked = $this->query->isLinked($identifier);
         $this->assertTrue($isLinked);
 
-        $identifier = ReferenceEntityIdentifier::fromString('brand');
+        $identifier = AssetFamilyIdentifier::fromString('brand');
         $isLinked = $this->query->isLinked($identifier);
         $this->assertTrue($isLinked);
 
-        $identifier = ReferenceEntityIdentifier::fromString('color');
+        $identifier = AssetFamilyIdentifier::fromString('color');
         $isLinked = $this->query->isLinked($identifier);
         $this->assertFalse($isLinked);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntity(): void
+    private function loadAssetFamily(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
 
-        $designer = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $designer = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'],
             Image::createEmpty()
         );
-        $brand = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $brand = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             ['fr_FR' => 'Marque', 'en_US' => 'Brand'],
             Image::createEmpty()
         );
-        $color = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('color'),
+        $color = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('color'),
             ['fr_FR' => 'Couleur', 'en_US' => 'Color'],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($designer);
-        $referenceEntityRepository->create($brand);
-        $referenceEntityRepository->create($color);
+        $assetFamilyRepository->create($designer);
+        $assetFamilyRepository->create($brand);
+        $assetFamilyRepository->create($color);
 
-        $mentor = RecordAttribute::create(
+        $mentor = AssetAttribute::create(
             AttributeIdentifier::fromString('mentor_designer_fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('mentor'),
             LabelCollection::fromArray(['en_US' => 'Mentor']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('designer')
+            AssetFamilyIdentifier::fromString('designer')
         );
-        $brands = RecordAttribute::create(
+        $brands = AssetAttribute::create(
             AttributeIdentifier::fromString('brands_designer_fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('brands'),
             LabelCollection::fromArray(['en_US' => 'Brands']),
             AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('brand')
+            AssetFamilyIdentifier::fromString('brand')
         );
         $attributeRepository->create($mentor);
         $attributeRepository->create($brands);

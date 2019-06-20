@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\File;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\File;
 
-use Akeneo\ReferenceEntity\Domain\Query\File\FindFileDataByFileKeyInterface;
+use Akeneo\AssetManager\Domain\Query\File\FindFileDataByFileKeyInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 

@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocales;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocales;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAttributesDetails;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryFindAttributesDetailsTest extends TestCase
@@ -37,15 +37,15 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     /**
      * @test
      */
-    public function it_saves_multiple_attribute_details_from_different_reference_entity()
+    public function it_saves_multiple_attribute_details_from_different_asset_family()
     {
-        $this->query->save($this->createReferenceEntityDetails('designer', 'name'));
-        $this->query->save($this->createReferenceEntityDetails('designer', 'description'));
-        $this->query->save($this->createReferenceEntityDetails('manufacturer', 'name'));
-        $this->query->save($this->createReferenceEntityDetails('manufacturer', 'description'));
+        $this->query->save($this->createAssetFamilyDetails('designer', 'name'));
+        $this->query->save($this->createAssetFamilyDetails('designer', 'description'));
+        $this->query->save($this->createAssetFamilyDetails('manufacturer', 'name'));
+        $this->query->save($this->createAssetFamilyDetails('manufacturer', 'description'));
 
-        $manufacturerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
+        $manufacturerIdentifier = AssetFamilyIdentifier::fromString('manufacturer');
+        $designerIdentifier = AssetFamilyIdentifier::fromString('manufacturer');
         $this->assertCount(2, $this->query->find($manufacturerIdentifier));
         $this->assertCount(2, $this->query->find($designerIdentifier));
     }
@@ -53,16 +53,16 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_if_there_are_no_attributes_for_the_given_reference_entity_identifier()
+    public function it_returns_an_empty_array_if_there_are_no_attributes_for_the_given_asset_family_identifier()
     {
-        $manufacturerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
+        $manufacturerIdentifier = AssetFamilyIdentifier::fromString('manufacturer');
         $this->assertEmpty($this->query->find($manufacturerIdentifier));
     }
 
-    private function createReferenceEntityDetails(string $referenceEntityIdentifier, string $attributeCode): AttributeDetails
+    private function createAssetFamilyDetails(string $assetFamilyIdentifier, string $attributeCode): AttributeDetails
     {
         $textAttributeDetails = new AttributeDetails();
-        $textAttributeDetails->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+        $textAttributeDetails->assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         $textAttributeDetails->code = AttributeCode::fromString($attributeCode);
 
         return $textAttributeDetails;

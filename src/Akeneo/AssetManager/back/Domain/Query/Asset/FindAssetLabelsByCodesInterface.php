@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Find labels for given records
+ * Find labels for given assets
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-interface FindRecordLabelsByCodesInterface
+interface FindAssetLabelsByCodesInterface
 {
     /**
-     * Find records by their $referenceEntityIdentifier and their $codes,
+     * Find assets by their $assetFamilyIdentifier and their $codes,
      * then returns their labels as LabelCollection indexed by their code:
      *
      * [
@@ -32,5 +32,5 @@ interface FindRecordLabelsByCodesInterface
      *      'dyson' => LabelCollection,
      * ]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array;
 }

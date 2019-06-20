@@ -1,7 +1,7 @@
-import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/file';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/file';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 
-describe('akeneo > reference entity > domain > model > record > data --- file', () => {
+describe('akeneo > asset family > domain > model > asset > data --- file', () => {
   test('I can create a new FileData with a File value', () => {
     expect(
       create(denormalizeFile({originalFilename: 'starck.png', filePath: '/a/g/d/f/fzefzgezgafzgzg.png'})).normalize()

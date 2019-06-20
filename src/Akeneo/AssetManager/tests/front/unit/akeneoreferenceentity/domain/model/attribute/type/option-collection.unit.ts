@@ -1,13 +1,13 @@
-import {ConcreteOptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import {ConcreteOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedFavoriteColor = {
   identifier: 'colors',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'colors',
   labels: {en_US: 'Colors'},
   type: 'option_collection',
@@ -37,7 +37,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionColle
     expect(() => {
       new ConcreteOptionCollectionAttribute(
         createIdentifier('designer', 'colors'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('colors'),
         createLabelCollection({en_US: 'Colors'}),
         true,

@@ -1,26 +1,26 @@
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import attributeFetcher from 'akeneoreferenceentity/infrastructure/fetcher/attribute';
-import {attributeListUpdated} from 'akeneoreferenceentity/domain/event/attribute/list';
-import {updateColumns} from 'akeneoreferenceentity/application/event/search';
-import {notifyAttributeListUpdateFailed} from 'akeneoreferenceentity/application/action/attribute/notify';
-import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import Channel from 'akeneoreferenceentity/domain/model/channel';
-import Locale from 'akeneoreferenceentity/domain/model/locale';
-import {generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
-import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {getAttributeTypes, AttributeType} from 'akeneoreferenceentity/application/configuration/attribute';
-import {hasDataCellView} from 'akeneoreferenceentity/application/configuration/value';
-import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
+import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
+import {updateColumns} from 'akeneoassetmanager/application/event/search';
+import {notifyAttributeListUpdateFailed} from 'akeneoassetmanager/application/action/attribute/notify';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import {Column} from 'akeneoassetmanager/application/reducer/grid';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import {generateKey} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {getAttributeTypes, AttributeType} from 'akeneoassetmanager/application/configuration/attribute';
+import {hasDataCellView} from 'akeneoassetmanager/application/configuration/value';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 export class InvalidArgument extends Error {}
 
 export const updateAttributeList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const referenceEntity = denormalizeReferenceEntity(getState().form.data);
+  const assetFamily = denormalizeAssetFamily(getState().form.data);
   try {
-    const attributes = await attributeFetcher.fetchAll(referenceEntity.getIdentifier());
+    const attributes = await attributeFetcher.fetchAll(assetFamily.getIdentifier());
     dispatch(attributeListGotUpdated(attributes));
   } catch (error) {
     dispatch(notifyAttributeListUpdateFailed());
@@ -35,8 +35,8 @@ export const attributeListGotUpdated = (attributes: Attribute[]) => (
 ): void => {
   dispatch(attributeListUpdated(attributes));
 
-  const referenceEntity = denormalizeReferenceEntity(getState().form.data);
-  const columnsToExclude = [referenceEntity.getAttributeAsImage(), referenceEntity.getAttributeAsLabel()];
+  const assetFamily = denormalizeAssetFamily(getState().form.data);
+  const columnsToExclude = [assetFamily.getAttributeAsImage(), assetFamily.getAttributeAsLabel()];
 
   dispatch(updateColumns(getColumns(attributes, getState().structure.channels, columnsToExclude)));
 };

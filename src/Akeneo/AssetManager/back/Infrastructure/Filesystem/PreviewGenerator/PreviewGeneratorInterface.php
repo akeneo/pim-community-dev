@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator;
+namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

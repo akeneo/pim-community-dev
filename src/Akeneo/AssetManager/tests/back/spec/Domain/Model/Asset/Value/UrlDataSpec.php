@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace spec\Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\UrlData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\UrlData;
 use PhpSpec\ObjectBehavior;
 
 /**

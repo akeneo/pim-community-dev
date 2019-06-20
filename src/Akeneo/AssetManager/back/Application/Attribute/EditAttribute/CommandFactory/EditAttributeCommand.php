@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

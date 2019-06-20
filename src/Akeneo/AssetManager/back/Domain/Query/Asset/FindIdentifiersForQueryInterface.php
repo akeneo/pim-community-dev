@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
 /**
- * Search on records for the given search query. This query function returns only record identifiers.
+ * Search on assets for the given search query. This query function returns only asset identifiers.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 interface FindIdentifiersForQueryInterface
 {
-    public function find(RecordQuery $query): IdentifiersForQueryResult;
+    public function find(AssetQuery $query): IdentifiersForQueryResult;
 }

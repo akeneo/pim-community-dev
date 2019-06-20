@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
+namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IndexRecordSubscriber implements EventSubscriberInterface
+class IndexAssetSubscriber implements EventSubscriberInterface
 {
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
+    /** @var AssetIndexerInterface */
+    private $assetIndexer;
 
-    /** @var IndexByReferenceEntityInBackgroundInterface */
-    private $indexByReferenceEntityInBackground;
+    /** @var IndexByAssetFamilyInBackgroundInterface */
+    private $indexByAssetFamilyInBackground;
 
     public function __construct(
-        RecordIndexerInterface $recordIndexer,
-        IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
+        AssetIndexerInterface $assetIndexer,
+        IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground
     ) {
-        $this->recordIndexer = $recordIndexer;
-        $this->indexByReferenceEntityInBackground = $indexByReferenceEntityInBackground;
+        $this->assetIndexer = $assetIndexer;
+        $this->indexByAssetFamilyInBackground = $indexByAssetFamilyInBackground;
     }
 
     /**
@@ -35,18 +35,18 @@ class IndexRecordSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RecordUpdatedEvent::class    => 'whenRecordUpdated',
+            AssetUpdatedEvent::class    => 'whenAssetUpdated',
             AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
         ];
     }
 
-    public function whenRecordUpdated(RecordUpdatedEvent $recordUpdatedEvent): void
+    public function whenAssetUpdated(AssetUpdatedEvent $assetUpdatedEvent): void
     {
-        $this->recordIndexer->index($recordUpdatedEvent->getRecordIdentifier());
+        $this->assetIndexer->index($assetUpdatedEvent->getAssetIdentifier());
     }
 
     public function whenAttributeIsDeleted(AttributeDeletedEvent $attributeDeletedEvent): void
     {
-        $this->indexByReferenceEntityInBackground->execute($attributeDeletedEvent->referenceEntityIdentifier);
+        $this->indexByAssetFamilyInBackground->execute($attributeDeletedEvent->assetFamilyIdentifier);
     }
 }

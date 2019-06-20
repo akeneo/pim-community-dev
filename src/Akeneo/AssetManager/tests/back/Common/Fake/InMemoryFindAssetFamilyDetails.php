@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsInterface
+class InMemoryFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
 {
-    /** @var ReferenceEntityDetails[] */
+    /** @var AssetFamilyDetails[] */
     private $results = [];
 
     /** @var InMemoryFindActivatedLocales */
@@ -35,19 +35,19 @@ class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsIn
         $this->activatedLocalesQuery = $activatedLocalesQuery;
     }
 
-    public function save(ReferenceEntityDetails $referenceEntityDetails)
+    public function save(AssetFamilyDetails $assetFamilyDetails)
     {
-        $key = $this->getKey($referenceEntityDetails->identifier);
-        $this->results[$key] = $referenceEntityDetails;
+        $key = $this->getKey($assetFamilyDetails->identifier);
+        $this->results[$key] = $assetFamilyDetails;
     }
 
     /**
      * {@inheritdoc}
      */
     public function find(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
-    ): ?ReferenceEntityDetails {
-        $key = $this->getKey($referenceEntityIdentifier);
+        AssetFamilyIdentifier $assetFamilyIdentifier
+    ): ?AssetFamilyDetails {
+        $key = $this->getKey($assetFamilyIdentifier);
 
         $activatedLocales = $this->activatedLocalesQuery->findAll();
         if (isset($this->results[$key])) {
@@ -58,9 +58,9 @@ class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsIn
     }
 
     private function getKey(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ): string {
-        return (string)$referenceEntityIdentifier;
+        return (string)$assetFamilyIdentifier;
     }
 
     private function getLabelsByActivatedLocale(LabelCollection $labels, array $activatedLocales): LabelCollection

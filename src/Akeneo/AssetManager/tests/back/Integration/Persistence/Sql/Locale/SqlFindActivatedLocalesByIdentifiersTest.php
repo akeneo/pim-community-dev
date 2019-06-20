@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Locale;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Locale;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
 {
@@ -26,8 +26,8 @@ class SqlFindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->localesAreActivated = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->localesAreActivated = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**

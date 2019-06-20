@@ -11,60 +11,60 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\BulkRecordItemHydrator;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetItemsForIdentifiersAndQueryInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\BulkAssetItemHydrator;
 use Doctrine\DBAL\Connection;
 
 /**
  *
- * Find record items for the given record identifiers & the given record query.
- * Note that this query searches only records with the same reference entity.
+ * Find asset items for the given asset identifiers & the given asset query.
+ * Note that this query searches only assets with the same asset family.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIdentifiersAndQueryInterface
+class SqlFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForIdentifiersAndQueryInterface
 {
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var BulkRecordItemHydrator */
-    private $bulkRecordItemHydrator;
+    /** @var BulkAssetItemHydrator */
+    private $bulkAssetItemHydrator;
 
     public function __construct(
         Connection $sqlConnection,
-        BulkRecordItemHydrator $bulkRecordItemHydrator
+        BulkAssetItemHydrator $bulkAssetItemHydrator
     ) {
         $this->sqlConnection = $sqlConnection;
-        $this->bulkRecordItemHydrator = $bulkRecordItemHydrator;
+        $this->bulkAssetItemHydrator = $bulkAssetItemHydrator;
     }
 
-    public function find(array $identifiers, RecordQuery $query): array
+    public function find(array $identifiers, AssetQuery $query): array
     {
-        $normalizedRecordItems = $this->fetchAll($identifiers);
-        $recordItems = $this->bulkRecordItemHydrator->hydrateAll($normalizedRecordItems, $query);
+        $normalizedAssetItems = $this->fetchAll($identifiers);
+        $assetItems = $this->bulkAssetItemHydrator->hydrateAll($normalizedAssetItems, $query);
 
-        return $recordItems;
+        return $assetItems;
     }
 
     private function fetchAll(array $identifiers): array
     {
         $sqlQuery = <<<SQL
         SELECT
-            record.identifier,
-            record.reference_entity_identifier,
-            record.code,
-            record.value_collection,
+            asset.identifier,
+            asset.asset_family_identifier,
+            asset.code,
+            asset.value_collection,
             reference.attribute_as_image,
             reference.attribute_as_label
-        FROM akeneo_reference_entity_record AS record
-        INNER JOIN akeneo_reference_entity_reference_entity AS reference
-            ON reference.identifier = record.reference_entity_identifier
-        WHERE record.identifier IN (:identifiers)
-        ORDER BY FIELD(record.identifier, :identifiers);
+        FROM akeneo_asset_manager_asset AS asset
+        INNER JOIN akeneo_asset_manager_asset_family AS reference
+            ON reference.identifier = asset.asset_family_identifier
+        WHERE asset.identifier IN (:identifiers)
+        ORDER BY FIELD(asset.identifier, :identifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($sqlQuery, [

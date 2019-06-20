@@ -4,7 +4,7 @@ Feature: Append a valid option into an attribute
   I want to append a new option into this collection of options
 
   Background:
-    Given a valid reference entity
+    Given a valid asset family
 
   @acceptance-back
   Scenario: Edit an existing option of an option attribute

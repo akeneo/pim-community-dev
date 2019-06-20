@@ -1,24 +1,24 @@
 services:
-    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_all_existent_records_for_reference_entity_identifiers_public_api:
-        class: 'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\SqlFindAllExistentRecordsForReferenceEntityIdentifiers'
+    akeneo_assetmanager.infrastructure.persistence.query.enrich.find_all_existent_assets_for_asset_family_identifiers_public_api:
+        class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlFindAllExistentAssetsForAssetFamilyIdentifiers'
         arguments:
             $connection: '@database_connection'
 
-    pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers:
-        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\FindAllExistentRecordsForReferenceEntityIdentifiers'
+    pimee.asset_manager.enrichment.find_all_existent_assets_for_asset_identifiers:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Bundle\Enrichment\FindAllExistentAssetsForAssetFamilyIdentifiers'
         arguments:
-            $allExistentRecordForReferenceEntityIdentifiers: '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_all_existent_records_for_reference_entity_identifiers_public_api'
+            $allExistentAssetForAssetFamilyIdentifiers: '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_all_existent_assets_for_asset_family_identifiers_public_api'
 
     # Enrichment > Reference entities
-    pimee.reference_entity.enrichment.product.get_products_linked_to_a_record_action:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Controller\Product\GetProductsLinkedToARecordAction
+    pimee.asset_manager.enrichment.product.get_products_linked_to_a_asset_action:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Controller\Product\GetProductsLinkedToAAssetAction
         arguments:
             - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor'
             - '@akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows'
             - '@validator'
-            - '@pimee.reference_entity.enrichment.productnormalizer.linked_product_normalizer'
+            - '@pimee.asset_manager.enrichment.productnormalizer.linked_product_normalizer'
 
-    pimee.reference_entity.enrichment.productnormalizer.linked_product_normalizer:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer
+    pimee.asset_manager.enrichment.productnormalizer.linked_product_normalizer:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\LinkedProductsNormalizer
         arguments:
             - '@pim_enrich.normalizer.image'

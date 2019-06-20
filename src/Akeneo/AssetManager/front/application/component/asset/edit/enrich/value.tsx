@@ -1,18 +1,18 @@
 import * as React from 'react';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
-import {getDataFieldView} from 'akeneoreferenceentity/application/configuration/value';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validaton-error';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
-import Flag from 'akeneoreferenceentity/tools/component/flag';
-import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import Asset from 'akeneoassetmanager/domain/model/asset/asset';
+import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
+import {getErrorsView} from 'akeneoassetmanager/application/component/asset/edit/validaton-error';
+import __ from 'akeneoassetmanager/tools/translator';
+import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
+import Flag from 'akeneoassetmanager/tools/component/flag';
+import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 
 export default (
-  record: Record,
+  asset: Asset,
   channel: ChannelReference,
   locale: LocaleReference,
   errors: ValidationError[],
@@ -22,13 +22,13 @@ export default (
     locale: {
       edit: boolean;
     };
-    record: {
+    asset: {
       edit: boolean;
       delete: boolean;
     };
   }
 ) => {
-  const visibleValues = record
+  const visibleValues = asset
     .getValueCollection()
     .getValuesForChannelAndLocale(channel, locale)
     .sort((firstValue: Value, secondValue: Value) => firstValue.attribute.order - secondValue.attribute.order);
@@ -36,7 +36,7 @@ export default (
   return visibleValues.map((value: Value) => {
     const DataView = getDataFieldView(value);
 
-    const canEditData = value.attribute.valuePerLocale ? rights.record.edit && rights.locale.edit : rights.record.edit;
+    const canEditData = value.attribute.valuePerLocale ? rights.asset.edit && rights.locale.edit : rights.asset.edit;
     return (
       <div
         key={value.attribute.getIdentifier().stringValue()}
@@ -47,7 +47,7 @@ export default (
           <label
             title={value.attribute.getLabel(locale.stringValue())}
             className="AknFieldContainer-label"
-            htmlFor={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+            htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
           >
             <span
               className={`AknBadge AknBadge--small AknBadge--highlight AknBadge--floating ${
@@ -70,7 +70,7 @@ export default (
         </div>
         <div className="AknFieldContainer-inputContainer">
           <ErrorBoundary
-            errorMessage={__('pim_reference_entity.record.error.value', {
+            errorMessage={__('pim_asset_manager.asset.error.value', {
               fieldName: value.attribute.getLabel(locale.stringValue()),
             })}
           >

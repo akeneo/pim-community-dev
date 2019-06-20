@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
+namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\FixturesLoader;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -27,7 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
  */
 final class ImagePreviewActionTest extends ControllerIntegrationTestCase
 {
-    private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_reference_entities_image_preview';
+    private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_asset_manager_image_preview';
     private const FILENAME = 'Akeneo-DSC_2109-2.jpg';
 
     /* @var Client */
@@ -51,8 +51,8 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
 
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
-        $this->fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
+        $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
 
         $this->loadFixtures();
     }
@@ -85,7 +85,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $fixtures = $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->withAttributes([
                  'website'
              ])

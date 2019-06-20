@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import NumberData, {create} from 'akeneoreferenceentity/domain/model/record/data/number';
-import {ConcreteNumberAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/number';
-import Key from 'akeneoreferenceentity/tools/key';
-import {unformatNumber, formatNumberForUILocale} from 'akeneoreferenceentity/tools/format-number';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import NumberData, {create} from 'akeneoassetmanager/domain/model/asset/data/number';
+import {ConcreteNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
+import Key from 'akeneoassetmanager/tools/key';
+import {unformatNumber, formatNumberForUILocale} from 'akeneoassetmanager/tools/format-number';
 
 const View = ({
   value,
@@ -35,7 +35,7 @@ const View = ({
   return (
     <React.Fragment>
       <input
-        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
         autoComplete="off"
         className={`AknTextField AknTextField--narrow AknTextField--light
           ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}

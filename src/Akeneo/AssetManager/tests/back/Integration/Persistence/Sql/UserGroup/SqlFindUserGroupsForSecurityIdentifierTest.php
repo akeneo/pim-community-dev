@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\UserGroup;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\UserGroup;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\SecurityIdentifier;
+use Akeneo\AssetManager\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
 class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
@@ -19,7 +19,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findUserGroupsForSecurityIdentifiers = $this->get('akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier');
+        $this->findUserGroupsForSecurityIdentifiers = $this->get('akeneoassetmanager.infrastructure.persistence.query.find_user_groups_for_security_identifier');
         $this->resetDB();
     }
 
@@ -51,7 +51,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function insertUserGroups(): void

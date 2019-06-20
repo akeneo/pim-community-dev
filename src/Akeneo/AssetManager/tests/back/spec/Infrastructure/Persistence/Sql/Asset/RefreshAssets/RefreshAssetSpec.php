@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
-class RefreshRecordSpec extends ObjectBehavior
+class RefreshAssetSpec extends ObjectBehavior
 {
-    function let(RecordRepositoryInterface $recordRepository)
+    function let(AssetRepositoryInterface $assetRepository)
     {
-        $this->beConstructedWith($recordRepository);
+        $this->beConstructedWith($assetRepository);
     }
 
-    function it_refreshes_a_record_by_loading_it_and_updating_it(
-        RecordRepositoryInterface $recordRepository,
-        Record $recordToRefresh
+    function it_refreshes_a_asset_by_loading_it_and_updating_it(
+        AssetRepositoryInterface $assetRepository,
+        Asset $assetToRefresh
     ) {
-        $recordIdentifier = RecordIdentifier::fromString('a_record_to_refresh');
-        $recordRepository->getByIdentifier($recordIdentifier)->willReturn($recordToRefresh);
-        $recordRepository->update($recordToRefresh)->shouldBeCalled();
+        $assetIdentifier = AssetIdentifier::fromString('a_asset_to_refresh');
+        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($assetToRefresh);
+        $assetRepository->update($assetToRefresh)->shouldBeCalled();
 
-        $this->refresh($recordIdentifier);
+        $this->refresh($assetIdentifier);
     }
 }

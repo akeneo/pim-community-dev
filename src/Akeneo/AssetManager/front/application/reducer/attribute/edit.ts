@@ -1,7 +1,7 @@
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import {NormalizedTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {getAttributeReducer, Reducer} from 'akeneoreferenceentity/application/configuration/attribute';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {NormalizedTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {getAttributeReducer, Reducer} from 'akeneoassetmanager/application/configuration/attribute';
 
 export interface EditState {
   isActive: boolean;
@@ -19,7 +19,7 @@ const initEditState = (): EditState => ({
   originalData: '',
   data: {
     identifier: '',
-    reference_entity_identifier: '',
+    asset_family_identifier: '',
     code: '',
     labels: {},
     type: 'text',

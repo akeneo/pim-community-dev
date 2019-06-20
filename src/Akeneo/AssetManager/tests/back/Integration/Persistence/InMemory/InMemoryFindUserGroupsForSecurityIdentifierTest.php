@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindUserGroupsForSecurityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindUserGroupsForSecurityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\SecurityIdentifier;
 use PHPUnit\Framework\TestCase;
 
 /**

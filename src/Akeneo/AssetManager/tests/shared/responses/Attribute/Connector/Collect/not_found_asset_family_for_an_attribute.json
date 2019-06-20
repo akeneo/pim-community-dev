@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "PATCH",
-    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
+    "route": "akeneo_asset_manager_asset_family_attribute_rest_connector_create_or_update",
     "query": {
-      "referenceEntityIdentifier": "wrong_reference_entity",
+      "assetFamilyIdentifier": "wrong_asset_family",
       "attributeCode": "main_color"
     },
     "body": {
@@ -26,7 +26,7 @@
     "status": 404,
     "body": {
       "code": 404,
-      "message":"Reference entity \"wrong_reference_entity\" does not exist."
+      "message":"Asset family \"wrong_asset_family\" does not exist."
     }
   }
 }

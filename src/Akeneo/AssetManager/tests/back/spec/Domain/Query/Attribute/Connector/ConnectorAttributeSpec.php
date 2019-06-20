@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector;
+namespace spec\Akeneo\AssetManager\Domain\Query\Attribute\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use PhpSpec\ObjectBehavior;
 
 class ConnectorAttributeSpec extends ObjectBehavior
@@ -78,12 +78,12 @@ class ConnectorAttributeSpec extends ObjectBehavior
                 'en_US' => 'Country',
                 'fr_FR' => 'Pays'
             ]),
-            'record',
+            'asset',
             AttributeValuePerLocale::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeIsRequired::fromBoolean(false),
             [
-                "reference_entity_code" => 'country'
+                "asset_family_code" => 'country'
             ]
         );
 
@@ -93,11 +93,11 @@ class ConnectorAttributeSpec extends ObjectBehavior
                 'en_US' => 'Country',
                 'fr_FR' => 'Pays'
             ],
-            'type' => 'reference_entity_single_link',
+            'type' => 'asset_family_single_link',
             'value_per_locale' => true,
             'value_per_channel' => true,
             'is_required_for_completeness' => false,
-            'reference_entity_code' => 'country'
+            'asset_family_code' => 'country'
         ]);
     }
 }

@@ -1,14 +1,14 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_reference_entities_record_edit_rest",
+    "route": "akeneo_asset_manager_asset_edit_rest",
     "query": {
-      "recordCode": "starck",
-      "referenceEntityIdentifier": "designer"
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer"
     },
     "body": {
       "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
-      "reference_entity_identifier": "designer",
+      "asset_family_identifier": "designer",
       "code": "starck",
       "labels": {
         "fr_FR": "Philippe Starck"
@@ -58,20 +58,20 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate":"The records \u0022unknow_city,wrong_city\u0022 were not found.",
+        "messageTemplate":"The assets \u0022unknow_city,wrong_city\u0022 were not found.",
         "parameters":{
-          "%record_codes%":"unknow_city,wrong_city"
+          "%asset_codes%":"unknow_city,wrong_city"
         },
         "plural":null,
-        "message":"The records \u0022unknow_city,wrong_city\u0022 were not found.",
+        "message":"The assets \u0022unknow_city,wrong_city\u0022 were not found.",
         "root":{
-          "referenceEntityIdentifier":"designer",
+          "assetFamilyIdentifier":"designer",
           "code":"starck",
           "labels":[
 
           ],
           "image":null,
-          "editRecordValueCommands":[
+          "editAssetValueCommands":[
             {
               "text":"Philippe Starck",
               "attribute":{
@@ -90,7 +90,7 @@
                 "identifier":[
 
                 ],
-                "referenceEntityIdentifier":[
+                "assetFamilyIdentifier":[
 
                 ],
                 "code":[
@@ -125,7 +125,7 @@
                 "identifier":[
 
                 ],
-                "referenceEntityIdentifier":[
+                "assetFamilyIdentifier":[
 
                 ],
                 "code":[
@@ -160,7 +160,7 @@
                 "identifier":[
 
                 ],
-                "referenceEntityIdentifier":[
+                "assetFamilyIdentifier":[
 
                 ],
                 "code":[
@@ -195,7 +195,7 @@
                 "identifier":[
 
                 ],
-                "referenceEntityIdentifier":[
+                "assetFamilyIdentifier":[
 
                 ],
                 "code":[
@@ -226,7 +226,7 @@
                 "identifier":[
 
                 ],
-                "referenceEntityIdentifier":[
+                "assetFamilyIdentifier":[
 
                 ],
                 "code":[
@@ -246,19 +246,19 @@
               "locale":null
             },
             {
-              "recordCodes":[
+              "assetCodes":[
                 "unknow_city",
                 "wrong_city"
               ],
               "attribute":{
-                "recordType":[
+                "assetType":[
 
                 ],
-                "type":"record_collection",
+                "type":"asset_collection",
                 "identifier":[
 
                 ],
-                "referenceEntityIdentifier":[
+                "assetFamilyIdentifier":[
 
                 ],
                 "code":[
@@ -281,19 +281,19 @@
         },
         "propertyPath":"values.linked_cities",
         "invalidValue":{
-          "recordCodes":[
+          "assetCodes":[
             "unknow_city",
             "wrong_city"
           ],
           "attribute":{
-            "recordType":[
+            "assetType":[
 
             ],
-            "type":"record_collection",
+            "type":"asset_collection",
             "identifier":[
 
             ],
-            "referenceEntityIdentifier":[
+            "assetFamilyIdentifier":[
 
             ],
             "code":[

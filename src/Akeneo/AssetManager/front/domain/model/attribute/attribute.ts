@@ -1,11 +1,11 @@
-import Identifier, {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import Identifier, {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import MinimalAttribute, {
   MinimalNormalizedAttribute,
   MinimalConcreteAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import AttributeCode from 'akeneoreferenceentity/domain/model/attribute/code';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection from 'akeneoreferenceentity/domain/model/label-collection';
+} from 'akeneoassetmanager/domain/model/attribute/minimal';
+import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
 
 /**
  * @api
@@ -38,7 +38,7 @@ export interface NormalizableAdditionalProperty {
 export abstract class ConcreteAttribute extends MinimalConcreteAttribute implements Attribute {
   protected constructor(
     readonly identifier: Identifier,
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
     type: string,
@@ -47,7 +47,7 @@ export abstract class ConcreteAttribute extends MinimalConcreteAttribute impleme
     readonly order: number,
     readonly isRequired: boolean
   ) {
-    super(referenceEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
+    super(assetFamilyIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
     if (!(identifier instanceof Identifier)) {
       throw new InvalidArgumentError('Attribute expects an AttributeIdentifier argument');

@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
+namespace spec\Akeneo\AssetManager\Domain\Query\Asset\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use PhpSpec\ObjectBehavior;
 
-class ConnectorRecordSpec extends ObjectBehavior
+class ConnectorAssetSpec extends ObjectBehavior
 {
      function let()
     {
-        $recordCode = RecordCode::fromString('starck');
+        $assetCode = AssetCode::fromString('starck');
         $valueCollection = [
             'label' => [
                 [
@@ -58,12 +58,12 @@ class ConnectorRecordSpec extends ObjectBehavior
             ]
         ];
 
-        $this->beConstructedWith($recordCode, $valueCollection);
+        $this->beConstructedWith($assetCode, $valueCollection);
     }
 
      function it_is_initializable()
     {
-        $this->shouldHaveType(ConnectorRecord::class);
+        $this->shouldHaveType(ConnectorAsset::class);
     }
 
      function it_normalizes_itself()
@@ -106,9 +106,9 @@ class ConnectorRecordSpec extends ObjectBehavior
          ]);
      }
 
-     function it_returns_a_record_with_values_filtered_on_channel()
+     function it_returns_a_asset_with_values_filtered_on_channel()
      {
-         $recordCode = RecordCode::fromString('starck');
+         $assetCode = AssetCode::fromString('starck');
          $valueCollection = [
              'label' => [
                  [
@@ -150,10 +150,10 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          ];
 
-         $this->beConstructedWith($recordCode, $valueCollection);
+         $this->beConstructedWith($assetCode, $valueCollection);
 
-         $expectedRecord = new ConnectorRecord(
-             $recordCode,
+         $expectedAsset = new ConnectorAsset(
+             $assetCode,
              [
                  'label' => [
                      [
@@ -184,12 +184,12 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          );
 
-         $this->getRecordWithValuesFilteredOnChannel(ChannelIdentifier::fromCode('ecommerce'))->shouldBeLike($expectedRecord);
+         $this->getAssetWithValuesFilteredOnChannel(ChannelIdentifier::fromCode('ecommerce'))->shouldBeLike($expectedAsset);
      }
 
      function it_filters_values_and_labels_by_locales()
      {
-         $recordCode = RecordCode::fromString('starck');
+         $assetCode = AssetCode::fromString('starck');
          $valueCollection = [
              'label' => [
                  [
@@ -241,10 +241,10 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          ];
 
-         $this->beConstructedWith($recordCode, $valueCollection);
+         $this->beConstructedWith($assetCode, $valueCollection);
 
-         $expectedRecord = new ConnectorRecord(
-             $recordCode,
+         $expectedAsset = new ConnectorAsset(
+             $assetCode,
              [
                  'label' => [
                      [
@@ -280,9 +280,9 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          );
 
-         $this->getRecordWithValuesFilteredOnLocales(LocaleIdentifierCollection::fromNormalized([
+         $this->getAssetWithValuesFilteredOnLocales(LocaleIdentifierCollection::fromNormalized([
              'en_US',
              'de_DE',
-         ]))->shouldBeLike($expectedRecord);
+         ]))->shouldBeLike($expectedAsset);
      }
 }

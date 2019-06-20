@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordPropertiesValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValuesValidator;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetPropertiesValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValuesValidator;
 use PhpSpec\ObjectBehavior;
 
-class RecordValidatorSpec extends ObjectBehavior
+class AssetValidatorSpec extends ObjectBehavior
 {
-    function let(RecordPropertiesValidator $recordPropertiesValidator, RecordValuesValidator $recordValuesValidator)
+    function let(AssetPropertiesValidator $assetPropertiesValidator, AssetValuesValidator $assetValuesValidator)
     {
-        $this->beConstructedWith($recordPropertiesValidator, $recordValuesValidator);
+        $this->beConstructedWith($assetPropertiesValidator, $assetValuesValidator);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordValidator::class);
+        $this->shouldHaveType(AssetValidator::class);
     }
 
-    function it_validates_both_properties_and_values_of_a_valid_record($recordPropertiesValidator, $recordValuesValidator)
+    function it_validates_both_properties_and_values_of_a_valid_asset($assetPropertiesValidator, $assetValuesValidator)
     {
-        $record = [
+        $asset = [
             'code' => 'starck',
             'labels' => [
                 'en_US' => 'Philippe Starck'
@@ -54,7 +54,7 @@ class RecordValidatorSpec extends ObjectBehavior
                         'data'    => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_starck.jpg',
                         '_links'  => [
                             'download' => [
-                                'href' => 'http://localhost/api/rest/v1/reference-entities-media-files/2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg'
+                                'href' => 'http://localhost/api/rest/v1/asset-families-media-files/2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg'
                             ]
                         ]
                     ]
@@ -62,17 +62,17 @@ class RecordValidatorSpec extends ObjectBehavior
             ]
         ];
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $recordPropertiesValidator->validate($record)->shouldBeCalled()->willReturn([]);
-        $recordValuesValidator->validate($referenceEntityIdentifier, $record)->shouldBeCalled()->willReturn([]);
+        $assetPropertiesValidator->validate($asset)->shouldBeCalled()->willReturn([]);
+        $assetValuesValidator->validate($assetFamilyIdentifier, $asset)->shouldBeCalled()->willReturn([]);
 
-        $this->validate($referenceEntityIdentifier, $record)->shouldReturn([]);
+        $this->validate($assetFamilyIdentifier, $asset)->shouldReturn([]);
     }
 
-    function it_returns_errors_of_invalid_values_if_properties_are_valid($recordPropertiesValidator, $recordValuesValidator)
+    function it_returns_errors_of_invalid_values_if_properties_are_valid($assetPropertiesValidator, $assetValuesValidator)
     {
-        $record = [
+        $asset = [
             'code' => 'starck',
             'labels' => [
                 'en_US' => 'Philippe Starck'
@@ -94,19 +94,19 @@ class RecordValidatorSpec extends ObjectBehavior
             'message'  => 'Integer value found, but a string or a null is required',
         ]];
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $recordPropertiesValidator->validate($record)->willReturn([]);
-        $recordValuesValidator->validate($referenceEntityIdentifier, $record)->willReturn($errors);
+        $assetPropertiesValidator->validate($asset)->willReturn([]);
+        $assetValuesValidator->validate($assetFamilyIdentifier, $asset)->willReturn($errors);
 
-        $this->validate($referenceEntityIdentifier, $record)->shouldReturn($errors);
+        $this->validate($assetFamilyIdentifier, $asset)->shouldReturn($errors);
     }
 
     function it_does_not_validate_values_if_the_are_invalid_properties(
-        $recordPropertiesValidator,
-        $recordValuesValidator
+        $assetPropertiesValidator,
+        $assetValuesValidator
     ) {
-        $record = [
+        $asset = [
             'code' => 'starck',
             'labels' => [
                 'en_US' => 'Philippe Starck'
@@ -129,11 +129,11 @@ class RecordValidatorSpec extends ObjectBehavior
             'message'  => 'String value found, but an array is required',
         ]];
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $recordPropertiesValidator->validate($record)->shouldBeCalled()->willReturn($errors);
-        $recordValuesValidator->validate($referenceEntityIdentifier, $record)->shouldNotBeCalled();
+        $assetPropertiesValidator->validate($asset)->shouldBeCalled()->willReturn($errors);
+        $assetValuesValidator->validate($assetFamilyIdentifier, $asset)->shouldNotBeCalled();
 
-        $this->validate($referenceEntityIdentifier, $record)->shouldReturn($errors);
+        $this->validate($assetFamilyIdentifier, $asset)->shouldReturn($errors);
     }
 }

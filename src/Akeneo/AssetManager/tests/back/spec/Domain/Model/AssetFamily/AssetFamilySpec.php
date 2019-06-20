@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
+namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntitySpec extends ObjectBehavior
+class AssetFamilySpec extends ObjectBehavior
 {
     public function let()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = AssetFamilyIdentifier::fromString('designer');
         $labelCollection = [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
@@ -33,32 +33,32 @@ class ReferenceEntitySpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(ReferenceEntity::class);
+        $this->shouldHaveType(AssetFamily::class);
     }
 
     public function it_returns_its_identifier()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = AssetFamilyIdentifier::fromString('designer');
         $this->getIdentifier()->shouldBeLike($identifier);
     }
 
-    public function it_is_comparable_to_another_reference_entity()
+    public function it_is_comparable_to_another_asset_family()
     {
-        $sameIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $sameReferenceEntity = ReferenceEntity::create(
+        $sameIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $sameAssetFamily = AssetFamily::create(
             $sameIdentifier,
             [],
             Image::createEmpty()
         );
-        $this->equals($sameReferenceEntity)->shouldReturn(true);
+        $this->equals($sameAssetFamily)->shouldReturn(true);
 
-        $anotherIdentifier = ReferenceEntityIdentifier::fromString('same_identifier');
-        $sameReferenceEntity = ReferenceEntity::create(
+        $anotherIdentifier = AssetFamilyIdentifier::fromString('same_identifier');
+        $sameAssetFamily = AssetFamily::create(
             $anotherIdentifier,
             [],
             Image::createEmpty()
         );
-        $this->equals($sameReferenceEntity)->shouldReturn(false);
+        $this->equals($sameAssetFamily)->shouldReturn(false);
     }
 
     public function it_returns_the_translated_label() {
@@ -67,7 +67,7 @@ class ReferenceEntitySpec extends ObjectBehavior
         $this->getLabel('ru_RU')->shouldReturn(null);
     }
 
-    public function it_returns_the_locale_code_from_which_the_reference_entity_is_translated($labelCollection) {
+    public function it_returns_the_locale_code_from_which_the_asset_family_is_translated($labelCollection) {
         $this->getLabelCodes()->shouldReturn(['en_US', 'fr_FR']);
     }
 

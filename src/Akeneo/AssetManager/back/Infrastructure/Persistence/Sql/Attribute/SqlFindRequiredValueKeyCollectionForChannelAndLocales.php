@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 /**
- * This SQL implementation keeps a cache of the fetched masks indexed by their reference entity identifier.
+ * This SQL implementation keeps a cache of the fetched masks indexed by their asset family identifier.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
@@ -39,7 +39,7 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequi
     }
 
     public function find(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         ChannelIdentifier $channelIdentifier,
         LocaleIdentifierCollection $localeIdentifierCollectionCollection
     ): ValueKeyCollection {
@@ -62,8 +62,8 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequi
                 FROM
                     (
                         SELECT identifier, value_per_channel, value_per_locale
-                        FROM akeneo_reference_entity_attribute 
-                        WHERE reference_entity_identifier = :reference_entity_identifier
+                        FROM akeneo_asset_manager_attribute 
+                        WHERE asset_family_identifier = :asset_family_identifier
                         AND is_required = 1 
                     ) as a
                     LEFT JOIN (SELECT code FROM pim_catalog_channel WHERE code = :channel_code) c ON value_per_channel = 1 AND value_per_locale = 0
@@ -85,7 +85,7 @@ SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
             [
-                'reference_entity_identifier' => $referenceEntityIdentifier,
+                'asset_family_identifier' => $assetFamilyIdentifier,
                 'channel_code'                => $channelIdentifier->normalize(),
                 'locale_codes'                => $localeIdentifierCollectionCollection->normalize(),
             ],

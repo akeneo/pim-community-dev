@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Behat\Behat\Context\Context;
 
 class DeleteAttributeContext implements Context
@@ -43,12 +43,12 @@ class DeleteAttributeContext implements Context
     }
 
     /**
-     * @When /^the user deletes the attribute "(.+)" linked to the reference entity "(.+)"$/
+     * @When /^the user deletes the attribute "(.+)" linked to the asset family "(.+)"$/
      */
     public function theUserDeletesTheAttribute(string $attributeCode, string $entityIdentifier)
     {
-        $identifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString($entityIdentifier),
+        $identifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($entityIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
@@ -63,8 +63,8 @@ class DeleteAttributeContext implements Context
      */
     public function itIsNotPossibleToDeleteTheAttributeAsLabelLinkedToThisEntity()
     {
-        $identifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $identifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('label')
         );
 
@@ -84,8 +84,8 @@ class DeleteAttributeContext implements Context
      */
     public function itIsNotPossibleToDeleteTheAttributeAsImageLinkedToThisEntity()
     {
-        $identifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $identifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('image')
         );
 

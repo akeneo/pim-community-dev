@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
 use PHPUnit\Framework\Assert;
 use Symfony\Component\EventDispatcher\Event;

@@ -28,7 +28,7 @@ const Grid = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  const getReferenceEntityLabel = async (identifier) => {
+  const getAssetFamilyLabel = async (identifier) => {
     const row = await page.waitForSelector(`.AknGrid-bodyRow[data-identifier="${identifier}"]`);
     const label = await row.$('.AknGrid-title');
     const labelProperty = await label.getProperty('textContent');
@@ -36,7 +36,7 @@ const Grid = async (nodeElement, createElementDecorator, page) => {
     return await labelProperty.jsonValue();
   };
 
-  return {isLoaded, getRowsAfterLoading, getRows, getTitle, hasRow, getReferenceEntityLabel};
+  return {isLoaded, getRowsAfterLoading, getRows, getTitle, hasRow, getAssetFamilyLabel};
 };
 
 module.exports = Grid;

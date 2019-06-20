@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -22,7 +22,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implements ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface
+class SqlAssetFamilyIsLinkedToAtLeastOneAssetFamilyAttribute implements AssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -32,28 +32,28 @@ class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implements 
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function isLinked(ReferenceEntityIdentifier $identifier): bool
+    public function isLinked(AssetFamilyIdentifier $identifier): bool
     {
-        return $this->isReferenceEntityLinkedToAtLeastOneReferenceEntityAttribute($identifier);
+        return $this->isAssetFamilyLinkedToAtLeastOneAssetFamilyAttribute($identifier);
     }
 
-    private function isReferenceEntityLinkedToAtLeastOneReferenceEntityAttribute(ReferenceEntityIdentifier $identifier): bool
+    private function isAssetFamilyLinkedToAtLeastOneAssetFamilyAttribute(AssetFamilyIdentifier $identifier): bool
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_reference_entity_attribute
+            FROM akeneo_asset_manager_attribute
             WHERE (
-                attribute_type = :recordAttributeType OR
-                attribute_type = :recordCollectionAttributeType
+                attribute_type = :assetAttributeType OR
+                attribute_type = :assetCollectionAttributeType
             )
-            AND JSON_CONTAINS(additional_properties, :jsonRecordType)
+            AND JSON_CONTAINS(additional_properties, :jsonAssetType)
         ) as is_linked
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'recordAttributeType' => 'record',
-            'recordCollectionAttributeType' => 'record_collection',
-            'jsonRecordType' => sprintf('{"record_type": "%s"}', $identifier),
+            'assetAttributeType' => 'asset',
+            'assetCollectionAttributeType' => 'asset_collection',
+            'jsonAssetType' => sprintf('{"asset_type": "%s"}', $identifier),
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();

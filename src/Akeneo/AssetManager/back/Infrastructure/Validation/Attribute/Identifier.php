@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,5 +21,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class Identifier extends Constraint
 {
-    public const MESSAGE_WRONG_PATTERN = 'pim_reference_entity.attribute.validation.identifier.pattern';
+    public const MESSAGE_WRONG_PATTERN = 'pim_asset_manager.attribute.validation.identifier.pattern';
 }

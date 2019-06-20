@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\File;
+namespace Akeneo\AssetManager\Domain\Query\File;
 
 /**
  * Find the data of a file by its file key.

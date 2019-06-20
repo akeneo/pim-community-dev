@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
 {
@@ -38,19 +38,19 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findAttributeNextOrder = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order');
+        $this->findAttributeNextOrder = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order');
         $this->resetDB();
-        $this->loadReferenceEntitiesAndAttributes();
+        $this->loadAssetFamiliesAndAttributes();
     }
 
     /**
      * @test
      */
-    public function it_returns_the_next_order_if_the_reference_entity_already_have_attributes()
+    public function it_returns_the_next_order_if_the_asset_family_already_have_attributes()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $nextOrder = $this->findAttributeNextOrder->withReferenceEntityIdentifier($referenceEntityIdentifier);
+        $nextOrder = $this->findAttributeNextOrder->withAssetFamilyIdentifier($assetFamilyIdentifier);
 
         $this->assertEquals(AttributeOrder::fromInteger(3), $nextOrder);
     }
@@ -58,43 +58,43 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_zero_if_the_reference_entity_does_not_have_any_attribute_yet()
+    public function it_returns_zero_if_the_asset_family_does_not_have_any_attribute_yet()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
 
-        $nextOrder = $this->findAttributeNextOrder->withReferenceEntityIdentifier($referenceEntityIdentifier);
+        $nextOrder = $this->findAttributeNextOrder->withAssetFamilyIdentifier($assetFamilyIdentifier);
 
         $this->assertEquals(AttributeOrder::fromInteger(2), $nextOrder);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntitiesAndAttributes(): void
+    private function loadAssetFamiliesAndAttributes(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $attributesRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
 
-        $referenceEntityFull = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyFull = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntityFull);
+        $assetFamilyRepository->create($assetFamilyFull);
 
         $identifier = $attributesRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name')
         );
 
         $textAttribute = TextAttribute::createText(
             $identifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
@@ -107,14 +107,14 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
         );
         $attributesRepository->create($textAttribute);
 
-        $referenceEntityEmpty = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $assetFamilyEmpty = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
             [
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntityEmpty);
+        $assetFamilyRepository->create($assetFamilyEmpty);
     }
 }

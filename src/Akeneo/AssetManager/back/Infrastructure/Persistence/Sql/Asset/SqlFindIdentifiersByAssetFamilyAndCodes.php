@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlFindIdentifiersByReferenceEntityAndCodes implements FindIdentifiersByReferenceEntityAndCodesInterface
+class SqlFindIdentifiersByAssetFamilyAndCodes implements FindIdentifiersByAssetFamilyAndCodesInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -35,20 +35,20 @@ class SqlFindIdentifiersByReferenceEntityAndCodes implements FindIdentifiersByRe
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array
     {
         $query = <<<SQL
         SELECT identifier, code
-        FROM akeneo_reference_entity_record
-        WHERE reference_entity_identifier = :referenceEntityIdentifier
+        FROM akeneo_asset_manager_asset
+        WHERE asset_family_identifier = :assetFamilyIdentifier
         AND code IN (:codes)
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
             $query,
             [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
-                'codes' => $recordCodes
+                'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
+                'codes' => $assetCodes
             ],
             [
                 'codes' => Connection::PARAM_STR_ARRAY
@@ -60,7 +60,7 @@ SQL;
 
         $identifiers = [];
         foreach ($results as $result) {
-            $identifiers[$result['code']] = RecordIdentifier::fromString($result['identifier']);
+            $identifiers[$result['code']] = AssetIdentifier::fromString($result['identifier']);
         }
 
         return $identifiers;

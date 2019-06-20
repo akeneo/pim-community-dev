@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {CellView} from 'akeneoreferenceentity/application/configuration/value';
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import {NormalizedOption} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import {NormalizedOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
+import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
+import {CellView} from 'akeneoassetmanager/application/configuration/value';
+import {Column} from 'akeneoassetmanager/application/reducer/grid';
+import {NormalizedOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {getLabel} from 'pimui/js/i18n';
 
 const memo = (React as any).memo;

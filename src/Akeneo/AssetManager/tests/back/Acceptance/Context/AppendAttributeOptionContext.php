@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand;
+use Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -65,7 +65,7 @@ class AppendAttributeOptionContext implements Context
     {
         $optionAttribute = OptionAttribute::create(
             AttributeIdentifier::fromString('color'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
@@ -129,7 +129,7 @@ class AppendAttributeOptionContext implements Context
     {
         $optionAttribute = OptionCollectionAttribute::create(
             AttributeIdentifier::fromString('color'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
@@ -174,7 +174,7 @@ class AppendAttributeOptionContext implements Context
     {
         $optionAttribute = OptionAttribute::create(
             AttributeIdentifier::fromString('color'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
@@ -202,7 +202,7 @@ class AppendAttributeOptionContext implements Context
     {
         $optionAttribute = OptionCollectionAttribute::create(
             AttributeIdentifier::fromString('color'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
@@ -230,7 +230,7 @@ class AppendAttributeOptionContext implements Context
     {
         $optionAttribute = OptionCollectionAttribute::create(
             AttributeIdentifier::fromString('color'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
@@ -255,7 +255,7 @@ class AppendAttributeOptionContext implements Context
     {
         $optionAttribute = OptionCollectionAttribute::create(
             AttributeIdentifier::fromString('color'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),

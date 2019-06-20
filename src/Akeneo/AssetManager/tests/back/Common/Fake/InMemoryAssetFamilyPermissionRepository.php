@@ -2,43 +2,43 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 
-class InMemoryReferenceEntityPermissionRepository implements ReferenceEntityPermissionRepositoryInterface
+class InMemoryAssetFamilyPermissionRepository implements AssetFamilyPermissionRepositoryInterface
 {
-    /** @var ReferenceEntityPermission[] */
-    private $referenceEntityPermissions;
+    /** @var AssetFamilyPermission[] */
+    private $assetFamilyPermissions;
 
-    public function save(ReferenceEntityPermission $referenceEntityPermission): void
+    public function save(AssetFamilyPermission $assetFamilyPermission): void
     {
-        $refEntityIdentifier = $referenceEntityPermission->getReferenceEntityIdentifier()->normalize();
-        $this->referenceEntityPermissions[$refEntityIdentifier] = $referenceEntityPermission;
+        $refEntityIdentifier = $assetFamilyPermission->getAssetFamilyIdentifier()->normalize();
+        $this->assetFamilyPermissions[$refEntityIdentifier] = $assetFamilyPermission;
     }
 
-    public function getByReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier
-    ): ReferenceEntityPermission {
-        return $this->referenceEntityPermissions[(string) $referenceEntityIdentifier] ?? ReferenceEntityPermission::create(
-                $referenceEntityIdentifier,
+    public function getByAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier
+    ): AssetFamilyPermission {
+        return $this->assetFamilyPermissions[(string) $assetFamilyIdentifier] ?? AssetFamilyPermission::create(
+                $assetFamilyIdentifier,
                 []
             );
     }
 
     public function hasPermission(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         UserGroupIdentifier $userGroupIdentifier,
         RightLevel $rightLevel
     ): bool {
-        $refEntityIdentifier = $referenceEntityIdentifier->normalize();
+        $refEntityIdentifier = $assetFamilyIdentifier->normalize();
 
-        if (key_exists($refEntityIdentifier, $this->referenceEntityPermissions)) {
-            $referenceEntityPermission = $this->referenceEntityPermissions[$refEntityIdentifier];
-            $normalized = $referenceEntityPermission->normalize();
+        if (key_exists($refEntityIdentifier, $this->assetFamilyPermissions)) {
+            $assetFamilyPermission = $this->assetFamilyPermissions[$refEntityIdentifier];
+            $normalized = $assetFamilyPermission->normalize();
 
             foreach ($normalized['permissions'] as $normalizedPermission) {
                 if (

@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
 class AttributeOptionShouldNotExist extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.attribute.validation.options.duplicated';
+    public const ERROR_MESSAGE = 'pim_asset_manager.attribute.validation.options.duplicated';
 
     public function getTargets()
     {
@@ -26,6 +26,6 @@ class AttributeOptionShouldNotExist extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.attribute.attribute_option_should_not_exist';
+        return 'akeneo_assetmanager.validator.attribute.attribute_option_should_not_exist';
     }
 }

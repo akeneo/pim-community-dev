@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import __ from 'akeneoreferenceentity/tools/translator';
-import Table from 'akeneoreferenceentity/application/component/reference-entity/index/table';
-import Breadcrumb from 'akeneoreferenceentity/application/component/app/breadcrumb';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
-import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/router';
-import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
-import {referenceEntityCreationStart} from 'akeneoreferenceentity/domain/event/reference-entity/create';
-import CreateReferenceEntityModal from 'akeneoreferenceentity/application/component/reference-entity/create';
+import __ from 'akeneoassetmanager/tools/translator';
+import Table from 'akeneoassetmanager/application/component/asset-family/index/table';
+import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
+import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
+import {redirectToAssetFamily} from 'akeneoassetmanager/application/action/asset-family/router';
+import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
+import {assetFamilyCreationStart} from 'akeneoassetmanager/domain/event/asset-family/create';
+import CreateAssetFamilyModal from 'akeneoassetmanager/application/component/asset-family/create';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -17,7 +17,7 @@ interface StateProps {
   };
 
   grid: {
-    referenceEntities: ReferenceEntity[];
+    assetFamilies: AssetFamily[];
     matchesCount: number;
     isLoading: boolean;
   };
@@ -33,11 +33,11 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => void;
+    onRedirectToAssetFamily: (assetFamily: AssetFamily) => void;
     onCreationStart: () => void;
   };
 }
-class ReferenceEntityListView extends React.Component<StateProps & DispatchProps> {
+class AssetFamilyListView extends React.Component<StateProps & DispatchProps> {
   private createButton: HTMLButtonElement;
 
   componentDidMount() {
@@ -66,9 +66,9 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                           {
                             action: {
                               type: 'redirect',
-                              route: 'akeneo_reference_entities_reference_entity_edit',
+                              route: 'akeneo_asset_manager_asset_family_edit',
                             },
-                            label: __('pim_reference_entity.reference_entity.breadcrumb'),
+                            label: __('pim_asset_manager.asset_family.breadcrumb'),
                           },
                         ]}
                       />
@@ -76,7 +76,7 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                     <div className="AknTitleContainer-buttonsContainer">
                       <PimView
                         className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-                        viewName="pim-reference-entity-index-user-navigation"
+                        viewName="pim-asset-family-index-user-navigation"
                       />
                       {acls.create ? (
                         <div className="AknTitleContainer-actionsContainer AknButtonList">
@@ -88,28 +88,28 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                             className="AknButton AknButton--apply AknButtonList-item"
                             onClick={events.onCreationStart}
                           >
-                            {__('pim_reference_entity.reference_entity.button.create')}
+                            {__('pim_asset_manager.asset_family.button.create')}
                           </button>
                         </div>
                       ) : null}
                     </div>
                   </div>
                   <div className="AknTitleContainer-line">
-                    {grid.isLoading === false && grid.referenceEntities.length === 0 ? (
+                    {grid.isLoading === false && grid.assetFamilies.length === 0 ? (
                       <div className="AknDescriptionHeader AknDescriptionHeader--sticky AknDescriptionHeader--push">
                         <div
                           className="AknDescriptionHeader-icon"
                           style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Reference-entities.svg")'}}
                         />
                         <div className="AknDescriptionHeader-title">
-                          {__('pim_reference_entity.reference_entity.index.grid.help.title')}
+                          {__('pim_asset_manager.asset_family.index.grid.help.title')}
                           <div className="AknDescriptionHeader-description">
-                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_one')} <br />
-                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_two')} <br />
-                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_three')} <br />
-                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_four')} <br />
-                            <a href="https://help.akeneo.com/pim/articles/what-about-reference-entities.html?utm_source=akeneo-app&utm_medium=ref-entities-grid">
-                              {__('pim_reference_entity.reference_entity.index.grid.help.description_part_five')}
+                            {__('pim_asset_manager.asset_family.index.grid.help.description_part_one')} <br />
+                            {__('pim_asset_manager.asset_family.index.grid.help.description_part_two')} <br />
+                            {__('pim_asset_manager.asset_family.index.grid.help.description_part_three')} <br />
+                            {__('pim_asset_manager.asset_family.index.grid.help.description_part_four')} <br />
+                            <a href="https://help.akeneo.com/pim/articles/what-about-asset-families.html?utm_source=akeneo-app&utm_medium=ref-entities-grid">
+                              {__('pim_asset_manager.asset_family.index.grid.help.description_part_five')}
                             </a>
                             <br />
                           </div>
@@ -119,11 +119,11 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                       <div className="AknTitleContainer-title">
                         <span className={grid.isLoading ? 'AknLoadingPlaceHolder' : ''}>
                           {__(
-                            'pim_reference_entity.reference_entity.index.grid.count',
+                            'pim_asset_manager.asset_family.index.grid.count',
                             {
-                              count: grid.referenceEntities.length,
+                              count: grid.assetFamilies.length,
                             },
-                            grid.referenceEntities.length
+                            grid.assetFamilies.length
                           )}
                         </span>
                       </div>
@@ -150,16 +150,16 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
             <div className="AknGrid--gallery">
               <div className="AknGridContainer">
                 <Table
-                  onRedirectToReferenceEntity={events.onRedirectToReferenceEntity}
+                  onRedirectToAssetFamily={events.onRedirectToAssetFamily}
                   locale={context.locale}
-                  referenceEntities={grid.referenceEntities}
+                  assetFamilies={grid.assetFamilies}
                   isLoading={grid.isLoading}
                 />
               </div>
             </div>
           </div>
         </div>
-        {create.active ? <CreateReferenceEntityModal /> : null}
+        {create.active ? <CreateAssetFamilyModal /> : null}
       </div>
     );
   }
@@ -168,7 +168,7 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
 export default connect(
   (state: IndexState): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const referenceEntities = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
+    const assetFamilies = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
     const matchesCount =
       undefined === state.grid || undefined === state.grid.matchesCount ? 0 : state.grid.matchesCount;
 
@@ -177,7 +177,7 @@ export default connect(
         locale,
       },
       grid: {
-        referenceEntities,
+        assetFamilies,
         matchesCount,
         isLoading: state.grid.isFetching && state.grid.items.length === 0,
       },
@@ -185,20 +185,20 @@ export default connect(
         active: state.create.active,
       },
       acls: {
-        create: securityContext.isGranted('akeneo_referenceentity_reference_entity_create'),
+        create: securityContext.isGranted('akeneo_assetmanager_asset_family_create'),
       },
     };
   },
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onRedirectToReferenceEntity: (referenceEntityCreation: ReferenceEntity) => {
-          dispatch(redirectToReferenceEntity(referenceEntityCreation.getIdentifier(), 'record'));
+        onRedirectToAssetFamily: (assetFamilyCreation: AssetFamily) => {
+          dispatch(redirectToAssetFamily(assetFamilyCreation.getIdentifier(), 'asset'));
         },
         onCreationStart: () => {
-          dispatch(referenceEntityCreationStart());
+          dispatch(assetFamilyCreationStart());
         },
       },
     };
   }
-)(ReferenceEntityListView);
+)(AssetFamilyListView);

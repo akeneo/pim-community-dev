@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
 
-class InMemoryFindIdentifiersByReferenceEntityAndCodes implements FindIdentifiersByReferenceEntityAndCodesInterface
+class InMemoryFindIdentifiersByAssetFamilyAndCodes implements FindIdentifiersByAssetFamilyAndCodesInterface
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    public function __construct(InMemoryRecordRepository $recordRepository)
+    public function __construct(InMemoryAssetRepository $assetRepository)
     {
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array
     {
         $identifiers = [];
 
-        foreach ($this->recordRepository->all() as $record) {
+        foreach ($this->assetRepository->all() as $asset) {
             if (
-                $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)
-                && in_array($record->getCode(), $recordCodes)
+                $asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)
+                && in_array($asset->getCode(), $assetCodes)
             ) {
-                $identifiers[$record->getCode()->normalize()] = $record->getIdentifier();
+                $identifiers[$asset->getCode()->normalize()] = $asset->getIdentifier();
             }
         }
 

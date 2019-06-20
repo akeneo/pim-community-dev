@@ -1,4 +1,4 @@
-export const gridStateStoragePath = 'pim_reference_entity.record.grid.filter';
+export const gridStateStoragePath = 'pim_asset_manager.asset.grid.filter';
 
 export default () => (store: any) => (next: any) => (action: any) => {
   if (

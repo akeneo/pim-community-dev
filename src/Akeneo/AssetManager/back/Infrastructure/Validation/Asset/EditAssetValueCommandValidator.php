@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommand as EditRecordValueCommandConstraint;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommand as EditAssetValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -26,14 +26,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordValueCommandValidator extends ConstraintValidator
+class EditAssetValueCommandValidator extends ConstraintValidator
 {
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    /** @var AssetExistsInterface */
+    private $assetExists;
 
-    public function __construct(RecordExistsInterface $recordExists)
+    public function __construct(AssetExistsInterface $assetExists)
     {
-        $this->recordExists = $recordExists;
+        $this->assetExists = $assetExists;
     }
 
     public function validate($command, Constraint $constraint)
@@ -48,10 +48,10 @@ class EditRecordValueCommandValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof EditRecordValueCommand) {
+        if (!$command instanceof EditAssetValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditRecordValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given', EditAssetValueCommand::class,
                     get_class($command)
                 )
             );
@@ -63,22 +63,22 @@ class EditRecordValueCommandValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EditRecordValueCommandConstraint) {
-            throw new UnexpectedTypeException($constraint, EditRecordValueCommandConstraint::class);
+        if (!$constraint instanceof EditAssetValueCommandConstraint) {
+            throw new UnexpectedTypeException($constraint, EditAssetValueCommandConstraint::class);
         }
     }
 
-    private function validateCommand(EditRecordValueCommand $command): void
+    private function validateCommand(EditAssetValueCommand $command): void
     {
-        $recordsFound = $this->recordExists->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
-            RecordCode::fromString($command->recordCode)
+        $assetsFound = $this->assetExists->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($command->attribute->getAssetType()->normalize()),
+            AssetCode::fromString($command->assetCode)
         );
 
-        if (!$recordsFound) {
-            $this->context->buildViolation(EditRecordValueCommandConstraint::ERROR_MESSAGE)
+        if (!$assetsFound) {
+            $this->context->buildViolation(EditAssetValueCommandConstraint::ERROR_MESSAGE)
                 ->atPath((string) $command->attribute->getCode())
-                ->setParameter('%record_code%', $command->recordCode)
+                ->setParameter('%asset_code%', $command->assetCode)
                 ->addViolation();
         }
     }

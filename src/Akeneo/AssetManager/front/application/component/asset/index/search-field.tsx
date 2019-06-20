@@ -1,4 +1,4 @@
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import * as React from 'react';
 
 type Props = {
@@ -47,7 +47,7 @@ export default class SearchField extends React.Component<Props> {
           type="text"
           autoComplete="off"
           className="AknFilterBox-search"
-          placeholder={__('pim_reference_entity.record.grid.search')}
+          placeholder={__('pim_asset_manager.asset.grid.search')}
           defaultValue={this.props.value}
           onChange={this.onSearchUpdated.bind(this)}
           ref={this.defaultFocus}

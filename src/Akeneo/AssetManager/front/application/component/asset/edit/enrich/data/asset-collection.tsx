@@ -1,12 +1,12 @@
 import * as React from 'react';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import RecordSelector from 'akeneoreferenceentity/application/component/app/record-selector';
-import {RecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import __ from 'akeneoreferenceentity/tools/translator';
-import RecordCollectionData from 'akeneoreferenceentity/domain/model/record/data/record-collection';
-import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
+import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import __ from 'akeneoassetmanager/tools/translator';
+import AssetCollectionData from 'akeneoassetmanager/domain/model/asset/data/asset-collection';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 
 const View = ({
   value,
@@ -21,28 +21,28 @@ const View = ({
   onChange: (value: Value) => void;
   canEditData: boolean;
 }) => {
-  if (!(value.data instanceof RecordCollectionData)) {
+  if (!(value.data instanceof AssetCollectionData)) {
     return null;
   }
 
-  const attribute = value.attribute as RecordAttribute;
+  const attribute = value.attribute as AssetAttribute;
 
   return (
     //The first children of a FieldContainer will stretch to the full width if not contained in a div.
     //I didn't found a better way to fix it. So we need this class
-    <div className="record-selector-container">
-      <RecordSelector
-        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
-        value={value.data.recordCollectionData}
+    <div className="asset-selector-container">
+      <AssetSelector
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+        value={value.data.assetCollectionData}
         multiple={true}
         locale={locale}
         channel={channel}
-        placeholder={__('pim_reference_entity.record.selector.no_value')}
-        referenceEntityIdentifier={attribute.recordType.getReferenceEntityIdentifier()}
+        placeholder={__('pim_asset_manager.asset.selector.no_value')}
+        assetFamilyIdentifier={attribute.assetType.getAssetFamilyIdentifier()}
         readOnly={!canEditData}
-        onChange={(recordCodes: RecordCode[]) => {
+        onChange={(assetCodes: AssetCode[]) => {
           if (canEditData) {
-            const newData = RecordCollectionData.create(recordCodes);
+            const newData = AssetCollectionData.create(assetCodes);
             const newValue = value.setData(newData);
 
             onChange(newValue);

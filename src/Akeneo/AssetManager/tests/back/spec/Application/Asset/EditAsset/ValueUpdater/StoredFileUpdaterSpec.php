@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\StoredFileUpdater;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\StoredFileUpdater;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpParser\Node\Arg;
 use PhpSpec\ObjectBehavior;
@@ -44,8 +44,8 @@ class StoredFileUpdaterSpec extends ObjectBehavior
         $this->supports($editStoredFileValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_file_value_of_a_record(
-        Record $record,
+    function it_edits_the_file_value_of_a_asset(
+        Asset $asset,
         Value $existingValue,
         FileData $existingFileData
     ) {
@@ -62,7 +62,7 @@ class StoredFileUpdaterSpec extends ObjectBehavior
             'png'
         );
 
-        $record->findValue(Argument::type(ValueKey::class))
+        $asset->findValue(Argument::type(ValueKey::class))
             ->willReturn($existingValue);
 
         $existingValue->getData()
@@ -70,13 +70,13 @@ class StoredFileUpdaterSpec extends ObjectBehavior
 
         $existingFileData->getKey()->willReturn('/a/b/c/jambon.png');
 
-        $record->setValue(Argument::type(Value::class))->shouldBeCalled();
+        $asset->setValue(Argument::type(Value::class))->shouldBeCalled();
 
-        $this->__invoke($record, $command);
+        $this->__invoke($asset, $command);
     }
 
     function it_sets_the_same_file_data_if_its_the_same_file(
-        Record $record,
+        Asset $asset,
         Value $existingValue,
         FileData $existingFileData
     ) {
@@ -93,7 +93,7 @@ class StoredFileUpdaterSpec extends ObjectBehavior
             'png'
         );
 
-        $record->findValue(Argument::type(ValueKey::class))
+        $asset->findValue(Argument::type(ValueKey::class))
             ->willReturn($existingValue);
 
         $existingValue->getData()
@@ -108,16 +108,16 @@ class StoredFileUpdaterSpec extends ObjectBehavior
             $existingFileData->getWrappedObject()
         );
 
-        $record->setValue($value)->shouldBeCalled();
+        $asset->setValue($value)->shouldBeCalled();
 
-        $this->__invoke($record, $command);
+        $this->__invoke($asset, $command);
     }
 
     private function getAttribute(): ImageAttribute
     {
         $imageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['fr_FR' => 'Image', 'en_US' => 'Image']),
             AttributeOrder::fromInteger(0),

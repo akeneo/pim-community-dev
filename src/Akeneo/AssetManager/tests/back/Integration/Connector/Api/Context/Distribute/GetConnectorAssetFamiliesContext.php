@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
+namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityItems;
-use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyItems;
+use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
-class GetConnectorReferenceEntitiesContext implements Context
+class GetConnectorAssetFamiliesContext implements Context
 {
-    private const REQUEST_CONTRACT_DIR = 'ReferenceEntity/Connector/Distribute/';
+    private const REQUEST_CONTRACT_DIR = 'AssetFamily/Connector/Distribute/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -36,75 +36,75 @@ class GetConnectorReferenceEntitiesContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorReferenceEntityItems */
-    private $findConnectorReferenceEntity;
+    /** @var InMemoryFindConnectorAssetFamilyItems */
+    private $findConnectorAssetFamily;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var array */
-    private $referenceEntityPages;
+    private $assetFamilyPages;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindConnectorReferenceEntityItems $findConnectorReferenceEntity,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository
+        InMemoryFindConnectorAssetFamilyItems $findConnectorAssetFamily,
+        AssetFamilyRepositoryInterface $assetFamilyRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->findConnectorAssetFamily = $findConnectorAssetFamily;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     /**
-     * @Given /^7 reference entities in the PIM$/
+     * @Given /^7 asset families in the PIM$/
      */
-    public function referenceEntitiesInThePIM()
+    public function assetFamiliesInThePIM()
     {
         for ($i = 1; $i <= 7; $i++) {
-            $rawIdentifier = sprintf('%s_%d', 'reference_entity', $i);
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawIdentifier);
+            $rawIdentifier = sprintf('%s_%d', 'asset_family', $i);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($rawIdentifier);
 
             $imageInfo = new FileInfo();
             $imageInfo
                 ->setOriginalFilename(sprintf('%s.jpg', $rawIdentifier))
                 ->setKey(sprintf('test/image_%s.jpg', $rawIdentifier));
 
-            $referenceEntity = new ConnectorReferenceEntity(
-                $referenceEntityIdentifier,
+            $assetFamily = new ConnectorAssetFamily(
+                $assetFamilyIdentifier,
                 LabelCollection::fromArray(['fr_FR' => 'Marque']),
                 Image::fromFileInfo($imageInfo)
             );
 
-            $this->findConnectorReferenceEntity->save(
-                $referenceEntityIdentifier,
-                $referenceEntity
+            $this->findConnectorAssetFamily->save(
+                $assetFamilyIdentifier,
+                $assetFamily
             );
 
-            $referenceEntity = ReferenceEntity::create(
-                $referenceEntityIdentifier,
+            $assetFamily = AssetFamily::create(
+                $assetFamilyIdentifier,
                 [],
                 Image::createEmpty()
             );
 
-            $this->referenceEntityRepository->create($referenceEntity);
+            $this->assetFamilyRepository->create($assetFamily);
         }
     }
 
     /**
-     * @When /^the connector requests all reference entities of the PIM$/
+     * @When /^the connector requests all asset families of the PIM$/
      */
-    public function theConnectorRequestsAllReferenceEntitiesOfThePIM()
+    public function theConnectorRequestsAllAssetFamiliesOfThePIM()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->referenceEntityPages = [];
+        $this->assetFamilyPages = [];
 
         for ($page = 1; $page <= 3; $page++) {
-            $this->referenceEntityPages[$page] = $this->webClientHelper->requestFromFile(
+            $this->assetFamilyPages[$page] = $this->webClientHelper->requestFromFile(
                 $client,
                 self::REQUEST_CONTRACT_DIR . sprintf(
-                    "successful_reference_entities_page_%d.json",
+                    "successful_asset_families_page_%d.json",
                     $page
                 )
             );
@@ -112,17 +112,17 @@ class GetConnectorReferenceEntitiesContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the label and image properties of the 7 reference entities of the PIM$/
+     * @Then /^the PIM returns the label and image properties of the 7 asset families of the PIM$/
      */
-    public function thePIMReturnsTheReferenceEntitiesOfThePIM()
+    public function thePIMReturnsTheAssetFamiliesOfThePIM()
     {
         for ($page = 1; $page <= 3; $page++) {
-            Assert::keyExists($this->referenceEntityPages, $page, sprintf('The page %d has not been loaded', $page));
+            Assert::keyExists($this->assetFamilyPages, $page, sprintf('The page %d has not been loaded', $page));
 
             $this->webClientHelper->assertJsonFromFile(
-                $this->referenceEntityPages[$page],
+                $this->assetFamilyPages[$page],
                 self::REQUEST_CONTRACT_DIR . sprintf(
-                    "successful_reference_entities_page_%d.json",
+                    "successful_asset_families_page_%d.json",
                     $page
                 )
             );

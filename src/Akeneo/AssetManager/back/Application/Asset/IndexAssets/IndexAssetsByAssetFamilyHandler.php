@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\IndexRecords;
+namespace Akeneo\AssetManager\Application\Asset\IndexAssets;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 
 /**
- * Indexes all the records of a given reference entity
+ * Indexes all the assets of a given asset family
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IndexRecordsByReferenceEntityHandler
+class IndexAssetsByAssetFamilyHandler
 {
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
+    /** @var AssetIndexerInterface */
+    private $assetIndexer;
 
-    public function __construct(RecordIndexerInterface $recordIndexer)
+    public function __construct(AssetIndexerInterface $assetIndexer)
     {
-        $this->recordIndexer = $recordIndexer;
+        $this->assetIndexer = $assetIndexer;
     }
 
-    public function __invoke(IndexRecordsByReferenceEntityCommand $command) :void
+    public function __invoke(IndexAssetsByAssetFamilyCommand $command) :void
     {
-        $refenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-        $this->recordIndexer->indexByReferenceEntity($refenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier);
+        $this->assetIndexer->indexByAssetFamily($assetFamilyIdentifier);
     }
 }

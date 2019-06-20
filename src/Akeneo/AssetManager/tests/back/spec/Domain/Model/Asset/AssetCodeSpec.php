@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record;
+namespace spec\Akeneo\AssetManager\Domain\Model\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use PhpSpec\ObjectBehavior;
 
-class RecordCodeSpec extends ObjectBehavior
+class AssetCodeSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -25,7 +25,7 @@ class RecordCodeSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(RecordCode::class);
+        $this->shouldHaveType(AssetCode::class);
     }
 
     public function it_can_be_transformed_into_a_string()
@@ -51,7 +51,7 @@ class RecordCodeSpec extends ObjectBehavior
 
     public function it_is_possible_to_compare_it()
     {
-        $this->equals(RecordCode::fromString('an_identifier'))->shouldReturn(true);
-        $this->equals(RecordCode::fromString('other_identifier'))->shouldReturn(false);
+        $this->equals(AssetCode::fromString('an_identifier'))->shouldReturn(true);
+        $this->equals(AssetCode::fromString('other_identifier'))->shouldReturn(false);
     }
 }

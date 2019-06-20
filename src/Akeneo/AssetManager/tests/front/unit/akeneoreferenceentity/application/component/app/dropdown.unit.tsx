@@ -1,4 +1,4 @@
-import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
+import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import * as React from 'react';
 import {mount} from 'enzyme';
 

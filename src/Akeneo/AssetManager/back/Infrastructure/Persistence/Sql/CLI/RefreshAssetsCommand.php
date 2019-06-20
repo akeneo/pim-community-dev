@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\CLI;
 
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\FindAllAssetIdentifiers;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAllAssets;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAsset;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -16,35 +16,35 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * This command refreshes all the records after to have a record linked, all records of a reference entity or attribute options linked deleted.
+ * This command refreshes all the assets after to have a asset linked, all assets of an asset family or attribute options linked deleted.
  *
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RefreshRecordsCommand extends ContainerAwareCommand
+class RefreshAssetsCommand extends ContainerAwareCommand
 {
-    public const REFRESH_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:refresh-records';
+    public const REFRESH_ASSETS_COMMAND_NAME = 'akeneo:asset-manager:refresh-assets';
     private const BULK_SIZE = 100;
 
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var FindAllRecordIdentifiers */
-    private $findAllRecordIdentifiers;
+    /** @var FindAllAssetIdentifiers */
+    private $findAllAssetIdentifiers;
 
-    /** @var RefreshRecord */
-    private $refreshRecord;
+    /** @var RefreshAsset */
+    private $refreshAsset;
 
     public function __construct(
-        FindAllRecordIdentifiers $findAllRecordIdentifiers,
-        RefreshRecord $refreshRecord,
+        FindAllAssetIdentifiers $findAllAssetIdentifiers,
+        RefreshAsset $refreshAsset,
         Connection $sqlConnection
     ) {
-        parent::__construct(self::REFRESH_RECORDS_COMMAND_NAME);
+        parent::__construct(self::REFRESH_ASSETS_COMMAND_NAME);
 
         $this->sqlConnection = $sqlConnection;
-        $this->findAllRecordIdentifiers = $findAllRecordIdentifiers;
-        $this->refreshRecord = $refreshRecord;
+        $this->findAllAssetIdentifiers = $findAllAssetIdentifiers;
+        $this->refreshAsset = $refreshAsset;
     }
 
     /**
@@ -53,31 +53,31 @@ class RefreshRecordsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(self::REFRESH_RECORDS_COMMAND_NAME)
+            ->setName(self::REFRESH_ASSETS_COMMAND_NAME)
             ->addOption(
                 'all',
                 true,
                 InputOption::VALUE_NONE,
-                'Refresh all existing records'
+                'Refresh all existing assets'
             )
-            ->setDescription('Refresh all records referencing a deleted record or a deleted attribute option.');
+            ->setDescription('Refresh all assets referencing a deleted asset or a deleted attribute option.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $isIndexAll = $input->getOption('all');
         if (!$isIndexAll) {
-            $output->writeln('Please use the flag --all to refresh all records');
+            $output->writeln('Please use the flag --all to refresh all assets');
         }
 
-        $totalRecords = $this->getTotalRecords();
-        $progressBar = new ProgressBar($output, $totalRecords);
+        $totalAssets = $this->getTotalAssets();
+        $progressBar = new ProgressBar($output, $totalAssets);
         $progressBar->start();
 
-        $recordIdentifiers = $this->findAllRecordIdentifiers->fetch();
+        $assetIdentifiers = $this->findAllAssetIdentifiers->fetch();
         $i = 0;
-        foreach ($recordIdentifiers as $recordIdentifier) {
-            $this->refreshRecord->refresh($recordIdentifier);
+        foreach ($assetIdentifiers as $assetIdentifier) {
+            $this->refreshAsset->refresh($assetIdentifier);
             if ($i % self::BULK_SIZE === 0) {
                 $progressBar->advance(self::BULK_SIZE);
             }
@@ -86,9 +86,9 @@ class RefreshRecordsCommand extends ContainerAwareCommand
         $progressBar->finish();
     }
 
-    private function getTotalRecords(): int
+    private function getTotalAssets(): int
     {
-        $stmt = $this->sqlConnection->executeQuery('SELECT COUNT(*) FROM akeneo_reference_entity_record;');
+        $stmt = $this->sqlConnection->executeQuery('SELECT COUNT(*) FROM akeneo_asset_manager_asset;');
         $result = $stmt->fetch(\PDO::FETCH_COLUMN);
         if (false === $result) {
             throw new \RuntimeException('An exception occured while connecting the database');

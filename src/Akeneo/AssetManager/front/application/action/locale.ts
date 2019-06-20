@@ -1,5 +1,5 @@
-import {localesReceived} from 'akeneoreferenceentity/domain/event/locale';
-import Locale from 'akeneoreferenceentity/domain/model/locale';
+import {localesReceived} from 'akeneoassetmanager/domain/event/locale';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 

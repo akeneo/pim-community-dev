@@ -11,41 +11,41 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByCodesInterface;
 
 /**
- * RecordItem Value hydrator for value of type "Record" & "Record Collection".
- * It retrieves the labels of linked records and add them into a value context for the frontend.
+ * AssetItem Value hydrator for value of type "Asset" & "Asset Collection".
+ * It retrieves the labels of linked assets and add them into a value context for the frontend.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class RecordValueHydrator implements ValueHydratorInterface
+class AssetValueHydrator implements ValueHydratorInterface
 {
-    /** @var FindRecordLabelsByCodesInterface */
-    private $findRecordLabelsByCodes;
+    /** @var FindAssetLabelsByCodesInterface */
+    private $findAssetLabelsByCodes;
 
-    public function __construct(FindRecordLabelsByCodesInterface $findRecordLabelsByCodes)
+    public function __construct(FindAssetLabelsByCodesInterface $findAssetLabelsByCodes)
     {
-        $this->findRecordLabelsByCodes = $findRecordLabelsByCodes;
+        $this->findAssetLabelsByCodes = $findAssetLabelsByCodes;
     }
 
     public function supports(AbstractAttribute $attribute): bool
     {
-        return $attribute instanceof RecordAttribute || $attribute instanceof RecordCollectionAttribute;
+        return $attribute instanceof AssetAttribute || $attribute instanceof AssetCollectionAttribute;
     }
 
     public function hydrate($normalizedValue, AbstractAttribute $attribute, array $context = []): array
     {
-        $recordIdentifiers = is_array($normalizedValue['data']) ? $normalizedValue['data'] : [$normalizedValue['data']];
-        $data = array_values(array_intersect(array_keys($context['labels']), $recordIdentifiers));
-        $labels = array_intersect_key($context['labels'], array_flip($recordIdentifiers));
-        if ('record' === $attribute->getType()) {
+        $assetIdentifiers = is_array($normalizedValue['data']) ? $normalizedValue['data'] : [$normalizedValue['data']];
+        $data = array_values(array_intersect(array_keys($context['labels']), $assetIdentifiers));
+        $labels = array_intersect_key($context['labels'], array_flip($assetIdentifiers));
+        if ('asset' === $attribute->getType()) {
             if (empty($data)) {
                 $normalizedValue['data'] = null;
             } else {

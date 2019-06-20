@@ -4,11 +4,11 @@ settings:
             text_normalizer:
                 filter: ['lowercase']
 mappings:
-    pimee_reference_entity_record:
+    pimee_asset_family_asset:
         properties:
             identifier:
                 type: 'keyword'
-            reference_entity_code:
+            asset_family_code:
                 type: 'keyword'
             code:
                 type: 'keyword'
@@ -16,14 +16,14 @@ mappings:
                 type: 'date'
         dynamic_templates:
             -
-                record_full_text_search:
-                    path_match: 'record_full_text_search.*.*'
+                asset_full_text_search:
+                    path_match: 'asset_full_text_search.*.*'
                     mapping:
                         type: 'keyword'
                         normalizer: 'text_normalizer'
             -
-                record_code_label_search:
-                    path_match: 'record_code_label_search.*'
+                asset_code_label_search:
+                    path_match: 'asset_code_label_search.*'
                     mapping:
                         type: 'keyword'
                         normalizer: 'text_normalizer'

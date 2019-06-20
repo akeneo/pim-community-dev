@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Checks whether a given reference_entity already exists in the data referential
+ * Checks whether a given asset_family already exists in the data referential
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityCodeShouldBeUniqueValidator extends ConstraintValidator
+class AssetFamilyCodeShouldBeUniqueValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
-    public function __construct(ReferenceEntityExistsInterface $recordExists)
+    public function __construct(AssetFamilyExistsInterface $assetExists)
     {
-        $this->referenceEntityExists = $recordExists;
+        $this->assetFamilyExists = $assetExists;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -48,9 +48,9 @@ class ReferenceEntityCodeShouldBeUniqueValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof CreateReferenceEntityCommand) {
+        if (!$command instanceof CreateAssetFamilyCommand) {
             throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                CreateReferenceEntityCommand::class, get_class($command)));
+                CreateAssetFamilyCommand::class, get_class($command)));
         }
     }
 
@@ -59,20 +59,20 @@ class ReferenceEntityCodeShouldBeUniqueValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof ReferenceEntityCodeShouldBeUnique) {
+        if (!$constraint instanceof AssetFamilyCodeShouldBeUnique) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(CreateReferenceEntityCommand $command): void
+    private function validateCommand(CreateAssetFamilyCommand $command): void
     {
-        $referenceEntityIdentifier = $command->code;
-        $alreadyExists = $this->referenceEntityExists->withIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier)
+        $assetFamilyIdentifier = $command->code;
+        $alreadyExists = $this->assetFamilyExists->withIdentifier(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
         );
         if ($alreadyExists) {
-            $this->context->buildViolation(ReferenceEntityCodeShouldBeUnique::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
+            $this->context->buildViolation(AssetFamilyCodeShouldBeUnique::ERROR_MESSAGE)
+                ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier)
                 ->atPath('code')
                 ->addViolation();
         }

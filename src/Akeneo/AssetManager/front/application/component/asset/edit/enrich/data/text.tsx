@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import TextData, {create} from 'akeneoreferenceentity/domain/model/record/data/text';
-import {ConcreteTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import RichTextEditor from 'akeneoreferenceentity/application/component/app/rich-text-editor';
-import Key from 'akeneoreferenceentity/tools/key';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import TextData, {create} from 'akeneoassetmanager/domain/model/asset/data/text';
+import {ConcreteTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
+import Key from 'akeneoassetmanager/tools/key';
 
 const View = ({
   value,
@@ -38,7 +38,7 @@ const View = ({
           <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!canEditData} />
         ) : (
           <textarea
-            id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+            id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
             className={`AknTextareaField AknTextareaField--light
             ${value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''}
             ${!canEditData ? 'AknTextField--disabled' : ''}`}
@@ -51,7 +51,7 @@ const View = ({
         )
       ) : (
         <input
-          id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+          id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
           autoComplete="off"
           className={`AknTextField AknTextField--narrow AknTextField--light
           ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}

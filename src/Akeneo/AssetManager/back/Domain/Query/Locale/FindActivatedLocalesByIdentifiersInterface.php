@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Locale;
+namespace Akeneo\AssetManager\Domain\Query\Locale;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 
 /**
  * Find a list of activated locale identifiers from a given list of locale identifiers.

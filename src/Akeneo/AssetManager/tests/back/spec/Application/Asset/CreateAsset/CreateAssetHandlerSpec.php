@@ -11,69 +11,69 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\CreateRecord;
+namespace spec\Akeneo\AssetManager\Application\Asset\CreateAsset;
 
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Webmozart\Assert\Assert;
 
-class CreateRecordHandlerSpec extends ObjectBehavior
+class CreateAssetHandlerSpec extends ObjectBehavior
 {
     function let(
-        RecordRepositoryInterface $recordRepository,
-        FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
+        AssetRepositoryInterface $assetRepository,
+        FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel
     ) {
-        $this->beConstructedWith($recordRepository, $findAttributeAsLabel);
+        $this->beConstructedWith($assetRepository, $findAttributeAsLabel);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CreateRecordHandler::class);
+        $this->shouldHaveType(CreateAssetHandler::class);
     }
 
-    function it_creates_and_save_a_new_record(
-        RecordRepositoryInterface $recordRepository,
-        CreateRecordCommand $createRecordCommand,
-        FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
+    function it_creates_and_save_a_new_asset(
+        AssetRepositoryInterface $assetRepository,
+        CreateAssetCommand $createAssetCommand,
+        FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel
     ) {
-        $createRecordCommand->code = 'intel';
-        $createRecordCommand->referenceEntityIdentifier = 'brand';
-        $createRecordCommand->labels = [
+        $createAssetCommand->code = 'intel';
+        $createAssetCommand->assetFamilyIdentifier = 'brand';
+        $createAssetCommand->labels = [
             'en_US' => 'Intel',
             'fr_FR' => 'Intel',
         ];
 
-        $recordIdentifier = RecordIdentifier::fromString('brand_intel_a1677570-a278-444b-ab46-baa1db199392');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($createRecordCommand->referenceEntityIdentifier);
+        $assetIdentifier = AssetIdentifier::fromString('brand_intel_a1677570-a278-444b-ab46-baa1db199392');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($createAssetCommand->assetFamilyIdentifier);
         $labelAttributeReference = AttributeAsLabelReference::createFromNormalized('label_brand_fingerprint');
 
         $findAttributeAsLabel
-            ->find(Argument::type(ReferenceEntityIdentifier::class))
+            ->find(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn($labelAttributeReference);
 
-        $recordRepository->nextIdentifier(
-            Argument::type(ReferenceEntityIdentifier::class),
-            Argument::type(RecordCode::class)
-        )->willReturn($recordIdentifier);
+        $assetRepository->nextIdentifier(
+            Argument::type(AssetFamilyIdentifier::class),
+            Argument::type(AssetCode::class)
+        )->willReturn($assetIdentifier);
 
-        $expectedRecord = Record::create(
-            $recordIdentifier,
-            $referenceEntityIdentifier,
-            RecordCode::fromString('intel'),
+        $expectedAsset = Asset::create(
+            $assetIdentifier,
+            $assetFamilyIdentifier,
+            AssetCode::fromString('intel'),
             ValueCollection::fromValues([
                 Value::create(
                     $labelAttributeReference->getIdentifier(),
@@ -90,11 +90,11 @@ class CreateRecordHandlerSpec extends ObjectBehavior
             ])
         );
 
-        $recordRepository->create(Argument::that(function ($record) use ($expectedRecord) {
-            Assert::eq($expectedRecord, $record);
+        $assetRepository->create(Argument::that(function ($asset) use ($expectedAsset) {
+            Assert::eq($expectedAsset, $asset);
             return true;
         }))->shouldBeCalled();
 
-        $this->__invoke($createRecordCommand);
+        $this->__invoke($createAssetCommand);
     }
 }

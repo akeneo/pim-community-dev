@@ -1,10 +1,10 @@
 parameters:
-    pim_datagrid.product.attribute_type.akeneo_reference_entity_collection:
+    pim_datagrid.product.attribute_type.akeneo_asset_multiple_link:
         column:
-            type:          reference_entity_collection
+            type:         .asset_multiple_link
         filter:
-            type:     reference_entity_collection
-            ftype:    reference_entity_collection
+            type:    .asset_multiple_link
+            ftype:   .asset_multiple_link
             options:
                 field_options:
                     multiple: true
@@ -12,12 +12,12 @@ parameters:
                         empty_choice: true
         sorter: ~
 
-    pim_datagrid.product.attribute_type.akeneo_reference_entity:
+    pim_datagrid.product.attribute_type.akeneo_asset_single_link:
         column:
-            type:          reference_entity
+            type:          asset_single_link
         filter:
-            type:     reference_entity_collection
-            ftype:    reference_entity_single
+            type:    .asset_multiple_link
+            ftype:    asset_single_link
             options:
                 field_options:
                     multiple: false

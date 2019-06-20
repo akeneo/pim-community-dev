@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class SqlFindReferenceEntityAttributeAsLabelTest extends SqlIntegrationTestCase
+class SqlFindAssetFamilyAttributeAsLabelTest extends SqlIntegrationTestCase
 {
-    /** @var FindReferenceEntityAttributeAsLabelInterface */
+    /** @var FindAssetFamilyAttributeAsLabelInterface */
     private $findAttributeAsLabel;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findAttributeAsLabel = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label');
+        $this->findAttributeAsLabel = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label');
         $this->resetDB();
         $this->loadFixtures();
     }
@@ -34,14 +34,14 @@ class SqlFindReferenceEntityAttributeAsLabelTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_finds_the_attribute_as_label_of_a_reference_entity()
+    public function it_finds_the_attribute_as_label_of_an_asset_family()
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
-        $expectedAttributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $attributeAsLabel = $this->findAttributeAsLabel->find($referenceEntityIdentifier);
+        $expectedAttributeAsLabel = $assetFamily->getAttributeAsLabelReference();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $attributeAsLabel = $this->findAttributeAsLabel->find($assetFamilyIdentifier);
 
         $this->assertEquals($expectedAttributeAsLabel, $attributeAsLabel);
     }
@@ -49,10 +49,10 @@ class SqlFindReferenceEntityAttributeAsLabelTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_attribute_as_label_if_the_reference_entity_was_not_found()
+    public function it_returns_an_empty_attribute_as_label_if_the_asset_family_was_not_found()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown');
-        $attributeAsLabel = $this->findAttributeAsLabel->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('unknown');
+        $attributeAsLabel = $this->findAttributeAsLabel->find($assetFamilyIdentifier);
 
         $this->assertTrue($attributeAsLabel->isEmpty());
     }
@@ -60,12 +60,12 @@ class SqlFindReferenceEntityAttributeAsLabelTest extends SqlIntegrationTestCase
     private function loadFixtures(): void
     {
         $this->fixturesLoader
-            ->referenceEntity('designer')
+            ->assetFamily('designer')
             ->load();
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 }

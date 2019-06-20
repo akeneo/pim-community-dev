@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -39,7 +39,7 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
         $allowedExtensions = isset($normalizedCommand['allowed_extensions']) ?
             $normalizedCommand['allowed_extensions'] : AttributeAllowedExtensions::ALL_ALLOWED;
         $command = new CreateImageAttributeCommand(
-            $normalizedCommand['reference_entity_identifier'],
+            $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,

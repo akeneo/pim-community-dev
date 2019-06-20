@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_reference_entity_rest_connector_get",
+    "route": "akeneo_asset_manager_asset_family_rest_connector_get",
     "query": {
       "code": "brand"
     }
@@ -11,7 +11,7 @@
     "body": {
       "_links": {
         "image_download": {
-          "href": "http://localhost/api/rest/v1/reference-entities-media-files/5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg"
+          "href": "http://localhost/api/rest/v1/asset-families-media-files/5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg"
         }
       },
       "code": "brand",

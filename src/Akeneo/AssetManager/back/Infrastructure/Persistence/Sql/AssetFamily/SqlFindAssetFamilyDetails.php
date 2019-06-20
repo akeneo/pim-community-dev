@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -31,7 +31,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterface
+class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -57,7 +57,7 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function find(ReferenceEntityIdentifier $identifier): ?ReferenceEntityDetails
+    public function find(AssetFamilyIdentifier $identifier): ?AssetFamilyDetails
     {
         $result = $this->fetchResult($identifier);
 
@@ -67,10 +67,10 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
 
         $attributesDetails = $this->findAttributesDetails->find($identifier);
 
-        return $this->hydrateReferenceEntityDetails(
+        return $this->hydrateAssetFamilyDetails(
             $result['identifier'],
             $result['labels'],
-            $result['record_count'],
+            $result['asset_count'],
             $result['file_key'],
             $result['original_filename'],
             $attributesDetails,
@@ -79,7 +79,7 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
         );
     }
 
-    private function fetchResult(ReferenceEntityIdentifier $identifier): array
+    private function fetchResult(AssetFamilyIdentifier $identifier): array
     {
         $query = <<<SQL
         SELECT
@@ -89,9 +89,9 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
             re.attribute_as_image,
             fi.file_key,
             fi.original_filename, (
-                SELECT count(*) FROM akeneo_reference_entity_record WHERE reference_entity_identifier = :identifier
-            ) as record_count
-        FROM akeneo_reference_entity_reference_entity as re
+                SELECT count(*) FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :identifier
+            ) as asset_count
+        FROM akeneo_asset_manager_asset_family as re
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
         WHERE re.identifier = :identifier;
 SQL;
@@ -106,26 +106,26 @@ SQL;
     }
 
     /**
-     * @return ReferenceEntityDetails
+     * @return AssetFamilyDetails
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function hydrateReferenceEntityDetails(
+    private function hydrateAssetFamilyDetails(
         string $identifier,
         string $normalizedLabels,
-        string $recordCount,
+        string $assetCount,
         ?string $fileKey,
         ?string $originalFilename,
         array $attributesDetails,
         ?string $attributeAsLabel,
         ?string $attributeAsImage
-    ): ReferenceEntityDetails {
+    ): AssetFamilyDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $activatedLocales = $this->findActivatedLocales->findAll();
 
         $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $recordCount = Type::getType(Type::INTEGER)->convertToPHPValue($recordCount, $platform);
+        $assetCount = Type::getType(Type::INTEGER)->convertToPHPValue($assetCount, $platform);
 
         $entityImage = Image::createEmpty();
         if (null !== $fileKey && null !== $originalFilename) {
@@ -137,16 +137,16 @@ SQL;
 
         $labelsByActivatedLocales = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
 
-        $referenceEntityItem = new ReferenceEntityDetails();
-        $referenceEntityItem->identifier = ReferenceEntityIdentifier::fromString($identifier);
-        $referenceEntityItem->labels = LabelCollection::fromArray($labelsByActivatedLocales);
-        $referenceEntityItem->image = $entityImage;
-        $referenceEntityItem->recordCount = $recordCount;
-        $referenceEntityItem->attributes = $attributesDetails;
-        $referenceEntityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized($attributeAsLabel);
-        $referenceEntityItem->attributeAsImage = AttributeAsImageReference::createFromNormalized($attributeAsImage);
+        $assetFamilyItem = new AssetFamilyDetails();
+        $assetFamilyItem->identifier = AssetFamilyIdentifier::fromString($identifier);
+        $assetFamilyItem->labels = LabelCollection::fromArray($labelsByActivatedLocales);
+        $assetFamilyItem->image = $entityImage;
+        $assetFamilyItem->assetCount = $assetCount;
+        $assetFamilyItem->attributes = $attributesDetails;
+        $assetFamilyItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized($attributeAsLabel);
+        $assetFamilyItem->attributeAsImage = AttributeAsImageReference::createFromNormalized($attributeAsImage);
 
-        return $referenceEntityItem;
+        return $assetFamilyItem;
     }
 
     private function getLabelsByActivatedLocales(array $labels, array $activatedLocales): array

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {CellView} from 'akeneoreferenceentity/application/configuration/value';
+import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
+import {CellView} from 'akeneoassetmanager/application/configuration/value';
 
 const UserContext = require('pim/user-context');
 const memo = (React as any).memo;

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use PhpSpec\ObjectBehavior;
 
 class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_create_an_image_attribute()
     {
         $command = $this->create([
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
             'is_required' => false,
@@ -33,7 +33,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         ]);
 
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
-        $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
+        $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('picture');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Portrait']);
         $command->isRequired->shouldBeEqualTo(false);
@@ -46,7 +46,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
     function it_throws_an_exception_if_there_is_one_missing_common_property()
     {
         $command = [
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'picture',
             'is_required' => false,
             //'value_per_channel' => false, // For the test purpose, this one is missing
@@ -62,7 +62,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_with_a_default_properties_if_the_value_is_missing()
     {
         $command = $this->create([
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
             'value_per_channel' => false,

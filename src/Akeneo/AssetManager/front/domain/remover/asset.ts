@@ -1,10 +1,10 @@
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 
-export default interface Remover<ReferenceEntityIdentifier, Identifier> {
+export default interface Remover<AssetFamilyIdentifier, Identifier> {
   remove: (
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     identifier: Identifier
   ) => Promise<ValidationError[] | null>;
 
-  removeAll: (referenceEntityIdentifier: ReferenceEntityIdentifier) => Promise<ValidationError[] | null>;
+  removeAll: (assetFamilyIdentifier: AssetFamilyIdentifier) => Promise<ValidationError[] | null>;
 }

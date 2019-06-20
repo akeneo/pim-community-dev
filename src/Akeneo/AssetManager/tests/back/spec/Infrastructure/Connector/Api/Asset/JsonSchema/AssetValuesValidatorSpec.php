@@ -11,51 +11,51 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValuesValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorRegistry;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValuesValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorRegistry;
 use PhpSpec\ObjectBehavior;
 
-class RecordValuesValidatorSpec extends ObjectBehavior
+class AssetValuesValidatorSpec extends ObjectBehavior
 {
     function let(
-        RecordValueValidatorRegistry $recordValueValidatorRegistry,
+        AssetValueValidatorRegistry $assetValueValidatorRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
-        $this->beConstructedWith($recordValueValidatorRegistry, $findAttributesIndexedByIdentifier);
+        $this->beConstructedWith($assetValueValidatorRegistry, $findAttributesIndexedByIdentifier);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordValuesValidator::class);
+        $this->shouldHaveType(AssetValuesValidator::class);
     }
 
-    function it_validates_record_values_grouped_by_attribute_type(
-        RecordValueValidatorRegistry $recordValueValidatorRegistry,
+    function it_validates_asset_values_grouped_by_attribute_type(
+        AssetValueValidatorRegistry $assetValueValidatorRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        RecordValueValidatorInterface $textTypeValidator,
-        RecordValueValidatorInterface $recordTypeValidator
+        AssetValueValidatorInterface $textTypeValidator,
+        AssetValueValidatorInterface $assetTypeValidator
     ) {
-        $record = [
+        $asset = [
             'values' => [
                 'name' => [
                     [
@@ -80,27 +80,27 @@ class RecordValuesValidatorSpec extends ObjectBehavior
             ]
         ];
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
 
         $nameAttribute = $this->getNameAttribute();
         $descriptionAttribute = $this->getDescriptionAttribute();
         $countryAttribute = $this->getCountryAttribute();
 
-        $findAttributesIndexedByIdentifier->find($referenceEntityIdentifier)->willReturn([
+        $findAttributesIndexedByIdentifier->find($assetFamilyIdentifier)->willReturn([
             $nameAttribute,
             $descriptionAttribute,
             $countryAttribute,
         ]);
 
-        $recordValueValidatorRegistry->getValidator(TextAttribute::class)->willReturn($textTypeValidator);
-        $recordValueValidatorRegistry->getValidator(RecordAttribute::class)->willReturn($recordTypeValidator);
+        $assetValueValidatorRegistry->getValidator(TextAttribute::class)->willReturn($textTypeValidator);
+        $assetValueValidatorRegistry->getValidator(AssetAttribute::class)->willReturn($assetTypeValidator);
 
         $textTypeError = [[
             'property' => 'values.description[0].data',
             'message'  => 'The property data is required'
         ]];
 
-        $recordTypeError = [[
+        $assetTypeError = [[
             'property' => 'values.country[0].data',
             'message'  => 'Integer value found, but a string or a null is required'
         ]];
@@ -123,7 +123,7 @@ class RecordValuesValidatorSpec extends ObjectBehavior
             ]
         ])->willReturn([$textTypeError]);
 
-        $recordTypeValidator->validate([
+        $assetTypeValidator->validate([
             'values' => [
                 'country' => [
                     [
@@ -133,21 +133,21 @@ class RecordValuesValidatorSpec extends ObjectBehavior
                     ],
                 ]
             ]
-        ])->willReturn([$recordTypeError]);
+        ])->willReturn([$assetTypeError]);
 
-        $errors = $this->validate($referenceEntityIdentifier, $record);
+        $errors = $this->validate($assetFamilyIdentifier, $asset);
         $errors->shouldHaveCount(2);
         $errors->shouldContain($textTypeError);
-        $errors->shouldContain($recordTypeError);
+        $errors->shouldContain($assetTypeError);
     }
 
     function it_returns_an_empty_array_if_there_are_no_errors(
-        RecordValueValidatorRegistry $recordValueValidatorRegistry,
+        AssetValueValidatorRegistry $assetValueValidatorRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        RecordValueValidatorInterface $textTypeValidator,
-        RecordValueValidatorInterface $recordTypeValidator
+        AssetValueValidatorInterface $textTypeValidator,
+        AssetValueValidatorInterface $assetTypeValidator
     ) {
-        $record = [
+        $asset = [
             'values' => [
                 'name' => [
                     [
@@ -173,17 +173,17 @@ class RecordValuesValidatorSpec extends ObjectBehavior
             ]
         ];
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
 
-        $findAttributesIndexedByIdentifier->find($referenceEntityIdentifier)->willReturn([
+        $findAttributesIndexedByIdentifier->find($assetFamilyIdentifier)->willReturn([
             $this->getNameAttribute(),
             $this->getDescriptionAttribute(),
             $this->getCountryAttribute(),
             $this->getImageAttribute(),
         ]);
 
-        $recordValueValidatorRegistry->getValidator(TextAttribute::class)->willReturn($textTypeValidator);
-        $recordValueValidatorRegistry->getValidator(RecordAttribute::class)->willReturn($recordTypeValidator);
+        $assetValueValidatorRegistry->getValidator(TextAttribute::class)->willReturn($textTypeValidator);
+        $assetValueValidatorRegistry->getValidator(AssetAttribute::class)->willReturn($assetTypeValidator);
 
         $textTypeValidator->validate([
             'values' => [
@@ -204,7 +204,7 @@ class RecordValuesValidatorSpec extends ObjectBehavior
             ]
         ])->willReturn([]);
 
-        $recordTypeValidator->validate([
+        $assetTypeValidator->validate([
             'values' => [
                 'country' => [
                     [
@@ -216,14 +216,14 @@ class RecordValuesValidatorSpec extends ObjectBehavior
             ]
         ])->willReturn([]);
 
-        $this->validate($referenceEntityIdentifier, $record)->shouldReturn([]);
+        $this->validate($assetFamilyIdentifier, $asset)->shouldReturn([]);
     }
 
     private function getNameAttribute(): TextAttribute
     {
         return TextAttribute::createText(
             AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -240,7 +240,7 @@ class RecordValuesValidatorSpec extends ObjectBehavior
     {
         return TextAttribute::createText(
             AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description']),
             AttributeOrder::fromInteger(0),
@@ -253,18 +253,18 @@ class RecordValuesValidatorSpec extends ObjectBehavior
         );
     }
 
-    private function getCountryAttribute(): RecordAttribute
+    private function getCountryAttribute(): AssetAttribute
     {
-        return RecordAttribute::create(
+        return AssetAttribute::create(
             AttributeIdentifier::create('brand', 'country', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('country'),
             LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('country')
+            AssetFamilyIdentifier::fromString('country')
         );
     }
 
@@ -272,7 +272,7 @@ class RecordValuesValidatorSpec extends ObjectBehavior
     {
         return ImageAttribute::create(
             AttributeIdentifier::create('brand', 'cover_image', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('cover_image'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(1),

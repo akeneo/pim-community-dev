@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditIsRichTextEditorCommandFactorySpec extends ObjectBehavior
@@ -16,15 +16,15 @@ class EditIsRichTextEditorCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_is_rich_text_editor_edits()
     {
         $this->supports([
-            'identifier'          => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier'          => ['identifier' => 'name', 'asset_family_identifier' => 'designer'],
             'is_rich_text_editor' => true,
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'          => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier'          => ['identifier' => 'name', 'asset_family_identifier' => 'designer'],
             'is_rich_text_editor' => null
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'name', 'asset_family_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);

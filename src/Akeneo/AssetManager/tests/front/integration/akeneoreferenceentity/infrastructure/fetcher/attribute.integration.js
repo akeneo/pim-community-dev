@@ -1,16 +1,16 @@
 const timeout = 5000;
 
-describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
+describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
     await page.reload();
   }, timeout);
 
-  it('It lists the attributes of a reference entity', async () => {
+  it('It lists the attributes of an asset family', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity/designer/attribute' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager/designer/attribute' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -18,7 +18,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
           body: JSON.stringify([
             {
               identifier: 'description_1234',
-              reference_entity_identifier: 'designer',
+              asset_family_identifier: 'designer',
               code: 'description',
               is_required: true,
               order: 0,
@@ -36,7 +36,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
             },
             {
               identifier: 'side_view_1234',
-              reference_entity_identifier: 'designer',
+              asset_family_identifier: 'designer',
               code: 'side_view',
               is_required: false,
               order: 1,
@@ -55,11 +55,11 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/attribute').default;
-      const identifierModule = 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-      const referenceEntityIdentifier = require(identifierModule).createIdentifier('designer');
+      const fetcher = require('akeneoassetmanager/infrastructure/fetcher/attribute').default;
+      const identifierModule = 'akeneoassetmanager/domain/model/asset-family/identifier';
+      const assetFamilyIdentifier = require(identifierModule).createIdentifier('designer');
 
-      return await fetcher.fetchAll(referenceEntityIdentifier);
+      return await fetcher.fetchAll(assetFamilyIdentifier);
     });
 
     // Missing properties such as "maxFileSize" and "AllowedExtensions"
@@ -68,7 +68,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
         code: {
           code: 'description',
         },
-        referenceEntityIdentifier: {
+        assetFamilyIdentifier: {
           identifier: 'designer',
         },
         identifier: {
@@ -100,7 +100,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
         code: {
           code: 'side_view',
         },
-        referenceEntityIdentifier: {
+        assetFamilyIdentifier: {
           identifier: 'designer',
         },
         identifier: {

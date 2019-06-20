@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
+namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,18 +29,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Validate & save a record
+ * Validate & save a asset
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class CreateAction
 {
-    /** @var CreateRecordHandler */
-    private $createRecordHandler;
+    /** @var CreateAssetHandler */
+    private $createAssetHandler;
 
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
+    /** @var AssetIndexerInterface */
+    private $assetIndexer;
 
     /** @var NormalizerInterface */
     private $normalizer;
@@ -51,41 +51,41 @@ class CreateAction
     /** @var SecurityFacade */
     private $securityFacade;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
-        CreateRecordHandler $createRecordHandler,
-        RecordIndexerInterface $recordIndexer,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        CreateAssetHandler $createAssetHandler,
+        AssetIndexerInterface $assetIndexer,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
-        $this->createRecordHandler = $createRecordHandler;
+        $this->createAssetHandler = $createAssetHandler;
         $this->validator = $validator;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
         $this->securityFacade = $securityFacade;
-        $this->recordIndexer = $recordIndexer;
+        $this->assetIndexer = $assetIndexer;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier): Response
+    public function __invoke(Request $request, string $assetFamilyIdentifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->isUserAllowedToCreate($request->get('referenceEntityIdentifier'))) {
+        if (!$this->isUserAllowedToCreate($request->get('assetFamilyIdentifier'))) {
             throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
             return new JsonResponse(
-                'Reference Entity Identifier provided in the route and the one given in the body of your request are different',
+                'Asset Family Identifier provided in the route and the one given in the body of your request are different',
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -100,20 +100,20 @@ class CreateAction
             );
         }
 
-        $this->createRecord($command);
+        $this->createAsset($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToCreate(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToCreate(string $assetFamilyIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery(
-            $referenceEntityIdentifier,
+        $query = new CanEditAssetFamilyQuery(
+            $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
 
-        return $this->securityFacade->isGranted('akeneo_referenceentity_record_create')
-            && ($this->canEditReferenceEntityQueryHandler)($query);
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_create')
+            && ($this->canEditAssetFamilyQueryHandler)($query);
     }
 
     /**
@@ -123,15 +123,15 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['reference_entity_identifier'] !== $request->get('referenceEntityIdentifier');
+        return $normalizedCommand['asset_family_identifier'] !== $request->get('assetFamilyIdentifier');
     }
 
-    private function getCreateCommand(Request $request): CreateRecordCommand
+    private function getCreateCommand(Request $request): CreateAssetCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = new CreateRecordCommand(
-            $normalizedCommand['reference_entity_identifier'] ?? null,
+        $command = new CreateAssetCommand(
+            $normalizedCommand['asset_family_identifier'] ?? null,
             $normalizedCommand['code'] ?? null,
             $normalizedCommand['labels'] ?? []
         );
@@ -140,12 +140,12 @@ class CreateAction
     }
 
     /**
-     * When creating multiple records in a row using the UI "Create another",
+     * When creating multiple assets in a row using the UI "Create another",
      * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
      */
-    private function createRecord(CreateRecordCommand $command): void
+    private function createAsset(CreateAssetCommand $command): void
     {
-        ($this->createRecordHandler)($command);
-        $this->recordIndexer->refresh();
+        ($this->createAssetHandler)($command);
+        $this->assetIndexer->refresh();
     }
 }

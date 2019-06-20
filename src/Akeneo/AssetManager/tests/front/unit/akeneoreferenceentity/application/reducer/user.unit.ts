@@ -1,6 +1,6 @@
-import reducer from 'akeneoreferenceentity/application/reducer/user';
+import reducer from 'akeneoassetmanager/application/reducer/user';
 
-describe('akeneo > reference entity > application > reducer --- user', () => {
+describe('akeneo > asset family > application > reducer --- user', () => {
   test('I can initialize an empty state', () => {
     const newState = reducer(undefined, {
       type: 'GRID_GO_FIRST_PAGE',

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Locale;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Locale;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -31,6 +31,6 @@ class LocalesShouldBeActivated extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.channel.locales_should_be_activated';
+        return 'akeneo_assetmanager.validator.channel.locales_should_be_activated';
     }
 }

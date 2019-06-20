@@ -1,9 +1,9 @@
 {
   "request": {
       "method": "PUT",
-      "route": "akeneo_reference_entities_record_index_rest",
+      "route": "akeneo_asset_manager_asset_index_rest",
       "query": {
-          "referenceEntityIdentifier": "design er"
+          "assetFamilyIdentifier": "design er"
       },
       "body": {
           "locale": "en_US",
@@ -18,7 +18,7 @@
                   "context": {}
               },
               {
-                  "field": "reference_entity",
+                  "field": "asset_family",
                   "operator": "=",
                   "value": "designer",
                   "context": {}

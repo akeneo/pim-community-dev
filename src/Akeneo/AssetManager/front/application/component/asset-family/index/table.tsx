@@ -1,21 +1,21 @@
 import * as React from 'react';
-import ItemView from 'akeneoreferenceentity/application/component/reference-entity/index/item';
-import ReferenceEntity, {
-  createReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createIdentifier as createAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+import ItemView from 'akeneoassetmanager/application/component/asset-family/index/item';
+import AssetFamily, {
+  createAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createIdentifier as createAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 interface TableState {
   locale: string;
-  referenceEntities: ReferenceEntity[];
+  assetFamilies: AssetFamily[];
   isLoading: boolean;
 }
 
 interface TableDispatch {
-  onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => void;
+  onRedirectToAssetFamily: (assetFamily: AssetFamily) => void;
 }
 
 interface TableProps extends TableState, TableDispatch {}
@@ -26,22 +26,22 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   };
 
   componentDidUpdate(previousProps: TableProps) {
-    if (this.props.referenceEntities.length !== previousProps.referenceEntities.length) {
-      this.setState({nextItemToAddPosition: previousProps.referenceEntities.length});
+    if (this.props.assetFamilies.length !== previousProps.assetFamilies.length) {
+      this.setState({nextItemToAddPosition: previousProps.assetFamilies.length});
     }
   }
 
   renderItems(
-    referenceEntities: ReferenceEntity[],
+    assetFamilies: AssetFamily[],
     locale: string,
     isLoading: boolean,
-    onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => void
+    onRedirectToAssetFamily: (assetFamily: AssetFamily) => void
   ): JSX.Element | JSX.Element[] {
-    if (0 === referenceEntities.length && isLoading) {
-      const referenceEntityIdentifier = createIdentifier('');
+    if (0 === assetFamilies.length && isLoading) {
+      const assetFamilyIdentifier = createIdentifier('');
       const labelCollection = createLabelCollection({});
-      const referenceEntity = createReferenceEntity(
-        referenceEntityIdentifier,
+      const assetFamily = createAssetFamily(
+        assetFamilyIdentifier,
         labelCollection,
         createEmptyFile(),
         createAttributeIdentifier(''),
@@ -54,23 +54,23 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
           <ItemView
             key={`${attributeIdentifier}_${key}`}
             isLoading={isLoading}
-            referenceEntity={referenceEntity}
+            assetFamily={assetFamily}
             locale={locale}
-            onRedirectToReferenceEntity={() => {}}
+            onRedirectToAssetFamily={() => {}}
             position={key}
           />
         ));
     }
 
-    return referenceEntities.map((referenceEntity: ReferenceEntity, index: number) => {
+    return assetFamilies.map((assetFamily: AssetFamily, index: number) => {
       const itemPosition = index - this.state.nextItemToAddPosition;
 
       return (
         <ItemView
-          key={referenceEntity.getIdentifier().stringValue()}
-          referenceEntity={referenceEntity}
+          key={assetFamily.getIdentifier().stringValue()}
+          assetFamily={assetFamily}
           locale={locale}
-          onRedirectToReferenceEntity={onRedirectToReferenceEntity}
+          onRedirectToAssetFamily={onRedirectToAssetFamily}
           position={itemPosition > 0 ? itemPosition : 0}
         />
       );
@@ -78,12 +78,12 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {referenceEntities, locale, onRedirectToReferenceEntity, isLoading} = this.props;
+    const {assetFamilies, locale, onRedirectToAssetFamily, isLoading} = this.props;
 
     return (
       <div className="AknGrid">
         <div className="AknGrid-body">
-          {this.renderItems(referenceEntities, locale, isLoading, onRedirectToReferenceEntity)}
+          {this.renderItems(assetFamilies, locale, isLoading, onRedirectToAssetFamily)}
         </div>
       </div>
     );

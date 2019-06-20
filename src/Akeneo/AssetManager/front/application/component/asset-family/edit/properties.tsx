@@ -1,25 +1,25 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import Form from 'akeneoreferenceentity/application/component/reference-entity/edit/form';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import Form from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
-  referenceEntityLabelUpdated,
-  saveReferenceEntity,
-  referenceEntityImageUpdated,
-} from 'akeneoreferenceentity/application/action/reference-entity/edit';
-import {deleteReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/delete';
-import __ from 'akeneoreferenceentity/tools/translator';
-import {EditionFormState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import File from 'akeneoreferenceentity/domain/model/file';
+  assetFamilyLabelUpdated,
+  saveAssetFamily,
+  assetFamilyImageUpdated,
+} from 'akeneoassetmanager/application/action/asset-family/edit';
+import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-family/delete';
+import __ from 'akeneoassetmanager/tools/translator';
+import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
+import AssetFamily, {
+  denormalizeAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
+import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import File from 'akeneoassetmanager/domain/model/file';
 const securityContext = require('pim/security-context');
-import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
-import {canEditLocale, canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
+import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
+import {canEditLocale, canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 
 interface StateProps {
   form: EditionFormState;
@@ -30,7 +30,7 @@ interface StateProps {
     locale: {
       edit: boolean;
     };
-    referenceEntity: {
+    assetFamily: {
       edit: boolean;
       delete: boolean;
     };
@@ -47,7 +47,7 @@ interface DispatchProps {
       onSubmit: () => void;
       onImageUpdated: (image: File) => void;
     };
-    onDelete: (referenceEntity: ReferenceEntity) => void;
+    onDelete: (assetFamily: AssetFamily) => void;
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
     onSaveEditForm: () => void;
@@ -69,7 +69,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
               className="AknDropdown-menuLink"
               onClick={() => this.props.events.onOpenDeleteModal()}
             >
-              {__('pim_reference_entity.reference_entity.module.delete.button')}
+              {__('pim_asset_manager.asset_family.module.delete.button')}
             </button>
           </div>
         </div>
@@ -78,37 +78,37 @@ class Properties extends React.Component<StateProps & DispatchProps> {
   };
 
   render() {
-    const referenceEntity = denormalizeReferenceEntity(this.props.form.data);
-    const label = referenceEntity.getLabel(this.props.context.locale);
+    const assetFamily = denormalizeAssetFamily(this.props.form.data);
+    const label = assetFamily.getLabel(this.props.context.locale);
 
     return (
       <React.Fragment>
         <Header
-          label={referenceEntity.getLabel(this.props.context.locale)}
-          image={referenceEntity.getImage()}
+          label={assetFamily.getLabel(this.props.context.locale)}
+          image={assetFamily.getImage()}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.referenceEntity.edit ? (
+            return this.props.rights.assetFamily.edit ? (
               <button
                 className="AknButton AknButton--apply"
                 onClick={this.props.events.onSaveEditForm}
                 ref={defaultFocus}
               >
-                {__('pim_reference_entity.reference_entity.button.save')}
+                {__('pim_asset_manager.asset_family.button.save')}
               </button>
             ) : null;
           }}
           secondaryActions={() => {
-            return this.props.rights.referenceEntity.delete ? this.getSecondaryActions() : null;
+            return this.props.rights.assetFamily.delete ? this.getSecondaryActions() : null;
           }}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={this.props.form.state.isDirty}
           breadcrumbConfiguration={breadcrumbConfiguration}
-          displayActions={this.props.rights.referenceEntity.edit}
+          displayActions={this.props.rights.assetFamily.edit}
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title">
-            <span className="group-label">{__('pim_reference_entity.reference_entity.properties.title')}</span>
+            <span className="group-label">{__('pim_asset_manager.asset_family.properties.title')}</span>
           </header>
           <div className="AknFormContainer AknFormContainer--withPadding">
             <Form
@@ -124,10 +124,10 @@ class Properties extends React.Component<StateProps & DispatchProps> {
         </div>
         {this.props.confirmDelete.isActive && (
           <DeleteModal
-            message={__('pim_reference_entity.reference_entity.delete.message', {referenceEntityLabel: label})}
-            title={__('pim_reference_entity.reference_entity.delete.title')}
+            message={__('pim_asset_manager.asset_family.delete.message', {assetFamilyLabel: label})}
+            title={__('pim_asset_manager.asset_family.delete.title')}
             onConfirm={() => {
-              this.props.events.onDelete(referenceEntity);
+              this.props.events.onDelete(assetFamily);
             }}
             onCancel={this.props.events.onCancelDeleteModal}
           />
@@ -150,14 +150,14 @@ export default connect(
         locale: {
           edit: canEditLocale(state.right.locale, locale),
         },
-        referenceEntity: {
+        assetFamily: {
           edit:
-            securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
-            securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_family_delete') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
       confirmDelete: state.confirmDelete,
@@ -168,17 +168,17 @@ export default connect(
       events: {
         form: {
           onLabelUpdated: (value: string, locale: string) => {
-            dispatch(referenceEntityLabelUpdated(value, locale));
+            dispatch(assetFamilyLabelUpdated(value, locale));
           },
           onSubmit: () => {
-            dispatch(saveReferenceEntity());
+            dispatch(saveAssetFamily());
           },
           onImageUpdated: (image: File) => {
-            dispatch(referenceEntityImageUpdated(image));
+            dispatch(assetFamilyImageUpdated(image));
           },
         },
-        onDelete: (referenceEntity: ReferenceEntity) => {
-          dispatch(deleteReferenceEntity(referenceEntity));
+        onDelete: (assetFamily: AssetFamily) => {
+          dispatch(deleteAssetFamily(assetFamily));
         },
         onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
@@ -187,7 +187,7 @@ export default connect(
           dispatch(openDeleteModal());
         },
         onSaveEditForm: () => {
-          dispatch(saveReferenceEntity());
+          dispatch(saveAssetFamily());
         },
       },
     };

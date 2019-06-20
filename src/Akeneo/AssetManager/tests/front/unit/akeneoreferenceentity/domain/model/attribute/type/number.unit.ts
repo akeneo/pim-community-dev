@@ -1,16 +1,16 @@
-import {ConcreteNumberAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/number';
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {MinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
-import {DecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
+import {ConcreteNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  createIdentifier as createAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {MinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
+import {DecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
 
 const normalizedArea = {
   identifier: 'area_city_fingerprint',
-  reference_entity_identifier: 'city',
+  asset_family_identifier: 'city',
   code: 'area',
   labels: {en_US: 'Area'},
   type: 'number',
@@ -32,7 +32,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
     expect(() => {
       new ConcreteNumberAttribute(
         createIdentifier('designer', 'age'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('age'),
         createLabelCollection({en_US: 'Age'}),
         false,
@@ -49,7 +49,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
     expect(() => {
       new ConcreteNumberAttribute(
         createIdentifier('designer', 'age'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('age'),
         createLabelCollection({en_US: 'Age'}),
         false,
@@ -67,7 +67,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
     expect(() => {
       new ConcreteNumberAttribute(
         createIdentifier('designer', 'age'),
-        createReferenceEntityIdentifier('designer'),
+        createAssetFamilyIdentifier('designer'),
         createCode('age'),
         createLabelCollection({en_US: 'Age'}),
         false,

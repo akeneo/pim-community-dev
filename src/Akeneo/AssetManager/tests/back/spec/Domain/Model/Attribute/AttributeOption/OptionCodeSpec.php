@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
 use PhpSpec\ObjectBehavior;
 
 class OptionCodeSpec extends ObjectBehavior

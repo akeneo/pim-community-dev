@@ -1,29 +1,29 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 const router = require('pim/router');
 
 const NoAttribute = ({
   onRedirectAttributeCreation,
-  referenceEntityLabel,
+  assetFamilyLabel,
 }: {
   onRedirectAttributeCreation: () => void;
-  referenceEntityLabel: string;
+  assetFamilyLabel: string;
 }) => {
   const createAttributePath = `#${router.generate(`pim_enrich_attribute_create`)}`;
 
   return (
     <div className="AknGridContainer-noData">
-      <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--reference-entity" />
+      <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--asset-family" />
       <div className="AknGridContainer-noDataTitle">
-        {__('pim_reference_entity.record.product.no_attribute.title', {
-          entityLabel: referenceEntityLabel,
+        {__('pim_asset_manager.asset.product.no_attribute.title', {
+          entityLabel: assetFamilyLabel,
         })}
       </div>
       <div className="AknGridContainer-noDataSubtitle">
-        {__('pim_reference_entity.record.product.no_attribute.subtitle')}
+        {__('pim_asset_manager.asset.product.no_attribute.subtitle')}
         <a
           href={createAttributePath}
-          title={__('pim_reference_entity.record.product.no_attribute.link')}
+          title={__('pim_asset_manager.asset.product.no_attribute.link')}
           onClick={event => {
             event.preventDefault();
 
@@ -32,7 +32,7 @@ const NoAttribute = ({
             return false;
           }}
         >
-          {__('pim_reference_entity.record.product.no_attribute.link')}
+          {__('pim_asset_manager.asset.product.no_attribute.link')}
         </a>
       </div>
     </div>

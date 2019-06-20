@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
@@ -25,7 +25,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlRecordExists implements RecordExistsInterface
+class SqlAssetExists implements AssetExistsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -35,34 +35,34 @@ class SqlRecordExists implements RecordExistsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withIdentifier(RecordIdentifier $recordIdentifier): bool
+    public function withIdentifier(AssetIdentifier $assetIdentifier): bool
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_reference_entity_record
+            FROM akeneo_asset_manager_asset
             WHERE identifier = :identifier
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => (string) $recordIdentifier
+            'identifier' => (string) $assetIdentifier
         ]);
 
         return $this->isIdentifierExisting($statement);
     }
 
-    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): bool
+    public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): bool
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_reference_entity_record
-            WHERE reference_entity_identifier = :referenceEntityIdentifier
+            FROM akeneo_asset_manager_asset
+            WHERE asset_family_identifier = :assetFamilyIdentifier
             AND code = :code
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+            'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
             'code' => (string) $code
         ]);
 

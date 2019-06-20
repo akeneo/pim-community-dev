@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "GET",
-        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
         "query": {
-            "referenceEntityIdentifier": "brand",
+            "assetFamilyIdentifier": "brand",
             "search_after": "brand_3"
         }
     },
@@ -12,13 +12,13 @@
         "body": {
             "_links": {
                 "self": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_3"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search_after=brand_3"
                 },
                 "first": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets"
                 },
                 "next": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_6"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search_after=brand_6"
                 }
             },
             "_embedded": {
@@ -26,7 +26,7 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_4"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_4"
                             }
                         },
                         "code": "brand_4",
@@ -59,7 +59,7 @@
                                     "data": "test/brand_4_image.jpg",
                                     "_links": {
                                         "download": {
-                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_4_image.jpg"
+                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_4_image.jpg"
                                         }
                                     }
                                 }
@@ -69,7 +69,7 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_5"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_5"
                             }
                         },
                         "code": "brand_5",
@@ -102,7 +102,7 @@
                                     "data": "test/brand_5_image.jpg",
                                     "_links": {
                                         "download": {
-                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_5_image.jpg"
+                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_5_image.jpg"
                                         }
                                     }
                                 }
@@ -112,7 +112,7 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_6"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_6"
                             }
                         },
                         "code": "brand_6",
@@ -145,7 +145,7 @@
                                     "data": "test/brand_6_image.jpg",
                                     "_links": {
                                         "download": {
-                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_6_image.jpg"
+                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_6_image.jpg"
                                         }
                                     }
                                 }

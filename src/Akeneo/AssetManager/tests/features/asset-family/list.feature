@@ -1,20 +1,20 @@
-Feature: List reference entities
-  In order to see what reference entities I have
+Feature: List asset families
+  In order to see what asset families I have
   As a user
-  I want see a list of reference entities
+  I want see a list of asset families
 
   @acceptance-front
-  Scenario: List existing reference entities
-    Given the following reference entities to list:
+  Scenario: List existing asset families
+    Given the following asset families to list:
       | identifier |
       | designer   |
       | sofa       |
-    When the user asks for the reference entity list
+    When the user asks for the asset family list
     Then the user gets a selection of 2 items out of 2 items in total
-    And the user gets a reference entity "designer"
-    And the user gets a reference entity "sofa"
+    And the user gets an asset family "designer"
+    And the user gets an asset family "sofa"
 
   @acceptance-front
-  Scenario: Shows an empty list if there is no reference entity
-    When the user asks for the reference entity list
-    Then there is no reference entity
+  Scenario: Shows an empty list if there is no asset family
+    When the user asks for the asset family list
+    Then there is no asset family

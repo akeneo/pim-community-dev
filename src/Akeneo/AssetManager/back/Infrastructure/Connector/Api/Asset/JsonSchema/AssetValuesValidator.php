@@ -11,57 +11,57 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
- * Validate the record values grouped by attribute type.
+ * Validate the asset values grouped by attribute type.
  * It's more efficient than validate the values one by one.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordValuesValidator
+class AssetValuesValidator
 {
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
 
-    /** @var RecordValueValidatorRegistry */
-    private $recordValueValidatorRegistry;
+    /** @var AssetValueValidatorRegistry */
+    private $assetValueValidatorRegistry;
 
     public function __construct(
-        RecordValueValidatorRegistry $recordValueValidatorRegistry,
+        AssetValueValidatorRegistry $assetValueValidatorRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
-        $this->recordValueValidatorRegistry = $recordValueValidatorRegistry;
+        $this->assetValueValidatorRegistry = $assetValueValidatorRegistry;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
     }
 
-    public function validate(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): array
+    public function validate(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): array
     {
-        $recordValues = $normalizedRecord['values'];
-        $attributeCodesIndexedByTypes = $this->getAttributeCodesIndexedByType($referenceEntityIdentifier);
+        $assetValues = $normalizedAsset['values'];
+        $attributeCodesIndexedByTypes = $this->getAttributeCodesIndexedByType($assetFamilyIdentifier);
         $errors = [];
 
         foreach ($attributeCodesIndexedByTypes as $attributeType => $attributeCodes) {
-            $recordValuesByType = array_intersect_key($recordValues, array_flip($attributeCodes));
+            $assetValuesByType = array_intersect_key($assetValues, array_flip($attributeCodes));
 
-            if (!empty($recordValuesByType)) {
-                $recordValueValidator = $this->recordValueValidatorRegistry->getValidator($attributeType);
-                $normalizedRecordWithFilteredValues = array_replace($normalizedRecord, ['values' => $recordValuesByType]);
-                $errors = array_merge($errors, $recordValueValidator->validate($normalizedRecordWithFilteredValues));
+            if (!empty($assetValuesByType)) {
+                $assetValueValidator = $this->assetValueValidatorRegistry->getValidator($attributeType);
+                $normalizedAssetWithFilteredValues = array_replace($normalizedAsset, ['values' => $assetValuesByType]);
+                $errors = array_merge($errors, $assetValueValidator->validate($normalizedAssetWithFilteredValues));
             }
         }
 
         return $errors;
     }
 
-    private function getAttributeCodesIndexedByType(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function getAttributeCodesIndexedByType(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        $attributes = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
+        $attributes = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
         $attributeCodesIndexedByTypes = [];
 
         foreach ($attributes as $attribute) {

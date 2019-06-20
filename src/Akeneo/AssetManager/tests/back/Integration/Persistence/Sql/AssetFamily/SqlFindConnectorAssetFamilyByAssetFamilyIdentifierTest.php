@@ -11,89 +11,89 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyByAssetFamilyIdentifierInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
-class SqlFindConnectorReferenceEntityByReferenceEntityIdentifierTest extends SqlIntegrationTestCase
+class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
-    /** @var FindConnectorReferenceEntityByReferenceEntityIdentifierInterface*/
-    private $findConnectorReferenceEntityQuery;
+    /** @var FindConnectorAssetFamilyByAssetFamilyIdentifierInterface*/
+    private $findConnectorAssetFamilyQuery;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $this->findConnectorReferenceEntityQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier');
+        $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $this->findConnectorAssetFamilyQuery = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_by_asset_family_identifier');
         $this->resetDB();
     }
 
     /**
      * @test
      */
-    public function it_finds_a_connector_reference_entity()
+    public function it_finds_a_connector_asset_family()
     {
-        $referenceEntity = $this->createDesignerReferenceEntity();
+        $assetFamily = $this->createDesignerAssetFamily();
 
-        $expectedReferenceEntity = new ConnectorReferenceEntity(
-            $referenceEntity->getIdentifier(),
+        $expectedAssetFamily = new ConnectorAssetFamily(
+            $assetFamily->getIdentifier(),
             LabelCollection::fromArray(['en_US' => 'designer', 'fr_FR' => 'designer']),
             Image::createEmpty()
         );
 
-        $referenceEntityFound = $this->findConnectorReferenceEntityQuery->find(ReferenceEntityIdentifier::fromString('designer'));
+        $assetFamilyFound = $this->findConnectorAssetFamilyQuery->find(AssetFamilyIdentifier::fromString('designer'));
 
-        $expectedReferenceEntity = $expectedReferenceEntity->normalize();
-        $foundReferenceEntity = $referenceEntityFound->normalize();
+        $expectedAssetFamily = $expectedAssetFamily->normalize();
+        $foundAssetFamily = $assetFamilyFound->normalize();
 
-        $this->assertSame($expectedReferenceEntity, $foundReferenceEntity);
+        $this->assertSame($expectedAssetFamily, $foundAssetFamily);
     }
 
     /**
      * @test
      */
-    public function it_returns_null_if_no_reference_entity_found()
+    public function it_returns_null_if_no_asset_family_found()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('whatever');
-        $referenceEntityFound = $this->findConnectorReferenceEntityQuery->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('whatever');
+        $assetFamilyFound = $this->findConnectorAssetFamilyQuery->find($assetFamilyIdentifier);
 
-        $this->assertNull($referenceEntityFound);
+        $this->assertNull($assetFamilyFound);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function createDesignerReferenceEntity(): ReferenceEntity
+    private function createDesignerAssetFamily(): AssetFamily
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
         $imageInfo = new FileInfo();
         $imageInfo
             ->setOriginalFilename('image_2.jpg')
             ->setKey('test/image_2.jpg');
 
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
             ['en_US' => 'designer', 'fr_FR' => 'designer'],
             Image::fromFileInfo($imageInfo)
         );
 
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
 
-        return $referenceEntity;
+        return $assetFamily;
     }
 }

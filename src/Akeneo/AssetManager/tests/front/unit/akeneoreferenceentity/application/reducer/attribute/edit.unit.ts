@@ -1,9 +1,9 @@
-import {editReducer} from 'akeneoreferenceentity/application/reducer/attribute/edit';
-import {ValidationRuleOption} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
+import {editReducer} from 'akeneoassetmanager/application/reducer/attribute/edit';
+import {ValidationRuleOption} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
 
 const normalizedDescription = {
   identifier: 'description_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -23,7 +23,7 @@ const modififerReducer = editReducer(() => state => {
   return {...state, michel: 'didier'};
 });
 
-describe('akeneo > reference entity > application > reducer > attribute --- edit', () => {
+describe('akeneo > asset family > application > reducer > attribute --- edit', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
@@ -42,7 +42,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- edit
       isActive: false,
       data: {
         identifier: '',
-        reference_entity_identifier: '',
+        asset_family_identifier: '',
         code: '',
         labels: {},
         type: 'text',

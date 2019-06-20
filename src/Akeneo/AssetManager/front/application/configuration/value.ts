@@ -1,8 +1,8 @@
-import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
-import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {Column, Filter} from 'akeneoreferenceentity/application/reducer/grid';
+import Value, {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Column, Filter} from 'akeneoassetmanager/application/reducer/grid';
 
 export class InvalidArgument extends Error {}
 
@@ -58,7 +58,7 @@ export const getDenormalizer = (config: ValueConfig) => (normalizedValue: Normal
   if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
     const expectedConfiguration = `config:
     config:
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             ${normalizedValue.attribute.type}:
                 denormalize: '@my_value_denormalizer'`;
 
@@ -96,7 +96,7 @@ export const getFieldView = (config: ValueConfig) => (value: Value): ViewGenerat
   if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
     const expectedConfiguration = `config:
     config:
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             ${attributeType}:
                 view: '@my_data_view'`;
 
@@ -133,7 +133,7 @@ export const getCellView = (config: ValueConfig) => (attributeType: string): Cel
   if (undefined === typeConfiguration || undefined === typeConfiguration.cell) {
     const expectedConfiguration = `config:
     config:
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             ${attributeType}:
                 cell: '@my_data_cell_view'`;
 
@@ -168,7 +168,7 @@ export const getFilterView = (config: ValueConfig) => (attributeType: string): F
   if (undefined === typeConfiguration || undefined === typeConfiguration.filter) {
     const expectedConfiguration = `config:
     config:
-        akeneoreferenceentity/application/configuration/value:
+        akeneoassetmanager/application/configuration/value:
             ${attributeType}:
                 filter: '@my_data_filter_view'`;
 

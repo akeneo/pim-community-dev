@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import Select2 from 'akeneoreferenceentity/application/component/app/select2';
-import {OptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
-import OptionData, {denormalize as denormalizeOptionData} from 'akeneoreferenceentity/domain/model/record/data/option';
-import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import __ from 'akeneoreferenceentity/tools/translator';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import OptionData, {denormalize as denormalizeOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
+import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import __ from 'akeneoassetmanager/tools/translator';
 
 const View = ({
   value,
@@ -37,7 +37,7 @@ const View = ({
   return (
     <div className="option-selector-container">
       <Select2
-        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
         className="AknSelectField"
         data={availableOptions}
         value={data.stringValue()}
@@ -45,7 +45,7 @@ const View = ({
         readOnly={!canEditData}
         configuration={{
           allowClear: true,
-          placeholder: __('pim_reference_entity.attribute.options.no_value'),
+          placeholder: __('pim_asset_manager.attribute.options.no_value'),
         }}
         onChange={(optionCode: string) => {
           const newData = denormalizeOptionData(optionCode, attribute);

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
@@ -23,7 +23,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlReferenceEntityExists implements ReferenceEntityExistsInterface
+class SqlAssetFamilyExists implements AssetFamilyExistsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -33,23 +33,23 @@ class SqlReferenceEntityExists implements ReferenceEntityExistsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): bool
+    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): bool
     {
-        $statement = $this->executeQuery($referenceEntityIdentifier);
+        $statement = $this->executeQuery($assetFamilyIdentifier);
 
         return $this->isIdentifierExisting($statement);
     }
 
-    private function executeQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): Statement
+    private function executeQuery(AssetFamilyIdentifier $assetFamilyIdentifier): Statement
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_reference_entity_reference_entity
+            FROM akeneo_asset_manager_asset_family
             WHERE identifier = :identifier 
         ) as is_existing
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $referenceEntityIdentifier]);
+        $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $assetFamilyIdentifier]);
 
         return $statement;
     }

@@ -1,30 +1,30 @@
 import {
-  notifyReferenceEntityWellDeleted,
-  notifyReferenceEntityDeleteFailed,
-  notifyReferenceEntityDeletionErrorOccured,
-} from 'akeneoreferenceentity/application/action/reference-entity/notify';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import referenceEntityRemover from 'akeneoreferenceentity/infrastructure/remover/reference-entity';
-import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
-import {redirectToReferenceEntityListItem} from 'akeneoreferenceentity/application/action/reference-entity/router';
-import {closeDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+  notifyAssetFamilyWellDeleted,
+  notifyAssetFamilyDeleteFailed,
+  notifyAssetFamilyDeletionErrorOccured,
+} from 'akeneoassetmanager/application/action/asset-family/notify';
+import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import assetFamilyRemover from 'akeneoassetmanager/infrastructure/remover/asset-family';
+import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
+import {closeDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 
-export const deleteReferenceEntity = (referenceEntity: ReferenceEntity) => async (dispatch: any): Promise<void> => {
+export const deleteAssetFamily = (assetFamily: AssetFamily) => async (dispatch: any): Promise<void> => {
   try {
-    const errors = await referenceEntityRemover.remove(referenceEntity.getIdentifier());
+    const errors = await assetFamilyRemover.remove(assetFamily.getIdentifier());
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyReferenceEntityDeletionErrorOccured(validationErrors));
+      dispatch(notifyAssetFamilyDeletionErrorOccured(validationErrors));
 
       return;
     }
 
-    dispatch(notifyReferenceEntityWellDeleted());
-    dispatch(redirectToReferenceEntityListItem());
+    dispatch(notifyAssetFamilyWellDeleted());
+    dispatch(redirectToAssetFamilyListItem());
     dispatch(closeDeleteModal());
   } catch (error) {
-    dispatch(notifyReferenceEntityDeleteFailed());
+    dispatch(notifyAssetFamilyDeleteFailed());
 
     throw error;
   }

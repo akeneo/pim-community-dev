@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
+use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Delete an Reference Entity
+ * Delete an Asset Family
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
@@ -45,28 +45,28 @@ class DeleteAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var DeleteReferenceEntityHandler */
-    private $deleteReferenceEntityHandler;
+    /** @var DeleteAssetFamilyHandler */
+    private $deleteAssetFamilyHandler;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
         SecurityFacade $securityFacade,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
-        DeleteReferenceEntityHandler $deleteReferenceEntityHandler
+        DeleteAssetFamilyHandler $deleteAssetFamilyHandler
     ) {
         $this->securityFacade = $securityFacade;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
-        $this->deleteReferenceEntityHandler = $deleteReferenceEntityHandler;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->deleteAssetFamilyHandler = $deleteAssetFamilyHandler;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -90,28 +90,28 @@ class DeleteAction
         }
 
         try {
-            ($this->deleteReferenceEntityHandler)($command);
-        } catch (ReferenceEntityNotFoundException $e) {
+            ($this->deleteAssetFamilyHandler)($command);
+        } catch (AssetFamilyNotFoundException $e) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToDelete(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToDelete(string $assetFamilyIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery(
-            $referenceEntityIdentifier,
+        $query = new CanEditAssetFamilyQuery(
+            $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
 
-        return $this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_delete')
-            && ($this->canEditReferenceEntityQueryHandler)($query);
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_delete')
+            && ($this->canEditAssetFamilyQueryHandler)($query);
     }
 
-    private function getDeleteCommand(string $identifier): DeleteReferenceEntityCommand
+    private function getDeleteCommand(string $identifier): DeleteAssetFamilyCommand
     {
-        $command = new DeleteReferenceEntityCommand($identifier);
+        $command = new DeleteAssetFamilyCommand($identifier);
 
         return $command;
     }

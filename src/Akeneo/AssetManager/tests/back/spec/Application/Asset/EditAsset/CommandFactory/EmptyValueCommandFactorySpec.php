@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommandFactory;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommandFactory;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use PhpSpec\ObjectBehavior;
 
 class EmptyValueCommandFactorySpec extends ObjectBehavior

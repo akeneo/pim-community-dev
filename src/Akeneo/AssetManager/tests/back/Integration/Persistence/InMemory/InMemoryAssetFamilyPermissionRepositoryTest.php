@@ -2,52 +2,52 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityPermissionRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\RightLevel;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupPermission;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyPermissionRepository;
+use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
+use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PHPUnit\Framework\TestCase;
 
-class InMemoryReferenceEntityPermissionRepositoryTest extends TestCase
+class InMemoryAssetFamilyPermissionRepositoryTest extends TestCase
 {
-    /** @var InMemoryReferenceEntityPermissionRepository */
-    private $inMemoryReferenceEntityPermissionRepository;
+    /** @var InMemoryAssetFamilyPermissionRepository */
+    private $inMemoryAssetFamilyPermissionRepository;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->inMemoryReferenceEntityPermissionRepository = new InMemoryReferenceEntityPermissionRepository();
+        $this->inMemoryAssetFamilyPermissionRepository = new InMemoryAssetFamilyPermissionRepository();
     }
 
     /**
      * @test
      */
-    public function it_saves_a_reference_entity_permission()
+    public function it_saves_an_asset_family_permission()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
         $userGroupIdentifier = UserGroupIdentifier::fromInteger(12);
         $rightLevel = RightLevel::fromString('view');
-        $referenceEntityPermission = ReferenceEntityPermission::create(
-            $referenceEntityIdentifier,
+        $assetFamilyPermission = AssetFamilyPermission::create(
+            $assetFamilyIdentifier,
             [UserGroupPermission::create($userGroupIdentifier, $rightLevel)]
         );
 
-        $this->inMemoryReferenceEntityPermissionRepository->save($referenceEntityPermission);
+        $this->inMemoryAssetFamilyPermissionRepository->save($assetFamilyPermission);
 
-        $this->assertTrue($this->inMemoryReferenceEntityPermissionRepository->hasPermission(
-            $referenceEntityIdentifier,
+        $this->assertTrue($this->inMemoryAssetFamilyPermissionRepository->hasPermission(
+            $assetFamilyIdentifier,
             $userGroupIdentifier,
             $rightLevel
         ));
 
-        $this->assertFalse($this->inMemoryReferenceEntityPermissionRepository->hasPermission(
-            $referenceEntityIdentifier,
+        $this->assertFalse($this->inMemoryAssetFamilyPermissionRepository->hasPermission(
+            $assetFamilyIdentifier,
             $userGroupIdentifier,
             RightLevel::fromString('edit')
         ));
@@ -56,29 +56,29 @@ class InMemoryReferenceEntityPermissionRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_reference_entity()
+    public function it_returns_the_asset_family()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $expectedReferenceEntityPermission = ReferenceEntityPermission::create(
-            $referenceEntityIdentifier,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $expectedAssetFamilyPermission = AssetFamilyPermission::create(
+            $assetFamilyIdentifier,
             [UserGroupPermission::create(UserGroupIdentifier::fromInteger(12), RightLevel::fromString('view'))]
         );
-        $this->inMemoryReferenceEntityPermissionRepository->save($expectedReferenceEntityPermission);
+        $this->inMemoryAssetFamilyPermissionRepository->save($expectedAssetFamilyPermission);
 
-        $actualReferenceEntityPermission = $this->inMemoryReferenceEntityPermissionRepository->getByReferenceEntityIdentifier($referenceEntityIdentifier);
+        $actualAssetFamilyPermission = $this->inMemoryAssetFamilyPermissionRepository->getByAssetFamilyIdentifier($assetFamilyIdentifier);
 
-        $this->assertEquals($expectedReferenceEntityPermission, $actualReferenceEntityPermission);
+        $this->assertEquals($expectedAssetFamilyPermission, $actualAssetFamilyPermission);
     }
 
     /**
      * @test
      */
-    public function it_returns_an_empty_reference_entity_permission_if_it_has_none()
+    public function it_returns_an_empty_asset_family_permission_if_it_has_none()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $actualReferenceEntityPermission = $this->inMemoryReferenceEntityPermissionRepository->getByReferenceEntityIdentifier($referenceEntityIdentifier);
-        $expectedReferenceEntityPermission = ReferenceEntityPermission::create($referenceEntityIdentifier, []);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $actualAssetFamilyPermission = $this->inMemoryAssetFamilyPermissionRepository->getByAssetFamilyIdentifier($assetFamilyIdentifier);
+        $expectedAssetFamilyPermission = AssetFamilyPermission::create($assetFamilyIdentifier, []);
 
-        $this->assertEquals($expectedReferenceEntityPermission->normalize(), $actualReferenceEntityPermission->normalize());
+        $this->assertEquals($expectedAssetFamilyPermission->normalize(), $actualAssetFamilyPermission->normalize());
     }
 }

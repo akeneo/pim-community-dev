@@ -1,16 +1,16 @@
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  createIdentifier as createAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {
   Attribute,
   ConcreteAttribute,
   NormalizedAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import OptionCode from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
+} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
 export interface NormalizedOptionAttribute extends NormalizedAttribute {
   type: 'option';
@@ -35,7 +35,7 @@ export class InvalidArgumentError extends Error {}
 export class ConcreteOptionAttribute extends ConcreteAttribute implements OptionAttribute {
   private constructor(
     identifier: Identifier,
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
     valuePerChannel: boolean,
@@ -46,7 +46,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
   ) {
     super(
       identifier,
-      referenceEntityIdentifier,
+      assetFamilyIdentifier,
       code,
       labelCollection,
       'option',
@@ -68,7 +68,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
   public static createFromNormalized(normalizedOptionAttribute: NormalizedOptionAttribute) {
     return new ConcreteOptionAttribute(
       createIdentifier(normalizedOptionAttribute.identifier),
-      createReferenceEntityIdentifier(normalizedOptionAttribute.reference_entity_identifier),
+      createAssetFamilyIdentifier(normalizedOptionAttribute.asset_family_identifier),
       createCode(normalizedOptionAttribute.code),
       createLabelCollection(normalizedOptionAttribute.labels),
       normalizedOptionAttribute.value_per_channel,
@@ -94,7 +94,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
   public setOptions(options: Option[]) {
     return new ConcreteOptionAttribute(
       this.identifier,
-      this.referenceEntityIdentifier,
+      this.assetFamilyIdentifier,
       this.code,
       this.labelCollection,
       this.valuePerChannel,

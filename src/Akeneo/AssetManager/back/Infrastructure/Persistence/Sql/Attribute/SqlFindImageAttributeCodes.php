@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindImageAttributeCodesInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -45,19 +45,19 @@ class SqlFindImageAttributeCodes implements FindImageAttributeCodesInterface
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $sqlQuery = <<<SQL
             SELECT code
-            FROM akeneo_reference_entity_attribute
-            WHERE reference_entity_identifier = :reference_entity_identifier
+            FROM akeneo_asset_manager_attribute
+            WHERE asset_family_identifier = :asset_family_identifier
               AND attribute_type = :attribute_type;
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
             $sqlQuery,
             [
-                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+                'asset_family_identifier' => (string) $assetFamilyIdentifier,
                 'attribute_type' => ImageAttribute::ATTRIBUTE_TYPE
             ]
         );

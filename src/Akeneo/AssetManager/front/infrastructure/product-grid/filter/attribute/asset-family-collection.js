@@ -30,7 +30,7 @@ define(
       choiceUrlParams: {},
       emptyChoice: false,
       resultsPerPage: 20,
-      referenceEntityIdentifier: null,
+      assetFamilyIdentifier: null,
       events: {
         'click .AknDropdown-menuLink': '_onSelectOperator'
       },
@@ -89,7 +89,7 @@ define(
             type: 'PUT',
             params: {contentType: 'application/json;charset=utf-8'},
             data: (term, page) => {
-              const selectedRecords = [];
+              const selectedAssets = [];
               const searchQuery = {
                 channel: UserContext.get('catalogScope'),
                 locale: UserContext.get('catalogLocale'),
@@ -97,9 +97,9 @@ define(
                 page: page - 1,
                 filters: [
                   {
-                    field: 'reference_entity',
+                    field: 'asset_family',
                     operator: '=',
-                    value: this.choiceUrlParams.referenceEntityIdentifier,
+                    value: this.choiceUrlParams.assetFamilyIdentifier,
                   },
                   {
                     field: 'code_label',
@@ -109,7 +109,7 @@ define(
                   {
                     field: 'code',
                     operator: 'NOT IN',
-                    value: selectedRecords,
+                    value: selectedAssets,
                   },
                 ],
               };
@@ -118,15 +118,15 @@ define(
             },
             results: (result) => {
               const items = result.items.map(
-                (normalizedRecord) => {
+                (normalizedAsset) => {
                   return {
-                    id: normalizedRecord.code,
+                    id: normalizedAsset.code,
                     text: i18n.getLabel(
-                      normalizedRecord.labels,
+                      normalizedAsset.labels,
                       UserContext.get('catalogLocale'),
-                      normalizedRecord.code
+                      normalizedAsset.code
                     ),
-                    original: normalizedRecord,
+                    original: normalizedAsset,
                   };
                 }
               );
@@ -213,9 +213,9 @@ define(
               page: 0,
               filters: [
                 {
-                  field: 'reference_entity',
+                  field: 'asset_family',
                   operator: '=',
-                  value: this.choiceUrlParams.referenceEntityIdentifier,
+                  value: this.choiceUrlParams.assetFamilyIdentifier,
                 },
                 {
                   field: 'code',
@@ -229,11 +229,11 @@ define(
           })(),
           success: (result) => {
             results = result.items.map(
-              (normalizedRecord) => {
+              (normalizedAsset) => {
                 return {
-                  id: normalizedRecord.code,
-                  text: i18n.getLabel(normalizedRecord.labels, UserContext.get('catalogLocale'), normalizedRecord.code),
-                  original: normalizedRecord,
+                  id: normalizedAsset.code,
+                  text: i18n.getLabel(normalizedAsset.labels, UserContext.get('catalogLocale'), normalizedAsset.code),
+                  original: normalizedAsset,
                 };
               }
             );

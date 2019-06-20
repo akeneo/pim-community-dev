@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -35,16 +35,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class EditReferenceEntityContext implements Context
+final class EditAssetFamilyContext implements Context
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
-    /** @var EditReferenceEntityHandler */
-    private $editReferenceEntityHandler;
+    /** @var EditAssetFamilyHandler */
+    private $editAssetFamilyHandler;
 
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -59,32 +59,32 @@ final class EditReferenceEntityContext implements Context
     private $activatedLocales;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        EditReferenceEntityHandler $editReferenceEntityHandler,
-        CreateReferenceEntityHandler $createReferenceEntityHandler,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        EditAssetFamilyHandler $editAssetFamilyHandler,
+        CreateAssetFamilyHandler $createAssetFamilyHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->editReferenceEntityHandler = $editReferenceEntityHandler;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->editAssetFamilyHandler = $editAssetFamilyHandler;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->activatedLocales = $activatedLocales;
     }
 
     /**
-     * @Given /^a reference entity$/
-     * @Given /^a reference entity "designer"$/
-     * @Given /^a valid reference entity$/
+     * @Given /^an asset family$/
+     * @Given /^an asset family "designer"$/
+     * @Given /^a valid asset family$/
      */
-    public function theFollowingReferenceEntity()
+    public function theFollowingAssetFamily()
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $createCommand = new CreateReferenceEntityCommand(
+        $createCommand = new CreateAssetFamilyCommand(
             'designer',
             [
                 'en_US' => 'Designer',
@@ -94,48 +94,48 @@ final class EditReferenceEntityContext implements Context
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
         }
 
-        ($this->createReferenceEntityHandler)($createCommand);
+        ($this->createAssetFamilyHandler)($createCommand);
     }
 
     /**
-     * @When /^the user updates the reference entity "([^"]*)" with:$/
+     * @When /^the user updates the asset family "([^"]*)" with:$/
      */
-    public function theUserUpdatesTheReferenceEntityWith(string $identifier, TableNode $updateTable)
+    public function theUserUpdatesTheAssetFamilyWith(string $identifier, TableNode $updateTable)
     {
         $updates = $updateTable->getRowsHash();
-        $command = new EditReferenceEntityCommand(
+        $command = new EditAssetFamilyCommand(
             $identifier,
             json_decode($updates['labels'], true),
             null
         );
-        ($this->editReferenceEntityHandler)($command);
+        ($this->editAssetFamilyHandler)($command);
     }
 
     /**
-     * @Then /^the reference entity "([^"]*)" should be:$/
+     * @Then /^the asset family "([^"]*)" should be:$/
      */
-    public function theReferenceEntityShouldBe(string $identifier, TableNode $referenceEntityTable)
+    public function theAssetFamilyShouldBe(string $identifier, TableNode $assetFamilyTable)
     {
-        $expectedIdentifier = ReferenceEntityIdentifier::fromString($identifier);
-        $expectedInformation = current($referenceEntityTable->getHash());
-        $actualReferenceEntity = $this->referenceEntityRepository->getByIdentifier($expectedIdentifier);
+        $expectedIdentifier = AssetFamilyIdentifier::fromString($identifier);
+        $expectedInformation = current($assetFamilyTable->getHash());
+        $actualAssetFamily = $this->assetFamilyRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),
-            $actualReferenceEntity
+            $actualAssetFamily
         );
 
         if (key_exists('attribute_as_label', $expectedInformation)) {
             $expectedAttributeIdentifier = sprintf('%s_%s_%s',
                 $expectedInformation['attribute_as_label'],
-                $actualReferenceEntity->getIdentifier(),
-                md5(sprintf('%s_%s', $actualReferenceEntity->getIdentifier(), $expectedInformation['attribute_as_label']))
+                $actualAssetFamily->getIdentifier(),
+                md5(sprintf('%s_%s', $actualAssetFamily->getIdentifier(), $expectedInformation['attribute_as_label']))
             );
 
             Assert::assertTrue(
-                $actualReferenceEntity->getAttributeAsLabelReference()->getIdentifier()->equals(
+                $actualAssetFamily->getAttributeAsLabelReference()->getIdentifier()->equals(
                     AttributeIdentifier::fromString($expectedAttributeIdentifier)
                 )
             );
@@ -144,23 +144,23 @@ final class EditReferenceEntityContext implements Context
         if (key_exists('attribute_as_image', $expectedInformation)) {
             $expectedAttributeIdentifier = sprintf('%s_%s_%s',
                 $expectedInformation['attribute_as_image'],
-                $actualReferenceEntity->getIdentifier(),
-                md5(sprintf('%s_%s', $actualReferenceEntity->getIdentifier(), $expectedInformation['attribute_as_image']))
+                $actualAssetFamily->getIdentifier(),
+                md5(sprintf('%s_%s', $actualAssetFamily->getIdentifier(), $expectedInformation['attribute_as_image']))
             );
 
             Assert::assertTrue(
-                $actualReferenceEntity->getAttributeAsImageReference()->getIdentifier()->equals(
+                $actualAssetFamily->getAttributeAsImageReference()->getIdentifier()->equals(
                     AttributeIdentifier::fromString($expectedAttributeIdentifier)
                 )
             );
         }
     }
 
-    private function assertSameLabels(array $expectedLabels, ReferenceEntity $actualReferenceEntity)
+    private function assertSameLabels(array $expectedLabels, AssetFamily $actualAssetFamily)
     {
         $actualLabels = [];
-        foreach ($actualReferenceEntity->getLabelCodes() as $labelCode) {
-            $actualLabels[$labelCode] = $actualReferenceEntity->getLabel($labelCode);
+        foreach ($actualAssetFamily->getLabelCodes() as $labelCode) {
+            $actualLabels[$labelCode] = $actualAssetFamily->getLabel($labelCode);
         }
 
         $differences = array_merge(
@@ -175,37 +175,37 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^the reference entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^the asset family \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function theReferenceEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
+    public function theAssetFamilyWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
 
         $label = json_decode($label);
 
-        $createCommand = new CreateReferenceEntityCommand($identifier, [$localCode => $label]);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label]);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
         }
 
-        ($this->createReferenceEntityHandler)($createCommand);
+        ($this->createAssetFamilyHandler)($createCommand);
     }
 
     /**
-     * @Given /^an image on a reference entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     * @Given /^an image on an asset family \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
-    public function anImageOnAnReferenceEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
+    public function anImageOnAnAssetFamilyWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
-        $createCommand = new CreateReferenceEntityCommand($identifier, []);
+        $createCommand = new CreateAssetFamilyCommand($identifier, []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
         }
 
-        ($this->createReferenceEntityHandler)($createCommand);
+        ($this->createAssetFamilyHandler)($createCommand);
 
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
@@ -214,23 +214,23 @@ final class EditReferenceEntityContext implements Context
         $file->setKey($filePath);
         $file->setOriginalFilename($filename);
 
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier(
-            ReferenceEntityIdentifier::fromString($identifier)
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier(
+            AssetFamilyIdentifier::fromString($identifier)
         );
 
-        $referenceEntity->updateImage(Image::fromFileInfo($file));
-        $this->referenceEntityRepository->update($referenceEntity);
+        $assetFamily->updateImage(Image::fromFileInfo($file));
+        $this->assetFamilyRepository->update($assetFamily);
     }
 
     /**
-     * @When /^the user updates the image of the reference entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     * @When /^the user updates the image of the asset family \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
-    public function theUserUpdatesTheImageOfTheReferenceEntityWithPathAndFilename(string $identifier, string $filePath, string $filename): void
+    public function theUserUpdatesTheImageOfTheAssetFamilyWithPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
 
-        $editReferenceEntityCommand = new EditReferenceEntityCommand(
+        $editAssetFamilyCommand = new EditAssetFamilyCommand(
             $identifier,
             [],
             [
@@ -238,67 +238,67 @@ final class EditReferenceEntityContext implements Context
                 'originalFilename' => $filename
             ]
         );
-        $this->editReferenceEntity($editReferenceEntityCommand);
+        $this->editAssetFamily($editAssetFamilyCommand);
     }
 
     /**
-     * @When /^the user updates the reference entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @When /^the user updates the asset family \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function theUserUpdatesTheReferenceEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
+    public function theUserUpdatesTheAssetFamilyWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
         $label = json_decode($label);
 
-        $editReferenceEntityCommand = new EditReferenceEntityCommand(
+        $editAssetFamilyCommand = new EditAssetFamilyCommand(
             $identifier,
             [$localCode => $label],
             null
         );
-        $this->editReferenceEntity($editReferenceEntityCommand);
+        $this->editAssetFamily($editAssetFamilyCommand);
     }
 
     /**
-     * @When /^the user updates the reference entity \'([^\']*)\' with an empty image$/
+     * @When /^the user updates the asset family \'([^\']*)\' with an empty image$/
      */
-    public function theUserUpdatesTheReferenceEntityWithAnEmptyImage(string $identifier)
+    public function theUserUpdatesTheAssetFamilyWithAnEmptyImage(string $identifier)
     {
-        $editReferenceEntityCommand = new EditReferenceEntityCommand($identifier, [], null);
-        $this->editReferenceEntity($editReferenceEntityCommand);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null);
+        $this->editAssetFamily($editAssetFamilyCommand);
     }
 
     /**
-     * @Then /^the image of the reference entity \'([^\']*)\' should be \'([^\']*)\'$/
+     * @Then /^the image of the asset family \'([^\']*)\' should be \'([^\']*)\'$/
      */
-    public function theImageOfTheReferenceEntityShouldBe(string $identifier, string $filePath)
+    public function theImageOfTheAssetFamilyShouldBe(string $identifier, string $filePath)
     {
         $this->constraintViolationsContext->assertThereIsNoViolations();
 
         $filePath = json_decode($filePath);
 
-        $referenceEntity = $this->referenceEntityRepository
-            ->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
+        $assetFamily = $this->assetFamilyRepository
+            ->getByIdentifier(AssetFamilyIdentifier::fromString($identifier));
 
-        Assert::assertEquals($filePath, $referenceEntity->getImage()->getKey());
+        Assert::assertEquals($filePath, $assetFamily->getImage()->getKey());
     }
 
     /**
-     * @Then /^the reference entity \'([^\']*)\' should have an empty image$/
+     * @Then /^the asset family \'([^\']*)\' should have an empty image$/
      */
-    public function theReferenceEntityShouldHaveAnEmptyImage(string $identifier)
+    public function theAssetFamilyShouldHaveAnEmptyImage(string $identifier)
     {
         $this->constraintViolationsContext->assertThereIsNoViolations();
 
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString($identifier));
 
-        $referenceEntityImage = $referenceEntity->getImage();
-        Assert::assertTrue($referenceEntityImage->isEmpty());
+        $assetFamilyImage = $assetFamily->getImage();
+        Assert::assertTrue($assetFamilyImage->isEmpty());
     }
 
-    private function editReferenceEntity(EditReferenceEntityCommand $editReferenceEntityCommand): void
+    private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
     {
-        $this->constraintViolationsContext->addViolations($this->validator->validate($editReferenceEntityCommand));
+        $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));
 
         if (!$this->constraintViolationsContext->hasViolations()) {
-            ($this->editReferenceEntityHandler)($editReferenceEntityCommand);
+            ($this->editAssetFamilyHandler)($editAssetFamilyCommand);
         }
     }
 }

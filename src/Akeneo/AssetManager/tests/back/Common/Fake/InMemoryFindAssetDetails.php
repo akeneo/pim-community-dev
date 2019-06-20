@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindRecordDetails implements FindRecordDetailsInterface
+class InMemoryFindAssetDetails implements FindAssetDetailsInterface
 {
-    /** @var RecordDetails[] */
+    /** @var AssetDetails[] */
     private $results;
 
     public function __construct()
@@ -32,22 +32,22 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
         $this->results = [];
     }
 
-    public function save(RecordDetails $recordDetails)
+    public function save(AssetDetails $assetDetails)
     {
-        $normalized = $recordDetails->normalize();
-        $referenceEntityIdentifier = $normalized['reference_entity_identifier'];
+        $normalized = $assetDetails->normalize();
+        $assetFamilyIdentifier = $normalized['asset_family_identifier'];
         $code = $normalized['code'];
 
-        $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $code)] = $recordDetails;
+        $this->results[sprintf('%s____%s', $assetFamilyIdentifier, $code)] = $assetDetails;
     }
 
     /**
      * {@inheritdoc}
      */
     public function find(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $recordCode
-    ): ?RecordDetails {
-        return $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $recordCode)] ?? null;
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $assetCode
+    ): ?AssetDetails {
+        return $this->results[sprintf('%s____%s', $assetFamilyIdentifier, $assetCode)] ?? null;
     }
 }

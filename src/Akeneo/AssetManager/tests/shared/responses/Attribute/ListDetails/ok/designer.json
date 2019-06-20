@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_attribute_index_rest",
+    "route": "akeneo_asset_manager_attribute_index_rest",
     "query": {
-      "referenceEntityIdentifier": "designer"
+      "assetFamilyIdentifier": "designer"
     }
   },
   "response": {
@@ -12,7 +12,7 @@
       {
         "type": "text",
         "identifier": "name_designer_52609e00b7ee307e79eb100099b9a8bf",
-        "reference_entity_identifier": "designer",
+        "asset_family_identifier": "designer",
         "code": "name",
         "labels": {
           "en_US": "Name"
@@ -30,7 +30,7 @@
       {
         "type": "text",
         "identifier": "email_designer_52609e00b7ee307e79eb100099b9a8bf",
-        "reference_entity_identifier": "designer",
+        "asset_family_identifier": "designer",
         "code": "email",
         "labels": {
           "en_US": "Email"
@@ -48,7 +48,7 @@
       {
         "type": "image",
         "identifier": "portrait_designer_52609e00b7ee307e79eb100099b9a8bf",
-        "reference_entity_identifier": "designer",
+        "asset_family_identifier": "designer",
         "code": "portrait",
         "labels": {
           "en_US": "Portrait"
@@ -65,7 +65,7 @@
       {
         "type": "option",
         "identifier": "favorite_color_designer_52609e00b7ee307e79eb100099b9a8bf",
-        "reference_entity_identifier": "designer",
+        "asset_family_identifier": "designer",
         "code": "favorite_color",
         "labels": {
           "en_US": "Favorite color"
@@ -94,7 +94,7 @@
       {
         "type": "option_collection",
         "identifier": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
-        "reference_entity_identifier": "designer",
+        "asset_family_identifier": "designer",
         "code": "colors",
         "labels": {
           "en_US": "Colors"

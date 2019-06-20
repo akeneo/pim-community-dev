@@ -11,45 +11,45 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
-use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Common\Fake\EventDispatcherMock;
+use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\DBALException;
 
 class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
@@ -64,12 +64,12 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $this->eventDispatcherMock = $this->get('event_dispatcher');
         $this->eventDispatcherMock->reset();
 
         $this->resetDB();
-        $this->insertReferenceEntity();
+        $this->insertAssetFamily();
     }
 
     /**
@@ -77,14 +77,14 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_attribute_of_type_text_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('name');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
         $expectedAttribute = TextAttribute::createTextarea(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $attributeCode,
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(2),
@@ -106,14 +106,14 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_attribute_of_type_image_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('picture');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
         $expectedAttribute = ImageAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('picture'),
             LabelCollection::fromArray(['en_US' => 'Picture', 'fr_FR' => 'Image']),
             AttributeOrder::fromInteger(2),
@@ -133,23 +133,23 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_attribute_of_type_record_and_returns_it()
+    public function it_creates_an_attribute_of_type_asset_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('mentor');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
-        $expectedAttribute = RecordAttribute::create(
+        $expectedAttribute = AssetAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('mentor'),
             LabelCollection::fromArray(['en_US' => 'Mentor', 'fr_FR' => 'Mentor']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            $referenceEntityIdentifier
+            $assetFamilyIdentifier
         );
 
         $this->attributeRepository->create($expectedAttribute);
@@ -161,23 +161,23 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_attribute_of_type_record_collection_and_returns_it()
+    public function it_creates_an_attribute_of_type_asset_collection_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('brands');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
-        $expectedAttribute = RecordCollectionAttribute::create(
+        $expectedAttribute = AssetCollectionAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('brands'),
             LabelCollection::fromArray(['en_US' => 'Brands', 'fr_FR' => 'Marques']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('brand')
+            AssetFamilyIdentifier::fromString('brand')
         );
 
         $this->attributeRepository->create($expectedAttribute);
@@ -191,14 +191,14 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_attribute_of_type_option_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('favorite_color');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
         $expectedOption = OptionAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $attributeCode,
             LabelCollection::fromArray(['en_US' => 'Favorite Color', 'fr_FR' => 'Couleur favorite']),
             AttributeOrder::fromInteger(2),
@@ -222,14 +222,14 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_attribute_of_type_option_collection_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('colors');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
         $expectedOption = OptionCollectionAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('colors'),
             LabelCollection::fromArray(['en_US' => 'Colors', 'fr_FR' => 'Couleurs']),
             AttributeOrder::fromInteger(2),
@@ -253,12 +253,12 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_attribute_of_type_number_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, AttributeCode::fromString('number'));
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, AttributeCode::fromString('number'));
         $expectedNumber = NumberAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('number'),
             LabelCollection::fromArray(['en_US' => 'Colors', 'fr_FR' => 'Couleurs']),
             AttributeOrder::fromInteger(2),
@@ -281,12 +281,12 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_attribute_of_type_url_and_returns_it()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, AttributeCode::fromString('number'));
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, AttributeCode::fromString('number'));
         $expectedUrl = UrlAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('preview'),
             LabelCollection::fromArray(['en_US' => 'Preview', 'fr_FR' => 'Aperçu']),
             AttributeOrder::fromInteger(2),
@@ -309,10 +309,10 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_creating_an_attribute_with_the_same_identifier()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('name');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
         $attribute = $this->createAttributeWithIdentifier($identifier);
         $this->attributeRepository->create($attribute);
@@ -326,8 +326,8 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_if_the_identifier_is_not_found()
     {
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier(ReferenceEntityIdentifier::fromString('designer'), AttributeCode::fromString('bio'));
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier(AssetFamilyIdentifier::fromString('designer'), AttributeCode::fromString('bio'));
 
         $this->expectException(AttributeNotFoundException::class);
         $this->attributeRepository->getByIdentifier($identifier);
@@ -348,10 +348,10 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_deletes_an_attribute_by_its_identifier()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('name');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
         $textAttribute = $this->createAttributeWithIdentifier($identifier);
         $this->attributeRepository->create($textAttribute);
@@ -367,10 +367,10 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     public function it_updates_a_text_area_attribute()
     {
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $expectedAttribute = TextAttribute::createTextarea(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             AttributeOrder::fromInteger(2),
@@ -397,10 +397,10 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     public function it_updates_a_text_attribute()
     {
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $expectedAttribute = TextAttribute::createText(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(2),
@@ -426,17 +426,17 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_counts_all_reference_entity_attributes()
+    public function it_counts_all_asset_family_attributes()
     {
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $designerIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $this->assertEquals(2, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+        $this->assertEquals(2, $this->attributeRepository->countByAssetFamily($designerIdentifier));
 
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $expectedAttribute = TextAttribute::createText(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(2),
@@ -449,12 +449,12 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         );
         $this->attributeRepository->create($expectedAttribute);
 
-        $this->assertEquals(3, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+        $this->assertEquals(3, $this->attributeRepository->countByAssetFamily($designerIdentifier));
 
         $identifier = AttributeIdentifier::create('designer', 'name2', 'test');
         $expectedAttribute = TextAttribute::createText(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             AttributeCode::fromString('name2'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(3),
@@ -467,7 +467,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         );
         $this->attributeRepository->create($expectedAttribute);
 
-        $this->assertEquals(4, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+        $this->assertEquals(4, $this->attributeRepository->countByAssetFamily($designerIdentifier));
     }
 
     private function assertAttribute(
@@ -483,36 +483,36 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function insertReferenceEntity(): void
+    private function insertAssetFamily(): void
     {
-        $repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $repository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer'
             ],
             Image::createEmpty()
         );
-        $repository->create($referenceEntity);
+        $repository->create($assetFamily);
     }
 
     private function insertRowWithUnsupportedType(): AttributeIdentifier
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('age');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
 
         $sqlConnection = $this->get('database_connection');
         $query = <<<SQL
-        INSERT INTO akeneo_reference_entity_attribute (
+        INSERT INTO akeneo_asset_manager_attribute (
             identifier,
             code,
-            reference_entity_identifier,
+            asset_family_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -524,7 +524,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         VALUES (
             :identifier,
             :code,
-            :reference_entity_identifier,
+            :asset_family_identifier,
             :labels,
             :attribute_type,
             :attribute_order,
@@ -539,7 +539,7 @@ SQL;
             [
                 'identifier'                 => (string) $identifier,
                 'code'                       => (string) $attributeCode,
-                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+                'asset_family_identifier' => (string) $assetFamilyIdentifier,
                 'labels'                     => '{}',
                 'attribute_type'             => 'UNSUPPORTED_ATTRIBUTE_TYPE',
                 'attribute_order'            => 2,
@@ -559,7 +559,7 @@ SQL;
     {
         return TextAttribute::createText(
             $identifier,
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),

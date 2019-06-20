@@ -1,4 +1,4 @@
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 
 export const attributeCreationStart = () => {
   return {type: 'ATTRIBUTE_CREATION_START'};
@@ -16,8 +16,8 @@ export const attributeCreationTypeUpdated = (attributeType: string) => {
   return {type: 'ATTRIBUTE_CREATION_TYPE_UPDATED', attribute_type: attributeType};
 };
 
-export const attributeCreationRecordTypeUpdated = (recordType: string) => {
-  return {type: 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED', record_type: recordType};
+export const attributeCreationAssetTypeUpdated = (assetType: string) => {
+  return {type: 'ATTRIBUTE_CREATION_ASSET_TYPE_UPDATED', asset_type: assetType};
 };
 
 export const attributeCreationValuePerLocaleUpdated = (valuePerLocale: boolean) => {

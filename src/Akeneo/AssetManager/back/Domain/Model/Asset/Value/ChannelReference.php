@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 
 /**
  * A ChannelReference expresses a link to a channel.

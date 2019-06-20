@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "PATCH",
-        "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
+        "route": "akeneo_asset_manager_asset_family_attribute_rest_connector_create_or_update",
         "query": {
-            "referenceEntityIdentifier": "designer",
+            "assetFamilyIdentifier": "designer",
             "attributeCode": "birthdate"
         },
         "body": {
@@ -22,7 +22,7 @@
         "status": 204,
         "body": "",
         "headers": {
-            "location": "http://localhost/api/rest/v1/reference-entities/designer/attributes/birthdate"
+            "location": "http://localhost/api/rest/v1/asset-families/designer/attributes/birthdate"
         }
     }
 }

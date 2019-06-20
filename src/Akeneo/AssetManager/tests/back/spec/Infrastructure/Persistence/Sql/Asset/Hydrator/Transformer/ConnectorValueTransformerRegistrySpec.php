@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use PhpSpec\ObjectBehavior;
 
 class ConnectorValueTransformerRegistrySpec extends ObjectBehavior
@@ -47,11 +47,11 @@ class ConnectorValueTransformerRegistrySpec extends ObjectBehavior
     function it_should_throws_an_exception_if_no_transformer_supports_the_given_type(
         $textTransformer,
         $imageTransformer,
-        RecordAttribute $recordAttribute
+        AssetAttribute $assetAttribute
     ) {
-        $textTransformer->supports($recordAttribute)->willReturn(false);
-        $imageTransformer->supports($recordAttribute)->willReturn(false);
+        $textTransformer->supports($assetAttribute)->willReturn(false);
+        $imageTransformer->supports($assetAttribute)->willReturn(false);
 
-        $this->shouldThrow(\RuntimeException::class)->during('getTransformer', [$recordAttribute]);
+        $this->shouldThrow(\RuntimeException::class)->during('getTransformer', [$assetAttribute]);
     }
 }

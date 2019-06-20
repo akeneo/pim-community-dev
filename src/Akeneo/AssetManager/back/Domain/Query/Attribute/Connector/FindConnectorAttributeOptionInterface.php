@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector;
+namespace Akeneo\AssetManager\Domain\Query\Attribute\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 interface FindConnectorAttributeOptionInterface
 {
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $attributeOptionCode): ?ConnectorAttributeOption;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode, OptionCode $attributeOptionCode): ?ConnectorAttributeOption;
 }

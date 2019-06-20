@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -17,16 +17,16 @@ use Webmozart\Assert\Assert;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class DeleteReferenceEntityContext implements Context
+final class DeleteAssetFamilyContext implements Context
 {
-    /** @var ReferenceEntityRepositoryInterface  */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface  */
+    private $assetFamilyRepository;
 
-    /** @var DeleteReferenceEntityHandler */
-    private $deleteReferenceEntityHandler;
+    /** @var DeleteAssetFamilyHandler */
+    private $deleteAssetFamilyHandler;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -34,40 +34,40 @@ final class DeleteReferenceEntityContext implements Context
     private $constraintViolationsContext;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        DeleteReferenceEntityHandler $deleteReferenceEntityHandler,
-        ReferenceEntityExistsInterface $referenceEntityExists,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        DeleteAssetFamilyHandler $deleteAssetFamilyHandler,
+        AssetFamilyExistsInterface $assetFamilyExists,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->deleteReferenceEntityHandler = $deleteReferenceEntityHandler;
-        $this->referenceEntityExists = $referenceEntityExists;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->deleteAssetFamilyHandler = $deleteAssetFamilyHandler;
+        $this->assetFamilyExists = $assetFamilyExists;
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->validator = $validator;
     }
 
     /**
-     * @When /^the user deletes the reference entity "([^"]+)"$/
+     * @When /^the user deletes the asset family "([^"]+)"$/
      */
-    public function theUserDeletesReferenceEntity(string $identifier)
+    public function theUserDeletesAssetFamily(string $identifier)
     {
-        $command = new DeleteReferenceEntityCommand($identifier);
+        $command = new DeleteAssetFamilyCommand($identifier);
 
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
 
         if (!$this->constraintViolationsContext->hasViolations()) {
-            ($this->deleteReferenceEntityHandler)($command);
+            ($this->deleteAssetFamilyHandler)($command);
         }
     }
 
     /**
-     * @Then /^there should be no reference entity "([^"]+)"$/
+     * @Then /^there should be no asset family "([^"]+)"$/
      */
-    public function thereShouldBeNoReferenceEntity(string $identifier)
+    public function thereShouldBeNoAssetFamily(string $identifier)
     {
-        Assert::false($this->referenceEntityExists->withIdentifier(
-            ReferenceEntityIdentifier::fromString($identifier)
+        Assert::false($this->assetFamilyExists->withIdentifier(
+            AssetFamilyIdentifier::fromString($identifier)
         ));
     }
 }

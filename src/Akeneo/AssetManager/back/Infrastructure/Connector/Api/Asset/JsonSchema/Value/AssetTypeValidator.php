@@ -11,33 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorInterface;
 use JsonSchema\Validator;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordTypeValidator implements RecordValueValidatorInterface
+class AssetTypeValidator implements AssetValueValidatorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function validate(array $normalizedRecord): array
+    public function validate(array $normalizedAsset): array
     {
-        $record = Validator::arrayToObjectRecursive($normalizedRecord);
+        $asset = Validator::arrayToObjectRecursive($normalizedAsset);
         $validator = new Validator();
-        $validator->validate($record, $this->getJsonSchema());
+        $validator->validate($asset, $this->getJsonSchema());
 
         return $validator->getErrors();
     }
 
     public function forAttributeType(): string
     {
-        return RecordAttribute::class;
+        return AssetAttribute::class;
     }
 
     private function getJsonSchema(): array

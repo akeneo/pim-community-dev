@@ -1,11 +1,11 @@
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import * as React from 'react';
 
 const NoResult = ({
   entityLabel,
-  title = 'pim_reference_entity.record.no_result.title',
-  subtitle = 'pim_reference_entity.record.no_result.subtitle',
-  type = 'reference-entity',
+  title = 'pim_asset_manager.asset.no_result.title',
+  subtitle = 'pim_asset_manager.asset.no_result.subtitle',
+  type = 'asset-family',
 }: {
   entityLabel: string;
   title?: string;

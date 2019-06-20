@@ -11,42 +11,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 
 /**
  * Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryRecordExists implements RecordExistsInterface
+class InMemoryAssetExists implements AssetExistsInterface
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    public function __construct(InMemoryRecordRepository $recordRepository)
+    public function __construct(InMemoryAssetRepository $assetRepository)
     {
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
     }
 
-    public function withIdentifier(RecordIdentifier $recordIdentifier): bool
+    public function withIdentifier(AssetIdentifier $assetIdentifier): bool
     {
-        return $this->recordRepository->hasRecord($recordIdentifier);
+        return $this->assetRepository->hasAsset($assetIdentifier);
     }
 
-    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): bool
+    public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): bool
     {
-        $hasRecord = true;
+        $hasAsset = true;
         try {
-            $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $code);
-        } catch (RecordNotFoundException $exception) {
-            $hasRecord = false;
+            $this->assetRepository->getByAssetFamilyAndCode($assetFamilyIdentifier, $code);
+        } catch (AssetNotFoundException $exception) {
+            $hasAsset = false;
         }
 
-        return $hasRecord;
+        return $hasAsset;
     }
 }

@@ -1,8 +1,8 @@
 pim_title:
-  akeneo_reference_entities_reference_entity_index: Create a new entity
-  akeneo_reference_entities_reference_entity_edit: Edit a reference entity
-  akeneo_reference_entities_record_edit: Edit a record
-pim_reference_entity:
+  akeneo_asset_manager_asset_family_index: Create a new entity
+  akeneo_asset_manager_asset_family_edit: Edit an asset family
+  akeneo_asset_manager_asset_edit: Edit a asset
+pim_asset_manager:
   app:
     image:
       wide:
@@ -13,19 +13,19 @@ pim_reference_entity:
         remove: Remove
         download: Download
         upload: Drag and drop to upload
-  reference_entity:
+  asset_family:
     validation:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for this entity.'
-        limit_reached: 'You cannot create the reference entity "{{ %reference_entity_label% }}" because you have reached the limit of {{ %limit% }} reference entities'
+        limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
     button:
       save: Save
       create: Create
-    title: Entities
-    img: The main image of the reference entity named "{{ label }}"
+    title: Assets
+    img: The main image of the asset family named "{{ label }}"
     tab:
-      records: Records
+      assets: Assets
       attribute: Attributes
       properties: Properties
     properties:
@@ -34,7 +34,7 @@ pim_reference_entity:
       label: Label
       image: Image
     attribute:
-      title: Record attributes
+      title: Asset attributes
       attribute:
         error:
           render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
@@ -52,45 +52,45 @@ pim_reference_entity:
         code: Code (required)
       confirm: Save
     delete:
-      message: Are you sure you want to delete the entity "{{ referenceEntityLabel }}"?
+      message: Are you sure you want to delete the entity "{{ assetFamilyLabel }}"?
       title: Attribute
     notification:
       save:
-        success: Reference entity successfully updated.
-        fail: An error occured during the save of the reference entity
+        success: Asset family successfully updated.
+        fail: An error occured during the save of the asset family
       create:
-        success: Reference entity successfully created.
-        fail: An error occured during the creation of the reference entity
+        success: Asset family successfully created.
+        fail: An error occured during the creation of the asset family
       delete:
-        success: Reference entity successfully deleted.
-        fail: An error occured during the deletion of the reference entity
-  record:
+        success: Asset family successfully deleted.
+        fail: An error occured during the deletion of the asset family
+  asset:
     validation:
-      limit_reached: 'You cannot create the record "{{ %record_label% }}" because you have reached the limit of {{ %limit% }} records for this reference entity'
+      limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for this entity.'
     no_data:
-      title: There are no record for {{ entityLabel }}
-      subtitle: Click on the button "Add new" to create the first record
+      title: There are no asset for {{ entityLabel }}
+      subtitle: Click on the button "Add new" to create the first asset
     no_result:
       title: There are no result for your search
       subtitle: Try again with new search criteria.
     selector:
-      no_value: Click here to select a record.
+      no_value: Click here to select a asset.
     error:
       value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
     button:
       save: Save
       create: Add new
       delete: Delete
-      delete_all: Delete all records
+      delete_all: Delete all assets
       back: Back to list
     enrich:
-      title: Record attributes
+      title: Asset attributes
       code: Code
       label: Label
-    title: Records
+    title: Assets
     create:
       header:
         title: Create
@@ -100,9 +100,9 @@ pim_reference_entity:
         code: Code (required)
       confirm: Save
     delete:
-      title: Record
+      title: Asset
     delete_all:
-      confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
+      confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     grid:
       search: Search on label, code and text attributes
       column:
@@ -112,26 +112,26 @@ pim_reference_entity:
         action: Actions
       more_result:
         title: That's not it!
-        description: You just scrolled through the first 500 results out of {{ total }} records. To see more, try with more specific search criteria.
+        description: You just scrolled through the first 500 results out of {{ total }} assets. To see more, try with more specific search criteria.
     tab:
       enrich: Enrich
     notification:
       save:
-        success: Record successfully updated.
-        fail: An error occured during the save of the record
-        validation_error: The record could not be updated
+        success: Asset successfully updated.
+        fail: An error occured during the save of the asset
+        validation_error: The asset could not be updated
       create:
-        success: Record successfully created.
-        fail: An error occured during the creation of the record
+        success: Asset successfully created.
+        fail: An error occured during the creation of the asset
       delete:
-        success: Record "{{ code }}" successfully deleted.
-        fail: An error occured during the deletion of the record
+        success: Asset "{{ code }}" successfully deleted.
+        fail: An error occured during the deletion of the asset
       delete_all:
-        success: All "{{ entityIdentifier }}" records successfully deleted.
-        fail: An error occured during the deletion of all this reference entity's records
+        success: All "{{ entityIdentifier }}" assets successfully deleted.
+        fail: An error occured during the deletion of all this asset family's assets
   attribute:
     validation:
-      limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this reference entity'
+      limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
     default:
       code: Code
       label: Label
@@ -211,8 +211,8 @@ pim_enrich:
       property:
         section:
           type_specific: Type specific parameters
-        reference_entity:
-          default_label: Please select a reference entity
+        asset_family:
+          default_label: Please select an asset family
 pim_catalog_volume:
   axis:
-    count_reference_entity: Reference entities
+    count_asset_family: Reference entities

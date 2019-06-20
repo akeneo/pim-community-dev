@@ -1,4 +1,4 @@
-import RecordCode from 'akeneoreferenceentity/domain/model/code';
-export * from 'akeneoreferenceentity/domain/model/code';
+import AssetCode from 'akeneoassetmanager/domain/model/code';
+export * from 'akeneoassetmanager/domain/model/code';
 
-export default RecordCode;
+export default AssetCode;

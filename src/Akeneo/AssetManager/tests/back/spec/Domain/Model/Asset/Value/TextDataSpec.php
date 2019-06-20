@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record\Value;
+namespace spec\Akeneo\AssetManager\Domain\Model\Asset\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use PhpSpec\ObjectBehavior;
 
 /**

@@ -10,17 +10,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindExistingAssetCodesInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindExistingRecordCodes implements FindExistingRecordCodesInterface
+class SqlFindExistingAssetCodes implements FindExistingAssetCodesInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -30,18 +30,18 @@ class SqlFindExistingRecordCodes implements FindExistingRecordCodesInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array
     {
         $query = <<<SQL
         SELECT code
-        FROM akeneo_reference_entity_record
-        WHERE reference_entity_identifier = :referenceEntityIdentifier
+        FROM akeneo_asset_manager_asset
+        WHERE asset_family_identifier = :assetFamilyIdentifier
         AND FIND_IN_SET(code, :codes)
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($query, [
-            'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
-            'codes' => implode(',', $recordCodes)
+            'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
+            'codes' => implode(',', $assetCodes)
         ]);
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);

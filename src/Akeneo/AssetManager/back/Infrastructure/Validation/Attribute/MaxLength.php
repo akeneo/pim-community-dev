@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,5 +21,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class MaxLength extends Constraint
 {
-    public const MESSAGE_SHOULD_BE_AN_INTEGER = 'pim_reference_entity.attribute.validation.max_length.should_be_an_integer';
+    public const MESSAGE_SHOULD_BE_AN_INTEGER = 'pim_asset_manager.attribute.validation.max_length.should_be_an_integer';
 }

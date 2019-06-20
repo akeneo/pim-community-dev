@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistryInterface;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistryInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordCommandFactory
+class EditAssetCommandFactory
 {
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
@@ -38,44 +38,44 @@ class EditRecordCommandFactory
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
     }
 
-    public function create(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): EditRecordCommand
+    public function create(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): EditAssetCommand
     {
-        $command = new EditRecordCommand(
-            $referenceEntityIdentifier->normalize(),
-            $normalizedRecord['code'],
+        $command = new EditAssetCommand(
+            $assetFamilyIdentifier->normalize(),
+            $normalizedAsset['code'],
             [],
             null,
-            $this->createEditRecordValueCommands($referenceEntityIdentifier, $normalizedRecord)
+            $this->createEditAssetValueCommands($assetFamilyIdentifier, $normalizedAsset)
         );
 
         return $command;
     }
 
-    private function createEditRecordValueCommands(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): array
+    private function createEditAssetValueCommands(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): array
     {
-        if (empty($normalizedRecord['values'])) {
+        if (empty($normalizedAsset['values'])) {
             return [];
         }
 
-        $attributesIndexedByCodes = $this->getAttributesIndexedByCodes($referenceEntityIdentifier);
-        $editRecordValueCommands = [];
+        $attributesIndexedByCodes = $this->getAttributesIndexedByCodes($assetFamilyIdentifier);
+        $editAssetValueCommands = [];
 
-        foreach ($normalizedRecord['values'] as $attributeCode => $normalizedValues) {
+        foreach ($normalizedAsset['values'] as $attributeCode => $normalizedValues) {
             $this->assertAttributeExists((string) $attributeCode, $attributesIndexedByCodes);
             $attribute = $attributesIndexedByCodes[$attributeCode];
 
             foreach ($normalizedValues as $normalizedValue) {
                 $editValueCommandFactory = $this->editValueCommandFactoryRegistry->getFactory($attribute, $normalizedValue);
-                $editRecordValueCommands[] = $editValueCommandFactory->create($attribute, $normalizedValue);
+                $editAssetValueCommands[] = $editValueCommandFactory->create($attribute, $normalizedValue);
             }
         }
 
-        return $editRecordValueCommands;
+        return $editAssetValueCommands;
     }
 
-    private function getAttributesIndexedByCodes(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function getAttributesIndexedByCodes(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
 
         $attributesIndexedByCodes = [];
         foreach ($attributesIndexedByIdentifier as $attribute) {
@@ -89,7 +89,7 @@ class EditRecordCommandFactory
     {
         if (!array_key_exists($attributeCode, $existingAttributes)) {
             throw new \InvalidArgumentException(sprintf(
-                'Attribute "%s" does not exist for this reference entity', $attributeCode
+                'Attribute "%s" does not exist for this asset family', $attributeCode
             ));
         }
     }

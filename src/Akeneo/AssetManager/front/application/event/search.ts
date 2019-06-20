@@ -1,4 +1,4 @@
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
+import {Column} from 'akeneoassetmanager/application/reducer/grid';
 
 export const startLoading = () => {
   return {type: 'GRID_START_LOADING_RESULTS'};

@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -30,7 +30,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class RecordDetailsHydrator implements RecordDetailsHydratorInterface
+class AssetDetailsHydrator implements AssetDetailsHydratorInterface
 {
     /** @var AbstractPlatform */
     private $platform;
@@ -56,15 +56,15 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         array $emptyValues,
         ValueKeyCollection $valueKeyCollection,
         array $attributes
-    ): RecordDetails {
+    ): AssetDetails {
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
         $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
-        $recordIdentifier = Type::getType(Type::STRING)
+        $assetIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
-            ->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
-        $recordCode = Type::getType(Type::STRING)
+        $assetFamilyIdentifier = Type::getType(Type::STRING)
+            ->convertToPHPValue($row['asset_family_identifier'], $this->platform);
+        $assetCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
         $values = $this->hydrateValues($valueKeyCollection, $attributes, $valueCollection);
@@ -76,19 +76,19 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $allValues = $this->createEmptyValues($emptyValues, $normalizedValues);
 
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
-        $recordImage = $this->getImage($valueCollection, $attributeAsImage);
+        $assetImage = $this->getImage($valueCollection, $attributeAsImage);
 
-        $recordDetails = new RecordDetails(
-            RecordIdentifier::fromString($recordIdentifier),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            RecordCode::fromString($recordCode),
+        $assetDetails = new AssetDetails(
+            AssetIdentifier::fromString($assetIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AssetCode::fromString($assetCode),
             LabelCollection::fromArray($labels),
-            $recordImage,
+            $assetImage,
             $allValues,
             true
         );
 
-        return $recordDetails;
+        return $assetDetails;
     }
 
     private function createEmptyValues(array $emptyValues, array $valueCollection): array

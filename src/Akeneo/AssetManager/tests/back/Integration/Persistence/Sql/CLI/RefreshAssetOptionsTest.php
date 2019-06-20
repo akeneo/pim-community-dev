@@ -2,49 +2,49 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\CLI;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\CLI;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionCollectionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionCollectionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class RefreshRecordOptionsTest extends SqlIntegrationTestCase
+class RefreshAssetOptionsTest extends SqlIntegrationTestCase
 {
-    /** @var ReferenceEntityIdentifier */
-    private $currentReferenceEntityIdentifier;
+    /** @var AssetFamilyIdentifier */
+    private $currentAssetFamilyIdentifier;
 
     /** @var AttributeIdentifier */
     private $currentAttributeIdentifier;
 
-    /** @var RecordIdentifier */
-    private $currentRecordIdentifier;
+    /** @var AssetIdentifier */
+    private $currentAssetIdentifier;
 
     protected function setUp(): void
     {
@@ -55,44 +55,44 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_refreshes_a_record_having_an_option_that_has_been_removed(): void
+    public function it_refreshes_a_asset_having_an_option_that_has_been_removed(): void
     {
         $this->createOptionAttributeWithOptions(['red']);
-        $this->createRecordHavingOption('red');
+        $this->createAssetHavingOption('red');
         $this->removeOptionFromAttribute('red');
-        $this->assertTrue($this->IsRecordHavingValue('red'));
+        $this->assertTrue($this->IsAssetHavingValue('red'));
 
-        $this->runRefreshRecordsCommand();
+        $this->runRefreshAssetsCommand();
 
-        $this->assertFalse($this->IsRecordHavingValue('red'));
+        $this->assertFalse($this->IsAssetHavingValue('red'));
     }
 
     /**
      * @test
      */
-    public function it_refreshes_a_record_having_one_of_its_option_removed(): void
+    public function it_refreshes_a_asset_having_one_of_its_option_removed(): void
     {
         $this->createOptionCollectionAttributeWithOptions(['red', 'blue']);
-        $this->createRecordHavingOptions(['red', 'blue']);
+        $this->createAssetHavingOptions(['red', 'blue']);
         $this->removeOptionFromAttribute('red');
-        $this->assertTrue($this->IsRecordHavingValue('red'));
-        $this->assertTrue($this->IsRecordHavingValue('blue'));
+        $this->assertTrue($this->IsAssetHavingValue('red'));
+        $this->assertTrue($this->IsAssetHavingValue('blue'));
 
-        $this->runRefreshRecordsCommand();
+        $this->runRefreshAssetsCommand();
 
-        $this->assertTrue($this->IsRecordHavingValue('blue'));
-        $this->assertFalse($this->IsRecordHavingValue('red'));
+        $this->assertTrue($this->IsAssetHavingValue('blue'));
+        $this->assertFalse($this->IsAssetHavingValue('red'));
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function runRefreshRecordsCommand(): void
+    private function runRefreshAssetsCommand(): void
     {
         $application = new Application($this->testKernel);
-        $command = $application->find('akeneo:reference-entity:refresh-records');
+        $command = $application->find('akeneo:asset-manager:refresh-assets');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
@@ -105,7 +105,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
      */
     private function createOptionAttributeWithOptions(array $options)
     {
-        $this->loadReferenceEntity('designer');
+        $this->loadAssetFamily('designer');
         $this->loadOptionAttributeWithOptions($options);
     }
 
@@ -114,23 +114,23 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
      */
     private function createOptionCollectionAttributeWithOptions(array $options)
     {
-        $this->loadReferenceEntity('designer');
+        $this->loadAssetFamily('designer');
         $this->loadOptionCollectionAttributeWithOptions($options);
     }
 
-    private function loadReferenceEntity(string $referenceEntityIdentifier)
+    private function loadAssetFamily(string $assetFamilyIdentifier)
     {
-        /** @var ReferenceEntityRepositoryInterface $referenceEntityRepository */
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                $referenceEntityIdentifier,
+        /** @var AssetFamilyRepositoryInterface $assetFamilyRepository */
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                $assetFamilyIdentifier,
                 [],
                 Image::createEmpty()
             )
         );
-        $this->currentReferenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->currentAssetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
     private function loadOptionAttributeWithOptions($optionCodes): void
@@ -138,7 +138,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $this->currentAttributeIdentifier = AttributeIdentifier::fromString('color');
         $optionAttribute = OptionAttribute::create(
             $this->currentAttributeIdentifier,
-            $this->currentReferenceEntityIdentifier,
+            $this->currentAssetFamilyIdentifier,
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
@@ -152,7 +152,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         }
 
         /** @var AttributeRepositoryInterface $attributeRepository */
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $attributeRepository->create($optionAttribute);
     }
 
@@ -161,7 +161,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $this->currentAttributeIdentifier = AttributeIdentifier::fromString('color');
         $optionAttribute = OptionCollectionAttribute::create(
             $this->currentAttributeIdentifier,
-            $this->currentReferenceEntityIdentifier,
+            $this->currentAssetFamilyIdentifier,
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
@@ -175,20 +175,20 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         }
 
         /** @var AttributeRepositoryInterface $attributeRepository */
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $attributeRepository->create($optionAttribute);
     }
 
-    private function createRecordHavingOption(string $optionCode): void
+    private function createAssetHavingOption(string $optionCode): void
     {
-        /** @var RecordRepositoryInterface $recordRepository */
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $this->currentRecordIdentifier = RecordIdentifier::fromString('a_record');
-        $recordRepository->create(
-            Record::create(
-                $this->currentRecordIdentifier,
-                $this->currentReferenceEntityIdentifier,
-                RecordCode::fromString('a_record'),
+        /** @var AssetRepositoryInterface $assetRepository */
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $this->currentAssetIdentifier = AssetIdentifier::fromString('a_asset');
+        $assetRepository->create(
+            Asset::create(
+                $this->currentAssetIdentifier,
+                $this->currentAssetFamilyIdentifier,
+                AssetCode::fromString('a_asset'),
                 ValueCollection::fromValues([
                     Value::create(
                         $this->currentAttributeIdentifier,
@@ -204,21 +204,21 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
     /**
      * @param string[] $optionCodes
      */
-    private function createRecordHavingOptions(array $optionCodes): void
+    private function createAssetHavingOptions(array $optionCodes): void
     {
-        /** @var RecordRepositoryInterface $recordRepository */
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $this->currentRecordIdentifier = RecordIdentifier::fromString('a_record');
+        /** @var AssetRepositoryInterface $assetRepository */
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $this->currentAssetIdentifier = AssetIdentifier::fromString('a_asset');
         $optionCodes = array_map(
             function (string $optionCode) {
                 return OptionCode::fromString($optionCode);
             }, $optionCodes
         );
-        $recordRepository->create(
-            Record::create(
-                $this->currentRecordIdentifier,
-                $this->currentReferenceEntityIdentifier,
-                RecordCode::fromString('a_record'),
+        $assetRepository->create(
+            Asset::create(
+                $this->currentAssetIdentifier,
+                $this->currentAssetFamilyIdentifier,
+                AssetCode::fromString('a_asset'),
                 ValueCollection::fromValues([
                     Value::create(
                         $this->currentAttributeIdentifier,
@@ -234,7 +234,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
     private function removeOptionFromAttribute(string $optionToRemove): void
     {
         /** @var AttributeRepositoryInterface $attributeRepository */
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         /** @var OptionAttribute $optionAttribute */
         $optionAttribute = $attributeRepository->getByIdentifier($this->currentAttributeIdentifier);
         $optionsToKeep = array_filter(
@@ -247,14 +247,14 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $attributeRepository->update($optionAttribute);
     }
 
-    private function IsRecordHavingValue(string $optionCode): bool
+    private function IsAssetHavingValue(string $optionCode): bool
     {
         /** @var Connection $sqlConnection */
         $sqlConnection = $this->get('database_connection');
         $statement = $sqlConnection->executeQuery(
-            'SELECT value_collection FROM akeneo_reference_entity_record WHERE identifier = :identifier',
+            'SELECT value_collection FROM akeneo_asset_manager_asset WHERE identifier = :identifier',
             [
-                'identifier' => $this->currentRecordIdentifier->normalize(),
+                'identifier' => $this->currentAssetIdentifier->normalize(),
             ]
         );
         $result = $statement->fetch(\PDO::FETCH_COLUMN);

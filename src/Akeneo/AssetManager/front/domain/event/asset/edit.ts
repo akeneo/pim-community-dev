@@ -1,36 +1,36 @@
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import File from 'akeneoreferenceentity/domain/model/file';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import File from 'akeneoassetmanager/domain/model/file';
+import Asset from 'akeneoassetmanager/domain/model/asset/asset';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
 
-export const recordEditionReceived = (record: Record) => {
-  return {type: 'RECORD_EDITION_RECEIVED', record: record.normalize()};
+export const assetEditionReceived = (asset: Asset) => {
+  return {type: 'ASSET_EDITION_RECEIVED', asset: asset.normalize()};
 };
 
-export const recordEditionUpdated = (record: Record) => {
-  return {type: 'RECORD_EDITION_UPDATED', record};
+export const assetEditionUpdated = (asset: Asset) => {
+  return {type: 'ASSET_EDITION_UPDATED', asset};
 };
 
-export const recordEditionLabelUpdated = (label: string, locale: string) => {
-  return {type: 'RECORD_EDITION_LABEL_UPDATED', label, locale};
+export const assetEditionLabelUpdated = (label: string, locale: string) => {
+  return {type: 'ASSET_EDITION_LABEL_UPDATED', label, locale};
 };
 
-export const recordEditionImageUpdated = (image: File) => {
-  return {type: 'RECORD_EDITION_IMAGE_UPDATED', image: image.normalize()};
+export const assetEditionImageUpdated = (image: File) => {
+  return {type: 'ASSET_EDITION_IMAGE_UPDATED', image: image.normalize()};
 };
 
-export const recordEditionValueUpdated = (value: Value) => {
-  return {type: 'RECORD_EDITION_VALUE_UPDATED', value: value.normalize()};
+export const assetEditionValueUpdated = (value: Value) => {
+  return {type: 'ASSET_EDITION_VALUE_UPDATED', value: value.normalize()};
 };
 
-export const recordEditionSubmission = () => {
-  return {type: 'RECORD_EDITION_SUBMISSION'};
+export const assetEditionSubmission = () => {
+  return {type: 'ASSET_EDITION_SUBMISSION'};
 };
 
-export const recordEditionSucceeded = () => {
-  return {type: 'RECORD_EDITION_SUCCEEDED'};
+export const assetEditionSucceeded = () => {
+  return {type: 'ASSET_EDITION_SUCCEEDED'};
 };
 
-export const recordEditionErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'RECORD_EDITION_ERROR_OCCURED', errors};
+export const assetEditionErrorOccured = (errors: ValidationError[]) => {
+  return {type: 'ASSET_EDITION_ERROR_OCCURED', errors};
 };

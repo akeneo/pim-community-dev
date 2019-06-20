@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateTextAttributeCommandFactory;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateTextAttributeCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use PhpSpec\ObjectBehavior;
 
 class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_create_a_text_attribute()
     {
         $command = $this->create([
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'is_required' => false,
@@ -36,7 +36,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         ]);
 
         $command->shouldBeAnInstanceOf(CreateTextAttributeCommand::class);
-        $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
+        $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('name');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Nom']);
         $command->isRequired->shouldBeEqualTo(false);
@@ -52,7 +52,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
     function it_throws_an_exception_if_there_is_one_missing_common_property()
     {
         $command = [
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             // 'code' => 'name', // For the test purpose, this one is missing
             'labels' => ['fr_FR' => 'Nom'],
             'is_required' => false,
@@ -72,7 +72,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_with_a_default_property_if_the_none_is_provided()
     {
         $command = $this->create([
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'value_per_channel' => false,

@@ -1,19 +1,19 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
-import {TextAttribute, TextAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {RegularExpression} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
+import __ from 'akeneoassetmanager/tools/translator';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
+import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
+import {TextAttribute, TextAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {RegularExpression} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
 import {
   ValidationRuleOption,
   ValidationRule,
-} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
-import {IsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
-import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
-import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
-import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
-import Key from 'akeneoreferenceentity/tools/key';
+} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
+import {IsRichTextEditor} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
+import {IsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
+import {MaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
+import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
+import Key from 'akeneoassetmanager/tools/key';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -49,7 +49,7 @@ const getValidationRuleOptions = (): DropdownElement[] => {
   return Object.values(ValidationRuleOption).map((option: string) => {
     return {
       identifier: option,
-      label: __(`pim_reference_entity.attribute.edit.input.options.validation_rule.${option}`),
+      label: __(`pim_asset_manager.attribute.edit.input.options.validation_rule.${option}`),
     };
   });
 };
@@ -81,8 +81,8 @@ const TextView = ({
     <React.Fragment>
       <div className="AknFieldContainer" data-code="maxLength">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.max_length">
-            {__('pim_reference_entity.attribute.edit.input.max_length')}
+          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.max_length">
+            {__('pim_asset_manager.attribute.edit.input.max_length')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
@@ -90,7 +90,7 @@ const TextView = ({
             type="text"
             autoComplete="off"
             className={inputTextClassName}
-            id="pim_reference_entity.attribute.edit.input.max_length"
+            id="pim_asset_manager.attribute.edit.input.max_length"
             name="max_length"
             readOnly={!rights.attribute.edit}
             value={attribute.maxLength.stringValue()}
@@ -114,11 +114,11 @@ const TextView = ({
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--inline"
-            htmlFor="pim_reference_entity.attribute.edit.input.textarea"
+            htmlFor="pim_asset_manager.attribute.edit.input.textarea"
           >
             <Checkbox
               readOnly={!rights.attribute.edit}
-              id="pim_reference_entity.attribute.edit.input.textarea"
+              id="pim_asset_manager.attribute.edit.input.textarea"
               value={attribute.isTextarea.booleanValue()}
               onChange={(isTextarea: boolean) =>
                 onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))
@@ -134,7 +134,7 @@ const TextView = ({
                 }
               }}
             >
-              {__('pim_reference_entity.attribute.edit.input.textarea')}
+              {__('pim_asset_manager.attribute.edit.input.textarea')}
             </span>
           </label>
         </div>
@@ -145,10 +145,10 @@ const TextView = ({
           <div className="AknFieldContainer-header">
             <label
               className="AknFieldContainer-label AknFieldContainer-label--inline"
-              htmlFor="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
+              htmlFor="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
             >
               <Checkbox
-                id="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
+                id="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
                 readOnly={!rights.attribute.edit}
                 value={attribute.isRichTextEditor.booleanValue()}
                 onChange={(isrichTextEditor: boolean) =>
@@ -166,7 +166,7 @@ const TextView = ({
                   );
                 }}
               >
-                {__('pim_reference_entity.attribute.edit.input.is_rich_text_editor')}
+                {__('pim_asset_manager.attribute.edit.input.is_rich_text_editor')}
               </span>
             </label>
           </div>
@@ -178,16 +178,16 @@ const TextView = ({
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
               className="AknFieldContainer-label"
-              htmlFor="pim_reference_entity.attribute.edit.input.validation_rule"
+              htmlFor="pim_asset_manager.attribute.edit.input.validation_rule"
             >
-              {__('pim_reference_entity.attribute.edit.input.validation_rule')}
+              {__('pim_asset_manager.attribute.edit.input.validation_rule')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
             <Dropdown
               readOnly={!rights.attribute.edit}
               ItemView={AttributeValidationRuleItemView}
-              label={__('pim_reference_entity.attribute.edit.input.validation_rule')}
+              label={__('pim_asset_manager.attribute.edit.input.validation_rule')}
               elements={getValidationRuleOptions()}
               selectedElement={attribute.validationRule.stringValue()}
               onSelectionChange={(value: DropdownElement) =>
@@ -205,9 +205,9 @@ const TextView = ({
             <div className="AknFieldContainer-header AknFieldContainer-header--light">
               <label
                 className="AknFieldContainer-label"
-                htmlFor="pim_reference_entity.attribute.edit.input.regular_expression"
+                htmlFor="pim_asset_manager.attribute.edit.input.regular_expression"
               >
-                {__('pim_reference_entity.attribute.edit.input.regular_expression')}
+                {__('pim_asset_manager.attribute.edit.input.regular_expression')}
               </label>
             </div>
             <div className="AknFieldContainer-inputContainer">
@@ -215,7 +215,7 @@ const TextView = ({
                 type="text"
                 autoComplete="off"
                 className={inputTextClassName}
-                id="pim_reference_entity.attribute.edit.input.regular_expression"
+                id="pim_asset_manager.attribute.edit.input.regular_expression"
                 name="regular_expression"
                 placeholder="/[a-z]+[0-9]*/"
                 value={attribute.regularExpression.stringValue()}

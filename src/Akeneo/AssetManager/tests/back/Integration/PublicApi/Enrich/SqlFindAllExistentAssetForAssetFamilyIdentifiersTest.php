@@ -11,45 +11,45 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\PublicApi\Enrich;
+namespace Akeneo\AssetManager\Integration\PublicApi\Enrich;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\SqlFindAllExistentRecordsForReferenceEntityIdentifiers;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlFindAllExistentAssetsForAssetFamilyIdentifiers;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-final class SqlFindAllExistentRecordForReferenceEntityIdentifiersTest extends SqlIntegrationTestCase
+final class SqlFindAllExistentAssetForAssetFamilyIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindAllExistentRecordsForReferenceEntityIdentifiers */
-    private $findAllExistentRecordForReferenceEntityIdentifiers;
+    /** @var SqlFindAllExistentAssetsForAssetFamilyIdentifiers */
+    private $findAllExistentAssetForAssetFamilyIdentifiers;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findAllExistentRecordForReferenceEntityIdentifiers = $this->get('akeneo_referenceentity.infrastructure.persistence.query.enrich.find_all_existent_records_for_reference_entity_identifiers_public_api');
+        $this->findAllExistentAssetForAssetFamilyIdentifiers = $this->get('akeneo_assetmanager.infrastructure.persistence.query.enrich.find_all_existent_assets_for_asset_family_identifiers_public_api');
         $this->resetDB();
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     public function test_it_returns_nothing_with_empty_arguments(): void
     {
         $expected = [];
-        $actual = $this->findAllExistentRecordForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes([]);
+        $actual = $this->findAllExistentAssetForAssetFamilyIdentifiers->forAssetFamilyIdentifiersAndAssetCodes([]);
 
         Assert::assertEqualsCanonicalizing($expected, $actual);
     }
@@ -59,15 +59,15 @@ final class SqlFindAllExistentRecordForReferenceEntityIdentifiersTest extends Sq
         $this->loadDataset();
 
         $expected = [
-            'reference_entity_1' => ['record_a', 'record_c', 'reference_entity_1_record_unique'],
-            'reference_entity_2' => ['record_a', 'record_b']
+            'asset_family_1' => ['asset_a', 'asset_c', 'asset_family_1_asset_unique'],
+            'asset_family_2' => ['asset_a', 'asset_b']
         ];
         $actual = $this
-            ->findAllExistentRecordForReferenceEntityIdentifiers
-            ->forReferenceEntityIdentifiersAndRecordCodes(
+            ->findAllExistentAssetForAssetFamilyIdentifiers
+            ->forAssetFamilyIdentifiersAndAssetCodes(
                 [
-                    'reference_entity_1' => ['record_a', 'record_c', 'reference_entity_1_record_unique'],
-                    'reference_entity_2' => ['record_a', 'record_b', 'a_non_existing_records']
+                    'asset_family_1' => ['asset_a', 'asset_c', 'asset_family_1_asset_unique'],
+                    'asset_family_2' => ['asset_a', 'asset_b', 'a_non_existing_assets']
                 ]
             );
 
@@ -76,33 +76,33 @@ final class SqlFindAllExistentRecordForReferenceEntityIdentifiersTest extends Sq
 
     private function loadDataset(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
 
-        $referenceEntityIdentifiers = array_map(function (int $identifier) {
-            return ReferenceEntityIdentifier::fromString(sprintf('reference_entity_%d', $identifier));
+        $assetFamilyIdentifiers = array_map(function (int $identifier) {
+            return AssetFamilyIdentifier::fromString(sprintf('asset_family_%d', $identifier));
         }, range(1, 4));
 
-        foreach ($referenceEntityIdentifiers as $referenceEntityIdentifier) {
-            $referenceEntityRepository->create(ReferenceEntity::create($referenceEntityIdentifier, [], Image::createEmpty()));
+        foreach ($assetFamilyIdentifiers as $assetFamilyIdentifier) {
+            $assetFamilyRepository->create(AssetFamily::create($assetFamilyIdentifier, [], Image::createEmpty()));
         }
 
-        foreach ($referenceEntityIdentifiers as $referenceEntityIdentifier) {
-            foreach (range('a', 'e') as $recordCode) {
-                $recordRepository->create(
-                    Record::create(
-                        RecordIdentifier::fromString(sprintf('record_%s_%s', $recordCode, $referenceEntityIdentifier->normalize())),
-                        $referenceEntityIdentifier,
-                        RecordCode::fromString(sprintf('record_%s', $recordCode)),
+        foreach ($assetFamilyIdentifiers as $assetFamilyIdentifier) {
+            foreach (range('a', 'e') as $assetCode) {
+                $assetRepository->create(
+                    Asset::create(
+                        AssetIdentifier::fromString(sprintf('asset_%s_%s', $assetCode, $assetFamilyIdentifier->normalize())),
+                        $assetFamilyIdentifier,
+                        AssetCode::fromString(sprintf('asset_%s', $assetCode)),
                         ValueCollection::fromValues([])
                     )
                 );
             }
-            $recordRepository->create(
-                Record::create(
-                    RecordIdentifier::fromString(sprintf('toto_record_%s', $referenceEntityIdentifier->normalize())),
-                    $referenceEntityIdentifier,
-                    RecordCode::fromString(sprintf('%s_record_unique', $referenceEntityIdentifier->normalize())),
+            $assetRepository->create(
+                Asset::create(
+                    AssetIdentifier::fromString(sprintf('toto_asset_%s', $assetFamilyIdentifier->normalize())),
+                    $assetFamilyIdentifier,
+                    AssetCode::fromString(sprintf('%s_asset_unique', $assetFamilyIdentifier->normalize())),
                     ValueCollection::fromValues([])
                 )
             );

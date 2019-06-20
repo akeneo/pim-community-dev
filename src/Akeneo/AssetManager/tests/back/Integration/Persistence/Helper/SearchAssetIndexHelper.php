@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Helper;
+namespace Akeneo\AssetManager\Integration\Persistence\Helper;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
@@ -22,54 +22,54 @@ use PHPUnit\Framework\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchRecordIndexHelper
+class SearchAssetIndexHelper
 {
     /** @var Client */
-    private $recordClient;
+    private $assetClient;
 
-    private const INDEX_TYPE = 'pimee_reference_entity_record';
+    private const INDEX_TYPE = 'pimee_asset_family_asset';
 
-    public function __construct(Client $recordClient)
+    public function __construct(Client $assetClient)
     {
-        $this->recordClient = $recordClient;
+        $this->assetClient = $assetClient;
     }
 
     public function resetIndex(): void
     {
-        $this->recordClient->resetIndex();
+        $this->assetClient->resetIndex();
     }
 
-    public function index(array $records): void
+    public function index(array $assets): void
     {
-        foreach ($records as $record) {
-            if (!array_key_exists('identifier', $record)) {
-                throw new \InvalidArgumentException('Expect to index record with a "identifier" property. None found.');
+        foreach ($assets as $asset) {
+            if (!array_key_exists('identifier', $asset)) {
+                throw new \InvalidArgumentException('Expect to index asset with a "identifier" property. None found.');
             }
 
-            $this->recordClient->index(self::INDEX_TYPE, $record['identifier'], $record);
+            $this->assetClient->index(self::INDEX_TYPE, $asset['identifier'], $asset);
         }
 
-        $this->recordClient->refreshIndex();
+        $this->assetClient->refreshIndex();
     }
 
-    public function search(string $referenceEntityCode, string $channel, string $locale, array $terms): array
+    public function search(string $assetFamilyCode, string $channel, string $locale, array $terms): array
     {
         $this->refreshIndex();
 
-        $query = $this->getQuery($referenceEntityCode, $channel, $locale, $terms);
+        $query = $this->getQuery($assetFamilyCode, $channel, $locale, $terms);
         $matchingIdentifiers = $this->executeQuery($query);
 
         return $matchingIdentifiers;
     }
 
-    public function findRecordsByReferenceEntity(string $referenceEntityCode): array
+    public function findAssetsByAssetFamily(string $assetFamilyCode): array
     {
         $this->refreshIndex();
 
         $query = [
             '_source' => '_id',
             'query' => [
-                'match' => ['reference_entity_code' => $referenceEntityCode,],
+                'match' => ['asset_family_code' => $assetFamilyCode,],
             ],
         ];
         $matchingIdentifiers = $this->executeQuery($query);
@@ -77,7 +77,7 @@ class SearchRecordIndexHelper
         return $matchingIdentifiers;
     }
 
-    public function findRecord(string $referenceEntityCode, string $recordCode): array
+    public function findAsset(string $assetFamilyCode, string $assetCode): array
     {
         $this->refreshIndex();
 
@@ -85,8 +85,8 @@ class SearchRecordIndexHelper
             'query' => [
                 'bool' => [
                     'must' => [
-                        ['term' => ['reference_entity_code' => $referenceEntityCode]],
-                        ['term' => ['code' => $recordCode]],
+                        ['term' => ['asset_family_code' => $assetFamilyCode]],
+                        ['term' => ['code' => $assetCode]],
                     ],
                 ],
             ],
@@ -96,23 +96,23 @@ class SearchRecordIndexHelper
         return $matchingIdentifiers;
     }
 
-    public function assertRecordExists(string $referenceEntityCode, string $recordCode): void
+    public function assertAssetExists(string $assetFamilyCode, string $assetCode): void
     {
-        $matchingIdentifiers = $this->findRecord($referenceEntityCode, $recordCode);
+        $matchingIdentifiers = $this->findAsset($assetFamilyCode, $assetCode);
 
-        Assert::assertCount(1, $matchingIdentifiers, sprintf('Record not found: %s_%s', $referenceEntityCode, $recordCode));
+        Assert::assertCount(1, $matchingIdentifiers, sprintf('Asset not found: %s_%s', $assetFamilyCode, $assetCode));
     }
 
-    public function assertRecordDoesNotExists(string $referenceEntityCode, string $recordCode): void
+    public function assertAssetDoesNotExists(string $assetFamilyCode, string $assetCode): void
     {
-        $matchingIdentifiers = $this->findRecord($referenceEntityCode, $recordCode);
+        $matchingIdentifiers = $this->findAsset($assetFamilyCode, $assetCode);
 
-        Assert::assertCount(0, $matchingIdentifiers, sprintf('This record should not exist: %s_%s', $referenceEntityCode, $recordCode));
+        Assert::assertCount(0, $matchingIdentifiers, sprintf('This asset should not exist: %s_%s', $assetFamilyCode, $assetCode));
     }
 
     public function executeQuery(array $query): array
     {
-        $matches = $this->recordClient->search(self::INDEX_TYPE, $query);
+        $matches = $this->assetClient->search(self::INDEX_TYPE, $query);
         $documents = $matches['hits']['hits'] ?? [];
 
         $matchingIdentifiers = [];
@@ -125,10 +125,10 @@ class SearchRecordIndexHelper
 
     public function refreshIndex()
     {
-        $this->recordClient->refreshIndex();
+        $this->assetClient->refreshIndex();
     }
 
-    private function getQuery(string $referenceEntityCode, $channel, $locale, array $terms): array
+    private function getQuery(string $assetFamilyCode, $channel, $locale, array $terms): array
     {
         $query = [
             '_source' => '_id',
@@ -140,7 +140,7 @@ class SearchRecordIndexHelper
                             'filter' => [
                                 [
                                     'term' => [
-                                        'reference_entity_code' => $referenceEntityCode,
+                                        'asset_family_code' => $assetFamilyCode,
                                     ],
                                 ],
                             ],
@@ -153,7 +153,7 @@ class SearchRecordIndexHelper
         foreach ($terms as $term) {
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
-                    'default_field' => sprintf('record_full_text_search.%s.%s', $channel, $locale),
+                    'default_field' => sprintf('asset_full_text_search.%s.%s', $channel, $locale),
                     'query' => sprintf('*%s*', $term),
                 ],
             ];

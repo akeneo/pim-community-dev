@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -11,32 +11,32 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
  * file that was distributed with this source code.
  */
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributesByReferenceEntityIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\Hal\AddHalSelfLinkToNormalizedConnectorAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributesByAssetFamilyIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\Hal\AddHalSelfLinkToNormalizedConnectorAttribute;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class GetConnectorReferenceEntityAttributesAction
+class GetConnectorAssetFamilyAttributesAction
 {
-    /** @var FindConnectorAttributesByReferenceEntityIdentifierInterface */
-    private $findConnectorReferenceEntityAttributes;
+    /** @var FindConnectorAttributesByAssetFamilyIdentifierInterface */
+    private $findConnectorAssetFamilyAttributes;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     /** @var AddHalSelfLinkToNormalizedConnectorAttribute */
     private $addHalSelfLinkToNormalizedConnectorAttribute;
 
     public function __construct(
-        FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes,
-        ReferenceEntityExistsInterface $referenceEntityExists,
+        FindConnectorAttributesByAssetFamilyIdentifierInterface $findConnectorAssetFamilyAttributes,
+        AssetFamilyExistsInterface $assetFamilyExists,
         AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorReferenceEntityAttributes = $findConnectorReferenceEntityAttributes;
+        $this->assetFamilyExists = $assetFamilyExists;
+        $this->findConnectorAssetFamilyAttributes = $findConnectorAssetFamilyAttributes;
         $this->addHalSelfLinkToNormalizedConnectorAttribute = $addHalSelfLinkToNormalizedConnectorAttribute;
     }
 
@@ -44,27 +44,27 @@ class GetConnectorReferenceEntityAttributesAction
      * @throws UnprocessableEntityHttpException
      * @throws NotFoundHttpException
      */
-    public function __invoke(string $referenceEntityIdentifier): JsonResponse
+    public function __invoke(string $assetFamilyIdentifier): JsonResponse
     {
         try {
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
+        $assetFamilyExists = $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
 
-        if (false === $referenceEntityExists) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        if (false === $assetFamilyExists) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
-        $attributes = $this->findConnectorReferenceEntityAttributes->find($referenceEntityIdentifier);
+        $attributes = $this->findConnectorAssetFamilyAttributes->find($assetFamilyIdentifier);
 
         $normalizedAttributes = [];
 
         foreach ($attributes as $attribute) {
             $normalizedAttribute = $attribute->normalize();
-            $normalizedAttribute = ($this->addHalSelfLinkToNormalizedConnectorAttribute)($referenceEntityIdentifier, $normalizedAttribute);
+            $normalizedAttribute = ($this->addHalSelfLinkToNormalizedConnectorAttribute)($assetFamilyIdentifier, $normalizedAttribute);
             $normalizedAttributes[] = $normalizedAttribute;
         }
 

@@ -1,6 +1,6 @@
 const path = require('path');
-const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
-const Attributes = require('../../decorators/reference-entity/edit/attributes.decorator');
+const Sidebar = require('../../decorators/asset-family/app/sidebar.decorator');
+const Attributes = require('../../decorators/asset-family/edit/attributes.decorator');
 const {getRequestContract, listenRequest} = require('../../tools');
 
 const {
@@ -31,15 +31,15 @@ module.exports = async function(cucumber) {
     await sidebar.clickOnTab('attribute');
   };
 
-  Given('the following attributes for the reference entity {string}:', async function(
-    referenceEntityIdentifier,
+  Given('the following attributes for the asset family {string}:', async function(
+    assetFamilyIdentifier,
     attributes
   ) {
     const attributesSaved = attributes.hashes().map(normalizedAttribute => {
       if ('text' === normalizedAttribute.type) {
         return {
-          identifier: `${referenceEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
-          reference_entity_identifier: referenceEntityIdentifier,
+          identifier: `${assetFamilyIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
+          asset_family_identifier: assetFamilyIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
           order: 0,
@@ -55,8 +55,8 @@ module.exports = async function(cucumber) {
         };
       } else if ('image' === normalizedAttribute.type) {
         return {
-          identifier: `${referenceEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
-          reference_entity_identifier: referenceEntityIdentifier,
+          identifier: `${assetFamilyIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
+          asset_family_identifier: assetFamilyIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
           order: 1,
@@ -69,8 +69,8 @@ module.exports = async function(cucumber) {
         };
       } else if ('option' === normalizedAttribute.type) {
         return {
-          identifier: `${referenceEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
-          reference_entity_identifier: referenceEntityIdentifier,
+          identifier: `${assetFamilyIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
+          asset_family_identifier: assetFamilyIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
           order: 2,
@@ -82,8 +82,8 @@ module.exports = async function(cucumber) {
         };
       } else if ('option_collection' === normalizedAttribute.type) {
         return {
-          identifier: `${referenceEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
-          reference_entity_identifier: referenceEntityIdentifier,
+          identifier: `${assetFamilyIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
+          asset_family_identifier: assetFamilyIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
           order: 3,
@@ -100,7 +100,7 @@ module.exports = async function(cucumber) {
 
     this.page.on('request', request => {
       if (
-        `http://pim.com/rest/reference_entity/${referenceEntityIdentifier}/attribute` === request.url() &&
+        `http://pim.com/rest/asset_manager/${assetFamilyIdentifier}/attribute` === request.url() &&
         'GET' === request.method()
       ) {
         answerJson(request, attributesSaved);
@@ -150,18 +150,18 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isEmpty, true);
   });
 
-  When('the user deletes the attribute {string} linked to the reference entity {string}', async function(
+  When('the user deletes the attribute {string} linked to the asset family {string}', async function(
     attributeIdentifier,
-    referenceEntityIdentifier
+    assetFamilyIdentifier
   ) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
 
     await editAttribute(this.page, attributeIdentifier, true);
     this.page.on('request', request => {
-      const baseUrl = 'http://pim.com/rest/reference_entity';
-      const identifier = `${referenceEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
-      const deleteUrl = `${baseUrl}/${referenceEntityIdentifier}/attribute/${identifier}`;
+      const baseUrl = 'http://pim.com/rest/asset_manager';
+      const identifier = `${assetFamilyIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
+      const deleteUrl = `${baseUrl}/${assetFamilyIdentifier}/attribute/${identifier}`;
       if (deleteUrl === request.url() && 'DELETE' === request.method()) {
         answerJson(request, {}, 204);
       }
@@ -184,9 +184,9 @@ module.exports = async function(cucumber) {
     await attributes.cancelDeletion();
   });
 
-  When('the user cannot delete the attribute {string} linked to the reference entity {string}', async function(
+  When('the user cannot delete the attribute {string} linked to the asset family {string}', async function(
     attributeIdentifier,
-    referenceEntityIdentifier
+    assetFamilyIdentifier
   ) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
@@ -194,9 +194,9 @@ module.exports = async function(cucumber) {
     await editAttribute(this.page, attributeIdentifier, true);
 
     this.page.on('request', request => {
-      const baseUrl = 'http://pim.com/rest/reference_entity';
-      const identifier = `${referenceEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
-      const deleteUrl = `${baseUrl}/${referenceEntityIdentifier}/attribute/${identifier}`;
+      const baseUrl = 'http://pim.com/rest/asset_manager';
+      const identifier = `${assetFamilyIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
+      const deleteUrl = `${baseUrl}/${assetFamilyIdentifier}/attribute/${identifier}`;
       if (deleteUrl === request.url() && 'DELETE' === request.method()) {
         answerJson(request, {}, 404);
       }

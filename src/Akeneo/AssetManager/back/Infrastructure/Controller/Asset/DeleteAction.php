@@ -10,13 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
+namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetCommand;
+use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,65 +26,65 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Delete a record
+ * Delete a asset
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class DeleteAction
 {
-    /** @var DeleteRecordHandler */
-    private $deleteRecordHandler;
+    /** @var DeleteAssetHandler */
+    private $deleteAssetHandler;
 
     /** @var SecurityFacade */
     private $securityFacade;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
-        DeleteRecordHandler $deleteRecordHandler,
+        DeleteAssetHandler $deleteAssetHandler,
         SecurityFacade $securityFacade,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->deleteRecordHandler = $deleteRecordHandler;
+        $this->deleteAssetHandler = $deleteAssetHandler;
         $this->securityFacade = $securityFacade;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier, string $recordCode): Response
+    public function __invoke(Request $request, string $assetFamilyIdentifier, string $assetCode): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->isUserAllowedToDelete($request->get('referenceEntityIdentifier'))) {
+        if (!$this->isUserAllowedToDelete($request->get('assetFamilyIdentifier'))) {
             throw new AccessDeniedException();
         }
 
-        $command = new DeleteRecordCommand($recordCode, $referenceEntityIdentifier);
+        $command = new DeleteAssetCommand($assetCode, $assetFamilyIdentifier);
 
         try {
-            ($this->deleteRecordHandler)($command);
-        } catch (RecordNotFoundException $exception) {
+            ($this->deleteAssetHandler)($command);
+        } catch (AssetNotFoundException $exception) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToDelete(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToDelete(string $assetFamilyIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery(
-            $referenceEntityIdentifier,
+        $query = new CanEditAssetFamilyQuery(
+            $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
 
-        return $this->securityFacade->isGranted('akeneo_referenceentity_record_delete')
-            && ($this->canEditReferenceEntityQueryHandler)($query);
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_delete')
+            && ($this->canEditAssetFamilyQueryHandler)($query);
     }
 }

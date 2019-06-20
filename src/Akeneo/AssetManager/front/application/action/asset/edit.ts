@@ -1,70 +1,70 @@
 import {
-  recordEditionLabelUpdated,
-  recordEditionReceived,
-  recordEditionImageUpdated,
-  recordEditionErrorOccured,
-  recordEditionSucceeded,
-  recordEditionValueUpdated,
-  recordEditionUpdated,
-  recordEditionSubmission,
-} from 'akeneoreferenceentity/domain/event/record/edit';
+  assetEditionLabelUpdated,
+  assetEditionReceived,
+  assetEditionImageUpdated,
+  assetEditionErrorOccured,
+  assetEditionSucceeded,
+  assetEditionValueUpdated,
+  assetEditionUpdated,
+  assetEditionSubmission,
+} from 'akeneoassetmanager/domain/event/asset/edit';
 import {
-  notifyRecordWellSaved,
-  notifyRecordSaveFailed,
-  notifyRecordSaveValidationError,
-} from 'akeneoreferenceentity/application/action/record/notify';
-import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
-import recordFetcher, {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';
-import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
-import File from 'akeneoreferenceentity/domain/model/file';
-import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
-import {redirectToRecordIndex} from 'akeneoreferenceentity/application/action/record/router';
-import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
+  notifyAssetWellSaved,
+  notifyAssetSaveFailed,
+  notifyAssetSaveValidationError,
+} from 'akeneoassetmanager/application/action/asset/notify';
+import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
+import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import File from 'akeneoassetmanager/domain/model/file';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
+import {redirectToAssetIndex} from 'akeneoassetmanager/application/action/asset/router';
+import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
 
-export const saveRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const record = denormalizeRecord(getState().form.data);
+export const saveAsset = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  const asset = denormalizeAsset(getState().form.data);
 
-  dispatch(recordEditionSubmission());
+  dispatch(assetEditionSubmission());
   try {
-    const errors = await recordSaver.save(record);
+    const errors = await assetSaver.save(asset);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(recordEditionErrorOccured(validationErrors));
-      dispatch(notifyRecordSaveValidationError());
+      dispatch(assetEditionErrorOccured(validationErrors));
+      dispatch(notifyAssetSaveValidationError());
 
       return;
     }
   } catch (error) {
-    dispatch(notifyRecordSaveFailed());
+    dispatch(notifyAssetSaveFailed());
 
     return;
   }
 
-  dispatch(recordEditionSucceeded());
-  dispatch(notifyRecordWellSaved());
-  const savedRecord: RecordResult = await recordFetcher.fetch(record.getReferenceEntityIdentifier(), record.getCode());
+  dispatch(assetEditionSucceeded());
+  dispatch(notifyAssetWellSaved());
+  const savedAsset: AssetResult = await assetFetcher.fetch(asset.getAssetFamilyIdentifier(), asset.getCode());
 
-  dispatch(recordEditionReceived(savedRecord.record));
+  dispatch(assetEditionReceived(savedAsset.asset));
 };
 
-export const recordLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {
-  dispatch(recordEditionLabelUpdated(value, locale));
-  dispatch(recordEditionUpdated(getState().form.data));
+export const assetLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {
+  dispatch(assetEditionLabelUpdated(value, locale));
+  dispatch(assetEditionUpdated(getState().form.data));
 };
 
-export const recordImageUpdated = (image: File) => (dispatch: any, getState: any) => {
-  dispatch(recordEditionImageUpdated(image));
-  dispatch(recordEditionUpdated(getState().form.data));
+export const assetImageUpdated = (image: File) => (dispatch: any, getState: any) => {
+  dispatch(assetEditionImageUpdated(image));
+  dispatch(assetEditionUpdated(getState().form.data));
 };
 
-export const recordValueUpdated = (value: Value) => (dispatch: any, getState: any) => {
-  dispatch(recordEditionValueUpdated(value));
-  dispatch(recordEditionUpdated(getState().form.data));
+export const assetValueUpdated = (value: Value) => (dispatch: any, getState: any) => {
+  dispatch(assetEditionValueUpdated(value));
+  dispatch(assetEditionUpdated(getState().form.data));
 };
 
-export const backToReferenceEntity = () => (dispatch: any, getState: any) => {
-  const record = denormalizeRecord(getState().form.data);
-  dispatch(redirectToRecordIndex(record.getReferenceEntityIdentifier()));
+export const backToAssetFamily = () => (dispatch: any, getState: any) => {
+  const asset = denormalizeAsset(getState().form.data);
+  dispatch(redirectToAssetIndex(asset.getAssetFamilyIdentifier()));
 };

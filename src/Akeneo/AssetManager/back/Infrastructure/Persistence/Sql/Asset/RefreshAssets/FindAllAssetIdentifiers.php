@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindAllRecordIdentifiers implements SelectRecordIdentifiersInterface
+class FindAllAssetIdentifiers implements SelectAssetIdentifiersInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -25,12 +25,12 @@ class FindAllRecordIdentifiers implements SelectRecordIdentifiersInterface
     public function fetch(): \Iterator
     {
         $query = <<<SQL
-SELECT identifier FROM akeneo_reference_entity_record;
+SELECT identifier FROM akeneo_asset_manager_asset;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
 
         while (false !== $result = $statement->fetch(\PDO::FETCH_COLUMN)) {
-            yield RecordIdentifier::fromString($result);
+            yield AssetIdentifier::fromString($result);
         }
     }
 }

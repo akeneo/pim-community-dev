@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionAttributeHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionAttributeHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
@@ -40,7 +40,7 @@ class OptionAttributeHydratorSpec extends ObjectBehavior
         $optionAttribute = $this->hydrate([
             'identifier' => 'favorite_color_designer_fingerprint',
             'code' => 'favorite_color',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'labels' => json_encode(['fr_FR' => 'Couleur favorite']),
             'attribute_type' => 'option',
             'attribute_order' => '0',
@@ -54,7 +54,7 @@ class OptionAttributeHydratorSpec extends ObjectBehavior
         $optionAttribute->shouldBeAnInstanceOf(OptionAttribute::class);
         $optionAttribute->normalize()->shouldBe([
             'identifier' => 'favorite_color_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'favorite_color',
             'labels' => ['fr_FR' => 'Couleur favorite'],
             'order' => 0,
@@ -71,7 +71,7 @@ class OptionAttributeHydratorSpec extends ObjectBehavior
         $optionAttribute = $this->hydrate([
             'identifier' => 'favorite_color_designer_fingerprint',
             'code' => 'favorite_color',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'labels' => json_encode(['fr_FR' => 'Couleur favorite']),
             'attribute_type' => 'option',
             'attribute_order' => '0',
@@ -98,7 +98,7 @@ class OptionAttributeHydratorSpec extends ObjectBehavior
         $optionAttribute->shouldBeAnInstanceOf(OptionAttribute::class);
         $optionAttribute->normalize()->shouldBe([
             'identifier' => 'favorite_color_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'favorite_color',
             'labels' => ['fr_FR' => 'Couleur favorite'],
             'order' => 0,

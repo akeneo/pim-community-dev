@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordValueCommand extends Constraint
+class EditAssetValueCommand extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.record.validation.record.should_exist';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset.validation.asset.should_exist';
 
     public function getTargets()
     {

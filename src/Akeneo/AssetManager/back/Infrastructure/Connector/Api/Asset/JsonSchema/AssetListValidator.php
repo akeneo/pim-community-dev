@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
 use JsonSchema\Validator;
 
 /**
- * Validate the structure of a records list (but not the records themselves).
+ * Validate the structure of a assets list (but not the assets themselves).
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordListValidator
+class AssetListValidator
 {
-    public function validate(array $normalizedRecordList): array
+    public function validate(array $normalizedAssetList): array
     {
         $validator = new Validator();
-        $normalizedRecordListObject = json_decode(json_encode($normalizedRecordList));
+        $normalizedAssetListObject = json_decode(json_encode($normalizedAssetList));
 
-        $validator->validate($normalizedRecordListObject, $this->getJsonSchema());
+        $validator->validate($normalizedAssetListObject, $this->getJsonSchema());
 
         return $validator->getErrors();
     }

@@ -1,11 +1,11 @@
-import user, {UserState} from 'akeneoreferenceentity/application/reducer/user';
-import grid, {GridState} from 'akeneoreferenceentity/application/reducer/grid';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import create, {CreateState} from 'akeneoreferenceentity/application/reducer/reference-entity/create';
+import user, {UserState} from 'akeneoassetmanager/application/reducer/user';
+import grid, {GridState} from 'akeneoassetmanager/application/reducer/grid';
+import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import create, {CreateState} from 'akeneoassetmanager/application/reducer/asset-family/create';
 
 export interface IndexState {
   user: UserState;
-  grid: GridState<ReferenceEntity>;
+  grid: GridState<AssetFamily>;
   create: CreateState;
 }
 

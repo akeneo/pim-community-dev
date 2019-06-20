@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -23,7 +23,7 @@ class CreateOptionAttributeCommandFactory extends AbstractCreateAttributeCommand
         $this->checkCommonProperties($normalizedCommand);
 
         $command = new CreateOptionAttributeCommand(
-            $normalizedCommand['reference_entity_identifier'],
+            $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,

@@ -2,35 +2,35 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity;
+namespace spec\Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class DeleteReferenceEntityHandlerSpec extends ObjectBehavior
+class DeleteAssetFamilyHandlerSpec extends ObjectBehavior
 {
-    function let(ReferenceEntityRepositoryInterface $referenceEntityRepository)
+    function let(AssetFamilyRepositoryInterface $assetFamilyRepository)
     {
-        $this->beConstructedWith($referenceEntityRepository);
+        $this->beConstructedWith($assetFamilyRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(DeleteReferenceEntityHandler::class);
+        $this->shouldHaveType(DeleteAssetFamilyHandler::class);
     }
 
-    function it_deletes_a_reference_entity(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        DeleteReferenceEntityCommand $command
+    function it_deletes_an_asset_family(
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        DeleteAssetFamilyCommand $command
     ) {
         $command->identifier = 'brand';
 
-        $referenceEntityRepository->deleteByIdentifier(
-            Argument::type(ReferenceEntityIdentifier::class)
+        $assetFamilyRepository->deleteByIdentifier(
+            Argument::type(AssetFamilyIdentifier::class)
         )->shouldBeCalled();
 
         $this->__invoke($command);

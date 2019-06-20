@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class InMemoryReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implements ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface
+class InMemoryAssetFamilyIsLinkedToAtLeastOneAssetFamilyAttribute implements AssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeInterface
 {
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
@@ -32,11 +32,11 @@ class InMemoryReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implem
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function isLinked(ReferenceEntityIdentifier $identifier): bool
+    public function isLinked(AssetFamilyIdentifier $identifier): bool
     {
         foreach ($this->attributeRepository->getAttributes() as $attribute) {
-            if ($attribute instanceof RecordAttribute || $attribute instanceof RecordCollectionAttribute) {
-                if ($attribute->getRecordType()->equals($identifier)) {
+            if ($attribute instanceof AssetAttribute || $attribute instanceof AssetCollectionAttribute) {
+                if ($attribute->getAssetType()->equals($identifier)) {
                     return true;
                 }
             }

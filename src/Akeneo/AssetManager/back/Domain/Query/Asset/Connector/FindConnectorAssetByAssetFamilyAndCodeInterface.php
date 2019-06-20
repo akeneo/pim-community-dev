@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
+namespace Akeneo\AssetManager\Domain\Query\Asset\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Find a connector record given a reference entity identifier and a record code
+ * Find a connector asset given an asset family identifier and a asset code
  *
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindConnectorRecordByReferenceEntityAndCodeInterface
+interface FindConnectorAssetByAssetFamilyAndCodeInterface
 {
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?ConnectorRecord;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?ConnectorAsset;
 }

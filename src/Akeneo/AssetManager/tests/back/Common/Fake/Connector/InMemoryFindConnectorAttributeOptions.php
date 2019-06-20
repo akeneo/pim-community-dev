@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
+namespace Akeneo\AssetManager\Common\Fake\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
 
 class InMemoryFindConnectorAttributeOptions implements FindConnectorAttributeOptionsInterface
 {
@@ -32,19 +32,19 @@ class InMemoryFindConnectorAttributeOptions implements FindConnectorAttributeOpt
     }
 
     public function save(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode,
         ConnectorAttribute $connectorAttribute
     ): void {
-        $this->attributes[(string) $referenceEntityIdentifier][(string) $attributeCode] = $connectorAttribute;
+        $this->attributes[(string) $assetFamilyIdentifier][(string) $attributeCode] = $connectorAttribute;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): ?array
     {
-        $connectorAttribute = $this->attributes[(string) $referenceEntityIdentifier][(string) $attributeCode] ?? null;
+        $connectorAttribute = $this->attributes[(string) $assetFamilyIdentifier][(string) $attributeCode] ?? null;
 
         if (null === $connectorAttribute) {
             return null;

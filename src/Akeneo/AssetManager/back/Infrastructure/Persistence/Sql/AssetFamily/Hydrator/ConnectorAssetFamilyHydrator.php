@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -26,7 +26,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ConnectorReferenceEntityHydrator
+class ConnectorAssetFamilyHydrator
 {
     /** @var AbstractPlatform */
     private $platform;
@@ -37,7 +37,7 @@ class ConnectorReferenceEntityHydrator
         $this->platform = $connection->getDatabasePlatform();
     }
 
-    public function hydrate(array $row): ConnectorReferenceEntity
+    public function hydrate(array $row): ConnectorAssetFamily
     {
         $labels = Type::getType(Type::JSON_ARRAY)
             ->convertToPHPValue($row['labels'], $this->platform);
@@ -57,12 +57,12 @@ class ConnectorReferenceEntityHydrator
             $image = Image::fromFileInfo($file);
         }
 
-        $connectorReferenceEntity = new ConnectorReferenceEntity(
-            ReferenceEntityIdentifier::fromString($identifier),
+        $connectorAssetFamily = new ConnectorAssetFamily(
+            AssetFamilyIdentifier::fromString($identifier),
             LabelCollection::fromArray($labels),
             $image
         );
 
-        return $connectorReferenceEntity;
+        return $connectorAssetFamily;
     }
 }

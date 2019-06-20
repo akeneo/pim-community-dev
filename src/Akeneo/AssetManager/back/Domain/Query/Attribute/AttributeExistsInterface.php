@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Query to determine if an Reference Entity Attribute exists
+ * Query to determine if an Asset Family Attribute exists
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
@@ -28,7 +28,7 @@ interface AttributeExistsInterface
 {
     public function withIdentifier(AttributeIdentifier $identifier): bool;
 
-    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $identifier, AttributeCode $attributeCode): bool;
+    public function withAssetFamilyAndCode(AssetFamilyIdentifier $identifier, AttributeCode $attributeCode): bool;
 
-    public function withReferenceEntityIdentifierAndOrder(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeOrder $order): bool;
+    public function withAssetFamilyIdentifierAndOrder(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeOrder $order): bool;
 }

@@ -10,64 +10,64 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * Get one Reference entity by its identifier
+ * Get one Asset family by its identifier
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class GetAction
 {
-    /** @var FindReferenceEntityDetailsInterface */
-    private $findOneReferenceEntityQuery;
+    /** @var FindAssetFamilyDetailsInterface */
+    private $findOneAssetFamilyQuery;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
-        FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->findOneReferenceEntityQuery = $findOneReferenceEntityQuery;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->findOneAssetFamilyQuery = $findOneAssetFamilyQuery;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(string $identifier): JsonResponse
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($identifier);
-        $referenceEntityDetails = $this->findReferenceEntityDetailsOr404($referenceEntityIdentifier);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($identifier);
+        $assetFamilyDetails = $this->findAssetFamilyDetailsOr404($assetFamilyIdentifier);
 
-        return new JsonResponse($referenceEntityDetails->normalize());
+        return new JsonResponse($assetFamilyDetails->normalize());
     }
 
-    private function getReferenceEntityIdentifierOr404(string $identifier): ReferenceEntityIdentifier
+    private function getAssetFamilyIdentifierOr404(string $identifier): AssetFamilyIdentifier
     {
         try {
-            return ReferenceEntityIdentifier::fromString($identifier);
+            return AssetFamilyIdentifier::fromString($identifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
     }
 
-    private function findReferenceEntityDetailsOr404(ReferenceEntityIdentifier $identifier): ReferenceEntityDetails
+    private function findAssetFamilyDetailsOr404(AssetFamilyIdentifier $identifier): AssetFamilyDetails
     {
-        $result = $this->findOneReferenceEntityQuery->find($identifier);
+        $result = $this->findOneAssetFamilyQuery->find($identifier);
         if (null === $result) {
             throw new NotFoundHttpException();
         }
@@ -75,14 +75,14 @@ class GetAction
         return $this->hydratePermissions($result);
     }
 
-    private function hydratePermissions(ReferenceEntityDetails $referenceEntityDetails): ReferenceEntityDetails
+    private function hydratePermissions(AssetFamilyDetails $assetFamilyDetails): AssetFamilyDetails
     {
-        $canEditQuery = new CanEditReferenceEntityQuery(
-            (string) $referenceEntityDetails->identifier,
+        $canEditQuery = new CanEditAssetFamilyQuery(
+            (string) $assetFamilyDetails->identifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
-        $referenceEntityDetails->isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($canEditQuery);
+        $assetFamilyDetails->isAllowedToEdit = ($this->canEditAssetFamilyQueryHandler)($canEditQuery);
 
-        return $referenceEntityDetails;
+        return $assetFamilyDetails;
     }
 }

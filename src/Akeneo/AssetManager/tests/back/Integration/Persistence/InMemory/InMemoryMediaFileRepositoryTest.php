@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryMediaFileRepository;
-use Akeneo\ReferenceEntity\Domain\Repository\MediaFileNotFoundException;
+use Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository;
+use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\TestCase;
 

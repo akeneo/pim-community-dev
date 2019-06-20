@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -57,7 +57,7 @@ abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
     private function convertCommonProperties(AbstractPlatform $platform, array $row): array
     {
         $row['identifier'] = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $platform);
-        $row['reference_entity_identifier'] = Type::getType(Type::STRING)->convertToPHPValue($row['reference_entity_identifier'], $platform);
+        $row['asset_family_identifier'] = Type::getType(Type::STRING)->convertToPHPValue($row['asset_family_identifier'], $platform);
         $row['code'] = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $platform);
         $row['labels'] = json_decode($row['labels'], true);
         $row['attribute_order'] = Type::getType(Type::INTEGER)->convertToPHPValue($row['attribute_order'], $platform);

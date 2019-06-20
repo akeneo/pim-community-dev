@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ValueHydratorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItemHydratorInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItemHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
-class RecordItemHydratorSpec extends ObjectBehavior
+class AssetItemHydratorSpec extends ObjectBehavior
 {
     public function let(
         Connection $connection,
@@ -38,11 +38,11 @@ class RecordItemHydratorSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(RecordItemHydratorInterface::class);
+        $this->shouldHaveType(AssetItemHydratorInterface::class);
     }
 
-    public function it_hydrates_a_record_item(
-        RecordQuery $recordQuery,
+    public function it_hydrates_a_asset_item(
+        AssetQuery $assetQuery,
         FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         ValueKeyCollection $valueKeyCollection,
@@ -51,13 +51,13 @@ class RecordItemHydratorSpec extends ObjectBehavior
         AbstractAttribute $textilesAttribute,
         ValueHydratorInterface $valueHydrator
     ) {
-        $recordQuery->getFilter('reference_entity')->willReturn([
-            'field' => 'reference_entity',
+        $assetQuery->getFilter('asset_family')->willReturn([
+            'field' => 'asset_family',
             'operator' => '=',
             'value' => 'wash_instruction'
         ]);
-        $recordQuery->getChannel()->willReturn('ecommerce');
-        $recordQuery->getLocale()->willReturn('fr_FR');
+        $assetQuery->getChannel()->willReturn('ecommerce');
+        $assetQuery->getLocale()->willReturn('fr_FR');
 
         $valueKeyCollection->normalize()->willReturn([
             'label-fr_FR',
@@ -65,12 +65,12 @@ class RecordItemHydratorSpec extends ObjectBehavior
         ]);
 
         $findRequiredValueKeyCollectionForChannelAndLocales->find(
-            ReferenceEntityIdentifier::fromString('wash_instruction'),
+            AssetFamilyIdentifier::fromString('wash_instruction'),
             ChannelIdentifier::fromCode('ecommerce'),
             LocaleIdentifierCollection::fromNormalized(['fr_FR'])
         )->willReturn($valueKeyCollection);
 
-        $findAttributesIndexedByIdentifier->find(ReferenceEntityIdentifier::fromString('wash_instruction'))
+        $findAttributesIndexedByIdentifier->find(AssetFamilyIdentifier::fromString('wash_instruction'))
             ->willReturn([
                 'label' => $labelAttribute,
                 'image' => $imageAttribute,
@@ -119,28 +119,28 @@ class RecordItemHydratorSpec extends ObjectBehavior
 
         $row = [
             'identifier' => 'dry_cotton',
-            'reference_entity_identifier' => 'wash_instruction',
+            'asset_family_identifier' => 'wash_instruction',
             'code' => 'dry_cotton',
             'value_collection' => json_encode($values),
             'attribute_as_label' => 'label',
             'attribute_as_image' => 'image',
         ];
 
-        $expectedRecordItem = new RecordItem();
-        $expectedRecordItem->identifier = 'dry_cotton';
-        $expectedRecordItem->referenceEntityIdentifier = 'wash_instruction';
-        $expectedRecordItem->code = 'dry_cotton';
-        $expectedRecordItem->labels = ['fr_FR' => 'Lavage cotton à sec', 'en_US' => 'Cotton dry wash'];
-        $expectedRecordItem->image = [
+        $expectedAssetItem = new AssetItem();
+        $expectedAssetItem->identifier = 'dry_cotton';
+        $expectedAssetItem->assetFamilyIdentifier = 'wash_instruction';
+        $expectedAssetItem->code = 'dry_cotton';
+        $expectedAssetItem->labels = ['fr_FR' => 'Lavage cotton à sec', 'en_US' => 'Cotton dry wash'];
+        $expectedAssetItem->image = [
             'file' => 'cottondry.png',
             'key' => '/tmp/cottondry.png'
         ];
-        $expectedRecordItem->values = $values;
-        $expectedRecordItem->completeness = [
+        $expectedAssetItem->values = $values;
+        $expectedAssetItem->completeness = [
             'complete' => 1,
             'required' => 2
         ];
 
-        $this->hydrate($row, $recordQuery)->shouldBeLike($expectedRecordItem);
+        $this->hydrate($row, $assetQuery)->shouldBeLike($expectedAssetItem);
     }
 }

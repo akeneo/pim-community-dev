@@ -2,67 +2,67 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\Subscribers;
+namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexByReferenceEntityInBackgroundInterface;
-use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\AssetManager\Application\Asset\Subscribers\IndexByAssetFamilyInBackgroundInterface;
+use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IndexRecordSubscriberSpec extends ObjectBehavior
+class IndexAssetSubscriberSpec extends ObjectBehavior
 {
     function let(
-        RecordIndexerInterface $recordIndexer,
-        IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
+        AssetIndexerInterface $assetIndexer,
+        IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground
     ) {
-        $this->beConstructedWith($recordIndexer, $indexByReferenceEntityInBackground);
+        $this->beConstructedWith($assetIndexer, $indexByAssetFamilyInBackground);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexRecordSubscriber::class);
+        $this->shouldHaveType(\Akeneo\AssetManager\Application\Asset\Subscribers\IndexAssetSubscriber::class);
     }
 
     function it_subscribes_to_events()
     {
         $this::getSubscribedEvents()->shouldReturn([
-            RecordUpdatedEvent::class    => 'whenRecordUpdated',
+            AssetUpdatedEvent::class    => 'whenAssetUpdated',
             AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
         ]);
     }
 
-    function it_triggers_the_reindexation_of_an_updated_record(RecordIndexerInterface $recordIndexer)
+    function it_triggers_the_reindexation_of_an_updated_asset(AssetIndexerInterface $assetIndexer)
     {
-        $recordIdentifier = RecordIdentifier::fromString('starck');
-        $recordIndexer->index($recordIdentifier)->shouldBeCalled();
+        $assetIdentifier = AssetIdentifier::fromString('starck');
+        $assetIndexer->index($assetIdentifier)->shouldBeCalled();
 
-        $this->whenRecordUpdated(new RecordUpdatedEvent(
-            $recordIdentifier,
-            RecordCode::fromString('starck'),
-            ReferenceEntityIdentifier::fromString('designer')
+        $this->whenAssetUpdated(new AssetUpdatedEvent(
+            $assetIdentifier,
+            AssetCode::fromString('starck'),
+            AssetFamilyIdentifier::fromString('designer')
         ));
     }
 
     function it_runs_a_reindexing_command_when_an_attribute_is_removed(
-        IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
+        IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $this->whenAttributeIsDeleted(
             new AttributeDeletedEvent(
-                $referenceEntityIdentifier,
+                $assetFamilyIdentifier,
                 AttributeIdentifier::fromString('name_designer_123')
             )
         );
-        $indexByReferenceEntityInBackground->execute($referenceEntityIdentifier)->shouldBeCalled();
+        $indexByAssetFamilyInBackground->execute($assetFamilyIdentifier)->shouldBeCalled();
     }
 }
 

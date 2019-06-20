@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -44,7 +44,7 @@ class SqlAttributeExists implements AttributeExistsInterface
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_reference_entity_attribute
+            FROM akeneo_asset_manager_attribute
             WHERE identifier = :identifier
         ) as is_existing
 SQL;
@@ -60,18 +60,18 @@ SQL;
         return $isExisting;
     }
 
-    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
+    public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): bool
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_reference_entity_attribute
-            WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier
+            FROM akeneo_asset_manager_attribute
+            WHERE code = :code AND asset_family_identifier = :asset_family_identifier
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'code' => $attributeCode,
-            'reference_entity_identifier' => $referenceEntityIdentifier,
+            'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -82,20 +82,20 @@ SQL;
         return $isExisting;
     }
 
-    public function withReferenceEntityIdentifierAndOrder(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+    public function withAssetFamilyIdentifierAndOrder(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeOrder $order
     ): bool {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_reference_entity_attribute
-            WHERE attribute_order = :attribute_order AND reference_entity_identifier = :reference_entity_identifier
+            FROM akeneo_asset_manager_attribute
+            WHERE attribute_order = :attribute_order AND asset_family_identifier = :asset_family_identifier
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'attribute_order' => $order->intValue(),
-            'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+            'asset_family_identifier' => (string) $assetFamilyIdentifier,
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();

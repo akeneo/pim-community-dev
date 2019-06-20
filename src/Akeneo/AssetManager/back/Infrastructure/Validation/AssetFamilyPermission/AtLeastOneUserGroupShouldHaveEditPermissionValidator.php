@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamilyPermission;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsCommand;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -32,11 +32,11 @@ class AtLeastOneUserGroupShouldHaveEditPermissionValidator extends ConstraintVal
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof SetReferenceEntityPermissionsCommand) {
+        if (!$command instanceof SetAssetFamilyPermissionsCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
-                    SetReferenceEntityPermissionsCommand::class,
+                    SetAssetFamilyPermissionsCommand::class,
                     get_class($command)
                 )
             );
@@ -53,7 +53,7 @@ class AtLeastOneUserGroupShouldHaveEditPermissionValidator extends ConstraintVal
         }
     }
 
-    private function validateCommand(SetReferenceEntityPermissionsCommand $command): void
+    private function validateCommand(SetAssetFamilyPermissionsCommand $command): void
     {
         $canEdit = false;
 

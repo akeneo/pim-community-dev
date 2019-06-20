@@ -1,12 +1,12 @@
-import {hydrator} from 'akeneoreferenceentity/application/hydrator/attribute';
+import {hydrator} from 'akeneoassetmanager/application/hydrator/attribute';
 
-describe('akeneo > reference entity > application > hydrator --- attribute', () => {
+describe('akeneo > asset family > application > hydrator --- attribute', () => {
   test('I can hydrate a new attribute', () => {
     const hydrate = hydrator(
-      ({identifier, reference_entity_identifier, code, labels, is_required, valuePerLocale, valuePerChannel, type}) => {
+      ({identifier, asset_family_identifier, code, labels, is_required, valuePerLocale, valuePerChannel, type}) => {
         expect(identifier).toEqual('description_1234');
         expect(code).toEqual('description');
-        expect(reference_entity_identifier).toEqual('designer');
+        expect(asset_family_identifier).toEqual('designer');
         expect(labels).toEqual({en_US: 'Description'});
       }
     );
@@ -14,7 +14,7 @@ describe('akeneo > reference entity > application > hydrator --- attribute', () 
     expect(
       hydrate({
         identifier: 'description_1234',
-        reference_entity_identifier: 'designer',
+        asset_family_identifier: 'designer',
         code: 'description',
         labels: {en_US: 'Description'},
         is_required: true,
@@ -29,7 +29,7 @@ describe('akeneo > reference entity > application > hydrator --- attribute', () 
     expect(() => hydrator()({})).toThrow();
     expect(() => hydrator()({labels: {}})).toThrow();
     expect(() => hydrator()({identifier: 'starck_1234'})).toThrow();
-    expect(() => hydrator()({reference_entity_identifier: 'designer'})).toThrow();
+    expect(() => hydrator()({asset_family_identifier: 'designer'})).toThrow();
     expect(() => hydrator()({valuePerLocale: false})).toThrow();
   });
 });

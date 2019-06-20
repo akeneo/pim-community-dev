@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "GET",
-        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
         "query": {
-            "referenceEntityIdentifier": "brand",
+            "assetFamilyIdentifier": "brand",
             "locales": "en_US"
         }
     },
@@ -12,13 +12,13 @@
         "body": {
             "_links": {
                 "self": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?locales=en_US"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?locales=en_US"
                 },
                 "first": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?locales=en_US"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?locales=en_US"
                 },
                 "next": {
-                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?locales=en_US&search_after=brand_3"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?locales=en_US&search_after=brand_3"
                 }
             },
             "_embedded": {
@@ -26,7 +26,7 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_1"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_1"
                             }
                         },
                         "code": "brand_1",
@@ -57,7 +57,7 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_2"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_2"
                             }
                         },
                         "code": "brand_2",
@@ -88,7 +88,7 @@
                     {
                         "_links": {
                             "self": {
-                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_3"
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_3"
                             }
                         },
                         "code": "brand_3",

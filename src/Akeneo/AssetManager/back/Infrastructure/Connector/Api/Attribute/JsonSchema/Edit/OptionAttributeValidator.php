@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use JsonSchema\Validator;
 
 class OptionAttributeValidator implements AttributeValidatorInterface
 {
     public function validate(array $normalizedAttribute): array
     {
-        $record = Validator::arrayToObjectRecursive($normalizedAttribute);
+        $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
-        $validator->validate($record, $this->getJsonSchema());
+        $validator->validate($asset, $this->getJsonSchema());
 
         return $validator->getErrors();
     }

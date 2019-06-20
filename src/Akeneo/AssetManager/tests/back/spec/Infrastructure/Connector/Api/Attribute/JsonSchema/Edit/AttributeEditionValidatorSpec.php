@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
 class AttributeEditionValidatorSpec extends ObjectBehavior
@@ -44,7 +44,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
     ) {
         $optionAttribute = OptionAttribute::create(
             AttributeIdentifier::fromString('option'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('option'),
             LabelCollection::fromArray(['en_US' => 'Main material']),
             AttributeOrder::fromInteger(4),
@@ -55,7 +55,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
 
         $imageAttribute = ImageAttribute::create(
             AttributeIdentifier::fromString('photo'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('photo'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(3),
@@ -68,7 +68,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
 
         $textAttribute = TextAttribute::createText(
             AttributeIdentifier::fromString('foo'),
-            ReferenceEntityIdentifier::fromString('foo'),
+            AssetFamilyIdentifier::fromString('foo'),
             AttributeCode::fromString('main_color'),
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(0),
@@ -92,18 +92,18 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
             ->getByIdentifier(AttributeIdentifier::fromString('text'))
             ->willReturn($textAttribute);
 
-        $getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('photo')
         )->willReturn(AttributeIdentifier::fromString('photo'));
 
-        $getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('option')
         )->willReturn(AttributeIdentifier::fromString('option'));
 
-        $getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $getAttributeIdentifier->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('text')
         )->willReturn(AttributeIdentifier::fromString('text'));
 
@@ -122,7 +122,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
     function it_validates_an_image_attribute()
     {
         $this->validate(
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('photo'),
             ['code' => 'photo']
         )->shouldBeArray();
@@ -131,7 +131,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
     function it_validates_an_option_attribute()
     {
         $this->validate(
-            ReferenceEntityIdentifier::fromString('brand'),
+            AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('option'),
             ['code' => 'option']
         )->shouldBeArray();
@@ -141,7 +141,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
     {
         $this->shouldThrow(\LogicException::class)
             ->during('validate', [
-                ReferenceEntityIdentifier::fromString('brand'),
+                AssetFamilyIdentifier::fromString('brand'),
                 AttributeCode::fromString('text'),
                 ['code' => 'starck']
             ]);

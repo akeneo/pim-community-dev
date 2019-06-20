@@ -2,7 +2,7 @@ import {
   createPermissionCollection,
   denormalizePermissionCollection,
   lowerLevel,
-} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+} from 'akeneoassetmanager/domain/model/asset-family/permission';
 
 const normalizedPermissions = [
   {
@@ -27,7 +27,7 @@ const normalizedPermissions = [
   },
 ];
 
-describe('akeneo > reference entity > domain > model > reference entity --- permission', () => {
+describe('akeneo > asset family > domain > model > asset family --- permission', () => {
   test('I can create a new permission collection', () => {
     expect(createPermissionCollection([]).normalize()).toEqual([]);
 

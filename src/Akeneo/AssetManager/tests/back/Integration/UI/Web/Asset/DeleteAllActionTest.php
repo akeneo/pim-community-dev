@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
+namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteAllActionTest extends ControllerIntegrationTestCase
 {
-    private const DELETE_ALL_RECORDS_ROUTE = 'akeneo_reference_entities_record_delete_all_rest';
+    private const DELETE_ALL_ASSETS_ROUTE = 'akeneo_asset_manager_asset_delete_all_rest';
 
     /* @var Client */
     private $client;
@@ -48,28 +48,28 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_deletes_all_records(): void
+    public function it_deletes_all_assets(): void
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/DeleteAll/ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/DeleteAll/ok.json');
     }
 
     /** @test */
     public function it_returns_an_error_when_the_user_does_not_have_the_rights()
     {
         $this->revokeDeletionRights();
-        $this->webClientHelper->assertRequest($this->client, 'Record/DeleteAll/forbidden.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/DeleteAll/forbidden.json');
     }
 
     /** @test */
-    public function it_does_not_return_an_error_when_the_reference_entity_does_not_exist()
+    public function it_does_not_return_an_error_when_the_asset_family_does_not_exist()
     {
-        $this->webClientHelper->assertRequest($this->client, 'Record/DeleteAll/delete_not_found.json');
+        $this->webClientHelper->assertRequest($this->client, 'Asset/DeleteAll/delete_not_found.json');
     }
 
     /**
@@ -80,9 +80,9 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::DELETE_ALL_RECORDS_ROUTE,
+            self::DELETE_ALL_ASSETS_ROUTE,
             [
-                'referenceEntityIdentifier' => 'designer',
+                'assetFamilyIdentifier' => 'designer',
             ],
             'DELETE'
         );
@@ -93,14 +93,14 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_reference_entity()
+    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_asset_family()
     {
         $this->forbidsEdit();
         $this->webClientHelper->callRoute(
             $this->client,
-            self::DELETE_ALL_RECORDS_ROUTE,
+            self::DELETE_ALL_ASSETS_ROUTE,
             [
-                'referenceEntityIdentifier' => 'designer',
+                'assetFamilyIdentifier' => 'designer',
             ],
             'DELETE',
             [
@@ -112,63 +112,63 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
 
     private function forbidsEdit(): void
     {
-        $this->get('akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler')
+        $this->get('akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler')
             ->forbid();
     }
 
     private function loadFixtures(): void
     {
-        $recordRepository = $this->getRecordRepository();
+        $assetRepository = $this->getAssetRepository();
 
-        $entityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
-        $recordIdentifier = $recordRepository->nextIdentifier($entityIdentifier, $recordCode);
-        $recordItem = $this->createRecord($entityIdentifier, $recordCode, $recordIdentifier);
-        $recordRepository->create($recordItem);
+        $entityIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('starck');
+        $assetIdentifier = $assetRepository->nextIdentifier($entityIdentifier, $assetCode);
+        $assetItem = $this->createAsset($entityIdentifier, $assetCode, $assetIdentifier);
+        $assetRepository->create($assetItem);
 
-        $entityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('dyson');
-        $recordIdentifier = $recordRepository->nextIdentifier($entityIdentifier, $recordCode);
-        $recordItem = $this->createRecord($entityIdentifier, $recordCode, $recordIdentifier);
-        $recordRepository->create($recordItem);
+        $entityIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('dyson');
+        $assetIdentifier = $assetRepository->nextIdentifier($entityIdentifier, $assetCode);
+        $assetItem = $this->createAsset($entityIdentifier, $assetCode, $assetIdentifier);
+        $assetRepository->create($assetItem);
 
-        $entityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $recordCode = RecordCode::fromString('cogip');
-        $recordIdentifier = $recordRepository->nextIdentifier($entityIdentifier, $recordCode);
-        $recordItem = $this->createRecord($entityIdentifier, $recordCode, $recordIdentifier);
-        $recordRepository->create($recordItem);
+        $entityIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetCode = AssetCode::fromString('cogip');
+        $assetIdentifier = $assetRepository->nextIdentifier($entityIdentifier, $assetCode);
+        $assetItem = $this->createAsset($entityIdentifier, $assetCode, $assetIdentifier);
+        $assetRepository->create($assetItem);
 
-        $entityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $recordCode = RecordCode::fromString('sbep');
-        $recordIdentifier = $recordRepository->nextIdentifier($entityIdentifier, $recordCode);
-        $recordItem = $this->createRecord($entityIdentifier, $recordCode, $recordIdentifier);
-        $recordRepository->create($recordItem);
+        $entityIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetCode = AssetCode::fromString('sbep');
+        $assetIdentifier = $assetRepository->nextIdentifier($entityIdentifier, $assetCode);
+        $assetItem = $this->createAsset($entityIdentifier, $assetCode, $assetIdentifier);
+        $assetRepository->create($assetItem);
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_referenceentity_records_delete_all', true);
+        $securityFacadeStub->setIsGranted('akeneo_assetmanager_assets_delete_all', true);
     }
 
-    private function createRecord(
-        ReferenceEntityIdentifier $entityIdentifier,
-        RecordCode $recordCode,
-        RecordIdentifier $recordIdentifier
-    ): Record {
-        return Record::create(
-            $recordIdentifier,
+    private function createAsset(
+        AssetFamilyIdentifier $entityIdentifier,
+        AssetCode $assetCode,
+        AssetIdentifier $assetIdentifier
+    ): Asset {
+        return Asset::create(
+            $assetIdentifier,
             $entityIdentifier,
-            $recordCode,
+            $assetCode,
             ValueCollection::fromValues([])
         );
     }
 
-    private function getRecordRepository(): RecordRepositoryInterface
+    private function getAssetRepository(): AssetRepositoryInterface
     {
-        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        return $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
     }
 
     private function revokeDeletionRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_referenceentity_records_delete_all', false);
+        $securityFacadeStub->setIsGranted('akeneo_assetmanager_assets_delete_all', false);
     }
 }

@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecordsInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyHasAssetsInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class InMemoryReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
+class InMemoryAssetFamilyHasAssets implements AssetFamilyHasAssetsInterface
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    public function __construct(InMemoryRecordRepository $recordRepository)
+    public function __construct(InMemoryAssetRepository $assetRepository)
     {
-        $this->recordRepository = $recordRepository;
+        $this->assetRepository = $assetRepository;
     }
 
-    public function hasRecords(ReferenceEntityIdentifier $identifier): bool
+    public function hasAssets(AssetFamilyIdentifier $identifier): bool
     {
-        return $this->recordRepository->referenceEntityHasRecords($identifier);
+        return $this->assetRepository->assetFamilyHasAssets($identifier);
     }
 }

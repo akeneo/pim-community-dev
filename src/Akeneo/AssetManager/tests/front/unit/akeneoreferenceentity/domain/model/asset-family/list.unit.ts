@@ -1,98 +1,98 @@
 import {
-  createReferenceEntityListItem,
-  denormalizeReferenceEntityListItem,
-  createEmptyReferenceEntityListItem,
-} from 'akeneoreferenceentity/domain/model/reference-entity/list';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+  createAssetFamilyListItem,
+  denormalizeAssetFamilyListItem,
+  createEmptyAssetFamilyListItem,
+} from 'akeneoassetmanager/domain/model/asset-family/list';
+import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const michelIdentifier = createIdentifier('michel');
 const michelLabels = createLabelCollection({en_US: 'Michel'});
 const didierCode = createIdentifier('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 
-describe('akeneo > reference entity > domain > model --- reference entity', () => {
-  test('I can create a new reference entity with an identifier and labels', () => {
-    expect(createReferenceEntityListItem(michelIdentifier, michelLabels, createEmptyFile()).getIdentifier()).toBe(
+describe('akeneo > asset family > domain > model --- asset family', () => {
+  test('I can create a new asset family with an identifier and labels', () => {
+    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getIdentifier()).toBe(
       michelIdentifier
     );
   });
 
-  test('I cannot create a malformed reference entity', () => {
+  test('I cannot create a malformed asset family', () => {
     expect(() => {
-      createReferenceEntityListItem(michelIdentifier);
-    }).toThrow('ReferenceEntityListItem expects a LabelCollection as labelCollection argument');
+      createAssetFamilyListItem(michelIdentifier);
+    }).toThrow('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
     expect(() => {
-      createReferenceEntityListItem();
-    }).toThrow('ReferenceEntityListItem expects an Identifier as identifier argument');
+      createAssetFamilyListItem();
+    }).toThrow('AssetFamilyListItem expects an Identifier as identifier argument');
     expect(() => {
-      createReferenceEntityListItem(12);
-    }).toThrow('ReferenceEntityListItem expects an Identifier as identifier argument');
+      createAssetFamilyListItem(12);
+    }).toThrow('AssetFamilyListItem expects an Identifier as identifier argument');
     expect(() => {
-      createReferenceEntityListItem(michelIdentifier, 52);
-    }).toThrow('ReferenceEntityListItem expects a LabelCollection as labelCollection argument');
+      createAssetFamilyListItem(michelIdentifier, 52);
+    }).toThrow('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
     expect(() => {
-      createReferenceEntityListItem(michelIdentifier, 52, {filePath: 'my_path.png', originalFilename: 'path.png'});
-    }).toThrow('ReferenceEntityListItem expects a LabelCollection as labelCollection argument');
+      createAssetFamilyListItem(michelIdentifier, 52, {filePath: 'my_path.png', originalFilename: 'path.png'});
+    }).toThrow('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
     expect(() => {
-      createReferenceEntityListItem(michelIdentifier, michelLabels, {
+      createAssetFamilyListItem(michelIdentifier, michelLabels, {
         filePath: 'my_path.png',
         originalFilename: 'path.png',
       });
-    }).toThrow('ReferenceEntityListItem expects a File as image argument');
+    }).toThrow('AssetFamilyListItem expects a File as image argument');
   });
 
-  test('I can compare two reference entities', () => {
+  test('I can compare two asset families', () => {
     const michelLabels = createLabelCollection({en_US: 'Michel'});
     expect(
-      createReferenceEntityListItem(didierCode, didierLabels, createEmptyFile()).equals(
-        createReferenceEntityListItem(didierCode, didierLabels, createEmptyFile())
+      createAssetFamilyListItem(didierCode, didierLabels, createEmptyFile()).equals(
+        createAssetFamilyListItem(didierCode, didierLabels, createEmptyFile())
       )
     ).toBe(true);
     expect(
-      createReferenceEntityListItem(didierCode, didierLabels, createEmptyFile()).equals(
-        createReferenceEntityListItem(michelIdentifier, michelLabels, createEmptyFile())
+      createAssetFamilyListItem(didierCode, didierLabels, createEmptyFile()).equals(
+        createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile())
       )
     ).toBe(false);
   });
 
   test('I can get a label for the given locale', () => {
-    expect(createReferenceEntityListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('en_US')).toBe(
+    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('en_US')).toBe(
       'Michel'
     );
-    expect(createReferenceEntityListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR')).toBe(
+    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR')).toBe(
       '[michel]'
     );
     expect(
-      createReferenceEntityListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR', false)
+      createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR', false)
     ).toBe('');
   });
 
   test('I can get the collection of labels', () => {
-    expect(createReferenceEntityListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabelCollection()).toBe(
+    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabelCollection()).toBe(
       michelLabels
     );
   });
 
-  test('I can create an empty reference entity creation', () => {
-    expect(createEmptyReferenceEntityListItem()).toEqual(
-      denormalizeReferenceEntityListItem({identifier: '', labels: {}, image: null})
+  test('I can create an empty asset family creation', () => {
+    expect(createEmptyAssetFamilyListItem()).toEqual(
+      denormalizeAssetFamilyListItem({identifier: '', labels: {}, image: null})
     );
   });
 
-  test('I can normalize a reference entity', () => {
-    const michelReferenceEntity = createReferenceEntityListItem(michelIdentifier, michelLabels, createEmptyFile());
+  test('I can normalize an asset family', () => {
+    const michelAssetFamily = createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile());
 
-    expect(michelReferenceEntity.normalize()).toEqual({
+    expect(michelAssetFamily.normalize()).toEqual({
       identifier: 'michel',
       labels: {en_US: 'Michel'},
       image: null,
     });
   });
 
-  test('I can normalize a reference entity', () => {
-    const michelReferenceEntity = denormalizeReferenceEntityListItem({
+  test('I can normalize an asset family', () => {
+    const michelAssetFamily = denormalizeAssetFamilyListItem({
       identifier: 'michel',
       labels: {
         en_US: 'Michel',
@@ -100,7 +100,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
       image: null,
     });
 
-    expect(michelReferenceEntity.normalize()).toEqual({
+    expect(michelAssetFamily.normalize()).toEqual({
       identifier: 'michel',
       labels: {en_US: 'Michel'},
       image: null,

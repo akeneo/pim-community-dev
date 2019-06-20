@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -65,16 +65,16 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates a text attribute "([^"]*)" linked to the reference entity "([^"]*)" with:$/
+     * @When /^the user creates a text attribute "([^"]*)" linked to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesATextAttributeLinkedToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    public function theUserCreatesATextAttributeLinkedToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
         $attributeData['type'] = 'text';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
-        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['identifier']['asset_family_identifier'] = $assetFamilyIdentifier;
+        $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -97,21 +97,21 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is a text attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     * @Then /^there is a text attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
-    public function thereIsAnTextAttributeInTheReferenceEntityWith(
+    public function thereIsAnTextAttributeInTheAssetFamilyWith(
         string $attributeCode,
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         TableNode $attributeData
     ) {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $expected = current($attributeData->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
-        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['asset_family_identifier'] = $assetFamilyIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
@@ -132,16 +132,16 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates a record attribute "([^"]*)" linked to the reference entity "([^"]*)" with:$/
+     * @When /^the user creates a asset attribute "([^"]*)" linked to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesARecordAttributeLinkedToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    public function theUserCreatesAAssetAttributeLinkedToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
-        $attributeData['type'] = 'record';
+        $attributeData['type'] = 'asset';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
-        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['identifier']['asset_family_identifier'] = $assetFamilyIdentifier;
+        $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -160,27 +160,27 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is a record attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     * @Then /^there is a asset attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
-    public function thereIsARecordAttributeInTheReferenceEntityWith(
+    public function thereIsAAssetAttributeInTheAssetFamilyWith(
         string $attributeCode,
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         TableNode $attributeData
     ) {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $expected = current($attributeData->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
-        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['asset_family_identifier'] = $assetFamilyIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
-        $expected['record_type'] = (string) $expected['record_type'];
+        $expected['asset_type'] = (string) $expected['asset_type'];
         ksort($expected);
 
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
@@ -191,16 +191,16 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates a record collection attribute "([^"]*)" linked to the reference entity "([^"]*)" with:$/
+     * @When /^the user creates a asset collection attribute "([^"]*)" linked to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesARecordCollectionAttributeLinkedToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    public function theUserCreatesAAssetCollectionAttributeLinkedToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
-        $attributeData['type'] = 'record_collection';
+        $attributeData['type'] = 'asset_collection';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
-        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['identifier']['asset_family_identifier'] = $assetFamilyIdentifier;
+        $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -220,27 +220,27 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is a record collection attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     * @Then /^there is a asset collection attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
-    public function thereIsARecordCollectionAttributeInTheReferenceEntityWith(
+    public function thereIsAAssetCollectionAttributeInTheAssetFamilyWith(
         string $attributeCode,
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         TableNode $attributeData
     ) {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $expected = current($attributeData->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
-        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['asset_family_identifier'] = $assetFamilyIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
-        $expected['record_type'] = (string) $expected['record_type'];
+        $expected['asset_type'] = (string) $expected['asset_type'];
         ksort($expected);
 
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
@@ -251,15 +251,15 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is no attribute "([^"]*)" for the reference entity "([^"]*)"$/
+     * @Then /^there is no attribute "([^"]*)" for the asset family "([^"]*)"$/
      */
-    public function thereIsNoAttributeInTheReferenceEntity(
+    public function thereIsNoAttributeInTheAssetFamily(
         string $attributeCode,
-        string $referenceEntityIdentifier
+        string $assetFamilyIdentifier
     ) {
         $attribute = null;
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
@@ -272,18 +272,18 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates an image attribute "([^"]*)" linked to the reference entity "([^"]*)" with:$/
+     * @When /^the user creates an image attribute "([^"]*)" linked to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesAnImageAttributeLinkedToTheReferenceEntityWith(
+    public function theUserCreatesAnImageAttributeLinkedToTheAssetFamilyWith(
         $attributeCode,
-        $referenceEntityIdentifier,
+        $assetFamilyIdentifier,
         TableNode $attributeData
     ) {
         $attributeData = current($attributeData->getHash());
 
         $attributeData['type'] = 'image';
         $attributeData['code'] = $attributeCode;
-        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
@@ -302,22 +302,22 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is an image attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     * @Then /^there is an image attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
     public function thereIsAnAttributeWith(
         string $attributeCode,
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         TableNode $attributeData
     ) {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $expected = current($attributeData->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
         $expected['code'] = $attributeCode;
-        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['asset_family_identifier'] = $assetFamilyIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
@@ -335,16 +335,16 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Given /^(\d+) random attributes for a reference entity$/
+     * @Given /^(\d+) random attributes for an asset family$/
      */
-    public function randomAttributesForReferenceEntity(int $number)
+    public function randomAttributesForAssetFamily(int $number)
     {
         for ($i = 2; $i < $number; $i++) {
             $attributeCode = uniqid();
             $attributeData['type'] = 'text';
             $attributeData['identifier']['identifier'] = $attributeCode;
-            $attributeData['identifier']['reference_entity_identifier'] = 'designer';
-            $attributeData['reference_entity_identifier'] = 'designer';
+            $attributeData['identifier']['asset_family_identifier'] = 'designer';
+            $attributeData['asset_family_identifier'] = 'designer';
             $attributeData['code'] = $attributeCode;
             $attributeData['order'] = $i;
             $attributeData['is_required'] = false;
@@ -372,8 +372,8 @@ class CreateAttributeContext implements Context
 
         $attributeData['type'] = 'option';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = 'designer';
-        $attributeData['reference_entity_identifier'] = 'designer';
+        $attributeData['identifier']['asset_family_identifier'] = 'designer';
+        $attributeData['asset_family_identifier'] = 'designer';
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -400,8 +400,8 @@ class CreateAttributeContext implements Context
 
         $attributeData['type'] = 'option_collection';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = 'designer';
-        $attributeData['reference_entity_identifier'] = 'designer';
+        $attributeData['identifier']['asset_family_identifier'] = 'designer';
+        $attributeData['asset_family_identifier'] = 'designer';
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -422,15 +422,15 @@ class CreateAttributeContext implements Context
     /**
      * @When /^the user creates an option attribute "([^"]*)" with:$/
      */
-    public function theUserCreatesAnOptionAttributeLinkedToTheReferenceEntityWith(
+    public function theUserCreatesAnOptionAttributeLinkedToTheAssetFamilyWith(
         string $attributeCode,
         TableNode $attributeData
     ): void {
         $attributeData = current($attributeData->getHash());
         $attributeData['type'] = 'option';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = 'designer';
-        $attributeData['reference_entity_identifier'] = 'designer';
+        $attributeData['identifier']['asset_family_identifier'] = 'designer';
+        $attributeData['asset_family_identifier'] = 'designer';
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -454,13 +454,13 @@ class CreateAttributeContext implements Context
     public function thereIsAnOptionAttributeWith(string $attributeCode, TableNode $attributeData): void
     {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString($attributeCode)
         );
         $expected = current($attributeData->getHash());
         $expected['code'] = $attributeCode;
         $expected['identifier'] = (string) $attributeIdentifier;
-        $expected['reference_entity_identifier'] = 'designer';
+        $expected['asset_family_identifier'] = 'designer';
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
@@ -484,8 +484,8 @@ class CreateAttributeContext implements Context
         $attributeData = current($attributeData->getHash());
         $attributeData['type'] = 'option_collection';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = 'designer';
-        $attributeData['reference_entity_identifier'] = 'designer';
+        $attributeData['identifier']['asset_family_identifier'] = 'designer';
+        $attributeData['asset_family_identifier'] = 'designer';
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -509,12 +509,12 @@ class CreateAttributeContext implements Context
     public function thereIsAnOptionCollectionAttributeWith(string $attributeCode, TableNode $attributeData): void
     {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString($attributeCode)
         );
         $expected = current($attributeData->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
-        $expected['reference_entity_identifier'] = 'designer';
+        $expected['asset_family_identifier'] = 'designer';
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
@@ -532,16 +532,16 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates a number attribute "([^"]*)" to the reference entity "([^"]*)" with:$/
+     * @When /^the user creates a number attribute "([^"]*)" to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesANumberAttributeToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    public function theUserCreatesANumberAttributeToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
         $attributeData['type'] = 'number';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
-        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['identifier']['asset_family_identifier'] = $assetFamilyIdentifier;
+        $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -561,18 +561,18 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is a number attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     * @Then /^there is a number attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
-    public function thereIsANumberAttributeInTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $expected): void
+    public function thereIsANumberAttributeInTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $expected): void
     {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $expected = current($expected->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
-        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['asset_family_identifier'] = $assetFamilyIdentifier;
         $expected['code'] = $attributeCode;
         $expected['order'] = (int)$expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
@@ -590,16 +590,16 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates an url attribute "([^"]*)" to the reference entity "([^"]*)" with:$/
+     * @When /^the user creates an url attribute "([^"]*)" to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesAnUrlAttributeToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    public function theUserCreatesAnUrlAttributeToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
         $attributeData['type'] = 'url';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
-        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['identifier']['asset_family_identifier'] = $assetFamilyIdentifier;
+        $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
@@ -620,18 +620,18 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is an url attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     * @Then /^there is an url attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
-    public function thereIsAnUrlAttributeInTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $expected): void
+    public function thereIsAnUrlAttributeInTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $expected): void
     {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $expected = current($expected->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
-        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['asset_family_identifier'] = $assetFamilyIdentifier;
         $expected['code'] = $attributeCode;
         $expected['order'] = (int)$expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);

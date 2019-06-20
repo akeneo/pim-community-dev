@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditIsRequiredCommandFactorySpec extends ObjectBehavior
@@ -16,15 +16,15 @@ class EditIsRequiredCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_required_edits()
     {
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'name', 'asset_family_identifier' => 'designer'],
             'is_required'   => true,
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'  => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier'  => ['identifier' => 'name', 'asset_family_identifier' => 'designer'],
             'is_required' => null,
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'name', 'asset_family_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -48,7 +48,7 @@ class EditIsRequiredCommandFactorySpec extends ObjectBehavior
                 [
                     'identifier'     => [
                         'identifier'                 => 'portrait',
-                        'reference_entity_identifier' => 'designer',
+                        'asset_family_identifier' => 'designer',
                     ],
                     'wrong_property' => 10,
                 ],

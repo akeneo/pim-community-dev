@@ -1,36 +1,36 @@
-import RecordRemover from 'akeneoreferenceentity/domain/remover/record';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {deleteJSON} from 'akeneoreferenceentity/tools/fetch';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
+import AssetRemover from 'akeneoassetmanager/domain/remover/asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
-export class RecordRemoverImplementation implements RecordRemover<ReferenceEntityIdentifier, RecordCode> {
+export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdentifier, AssetCode> {
   constructor() {
     Object.freeze(this);
   }
 
   async remove(
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
-    recordCode: RecordCode
+    assetFamilyIdentifier: AssetFamilyIdentifier,
+    assetCode: AssetCode
   ): Promise<ValidationError[] | null> {
     return await deleteJSON(
-      routing.generate('akeneo_reference_entities_record_delete_rest', {
-        recordCode: recordCode.stringValue(),
-        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
+      routing.generate('akeneo_asset_manager_asset_delete_rest', {
+        assetCode: assetCode.stringValue(),
+        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
       })
     ).catch(errorHandler);
   }
 
-  async removeAll(referenceEntityIdentifier: ReferenceEntityIdentifier): Promise<ValidationError[] | null> {
+  async removeAll(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<ValidationError[] | null> {
     return await deleteJSON(
-      routing.generate('akeneo_reference_entities_record_delete_all_rest', {
-        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
+      routing.generate('akeneo_asset_manager_asset_delete_all_rest', {
+        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
       })
     ).catch(errorHandler);
   }
 }
 
-export default new RecordRemoverImplementation();
+export default new AssetRemoverImplementation();

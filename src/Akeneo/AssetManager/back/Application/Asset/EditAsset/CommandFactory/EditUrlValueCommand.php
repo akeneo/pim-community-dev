@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

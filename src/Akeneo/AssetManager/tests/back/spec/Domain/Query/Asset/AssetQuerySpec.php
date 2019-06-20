@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace spec\Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use PhpSpec\ObjectBehavior;
 
-class RecordQuerySpec extends ObjectBehavior
+class AssetQuerySpec extends ObjectBehavior
 {
     public function let() {
         $normalizedQuery = [
@@ -37,7 +37,7 @@ class RecordQuerySpec extends ObjectBehavior
         ]);
 
         $this->beConstructedThrough('createPaginatedQueryUsingSearchAfter', [
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             ChannelReference::createfromNormalized($normalizedQuery['channel']),
             LocaleIdentifierCollection::fromNormalized([$normalizedQuery['locale']]),
             20,
@@ -48,12 +48,12 @@ class RecordQuerySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordQuery::class);
+        $this->shouldHaveType(AssetQuery::class);
     }
 
-    function it_creates_a_record_query()
+    function it_creates_a_asset_query()
     {
-        $this->shouldBeAnInstanceOf(RecordQuery::class);
+        $this->shouldBeAnInstanceOf(AssetQuery::class);
     }
 
     function it_can_get_filter()

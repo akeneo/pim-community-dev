@@ -1,26 +1,26 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ProductModel, {denormalizeProduct, NormalizedProduct} from 'akeneoreferenceentity/domain/model/product/product';
-import ItemView from 'akeneoreferenceentity/application/component/record/edit/product/item';
-import {redirectToProduct, redirectToAttributeCreation} from 'akeneoreferenceentity/application/action/product/router';
-import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
+import __ from 'akeneoassetmanager/tools/translator';
+import ProductModel, {denormalizeProduct, NormalizedProduct} from 'akeneoassetmanager/domain/model/product/product';
+import ItemView from 'akeneoassetmanager/application/component/asset/edit/product/item';
+import {redirectToProduct, redirectToAttributeCreation} from 'akeneoassetmanager/application/action/product/router';
+import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import {getLabel} from 'pimui/js/i18n';
-import {attributeSelected} from 'akeneoreferenceentity/application/action/product/attribute';
-import NoResult from 'akeneoreferenceentity/application/component/app/no-result';
-import {NormalizedCode} from 'akeneoreferenceentity/domain/model/record/code';
+import {attributeSelected} from 'akeneoassetmanager/application/action/product/attribute';
+import NoResult from 'akeneoassetmanager/application/component/app/no-result';
+import {NormalizedCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {
   createCode,
   NormalizedCode as NormalizedAttributeCode,
-} from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
-import NoAttribute from 'akeneoreferenceentity/application/component/record/edit/product/no-attribute';
-import Key from 'akeneoreferenceentity/tools/key';
-import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
-import {redirectToProductGrid} from 'akeneoreferenceentity/application/event/router';
-import NotEnoughItems from 'akeneoreferenceentity/application/component/record/edit/product/not-enough-items';
+} from 'akeneoassetmanager/domain/model/product/attribute/code';
+import {NormalizedIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
+import NoAttribute from 'akeneoassetmanager/application/component/asset/edit/product/no-attribute';
+import Key from 'akeneoassetmanager/tools/key';
+import ItemsCounter from 'akeneoassetmanager/application/component/asset/index/items-counter';
+import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
+import NotEnoughItems from 'akeneoassetmanager/application/component/asset/edit/product/not-enough-items';
 
 interface StateProps {
   context: {
@@ -31,8 +31,8 @@ interface StateProps {
   totalCount: number;
   attributes: DropdownElement[];
   selectedAttribute: NormalizedAttribute | null;
-  recordCode: NormalizedCode;
-  referenceEntityIdentifier: NormalizedIdentifier;
+  assetCode: NormalizedCode;
+  assetFamilyIdentifier: NormalizedIdentifier;
 }
 
 interface DispatchProps {
@@ -40,7 +40,7 @@ interface DispatchProps {
     onLinkedAttributeChange: (attributeCode: string) => void;
     onRedirectToProduct: (product: ProductModel) => void;
     onRedirectAttributeCreation: () => void;
-    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => void;
+    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedCode) => void;
   };
 }
 
@@ -54,7 +54,7 @@ const AttributeButtonView = ({selectedElement, onClick}: {selectedElement: Dropd
       if (Key.Space === event.key) onClick();
     }}
   >
-    {__('pim_reference_entity.record.product.dropdown.attribute')}
+    {__('pim_asset_manager.asset.product.dropdown.attribute')}
     :&nbsp;
     <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
       {selectedElement.label}
@@ -81,7 +81,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
           <React.Fragment>
             <div className="AknFilterBox AknFilterBox--search">
               <div className="AknFilterBox-list">
-                <span className="AknFilterBox-title">{__('pim_reference_entity.record.product.title')}</span>
+                <span className="AknFilterBox-title">{__('pim_asset_manager.asset.product.title')}</span>
                 <ItemsCounter count={this.props.totalCount} inline={true} />
                 {null !== this.props.selectedAttribute ? (
                   <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
@@ -89,7 +89,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
                       <Dropdown
                         elements={this.props.attributes}
                         selectedElement={(this.props.selectedAttribute as NormalizedAttribute).code}
-                        label={__('pim_reference_entity.record.product.attribute')}
+                        label={__('pim_asset_manager.asset.product.attribute')}
                         onSelectionChange={(selectedElement: DropdownElement) => {
                           this.props.events.onLinkedAttributeChange(selectedElement.identifier);
                         }}
@@ -125,8 +125,8 @@ class Product extends React.Component<StateProps & DispatchProps> {
                 {undefined !== selectedDropdownAttribute ? (
                   <NoResult
                     entityLabel={selectedDropdownAttribute.label}
-                    title="pim_reference_entity.record.product.no_product.title"
-                    subtitle="pim_reference_entity.record.product.no_product.subtitle"
+                    title="pim_asset_manager.asset.product.no_product.title"
+                    subtitle="pim_asset_manager.asset.product.no_product.subtitle"
                     type="product"
                   />
                 ) : null}
@@ -139,14 +139,14 @@ class Product extends React.Component<StateProps & DispatchProps> {
               showMore={() =>
                 this.props.events.onRedirectToProductGrid(
                   (this.props.selectedAttribute as NormalizedAttribute).code,
-                  this.props.recordCode
+                  this.props.assetCode
                 )
               }
             />
           </React.Fragment>
         ) : (
           <NoAttribute
-            referenceEntityLabel={this.props.referenceEntityIdentifier}
+            assetFamilyLabel={this.props.assetFamilyIdentifier}
             onRedirectAttributeCreation={this.props.events.onRedirectAttributeCreation}
           />
         )}
@@ -174,8 +174,8 @@ export default connect(
         original: attribute,
       })),
       selectedAttribute: state.products.selectedAttribute,
-      recordCode: state.form.data.code,
-      referenceEntityIdentifier: state.form.data.reference_entity_identifier,
+      assetCode: state.form.data.code,
+      assetFamilyIdentifier: state.form.data.asset_family_identifier,
     };
   },
   (dispatch: any): DispatchProps => {
@@ -190,8 +190,8 @@ export default connect(
         onRedirectAttributeCreation: () => {
           dispatch(redirectToAttributeCreation());
         },
-        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, recordCode: NormalizedCode) => {
-          dispatch(redirectToProductGrid(selectedAttribute, recordCode));
+        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedCode) => {
+          dispatch(redirectToProductGrid(selectedAttribute, assetCode));
         },
       },
     };

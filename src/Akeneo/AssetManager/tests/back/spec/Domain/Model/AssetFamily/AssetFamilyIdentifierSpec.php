@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
+namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityIdentifierSpec extends ObjectBehavior
+class AssetFamilyIdentifierSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -25,7 +25,7 @@ class ReferenceEntityIdentifierSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(ReferenceEntityIdentifier::class);
+        $this->shouldHaveType(AssetFamilyIdentifier::class);
     }
 
     public function it_should_contain_only_letters_numbers_and_underscores()
@@ -51,7 +51,7 @@ class ReferenceEntityIdentifierSpec extends ObjectBehavior
 
     public function it_is_possible_to_compare_it()
     {
-        $this->equals(ReferenceEntityIdentifier::fromString('an_identifier_55'))->shouldReturn(true);
-        $this->equals(ReferenceEntityIdentifier::fromString('other_identifier'))->shouldReturn(false);
+        $this->equals(AssetFamilyIdentifier::fromString('an_identifier_55'))->shouldReturn(true);
+        $this->equals(AssetFamilyIdentifier::fromString('other_identifier'))->shouldReturn(false);
     }
 }

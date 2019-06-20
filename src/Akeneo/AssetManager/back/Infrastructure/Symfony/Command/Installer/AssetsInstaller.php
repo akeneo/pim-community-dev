@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer;
 
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -29,7 +29,7 @@ class AssetsInstaller
     public function installAssets(bool $shouldSymlink): void
     {
         $originDir = __DIR__ . '/../../../../../front';
-        $targetDir = $this->projectDir . '/web/bundles/akeneoreferenceentity';
+        $targetDir = $this->projectDir . '/web/bundles/akeneoassetmanager';
         if ($shouldSymlink) {
             $this->relativeSymlinkWithFallback($originDir, $targetDir);
         } else {

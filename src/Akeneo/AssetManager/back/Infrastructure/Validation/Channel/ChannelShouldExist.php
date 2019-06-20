@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Channel;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Channel;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -30,6 +30,6 @@ class ChannelShouldExist extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.channel.channel_should_exist';
+        return 'akeneo_assetmanager.validator.channel.channel_should_exist';
     }
 }

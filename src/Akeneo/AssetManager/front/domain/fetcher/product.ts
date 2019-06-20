@@ -1,15 +1,15 @@
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import Product from 'akeneoreferenceentity/domain/model/product/product';
-import AttributeCode from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import {SearchResult} from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import Product from 'akeneoassetmanager/domain/model/product/product';
+import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 
 export default interface Fetcher {
   fetchLinkedProducts: (
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
-    recordCode: RecordCode,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
+    assetCode: AssetCode,
     attributeCode: AttributeCode,
     channel: ChannelReference,
     locale: LocaleReference

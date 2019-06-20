@@ -1,5 +1,5 @@
-import {getAttributeDenormalizer, Denormalizer} from 'akeneoreferenceentity/application/configuration/attribute';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeDenormalizer, Denormalizer} from 'akeneoassetmanager/application/configuration/attribute';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export const denormalizeAttribute = (
   getAttributeDenormalizer: (normalizedAttribute: NormalizedAttribute) => Denormalizer

@@ -1,4 +1,4 @@
-import {InvalidArgumentError} from 'akeneoreferenceentity/domain/model/attribute/type/number';
+import {InvalidArgumentError} from 'akeneoassetmanager/domain/model/attribute/type/number';
 
 export type NormalizedMaxValue = string | null;
 

@@ -1,8 +1,8 @@
-import {hydrator} from 'akeneoreferenceentity/application/hydrator/reference-entity';
-import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {hydrator} from 'akeneoassetmanager/application/hydrator/asset-family';
+import {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
-describe('akeneo > reference entity > application > hydrator --- reference entity', () => {
-  test('I can hydrate a new reference entity', () => {
+describe('akeneo > asset family > application > hydrator --- asset family', () => {
+  test('I can hydrate a new asset family', () => {
     const hydrate = hydrator(({identifier, labels, image, attribute_as_label, attribute_as_image}) => {
       expect(identifier).toEqual('designer');
       expect(image).toEqual(null);
@@ -10,7 +10,7 @@ describe('akeneo > reference entity > application > hydrator --- reference entit
       expect(attribute_as_label).toEqual('name');
       expect(attribute_as_image).toEqual('picture');
 
-      return denormalizeReferenceEntity({identifier, labels, image, attribute_as_label, attribute_as_image});
+      return denormalizeAssetFamily({identifier, labels, image, attribute_as_label, attribute_as_image});
     });
 
     expect(
@@ -24,7 +24,7 @@ describe('akeneo > reference entity > application > hydrator --- reference entit
     );
   });
 
-  test('It throw an error if I pass a malformed reference entity', () => {
+  test('It throw an error if I pass a malformed asset family', () => {
     expect(() => hydrator()({})).toThrow();
     expect(() => hydrator()({labels: {}})).toThrow();
     expect(() => hydrator()({identifier: 'sofa'})).toThrow();

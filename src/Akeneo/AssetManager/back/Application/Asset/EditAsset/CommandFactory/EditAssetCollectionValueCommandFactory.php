@@ -10,28 +10,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordCollectionValueCommandFactory implements EditValueCommandFactoryInterface
+class EditAssetCollectionValueCommandFactory implements EditValueCommandFactoryInterface
 {
     public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
         return
-            $attribute instanceof RecordCollectionAttribute &&
+            $attribute instanceof AssetCollectionAttribute &&
             is_array($normalizedValue['data']) &&
             !empty($normalizedValue['data']);
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditRecordCollectionValueCommand(
+        $command = new EditAssetCollectionValueCommand(
             $attribute,
             $normalizedValue['channel'],
             $normalizedValue['locale'],

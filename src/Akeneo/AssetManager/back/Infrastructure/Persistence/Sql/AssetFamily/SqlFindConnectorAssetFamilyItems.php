@@ -11,34 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyItemsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorAssetFamilyHydrator;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEntityItemsInterface
+class SqlFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyItemsInterface
 {
     /** @var Connection */
     private $connection;
 
-    /** @var ConnectorReferenceEntityHydrator */
-    private $referenceEntityHydrator;
+    /** @var ConnectorAssetFamilyHydrator */
+    private $assetFamilyHydrator;
 
     public function __construct(
         Connection $connection,
-        ConnectorReferenceEntityHydrator $hydrator
+        ConnectorAssetFamilyHydrator $hydrator
     ) {
         $this->connection = $connection;
-        $this->referenceEntityHydrator = $hydrator;
+        $this->assetFamilyHydrator = $hydrator;
     }
 
-    public function find(ReferenceEntityQuery $query): array
+    public function find(AssetFamilyQuery $query): array
     {
         $sql = <<<SQL
         SELECT
@@ -46,7 +46,7 @@ class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEnti
             re.labels,
             fi.file_key as image_file_key,
             fi.original_filename as image_original_filename
-        FROM akeneo_reference_entity_reference_entity as re
+        FROM akeneo_asset_manager_asset_family as re
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
         %s
         ORDER BY identifier ASC
@@ -74,16 +74,16 @@ SQL;
             return [];
         }
 
-        $hydratedReferenceEntities = [];
+        $hydratedAssetFamilies = [];
 
         foreach ($results as $result) {
-            $hydratedReferenceEntities[] = $this->referenceEntityHydrator->hydrate($result);
+            $hydratedAssetFamilies[] = $this->assetFamilyHydrator->hydrate($result);
         }
 
-        return $hydratedReferenceEntities;
+        return $hydratedAssetFamilies;
     }
 
-    private function queryIsFirstPage(ReferenceEntityQuery $query): bool
+    private function queryIsFirstPage(AssetFamilyQuery $query): bool
     {
         return empty($query->getSearchAfterIdentifier());
     }

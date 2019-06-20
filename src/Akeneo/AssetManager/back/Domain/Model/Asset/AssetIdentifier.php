@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record;
+namespace Akeneo\AssetManager\Domain\Model\Asset;
 
 use Webmozart\Assert\Assert;
 
@@ -19,19 +19,19 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordIdentifier
+class AssetIdentifier
 {
     /** @var string */
     private $identifier;
 
     private function __construct(string $identifier)
     {
-        Assert::stringNotEmpty($identifier, 'Record identifier cannot be empty');
+        Assert::stringNotEmpty($identifier, 'Asset identifier cannot be empty');
         Assert::maxLength(
             $identifier,
             255,
             sprintf(
-                'Record identifier cannot be longer than 255 characters, %d string long given',
+                'Asset identifier cannot be longer than 255 characters, %d string long given',
                 strlen($identifier)
             )
         );
@@ -39,7 +39,7 @@ class RecordIdentifier
             $identifier,
             '/^[a-zA-Z0-9_-]+$/',
             sprintf(
-                'Record identifier may contain only letters, numbers, underscores and dashes. "%s" given',
+                'Asset identifier may contain only letters, numbers, underscores and dashes. "%s" given',
                 $identifier
             )
         );
@@ -47,23 +47,23 @@ class RecordIdentifier
         $this->identifier = $identifier;
     }
 
-    public static function create(string $referenceEntityIdentifier, string $code, string $fingerprint): self
+    public static function create(string $assetFamilyIdentifier, string $code, string $fingerprint): self
     {
-        Assert::stringNotEmpty($referenceEntityIdentifier, 'Reference entity identifier cannot be empty');
+        Assert::stringNotEmpty($assetFamilyIdentifier, 'Asset family identifier cannot be empty');
         Assert::regex(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
-                'Reference entity identifier may contain only letters, numbers and underscores. "%s" given',
-                $referenceEntityIdentifier
+                'Asset family identifier may contain only letters, numbers and underscores. "%s" given',
+                $assetFamilyIdentifier
             )
         );
-        Assert::stringNotEmpty($code, 'Record code cannot be empty');
+        Assert::stringNotEmpty($code, 'Asset code cannot be empty');
         Assert::regex(
             $code,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
-                'Record code may contain only letters, numbers and underscores. "%s" given',
+                'Asset code may contain only letters, numbers and underscores. "%s" given',
                 $code
             )
         );
@@ -80,7 +80,7 @@ class RecordIdentifier
 
         return new self(sprintf(
             '%s_%s_%s',
-            substr($referenceEntityIdentifier, 0, 20),
+            substr($assetFamilyIdentifier, 0, 20),
             substr($code, 0, 20),
             $fingerprint
         ));
@@ -91,7 +91,7 @@ class RecordIdentifier
         return new self($identifier);
     }
 
-    public function equals(RecordIdentifier $identifier): bool
+    public function equals(AssetIdentifier $identifier): bool
     {
         return $this->identifier === $identifier->identifier;
     }

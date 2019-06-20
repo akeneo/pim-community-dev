@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>

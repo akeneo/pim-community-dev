@@ -1,48 +1,48 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import {RecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record';
-import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import __ from 'akeneoassetmanager/tools/translator';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
+import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 type Props = {
-  attribute: RecordAttribute;
+  attribute: AssetAttribute;
   errors: ValidationError[];
   locale: string;
 };
 
-class RecordView extends React.Component<Props, {referenceEntity: ReferenceEntity | null}> {
-  state = {referenceEntity: null};
+class AssetView extends React.Component<Props, {assetFamily: AssetFamily | null}> {
+  state = {assetFamily: null};
   async componentDidMount() {
-    this.updateReferenceEntity();
+    this.updateAssetFamily();
   }
 
   async componentDidUpdate(prevProps: Props) {
-    if (!this.props.attribute.getRecordType().equals(prevProps.attribute.getRecordType())) {
-      this.updateReferenceEntity();
+    if (!this.props.attribute.getAssetType().equals(prevProps.attribute.getAssetType())) {
+      this.updateAssetFamily();
     }
   }
 
-  async updateReferenceEntity() {
-    const referenceEntityResult = await referenceEntityFetcher.fetch(
-      this.props.attribute.recordType.getReferenceEntityIdentifier()
+  async updateAssetFamily() {
+    const assetFamilyResult = await assetFamilyFetcher.fetch(
+      this.props.attribute.assetType.getAssetFamilyIdentifier()
     );
-    this.setState({referenceEntity: referenceEntityResult.referenceEntity});
+    this.setState({assetFamily: assetFamilyResult.assetFamily});
   }
 
   render() {
     const value =
-      null !== this.state.referenceEntity
-        ? (this.state.referenceEntity as any).getLabel(this.props.locale)
-        : this.props.attribute.recordType.stringValue();
+      null !== this.state.assetFamily
+        ? (this.state.assetFamily as any).getLabel(this.props.locale)
+        : this.props.attribute.assetType.stringValue();
 
     return (
       <React.Fragment>
-        <div className="AknFieldContainer" data-code="recordType">
+        <div className="AknFieldContainer" data-code="assetType">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
-            <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.record_type">
-              {__('pim_reference_entity.attribute.edit.input.record_type')}
+            <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.asset_type">
+              {__('pim_asset_manager.attribute.edit.input.asset_type')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
@@ -50,18 +50,18 @@ class RecordView extends React.Component<Props, {referenceEntity: ReferenceEntit
               type="text"
               autoComplete="off"
               className="AknTextField AknTextField--light AknTextField--disabled"
-              id="pim_reference_entity.attribute.edit.input.record_type"
-              name="record_type"
+              id="pim_asset_manager.attribute.edit.input.asset_type"
+              name="asset_type"
               value={value}
               readOnly
               tabIndex={-1}
             />
           </div>
-          {getErrorsView(this.props.errors, 'recordType')}
+          {getErrorsView(this.props.errors, 'assetType')}
         </div>
       </React.Fragment>
     );
   }
 }
 
-export const view = RecordView;
+export const view = AssetView;

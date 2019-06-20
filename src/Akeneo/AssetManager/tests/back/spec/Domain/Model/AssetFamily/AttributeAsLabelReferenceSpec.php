@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
+namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use PhpSpec\ObjectBehavior;
 
 class AttributeAsLabelReferenceSpec extends ObjectBehavior

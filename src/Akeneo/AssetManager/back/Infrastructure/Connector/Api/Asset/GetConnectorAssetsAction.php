@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset;
 
-use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Limit;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\Hal\AddHalDownloadLinkToRecordImages;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\SearchFiltersValidator;
+use Akeneo\AssetManager\Application\Asset\SearchAsset\SearchConnectorAsset;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Limit;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\SearchFiltersValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,21 +39,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class GetConnectorRecordsAction
+class GetConnectorAssetsAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     /** @var Limit */
     private $limit;
 
-    /** @var SearchConnectorRecord */
-    private $searchConnectorRecord;
+    /** @var SearchConnectorAsset */
+    private $searchConnectorAsset;
 
     /** @var PaginatorInterface */
     private $halPaginator;
 
-    /** @var AddHalDownloadLinkToRecordImages */
+    /** @var AddHalDownloadLinkToAssetImages */
     private $addHalLinksToImageValues;
 
     /** @var ValidatorInterface */
@@ -63,16 +63,16 @@ class GetConnectorRecordsAction
     private $searchFiltersValidator;
 
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        SearchConnectorRecord $searchConnectorRecord,
+        AssetFamilyExistsInterface $assetFamilyExists,
+        SearchConnectorAsset $searchConnectorAsset,
         PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
+        AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
         int $limit,
         ValidatorInterface $validator,
         SearchFiltersValidator $searchFiltersValidator
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->searchConnectorRecord = $searchConnectorRecord;
+        $this->assetFamilyExists = $assetFamilyExists;
+        $this->searchConnectorAsset = $searchConnectorAsset;
         $this->limit = new Limit($limit);
         $this->halPaginator = $halPaginator;
         $this->addHalLinksToImageValues = $addHalLinksToImageValues;
@@ -84,7 +84,7 @@ class GetConnectorRecordsAction
      * @throws UnprocessableEntityHttpException
      * @throws NotFoundHttpException
      */
-    public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
+    public function __invoke(Request $request, string $assetFamilyIdentifier): JsonResponse
     {
         $searchFilters = $this->getSearchFiltersFromRequest($request);
         $searchFiltersErrors = !empty($searchFilters) ? $this->searchFiltersValidator->validate($searchFilters) : [];
@@ -99,12 +99,12 @@ class GetConnectorRecordsAction
 
         try {
             $searchAfter = $request->get('search_after', null);
-            $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $searchAfterCode = null !== $searchAfter ? AssetCode::fromString($searchAfter) : null;
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
             $channelReferenceValuesFilter = ChannelReference::createfromNormalized($request->get('channel', null));
             $localeIdentifiersValuesFilter = $this->getLocaleIdentifiersValuesFilterFromRequest($request);
-            $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-                $referenceEntityIdentifier,
+            $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
+                $assetFamilyIdentifier,
                 $channelReferenceValuesFilter,
                 $localeIdentifiersValuesFilter,
                 $this->limit->intValue(),
@@ -115,43 +115,43 @@ class GetConnectorRecordsAction
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        $violations = $this->validator->validate($recordQuery);
+        $violations = $this->validator->validate($assetQuery);
         if ($violations->count() > 0) {
             throw new ViolationHttpException($violations, 'Invalid query parameters');
         }
 
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        if (false === $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
-        $records = ($this->searchConnectorRecord)($recordQuery);
-        $records = array_map(function (ConnectorRecord $record) {
-            return $record->normalize();
-        }, $records);
+        $assets = ($this->searchConnectorAsset)($assetQuery);
+        $assets = array_map(function (ConnectorAsset $asset) {
+            return $asset->normalize();
+        }, $assets);
 
-        $records = ($this->addHalLinksToImageValues)($referenceEntityIdentifier, $records);
-        $paginatedRecords = $this->paginateRecords($records, $request, $referenceEntityIdentifier);
+        $assets = ($this->addHalLinksToImageValues)($assetFamilyIdentifier, $assets);
+        $paginatedAssets = $this->paginateAssets($assets, $request, $assetFamilyIdentifier);
 
-        return new JsonResponse($paginatedRecords);
+        return new JsonResponse($paginatedAssets);
     }
 
-    private function paginateRecords(array $records, Request $request, ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function paginateAssets(array $assets, Request $request, AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        $lastRecord = end($records);
-        reset($records);
-        $lastRecordCode = $lastRecord['code'] ?? null;
+        $lastAsset = end($assets);
+        reset($assets);
+        $lastAssetCode = $lastAsset['code'] ?? null;
 
         $paginationParameters = [
-            'list_route_name'     => 'akeneo_reference_entities_records_rest_connector_get',
-            'item_route_name'     => 'akeneo_reference_entities_record_rest_connector_get',
+            'list_route_name'     => 'akeneo_asset_manager_assets_rest_connector_get',
+            'item_route_name'     => 'akeneo_asset_manager_asset_rest_connector_get',
             'search_after'        => [
                 'self' => $request->get('search_after', null),
-                'next' => $lastRecordCode
+                'next' => $lastAssetCode
             ],
             'limit'               => $this->limit->intValue(),
             'item_identifier_key' => 'code',
             'uri_parameters'      => [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+                'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
             ],
             'query_parameters'    => [
                 'channel' => $request->get('channel', null),
@@ -160,7 +160,7 @@ class GetConnectorRecordsAction
             ],
         ];
 
-        return $this->halPaginator->paginate($records, $paginationParameters, count($records));
+        return $this->halPaginator->paginate($assets, $paginationParameters, count($assets));
     }
 
     private function getLocaleIdentifiersValuesFilterFromRequest(Request $request): LocaleIdentifierCollection

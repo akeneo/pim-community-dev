@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\SearchFiltersValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\SearchFiltersValidator;
 use PhpSpec\ObjectBehavior;
 
 class SearchFiltersValidatorSpec extends ObjectBehavior

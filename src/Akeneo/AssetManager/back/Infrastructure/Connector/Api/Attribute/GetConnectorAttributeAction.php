@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -11,10 +11,10 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
  * file that was distributed with this source code.
  */
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -24,14 +24,14 @@ class GetConnectorAttributeAction
     /** @var FindConnectorAttributeByIdentifierAndCodeInterface */
     private $findConnectorAttributeQuery;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
 
     public function __construct(
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists
+        AssetFamilyExistsInterface $assetFamilyExists
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
+        $this->assetFamilyExists = $assetFamilyExists;
         $this->findConnectorAttributeQuery = $findConnectorAttributeQuery;
     }
 
@@ -39,25 +39,25 @@ class GetConnectorAttributeAction
      * @throws UnprocessableEntityHttpException
      * @throws NotFoundHttpException
      */
-    public function __invoke(string $code, string $referenceEntityIdentifier): JsonResponse
+    public function __invoke(string $code, string $assetFamilyIdentifier): JsonResponse
     {
         try {
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
+        $assetFamilyExists = $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
 
-        if (false === $referenceEntityExists) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        if (false === $assetFamilyExists) {
+            throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
         $attributeCode = AttributeCode::fromString($code);
-        $attribute = $this->findConnectorAttributeQuery->find($referenceEntityIdentifier, $attributeCode);
+        $attribute = $this->findConnectorAttributeQuery->find($assetFamilyIdentifier, $attributeCode);
 
         if (null === $attribute) {
-            throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist for the reference entity "%s".', $code, $referenceEntityIdentifier));
+            throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist for the asset family "%s".', $code, $assetFamilyIdentifier));
         }
 
         $normalizedAttribute = $attribute->normalize();

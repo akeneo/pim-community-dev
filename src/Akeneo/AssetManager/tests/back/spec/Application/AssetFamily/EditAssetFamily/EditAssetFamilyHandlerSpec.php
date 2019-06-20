@@ -1,24 +1,24 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity;
+namespace spec\Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Query\File\FileExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class EditReferenceEntityHandlerSpec extends ObjectBehavior
+class EditAssetFamilyHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ReferenceEntityRepositoryInterface $repository,
+        AssetFamilyRepositoryInterface $repository,
         FileStorerInterface $storer,
         FileExistsInterface $fileExists
     ) {
@@ -27,61 +27,61 @@ class EditReferenceEntityHandlerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditReferenceEntityHandler::class);
+        $this->shouldHaveType(EditAssetFamilyHandler::class);
     }
 
-    function it_edits_a_reference_entity_with_an_empty_image(
-        ReferenceEntityRepositoryInterface $repository,
-        ReferenceEntity $referenceEntity,
-        EditReferenceEntityCommand $editReferenceEntityCommand,
+    function it_edits_an_asset_family_with_an_empty_image(
+        AssetFamilyRepositoryInterface $repository,
+        AssetFamily $assetFamily,
+        EditAssetFamilyCommand $editAssetFamilyCommand,
         Image $image
     ) {
-        $editReferenceEntityCommand->identifier = 'designer';
-        $editReferenceEntityCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
-        $editReferenceEntityCommand->image = null;
+        $editAssetFamilyCommand->identifier = 'designer';
+        $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
+        $editAssetFamilyCommand->image = null;
 
-        $repository->getByIdentifier(Argument::type(ReferenceEntityIdentifier::class))
-            ->willReturn($referenceEntity);
+        $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
+            ->willReturn($assetFamily);
 
-        $referenceEntity->getImage()->willReturn($image);
+        $assetFamily->getImage()->willReturn($image);
         $image->isEmpty()->willReturn(true);
 
-        $referenceEntity->updateLabels(Argument::type(LabelCollection::class))
+        $assetFamily->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $referenceEntity->updateImage(Argument::that(function ($image) {
+        $assetFamily->updateImage(Argument::that(function ($image) {
                 return $image instanceof Image && $image->isEmpty();
             }))
             ->shouldBeCalled();
 
-        $repository->update($referenceEntity)->shouldBeCalled();
+        $repository->update($assetFamily)->shouldBeCalled();
 
-        $this->__invoke($editReferenceEntityCommand);
+        $this->__invoke($editAssetFamilyCommand);
     }
 
-    function it_edits_a_reference_entity_with_an_uploaded_image(
-        ReferenceEntityRepositoryInterface $repository,
-        ReferenceEntity $referenceEntity,
-        EditReferenceEntityCommand $editReferenceEntityCommand,
+    function it_edits_an_asset_family_with_an_uploaded_image(
+        AssetFamilyRepositoryInterface $repository,
+        AssetFamily $assetFamily,
+        EditAssetFamilyCommand $editAssetFamilyCommand,
         FileStorerInterface $storer,
         FileInfoInterface $fileInfo,
         Image $image,
         FileExistsInterface $fileExists
     ) {
-        $editReferenceEntityCommand->identifier = 'designer';
-        $editReferenceEntityCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
-        $editReferenceEntityCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
+        $editAssetFamilyCommand->identifier = 'designer';
+        $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
+        $editAssetFamilyCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
 
-        $repository->getByIdentifier(Argument::type(ReferenceEntityIdentifier::class))
-            ->willReturn($referenceEntity);
+        $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
+            ->willReturn($assetFamily);
 
-        $referenceEntity->getImage()->willReturn($image);
+        $assetFamily->getImage()->willReturn($image);
         $image->isEmpty()->willReturn(true);
 
-        $referenceEntity->updateLabels(Argument::type(LabelCollection::class))
+        $assetFamily->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $referenceEntity->updateImage(Argument::that(function ($image) {
+        $assetFamily->updateImage(Argument::that(function ($image) {
                 return $image instanceof Image && $image->getKey() === '/path/image.jpg';
             }))
             ->shouldBeCalled();
@@ -97,40 +97,40 @@ class EditReferenceEntityHandlerSpec extends ObjectBehavior
         $fileInfo->getOriginalFilename()
             ->willReturn('image.jpg');
 
-        $repository->update($referenceEntity)->shouldBeCalled();
+        $repository->update($assetFamily)->shouldBeCalled();
 
-        $this->__invoke($editReferenceEntityCommand);
+        $this->__invoke($editAssetFamilyCommand);
     }
 
-    function it_edits_a_reference_entity_with_a_stored_image(
-        ReferenceEntityRepositoryInterface $repository,
-        ReferenceEntity $referenceEntity,
-        EditReferenceEntityCommand $editReferenceEntityCommand,
+    function it_edits_an_asset_family_with_a_stored_image(
+        AssetFamilyRepositoryInterface $repository,
+        AssetFamily $assetFamily,
+        EditAssetFamilyCommand $editAssetFamilyCommand,
         Image $image,
         FileExistsInterface $fileExists
     ) {
-        $editReferenceEntityCommand->identifier = 'designer';
-        $editReferenceEntityCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
-        $editReferenceEntityCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
+        $editAssetFamilyCommand->identifier = 'designer';
+        $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
+        $editAssetFamilyCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
 
-        $repository->getByIdentifier(Argument::type(ReferenceEntityIdentifier::class))
-            ->willReturn($referenceEntity);
+        $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
+            ->willReturn($assetFamily);
 
-        $referenceEntity->getImage()->willReturn($image);
+        $assetFamily->getImage()->willReturn($image);
         $image->isEmpty()->willReturn(true);
 
-        $referenceEntity->updateLabels(Argument::type(LabelCollection::class))
+        $assetFamily->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $referenceEntity->updateImage(Argument::that(function ($image) {
+        $assetFamily->updateImage(Argument::that(function ($image) {
                 return $image instanceof Image && $image->getKey() === '/path/image.jpg';
             }))
             ->shouldBeCalled();
 
         $fileExists->exists('/path/image.jpg')->willReturn(true);
 
-        $repository->update($referenceEntity)->shouldBeCalled();
+        $repository->update($assetFamily)->shouldBeCalled();
 
-        $this->__invoke($editReferenceEntityCommand);
+        $this->__invoke($editAssetFamilyCommand);
     }
 }

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecordsInterface;
+use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyHasAssetsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,14 +24,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ReferenceEntityShouldHaveNoRecordValidator extends ConstraintValidator
+class AssetFamilyShouldHaveNoAssetValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityHasRecordsInterface */
-    private $referenceEntityHasRecords;
+    /** @var AssetFamilyHasAssetsInterface */
+    private $assetFamilyHasAssets;
 
-    public function __construct(ReferenceEntityHasRecordsInterface $referenceEntityHasRecords)
+    public function __construct(AssetFamilyHasAssetsInterface $assetFamilyHasAssets)
     {
-        $this->referenceEntityHasRecords = $referenceEntityHasRecords;
+        $this->assetFamilyHasAssets = $assetFamilyHasAssets;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -46,11 +46,11 @@ class ReferenceEntityShouldHaveNoRecordValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof DeleteReferenceEntityCommand) {
+        if (!$command instanceof DeleteAssetFamilyCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
-                    DeleteReferenceEntityCommand::class,
+                    DeleteAssetFamilyCommand::class,
                     get_class($command)
                 )
             );
@@ -62,19 +62,19 @@ class ReferenceEntityShouldHaveNoRecordValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof ReferenceEntityShouldHaveNoRecord) {
+        if (!$constraint instanceof AssetFamilyShouldHaveNoAsset) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(DeleteReferenceEntityCommand $command): void
+    private function validateCommand(DeleteAssetFamilyCommand $command): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->identifier);
-        $hasRecords = $this->referenceEntityHasRecords->hasRecords($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->identifier);
+        $hasAssets = $this->assetFamilyHasAssets->hasAssets($assetFamilyIdentifier);
 
-        if ($hasRecords) {
-            $this->context->buildViolation(ReferenceEntityShouldHaveNoRecord::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
+        if ($hasAssets) {
+            $this->context->buildViolation(AssetFamilyShouldHaveNoAsset::ERROR_MESSAGE)
+                ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier)
                 ->addViolation();
         }
     }

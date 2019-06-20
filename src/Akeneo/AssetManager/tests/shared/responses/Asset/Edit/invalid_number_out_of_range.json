@@ -1,14 +1,14 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_reference_entities_record_edit_rest",
+    "route": "akeneo_asset_manager_asset_edit_rest",
     "query": {
-      "recordCode": "starck",
-      "referenceEntityIdentifier": "designer"
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer"
     },
     "body": {
       "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
-      "reference_entity_identifier": "designer",
+      "asset_family_identifier": "designer",
       "code": "starck",
       "labels": {
         "fr_FR": "Philippe Starck"
@@ -66,11 +66,11 @@
           "plural": null,
           "message": "This value should be \"-10\" or more.",
           "root": {
-            "referenceEntityIdentifier": "designer",
+            "assetFamilyIdentifier": "designer",
             "code": "starck",
             "labels": [],
             "image": null,
-            "editRecordValueCommands": [
+            "editAssetValueCommands": [
               {
                 "text": "Philippe Starck",
                 "attribute": {
@@ -85,7 +85,7 @@
                   "validationRule": true,
                   "type": "text",
                   "identifier": [],
-                  "referenceEntityIdentifier": [],
+                  "assetFamilyIdentifier": [],
                   "code": [],
                   "labelCodes": [
                     "fr_FR"
@@ -110,7 +110,7 @@
                   "validationRule": true,
                   "type": "text",
                   "identifier": [],
-                  "referenceEntityIdentifier": [],
+                  "assetFamilyIdentifier": [],
                   "code": [],
                   "labelCodes": [
                     "fr_FR"
@@ -135,7 +135,7 @@
                   "validationRule": true,
                   "type": "text",
                   "identifier": [],
-                  "referenceEntityIdentifier": [],
+                  "assetFamilyIdentifier": [],
                   "code": [],
                   "labelCodes": [
                     "fr_FR"
@@ -160,7 +160,7 @@
                   "validationRule": false,
                   "type": "text",
                   "identifier": [],
-                  "referenceEntityIdentifier": [],
+                  "assetFamilyIdentifier": [],
                   "code": [],
                   "labelCodes": [
                     "fr_FR"
@@ -183,7 +183,7 @@
                     "allAllowed": false
                   },
                   "identifier": [],
-                  "referenceEntityIdentifier": [],
+                  "assetFamilyIdentifier": [],
                   "code": [],
                   "labelCodes": [
                     "fr_FR",
@@ -203,7 +203,7 @@
                   "minLimitless": false,
                   "maxLimitless": false,
                   "identifier": [],
-                  "referenceEntityIdentifier": [],
+                  "assetFamilyIdentifier": [],
                   "code": [],
                   "labelCodes": [
                     "en_US"
@@ -225,7 +225,7 @@
               "minLimitless": false,
               "maxLimitless": false,
               "identifier": [],
-              "referenceEntityIdentifier": [],
+              "assetFamilyIdentifier": [],
               "code": [],
               "labelCodes": [
                 "en_US"

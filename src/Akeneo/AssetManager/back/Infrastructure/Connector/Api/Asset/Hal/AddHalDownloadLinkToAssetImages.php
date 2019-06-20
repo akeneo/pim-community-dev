@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\Hal;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindImageAttributeCodesInterface;
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 
 /**
- * Add download links at HAL format to a list of normalized records for each record image (as main image or as value)
+ * Add download links at HAL format to a list of normalized assets for each asset image (as main image or as value)
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AddHalDownloadLinkToRecordImages
+class AddHalDownloadLinkToAssetImages
 {
     /** @var Router */
     private $router;
@@ -41,31 +41,31 @@ class AddHalDownloadLinkToRecordImages
         $this->findImageAttributeCodes = $findImageAttributeCodes;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecords): array
+    public function __invoke(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAssets): array
     {
-        $imageAttributeCodes = $this->findImageAttributeCodes->find($referenceEntityIdentifier);
+        $imageAttributeCodes = $this->findImageAttributeCodes->find($assetFamilyIdentifier);
 
-        return array_map(function ($normalizedRecord) use ($imageAttributeCodes) {
-            return $this->addDownloadLinkToNormalizedRecord($normalizedRecord, $imageAttributeCodes);
-        }, $normalizedRecords);
+        return array_map(function ($normalizedAsset) use ($imageAttributeCodes) {
+            return $this->addDownloadLinkToNormalizedAsset($normalizedAsset, $imageAttributeCodes);
+        }, $normalizedAssets);
     }
 
-    private function addDownloadLinkToNormalizedRecord(array $normalizedRecord, array $imageAttributeCodes): array
+    private function addDownloadLinkToNormalizedAsset(array $normalizedAsset, array $imageAttributeCodes): array
     {
-        if (is_object($normalizedRecord['values'])) {
-            return $normalizedRecord;
+        if (is_object($normalizedAsset['values'])) {
+            return $normalizedAsset;
         }
 
         foreach ($imageAttributeCodes as $imageAttributeCode) {
             $imageAttributeCode = (string) $imageAttributeCode;
-            if (isset($normalizedRecord['values'][$imageAttributeCode])) {
-                $normalizedRecord['values'][$imageAttributeCode] = $this->addDownloadLinksToImageValues(
-                    $normalizedRecord['values'][$imageAttributeCode]
+            if (isset($normalizedAsset['values'][$imageAttributeCode])) {
+                $normalizedAsset['values'][$imageAttributeCode] = $this->addDownloadLinksToImageValues(
+                    $normalizedAsset['values'][$imageAttributeCode]
                 );
             }
         }
 
-        return $normalizedRecord;
+        return $normalizedAsset;
     }
 
     private function addDownloadLinksToImageValues(array $values): array
@@ -83,7 +83,7 @@ class AddHalDownloadLinkToRecordImages
     private function generateImageUrl(string $imageCode): string
     {
         return $this->router->generate(
-            'akeneo_reference_entities_media_file_rest_connector_download',
+            'akeneo_asset_manager_media_file_rest_connector_download',
             ['fileCode' => $imageCode],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

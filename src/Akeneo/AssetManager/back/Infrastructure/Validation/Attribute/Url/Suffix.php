@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,5 +21,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class Suffix extends Constraint
 {
-    public const MESSAGE_NOT_EMPTY_STRING = 'pim_reference_entity.attribute.validation.suffix.should_not_be_empty';
+    public const MESSAGE_NOT_EMPTY_STRING = 'pim_asset_manager.attribute.validation.suffix.should_not_be_empty';
 }

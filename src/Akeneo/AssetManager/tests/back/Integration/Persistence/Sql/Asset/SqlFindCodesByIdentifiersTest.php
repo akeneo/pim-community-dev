@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindCodesByIdentifiersTest extends SqlIntegrationTestCase
 {
@@ -23,16 +23,16 @@ class SqlFindCodesByIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers');
+        $this->query = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers');
         $this->resetDB();
-        $this->loadReferenceEntityDesigner();
-        $this->loadRecords();
+        $this->loadAssetFamilyDesigner();
+        $this->loadAssets();
     }
 
     /**
      * @test
      */
-    public function it_finds_record_codes_given_their_identifiers()
+    public function it_finds_asset_codes_given_their_identifiers()
     {
         $codes = $this->query->find(['designer_stark_fingerprint', 'designer_jacobs_fingerprint']);
 
@@ -54,32 +54,32 @@ class SqlFindCodesByIdentifiersTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntityDesigner(): void
+    private function loadAssetFamilyDesigner(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
     }
 
-    public function loadRecords(): void
+    public function loadAssets(): void
     {
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $designerIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $starkCode = RecordCode::fromString('starck');
-        $starkIdentifier = RecordIdentifier::create('designer', 'stark', 'fingerprint');
-        $recordRepository->create(
-            Record::create(
+        $starkCode = AssetCode::fromString('starck');
+        $starkIdentifier = AssetIdentifier::create('designer', 'stark', 'fingerprint');
+        $assetRepository->create(
+            Asset::create(
                 $starkIdentifier,
                 $designerIdentifier,
                 $starkCode,
@@ -87,10 +87,10 @@ class SqlFindCodesByIdentifiersTest extends SqlIntegrationTestCase
             )
         );
 
-        $jacobsCode = RecordCode::fromString('jacobs');
-        $jacobsIdentifier = RecordIdentifier::create('designer', 'jacobs', 'fingerprint');
-        $recordRepository->create(
-            Record::create(
+        $jacobsCode = AssetCode::fromString('jacobs');
+        $jacobsIdentifier = AssetIdentifier::create('designer', 'jacobs', 'fingerprint');
+        $assetRepository->create(
+            Asset::create(
                 $jacobsIdentifier,
                 $designerIdentifier,
                 $jacobsCode,

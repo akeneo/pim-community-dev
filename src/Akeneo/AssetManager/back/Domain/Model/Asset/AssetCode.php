@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Model\Record;
+namespace Akeneo\AssetManager\Domain\Model\Asset;
 
 use Webmozart\Assert\Assert;
 
@@ -19,23 +19,23 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordCode
+class AssetCode
 {
     /** @var string */
     private $code;
 
     private function __construct(string $code)
     {
-        Assert::stringNotEmpty($code, 'Record code cannot be empty');
+        Assert::stringNotEmpty($code, 'Asset code cannot be empty');
         Assert::maxLength(
             $code,
             255,
-            sprintf('Record code cannot be longer than 255 characters, %d string long given', strlen($code))
+            sprintf('Asset code cannot be longer than 255 characters, %d string long given', strlen($code))
         );
         Assert::regex(
             $code,
             '/^[a-zA-Z0-9_]+$/',
-            sprintf('Record code may contain only letters, numbers and underscores. "%s" given', $code)
+            sprintf('Asset code may contain only letters, numbers and underscores. "%s" given', $code)
         );
 
         $this->code = $code;
@@ -51,7 +51,7 @@ class RecordCode
         return $this->code;
     }
 
-    public function equals(RecordCode $code): bool
+    public function equals(AssetCode $code): bool
     {
         return $this->code === $code->code;
     }

@@ -1,18 +1,18 @@
 const timeout = 5000;
 
-const ReferenceEntityBuilder = require('../../../../common/builder/reference-entity.js');
+const AssetFamilyBuilder = require('../../../../common/builder/asset-family.js');
 
-describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', () => {
+describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
     await page.reload();
   }, timeout);
 
-  it('It search for reference entities', async () => {
+  it('It search for asset families', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -25,7 +25,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
     });
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/reference-entity').default;
+      const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset-family').default;
 
       return await fetcher.search();
     });
@@ -35,13 +35,13 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
     });
   });
 
-  it('It fetches one reference entity', async () => {
+  it('It fetches one asset family', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/reference_entity/sofa' === interceptedRequest.url() &&
+        'http://pim.com/rest/asset_manager/sofa' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
-        const referenceEntity = new ReferenceEntityBuilder()
+        const assetFamily = new AssetFamilyBuilder()
           .withIdentifier('sofa')
           .withLabels({
             en_US: 'Sofa',
@@ -58,23 +58,23 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
 
         interceptedRequest.respond({
           contentType: 'application/json',
-          body: JSON.stringify(referenceEntity),
+          body: JSON.stringify(assetFamily),
         });
       }
     });
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/reference-entity').default;
-      const identifierModule = 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-      const referenceEntityIdentifier = require(identifierModule).createIdentifier('sofa');
+      const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset-family').default;
+      const identifierModule = 'akeneoassetmanager/domain/model/asset-family/identifier';
+      const assetFamilyIdentifier = require(identifierModule).createIdentifier('sofa');
 
-      return await fetcher.fetch(referenceEntityIdentifier);
+      return await fetcher.fetch(assetFamilyIdentifier);
     });
 
     expect(response).toEqual({
       attributes: [],
-      recordCount: 123,
-      referenceEntity: {
+      assetCount: 123,
+      assetFamily: {
         attributeAsImage: {
           identifier: '',
         },
@@ -95,7 +95,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
           originalFilename: 'sofa.jpg',
         },
       },
-      permission: {edit: true, referenceEntityIdentifier: 'sofa'},
+      permission: {edit: true, assetFamilyIdentifier: 'sofa'},
     });
   });
 });

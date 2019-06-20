@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeOptions extends Constraint
 {
-    const MESSAGE_TOO_MANY_OPTIONS = 'pim_reference_entity.attribute.validation.options.too_many';
-    const MESSAGE_OPTION_DUPLICATED = 'pim_reference_entity.attribute.validation.options.duplicated';
+    const MESSAGE_TOO_MANY_OPTIONS = 'pim_asset_manager.attribute.validation.options.too_many';
+    const MESSAGE_OPTION_DUPLICATED = 'pim_asset_manager.attribute.validation.options.duplicated';
 
     public function getTargets()
     {
@@ -22,6 +22,6 @@ class AttributeOptions extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.record.attribute_options';
+        return 'akeneo_assetmanager.validator.asset.attribute_options';
     }
 }

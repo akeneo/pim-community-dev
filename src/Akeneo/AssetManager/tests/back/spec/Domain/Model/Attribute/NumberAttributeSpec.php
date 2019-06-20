@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 
@@ -29,7 +29,7 @@ class NumberAttributeSpec extends ObjectBehavior
             'create',
             [
                 AttributeIdentifier::create('city', 'area', 'test'),
-                ReferenceEntityIdentifier::fromString('city'),
+                AssetFamilyIdentifier::fromString('city'),
                 AttributeCode::fromString('area'),
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
@@ -60,7 +60,7 @@ class NumberAttributeSpec extends ObjectBehavior
             'create',
             [
                 AttributeIdentifier::create('city', 'area', 'test'),
-                ReferenceEntityIdentifier::fromString('city'),
+                AssetFamilyIdentifier::fromString('city'),
                 AttributeCode::fromString('area'),
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
@@ -82,7 +82,7 @@ class NumberAttributeSpec extends ObjectBehavior
             'create',
             [
                 AttributeIdentifier::create('city', 'area', 'test'),
-                ReferenceEntityIdentifier::fromString('city'),
+                AssetFamilyIdentifier::fromString('city'),
                 AttributeCode::fromString('area'),
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
@@ -101,7 +101,7 @@ class NumberAttributeSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'identifier'                  => 'area_city_test',
-                'reference_entity_identifier' => 'city',
+                'asset_family_identifier' => 'city',
                 'code'                        => 'area',
                 'labels'                      => ['fr_FR' => 'Superficie', 'en_US' => 'Area'],
                 'order'                       => 0,
@@ -122,7 +122,7 @@ class NumberAttributeSpec extends ObjectBehavior
             'create',
             [
                 AttributeIdentifier::create('city', 'area', 'test'),
-                ReferenceEntityIdentifier::fromString('city'),
+                AssetFamilyIdentifier::fromString('city'),
                 AttributeCode::fromString('area'),
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),

@@ -1,89 +1,89 @@
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  createIdentifier as createAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {
   NormalizedAttribute,
   Attribute,
   ConcreteAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {RecordType, NormalizedRecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
+} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {AssetType, NormalizedAssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
-export interface NormalizedRecordCollectionAttribute extends NormalizedAttribute {
-  type: 'record_collection';
-  record_type: NormalizedRecordType;
+export interface NormalizedAssetCollectionAttribute extends NormalizedAttribute {
+  type: 'asset_collection';
+  asset_type: NormalizedAssetType;
 }
 
-export type NormalizedRecordAdditionalProperty = NormalizedRecordType;
+export type NormalizedAssetAdditionalProperty = NormalizedAssetType;
 
-export type RecordAdditionalProperty = RecordType;
+export type AssetAdditionalProperty = AssetType;
 
-export interface RecordCollectionAttribute extends Attribute {
-  recordType: RecordType;
-  normalize(): NormalizedRecordCollectionAttribute;
-  getRecordType(): RecordType;
+export interface AssetCollectionAttribute extends Attribute {
+  assetType: AssetType;
+  normalize(): NormalizedAssetCollectionAttribute;
+  getAssetType(): AssetType;
 }
 
 export class InvalidArgumentError extends Error {}
 
-export class ConcreteRecordCollectionAttribute extends ConcreteAttribute implements RecordCollectionAttribute {
+export class ConcreteAssetCollectionAttribute extends ConcreteAttribute implements AssetCollectionAttribute {
   private constructor(
     identifier: Identifier,
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
-    readonly recordType: RecordType
+    readonly assetType: AssetType
   ) {
     super(
       identifier,
-      referenceEntityIdentifier,
+      assetFamilyIdentifier,
       code,
       labelCollection,
-      'record_collection',
+      'asset_collection',
       valuePerLocale,
       valuePerChannel,
       order,
       is_required
     );
 
-    if (!(recordType instanceof RecordType)) {
-      throw new InvalidArgumentError('Attribute expects a RecordType as recordType');
+    if (!(assetType instanceof AssetType)) {
+      throw new InvalidArgumentError('Attribute expects a AssetType as assetType');
     }
 
     Object.freeze(this);
   }
 
-  public static createFromNormalized(normalizedRecordCollectionAttribute: NormalizedRecordCollectionAttribute) {
-    return new ConcreteRecordCollectionAttribute(
-      createIdentifier(normalizedRecordCollectionAttribute.identifier),
-      createReferenceEntityIdentifier(normalizedRecordCollectionAttribute.reference_entity_identifier),
-      createCode(normalizedRecordCollectionAttribute.code),
-      createLabelCollection(normalizedRecordCollectionAttribute.labels),
-      normalizedRecordCollectionAttribute.value_per_locale,
-      normalizedRecordCollectionAttribute.value_per_channel,
-      normalizedRecordCollectionAttribute.order,
-      normalizedRecordCollectionAttribute.is_required,
-      RecordType.createFromNormalized(normalizedRecordCollectionAttribute.record_type)
+  public static createFromNormalized(normalizedAssetCollectionAttribute: NormalizedAssetCollectionAttribute) {
+    return new ConcreteAssetCollectionAttribute(
+      createIdentifier(normalizedAssetCollectionAttribute.identifier),
+      createAssetFamilyIdentifier(normalizedAssetCollectionAttribute.asset_family_identifier),
+      createCode(normalizedAssetCollectionAttribute.code),
+      createLabelCollection(normalizedAssetCollectionAttribute.labels),
+      normalizedAssetCollectionAttribute.value_per_locale,
+      normalizedAssetCollectionAttribute.value_per_channel,
+      normalizedAssetCollectionAttribute.order,
+      normalizedAssetCollectionAttribute.is_required,
+      AssetType.createFromNormalized(normalizedAssetCollectionAttribute.asset_type)
     );
   }
 
-  getRecordType(): RecordType {
-    return this.recordType;
+  getAssetType(): AssetType {
+    return this.assetType;
   }
 
-  public normalize(): NormalizedRecordCollectionAttribute {
+  public normalize(): NormalizedAssetCollectionAttribute {
     return {
       ...super.normalize(),
-      type: 'record_collection',
-      record_type: this.recordType.normalize(),
+      type: 'asset_collection',
+      asset_type: this.assetType.normalize(),
     };
   }
 }
 
-export const denormalize = ConcreteRecordCollectionAttribute.createFromNormalized;
+export const denormalize = ConcreteAssetCollectionAttribute.createFromNormalized;

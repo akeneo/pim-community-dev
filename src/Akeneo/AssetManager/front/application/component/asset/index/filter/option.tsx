@@ -1,17 +1,17 @@
 import * as React from 'react';
-import {FilterView, FilterViewProps} from 'akeneoreferenceentity/application/configuration/value';
-import {ConcreteOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
+import {FilterView, FilterViewProps} from 'akeneoassetmanager/application/configuration/value';
+import {ConcreteOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {
   Option,
   NormalizedOption,
   NormalizedOptionCode,
-} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {connect} from 'react-redux';
-import Select2 from 'akeneoreferenceentity/application/component/app/select2';
-import __ from 'akeneoreferenceentity/tools/translator';
-import {ConcreteOptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
-import {getAttributeFilterKey} from 'akeneoreferenceentity/tools/filter';
+import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import __ from 'akeneoassetmanager/tools/translator';
+import {ConcreteOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;
@@ -65,7 +65,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
         onClick={() => setIsOpen(true)}
       >
         <span className="AknFilterBox-filterCriteriaHint">
-          {0 === labels.length ? __('pim_reference_entity.record.grid.filter.option.all') : labels.join(', ')}
+          {0 === labels.length ? __('pim_asset_manager.asset.grid.filter.option.all') : labels.join(', ')}
         </span>
         <span className="AknFilterBox-filterCaret" />
       </span>
@@ -80,14 +80,14 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
               </div>
               <div>
                 <Select2
-                  className="record-option-selector"
+                  className="asset-option-selector"
                   data={availableOptions}
                   value={value}
                   multiple={true}
                   readOnly={false}
                   configuration={{
                     allowClear: true,
-                    placeholder: __('pim_reference_entity.record.grid.filter.option.no_value'),
+                    placeholder: __('pim_asset_manager.asset.grid.filter.option.no_value'),
                   }}
                   onChange={(optionCodes: string[]) => {
                     onFilterUpdated({

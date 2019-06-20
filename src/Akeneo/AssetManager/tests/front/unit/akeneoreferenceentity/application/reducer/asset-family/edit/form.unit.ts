@@ -1,4 +1,4 @@
-import reducer from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
+import reducer from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 
 const initialState = {
   data: {
@@ -16,7 +16,7 @@ const initialState = {
   },
 };
 
-describe('akeneo > reference entity > application > reducer > reference-entity --- edit', () => {
+describe('akeneo > asset family > application > reducer > asset-family --- edit', () => {
   test('I ignore other commands', () => {
     const newState = reducer(initialState, {
       type: 'ANOTHER_ACTION',
@@ -33,9 +33,9 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     expect(newState).toEqual(initialState);
   });
 
-  test('I can receive a reference entity', () => {
+  test('I can receive an asset family', () => {
     const state = {};
-    const normalizedReferenceEntity = {
+    const normalizedAssetFamily = {
       identifier: 'designer',
       labels: {
         en_US: 'Designer',
@@ -43,18 +43,18 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       image: null,
     };
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_EDITION_RECEIVED',
-      referenceEntity: normalizedReferenceEntity,
+      type: 'ASSET_FAMILY_EDITION_RECEIVED',
+      assetFamily: normalizedAssetFamily,
     });
 
     expect(newState).toEqual({
       errors: [],
-      data: normalizedReferenceEntity,
+      data: normalizedAssetFamily,
       state: {isDirty: false, originalData: '{"identifier":"designer","labels":{"en_US":"Designer"},"image":null}'},
     });
   });
 
-  test('I can update the label of the reference entity', () => {
+  test('I can update the label of the asset family', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -70,7 +70,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       },
     };
     const newState = reducer(previousState, {
-      type: 'REFERENCE_ENTITY_EDITION_LABEL_UPDATED',
+      type: 'ASSET_FAMILY_EDITION_LABEL_UPDATED',
       value: 'Famous Designer',
       locale: 'en_US',
     });
@@ -88,7 +88,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can add a new label of the reference entity', () => {
+  test('I can add a new label of the asset family', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -104,7 +104,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       },
     };
     const newState = reducer(previousState, {
-      type: 'REFERENCE_ENTITY_EDITION_LABEL_UPDATED',
+      type: 'ASSET_FAMILY_EDITION_LABEL_UPDATED',
       value: 'Concepteur',
       locale: 'fr_FR',
     });
@@ -123,7 +123,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can update the image of the reference entity', () => {
+  test('I can update the image of the asset family', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -139,7 +139,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       },
     };
     const newState = reducer(previousState, {
-      type: 'REFERENCE_ENTITY_EDITION_IMAGE_UPDATED',
+      type: 'ASSET_FAMILY_EDITION_IMAGE_UPDATED',
       image: {my: 'image'},
     });
 
@@ -156,7 +156,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I can successfully save the reference entity', () => {
+  test('I can successfully save the asset family', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -174,7 +174,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       },
     };
     const newState = reducer(previousState, {
-      type: 'REFERENCE_ENTITY_EDITION_SUBMISSION',
+      type: 'ASSET_FAMILY_EDITION_SUBMISSION',
     });
 
     expect(newState).toEqual({
@@ -188,7 +188,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('I cannot save the reference entity', () => {
+  test('I cannot save the asset family', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -202,7 +202,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       },
     };
     const newState = reducer(previousState, {
-      type: 'REFERENCE_ENTITY_EDITION_ERROR_OCCURED',
+      type: 'ASSET_FAMILY_EDITION_ERROR_OCCURED',
       errors: [
         {
           my: 'error',

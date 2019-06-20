@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ValueHydratorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\ValuesDecoder;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\ValuesDecoder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -31,7 +31,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class RecordItemHydrator implements RecordItemHydratorInterface
+class AssetItemHydrator implements AssetItemHydratorInterface
 {
     /** @var AbstractPlatform */
     private $platform;
@@ -57,13 +57,13 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $this->valueHydrator = $valueHydrator;
     }
 
-    public function hydrate(array $row, RecordQuery $query, $context = []): RecordItem
+    public function hydrate(array $row, AssetQuery $query, $context = []): AssetItem
     {
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
+        $assetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['asset_family_identifier'], $this->platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $this->platform);
 
-        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
+        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(AssetFamilyIdentifier::fromString($assetFamilyIdentifier));
         $valueCollection = ValuesDecoder::decode($row['value_collection']);
         $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes, $context);
 
@@ -72,19 +72,19 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
         $image = $this->getImage($valueCollection, $attributeAsImage);
 
-        $recordItem = new RecordItem();
-        $recordItem->identifier = $identifier;
-        $recordItem->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $recordItem->code = $code;
-        $recordItem->labels = $labels;
-        $recordItem->image = $image;
-        $recordItem->values = $valueCollection;
-        $recordItem->completeness = $this->getCompleteness($query, $valueCollection);
+        $assetItem = new AssetItem();
+        $assetItem->identifier = $identifier;
+        $assetItem->assetFamilyIdentifier = $assetFamilyIdentifier;
+        $assetItem->code = $code;
+        $assetItem->labels = $labels;
+        $assetItem->image = $image;
+        $assetItem->values = $valueCollection;
+        $assetItem->completeness = $this->getCompleteness($query, $valueCollection);
 
-        return $recordItem;
+        return $assetItem;
     }
 
-    private function getCompleteness(RecordQuery $query, $valueCollection): array
+    private function getCompleteness(AssetQuery $query, $valueCollection): array
     {
         $normalizedRequiredValueKeys = $this->getRequiredValueKeys($query)->normalize();
 
@@ -100,16 +100,16 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         return $completeness;
     }
 
-    private function getRequiredValueKeys(RecordQuery $query): ValueKeyCollection
+    private function getRequiredValueKeys(AssetQuery $query): ValueKeyCollection
     {
-        $referenceEntityFilter = $query->getFilter('reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);
+        $assetFamilyFilter = $query->getFilter('asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyFilter['value']);
         $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
         /** @var ValueKeyCollection $result */
         $result = $this->findRequiredValueKeyCollectionForChannelAndLocales->find(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $channelIdentifier,
             $localeIdentifiers
         );

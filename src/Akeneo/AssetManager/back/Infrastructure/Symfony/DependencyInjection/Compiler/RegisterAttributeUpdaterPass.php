@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,8 +23,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterAttributeUpdaterPass implements CompilerPassInterface
 {
-    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_referenceentity.application.edit_attribute.attribute_updater.attribute_updater_registry';
-    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_referenceentity.attribute_updater';
+    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_assetmanager.application.edit_attribute.attribute_updater.attribute_updater_registry';
+    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_assetmanager.attribute_updater';
     private const DEFAULT_PRIORITY = 50;
 
     /**

@@ -1,13 +1,13 @@
-akeneo_referenceentity:
+akeneo_assetmanager:
   acl_group:
-    reference_entity: Entidades de referencia
+    asset_family: Entidades de referencia
   acl:
-    reference_entity:
+    asset_family:
       create: Crear una entidad
       edit: Editar las propiedades de la entidad
       delete: Eliminar una entidad
       manage_permission: Administrar permisos de entidad de referencia
-    record:
+    asset:
       create: Crear un registro
       edit: Editar los registros
       delete: Eliminar un registro

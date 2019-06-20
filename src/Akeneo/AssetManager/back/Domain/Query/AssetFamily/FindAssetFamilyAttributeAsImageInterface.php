@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
+namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
-interface FindReferenceEntityAttributeAsImageInterface
+interface FindAssetFamilyAttributeAsImageInterface
 {
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsImageReference;
 }

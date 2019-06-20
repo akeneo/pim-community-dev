@@ -1,14 +1,14 @@
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {PermissionCollection} from 'web/bundles/akeneoreferenceentity/domain/model/reference-entity/permission';
-import {postJSON} from 'akeneoreferenceentity/tools/fetch';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {PermissionCollection} from 'web/bundles/akeneoassetmanager/domain/model/asset-family/permission';
+import {postJSON} from 'akeneoassetmanager/tools/fetch';
 
 const routing = require('routing');
 
 export interface PermissionSaver {
   save: (
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     permissions: PermissionCollection
   ) => Promise<ValidationError[] | null>;
 }
@@ -19,12 +19,12 @@ export class PermissionSaverImplementation implements PermissionSaver {
   }
 
   async save(
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     permissions: PermissionCollection
   ): Promise<ValidationError[] | null> {
     return await postJSON(
-      routing.generate('akeneo_reference_entities_reference_entity_permission_set_rest', {
-        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
+      routing.generate('akeneo_asset_manager_asset_family_permission_set_rest', {
+        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
       }),
       permissions.normalize()
     ).catch(handleError);

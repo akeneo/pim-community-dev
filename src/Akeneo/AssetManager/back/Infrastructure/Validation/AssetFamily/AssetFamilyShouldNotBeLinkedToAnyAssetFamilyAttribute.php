@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute extends Constraint
+class AssetFamilyShouldNotBeLinkedToAnyAssetFamilyAttribute extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.reference_entity_attributes.should_not_be_linked';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.asset_family_attributes.should_not_be_linked';
 
     public function getTargets()
     {
@@ -30,6 +30,6 @@ class ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute extends Cons
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.reference_entity.should_not_be_linked_any_reference_entity_attribute';
+        return 'akeneo_assetmanager.validator.asset_family.should_not_be_linked_any_asset_family_attribute';
     }
 }

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommandFactory;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistry;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistry;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
 class EditValueCommandFactoryRegistrySpec extends ObjectBehavior
@@ -16,7 +16,7 @@ class EditValueCommandFactoryRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(EditValueCommandFactoryRegistry::class);
     }
 
-    function it_registers_a_record_value_command_factory_and_return_it_if_it_supports(
+    function it_registers_a_asset_value_command_factory_and_return_it_if_it_supports(
         EditTextValueCommandFactory $editTextValueCommandFactory,
         TextAttribute $name
     ) {

@@ -1,13 +1,13 @@
-import ValueData from 'akeneoreferenceentity/domain/model/record/data';
-import OptionCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
-import {OptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
+import ValueData from 'akeneoassetmanager/domain/model/asset/data';
+import OptionCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 
 class InvalidTypeError extends Error {}
 
 type NormalizedOptionData = string | null;
 
 /**
- * Data representing an Option, used for Record Values for Attribute with type "Option"
+ * Data representing an Option, used for Asset Values for Attribute with type "Option"
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

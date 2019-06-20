@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 
@@ -14,26 +14,26 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordIndexer implements RecordIndexerInterface
+class AssetIndexer implements AssetIndexerInterface
 {
-    private const INDEX_TYPE = 'pimee_reference_entity_record';
+    private const INDEX_TYPE = 'pimee_asset_family_asset';
     private const KEY_AS_ID = 'identifier';
 
     /** @var Client */
-    private $recordClient;
+    private $assetClient;
 
-    /** @var RecordNormalizerInterface */
+    /** @var AssetNormalizerInterface */
     private $normalizer;
 
     /** @var int */
     private $batchSize;
 
     public function __construct(
-        Client $recordClient,
-        RecordNormalizerInterface $normalizer,
+        Client $assetClient,
+        AssetNormalizerInterface $normalizer,
         int $batchSize
     ) {
-        $this->recordClient = $recordClient;
+        $this->assetClient = $assetClient;
         $this->normalizer = $normalizer;
         $this->batchSize = $batchSize;
     }
@@ -41,68 +41,68 @@ class RecordIndexer implements RecordIndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function index(RecordIdentifier $recordIdentifier): void
+    public function index(AssetIdentifier $assetIdentifier): void
     {
-        $normalizedRecord = $this->normalizer->normalizeRecord($recordIdentifier);
-        $this->recordClient->index(self::INDEX_TYPE, $normalizedRecord['identifier'], $normalizedRecord, refresh::disable());
+        $normalizedAsset = $this->normalizer->normalizeAsset($assetIdentifier);
+        $this->assetClient->index(self::INDEX_TYPE, $normalizedAsset['identifier'], $normalizedAsset, refresh::disable());
     }
 
-    public function indexByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
+    public function indexByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        $normalizedSearchableRecords = $this->normalizer->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);
+        $normalizedSearchableAssets = $this->normalizer->normalizeAssetsByAssetFamily($assetFamilyIdentifier);
         $toIndex = [];
-        foreach ($normalizedSearchableRecords as $normalizedSearchableRecord) {
-            $toIndex[] = $normalizedSearchableRecord;
+        foreach ($normalizedSearchableAssets as $normalizedSearchableAsset) {
+            $toIndex[] = $normalizedSearchableAsset;
 
             if (\count($toIndex) % $this->batchSize === 0) {
-                $this->recordClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
+                $this->assetClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
                 $toIndex = [];
             }
         }
 
         if (!empty($toIndex)) {
-            $this->recordClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
+            $this->assetClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeByReferenceEntityIdentifier(string $referenceEntityIdentifier)
+    public function removeByAssetFamilyIdentifier(string $assetFamilyIdentifier)
     {
         $queryBody = [
             'query' => [
-                'match' => ['reference_entity_code' => $referenceEntityIdentifier],
+                'match' => ['asset_family_code' => $assetFamilyIdentifier],
             ],
         ];
 
-        $this->recordClient->deleteByQuery($queryBody);
+        $this->assetClient->deleteByQuery($queryBody);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeRecordByReferenceEntityIdentifierAndCode(
-        string $referenceEntityIdentifier,
-        string $recordCode
+    public function removeAssetByAssetFamilyIdentifierAndCode(
+        string $assetFamilyIdentifier,
+        string $assetCode
     ) {
         $queryBody = [
             'query' => [
                 'bool' => [
                     'must' =>
                         [
-                            ['term' => ['reference_entity_code' => $referenceEntityIdentifier]],
-                            ['term' => ['code' => $recordCode]],
+                            ['term' => ['asset_family_code' => $assetFamilyIdentifier]],
+                            ['term' => ['code' => $assetCode]],
                         ],
                 ],
             ],
         ];
 
-        $this->recordClient->deleteByQuery($queryBody);
+        $this->assetClient->deleteByQuery($queryBody);
     }
 
     public function refresh(): void
     {
-        $this->recordClient->refreshIndex();
+        $this->assetClient->refreshIndex();
     }
 }

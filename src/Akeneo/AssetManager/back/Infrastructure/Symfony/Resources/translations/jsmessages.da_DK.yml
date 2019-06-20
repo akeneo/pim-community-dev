@@ -1,4 +1,4 @@
-pim_reference_entity:
+pim_asset_manager:
   app:
     image:
       wide:
@@ -6,7 +6,7 @@ pim_reference_entity:
       small:
         remove: Fjern
         download: Hent
-  reference_entity:
+  asset_family:
     button:
       save: Gem
       save_permission: Gem
@@ -27,7 +27,7 @@ pim_reference_entity:
       confirm: Gem
     delete:
       title: Attribut
-  record:
+  asset:
     no_result:
       subtitle: Prøv igen med nye søgekriterier.
     button:

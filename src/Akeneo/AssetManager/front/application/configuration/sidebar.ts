@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
-import securityContext from 'akeneoreferenceentity/tools/security-context';
+import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
+import securityContext from 'akeneoassetmanager/tools/security-context';
 
 class SibebarMissConfigurationError extends Error {}
 
@@ -36,7 +36,7 @@ export class TabsProvider {
       const confPath = `
 config:
     config:
-        akeneoreferenceentity/application/configuration/sidebar:
+        akeneoassetmanager/application/configuration/sidebar:
             ${sidebarIdentifier}:
                 tabs:
                     tab-code:
@@ -66,7 +66,7 @@ Actual conf: ${JSON.stringify(this.configuration)}`
           const confPath = `
 config:
     config:
-        akeneoreferenceentity/application/configuration/sidebar:
+        akeneoassetmanager/application/configuration/sidebar:
             ${sidebarIdentifier}:
                 tabs:
                     tab-code:
@@ -89,7 +89,7 @@ config:
       const confPath = `
 config:
     config:
-        akeneoreferenceentity/application/configuration/sidebar:
+        akeneoassetmanager/application/configuration/sidebar:
             ${sidebarIdentifier}:
                 tabs:
                     ${code}:

@@ -1,8 +1,8 @@
 pim_title:
-  akeneo_reference_entities_reference_entity_index: Crear una nueva entidad
-  akeneo_reference_entities_reference_entity_edit: Editar una entidad de referencia
-  akeneo_reference_entities_record_edit: Editar un registro
-pim_reference_entity:
+  akeneo_asset_manager_asset_family_index: Crear una nueva entidad
+  akeneo_asset_manager_asset_family_edit: Editar una entidad de referencia
+  akeneo_asset_manager_asset_edit: Editar un registro
+pim_asset_manager:
   app:
     image:
       wide:
@@ -13,12 +13,12 @@ pim_reference_entity:
         remove: Quitar
         download: Descargar
         upload: Arrastrar y soltar para subir
-  reference_entity:
+  asset_family:
     validation:
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
         should_be_unique: 'El código ya existe para esta entidad.'
-        limit_reached: 'No se puede crear la entidad de referencia "{{ %reference_entity_label% }}" ya ha alcanzado el límite de {{ %limit% }} entidades de referencia'
+        limit_reached: 'No se puede crear la entidad de referencia "{{ %asset_family_label% }}" ya ha alcanzado el límite de {{ %limit% }} entidades de referencia'
     button:
       save: Guardar
       save_permission: Guardar
@@ -29,7 +29,7 @@ pim_reference_entity:
     breadcrumb: Información de referencia
     img: La imagen principal de la entidad de referencia denominada "{{ label }}"
     tab:
-      records: Registros
+      assets: Registros
       attribute: Atributos
       properties: Propiedades
       permission: Permisos
@@ -68,7 +68,7 @@ pim_reference_entity:
         code: Código (requerido)
       confirm: Guardar
     delete:
-      message: '¿Está seguro que desea eliminar la entidad "{{ referenceEntityLabel }}"?'
+      message: '¿Está seguro que desea eliminar la entidad "{{ assetFamilyLabel }}"?'
       title: Atributo
     notification:
       save:
@@ -89,9 +89,9 @@ pim_reference_entity:
       title: No tiene ningún grupo de usuarios
       subtitle: Para gestionar los permisos de la entidad de referencia es necesario tener al menos un grupo de usuarios.
       link: Haga clic aquí para añadir su primer grupo de usuarios
-  record:
+  asset:
     validation:
-      limit_reached: 'No puede crear el registro "{{ %record_label% }}" porque ha llegado al límite de registros {{ %limit% }} para esta entidad de referencia'
+      limit_reached: 'No puede crear el registro "{{ %asset_label% }}" porque ha llegado al límite de registros {{ %limit% }} para esta entidad de referencia'
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
         should_be_unique: 'El código ya existe para esta entidad.'
@@ -127,7 +127,7 @@ pim_reference_entity:
         create_another: Crear otro registro
       confirm: Guardar
     delete:
-      message: '¿Está seguro que desea eliminar el registro "{{ recordLabel }}"? Si se encuentra asociado a productos o registros, los mismos serán eliminados.'
+      message: '¿Está seguro que desea eliminar el registro "{{ assetLabel }}"? Si se encuentra asociado a productos o registros, los mismos serán eliminados.'
       title: Registro
     delete_all:
       confirm: '¿Está seguro que desea eliminar todos los registros de "{{ entityIdentifier }}"? Si están vinculados a los productos, se eliminarán los enlaces a los productos.'
@@ -203,11 +203,11 @@ pim_reference_entity:
         code: Código (requerido)
         label: Etiqueta
         type: Tipo de atributo
-        record_type: Entidad de referencia a vincular (obligatorio)
+        asset_type: Entidad de referencia a vincular (obligatorio)
         value_per_locale: Valor por local
         value_per_channel: Valor por canal
       placeholder:
-        record_type: Seleccione su entidad de referencia vinculada
+        asset_type: Seleccione su entidad de referencia vinculada
       confirm: Guardar
     edit:
       delete: Eliminar el atributo
@@ -218,7 +218,7 @@ pim_reference_entity:
         code: Código (requerido)
         label: Etiqueta
         type: Tipo de atributo
-        record_type: Entidad de referencia relacionada (obligatorio)
+        asset_type: Entidad de referencia relacionada (obligatorio)
         value_per_locale: Valor por local
         value_per_channel: Valor por canal
         is_required: Necesarios para la integridad
@@ -279,11 +279,11 @@ pim_enrich:
       property:
         section:
           type_specific: Escriba los parámetros específicos
-        reference_entity:
+        asset_family:
           identifier: Entidad de referencia relacionada (obligatorio)
           default_label: Por favor, selecciona una entidad de referencia
 permission:
   mass_action: Aplicar {{ rightLevel }} derechos en todos los grupos
 pim_catalog_volume:
   axis:
-    count_reference_entity: Entidades de referencia
+    count_asset_family: Entidades de referencia

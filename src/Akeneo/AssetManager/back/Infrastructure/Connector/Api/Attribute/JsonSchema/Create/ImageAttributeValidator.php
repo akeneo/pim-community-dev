@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
+namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class ImageAttributeValidator implements AttributeValidatorInterface
@@ -20,9 +20,9 @@ class ImageAttributeValidator implements AttributeValidatorInterface
 
     public function validate(array $normalizedAttribute): array
     {
-        $record = Validator::arrayToObjectRecursive($normalizedAttribute);
+        $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
-        $validator->validate($record, $this->getJsonSchema());
+        $validator->validate($asset, $this->getJsonSchema());
 
         return $validator->getErrors();
     }

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -30,18 +30,18 @@ class SqlGetAttributeIdentifier implements GetAttributeIdentifierInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withReferenceEntityAndCode(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+    public function withAssetFamilyAndCode(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeCode $attributeCode
     ): AttributeIdentifier {
         $query = <<<SQL
             SELECT identifier
-            FROM akeneo_reference_entity_attribute
-            WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier
+            FROM akeneo_asset_manager_attribute
+            WHERE code = :code AND asset_family_identifier = :asset_family_identifier
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'code' => $attributeCode,
-            'reference_entity_identifier' => $referenceEntityIdentifier,
+            'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetch();
@@ -49,9 +49,9 @@ SQL;
         if (!isset($result['identifier'])) {
             throw new \LogicException(
                 sprintf(
-                    'Attribute identifier not found for "%s" attribute code and "%s" reference entity identifier.',
+                    'Attribute identifier not found for "%s" attribute code and "%s" asset family identifier.',
                     $attributeCode,
-                    $referenceEntityIdentifier
+                    $assetFamilyIdentifier
                 )
             );
         }

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
@@ -38,7 +38,7 @@ class ImageAttributeHydratorSpec extends ObjectBehavior
         $textArea = $this->hydrate([
             'identifier'                 => 'picture_designer_fingerprint',
             'code'                       => 'picture',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'labels'                     => json_encode(['fr_FR' => 'Image']),
             'attribute_type'             => 'image',
             'attribute_order'            => '0',
@@ -54,7 +54,7 @@ class ImageAttributeHydratorSpec extends ObjectBehavior
         $textArea->shouldBeAnInstanceOf(ImageAttribute::class);
         $textArea->normalize()->shouldBe([
             'identifier'                 => 'picture_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code'                       => 'picture',
             'labels'                     => ['fr_FR' => 'Image'],
             'order'                      => 0,
@@ -72,7 +72,7 @@ class ImageAttributeHydratorSpec extends ObjectBehavior
         $textArea = $this->hydrate([
             'identifier'                 => 'picture_designer_fingerprint',
             'code'                       => 'picture',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'labels'                     => json_encode(['fr_FR' => 'Image']),
             'attribute_type'             => 'image',
             'attribute_order'            => '0',
@@ -88,7 +88,7 @@ class ImageAttributeHydratorSpec extends ObjectBehavior
         $textArea->shouldBeAnInstanceOf(ImageAttribute::class);
         $textArea->normalize()->shouldBe([
             'identifier'                 => 'picture_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code'                       => 'picture',
             'labels'                     => ['fr_FR' => 'Image'],
             'order'                      => 0,

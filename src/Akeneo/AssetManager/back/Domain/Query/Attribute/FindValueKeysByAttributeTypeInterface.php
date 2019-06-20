@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -22,10 +22,10 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 interface FindValueKeysByAttributeTypeInterface
 {
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      * @param string[]                  $attributeTypes
      *
      * @return string[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array;
 }

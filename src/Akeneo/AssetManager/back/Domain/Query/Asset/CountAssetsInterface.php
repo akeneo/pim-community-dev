@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Counting the number of records.
+ * Counting the number of assets.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-interface CountRecordsInterface
+interface CountAssetsInterface
 {
-    public function forReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int;
+    public function forAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int;
 }

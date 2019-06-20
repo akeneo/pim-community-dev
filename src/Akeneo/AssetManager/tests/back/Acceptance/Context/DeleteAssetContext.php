@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetCommand;
+use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -36,20 +36,20 @@ use Webmozart\Assert\Assert;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class DeleteRecordContext implements Context
+final class DeleteAssetContext implements Context
 {
-    private const REFERENCE_ENTITY_IDENTIFIER = 'designer';
+    private const ASSET_FAMILY_IDENTIFIER = 'designer';
     private const FINGERPRINT = 'fingerprint';
-    private const RECORD_CODE = 'stark';
+    private const ASSET_CODE = 'stark';
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    /** @var DeleteRecordHandler */
-    private $deleteRecordHandler;
+    /** @var DeleteAssetHandler */
+    private $deleteAssetHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -60,108 +60,108 @@ final class DeleteRecordContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        RecordRepositoryInterface $recordRepository,
-        DeleteRecordHandler $deleteRecordHandler,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetRepositoryInterface $assetRepository,
+        DeleteAssetHandler $deleteAssetHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $violationsContext,
         ExceptionContext $exceptionContext,
-        CreateReferenceEntityHandler $createReferenceEntityHandler
+        CreateAssetFamilyHandler $createAssetFamilyHandler
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->recordRepository = $recordRepository;
-        $this->deleteRecordHandler = $deleteRecordHandler;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->assetRepository = $assetRepository;
+        $this->deleteAssetHandler = $deleteAssetHandler;
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
         $this->violationsContext = $violationsContext;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
     }
 
     /**
-     * @Given /^a reference entity with one record$/
+     * @Given /^an asset family with one asset$/
      * @throws \Exception
      */
-    public function aReferenceEntityWithOneRecord()
+    public function aAssetFamilyWithOneAsset()
     {
-        $this->createReferenceEntity();
-        $this->createRecord();
+        $this->createAssetFamily();
+        $this->createAsset();
     }
 
     /**
-     * @When /^the user deletes the record$/
+     * @When /^the user deletes the asset$/
      */
-    public function theUserDeletesTheRecord(): void
+    public function theUserDeletesTheAsset(): void
     {
-        $command = new DeleteRecordCommand(
-            self::RECORD_CODE,
-            self::REFERENCE_ENTITY_IDENTIFIER
+        $command = new DeleteAssetCommand(
+            self::ASSET_CODE,
+            self::ASSET_FAMILY_IDENTIFIER
         );
 
         $this->executeDeleteCommand($command);
     }
 
     /**
-     * @When /^the user tries to delete record that does not exist$/
+     * @When /^the user tries to delete asset that does not exist$/
      */
-    public function theUserDeletesAWrongRecord(): void
+    public function theUserDeletesAWrongAsset(): void
     {
-        $command = new DeleteRecordCommand(
+        $command = new DeleteAssetCommand(
             'unknown_code',
-            self::REFERENCE_ENTITY_IDENTIFIER
+            self::ASSET_FAMILY_IDENTIFIER
         );
 
         $this->executeDeleteCommand($command);
     }
 
     /**
-     * @Then /^the record should not exist anymore$/
+     * @Then /^the asset should not exist anymore$/
      */
-    public function theRecordShouldNotExist()
+    public function theAssetShouldNotExist()
     {
         try {
-            $this->recordRepository->getByReferenceEntityAndCode(
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-                RecordCode::fromString(self::RECORD_CODE)
+            $this->assetRepository->getByAssetFamilyAndCode(
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AssetCode::fromString(self::ASSET_CODE)
             );
-        } catch (RecordNotFoundException $exception) {
+        } catch (AssetNotFoundException $exception) {
             return;
         }
 
-        Assert::true(false, 'The record should not exist');
+        Assert::true(false, 'The asset should not exist');
     }
 
-    private function createReferenceEntity(): void
+    private function createAssetFamily(): void
     {
-        $createCommand = new CreateReferenceEntityCommand(
-            self::REFERENCE_ENTITY_IDENTIFIER,
+        $createCommand = new CreateAssetFamilyCommand(
+            self::ASSET_FAMILY_IDENTIFIER,
             []
         );
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
         }
 
-        ($this->createReferenceEntityHandler)($createCommand);
+        ($this->createAssetFamilyHandler)($createCommand);
     }
 
-    private function createRecord(): void
+    private function createAsset(): void
     {
-        $this->recordRepository->create(Record::create(
-            RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE),
+        $this->assetRepository->create(Asset::create(
+            AssetIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ASSET_CODE, self::FINGERPRINT),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE),
             ValueCollection::fromValues([])
         ));
     }
 
-    private function executeDeleteCommand(DeleteRecordCommand $deleteRecordCommand): void
+    private function executeDeleteCommand(DeleteAssetCommand $deleteAssetCommand): void
     {
-        $violations = $this->validator->validate($deleteRecordCommand);
+        $violations = $this->validator->validate($deleteAssetCommand);
         if ($violations->count() > 0) {
             $this->violationsContext->addViolations($violations);
 
@@ -169,7 +169,7 @@ final class DeleteRecordContext implements Context
         }
 
         try {
-            ($this->deleteRecordHandler)($deleteRecordCommand);
+            ($this->deleteAssetHandler)($deleteAssetCommand);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }

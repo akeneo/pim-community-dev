@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -30,16 +30,16 @@ use Webmozart\Assert\Assert;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class CreateRecordContext implements Context
+final class CreateAssetContext implements Context
 {
-    /** @var CreateRecordHandler */
-    private $createRecordHandler;
+    /** @var CreateAssetHandler */
+    private $createAssetHandler;
 
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
 
-    /** @var ReferenceEntityRepositoryInterface  */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface  */
+    private $assetFamilyRepository;
 
     /** @var ExceptionContext */
     private $exceptionContext;
@@ -51,32 +51,32 @@ final class CreateRecordContext implements Context
     private $violationsContext;
 
     public function __construct(
-        RecordRepositoryInterface $recordRepository,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        CreateRecordHandler $createRecordHandler,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        CreateAssetHandler $createAssetHandler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
         ConstraintViolationsContext $violationsContext
     ) {
-        $this->createRecordHandler = $createRecordHandler;
-        $this->recordRepository = $recordRepository;
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->createAssetHandler = $createAssetHandler;
+        $this->assetRepository = $assetRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->validator = $validator;
         $this->exceptionContext = $exceptionContext;
         $this->violationsContext = $violationsContext;
     }
 
     /**
-     * @When /^the user creates a record "([^"]+)" for entity "([^"]+)" with:$/
+     * @When /^the user creates a asset "([^"]+)" for entity "([^"]+)" with:$/
      */
-    public function theUserCreatesARecordWith(
+    public function theUserCreatesAAssetWith(
         string $code,
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         TableNode $updateTable
     ) {
         $updates = current($updateTable->getHash());
-        $command = new CreateRecordCommand(
-            $referenceEntityIdentifier,
+        $command = new CreateAssetCommand(
+            $assetFamilyIdentifier,
             $code,
             json_decode($updates['labels'], true)
         );
@@ -84,35 +84,35 @@ final class CreateRecordContext implements Context
         $this->violationsContext->addViolations($this->validator->validate($command));
 
         try {
-            ($this->createRecordHandler)($command);
+            ($this->createAssetHandler)($command);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
     }
 
     /**
-     * @Then /^there is a record with:$/
+     * @Then /^there is a asset with:$/
      */
-    public function thereIsARecordWith(TableNode $referenceEntityTable)
+    public function thereIsAAssetWith(TableNode $assetFamilyTable)
     {
-        $expectedInformation = current($referenceEntityTable->getHash());
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($expectedInformation['entity_identifier']);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $actualRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            RecordCode::fromString($expectedInformation['code'])
+        $expectedInformation = current($assetFamilyTable->getHash());
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($expectedInformation['entity_identifier']);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $actualAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            $assetFamilyIdentifier,
+            AssetCode::fromString($expectedInformation['code'])
         );
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
+        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),
-            $actualRecord,
+            $actualAsset,
             $attributeAsLabel
         );
     }
 
-    private function assertSameLabels(array $expectedLabels, Record $record, AttributeAsLabelReference $attributeAsLabel)
+    private function assertSameLabels(array $expectedLabels, Asset $asset, AttributeAsLabelReference $attributeAsLabel)
     {
-        $valueCollection = $record->getValues()->normalize();
+        $valueCollection = $asset->getValues()->normalize();
 
         $actualLabels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel->normalize());
 
@@ -145,33 +145,33 @@ final class CreateRecordContext implements Context
     }
 
     /**
-     * @Given /^there should be no record$/
+     * @Given /^there should be no asset$/
      */
-    public function thereShouldBeNoRecord()
+    public function thereShouldBeNoAsset()
     {
-        $referenceEntityCount = $this->recordRepository->count();
+        $assetFamilyCount = $this->assetRepository->count();
         Assert::same(
             0,
-            $referenceEntityCount,
-            sprintf('Expected to have 0 reference entity. %d found.', $referenceEntityCount)
+            $assetFamilyCount,
+            sprintf('Expected to have 0 asset family. %d found.', $assetFamilyCount)
         );
     }
 
     /**
-     * @Given /^(\d+) random records for a reference entity$/
+     * @Given /^(\d+) random assets for an asset family$/
      */
-    public function randomRecordsForAReferenceEntity(int $number)
+    public function randomAssetsForAAssetFamily(int $number)
     {
         for ($i = 0; $i < $number; $i++) {
-            $command = new CreateRecordCommand(
+            $command = new CreateAssetCommand(
                 'designer',
-                uniqid('record_'),
+                uniqid('asset_'),
                 []
             );
 
             $this->violationsContext->addViolations($this->validator->validate($command));
 
-            ($this->createRecordHandler)($command);
+            ($this->createAssetHandler)($command);
         }
     }
 }

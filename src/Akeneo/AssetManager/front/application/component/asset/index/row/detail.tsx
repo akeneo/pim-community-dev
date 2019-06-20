@@ -1,25 +1,25 @@
 import * as React from 'react';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import {CellViews} from 'akeneoreferenceentity/application/component/reference-entity/edit/record';
+import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import {Column} from 'akeneoassetmanager/application/reducer/grid';
+import {CellViews} from 'akeneoassetmanager/application/component/asset-family/edit/asset';
 
 const memo = (React as any).memo;
 
 const DetailRow = memo(
   ({
-    record,
+    asset,
     placeholder = false,
-    onRedirectToRecord,
+    onRedirectToAsset,
     columns,
     cellViews,
   }: {
-    record: NormalizedRecord;
+    asset: NormalizedAsset;
     placeholder?: boolean;
     position: number;
     columns: Column[];
     cellViews: CellViews;
   } & {
-    onRedirectToRecord: (record: NormalizedRecord) => void;
+    onRedirectToAsset: (asset: NormalizedAsset) => void;
   }) => {
     if (true === placeholder) {
       return (
@@ -38,11 +38,11 @@ const DetailRow = memo(
     return (
       <tr
         className="AknGrid-bodyRow"
-        data-identifier={record.identifier}
+        data-identifier={asset.identifier}
         onClick={event => {
           event.preventDefault();
 
-          onRedirectToRecord(record);
+          onRedirectToAsset(asset);
 
           return false;
         }}
@@ -51,7 +51,7 @@ const DetailRow = memo(
 
         {columns.map((column: Column) => {
           const CellView = cellViews[column.key];
-          const value = record.values[column.key as any];
+          const value = asset.values[column.key as any];
 
           if (undefined === value) {
             return <td key={column.key} className="AknGrid-bodyCell" />;
@@ -70,55 +70,55 @@ const DetailRow = memo(
 
 const DetailRows = memo(
   ({
-    records,
+    assets,
     locale,
     placeholder,
-    onRedirectToRecord,
-    recordCount,
+    onRedirectToAsset,
+    assetCount,
     columns,
     cellViews,
   }: {
-    records: NormalizedRecord[];
+    assets: NormalizedAsset[];
     locale: string;
     placeholder: boolean;
-    onRedirectToRecord: (record: NormalizedRecord) => void;
-    recordCount: number;
+    onRedirectToAsset: (asset: NormalizedAsset) => void;
+    assetCount: number;
     columns: Column[];
     cellViews: CellViews;
   }) => {
     if (placeholder) {
-      const record = {
+      const asset = {
         identifier: '',
-        reference_entity_identifier: '',
+        asset_family_identifier: '',
         code: '',
         labels: {},
         image: null,
         values: [],
       };
 
-      const placeholderCount = recordCount < 30 ? recordCount : 30;
+      const placeholderCount = assetCount < 30 ? assetCount : 30;
 
       return Array.from(Array(placeholderCount).keys()).map(key => (
         <DetailRow
           placeholder={placeholder}
           key={key}
-          record={record}
+          asset={asset}
           locale={locale}
-          onRedirectToRecord={() => {}}
+          onRedirectToAsset={() => {}}
           columns={columns}
           cellViews={cellViews}
         />
       ));
     }
 
-    return records.map((record: NormalizedRecord) => {
+    return assets.map((asset: NormalizedAsset) => {
       return (
         <DetailRow
           placeholder={false}
-          key={record.identifier}
-          record={record}
+          key={asset.identifier}
+          asset={asset}
           locale={locale}
-          onRedirectToRecord={onRedirectToRecord}
+          onRedirectToAsset={onRedirectToAsset}
           columns={columns}
           cellViews={cellViews}
         />

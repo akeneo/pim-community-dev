@@ -2,57 +2,57 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\Subscribers;
+namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\ReferenceEntity\Application\Record\Subscribers\RemoveRecordFromIndexSubscriber;
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\AssetManager\Application\Asset\Subscribers\RemoveAssetFromIndexSubscriber;
+use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RemoveRecordFromIndexSubscriberSpec extends ObjectBehavior
+class RemoveAssetFromIndexSubscriberSpec extends ObjectBehavior
 {
-    function let(RecordIndexerInterface $recordIndexer)
+    function let(AssetIndexerInterface $assetIndexer)
     {
-        $this->beConstructedWith($recordIndexer);
+        $this->beConstructedWith($assetIndexer);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RemoveRecordFromIndexSubscriber::class);
+        $this->shouldHaveType(RemoveAssetFromIndexSubscriber::class);
     }
 
     function it_subscribes_to_events()
     {
         $this::getSubscribedEvents()->shouldReturn([
-            RecordDeletedEvent::class => 'whenRecordDeleted',
-            ReferenceEntityRecordsDeletedEvent::class => 'whenAllRecordsDeleted',
+            AssetDeletedEvent::class => 'whenAssetDeleted',
+            AssetFamilyAssetsDeletedEvent::class => 'whenAllAssetsDeleted',
         ]);
     }
 
-    function it_triggers_the_unindexation_of_an_deleted_record(RecordIndexerInterface $recordIndexer)
+    function it_triggers_the_unindexation_of_an_deleted_asset(AssetIndexerInterface $assetIndexer)
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordIdentifier = RecordIdentifier::fromString('stark_identifier');
-        $recordCode = RecordCode::fromString('stark');
-        $recordIndexer->removeRecordByReferenceEntityIdentifierAndCode('designer', 'stark')->shouldBeCalled();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetIdentifier = AssetIdentifier::fromString('stark_identifier');
+        $assetCode = AssetCode::fromString('stark');
+        $assetIndexer->removeAssetByAssetFamilyIdentifierAndCode('designer', 'stark')->shouldBeCalled();
 
-        $this->whenRecordDeleted(new RecordDeletedEvent($recordIdentifier, $recordCode, $referenceEntityIdentifier));
+        $this->whenAssetDeleted(new AssetDeletedEvent($assetIdentifier, $assetCode, $assetFamilyIdentifier));
     }
 
-    function it_triggers_the_unindexation_of_all_entity_records_when_they_are_deleted(
-        RecordIndexerInterface $recordIndexer
+    function it_triggers_the_unindexation_of_all_entity_assets_when_they_are_deleted(
+        AssetIndexerInterface $assetIndexer
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordIndexer->removeByReferenceEntityIdentifier('designer')->shouldBeCalled();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetIndexer->removeByAssetFamilyIdentifier('designer')->shouldBeCalled();
 
-        $this->whenAllRecordsDeleted(new ReferenceEntityRecordsDeletedEvent($referenceEntityIdentifier));
+        $this->whenAllAssetsDeleted(new AssetFamilyAssetsDeletedEvent($assetFamilyIdentifier));
     }
 }

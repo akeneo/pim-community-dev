@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
+namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,10 +21,10 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditNumberValueCommand extends Constraint
 {
-    public const NUMBER_SHOULD_BE_STRING = 'pim_reference_entity.record.validation.number.should_be_string';
-    public const NUMBER_SHOULD_BE_INTEGER = 'pim_reference_entity.record.validation.number.should_be_integer';
-    public const INTEGER_TOO_LONG = 'pim_reference_entity.record.validation.number.integer_too_long';
-    public const NUMBER_SHOULD_BE_NUMERIC = 'pim_reference_entity.record.validation.number.should_be_numeric';
+    public const NUMBER_SHOULD_BE_STRING = 'pim_asset_manager.asset.validation.number.should_be_string';
+    public const NUMBER_SHOULD_BE_INTEGER = 'pim_asset_manager.asset.validation.number.should_be_integer';
+    public const INTEGER_TOO_LONG = 'pim_asset_manager.asset.validation.number.integer_too_long';
+    public const NUMBER_SHOULD_BE_NUMERIC = 'pim_asset_manager.asset.validation.number.should_be_numeric';
 
     public function getTargets()
     {

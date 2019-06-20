@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
 use Webmozart\Assert\Assert;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordCollectionConnectorValueTransformer implements ConnectorValueTransformerInterface
+class AssetCollectionConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
     /** @var FindCodesByIdentifiersInterface */
     private $findCodesByIdentifiers;
@@ -34,23 +34,23 @@ class RecordCollectionConnectorValueTransformer implements ConnectorValueTransfo
 
     public function supports(AbstractAttribute $attribute): bool
     {
-        return $attribute instanceof RecordCollectionAttribute;
+        return $attribute instanceof AssetCollectionAttribute;
     }
 
     public function transform(array $normalizedValue, AbstractAttribute $attribute): ?array
     {
         Assert::true($this->supports($attribute));
 
-        $existingRecordCodes = $this->findCodesByIdentifiers->find($normalizedValue['data']);
+        $existingAssetCodes = $this->findCodesByIdentifiers->find($normalizedValue['data']);
 
-        if (empty($existingRecordCodes)) {
+        if (empty($existingAssetCodes)) {
             return null;
         }
 
         return [
             'locale'  => $normalizedValue['locale'],
             'channel' => $normalizedValue['channel'],
-            'data'    => array_values($existingRecordCodes),
+            'data'    => array_values($existingAssetCodes),
         ];
     }
 }

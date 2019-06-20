@@ -7,7 +7,7 @@ const {
 
 const getRequestContract = fileName => {
   return JSON.parse(
-    fs.readFileSync(`${process.cwd()}/src/Akeneo/ReferenceEntity/tests/shared/responses/${fileName}`, 'utf-8')
+    fs.readFileSync(`${process.cwd()}/src/Akeneo/AssetManager/tests/shared/responses/${fileName}`, 'utf-8')
   );
 };
 
@@ -52,11 +52,11 @@ const answerChannelList = async function() {
   await listenRequest(this.page, requestContract);
 };
 
-const askForReferenceEntity = async function(identifier) {
+const askForAssetFamily = async function(identifier) {
   await answerLocaleList.apply(this);
   await answerChannelList.apply(this);
   await this.page.evaluate(async identifier => {
-    const Controller = require('pim/controller/reference-entity/edit');
+    const Controller = require('pim/controller/asset-family/edit');
     const controller = new Controller();
     controller.renderRoute({params: {identifier, tab: 'attribute'}});
 
@@ -69,7 +69,7 @@ const askForReferenceEntity = async function(identifier) {
 module.exports = {
   getRequestContract,
   listenRequest,
-  askForReferenceEntity,
+  askForAssetFamily,
   answerLocaleList,
   answerChannelList,
 };

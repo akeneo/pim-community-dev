@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -25,18 +25,18 @@ use PHPUnit\Framework\TestCase;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends TestCase
+class InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends TestCase
 {
-    /** @var InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute */
+    /** @var InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute */
     private $query;
 
     public function setUp(): void
     {
         parent::setUp();
-        $referenceEntityattribute = new Attribute();
-        $referenceEntityattribute->setCode('main_designer');
-        $referenceEntityattribute->setType(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);
-        $referenceEntityattribute->setProperties([
+        $assetFamilyattribute = new Attribute();
+        $assetFamilyattribute->setCode('main_designer');
+        $assetFamilyattribute->setType(AssetMultipleLinkType::ASSET_MULTIPLE_LINK);
+        $assetFamilyattribute->setProperties([
             'reference_data_name' => 'designer'
         ]);
 
@@ -45,22 +45,22 @@ class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends Te
         $textareaAttribute->setType(AttributeTypes::TEXTAREA);
 
         $inMemoryAttributeRepository = new InMemoryAttributeRepository();
-        $inMemoryAttributeRepository->save($referenceEntityattribute);
+        $inMemoryAttributeRepository->save($assetFamilyattribute);
         $inMemoryAttributeRepository->save($textareaAttribute);
 
-        $this->query = new InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute($inMemoryAttributeRepository);
+        $this->query = new InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute($inMemoryAttributeRepository);
     }
 
     /**
      * @test
      */
-    public function it_tells_if_a_reference_entity_is_linked_to_at_least_one_product_attribute()
+    public function it_tells_if_an_asset_family_is_linked_to_at_least_one_product_attribute()
     {
-        $identifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = AssetFamilyIdentifier::fromString('designer');
         $isLinked = $this->query->isLinked($identifier);
         $this->assertTrue($isLinked);
 
-        $identifier = ReferenceEntityIdentifier::fromString('brand');
+        $identifier = AssetFamilyIdentifier::fromString('brand');
         $isLinked = $this->query->isLinked($identifier);
         $this->assertFalse($isLinked);
     }

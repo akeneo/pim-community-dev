@@ -11,26 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesIndexedByIdentifier;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindImageAttributeCodes;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAttributesIndexedByIdentifier;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindImageAttributeCodes;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -51,11 +51,11 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_codes_of_the_image_attributes_for_a_given_reference_entity()
+    public function it_returns_the_codes_of_the_image_attributes_for_a_given_asset_family()
     {
         $this->loadAttributesWithImageType();
 
-        $imageAttributeCodes = $this->findImageAttributeCodes->find(ReferenceEntityIdentifier::fromString('designer'));
+        $imageAttributeCodes = $this->findImageAttributeCodes->find(AssetFamilyIdentifier::fromString('designer'));
         $expectedCodes = [
             AttributeCode::fromString('image'),
             AttributeCode::fromString('second_image')
@@ -71,7 +71,7 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
     {
         $this->loadAttributesWithoutImageType();
 
-        $imageAttributeCodes = $this->findImageAttributeCodes->find(ReferenceEntityIdentifier::fromString('designer'));
+        $imageAttributeCodes = $this->findImageAttributeCodes->find(AssetFamilyIdentifier::fromString('designer'));
 
         $this->assertSame([], $imageAttributeCodes);
     }
@@ -82,7 +82,7 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
 
         $imageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
@@ -95,7 +95,7 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
 
         $secondImageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'second_image', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('second_image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(3),
@@ -114,7 +114,7 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
     {
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -128,7 +128,7 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
 
         $email = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'email', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('email'),
             LabelCollection::fromArray(['en_US' => 'Email']),
             AttributeOrder::fromInteger(1),

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Locale;
+namespace Akeneo\AssetManager\Domain\Query\Locale;
 
 /**
  * Find the list of activated locale identifiers (that's not belong to our bounded context)

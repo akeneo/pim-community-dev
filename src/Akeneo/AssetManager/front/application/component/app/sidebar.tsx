@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import __ from 'akeneoreferenceentity/tools/translator';
-import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {toggleSidebar, updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
-import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
-import Key from 'akeneoreferenceentity/tools/key';
-import DropdownMenu from 'akeneoreferenceentity/application/component/app/dropdown-menu';
+import __ from 'akeneoassetmanager/tools/translator';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
+import {toggleSidebar, updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
+import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
+import Key from 'akeneoassetmanager/tools/key';
+import DropdownMenu from 'akeneoassetmanager/application/component/app/dropdown-menu';
 
 interface SidebarOwnProps {
   backButton?: () => JSX.Element;
@@ -48,7 +48,7 @@ class Sidebar extends React.Component<SidebarProps> {
         <div className="AknColumn-inner column-inner">
           <div className="AknColumn-navigation">
             <DropdownMenu
-              label={__('pim_reference_entity.reference_entity.breadcrumb')}
+              label={__('pim_asset_manager.asset_family.breadcrumb')}
               elements={this.props.tabs}
               selectedElement={this.props.currentTab}
               onSelectionChange={this.updateCurrentTab}
@@ -57,7 +57,7 @@ class Sidebar extends React.Component<SidebarProps> {
           <div className="AknColumn-innerTop">
             <div className="AknColumn-block">
               {undefined !== BackButton ? <BackButton /> : null}
-              <div className="AknColumn-title">{__('pim_reference_entity.reference_entity.breadcrumb')}</div>
+              <div className="AknColumn-title">{__('pim_asset_manager.asset_family.breadcrumb')}</div>
               {this.props.tabs.map((tab: any) => {
                 const activeClass = this.props.currentTab === tab.code ? 'AknColumn-navigationLink--active' : '';
 

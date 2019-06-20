@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\IndexAssets\IndexAssetsByAssetFamilyCommand;
+use Akeneo\AssetManager\Application\Asset\IndexAssets\IndexAssetsByAssetFamilyHandler;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\AssetIndexerSpy;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -21,16 +21,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IndexRecordsContext implements Context
+class IndexAssetsContext implements Context
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
-    /** @var IndexRecordsByReferenceEntityHandler */
-    private $indexRecordsByReferenceEntity;
+    /** @var IndexAssetsByAssetFamilyHandler */
+    private $indexAssetsByAssetFamily;
 
-    /** @var RecordIndexerInterface */
-    private $recordIndexerSpy;
+    /** @var AssetIndexerInterface */
+    private $assetIndexerSpy;
 
     /** @var ConstraintViolationsContext */
     private $constraintViolationsContext;
@@ -38,53 +38,53 @@ class IndexRecordsContext implements Context
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        IndexRecordsByReferenceEntityHandler $indexRecordsByReferenceEntity,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        IndexAssetsByAssetFamilyHandler $indexAssetsByAssetFamily,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
-        RecordIndexerSpy $recordIndexerSpy,
-        CreateReferenceEntityHandler $createReferenceEntityHandler
+        AssetIndexerSpy $assetIndexerSpy,
+        CreateAssetFamilyHandler $createAssetFamilyHandler
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->indexRecordsByReferenceEntity = $indexRecordsByReferenceEntity;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->indexAssetsByAssetFamily = $indexAssetsByAssetFamily;
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
-        $this->recordIndexerSpy = $recordIndexerSpy;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->assetIndexerSpy = $assetIndexerSpy;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
     }
 
     /**
-     * @Given /^the reference entity "([^"]*)"$/
+     * @Given /^the asset family "([^"]*)"$/
      */
-    public function theReferenceEntity(string $referenceEntityIdentifier): void
+    public function theAssetFamily(string $assetFamilyIdentifier): void
     {
-        $createCommand = new CreateReferenceEntityCommand($referenceEntityIdentifier, []);
+        $createCommand = new CreateAssetFamilyCommand($assetFamilyIdentifier, []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
         }
 
-        ($this->createReferenceEntityHandler)($createCommand);
+        ($this->createAssetFamilyHandler)($createCommand);
     }
     /**
-     * @Given /^none of the records of "([^"]*)" are indexed$/
+     * @Given /^none of the assets of "([^"]*)" are indexed$/
      */
-    public function noneOfTheRecordsOfAreIndexed(string $referenceEntityIdentifier)
+    public function noneOfTheAssetsOfAreIndexed(string $assetFamilyIdentifier)
     {
-        $this->recordIndexerSpy->assertReferenceEntityNotIndexed($referenceEntityIdentifier);
+        $this->assetIndexerSpy->assertAssetFamilyNotIndexed($assetFamilyIdentifier);
     }
 
     /**
-     * @When /^the system administrator reindexes all the records of "([^"]*)"$/
+     * @When /^the system administrator reindexes all the assets of "([^"]*)"$/
      */
-    public function theSystemAdministratorReindexesAllTheRecordsOf(string $refenceEntityIdentifier): void
+    public function theSystemAdministratorReindexesAllTheAssetsOf(string $assetFamilyIdentifier): void
     {
-        $command = new IndexRecordsByReferenceEntityCommand($refenceEntityIdentifier);
+        $command = new IndexAssetsByAssetFamilyCommand($assetFamilyIdentifier);
         $violations = $this->validator->validate($command);
 
         if (0 < $violations->count()) {
@@ -92,23 +92,23 @@ class IndexRecordsContext implements Context
 
             return;
         }
-        ($this->indexRecordsByReferenceEntity)($command);
+        ($this->indexAssetsByAssetFamily)($command);
     }
 
     /**
-     * @Then /^the records of the reference entity "([^"]*)" have been indexed$/
+     * @Then /^the assets of the asset family "([^"]*)" have been indexed$/
      */
-    public function theRecordsOfTheReferenceEntityHaveBeenIndexed(string $referenceEntityIdentifier): void
+    public function theAssetsOfTheAssetFamilyHaveBeenIndexed(string $assetFamilyIdentifier): void
     {
-        $this->recordIndexerSpy->assertReferenceEntityIndexed($referenceEntityIdentifier);
+        $this->assetIndexerSpy->assertAssetFamilyIndexed($assetFamilyIdentifier);
     }
 
     /**
-     * @When /^the system administrator reindexes the records of a reference entity that does not exist$/
+     * @When /^the system administrator reindexes the assets of an asset family that does not exist$/
      */
-    public function theSystemAdministratorReindexesTheRecordsOfAnReferenceEntityThatDoesNotExist()
+    public function theSystemAdministratorReindexesTheAssetsOfAnAssetFamilyThatDoesNotExist()
     {
-        $command = new IndexRecordsByReferenceEntityCommand('unknown_reference_entity');
+        $command = new IndexAssetsByAssetFamilyCommand('unknown_asset_family');
         $violations = $this->validator->validate($command);
 
         if (0 < $violations->count()) {
@@ -116,6 +116,6 @@ class IndexRecordsContext implements Context
 
             return;
         }
-        ($this->indexRecordsByReferenceEntity)($command);
+        ($this->indexAssetsByAssetFamily)($command);
     }
 }

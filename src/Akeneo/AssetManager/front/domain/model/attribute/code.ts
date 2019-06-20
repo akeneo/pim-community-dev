@@ -1,4 +1,4 @@
-import AttributeCode from 'akeneoreferenceentity/domain/model/code';
-export * from 'akeneoreferenceentity/domain/model/code';
+import AttributeCode from 'akeneoassetmanager/domain/model/code';
+export * from 'akeneoassetmanager/domain/model/code';
 
 export default AttributeCode;

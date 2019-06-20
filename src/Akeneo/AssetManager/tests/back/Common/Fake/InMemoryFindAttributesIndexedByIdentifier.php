@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
@@ -35,9 +35,9 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
     /**
      * @return AttributeDetails[]
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
+        $attributes = $this->attributeRepository->findByAssetFamily($assetFamilyIdentifier);
 
         return array_reduce($attributes, function ($stack, AbstractAttribute $current) {
             $stack[(string) $current->getIdentifier()] = $current;

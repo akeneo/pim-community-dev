@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecordsInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyHasAssetsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
@@ -23,7 +23,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
+class SqlAssetFamilyHasAssets implements AssetFamilyHasAssetsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -33,35 +33,35 @@ class SqlReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function hasRecords(ReferenceEntityIdentifier $identifier): bool
+    public function hasAssets(AssetFamilyIdentifier $identifier): bool
     {
         $statement = $this->executeQuery($identifier);
 
-        return $this->doesReferenceEntityHaveRecords($statement);
+        return $this->doesAssetFamilyHaveAssets($statement);
     }
 
-    private function executeQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): Statement
+    private function executeQuery(AssetFamilyIdentifier $assetFamilyIdentifier): Statement
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_reference_entity_record
-            WHERE reference_entity_identifier = :reference_entity_identifier
-        ) as has_records
+            FROM akeneo_asset_manager_asset
+            WHERE asset_family_identifier = :asset_family_identifier
+        ) as has_assets
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'reference_entity_identifier' => $referenceEntityIdentifier,
+            'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
 
         return $statement;
     }
 
-    private function doesReferenceEntityHaveRecords(Statement $statement): bool
+    private function doesAssetFamilyHaveAssets(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        $hasRecords = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['has_records'], $platform);
+        $hasAssets = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['has_assets'], $platform);
 
-        return $hasRecords;
+        return $hasAssets;
     }
 }

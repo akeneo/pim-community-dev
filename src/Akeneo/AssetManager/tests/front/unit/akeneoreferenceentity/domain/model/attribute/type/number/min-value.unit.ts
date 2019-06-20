@@ -1,4 +1,4 @@
-import {MinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
+import {MinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
 
 describe('akeneo > attribute > domain > model > attribute > type > text --- MinValue', () => {
   test('I can create a MinValue from normalized', () => {

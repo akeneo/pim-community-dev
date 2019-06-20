@@ -1,5 +1,5 @@
-import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export interface ListState {
   attributes: NormalizedAttribute[] | null;

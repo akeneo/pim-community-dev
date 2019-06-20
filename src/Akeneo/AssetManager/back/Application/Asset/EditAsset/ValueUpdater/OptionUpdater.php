@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -12,15 +12,15 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
  * file that was distributed with this source code.
  */
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommand;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -33,10 +33,10 @@ class OptionUpdater implements ValueUpdaterInterface
         return $command instanceof EditOptionValueCommand;
     }
 
-    public function __invoke(Record $record, AbstractEditValueCommand $command): void
+    public function __invoke(Asset $asset, AbstractEditValueCommand $command): void
     {
         if (!$this->supports($command)) {
-            throw new \RuntimeException('Impossible to update the value of the record with the given command.');
+            throw new \RuntimeException('Impossible to update the value of the asset with the given command.');
         }
 
         /** @var EditOptionValueCommand $command */
@@ -50,6 +50,6 @@ class OptionUpdater implements ValueUpdaterInterface
         $option = OptionData::createFromNormalize($command->optionCode);
 
         $value = Value::create($attribute, $channelReference, $localeReference, $option);
-        $record->setValue($value);
+        $asset->setValue($value);
     }
 }

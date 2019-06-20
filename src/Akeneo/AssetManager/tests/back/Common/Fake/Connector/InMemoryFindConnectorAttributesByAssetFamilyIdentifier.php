@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
+namespace Akeneo\AssetManager\Common\Fake\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributesByReferenceEntityIdentifierInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributesByAssetFamilyIdentifierInterface;
 
-class InMemoryFindConnectorAttributesByReferenceEntityIdentifier implements FindConnectorAttributesByReferenceEntityIdentifierInterface
+class InMemoryFindConnectorAttributesByAssetFamilyIdentifier implements FindConnectorAttributesByAssetFamilyIdentifierInterface
 {
     /** @var ConnectorAttribute[] */
     private $attributes;
@@ -28,17 +28,17 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifier implements Find
     }
 
     public function save(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
         ConnectorAttribute $connectorAttribute
     ): void {
-        $this->attributes[(string) $referenceEntityIdentifier][] = $connectorAttribute;
+        $this->attributes[(string) $assetFamilyIdentifier][] = $connectorAttribute;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        return $this->attributes[(string) $referenceEntityIdentifier] ?? [];
+        return $this->attributes[(string) $assetFamilyIdentifier] ?? [];
     }
 }

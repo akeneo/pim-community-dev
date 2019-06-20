@@ -1,89 +1,89 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
+namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCollectionValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordUpdater;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCollectionValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\AssetUpdater;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordUpdaterSpec extends ObjectBehavior
+class AssetUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordUpdater::class);
+        $this->shouldHaveType(AssetUpdater::class);
     }
 
-    function it_only_supports_edit_record_value_command(
-        EditRecordValueCommand $editRecordValueCommand,
-        EditRecordCollectionValueCommand $editRecordCollectionValueCommand
+    function it_only_supports_edit_asset_value_command(
+        EditAssetValueCommand $editAssetValueCommand,
+        EditAssetCollectionValueCommand $editAssetCollectionValueCommand
     ) {
-        $this->supports($editRecordValueCommand)->shouldReturn(true);
-        $this->supports($editRecordCollectionValueCommand)->shouldReturn(false);
+        $this->supports($editAssetValueCommand)->shouldReturn(true);
+        $this->supports($editAssetCollectionValueCommand)->shouldReturn(false);
     }
 
-    function it_edits_the_record_value_of_a_record(Record $record) {
-        $recordAttribute = $this->getAttribute();
+    function it_edits_the_asset_value_of_a_asset(Asset $asset) {
+        $assetAttribute = $this->getAttribute();
 
-        $editRecordValueCommand = new EditRecordValueCommand(
-            $recordAttribute,
+        $editAssetValueCommand = new EditAssetValueCommand(
+            $assetAttribute,
             'ecommerce',
             'fr_FR',
             'cogip'
         );
         $value = Value::create(
-            $editRecordValueCommand->attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($editRecordValueCommand->channel),
-            LocaleReference::createfromNormalized($editRecordValueCommand->locale),
-            RecordData::createFromNormalize($editRecordValueCommand->recordCode)
+            $editAssetValueCommand->attribute->getIdentifier(),
+            ChannelReference::createfromNormalized($editAssetValueCommand->channel),
+            LocaleReference::createfromNormalized($editAssetValueCommand->locale),
+            AssetData::createFromNormalize($editAssetValueCommand->assetCode)
         );
 
-        $this->__invoke($record, $editRecordValueCommand);
-        $record->setValue($value)->shouldBeCalled();
+        $this->__invoke($asset, $editAssetValueCommand);
+        $asset->setValue($value)->shouldBeCalled();
     }
 
     function it_throws_if_it_does_not_support_the_command(
-        Record $record,
-        EditRecordCollectionValueCommand $editRecordCollectionValueCommand
+        Asset $asset,
+        EditAssetCollectionValueCommand $editAssetCollectionValueCommand
     ) {
-        $this->supports($editRecordCollectionValueCommand)->shouldReturn(false);
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $editRecordCollectionValueCommand]);
+        $this->supports($editAssetCollectionValueCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$asset, $editAssetCollectionValueCommand]);
     }
 
-    private function getAttribute(): RecordAttribute
+    private function getAttribute(): AssetAttribute
     {
-        $recordAttribute = RecordAttribute::create(
+        $assetAttribute = AssetAttribute::create(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            ReferenceEntityIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            ReferenceEntityIdentifier::fromString('brand')
+            AssetFamilyIdentifier::fromString('brand')
         );
 
-        return $recordAttribute;
+        return $assetAttribute;
     }
 }

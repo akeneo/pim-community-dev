@@ -1,61 +1,61 @@
-Feature: Delete all reference entity record
-  In order to administrate records
+Feature: Delete all asset family asset
+  In order to administrate assets
   As a user
-  I need to delete all records belonging to a refenrence entity
+  I need to delete all assets belonging to a refenrence entity
 
   @acceptance-back
-  Scenario: Deleting all records of a reference entity
-    Given two reference entities with two records each
-    When the user deletes all the records from one reference entity
-    Then there should be no records for this reference entity
-    But there is still two records on the other reference entity
+  Scenario: Deleting all assets of an asset family
+    Given two asset families with two assets each
+    When the user deletes all the assets from one asset family
+    Then there should be no assets for this asset family
+    But there is still two assets on the other asset family
 
   @acceptance-back
-  Scenario: Deleting all records of an unknown reference entity
-    Given two reference entities with two records each
-    When the user deletes all the records from an unknown entity
-    And there is still two records for each reference entity
+  Scenario: Deleting all assets of an unknown asset family
+    Given two asset families with two assets each
+    When the user deletes all the assets from an unknown entity
+    And there is still two assets for each asset family
 
   @acceptance-front
-  Scenario: Delete all reference entity records
-    Given a valid reference entity
-    And the following records for the reference entity "designer":
+  Scenario: Delete all asset family assets
+    Given a valid asset family
+    And the following assets for the asset family "designer":
       | identifier        | code   | labels                        |
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
       | designer_coco_2   | coco   | {"en_US": "Coco"}             |
     And the user has the following rights:
-      | akeneo_referenceentity_record_create      | true |
-      | akeneo_referenceentity_record_edit        | true |
-      | akeneo_referenceentity_records_delete_all | true |
-    And the user asks for the reference entity "designer"
-    When the user deletes all the reference entity records
+      | akeneo_assetmanager_asset_create      | true |
+      | akeneo_assetmanager_asset_edit        | true |
+      | akeneo_assetmanager_assets_delete_all | true |
+    And the user asks for the asset family "designer"
+    When the user deletes all the asset family assets
     Then the user should see the successfull deletion notification
 
   @acceptance-front
-  Scenario: Error while deleting all reference entity records
-    Given a valid reference entity
-    And the following records for the reference entity "designer":
+  Scenario: Error while deleting all asset family assets
+    Given a valid asset family
+    And the following assets for the asset family "designer":
       | identifier        | code   | labels                        |
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
       | designer_coco_2   | coco   | {"en_US": "Coco"}             |
     And the user has the following rights:
-      | akeneo_referenceentity_record_create      | true |
-      | akeneo_referenceentity_record_edit        | true |
-      | akeneo_referenceentity_records_delete_all | true |
-    And the user asks for the reference entity "designer"
-    When the user cannot delete all the reference entity records
+      | akeneo_assetmanager_asset_create      | true |
+      | akeneo_assetmanager_asset_edit        | true |
+      | akeneo_assetmanager_assets_delete_all | true |
+    And the user asks for the asset family "designer"
+    When the user cannot delete all the asset family assets
     Then the user should see the failed deletion notification
 
   @acceptance-front
-  Scenario: Cannot delete all reference entity records without rights
-    Given a valid reference entity
-    And the following records for the reference entity "designer":
+  Scenario: Cannot delete all asset family assets without rights
+    Given a valid asset family
+    And the following assets for the asset family "designer":
       | identifier        | code   | labels                        |
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
       | designer_coco_2   | coco   | {"en_US": "Coco"}             |
     And the user has the following rights:
-      | akeneo_referenceentity_record_create      | true  |
-      | akeneo_referenceentity_record_edit        | true  |
-      | akeneo_referenceentity_records_delete_all | false |
-    And the user asks for the reference entity "designer"
+      | akeneo_assetmanager_asset_create      | true  |
+      | akeneo_assetmanager_asset_edit        | true  |
+      | akeneo_assetmanager_assets_delete_all | false |
+    And the user asks for the asset family "designer"
     Then the user should not see the delete all button

@@ -1,40 +1,40 @@
-import Saver from 'akeneoreferenceentity/domain/saver/saver';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
-import {postJSON} from 'akeneoreferenceentity/tools/fetch';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
+import Saver from 'akeneoassetmanager/domain/saver/saver';
+import Asset from 'akeneoassetmanager/domain/model/asset/asset';
+import {postJSON} from 'akeneoassetmanager/tools/fetch';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
-export interface RecordSaver extends Saver<Record> {}
+export interface AssetSaver extends Saver<Asset> {}
 
-export class RecordSaverImplementation implements RecordSaver {
+export class AssetSaverImplementation implements AssetSaver {
   constructor() {
     Object.freeze(this);
   }
 
-  async save(record: Record): Promise<ValidationError[] | null> {
-    const normalizedRecord = record.normalizeMinimal();
+  async save(asset: Asset): Promise<ValidationError[] | null> {
+    const normalizedAsset = asset.normalizeMinimal();
 
     return await postJSON(
-      routing.generate('akeneo_reference_entities_record_edit_rest', {
-        referenceEntityIdentifier: record.getReferenceEntityIdentifier().stringValue(),
-        recordCode: record.getCode().stringValue(),
+      routing.generate('akeneo_asset_manager_asset_edit_rest', {
+        assetFamilyIdentifier: asset.getAssetFamilyIdentifier().stringValue(),
+        assetCode: asset.getCode().stringValue(),
       }),
-      normalizedRecord
+      normalizedAsset
     ).catch(handleError);
   }
 
-  async create(record: Record): Promise<ValidationError[] | null> {
-    const normalizedRecord = record.normalize() as any;
+  async create(asset: Asset): Promise<ValidationError[] | null> {
+    const normalizedAsset = asset.normalize() as any;
 
     return await postJSON(
-      routing.generate('akeneo_reference_entities_record_create_rest', {
-        referenceEntityIdentifier: record.getReferenceEntityIdentifier().stringValue(),
+      routing.generate('akeneo_asset_manager_asset_create_rest', {
+        assetFamilyIdentifier: asset.getAssetFamilyIdentifier().stringValue(),
       }),
-      normalizedRecord
+      normalizedAsset
     ).catch(handleError);
   }
 }
 
-export default new RecordSaverImplementation();
+export default new AssetSaverImplementation();

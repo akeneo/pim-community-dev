@@ -1,12 +1,12 @@
-import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
-import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
+import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
+import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 
 const normalizedDescription = {
   identifier: 'description_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -22,7 +22,7 @@ const normalizedDescription = {
 };
 const normalizedWebsite = {
   identifier: 'website_1234',
-  reference_entity_identifier: 'designer',
+  asset_family_identifier: 'designer',
   code: 'website',
   labels: {en_US: 'Website'},
   type: 'text',
@@ -42,7 +42,7 @@ const ecommerce = denormalizeChannelReference('ecommerce');
 const enUS = denormalizeLocaleReference('en_US');
 const data = denormalizeTextData('a nice description');
 
-describe('akeneo > reference entity > domain > model > record --- value', () => {
+describe('akeneo > asset family > domain > model > asset --- value', () => {
   test('I can create a new value with a text data', () => {
     expect(createValue(description, denormalizeChannelReference(null), enUS, data).normalize()).toEqual({
       attribute: normalizedDescription,

@@ -1,43 +1,43 @@
 {
     "request": {
         "method": "PATCH",
-        "route": "akeneo_reference_entities_records_rest_connector_create_or_update",
+        "route": "akeneo_asset_manager_assets_rest_connector_create_or_update",
         "query": {
-            "referenceEntityIdentifier": "brand"
+            "assetFamilyIdentifier": "brand"
         },
         "body": [
             {
-                "code": "record_1"
+                "code": "asset_1"
             },
             {
-                "code": "record_2"
+                "code": "asset_2"
             },
             {
-                "code": "record_3"
+                "code": "asset_3"
             },
             {
-                "code": "record_4"
+                "code": "asset_4"
             },
             {
-                "code": "record_5"
+                "code": "asset_5"
             },
             {
-                "code": "record_6"
+                "code": "asset_6"
             },
             {
-                "code": "record_7"
+                "code": "asset_7"
             },
             {
-                "code": "record_8"
+                "code": "asset_8"
             },
             {
-                "code": "record_9"
+                "code": "asset_9"
             },
             {
-                "code": "record_10"
+                "code": "asset_10"
             },
             {
-                "code": "record_11"
+                "code": "asset_11"
             }
         ]
     },

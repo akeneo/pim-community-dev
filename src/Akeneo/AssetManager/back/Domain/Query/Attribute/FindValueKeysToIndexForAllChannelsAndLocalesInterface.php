@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 interface FindValueKeysToIndexForAllChannelsAndLocalesInterface
 {
@@ -19,9 +19,9 @@ interface FindValueKeysToIndexForAllChannelsAndLocalesInterface
      *   'mobile' => [ ... ]
      * ]
      *
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
      * @return array
      */
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array;
 }

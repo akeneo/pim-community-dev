@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsCommand;
-use Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsCommand;
+use Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsHandler;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
@@ -35,19 +35,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class DeleteAllRecordsContext implements Context
+final class DeleteAllAssetsContext implements Context
 {
-    private const REFERENCE_ENTITY_IDENTIFIER_FIRST = 'designer';
-    private const REFERENCE_ENTITY_IDENTIFIER_SECOND = 'brand';
+    private const ASSET_FAMILY_IDENTIFIER_FIRST = 'designer';
+    private const ASSET_FAMILY_IDENTIFIER_SECOND = 'brand';
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    /** @var DeleteAllReferenceEntityRecordsHandler */
-    private $deleteAllRecordsHandler;
+    /** @var DeleteAllAssetFamilyAssetsHandler */
+    private $deleteAllAssetsHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -58,60 +58,60 @@ final class DeleteAllRecordsContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        RecordRepositoryInterface $recordRepository,
-        DeleteAllReferenceEntityRecordsHandler $deleteAllRecordsHandler,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetRepositoryInterface $assetRepository,
+        DeleteAllAssetFamilyAssetsHandler $deleteAllAssetsHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $violationsContext,
         ExceptionContext $exceptionContext,
-        CreateReferenceEntityHandler $createReferenceEntityHandler
+        CreateAssetFamilyHandler $createAssetFamilyHandler
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->recordRepository = $recordRepository;
-        $this->deleteAllRecordsHandler = $deleteAllRecordsHandler;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->assetRepository = $assetRepository;
+        $this->deleteAllAssetsHandler = $deleteAllAssetsHandler;
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
         $this->violationsContext = $violationsContext;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
     }
 
     /**
-     * @Given /^two reference entities with two records each$/
+     * @Given /^two asset families with two assets each$/
      * @throws \Exception
      */
-    public function twoReferenceEntitiesWithTwoRecordsEach()
+    public function twoAssetFamiliesWithTwoAssetsEach()
     {
-        $this->createReferenceEntity(self::REFERENCE_ENTITY_IDENTIFIER_FIRST);
-        $this->createRecord(self::REFERENCE_ENTITY_IDENTIFIER_FIRST);
-        $this->createRecord(self::REFERENCE_ENTITY_IDENTIFIER_FIRST);
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER_FIRST);
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER_FIRST);
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER_FIRST);
 
-        $this->createReferenceEntity(self::REFERENCE_ENTITY_IDENTIFIER_SECOND);
-        $this->createRecord(self::REFERENCE_ENTITY_IDENTIFIER_SECOND);
-        $this->createRecord(self::REFERENCE_ENTITY_IDENTIFIER_SECOND);
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER_SECOND);
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER_SECOND);
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER_SECOND);
     }
 
     /**
-     * @When /^the user deletes all the records from one reference entity$/
+     * @When /^the user deletes all the assets from one asset family$/
      */
-    public function theUserDeletesAllTheRecordFromOneEntity(): void
+    public function theUserDeletesAllTheAssetFromOneEntity(): void
     {
-        $command = new DeleteAllReferenceEntityRecordsCommand(
-            self::REFERENCE_ENTITY_IDENTIFIER_FIRST
+        $command = new DeleteAllAssetFamilyAssetsCommand(
+            self::ASSET_FAMILY_IDENTIFIER_FIRST
         );
 
         $this->executeCommand($command);
     }
 
     /**
-     * @When /^the user deletes all the records from an unknown entity$/
+     * @When /^the user deletes all the assets from an unknown entity$/
      */
-    public function theUserDeletesAllTheRecordFromUnknownEntity(): void
+    public function theUserDeletesAllTheAssetFromUnknownEntity(): void
     {
-        $command = new DeleteAllReferenceEntityRecordsCommand(
+        $command = new DeleteAllAssetFamilyAssetsCommand(
             'unknown'
         );
 
@@ -119,69 +119,69 @@ final class DeleteAllRecordsContext implements Context
     }
 
     /**
-     * @When /^there should be no records for this reference entity$/
+     * @When /^there should be no assets for this asset family$/
      */
-    public function thereShouldBeNoRecordForThisEntity(): void
+    public function thereShouldBeNoAssetForThisEntity(): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER_FIRST);
-        Assert::assertFalse($this->recordRepository->referenceEntityHasRecords($referenceEntityIdentifier));
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER_FIRST);
+        Assert::assertFalse($this->assetRepository->assetFamilyHasAssets($assetFamilyIdentifier));
     }
 
     /**
-     * @When /^there is still two records on the other reference entity$/
+     * @When /^there is still two assets on the other asset family$/
      */
-    public function thereIsStillTwoRecordsForTheOtherEntity(): void
+    public function thereIsStillTwoAssetsForTheOtherEntity(): void
     {
         $this->violationsContext->assertThereIsNoViolations();
         $this->exceptionContext->assertThereIsNoExceptionThrown();
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER_SECOND);
-        Assert::assertEquals(2, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER_SECOND);
+        Assert::assertEquals(2, $this->assetRepository->countByAssetFamily($assetFamilyIdentifier));
     }
 
     /**
-     * @When /^there is still two records for each reference entity$/
+     * @When /^there is still two assets for each asset family$/
      */
-    public function thereIsStillTwoRecordsForEachEntity(): void
+    public function thereIsStillTwoAssetsForEachEntity(): void
     {
         $this->violationsContext->assertThereIsNoViolations();
         $this->exceptionContext->assertThereIsNoExceptionThrown();
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER_FIRST);
-        Assert::assertEquals(2, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER_SECOND);
-        Assert::assertEquals(2, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER_FIRST);
+        Assert::assertEquals(2, $this->assetRepository->countByAssetFamily($assetFamilyIdentifier));
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER_SECOND);
+        Assert::assertEquals(2, $this->assetRepository->countByAssetFamily($assetFamilyIdentifier));
     }
 
-    private function createReferenceEntity(string $identifier): void
+    private function createAssetFamily(string $identifier): void
     {
-        $createCommand = new CreateReferenceEntityCommand(
+        $createCommand = new CreateAssetFamilyCommand(
             $identifier,
             []
         );
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
         }
 
-        ($this->createReferenceEntityHandler)($createCommand);
+        ($this->createAssetFamilyHandler)($createCommand);
     }
 
-    private function createRecord(string $referenceEntityIdentifier): void
+    private function createAsset(string $assetFamilyIdentifier): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString(str_replace('-', '', Uuid::uuid4()->toString()));
-        $recordIdentifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $this->recordRepository->create(Record::create(
-            $recordIdentifier,
-            $referenceEntityIdentifier,
-            $recordCode,
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
+        $assetCode = AssetCode::fromString(str_replace('-', '', Uuid::uuid4()->toString()));
+        $assetIdentifier = $this->assetRepository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $this->assetRepository->create(Asset::create(
+            $assetIdentifier,
+            $assetFamilyIdentifier,
+            $assetCode,
             ValueCollection::fromValues([])
         ));
     }
 
-    private function executeCommand(DeleteAllReferenceEntityRecordsCommand $command): void
+    private function executeCommand(DeleteAllAssetFamilyAssetsCommand $command): void
     {
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
@@ -191,7 +191,7 @@ final class DeleteAllRecordsContext implements Context
         }
 
         try {
-            ($this->deleteAllRecordsHandler)($command);
+            ($this->deleteAllAssetsHandler)($command);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }

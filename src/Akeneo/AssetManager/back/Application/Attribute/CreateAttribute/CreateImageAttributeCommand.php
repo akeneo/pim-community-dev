@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
+namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -26,7 +26,7 @@ class CreateImageAttributeCommand extends AbstractCreateAttributeCommand
     public $allowedExtensions;
 
     public function __construct(
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         string $code,
         array $labels,
         bool $isRequired,
@@ -36,7 +36,7 @@ class CreateImageAttributeCommand extends AbstractCreateAttributeCommand
         array $allowedExtensions
     ) {
         parent::__construct(
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $code,
             $labels,
             $isRequired,

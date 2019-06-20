@@ -11,53 +11,53 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * List reference entities
+ * List asset families
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class IndexAction
 {
-    /** @var FindReferenceEntityItemsInterface */
-    private $findReferenceEntitiesQuery;
+    /** @var FindAssetFamilyItemsInterface */
+    private $findAssetFamiliesQuery;
 
-    public function __construct(FindReferenceEntityItemsInterface $findReferenceEntitiesQuery)
+    public function __construct(FindAssetFamilyItemsInterface $findAssetFamiliesQuery)
     {
-        $this->findReferenceEntitiesQuery = $findReferenceEntitiesQuery;
+        $this->findAssetFamiliesQuery = $findAssetFamiliesQuery;
     }
 
     /**
-     * Get all reference entities
+     * Get all asset families
      *
      * @return JsonResponse
      */
     public function __invoke(): JsonResponse
     {
-        $referenceEntityItems = $this->findReferenceEntitiesQuery->find();
-        $normalizedReferenceEntityItems = $this->normalizeReferenceEntityItems($referenceEntityItems);
+        $assetFamilyItems = $this->findAssetFamiliesQuery->find();
+        $normalizedAssetFamilyItems = $this->normalizeAssetFamilyItems($assetFamilyItems);
 
         return new JsonResponse([
-            'items' => $normalizedReferenceEntityItems,
-            'total' => count($normalizedReferenceEntityItems),
+            'items' => $normalizedAssetFamilyItems,
+            'total' => count($normalizedAssetFamilyItems),
         ]);
     }
 
     /**
-     * @param ReferenceEntityItem[] $referenceEntityItems
+     * @param AssetFamilyItem[] $assetFamilyItems
      *
      * @return array
      */
-    private function normalizeReferenceEntityItems(array $referenceEntityItems): array
+    private function normalizeAssetFamilyItems(array $assetFamilyItems): array
     {
-        return array_map(function (ReferenceEntityItem $item) {
+        return array_map(function (AssetFamilyItem $item) {
             return $item->normalize();
-        }, $referenceEntityItems);
+        }, $assetFamilyItems);
     }
 }

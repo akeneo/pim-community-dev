@@ -1,11 +1,11 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_product_get_linked_product",
+    "route": "akeneo_asset_manager_product_get_linked_product",
     "query": {
       "attributeCode": "designers",
-      "recordCode": "starck",
-      "referenceEntityIdentifier": "designer",
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer",
       "channel": "ecommerce",
       "locale": "en_US"
     }

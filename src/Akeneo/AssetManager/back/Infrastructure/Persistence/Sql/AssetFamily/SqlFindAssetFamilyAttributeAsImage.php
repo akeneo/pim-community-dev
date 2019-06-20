@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsImageInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsImageInterface;
 use Doctrine\DBAL\Connection;
 
-class SqlFindReferenceEntityAttributeAsImage implements FindReferenceEntityAttributeAsImageInterface
+class SqlFindAssetFamilyAttributeAsImage implements FindAssetFamilyAttributeAsImageInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -28,15 +28,15 @@ class SqlFindReferenceEntityAttributeAsImage implements FindReferenceEntityAttri
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsImageReference
     {
         $query = <<<SQL
         SELECT attribute_as_image
-        FROM akeneo_reference_entity_reference_entity
+        FROM akeneo_asset_manager_asset_family
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => (string) $referenceEntityIdentifier,
+            'identifier' => (string) $assetFamilyIdentifier,
         ]);
 
         $attributeAsImage = $statement->fetchColumn();

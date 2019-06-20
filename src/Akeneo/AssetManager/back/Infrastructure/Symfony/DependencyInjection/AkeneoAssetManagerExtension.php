@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,11 +19,11 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Akeneo Reference Entity extension
+ * Akeneo Asset Family extension
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AkeneoReferenceEntityExtension extends Extension
+class AkeneoAssetManagerExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -34,7 +34,7 @@ class AkeneoReferenceEntityExtension extends Extension
         $loader->load('attribute_factories.yml');
         $loader->load('analytics.yml');
         $loader->load('attribute_command_factories.yml');
-        $loader->load('record_command_factories.yml');
+        $loader->load('asset_command_factories.yml');
         $loader->load('controllers.yml');
         $loader->load('enrichment.yml');
         $loader->load('files.yml');

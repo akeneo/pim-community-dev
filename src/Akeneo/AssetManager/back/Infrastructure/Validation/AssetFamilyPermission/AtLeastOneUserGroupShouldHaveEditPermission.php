@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntityPermission;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamilyPermission;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class AtLeastOneUserGroupShouldHaveEditPermission extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.reference_entity_permissions.at_least_one_user_group_should_have_edit_permission';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.asset_family_permissions.at_least_one_user_group_should_have_edit_permission';
 
     public function getTargets()
     {
@@ -30,6 +30,6 @@ class AtLeastOneUserGroupShouldHaveEditPermission extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_referenceentity.validator.reference_entity_permission.at_least_one_user_group_should_have_edit_permission';
+        return 'akeneo_assetmanager.validator.asset_family_permission.at_least_one_user_group_should_have_edit_permission';
     }
 }

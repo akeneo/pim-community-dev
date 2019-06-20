@@ -1,50 +1,50 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity;
+namespace spec\Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\SecurityIdentifier;
+use Akeneo\AssetManager\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class CanEditReferenceEntityQueryHandlerSpec extends ObjectBehavior
+class CanEditAssetFamilyQueryHandlerSpec extends ObjectBehavior
 {
     function let(
-        ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository,
+        AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository,
         FindUserGroupsForSecurityIdentifierInterface $findUserGroupsForSecurityIdentifier
     ) {
-        $this->beConstructedWith($referenceEntityPermissionRepository, $findUserGroupsForSecurityIdentifier);
+        $this->beConstructedWith($assetFamilyPermissionRepository, $findUserGroupsForSecurityIdentifier);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CanEditReferenceEntityQueryHandler::class);
+        $this->shouldHaveType(CanEditAssetFamilyQueryHandler::class);
     }
 
-    function it_asks_the_reference_entity_permission_if_the_user_is_allowed(
-        ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository,
+    function it_asks_the_asset_family_permission_if_the_user_is_allowed(
+        AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository,
         FindUserGroupsForSecurityIdentifierInterface $findUserGroupsForSecurityIdentifier,
-        ReferenceEntityPermission $referenceEntityPermission,
+        AssetFamilyPermission $assetFamilyPermission,
         UserGroupIdentifier $userGroupIdentifier1,
         UserGroupIdentifier $userGroupIdentifier2
     ) {
-        $query = new CanEditReferenceEntityQuery(
+        $query = new CanEditAssetFamilyQuery(
             'brand',
             'julia'
         );
 
-        $referenceEntityPermissionRepository->getByReferenceEntityIdentifier(
+        $assetFamilyPermissionRepository->getByAssetFamilyIdentifier(
             Argument::that(
-                function ($referenceEntityIdentifier) {
-                    return 'brand' === $referenceEntityIdentifier->normalize();
+                function ($assetFamilyIdentifier) {
+                    return 'brand' === $assetFamilyIdentifier->normalize();
                 }
             )
-        )->willReturn($referenceEntityPermission);
+        )->willReturn($assetFamilyPermission);
 
         $findUserGroupsForSecurityIdentifier->find(
             Argument::that(
@@ -54,7 +54,7 @@ class CanEditReferenceEntityQueryHandlerSpec extends ObjectBehavior
             )
         )->willReturn([$userGroupIdentifier1, $userGroupIdentifier2]);
 
-        $referenceEntityPermission->isAllowedToEdit([$userGroupIdentifier1, $userGroupIdentifier2])->willReturn(true);
+        $assetFamilyPermission->isAllowedToEdit([$userGroupIdentifier1, $userGroupIdentifier2])->willReturn(true);
 
         $this->__invoke($query)->shouldReturn(true);
     }

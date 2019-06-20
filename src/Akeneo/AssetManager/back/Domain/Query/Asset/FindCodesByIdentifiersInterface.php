@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace Akeneo\AssetManager\Domain\Query\Asset;
 
 /**
- * Find record codes for given identifiers
+ * Find asset codes for given identifiers
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
@@ -22,7 +22,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 interface FindCodesByIdentifiersInterface
 {
     /**
-     * Return records codes for given $identifiers, indexed by identifier, eg:
+     * Return assets codes for given $identifiers, indexed by identifier, eg:
      *
      * [
      *     'designer_starck_abcdef123456789' => 'starck',

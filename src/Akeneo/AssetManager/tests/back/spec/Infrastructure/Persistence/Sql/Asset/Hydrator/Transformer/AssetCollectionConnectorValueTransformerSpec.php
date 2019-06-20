@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
 
-class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
+class AssetCollectionConnectorValueTransformerSpec extends ObjectBehavior
 {
     function let(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
@@ -32,20 +32,20 @@ class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
         $this->shouldImplement(ConnectorValueTransformerInterface::class);
     }
 
-    function it_only_supports_a_value_of_an_record_attribute(
+    function it_only_supports_a_value_of_an_asset_attribute(
         TextAttribute $textAttribute,
-        RecordCollectionAttribute $recordCollectionAttribute
+        AssetCollectionAttribute $assetCollectionAttribute
     ) {
-        $this->supports($recordCollectionAttribute)->shouldReturn(true);
+        $this->supports($assetCollectionAttribute)->shouldReturn(true);
         $this->supports($textAttribute)->shouldReturn(false);
     }
 
     function it_transforms_a_normalized_value_to_a_normalized_connector_value(
         $findCodesByIdentifiers,
-        RecordCollectionAttribute $attribute,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetCollectionAttribute $attribute,
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ) {
-        $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
+        $attribute->getAssetType()->willReturn($assetFamilyIdentifier);
         $findCodesByIdentifiers
             ->find(['kartell', 'lexon', 'cogip'])
             ->willReturn([
@@ -66,12 +66,12 @@ class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_removes_records_that_do_not_exist_in_a_value_containing_records(
+    function it_removes_assets_that_do_not_exist_in_a_value_containing_assets(
         $findCodesByIdentifiers,
-        RecordCollectionAttribute $attribute,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetCollectionAttribute $attribute,
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ) {
-        $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
+        $attribute->getAssetType()->willReturn($assetFamilyIdentifier);
         $findCodesByIdentifiers
             ->find(['kartell', 'lexon', 'cogip'])
             ->willReturn(['lexon']);
@@ -88,12 +88,12 @@ class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_null_if_no_records_exist(
+    function it_returns_null_if_no_assets_exist(
         $findCodesByIdentifiers,
-        RecordCollectionAttribute $attribute,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        AssetCollectionAttribute $attribute,
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ) {
-        $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
+        $attribute->getAssetType()->willReturn($assetFamilyIdentifier);
         $findCodesByIdentifiers->find(['cogip'])->willReturn([]);
 
         $this->transform([

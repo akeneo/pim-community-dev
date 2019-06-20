@@ -1,17 +1,17 @@
-Feature: Edit an attribute of a reference entity
-  In order to edit an attribute of a reference entity
+Feature: Edit an attribute of an asset family
+  In order to edit an attribute of an asset family
   As a user
-  I want to edit an attribute of a reference entity
+  I want to edit an attribute of an asset family
 
   @acceptance-back
   Scenario: Updating the label
-    Given a reference entity with a record collection attribute 'brands' and the label 'en_US' equal to 'Brands'
+    Given an asset family with a asset collection attribute 'brands' and the label 'en_US' equal to 'Brands'
     When the user updates the 'brands' attribute label with '"Past Brands"' on the locale '"en_US"'
     Then the label 'en_US' of the 'brands' attribute should be 'Past Brands'
 
   @acceptance-back
   Scenario Outline: Invalid label edit
-    Given a reference entity with a record collection attribute 'brands' and the label 'en_US' equal to 'Brands'
+    Given an asset family with a asset collection attribute 'brands' and the label 'en_US' equal to 'Brands'
     When the user updates the 'brands' attribute label with '<label>' on the locale '<localeCode>'
     Then there should be a validation error on the property 'labels' with message '<message>'
 
@@ -24,13 +24,13 @@ Feature: Edit an attribute of a reference entity
 
   @acceptance-back
   Scenario: Updating is required property
-    Given a reference entity with a record collection attribute 'brands' non required
+    Given an asset family with a asset collection attribute 'brands' non required
     When the user sets the 'brands' attribute required
     Then 'brands' should be required
 
   @acceptance-back
   Scenario Outline: Invalid is required edit
-    Given a reference entity with a record collection attribute 'brands' non required
+    Given an asset family with a asset collection attribute 'brands' non required
     When the user sets the is_required property of 'brands' to '<invalid_required>'
     Then there should be a validation error on the property 'isRequired' with message '<message>'
 

@@ -1,4 +1,4 @@
-import {denormalizeCompleteness} from 'akeneoreferenceentity/domain/model/product/completeness';
+import {denormalizeCompleteness} from 'akeneoassetmanager/domain/model/product/completeness';
 
 const completeProductModel = denormalizeCompleteness({
   completeChildren: 10,
@@ -22,7 +22,7 @@ const incompleteProduct = denormalizeCompleteness({
   ratio: 58,
 });
 
-describe('akeneo > reference entity > domain > model > product --- completeness', () => {
+describe('akeneo > asset family > domain > model > product --- completeness', () => {
   test('I can create a new complete product', () => {
     expect(incompleteProductModel.normalize()).toEqual({completeChildren: 4, totalChildren: 10, ratio: 0});
     expect(incompleteProductModel.getCompleteChildren()).toEqual(4);

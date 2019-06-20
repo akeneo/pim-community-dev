@@ -1,15 +1,15 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_reference_entities_record_edit_rest",
+    "route": "akeneo_asset_manager_asset_edit_rest",
     "query": {
-      "recordCode": "starck",
-      "referenceEntityIdentifier": "designer"
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer"
     },
     "body": {
       "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
       "code": "starck",
-      "reference_entity_identifier": "designer",
+      "asset_family_identifier": "designer",
       "labels": {
         "fr_FR": "Philippe Starck"
       },
@@ -41,13 +41,13 @@
         "plural":null,
         "message":"The file \u0022\/a\/b\/c\/philou.gif\u0022 was not found.",
         "root":{
-          "referenceEntityIdentifier":"designer",
+          "assetFamilyIdentifier":"designer",
           "code":"starck",
           "labels":[
 
           ],
           "image":null,
-          "editRecordValueCommands":[
+          "editAssetValueCommands":[
             {
               "filePath":"\/a\/b\/c\/philou.gif",
               "originalFilename":null,
@@ -66,7 +66,7 @@
                 "identifier":[
 
                 ],
-                "referenceEntityIdentifier":[
+                "assetFamilyIdentifier":[
 
                 ],
                 "code":[
@@ -106,7 +106,7 @@
             "identifier":[
 
             ],
-            "referenceEntityIdentifier":[
+            "assetFamilyIdentifier":[
 
             ],
             "code":[

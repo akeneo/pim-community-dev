@@ -1,7 +1,7 @@
 {
   "request": {
       "method": "GET",
-      "route": "akeneo_reference_entities_reference_entity_get_rest",
+      "route": "akeneo_asset_manager_asset_family_get_rest",
       "query": {
           "identifier": "brand"
       }
@@ -18,7 +18,7 @@
               "filePath": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg",
               "originalFilename": "brand.jpg"
           },
-          "record_count": 12,
+          "asset_count": 12,
           "attributes": [],
           "permission": {
               "edit": true

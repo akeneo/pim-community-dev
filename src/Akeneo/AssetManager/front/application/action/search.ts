@@ -1,6 +1,6 @@
-import {startLoading, stopLoading, goNextPage, goFirstPage} from 'akeneoreferenceentity/application/event/search';
-import {SearchFetcher, Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
-import {dataReceived} from 'akeneoreferenceentity/domain/event/search';
+import {startLoading, stopLoading, goNextPage, goFirstPage} from 'akeneoassetmanager/application/event/search';
+import {SearchFetcher, Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {dataReceived} from 'akeneoassetmanager/domain/event/search';
 
 const updateResultsWithFetcher = <Object>(
   fetcher: SearchFetcher<Object>,

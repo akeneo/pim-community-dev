@@ -1,8 +1,8 @@
 pim_title:
-  akeneo_reference_entities_reference_entity_index: Erstellen einer neuen Entität
-  akeneo_reference_entities_reference_entity_edit: Referenzdaten bearbeiten
-  akeneo_reference_entities_record_edit: Datensatz bearbeiten
-pim_reference_entity:
+  akeneo_asset_manager_asset_family_index: Erstellen einer neuen Entität
+  akeneo_asset_manager_asset_family_edit: Referenzdaten bearbeiten
+  akeneo_asset_manager_asset_edit: Datensatz bearbeiten
+pim_asset_manager:
   app:
     image:
       wide:
@@ -13,12 +13,12 @@ pim_reference_entity:
         remove: Entfernen
         download: Herunterladen
         upload: Drag & Drop zum hochladen
-  reference_entity:
+  asset_family:
     validation:
       code:
         pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         should_be_unique: 'Dieser Code existiert bereits für diese Entität.'
-        limit_reached: 'Sie können die Referenz-Entität "{{ %reference_entity_label% }}" nicht anlegen, da Sie die Grenze von {{ %limit% }} Referenz-Entitäten erreicht haben'
+        limit_reached: 'Sie können die Referenz-Entität "{{ %asset_family_label% }}" nicht anlegen, da Sie die Grenze von {{ %limit% }} Referenz-Entitäten erreicht haben'
     button:
       save: Speichern
       save_permission: Speichern
@@ -29,7 +29,7 @@ pim_reference_entity:
     breadcrumb: Referenzentitäten
     img: Das Hauptbild der Referenz-Entität mit dem Namen "{{ label }}"
     tab:
-      records: Aufzeichnungen
+      assets: Aufzeichnungen
       attribute: Attribute
       properties: Eigenschaften
       permission: Berechtigungen
@@ -68,7 +68,7 @@ pim_reference_entity:
         code: Code (erforderlich)
       confirm: Speichern
     delete:
-      message: Sind Sie sicher, dass Sie die Entität "{{ referenceEntityLabel }}" löschen möchten?
+      message: Sind Sie sicher, dass Sie die Entität "{{ assetFamilyLabel }}" löschen möchten?
       title: Attribut
     notification:
       save:
@@ -89,9 +89,9 @@ pim_reference_entity:
       title: Sie haben keine Benutzergruppe
       subtitle: Um die Berechtigung für die Referenzentität zu verwalten, müssen Sie mindestens eine Benutzergruppe haben.
       link: Klicken Sie hier, um Ihre erste Benutzergruppe hinzuzufügen.
-  record:
+  asset:
     validation:
-      limit_reached: 'Sie können den Datensatz "{{ %record_label% }}}" nicht erstellen, da Sie die Grenze von {{ %limit% }}} Datensätzen für diese Referenzentität erreicht haben.'
+      limit_reached: 'Sie können den Datensatz "{{ %asset_label% }}}" nicht erstellen, da Sie die Grenze von {{ %limit% }}} Datensätzen für diese Referenzentität erreicht haben.'
       code:
         pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         should_be_unique: 'Dieser Code existiert bereits für diese Entität.'
@@ -126,7 +126,7 @@ pim_reference_entity:
         create_another: Einen weiteren Datensatz anlegen
       confirm: Speichern
     delete:
-      message: Sind Sie sicher, dass Sie den Datensatz "{{ recordLabel }}}" löschen möchten? Wenn dieser mit Produkten oder Datensätzen verlinkt ist, werden die Links entfernt.
+      message: Sind Sie sicher, dass Sie den Datensatz "{{ assetLabel }}}" löschen möchten? Wenn dieser mit Produkten oder Datensätzen verlinkt ist, werden die Links entfernt.
       title: Datensatz
     delete_all:
       confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}}" Datensätze löschen möchten? Wenn diese mit Produkten verlinkt sind, werden die Links zu den Produkten entfernt.
@@ -184,8 +184,8 @@ pim_reference_entity:
     type:
       text: Text
       image: Abbildung
-      record: Referenz-Entität Einzelverknüpfung
-      record_collection: Referenz-Entität Mehrfachverknüpfungen
+      asset: Referenz-Entität Einzelverknüpfung
+      asset_collection: Referenz-Entität Mehrfachverknüpfungen
       option: Einzelfunktion
       option_collection: Mehrfachfunktion
     is_required: zur Vollständigkeit erforderlich
@@ -204,11 +204,11 @@ pim_reference_entity:
         code: Code (erforderlich)
         label: Bezeichnung
         type: Attributtyp
-        record_type: Referenz-Entität zum Verknüpfen (erforderlich)
+        asset_type: Referenz-Entität zum Verknüpfen (erforderlich)
         value_per_locale: Wert je Gebietsschema
         value_per_channel: Wert je Ausgabekanal
       placeholder:
-        record_type: Wählen Sie Ihre verknüpfte Referenz-Entität aus
+        asset_type: Wählen Sie Ihre verknüpfte Referenz-Entität aus
       confirm: Speichern
     edit:
       delete: Attribut löschen
@@ -219,7 +219,7 @@ pim_reference_entity:
         code: Code (erforderlich)
         label: Bezeichnung
         type: Attributtyp
-        record_type: Zugehörige Referenzentität (erforderlich)
+        asset_type: Zugehörige Referenzentität (erforderlich)
         value_per_locale: Wert je Gebietsschema
         value_per_channel: Wert je Ausgabekanal
         is_required: Erforderlich für die Vollständigkeit
@@ -279,21 +279,21 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Referenz-Entität Mehrfachverknüpfungen
-          akeneo_reference_entity: Referenz-Entität Einzelverknüpfung
+          akeneo_asset_multiple_link: Referenz-Entität Mehrfachverknüpfungen
+          akeneo_asset_single_link: Referenz-Entität Einzelverknüpfung
         section:
           type_specific: Spezifische Parameter
-        reference_entity:
+        asset_family:
           identifier: Zugehörige Referenzentität (erforderlich)
           default_label: Bitte wählen Sie eine Referenzentität aus
 permission:
   mass_action: Wenden Sie {{ rightLevel }}} Rechte auf alle Gruppen an.
 pim_catalog_volume:
   section:
-    reference_entity:
+    asset_family:
       title: Achsen an Referenzobjekten
       hint: Wenn Sie die Referenzobjekte verwenden, finden Sie hier die Achsen, die Ihnen helfen, Ihr Volumen zu überwachen.
   axis:
-    count_reference_entity: Referenzentitäten
-    average_max_records_per_reference_entity: Datensätze pro Referenzobjekt
-    average_max_attributes_per_reference_entity: Attribute pro Referenzobjekt
+    count_asset_family: Referenzentitäten
+    average_max_assets_per_asset_family: Datensätze pro Referenzobjekt
+    average_max_attributes_per_asset_family: Attribute pro Referenzobjekt

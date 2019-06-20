@@ -1,6 +1,6 @@
-import {reducer} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {editOptionsReducer} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {NormalizedOption} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import {reducer} from 'akeneoassetmanager/application/reducer/attribute/type/option';
+import {editOptionsReducer} from 'akeneoassetmanager/application/reducer/attribute/type/option';
+import {NormalizedOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedOptions = [
   {
@@ -21,7 +21,7 @@ const normalizedOptions = [
 const stringifiedOptions =
   '[{"code":"red","labels":{"fr_FR":"Rouge","en_US":"Red"}},{"code":"green","labels":{"fr_FR":"Vert","en_US":"Green"}}]';
 
-describe('akeneo > reference entity > application > reducer > attribute > type > option --- edit', () => {
+describe('akeneo > asset family > application > reducer > attribute > type > option --- edit', () => {
   test('I call the option reducer', () => {
     const state = {type: 'option'};
     const newState = reducer(state, 'label', 'designer');

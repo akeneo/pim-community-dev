@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditMinMaxValueCommandFactorySpec extends ObjectBehavior

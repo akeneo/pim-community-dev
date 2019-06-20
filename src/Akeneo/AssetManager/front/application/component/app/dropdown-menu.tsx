@@ -1,7 +1,7 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import Key from 'akeneoreferenceentity/tools/key';
-import {SidebarLabel} from 'akeneoreferenceentity/application/component/app/sidebar';
+import __ from 'akeneoassetmanager/tools/translator';
+import Key from 'akeneoassetmanager/tools/key';
+import {SidebarLabel} from 'akeneoassetmanager/application/component/app/sidebar';
 
 export interface DropdownMenuElement {
   code: string;

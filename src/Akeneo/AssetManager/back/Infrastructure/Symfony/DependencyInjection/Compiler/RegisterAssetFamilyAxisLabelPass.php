@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class RegisterReferenceEntityAxisLabelPass implements CompilerPassInterface
+class RegisterAssetFamilyAxisLabelPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class RegisterReferenceEntityAxisLabelPass implements CompilerPassInterface
     {
         $normalizer = $container->getDefinition('pim_enrich.normalizer.entity_with_family_variant');
 
-        $referenceEntityAxisLabelNormalizer = $container->getDefinition('akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_axis_label_normalizer');
-        $normalizer->addArgument($referenceEntityAxisLabelNormalizer);
+        $assetFamilyAxisLabelNormalizer = $container->getDefinition('akeneo_assetmanager.infrastructure.catalog.normalizer.asset_family_axis_label_normalizer');
+        $normalizer->addArgument($assetFamilyAxisLabelNormalizer);
     }
 }

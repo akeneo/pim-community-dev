@@ -10,20 +10,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetCollectionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueDataInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordCollectionDataHydrator implements DataHydratorInterface
+class AssetCollectionDataHydrator implements DataHydratorInterface
 {
     /** @var FindCodesByIdentifiersInterface */
     private $findCodesByIdentifiers;
@@ -35,21 +35,21 @@ class RecordCollectionDataHydrator implements DataHydratorInterface
 
     public function supports(AbstractAttribute $attribute): bool
     {
-        return $attribute instanceof RecordCollectionAttribute;
+        return $attribute instanceof AssetCollectionAttribute;
     }
 
     public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
-        $filteredRecordCodes = $this->findCodes($normalizedData);
-        if (empty($filteredRecordCodes)) {
+        $filteredAssetCodes = $this->findCodes($normalizedData);
+        if (empty($filteredAssetCodes)) {
             return EmptyData::create();
         }
 
-        return RecordCollectionData::createFromNormalize(array_values($filteredRecordCodes));
+        return AssetCollectionData::createFromNormalize(array_values($filteredAssetCodes));
     }
 
     /**
-     * This method also cleans missing records (returns only existing ones)
+     * This method also cleans missing assets (returns only existing ones)
      */
     private function findCodes(array $identifiers): array
     {

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Event;
+namespace Akeneo\AssetManager\Domain\Event;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -21,18 +21,18 @@ use Symfony\Component\EventDispatcher\Event;
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  * @internal  This event is not part of the public API and you should not rely on it for custom purpose.
  */
-class ReferenceEntityCreatedEvent extends Event
+class AssetFamilyCreatedEvent extends Event
 {
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
+    /** @var AssetFamilyIdentifier */
+    private $assetFamilyIdentifier;
 
-    public function __construct(ReferenceEntityIdentifier $referenceEntityIdentifier)
+    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
     {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
-    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
     {
-        return $this->referenceEntityIdentifier;
+        return $this->assetFamilyIdentifier;
     }
 }

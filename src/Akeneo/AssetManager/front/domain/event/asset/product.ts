@@ -1,6 +1,6 @@
-import Product from 'akeneoreferenceentity/domain/model/product/product';
-import AttributeCode from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import Attribute from 'akeneoreferenceentity/domain/model/product/attribute';
+import Product from 'akeneoassetmanager/domain/model/product/product';
+import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
+import Attribute from 'akeneoassetmanager/domain/model/product/attribute';
 
 export const productListAttributeListUpdated = (attributes: Attribute[]) => {
   return {

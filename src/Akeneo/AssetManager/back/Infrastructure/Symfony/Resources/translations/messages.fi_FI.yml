@@ -1,13 +1,13 @@
-akeneo_referenceentity:
+akeneo_assetmanager:
   acl_group:
-    reference_entity: Viitetiedot
+    asset_family: Viitetiedot
   acl:
-    reference_entity:
+    asset_family:
       create: Luo uusi viitetieto
       edit: Muokkaa viitetiedon ominaisuuksia
       delete: Poista viitetieto
       manage_permission: Määritä viitetiedon käyttöoikeudet
-    record:
+    asset:
       create: Luo tietue
       edit: Muokkaa tietueita
       delete: Poista tietue

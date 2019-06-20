@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheChannelExists;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheChannelExists;
 use PhpSpec\ObjectBehavior;
 
 class CacheChannelExistsSpec extends ObjectBehavior

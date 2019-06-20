@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorAssetFamilyHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
-class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
+class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
 {
     function let(
         Connection $connection
@@ -34,10 +34,10 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ConnectorReferenceEntityHydrator::class);
+        $this->shouldHaveType(ConnectorAssetFamilyHydrator::class);
     }
 
-    function it_hydrates_a_connector_reference_entity() {
+    function it_hydrates_a_connector_asset_family() {
         $row = [
             'identifier'                  => 'designer',
             'image_file_key'              => 'test/image_1.jpg',
@@ -53,8 +53,8 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
         $file->setOriginalFilename('image_1.jpg');
         $image = Image::fromFileInfo($file);
 
-        $expectedReferenceEntity = new ConnectorReferenceEntity(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $expectedAssetFamily = new ConnectorAssetFamily(
+            AssetFamilyIdentifier::fromString('designer'),
             LabelCollection::fromArray([
                 'en_US' => 'Designer',
                 'fr_FR' => 'Designer',
@@ -62,10 +62,10 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
             $image
         );
 
-        $this->hydrate($row)->shouldBeLike($expectedReferenceEntity);
+        $this->hydrate($row)->shouldBeLike($expectedAssetFamily);
     }
 
-    function it_hydrates_a_reference_entity_without_image() {
+    function it_hydrates_an_asset_family_without_image() {
         $row = [
             'identifier'                  => 'designer',
             'image_file_key'              => null,
@@ -76,8 +76,8 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
             ])
         ];
 
-        $expectedReferenceEntity = new ConnectorReferenceEntity(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $expectedAssetFamily = new ConnectorAssetFamily(
+            AssetFamilyIdentifier::fromString('designer'),
             LabelCollection::fromArray([
                 'en_US' => 'Designer',
                 'fr_FR' => 'Designer',
@@ -85,6 +85,6 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
             Image::createEmpty()
         );
 
-        $this->hydrate($row)->shouldBeLike($expectedReferenceEntity);
+        $this->hydrate($row)->shouldBeLike($expectedAssetFamily);
     }
 }

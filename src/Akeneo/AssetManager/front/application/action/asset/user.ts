@@ -1,6 +1,6 @@
-import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
-import {updateProductList} from 'akeneoreferenceentity/application/action/product/attribute';
-import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
+import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/domain/event/user';
+import {updateProductList} from 'akeneoassetmanager/application/action/product/attribute';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 
 export const localeChanged = (locale: string) => (dispatch: any, getState: () => EditState) => {
   dispatch(catalogLocaleChanged(locale));

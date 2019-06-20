@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
 {
@@ -33,9 +33,9 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findValueKeysByAttributeType = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type');
+        $this->findValueKeysByAttributeType = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type');
         $this->resetDB();
-        $this->loadReferenceEntity();
+        $this->loadAssetFamily();
     }
 
     /**
@@ -43,12 +43,12 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
      */
     public function it_returns_all_value_keys_of_given_attribute_types()
     {
-        $designer = ReferenceEntityIdentifier::fromString('designer');
+        $designer = AssetFamilyIdentifier::fromString('designer');
         $identifiers = $this->loadAttributes();
 
-        $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
+        $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->getByIdentifier($designer);
-        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
+        $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
 
         $textValueKeys = $this->findValueKeysByAttributeType->find($designer, ['text']);
         $this->assertCount(7, $textValueKeys);
@@ -67,46 +67,46 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
         $this->assertContains(sprintf('%s_mobile_de_DE', $identifiers['option']), $optionValueKeys);
         $this->assertContains(sprintf('%s_print_en_US', $identifiers['option']), $optionValueKeys);
 
-        $recordCollectionValueKeys = $this->findValueKeysByAttributeType->find($designer, ['record_collection']);
-        $this->assertCount(4, $recordCollectionValueKeys);
-        $this->assertContains(sprintf('%s_ecommerce_en_US', $identifiers['record_collection']), $recordCollectionValueKeys);
-        $this->assertContains(sprintf('%s_ecommerce_fr_FR', $identifiers['record_collection']), $recordCollectionValueKeys);
-        $this->assertContains(sprintf('%s_mobile_de_DE', $identifiers['record_collection']), $recordCollectionValueKeys);
-        $this->assertContains(sprintf('%s_print_en_US', $identifiers['record_collection']), $recordCollectionValueKeys);
+        $assetCollectionValueKeys = $this->findValueKeysByAttributeType->find($designer, ['asset_collection']);
+        $this->assertCount(4, $assetCollectionValueKeys);
+        $this->assertContains(sprintf('%s_ecommerce_en_US', $identifiers['asset_collection']), $assetCollectionValueKeys);
+        $this->assertContains(sprintf('%s_ecommerce_fr_FR', $identifiers['asset_collection']), $assetCollectionValueKeys);
+        $this->assertContains(sprintf('%s_mobile_de_DE', $identifiers['asset_collection']), $assetCollectionValueKeys);
+        $this->assertContains(sprintf('%s_print_en_US', $identifiers['asset_collection']), $assetCollectionValueKeys);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadReferenceEntity(): void
+    private function loadAssetFamily(): void
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntity);
+        $assetFamilyRepository->create($assetFamily);
     }
 
     private function loadAttributes(): array
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $identifiers = [];
 
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
 
         $attrCode = AttributeCode::fromString('text_attr');
-        $identifier = $attributeRepository->nextIdentifier($referenceEntityIdentifier, $attrCode);
+        $identifier = $attributeRepository->nextIdentifier($assetFamilyIdentifier, $attrCode);
         $identifiers['text'] = $identifier;
         $textAttribute = TextAttribute::createText(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $attrCode,
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
@@ -120,11 +120,11 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
         $attributeRepository->create($textAttribute);
 
         $attrCode = AttributeCode::fromString('single_option_attr');
-        $identifier = $attributeRepository->nextIdentifier($referenceEntityIdentifier, $attrCode);
+        $identifier = $attributeRepository->nextIdentifier($assetFamilyIdentifier, $attrCode);
         $identifiers['option'] = $identifier;
         $optionAttribute = OptionAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $attrCode,
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
@@ -134,21 +134,21 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
         );
         $attributeRepository->create($optionAttribute);
 
-        $attrCode = AttributeCode::fromString('record_collection_attr');
-        $identifier = $attributeRepository->nextIdentifier($referenceEntityIdentifier, $attrCode);
-        $identifiers['record_collection'] = $identifier;
-        $recordCollAttribute = RecordCollectionAttribute::create(
+        $attrCode = AttributeCode::fromString('asset_collection_attr');
+        $identifier = $attributeRepository->nextIdentifier($assetFamilyIdentifier, $attrCode);
+        $identifiers['asset_collection'] = $identifier;
+        $assetCollAttribute = AssetCollectionAttribute::create(
             $identifier,
-            $referenceEntityIdentifier,
+            $assetFamilyIdentifier,
             $attrCode,
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            ReferenceEntityIdentifier::fromString('designer')
+            AssetFamilyIdentifier::fromString('designer')
         );
-        $attributeRepository->create($recordCollAttribute);
+        $attributeRepository->create($assetCollAttribute);
 
         return $identifiers;
     }

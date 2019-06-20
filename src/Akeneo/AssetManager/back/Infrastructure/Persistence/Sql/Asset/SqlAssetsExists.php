@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlRecordsExists
+class SqlAssetsExists
 {
     /** @var Connection */
     private $sqlConnection;
@@ -35,18 +35,18 @@ class SqlRecordsExists
      *
      * @return string[]
      */
-    public function withReferenceEntityAndCodes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $codes): array
+    public function withAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $codes): array
     {
         $query = <<<SQL
         SELECT code
-        FROM akeneo_reference_entity_record
-        WHERE reference_entity_identifier = :referenceEntityIdentifier
+        FROM akeneo_asset_manager_asset
+        WHERE asset_family_identifier = :assetFamilyIdentifier
         AND code IN (:codes)
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
             [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+                'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
                 'codes'                     => $codes,
             ],
             [

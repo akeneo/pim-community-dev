@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
+namespace Akeneo\AssetManager\Domain\Query\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Find the list of expected keys for the given reference entity
+ * Find the list of expected keys for the given asset family
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 interface FindValueKeyCollectionInterface
 {
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): ValueKeyCollection;
 }

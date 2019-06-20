@@ -1,9 +1,9 @@
-import {postJSON} from 'akeneoreferenceentity/tools/fetch';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
-import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {AttributeWithOptions, OptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
-import {Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import {postJSON} from 'akeneoassetmanager/tools/fetch';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
+import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {AttributeWithOptions, OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const routing = require('routing');
 
@@ -16,13 +16,13 @@ export class AttributeOptionSaver {
     const normalizedOptionAttribute = (attribute as OptionAttribute).normalize() as any;
 
     return await postJSON(
-      routing.generate('akeneo_reference_entities_attribute_edit_rest', {
-        referenceEntityIdentifier: (attribute as OptionAttribute).getReferenceEntityIdentifier().stringValue(),
+      routing.generate('akeneo_asset_manager_attribute_edit_rest', {
+        assetFamilyIdentifier: (attribute as OptionAttribute).getAssetFamilyIdentifier().stringValue(),
         attributeIdentifier: (attribute as OptionAttribute).getIdentifier().identifier,
       }),
       {
         identifier: normalizedOptionAttribute.identifier,
-        reference_entity_identifier: normalizedOptionAttribute.reference_entity_identifier,
+        asset_family_identifier: normalizedOptionAttribute.asset_family_identifier,
         options: ((attribute as any) as AttributeWithOptions).getOptions().map((option: Option) => option.normalize()),
       }
     ).catch(handleError);

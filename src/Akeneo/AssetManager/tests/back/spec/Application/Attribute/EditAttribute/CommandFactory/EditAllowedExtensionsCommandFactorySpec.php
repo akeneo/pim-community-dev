@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommandFactory;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
@@ -16,15 +16,15 @@ class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_allowed_extension_edits()
     {
         $this->supports([
-            'identifier'         => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
+            'identifier'         => ['identifier' => 'portrait', 'asset_family_identifier' => 'designer'],
             'allowed_extensions' => ['pdf', 'png'],
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'         => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
+            'identifier'         => ['identifier' => 'portrait', 'asset_family_identifier' => 'designer'],
             'allowed_extensions' => null,
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
+            'identifier'    => ['identifier' => 'portrait', 'asset_family_identifier' => 'designer'],
             'max_file_size' => '172.50',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);

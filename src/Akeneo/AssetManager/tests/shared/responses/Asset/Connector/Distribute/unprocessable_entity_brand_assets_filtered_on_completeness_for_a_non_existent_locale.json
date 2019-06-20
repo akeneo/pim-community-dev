@@ -1,9 +1,9 @@
 {
     "request": {
         "method": "GET",
-        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
         "query": {
-            "referenceEntityIdentifier": "brand",
+            "assetFamilyIdentifier": "brand",
             "search": "{\"complete\":{\"operator\":\"=\",\"value\":true,\"channel\":\"ecommerce\",\"locales\":[\"en_US\",\"en_AU\"]}}"
         }
     },

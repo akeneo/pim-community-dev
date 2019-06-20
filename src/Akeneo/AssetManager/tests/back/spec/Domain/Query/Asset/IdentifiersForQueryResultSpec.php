@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record;
+namespace spec\Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
+use Akeneo\AssetManager\Domain\Query\Asset\IdentifiersForQueryResult;
 use PhpSpec\ObjectBehavior;
 
 class IdentifiersForQueryResultSpec extends ObjectBehavior

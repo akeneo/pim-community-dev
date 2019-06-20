@@ -11,67 +11,67 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\tests\back\Acceptance\Context;
+namespace Akeneo\AssetManager\tests\back\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Acceptance\Context\ConstraintViolationsContext;
-use Akeneo\ReferenceEntity\Acceptance\Context\ExceptionContext;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
+use Akeneo\AssetManager\Acceptance\Context\ConstraintViolationsContext;
+use Akeneo\AssetManager\Acceptance\Context\ExceptionContext;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\NumberData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionCollectionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\NumberData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionCollectionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetCollectionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -81,11 +81,11 @@ use Webmozart\Assert\Assert;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class EditRecordContext implements Context
+final class EditAssetContext implements Context
 {
-    private const REFERENCE_ENTITY_IDENTIFIER = 'designer';
+    private const ASSET_FAMILY_IDENTIFIER = 'designer';
     private const FINGERPRINT = 'fingerprint';
-    private const RECORD_CODE = 'stark';
+    private const ASSET_CODE = 'stark';
 
     private const ECOMMERCE_CHANNEL_CODE = 'ecommerce';
     private const FRENCH_LOCALE_CODE = 'fr_FR';
@@ -101,9 +101,9 @@ final class EditRecordContext implements Context
     private const TEXT_ATTRIBUTE_IDENTIFIER = 'name_designer_fingerprint';
     private const IMAGE_ATTRIBUTE_CODE = 'primary_picture';
     private const IMAGE_ATTRIBUTE_IDENTIFIER = 'primary_picture_designer_fingerprint';
-    private const RECORD_TYPE = 'brand';
-    private const RECORD_ATTRIBUTE_CODE = 'brand_linked';
-    private const RECORD_ATTRIBUTE_IDENTIFIER = 'brand_linked_designer_fingerprint';
+    private const ASSET_TYPE = 'brand';
+    private const ASSET_ATTRIBUTE_CODE = 'brand_linked';
+    private const ASSET_ATTRIBUTE_IDENTIFIER = 'brand_linked_designer_fingerprint';
     private const OPTION_ATTRIBUTE_CODE = 'favorite_color';
     private const OPTION_ATTRIBUTE_IDENTIFIER = 'favorite_color_designer_fingerprint';
     private const OPTION_COLLECTION_ATTRIBUTE_CODE = 'favorite_drinks';
@@ -137,20 +137,20 @@ final class EditRecordContext implements Context
     private const GOOD_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::GOOD_EXTENSION_FILENAME;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
 
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
 
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
+    /** @var EditAssetCommandFactory */
+    private $editAssetCommandFactory;
 
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
+    /** @var EditAssetHandler */
+    private $editAssetHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -170,8 +170,8 @@ final class EditRecordContext implements Context
     /** @var InMemoryFindActivatedLocalesPerChannels */
     private $activatedLocalesPerChannels;
 
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
 
     /** @var InMemoryFindFileDataByFileKey */
     private $findFileData;
@@ -180,52 +180,52 @@ final class EditRecordContext implements Context
     private $fileExists;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        RecordRepositoryInterface $recordRepository,
-        EditRecordCommandFactory $editRecordCommandFactory,
-        EditRecordHandler $editRecordHandler,
+        AssetRepositoryInterface $assetRepository,
+        EditAssetCommandFactory $editAssetCommandFactory,
+        EditAssetHandler $editAssetHandler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
         ConstraintViolationsContext $violationsContext,
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
-        CreateReferenceEntityHandler $createReferenceEntityHandler,
+        CreateAssetFamilyHandler $createAssetFamilyHandler,
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->recordRepository = $recordRepository;
-        $this->editRecordCommandFactory = $editRecordCommandFactory;
-        $this->editRecordHandler = $editRecordHandler;
+        $this->assetRepository = $assetRepository;
+        $this->editAssetCommandFactory = $editAssetCommandFactory;
+        $this->editAssetHandler = $editAssetHandler;
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
         $this->violationsContext = $violationsContext;
         $this->channelExists = $channelExists;
         $this->activatedLocales = $activatedLocales;
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
         $this->findFileData = $findFileData;
         $this->fileExists = $fileExists;
     }
 
     /**
-     * @Given /^a reference entity with a text attribute$/
+     * @Given /^an asset family with a text attribute$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithATextAttribute()
+    public function anAssetFamilyWithATextAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -240,13 +240,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with a value of "([^"]*)" for the text attribute$/
+     * @Given /^a asset belonging to this asset family with a value of "([^"]*)" for the text attribute$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithAValueOfFor(string $textData)
+    public function aAssetBelongingToThisAssetFamilyWithAValueOfFor(string $textData)
     {
         $textValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -254,17 +254,17 @@ final class EditRecordContext implements Context
             LocaleReference::noReference(),
             TextData::fromString($textData)
         );
-        $this->createRecord($textValue);
+        $this->createAsset($textValue);
     }
 
     /**
-     * @When /^the user updates the text attribute of the record to "([^"]*)"$/
+     * @When /^the user updates the text attribute of the asset to "([^"]*)"$/
      */
-    public function theUserUpdatesTheTextOfOfTheRecordTo(string $newData): void
+    public function theUserUpdatesTheTextOfOfTheAssetTo(string $newData): void
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -279,18 +279,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^the record should have the text value "([^"]*)" for this attribute$/
+     * @Then /^the asset should have the text value "([^"]*)" for this attribute$/
      */
-    public function theRecordShouldHaveTheTextValueFor(string $expectedValue): void
+    public function theAssetShouldHaveTheTextValueFor(string $expectedValue): void
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -304,19 +304,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an image attribute$/
+     * @Given /^an asset family with an image attribute$/
      */
-    public function anReferenceEntityWithAImageAttribute()
+    public function anAssetFamilyWithAImageAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::IMAGE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -330,9 +330,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with the file "([^"]*)" for the image attribute$/
+     * @Given /^a asset belonging to this asset family with the file "([^"]*)" for the image attribute$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithATheFileForTheImageAttribute(string $originalFilename)
+    public function aAssetBelongingToThisAssetFamilyWithATheFileForTheImageAttribute(string $originalFilename)
     {
         $file = new FileInfo();
         $file->setOriginalFilename($originalFilename);
@@ -342,7 +342,7 @@ final class EditRecordContext implements Context
 
         $fileValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::IMAGE_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -350,23 +350,23 @@ final class EditRecordContext implements Context
             LocaleReference::noReference(),
             FileData::createFromFileinfo($file)
         );
-        $this->createRecord($fileValue);
+        $this->createAsset($fileValue);
     }
 
     /**
-     * @When /^the user updates the record default image with a valid file$/
+     * @When /^the user updates the asset default image with a valid file$/
      */
-    public function theUserUpdatesTheRecordDefaultImage()
+    public function theUserUpdatesTheAssetDefaultImage()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
 
         $fileData = $this->initUploadedFileData();
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code' => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code' => self::ASSET_CODE,
             'labels' => [],
             'values' => [
                 [
@@ -382,13 +382,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the record default image with an empty image$/
+     * @When /^the user updates the asset default image with an empty image$/
      */
-    public function theUserUpdatesTheRecordDefaultImageWithAnEmpty()
+    public function theUserUpdatesTheAssetDefaultImageWithAnEmpty()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code' => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code' => self::ASSET_CODE,
             'values' => []
         ]);
 
@@ -396,20 +396,20 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the record default image with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     * @When /^the user updates the asset default image with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
-    public function theUserUpdatesTheRecordDefaultImageWithPathAndFilename(string $filePath, string $filename)
+    public function theUserUpdatesTheAssetDefaultImageWithPathAndFilename(string $filePath, string $filename)
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
 
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code' => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code' => self::ASSET_CODE,
             'values' => [
                 [
                     'attribute' => $attributeAsImage->normalize(),
@@ -427,14 +427,14 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a valid uploaded file$/
+     * @When /^the user updates the image attribute of the asset with a valid uploaded file$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordTo()
+    public function theUserUpdatesTheImageAttributeOfTheAssetTo()
     {
         $fileData = $this->initUploadedFileData();
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -450,18 +450,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should have the valid image for this attribute$/
+     * @Given /^the asset should have the valid image for this attribute$/
      */
-    public function theRecordShouldHaveTheImageForThisAttribute()
+    public function theAssetShouldHaveTheImageForThisAttribute()
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::IMAGE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -490,19 +490,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute with max length (\d+)$/
+     * @Given /^an asset family with a text attribute with max length (\d+)$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithATextAttributeWithMaxLength(int $maxLength)
+    public function anAssetFamilyWithATextAttributeWithMaxLength(int $maxLength)
     {
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -517,19 +517,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute with an email validation rule$/
+     * @Given /^an asset family with a text attribute with an email validation rule$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithATextAttributeWithAnEmailValidationRule()
+    public function anAssetFamilyWithATextAttributeWithAnEmailValidationRule()
     {
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -544,20 +544,20 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
+     * @Given /^an asset family with a text attribute with a regular expression validation rule like "([^"]*)"$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithATextAttributeWithARegularExpressionValidationRuleLike(
+    public function anAssetFamilyWithATextAttributeWithARegularExpressionValidationRuleLike(
         string $regularExpression
     ): void {
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -572,14 +572,14 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the text attribute of the record to an invalid value type$/
+     * @When /^the user updates the text attribute of the asset to an invalid value type$/
      */
-    public function theUserUpdatesTheTextAttributeOfTheRecordToAnInvalidValue()
+    public function theUserUpdatesTheTextAttributeOfTheAssetToAnInvalidValue()
     {
         try {
-            $editCommand = $this->editRecordCommandFactory->create([
-                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-                'code'                       => self::RECORD_CODE,
+            $editCommand = $this->editAssetCommandFactory->create([
+                'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+                'code'                       => self::ASSET_CODE,
                 'labels'                     => [],
                 'values'                     => [
                     [
@@ -597,19 +597,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a text attribute with an url validation rule$/
+     * @Given /^an asset family with a text attribute with an url validation rule$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithATextAttributeWithAnUrlValidationRule()
+    public function anAssetFamilyWithATextAttributeWithAnUrlValidationRule()
     {
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -624,13 +624,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user empties the text attribute of the record$/
+     * @When /^the user empties the text attribute of the asset$/
      */
-    public function theUserEmptiesTheTextAttributeOfTheRecord()
+    public function theUserEmptiesTheTextAttributeOfTheAsset()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -646,18 +646,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should have an empty value for this attribute$/
+     * @Given /^the asset should have an empty value for this attribute$/
      */
-    public function theRecordShouldHaveAnEmptyValueForThisAttribute()
+    public function theAssetShouldHaveAnEmptyValueForThisAttribute()
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -670,20 +670,20 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a localizable attribute$/
+     * @Given /^an asset family with a localizable attribute$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithALocalizableAttribute()
+    public function anAssetFamilyWithALocalizableAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -698,15 +698,15 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with a value for the french locale$/
+     * @Given /^a asset belonging to this asset family with a value for the french locale$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithAValueForTheFrenchLocale()
+    public function aAssetBelongingToThisAssetFamilyWithAValueForTheFrenchLocale()
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE));
 
         $localizedValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -714,17 +714,17 @@ final class EditRecordContext implements Context
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE)),
             TextData::fromString(self::DUMMY_ORIGINAL_VALUE)
         );
-        $this->createRecord($localizedValue);
+        $this->createAsset($localizedValue);
     }
 
     /**
-     * @When /^the user updates the attribute of the record for the french locale$/
+     * @When /^the user updates the attribute of the asset for the french locale$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordForTheFrenchLocale()
+    public function theUserUpdatesTheAttributeOfTheAssetForTheFrenchLocale()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -739,13 +739,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the localizable attribute value of the record without specifying the locale$/
+     * @When /^the user updates the localizable attribute value of the asset without specifying the locale$/
      */
-    public function theUserUpdatesTheLocalizableAttributeValueOfTheRecordWithoutSpecifyingTheLocale()
+    public function theUserUpdatesTheLocalizableAttributeValueOfTheAssetWithoutSpecifyingTheLocale()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -760,19 +760,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a not localizable attribute$/
+     * @Given /^an asset family with a not localizable attribute$/
      */
-    public function anReferenceEntityWithANotLocalizableAttribute()
+    public function anAssetFamilyWithANotLocalizableAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -787,13 +787,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the not localizable attribute value of the record by specifying the locale$/
+     * @When /^the user updates the not localizable attribute value of the asset by specifying the locale$/
      */
-    public function theUserUpdatesTheNotLocalizableAttributeValueOfTheRecordBySpecifyingTheLocale()
+    public function theUserUpdatesTheNotLocalizableAttributeValueOfTheAssetBySpecifyingTheLocale()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -808,13 +808,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute value of the record by specifying a not activated locale$/
+     * @When /^the user updates the attribute value of the asset by specifying a not activated locale$/
      */
-    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingANotActivatedLocale()
+    public function theUserUpdatesTheAttributeValueOfTheAssetBySpecifyingANotActivatedLocale()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -829,15 +829,15 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute value of the record by specifying a locale not activated for the ecommerce channel$/
+     * @When /^the user updates the attribute value of the asset by specifying a locale not activated for the ecommerce channel$/
      */
-    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingALocaleNotActivatedForTheEcommerceChannel()
+    public function theUserUpdatesTheAttributeValueOfTheAssetBySpecifyingALocaleNotActivatedForTheEcommerceChannel()
     {
         $this->channelExists->save(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE));
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -852,68 +852,68 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should have the new default image$/
+     * @Given /^the asset should have the new default image$/
      */
-    public function theRecordShouldHaveTheNewDefaultImage()
+    public function theAssetShouldHaveTheNewDefaultImage()
     {
         $this->violationsContext->assertThereIsNoViolations();
         $this->exceptionContext->assertThereIsNoExceptionThrown();
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            RecordCode::fromString(self::RECORD_CODE)
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            $assetFamilyIdentifier,
+            AssetCode::fromString(self::ASSET_CODE)
         );
 
-        $recordImage = $this->getImage(
-            $record->getValues()->normalize(),
+        $assetImage = $this->getImage(
+            $asset->getValues()->normalize(),
             $attributeAsImage->getIdentifier()->normalize()
         );
-        Assert::false($recordImage === null);
+        Assert::false($assetImage === null);
 
-        Assert::keyExists($recordImage, 'originalFilename');
-        Assert::keyExists($recordImage, 'filePath');
-        Assert::same(self::UPDATED_DUMMY_FILENAME, $recordImage['originalFilename']);
-        Assert::same(self::UPDATED_DUMMY_FILE_FILEPATH, $recordImage['filePath']);
+        Assert::keyExists($assetImage, 'originalFilename');
+        Assert::keyExists($assetImage, 'filePath');
+        Assert::same(self::UPDATED_DUMMY_FILENAME, $assetImage['originalFilename']);
+        Assert::same(self::UPDATED_DUMMY_FILE_FILEPATH, $assetImage['filePath']);
     }
 
     /**
-     * @Given /^the record should have an empty image$/
+     * @Given /^the asset should have an empty image$/
      */
-    public function theRecordShouldHaveAnEmptyImage()
+    public function theAssetShouldHaveAnEmptyImage()
     {
         $this->violationsContext->assertThereIsNoViolations();
         $this->exceptionContext->assertThereIsNoExceptionThrown();
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
 
-        $recordImage = $this->getImage(
-            $record->getValues()->normalize(),
+        $assetImage = $this->getImage(
+            $asset->getValues()->normalize(),
             $attributeAsImage->getIdentifier()->normalize()
         );
-        Assert::true($recordImage === null);
+        Assert::true($assetImage === null);
     }
 
     /**
-     * @Given /^the record should have the updated value for this attribute and the french locale$/
+     * @Given /^the asset should have the updated value for this attribute and the french locale$/
      */
-    public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheFrenchLocale()
+    public function theAssetShouldHaveTheUpdatedValueForThisAttributeAndTheFrenchLocale()
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE,
+                AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT),
                 ChannelReference::noReference(),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
@@ -925,20 +925,20 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a scopable attribute$/
+     * @Given /^an asset family with a scopable attribute$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithAScopableAttribute()
+    public function anAssetFamilyWithAScopableAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -953,15 +953,15 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with a value for the ecommerce channel$/
+     * @Given /^a asset belonging to this asset family with a value for the ecommerce channel$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithAValueForTheEcommerceChannel()
+    public function aAssetBelongingToThisAssetFamilyWithAValueForTheEcommerceChannel()
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
 
         $localizedValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -969,17 +969,17 @@ final class EditRecordContext implements Context
             LocaleReference::noReference(),
             TextData::fromString(self::DUMMY_ORIGINAL_VALUE)
         );
-        $this->createRecord($localizedValue);
+        $this->createAsset($localizedValue);
     }
 
     /**
-     * @When /^the user updates the attribute of the record for the ecommerce channel$/
+     * @When /^the user updates the attribute of the asset for the ecommerce channel$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordForTheEcommerceChannel()
+    public function theUserUpdatesTheAttributeOfTheAssetForTheEcommerceChannel()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -994,19 +994,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a not scopable attribute$/
+     * @Given /^an asset family with a not scopable attribute$/
      */
-    public function aReferenceEntityWithANotScopableAttribute()
+    public function aAssetFamilyWithANotScopableAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -1021,13 +1021,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with a value for the not scopable attribute$/
+     * @Given /^a asset belonging to this asset family with a value for the not scopable attribute$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithAValueForTheNotScopableAttribute()
+    public function aAssetBelongingToThisAssetFamilyWithAValueForTheNotScopableAttribute()
     {
         $localizedValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -1035,22 +1035,22 @@ final class EditRecordContext implements Context
             LocaleReference::noReference(),
             TextData::fromString(self::DUMMY_ORIGINAL_VALUE)
         );
-        $this->createRecord($localizedValue);
+        $this->createAsset($localizedValue);
     }
 
     /**
-     * @Given /^the record should have the updated value for this attribute and the ecommerce channel$/
+     * @Given /^the asset should have the updated value for this attribute and the ecommerce channel$/
      */
-    public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheEcommerceChannel()
+    public function theAssetShouldHaveTheUpdatedValueForThisAttributeAndTheEcommerceChannel()
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -1063,19 +1063,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a scopable and localizable attribute$/
+     * @Given /^an asset family with a scopable and localizable attribute$/
      */
-    public function anReferenceEntityWithAScopableAndLocalizableAttribute()
+    public function anAssetFamilyWithAScopableAndLocalizableAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -1090,16 +1090,16 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with a value for the ecommerce channel and french locale$/
+     * @Given /^a asset belonging to this asset family with a value for the ecommerce channel and french locale$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithAValueForTheEcommerceChannelAndFrenchLocale()
+    public function aAssetBelongingToThisAssetFamilyWithAValueForTheEcommerceChannelAndFrenchLocale()
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save(self::ECOMMERCE_CHANNEL_CODE, [self::FRENCH_LOCALE_CODE]);
 
         $localizedValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -1107,17 +1107,17 @@ final class EditRecordContext implements Context
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE)),
             TextData::fromString(self::DUMMY_ORIGINAL_VALUE)
         );
-        $this->createRecord($localizedValue);
+        $this->createAsset($localizedValue);
     }
 
     /**
-     * @When /^the user updates the attribute of the record for the ecommerce channel and french locale$/
+     * @When /^the user updates the attribute of the asset for the ecommerce channel and french locale$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordForTheEcommerceChannelAndFrenchLocale()
+    public function theUserUpdatesTheAttributeOfTheAssetForTheEcommerceChannelAndFrenchLocale()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1132,18 +1132,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should have the updated value for this attribute and the ecommerce channel and the french locale$/
+     * @Given /^the asset should have the updated value for this attribute and the ecommerce channel and the french locale$/
      */
-    public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheEcommerceChannelAndTheFrenchLocale()
+    public function theAssetShouldHaveTheUpdatedValueForThisAttributeAndTheEcommerceChannelAndTheFrenchLocale()
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -1156,13 +1156,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute of the record with an invalid channel$/
+     * @When /^the user updates the attribute of the asset with an invalid channel$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordForAnInvalidChannel()
+    public function theUserUpdatesTheAttributeOfTheAssetForAnInvalidChannel()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1177,13 +1177,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user enriches a scopable attribute value of a record without specifying the channel$/
+     * @When /^the user enriches a scopable attribute value of a asset without specifying the channel$/
      */
-    public function theUserEnrichesAnScopableAttributeValueOfARecordWithoutChannel()
+    public function theUserEnrichesAnScopableAttributeValueOfAAssetWithoutChannel()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1198,13 +1198,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the not scopable attribute of the record by specifying a channel$/
+     * @When /^the user updates the not scopable attribute of the asset by specifying a channel$/
      */
-    public function theUserUpdatesTheNotScopableAttributeOfTheRecordBySpecifyingAChannel()
+    public function theUserUpdatesTheNotScopableAttributeOfTheAssetBySpecifyingAChannel()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1219,13 +1219,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute value of the record by specifying an unknown channel$/
+     * @When /^the user updates the attribute value of the asset by specifying an unknown channel$/
      */
-    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingAnUnknownChannel()
+    public function theUserUpdatesTheAttributeValueOfTheAssetBySpecifyingAnUnknownChannel()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1240,13 +1240,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid uploaded file path$/
+     * @When /^the user updates the image attribute of the asset to an invalid uploaded file path$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidUploadedFilepath()
+    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidUploadedFilepath()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1264,13 +1264,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid stored file path$/
+     * @When /^the user updates the image attribute of the asset to an invalid stored file path$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredFilepath()
+    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredFilepath()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1291,9 +1291,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid stored file size$/
+     * @When /^the user updates the image attribute of the asset to an invalid stored file size$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredSize()
+    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredSize()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1306,9 +1306,9 @@ final class EditRecordContext implements Context
         ];
         $this->findFileData->save($fileData);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1323,9 +1323,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid stored file extension$/
+     * @When /^the user updates the image attribute of the asset to an invalid stored file extension$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredExtension()
+    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredExtension()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1338,9 +1338,9 @@ final class EditRecordContext implements Context
         ];
         $this->findFileData->save($fileData);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1355,9 +1355,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid stored file mime type$/
+     * @When /^the user updates the image attribute of the asset to an invalid stored file mime type$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredMimeType()
+    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredMimeType()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1370,9 +1370,9 @@ final class EditRecordContext implements Context
         ];
         $this->findFileData->save($fileData);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1407,13 +1407,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid uploaded file name$/
+     * @When /^the user updates the image attribute of the asset to an invalid uploaded file name$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidUploadedFileName()
+    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidUploadedFileName()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1431,13 +1431,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an image that does not exist$/
+     * @When /^the user updates the image attribute of the asset to an image that does not exist$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnImageThatDoesNotExist()
+    public function theUserUpdatesTheImageAttributeOfTheAssetToAnImageThatDoesNotExist()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1458,9 +1458,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid stored file name$/
+     * @When /^the user updates the image attribute of the asset to an invalid stored file name$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredFileName()
+    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredFileName()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1473,9 +1473,9 @@ final class EditRecordContext implements Context
         ];
         $this->findFileData->save($fileData);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1490,16 +1490,16 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a bigger uploaded file than the limit$/
+     * @When /^the user updates the image attribute of the asset with a bigger uploaded file than the limit$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerUploadedFileThanTheLimit()
+    public function theUserUpdatesTheImageAttributeOfTheAssetWithABiggerUploadedFileThanTheLimit()
     {
         $fileData = $this->initUploadedFileData([
             'size' => intval(10e6),
         ]);
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1514,9 +1514,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a bigger stored file than the limit$/
+     * @When /^the user updates the image attribute of the asset with a bigger stored file than the limit$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerStoredFileThanTheLimit()
+    public function theUserUpdatesTheImageAttributeOfTheAssetWithABiggerStoredFileThanTheLimit()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1529,9 +1529,9 @@ final class EditRecordContext implements Context
         ];
         $this->findFileData->save($fileData);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1546,16 +1546,16 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a smaller file than the limit$/
+     * @When /^the user updates the image attribute of the asset with a smaller file than the limit$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithASmallerFileThanTheLimit()
+    public function theUserUpdatesTheImageAttributeOfTheAssetWithASmallerFileThanTheLimit()
     {
         $fileData = $this->initUploadedFileData([
             'size' => 1,
         ]);
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1570,18 +1570,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an image attribute having a max file size of 15ko$/
+     * @Given /^an asset family with an image attribute having a max file size of 15ko$/
      */
-    public function anReferenceEntityWithAnImageAttributeHavingAMaxFileSizeOf10k()
+    public function anAssetFamilyWithAnImageAttributeHavingAMaxFileSizeOf10k()
     {
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::IMAGE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -1595,16 +1595,16 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with an uploaded gif file which is a denied extension$/
+     * @When /^the user updates the image attribute of the asset with an uploaded gif file which is a denied extension$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithAnUploadedFileHavingADeniedExtension()
+    public function theUserUpdatesTheImageAttributeOfTheAssetWithAnUploadedFileHavingADeniedExtension()
     {
         $fileData = $this->initUploadedFileData([
             'extension' => current(self::INVALID_IMAGE_EXTENSION),
         ]);
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1619,9 +1619,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a stored gif file which is a denied extension$/
+     * @When /^the user updates the image attribute of the asset with a stored gif file which is a denied extension$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithAnStoredFileHavingADeniedExtension()
+    public function theUserUpdatesTheImageAttributeOfTheAssetWithAnStoredFileHavingADeniedExtension()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1634,9 +1634,9 @@ final class EditRecordContext implements Context
         ];
         $this->findFileData->save($fileData);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1651,14 +1651,14 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with an uploaded png file$/
+     * @When /^the user updates the image attribute of the asset with an uploaded png file$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithAnUploadedFileHavingAValidExtension()
+    public function theUserUpdatesTheImageAttributeOfTheAssetWithAnUploadedFileHavingAValidExtension()
     {
         $fileData = $this->initUploadedFileData();
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1673,19 +1673,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an image attribute allowing only files with extension png$/
+     * @Given /^an asset family with an image attribute allowing only files with extension png$/
      */
-    public function anReferenceEntityWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
+    public function anAssetFamilyWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::IMAGE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -1699,13 +1699,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user removes an image from the record for this attribute$/
+     * @When /^the user removes an image from the asset for this attribute$/
      */
-    public function theUserRemovesAnImageFromTheRecordForThisAttribute()
+    public function theUserRemovesAnImageFromTheAssetForThisAttribute()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
@@ -1720,18 +1720,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should not have any image for this attribute$/
+     * @Given /^the asset should not have any image for this attribute$/
      */
-    public function theRecordShouldNotHaveAnyImageForThisAttribute()
+    public function theAssetShouldNotHaveAnyImageForThisAttribute()
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::IMAGE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -1743,38 +1743,38 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity and a record with french label "([^"]*)"$/
+     * @Given /^an asset family and a asset with french label "([^"]*)"$/
      */
-    public function aReferenceEntityAndARecordWithLabel(string $label): void
+    public function aAssetFamilyAndAAssetWithLabel(string $label): void
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $labelValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
-                self::RECORD_CODE,
+                self::ASSET_FAMILY_IDENTIFIER,
+                self::ASSET_CODE,
                 self::FINGERPRINT
             ),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString($label)
         );
-        $this->recordRepository->create(
-            Record::create(
-                RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-                RecordCode::fromString(self::RECORD_CODE),
+        $this->assetRepository->create(
+            Asset::create(
+                AssetIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ASSET_CODE, self::FINGERPRINT),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AssetCode::fromString(self::ASSET_CODE),
                 ValueCollection::fromValues([$labelValue])
             )
         );
     }
 
     /**
-     * @Given /^a referenceEntity and a record with an image$/
+     * @Given /^a assetFamily and a asset with an image$/
      */
-    public function aReferenceEntityAndARecordWithAnImage(): void
+    public function aAssetFamilyAndAAssetWithAnImage(): void
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
 
         $imageInfo = new FileInfo();
         $imageInfo
@@ -1782,8 +1782,8 @@ final class EditRecordContext implements Context
             ->setKey(self::DUMMY_IMAGE_FILEPATH);
         $labelValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
-                self::RECORD_CODE,
+                self::ASSET_FAMILY_IDENTIFIER,
+                self::ASSET_CODE,
                 self::FINGERPRINT
             ),
             ChannelReference::noReference(),
@@ -1791,11 +1791,11 @@ final class EditRecordContext implements Context
             TextData::fromString('fr_label')
         );
 
-        $this->recordRepository->create(
-            Record::create(
-                RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-                RecordCode::fromString(self::RECORD_CODE),
+        $this->assetRepository->create(
+            Asset::create(
+                AssetIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ASSET_CODE, self::FINGERPRINT),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AssetCode::fromString(self::ASSET_CODE),
                 ValueCollection::fromValues([$labelValue])
             )
         );
@@ -1806,13 +1806,13 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheLabelTo(string $updatedLabel)
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
 
-        $editLabelCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                        => self::RECORD_CODE,
+        $editLabelCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                        => self::ASSET_CODE,
             'values'                      => [
                 [
                     'attribute' => $attributeAsLabel->normalize(),
@@ -1830,9 +1830,9 @@ final class EditRecordContext implements Context
      */
     public function theUserEmptiesTheLabel()
     {
-        $editLabelCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editLabelCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [
                 'fr_FR' => ''
             ],
@@ -1842,38 +1842,38 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^the record should have the french label "([^"]*)"$/
+     * @Then /^the asset should have the french label "([^"]*)"$/
      */
-    public function theRecordShouldHaveTheLabel(string $expectedLabel)
+    public function theAssetShouldHaveTheLabel(string $expectedLabel)
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            RecordCode::fromString(self::RECORD_CODE)
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            $assetFamilyIdentifier,
+            AssetCode::fromString(self::ASSET_CODE)
         );
         $actualLabels = $this->getLabelsFromValues(
-            $record->getValues()->normalize(),
+            $asset->getValues()->normalize(),
             $attributeAsLabel->getIdentifier()->normalize()
         );
         Assert::same($expectedLabel, $actualLabels['fr_FR'], 'Labels are not equal');
     }
 
     /**
-     * @Then /^the record should not have a french label$/
+     * @Then /^the asset should not have a french label$/
      */
-    public function theRecordShouldNotHaveLabel()
+    public function theAssetShouldNotHaveLabel()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            RecordCode::fromString(self::RECORD_CODE)
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            $assetFamilyIdentifier,
+            AssetCode::fromString(self::ASSET_CODE)
         );
         $actualLabels = $this->getLabelsFromValues(
-            $record->getValues()->normalize(),
+            $asset->getValues()->normalize(),
             $attributeAsLabel->getIdentifier()->normalize()
         );
         Assert::IsEmpty($actualLabels, 'French label is not null');
@@ -1884,13 +1884,13 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheGermanLabelTo(string $updatedLabel)
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
 
-        $editLabelCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                        => self::RECORD_CODE,
+        $editLabelCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                        => self::ASSET_CODE,
             'values'                      => [
                 [
                     'attribute' => $attributeAsLabel->normalize(),
@@ -1913,44 +1913,44 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^there should be (\d+) records$/
+     * @Then /^there should be (\d+) assets$/
      */
-    public function thereShouldBeRecords(int $expectedCount)
+    public function thereShouldBeAssets(int $expectedCount)
     {
         $this->violationsContext->assertThereIsNoViolations();
         $this->violationsContext->assertThereIsNoViolations();
-        $recordsCount = $this->recordRepository->count();
-        Assert::same($expectedCount, $recordsCount);
+        $assetsCount = $this->assetRepository->count();
+        Assert::same($expectedCount, $assetsCount);
     }
 
-    private function createReferenceEntity(): void
+    private function createAssetFamily(): void
     {
-        $createCommand = new CreateReferenceEntityCommand(
-            self::REFERENCE_ENTITY_IDENTIFIER,
+        $createCommand = new CreateAssetFamilyCommand(
+            self::ASSET_FAMILY_IDENTIFIER,
             []
         );
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
         }
 
-        ($this->createReferenceEntityHandler)($createCommand);
+        ($this->createAssetFamilyHandler)($createCommand);
     }
 
-    private function createRecord(Value $value): void
+    private function createAsset(Value $value): void
     {
-        $this->recordRepository->create(
-            Record::create(
-                RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-                RecordCode::fromString(self::RECORD_CODE),
+        $this->assetRepository->create(
+            Asset::create(
+                AssetIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ASSET_CODE, self::FINGERPRINT),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AssetCode::fromString(self::ASSET_CODE),
                 ValueCollection::fromValues([$value])
             )
         );
     }
 
-    private function executeCommand(EditRecordCommand $editCommand): void
+    private function executeCommand(EditAssetCommand $editCommand): void
     {
         $violations = $this->validator->validate($editCommand);
         if ($violations->count() > 0) {
@@ -1960,74 +1960,74 @@ final class EditRecordContext implements Context
         }
 
         try {
-            ($this->editRecordHandler)($editCommand);
+            ($this->editAssetHandler)($editCommand);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
     }
 
     /**
-     * @Given /^a reference entity with a record attribute$/
+     * @Given /^an asset family with a asset attribute$/
      */
-    public function anReferenceEntityWithARecordAttribute()
+    public function anAssetFamilyWithAAssetAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
-            RecordAttribute::create(
+            AssetAttribute::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
-                    self::RECORD_ATTRIBUTE_CODE,
+                    self::ASSET_FAMILY_IDENTIFIER,
+                    self::ASSET_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-                AttributeCode::fromString(self::RECORD_ATTRIBUTE_CODE),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AttributeCode::fromString(self::ASSET_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                ReferenceEntityIdentifier::fromString(self::RECORD_TYPE)
+                AssetFamilyIdentifier::fromString(self::ASSET_TYPE)
             )
         );
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with a value of "([^"]*)" for the record attribute$/
+     * @Given /^a asset belonging to this asset family with a value of "([^"]*)" for the asset attribute$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithAValueOfForTheRecordAttribute($recordCode)
+    public function aAssetBelongingToThisAssetFamilyWithAValueOfForTheAssetAttribute($assetCode)
     {
-        $this->createRecordLinked($recordCode);
+        $this->createAssetLinked($assetCode);
 
-        $recordValue = Value::create(
+        $assetValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
-                self::RECORD_ATTRIBUTE_CODE,
+                self::ASSET_FAMILY_IDENTIFIER,
+                self::ASSET_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            RecordData::createFromNormalize($recordCode)
+            AssetData::createFromNormalize($assetCode)
         );
-        $this->createRecord($recordValue);
+        $this->createAsset($assetValue);
     }
 
     /**
-     * @When /^the user updates the record attribute of the record to "([^"]*)"$/
+     * @When /^the user updates the asset attribute of the asset to "([^"]*)"$/
      */
-    public function theUserUpdatesTheRecordAttributeOfTheRecordTo($recordCode)
+    public function theUserUpdatesTheAssetAttributeOfTheAssetTo($assetCode)
     {
-        $this->createRecordLinked($recordCode);
+        $this->createAssetLinked($assetCode);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => $recordCode,
+                    'data'      => $assetCode,
                 ],
             ],
         ]);
@@ -2035,17 +2035,17 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user tries to update the record attribute of the record with an unknown value$/
+     * @When /^the user tries to update the asset attribute of the asset with an unknown value$/
      */
-    public function theUserTriesToUpdateTheRecordAttributeOfTheRecordWithAnUnknownValue()
+    public function theUserTriesToUpdateTheAssetAttributeOfTheAssetWithAnUnknownValue()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => 'unknown_brand',
@@ -2056,19 +2056,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^the record should have the record value "([^"]*)" for this attribute$/
+     * @Then /^the asset should have the asset value "([^"]*)" for this attribute$/
      */
-    public function theRecordShouldHaveTheRecordValueForThisAttribute($expectedValue)
+    public function theAssetShouldHaveTheAssetValueForThisAttribute($expectedValue)
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
-                    self::RECORD_ATTRIBUTE_CODE,
+                    self::ASSET_FAMILY_IDENTIFIER,
+                    self::ASSET_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
                 ChannelReference::noReference(),
@@ -2081,18 +2081,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the record attribute of the record to an invalid record value$/
+     * @When /^the user updates the asset attribute of the asset to an invalid asset value$/
      */
-    public function theUserUpdatesTheRecordAttributeOfTheRecordToAnInvalidRecordValue()
+    public function theUserUpdatesTheAssetAttributeOfTheAssetToAnInvalidAssetValue()
     {
         try {
-            $editCommand = $this->editRecordCommandFactory->create([
-                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-                'code'                       => self::RECORD_CODE,
+            $editCommand = $this->editAssetCommandFactory->create([
+                'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+                'code'                       => self::ASSET_CODE,
                 'labels'                     => [],
                 'values'                     => [
                     [
-                        'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                        'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
                         'channel'   => null,
                         'locale'    => null,
                         'data'      => 1,
@@ -2106,62 +2106,62 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error on the property record attribute with message "(.*)"$/
+     * @Then /^there should be a validation error on the property asset attribute with message "(.*)"$/
      */
-    public function thereShouldBeAValidationErrorOnThePropertyRecordAttributeWithMessage($expectedMessage)
+    public function thereShouldBeAValidationErrorOnThePropertyAssetAttributeWithMessage($expectedMessage)
     {
         $this->violationsContext->assertThereShouldBeViolations(1);
         $this->violationsContext->assertViolationOnPropertyWithMesssage(
-            'values.' . self::RECORD_ATTRIBUTE_CODE,
+            'values.' . self::ASSET_ATTRIBUTE_CODE,
             $expectedMessage
         );
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with values of "([^"]*)" for the record collection attribute$/
+     * @Given /^a asset belonging to this asset family with values of "([^"]*)" for the asset collection attribute$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheRecordCollectionAttribute($recordCodeCollection)
+    public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheAssetCollectionAttribute($assetCodeCollection)
     {
-        $recordCodeCollection = explode(',', $recordCodeCollection);
-        foreach ($recordCodeCollection as $recordCode) {
-            $this->createRecordLinked(trim($recordCode));
+        $assetCodeCollection = explode(',', $assetCodeCollection);
+        foreach ($assetCodeCollection as $assetCode) {
+            $this->createAssetLinked(trim($assetCode));
         }
 
-        $recordValue = Value::create(
+        $assetValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
-                self::RECORD_ATTRIBUTE_CODE,
+                self::ASSET_FAMILY_IDENTIFIER,
+                self::ASSET_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            RecordCollectionData::createFromNormalize($recordCodeCollection)
+            AssetCollectionData::createFromNormalize($assetCodeCollection)
         );
-        $this->createRecord($recordValue);
+        $this->createAsset($assetValue);
     }
 
     /**
-     * @When /^the user updates the record collection attribute of the record to "([^"]*)"$/
+     * @When /^the user updates the asset collection attribute of the asset to "([^"]*)"$/
      */
-    public function theUserUpdatesTheRecordCollectionAttributeOfTheRecordTo($recordCodeCollection)
+    public function theUserUpdatesTheAssetCollectionAttributeOfTheAssetTo($assetCodeCollection)
     {
-        $recordCodeCollection = explode(',', $recordCodeCollection);
-        foreach ($recordCodeCollection as $recordCode) {
-            $this->createRecordLinked(trim($recordCode));
+        $assetCodeCollection = explode(',', $assetCodeCollection);
+        foreach ($assetCodeCollection as $assetCode) {
+            $this->createAssetLinked(trim($assetCode));
         }
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => array_map(function ($newData) {
                         return trim($newData);
-                    }, $recordCodeCollection),
+                    }, $assetCodeCollection),
                 ],
             ],
         ]);
@@ -2169,17 +2169,17 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the record collection attribute of the record with unknown values$/
+     * @When /^the user updates the asset collection attribute of the asset with unknown values$/
      */
-    public function theUserUpdatesTheRecordCollectionAttributeOfTheRecordWithUnknownValues()
+    public function theUserUpdatesTheAssetCollectionAttributeOfTheAssetWithUnknownValues()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code'                       => self::ASSET_CODE,
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
@@ -2193,20 +2193,20 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^the record should have the record collection value "([^"]*)" for this attribute$/
+     * @Then /^the asset should have the asset collection value "([^"]*)" for this attribute$/
      */
-    public function theRecordShouldHaveTheRecordCollectionValueForThisAttribute($expectedValue)
+    public function theAssetShouldHaveTheAssetCollectionValueForThisAttribute($expectedValue)
     {
         $expectedValue = explode(',', $expectedValue);
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
-                    self::RECORD_ATTRIBUTE_CODE,
+                    self::ASSET_FAMILY_IDENTIFIER,
+                    self::ASSET_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
                 ChannelReference::noReference(),
@@ -2218,34 +2218,34 @@ final class EditRecordContext implements Context
         Assert::same($expectedValue, $value->getData()->normalize());
     }
 
-    private function createRecordLinked($recordCode)
+    private function createAssetLinked($assetCode)
     {
-        $this->recordRepository->create(
-            Record::create(
-                RecordIdentifier::create(self::RECORD_TYPE, $recordCode, self::FINGERPRINT),
-                ReferenceEntityIdentifier::fromString(self::RECORD_TYPE),
-                RecordCode::fromString($recordCode),
+        $this->assetRepository->create(
+            Asset::create(
+                AssetIdentifier::create(self::ASSET_TYPE, $assetCode, self::FINGERPRINT),
+                AssetFamilyIdentifier::fromString(self::ASSET_TYPE),
+                AssetCode::fromString($assetCode),
                 ValueCollection::fromValues([])
             )
         );
     }
 
     /**
-     * @When /^the user updates the record collection attribute of the record to an invalid record value$/
+     * @When /^the user updates the asset collection attribute of the asset to an invalid asset value$/
      */
-    public function theUserUpdatesTheRecordCollectionAttributeOfTheRecordToAnInvalidRecordValue()
+    public function theUserUpdatesTheAssetCollectionAttributeOfTheAssetToAnInvalidAssetValue()
     {
         try {
-            $editCommand = $this->editRecordCommandFactory->create([
-                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-                'code'                       => self::RECORD_CODE,
+            $editCommand = $this->editAssetCommandFactory->create([
+                'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+                'code'                       => self::ASSET_CODE,
                 'labels'                     => [],
                 'values'                     => [
                     [
-                        'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                        'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
                         'channel'   => null,
                         'locale'    => null,
-                        'data'      => 'invalid_record_collection',
+                        'data'      => 'invalid_asset_collection',
                     ],
                 ],
             ]);
@@ -2256,44 +2256,44 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a record collection attribute$/
+     * @Given /^an asset family with a asset collection attribute$/
      */
-    public function anReferenceEntityWithARecordCollectionAttribute()
+    public function anAssetFamilyWithAAssetCollectionAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
-            RecordCollectionAttribute::create(
+            AssetCollectionAttribute::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
-                    self::RECORD_ATTRIBUTE_CODE,
+                    self::ASSET_FAMILY_IDENTIFIER,
+                    self::ASSET_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-                AttributeCode::fromString(self::RECORD_ATTRIBUTE_CODE),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AttributeCode::fromString(self::ASSET_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                ReferenceEntityIdentifier::fromString(self::RECORD_TYPE)
+                AssetFamilyIdentifier::fromString(self::ASSET_TYPE)
             )
         );
     }
 
     /**
-     * @Given /^a reference entity with an option attribute$/
+     * @Given /^an asset family with an option attribute$/
      */
-    public function aReferenceEntityWithAnOptionAttribute()
+    public function aAssetFamilyWithAnOptionAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
 
         $attribute = OptionAttribute::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::OPTION_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::OPTION_ATTRIBUTE_CODE),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
@@ -2311,13 +2311,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with values of "([^"]+)" for the option attribute$/
+     * @Given /^a asset belonging to this asset family with values of "([^"]+)" for the option attribute$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheOptionAttribute($optionCode)
+    public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheOptionAttribute($optionCode)
     {
-        $recordValue = Value::create(
+        $assetValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::OPTION_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -2325,17 +2325,17 @@ final class EditRecordContext implements Context
             LocaleReference::noReference(),
             OptionData::createFromNormalize($optionCode)
         );
-        $this->createRecord($recordValue);
+        $this->createAsset($assetValue);
     }
 
     /**
-     * @When /^the user updates the option attribute of the record to "([^"]+)"$/
+     * @When /^the user updates the option attribute of the asset to "([^"]+)"$/
      */
-    public function theUserUpdatesTheOptionAttributeOfTheRecordTo($optionCode)
+    public function theUserUpdatesTheOptionAttributeOfTheAssetTo($optionCode)
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code' => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code' => self::ASSET_CODE,
             'labels' => [],
             'values' => [
                 [
@@ -2351,19 +2351,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should have the option value "([^"]+)" for this attribute$/
+     * @Given /^the asset should have the option value "([^"]+)" for this attribute$/
      */
-    public function theRecordShouldHaveTheOptionValueForThisAttribute($expectedValue)
+    public function theAssetShouldHaveTheOptionValueForThisAttribute($expectedValue)
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
 
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::OPTION_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -2389,19 +2389,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with an option collection attribute$/
+     * @Given /^an asset family with an option collection attribute$/
      */
-    public function aReferenceEntityWithAnOptionCollectionAttribute()
+    public function aAssetFamilyWithAnOptionCollectionAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
 
         $attribute = OptionCollectionAttribute::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::OPTION_COLLECTION_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::OPTION_COLLECTION_ATTRIBUTE_CODE),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
@@ -2420,16 +2420,16 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with values of "([^"]+)" for the option collection attribute$/
+     * @Given /^a asset belonging to this asset family with values of "([^"]+)" for the option collection attribute$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheOptionCollectionAttribute($optionCodes)
+    public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheOptionCollectionAttribute($optionCodes)
     {
         $optionCodesArray = explode(',', $optionCodes);
         $optionCodesArray = array_map('trim', $optionCodesArray);
 
-        $recordValue = Value::create(
+        $assetValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::OPTION_COLLECTION_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -2437,20 +2437,20 @@ final class EditRecordContext implements Context
             LocaleReference::noReference(),
             OptionCollectionData::createFromNormalize($optionCodesArray)
         );
-        $this->createRecord($recordValue);
+        $this->createAsset($assetValue);
     }
 
     /**
-     * @When /^the user updates the option collection attribute of the record to "([^"]+)"$/
+     * @When /^the user updates the option collection attribute of the asset to "([^"]+)"$/
      */
-    public function theUserUpdatesTheOptionCollectionAttributeOfTheRecordTo($optionCodes)
+    public function theUserUpdatesTheOptionCollectionAttributeOfTheAssetTo($optionCodes)
     {
         $optionCodesArray = explode(',', $optionCodes);
         $optionCodesArray = array_map('trim', $optionCodesArray);
 
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code' => self::RECORD_CODE,
+        $editCommand = $this->editAssetCommandFactory->create([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code' => self::ASSET_CODE,
             'labels' => [],
             'values' => [
                 [
@@ -2466,22 +2466,22 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should have the option collection value "([^"]+)" for this attribute$/
+     * @Given /^the asset should have the option collection value "([^"]+)" for this attribute$/
      */
-    public function theRecordShouldHaveTheOptionCollectionValueForThisAttribute($expectedValue)
+    public function theAssetShouldHaveTheOptionCollectionValueForThisAttribute($expectedValue)
     {
         $expectedValueArray = explode(',', $expectedValue);
         $expectedValueArray = array_map('trim', $expectedValueArray);
 
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
 
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::OPTION_COLLECTION_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -2559,20 +2559,20 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a number attribute$/
-     * @Given /^a reference entity with a number attribute with decimals$/
+     * @Given /^an asset family with a number attribute$/
+     * @Given /^an asset family with a number attribute with decimals$/
      */
-    public function aReferenceEntityWithANumberAttribute()
+    public function aAssetFamilyWithANumberAttribute()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             NumberAttribute::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::NUMBER_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::NUMBER_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -2587,14 +2587,14 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this reference entity with values of "([^"]*)" for the number attribute$/
-     * @Given /^a record belonging to this reference entity$/
+     * @Given /^a asset belonging to this asset family with values of "([^"]*)" for the number attribute$/
+     * @Given /^a asset belonging to this asset family$/
      */
-    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheNumberAttribute($numberValue = '0')
+    public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheNumberAttribute($numberValue = '0')
     {
-        $recordValue = Value::create(
+        $assetValue = Value::create(
             AttributeIdentifier::create(
-                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::ASSET_FAMILY_IDENTIFIER,
                 self::NUMBER_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -2602,18 +2602,18 @@ final class EditRecordContext implements Context
             LocaleReference::noReference(),
             NumberData::createFromNormalize($numberValue)
         );
-        $this->createRecord($recordValue);
+        $this->createAsset($assetValue);
     }
 
     /**
-     * @When /^the user updates the number attribute of the record to "([^"]*)"$/
+     * @When /^the user updates the number attribute of the asset to "([^"]*)"$/
      */
-    public function theUserUpdatesTheNumberAttributeOfTheRecordTo($newData)
+    public function theUserUpdatesTheNumberAttributeOfTheAssetTo($newData)
     {
-        $editCommand = $this->editRecordCommandFactory->create(
+        $editCommand = $this->editAssetCommandFactory->create(
             [
-                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-                'code'                        => self::RECORD_CODE,
+                'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+                'code'                        => self::ASSET_CODE,
                 'labels'                      => [],
                 'values'                      => [
                     [
@@ -2629,18 +2629,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should have the number value "([^"]*)" for this attribute$/
+     * @Given /^the asset should have the number value "([^"]*)" for this attribute$/
      */
-    public function theRecordShouldHaveTheNumberValueForThisAttribute($expectedValue)
+    public function theAssetShouldHaveTheNumberValueForThisAttribute($expectedValue)
     {
-        $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            RecordCode::fromString(self::RECORD_CODE)
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $record->findValue(
+        $value = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::NUMBER_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
@@ -2654,19 +2654,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a number attribute with no decimal value$/
+     * @Given /^an asset family with a number attribute with no decimal value$/
      */
-    public function aReferenceEntityWithANumberAttributeWithNoDecimalValue()
+    public function aAssetFamilyWithANumberAttributeWithNoDecimalValue()
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             NumberAttribute::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::NUMBER_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::NUMBER_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -2693,19 +2693,19 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a reference entity with a number attribute with min "([^\']*)" and max "([^\']*)"$/
+     * @Given /^an asset family with a number attribute with min "([^\']*)" and max "([^\']*)"$/
      */
-    public function aReferenceEntityWithANumberAttributeWithMinAndMax(string $minValue, string $maxValue)
+    public function aAssetFamilyWithANumberAttributeWithMinAndMax(string $minValue, string $maxValue)
     {
-        $this->createReferenceEntity();
+        $this->createAssetFamily();
         $this->attributeRepository->create(
             NumberAttribute::create(
                 AttributeIdentifier::create(
-                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::ASSET_FAMILY_IDENTIFIER,
                     self::NUMBER_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::NUMBER_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
@@ -2724,10 +2724,10 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheNumberValueWithAnIntegerTooLong()
     {
-        $editCommand = $this->editRecordCommandFactory->create(
+        $editCommand = $this->editAssetCommandFactory->create(
             [
-                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-                'code'                        => self::RECORD_CODE,
+                'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+                'code'                        => self::ASSET_CODE,
                 'labels'                      => [],
                 'values'                      => [
                     [

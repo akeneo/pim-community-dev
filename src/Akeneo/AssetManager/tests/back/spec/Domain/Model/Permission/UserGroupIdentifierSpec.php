@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Model\Permission;
+namespace spec\Akeneo\AssetManager\Domain\Model\Permission;
 
-use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
+use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class UserGroupIdentifierSpec extends ObjectBehavior

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,8 +23,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterAttributeFactoryPass implements CompilerPassInterface
 {
-    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_referenceentity.application.registry.attribute_factory';
-    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_referenceentity.attribute_factory';
+    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_assetmanager.application.registry.attribute_factory';
+    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_assetmanager.attribute_factory';
 
     /**
      * {@inheritdoc}

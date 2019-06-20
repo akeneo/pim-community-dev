@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Helper;
+namespace Akeneo\AssetManager\Common\Helper;
 
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use Akeneo\UserManagement\Component\Model\User;

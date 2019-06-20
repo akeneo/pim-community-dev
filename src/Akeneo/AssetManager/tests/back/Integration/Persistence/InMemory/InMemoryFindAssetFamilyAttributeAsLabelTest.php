@@ -11,52 +11,52 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
+namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityAttributeAsLabel;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyAttributeAsLabel;
+use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class InMemoryFindReferenceEntityAttributeAsLabelTest extends TestCase
+class InMemoryFindAssetFamilyAttributeAsLabelTest extends TestCase
 {
-    /** @var InMemoryFindReferenceEntityAttributeAsLabel */
-    private $findReferenceEntityAttributeAsLabel;
+    /** @var InMemoryFindAssetFamilyAttributeAsLabel */
+    private $findAssetFamilyAttributeAsLabel;
 
-    /** @var InMemoryReferenceEntityRepository */
-    private $referenceEntityRepository;
+    /** @var InMemoryAssetFamilyRepository */
+    private $assetFamilyRepository;
 
     public function setUp(): void
     {
-        $this->referenceEntityRepository = new InMemoryReferenceEntityRepository(
+        $this->assetFamilyRepository = new InMemoryAssetFamilyRepository(
             new EventDispatcher()
         );
-        $this->findReferenceEntityAttributeAsLabel = new InMemoryFindReferenceEntityAttributeAsLabel($this->referenceEntityRepository);
+        $this->findAssetFamilyAttributeAsLabel = new InMemoryFindAssetFamilyAttributeAsLabel($this->assetFamilyRepository);
     }
 
     /**
      * @test
      */
-    public function it_finds_the_attribute_as_label_of_a_reference_entity()
+    public function it_finds_the_attribute_as_label_of_an_asset_family()
     {
         $expectedAttributeAsLabel = AttributeAsLabelReference::createFromNormalized('label_designer_fingerprint');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $referenceEntity = ReferenceEntity::createWithAttributes(
-            $referenceEntityIdentifier,
+        $assetFamily = AssetFamily::createWithAttributes(
+            $assetFamilyIdentifier,
             [],
             Image::createEmpty(),
             $expectedAttributeAsLabel,
             AttributeAsImageReference::noReference()
         );
-        $this->referenceEntityRepository->create($referenceEntity);
+        $this->assetFamilyRepository->create($assetFamily);
 
-        $attributeAsLabel = $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier);
+        $attributeAsLabel = $this->findAssetFamilyAttributeAsLabel->find($assetFamilyIdentifier);
 
         $this->assertSame($expectedAttributeAsLabel, $attributeAsLabel);
     }
@@ -64,10 +64,10 @@ class InMemoryFindReferenceEntityAttributeAsLabelTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_attribute_as_label_if_the_reference_entity_was_not_found()
+    public function it_returns_an_empty_attribute_as_label_if_the_asset_family_was_not_found()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown');
-        $attributeAsLabel = $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('unknown');
+        $attributeAsLabel = $this->findAssetFamilyAttributeAsLabel->find($assetFamilyIdentifier);
 
         $this->assertTrue($attributeAsLabel->isEmpty());
     }

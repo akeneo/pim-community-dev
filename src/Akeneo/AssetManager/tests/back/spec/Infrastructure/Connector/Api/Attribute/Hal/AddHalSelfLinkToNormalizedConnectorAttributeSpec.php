@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\Hal;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\Hal;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\Hal\AddHalSelfLinkToNormalizedConnectorAttribute;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\Hal\AddHalSelfLinkToNormalizedConnectorAttribute;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
@@ -39,40 +39,40 @@ class AddHalSelfLinkToNormalizedConnectorAttributeSpec extends ObjectBehavior
                 'en_US' => 'Country',
                 'fr_FR' => 'Pays'
             ],
-            'type' => 'reference_entity_single_link',
+            'type' => 'asset_family_single_link',
             'localizable' => true,
             'scopable' => true,
             'is_required_for_completeness' => false,
-            'reference_entity_code' => 'country'
+            'asset_family_code' => 'country'
         ];
 
         $router->generate(
-            'akeneo_reference_entities_reference_entity_attribute_rest_connector_get',
+            'akeneo_asset_manager_asset_family_attribute_rest_connector_get',
             [
-                'referenceEntityIdentifier' => 'designer',
+                'assetFamilyIdentifier' => 'designer',
                 'code' => $normalizedAttribute['code']
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
-        )->willReturn('http://localhost/api/rest/v1/reference-entities/designer/attributes/country');
+        )->willReturn('http://localhost/api/rest/v1/asset-families/designer/attributes/country');
 
-        $expectedNormalizedRecord = [
+        $expectedNormalizedAsset = [
             'code' => 'country',
             'labels' => [
                 'en_US' => 'Country',
                 'fr_FR' => 'Pays'
             ],
-            'type' => 'reference_entity_single_link',
+            'type' => 'asset_family_single_link',
             'localizable' => true,
             'scopable' => true,
             'is_required_for_completeness' => false,
-            'reference_entity_code' => 'country',
+            'asset_family_code' => 'country',
             '_links'     => [
                 'self' => [
-                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/country'
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/country'
                 ]
             ]
         ];
 
-        $this->__invoke('designer', $normalizedAttribute)->shouldReturn($expectedNormalizedRecord);
+        $this->__invoke('designer', $normalizedAttribute)->shouldReturn($expectedNormalizedAsset);
     }
 }

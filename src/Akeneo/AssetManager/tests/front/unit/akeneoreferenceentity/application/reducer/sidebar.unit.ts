@@ -1,7 +1,7 @@
-import reducer from 'akeneoreferenceentity/application/reducer/sidebar';
-import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
+import reducer from 'akeneoassetmanager/application/reducer/sidebar';
+import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 
-describe('akeneo > reference entity > application > reducer --- sidebar', () => {
+describe('akeneo > asset family > application > reducer --- sidebar', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {

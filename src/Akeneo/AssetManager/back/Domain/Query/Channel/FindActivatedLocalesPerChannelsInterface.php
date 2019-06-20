@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Channel;
+namespace Akeneo\AssetManager\Domain\Query\Channel;
 
 interface FindActivatedLocalesPerChannelsInterface
 {

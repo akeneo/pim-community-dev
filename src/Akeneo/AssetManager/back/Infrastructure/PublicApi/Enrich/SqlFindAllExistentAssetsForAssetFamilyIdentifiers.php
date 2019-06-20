@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich;
+namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 
 use Doctrine\DBAL\Connection;
 
@@ -19,7 +19,7 @@ use Doctrine\DBAL\Connection;
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-final class SqlFindAllExistentRecordsForReferenceEntityIdentifiers
+final class SqlFindAllExistentAssetsForAssetFamilyIdentifiers
 {
     /** @var Connection */
     private $connection;
@@ -29,9 +29,9 @@ final class SqlFindAllExistentRecordsForReferenceEntityIdentifiers
         $this->connection = $connection;
     }
 
-    public function forReferenceEntityIdentifiersAndRecordCodes(array $referenceEntityIdentifiersToCodes): array
+    public function forAssetFamilyIdentifiersAndAssetCodes(array $assetFamilyIdentifiersToCodes): array
     {
-        if (empty($referenceEntityIdentifiersToCodes)) {
+        if (empty($assetFamilyIdentifiersToCodes)) {
             return [];
         }
 
@@ -43,19 +43,19 @@ final class SqlFindAllExistentRecordsForReferenceEntityIdentifiers
         $queryParams = [];
         $queryStringParams = [];
 
-        foreach ($referenceEntityIdentifiersToCodes as $referenceEntityIdentifier => $recordCodes) {
-            foreach ($recordCodes as $recordCode) {
-                $queryParams[] = $referenceEntityIdentifier;
-                $queryParams[] = $recordCode;
+        foreach ($assetFamilyIdentifiersToCodes as $assetFamilyIdentifier => $assetCodes) {
+            foreach ($assetCodes as $assetCode) {
+                $queryParams[] = $assetFamilyIdentifier;
+                $queryParams[] = $assetCode;
                 $queryStringParams[] = "(?, ?)";
             }
         }
 
         $query = <<<SQL
-SELECT reference_entity_identifier as reference_entity_identifier, JSON_ARRAYAGG(code) as record_code
-FROM akeneo_reference_entity_record
-WHERE (reference_entity_identifier, code) IN (%s)
-GROUP BY reference_entity_identifier;
+SELECT asset_family_identifier as asset_family_identifier, JSON_ARRAYAGG(code) as asset_code
+FROM akeneo_asset_manager_asset
+WHERE (asset_family_identifier, code) IN (%s)
+GROUP BY asset_family_identifier;
 SQL;
 
         $rawResults = $this->connection->executeQuery(
@@ -64,7 +64,7 @@ SQL;
         )->fetchAll();
 
         return array_reduce($rawResults, function (array $results, array $item) {
-            $results[$item['reference_entity_identifier']] = json_decode($item['record_code'], true);
+            $results[$item['asset_family_identifier']] = json_decode($item['asset_code'], true);
 
             return $results;
         }, []);

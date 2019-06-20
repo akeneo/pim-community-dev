@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
 use Doctrine\DBAL\Connection;
 
-class SqlFindReferenceEntityAttributeAsLabel implements FindReferenceEntityAttributeAsLabelInterface
+class SqlFindAssetFamilyAttributeAsLabel implements FindAssetFamilyAttributeAsLabelInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -28,15 +28,15 @@ class SqlFindReferenceEntityAttributeAsLabel implements FindReferenceEntityAttri
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsLabelReference
     {
         $query = <<<SQL
         SELECT attribute_as_label
-        FROM akeneo_reference_entity_reference_entity
+        FROM akeneo_asset_manager_asset_family
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => (string) $referenceEntityIdentifier,
+            'identifier' => (string) $assetFamilyIdentifier,
         ]);
 
         $attributeAsLabel = $statement->fetchColumn();

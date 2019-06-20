@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity;
+namespace Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CanEditReferenceEntityQuery
+class CanEditAssetFamilyQuery
 {
     /** @var string */
-    public $referenceEntityIdentifier;
+    public $assetFamilyIdentifier;
 
     /** @var string */
     public $securityIdentifier;
 
-    public function __construct(string $referenceEntityIdentifier, string $securityIdentifier)
+    public function __construct(string $assetFamilyIdentifier, string $securityIdentifier)
     {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->securityIdentifier = $securityIdentifier;
     }
 }

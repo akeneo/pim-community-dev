@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Locale;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Cache\Locale;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers;
 use PhpSpec\ObjectBehavior;
 
 class CacheFindActivatedLocalesByIdentifiersSpec extends ObjectBehavior

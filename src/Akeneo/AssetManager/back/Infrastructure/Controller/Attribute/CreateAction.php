@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
+namespace Akeneo\AssetManager\Infrastructure\Controller\Attribute;
 
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
+use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -54,8 +54,8 @@ class CreateAction
     /** @var CreateAttributeCommandFactoryRegistryInterface */
     private $attributeCommandFactoryRegistry;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    /** @var CanEditAssetFamilyQueryHandler */
+    private $canEditAssetFamilyQueryHandler;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
@@ -64,7 +64,7 @@ class CreateAction
         CreateAttributeHandler $createAttributeHandler,
         FindAttributeNextOrderInterface $attributeNextOrder,
         CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
@@ -76,16 +76,16 @@ class CreateAction
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
         $this->attributeCommandFactoryRegistry = $attributeCommandFactoryRegistry;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier): Response
+    public function __invoke(Request $request, string $assetFamilyIdentifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->isUserAllowedToCreate($request->get('referenceEntityIdentifier'))) {
+        if (!$this->isUserAllowedToCreate($request->get('assetFamilyIdentifier'))) {
             throw new AccessDeniedException();
         }
         if (!$this->isAttributeTypeProvided($request)) {
@@ -110,15 +110,15 @@ class CreateAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToCreate(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToCreate(string $assetFamilyIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery(
-            $referenceEntityIdentifier,
+        $query = new CanEditAssetFamilyQuery(
+            $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
 
-        return $this->securityFacade->isGranted('akeneo_referenceentity_attribute_create')
-            && ($this->canEditReferenceEntityQueryHandler)($query);
+        return $this->securityFacade->isGranted('akeneo_assetmanager_attribute_create')
+            && ($this->canEditAssetFamilyQueryHandler)($query);
     }
 
     private function getCreateCommand(Request $request): AbstractCreateAttributeCommand

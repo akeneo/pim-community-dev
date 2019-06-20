@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity;
+namespace Akeneo\AssetManager\Integration\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlLocalizableOnly;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -27,7 +27,7 @@ use Ramsey\Uuid\Uuid;
 class SqlLocalizableOnlyTest extends SqlIntegrationTestCase
 {
     /** @var SqlLocalizableOnly */
-    private $averageMaxPercentageOfLocalizableOnlyAttributessPerReferenceEntity;
+    private $averageMaxPercentageOfLocalizableOnlyAttributessPerAssetFamily;
 
     /** @var CreateAttributesHelper */
     private $createAttributesHelper;
@@ -36,60 +36,60 @@ class SqlLocalizableOnlyTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->averageMaxPercentageOfLocalizableOnlyAttributessPerReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.localizable_only');
-        $this->createAttributesHelper = new CreateAttributesHelper($this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute'));
+        $this->averageMaxPercentageOfLocalizableOnlyAttributessPerAssetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.localizable_only');
+        $this->createAttributesHelper = new CreateAttributesHelper($this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute'));
         $this->resetDB();
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
      * @test
      */
-    public function it_returns_the_average_and_max_percentage_of_localizable_only_attributes_per_reference_entity()
+    public function it_returns_the_average_and_max_percentage_of_localizable_only_attributes_per_asset_family()
     {
-        $referenceEntityIdentifier = $this->createReferenceEntity();
-        $this->createAttributesHelper->loadLocalizableOnlyAttributesForReferenceEntity($referenceEntityIdentifier, 4);
-        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForReferenceEntity($referenceEntityIdentifier,
+        $assetFamilyIdentifier = $this->createAssetFamily();
+        $this->createAttributesHelper->loadLocalizableOnlyAttributesForAssetFamily($assetFamilyIdentifier, 4);
+        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForAssetFamily($assetFamilyIdentifier,
             10);
-        $this->createAttributesHelper->loadScopableOnlyAttributesForReferenceEntity($referenceEntityIdentifier, 10);
-        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForReferenceEntity($referenceEntityIdentifier,
+        $this->createAttributesHelper->loadScopableOnlyAttributesForAssetFamily($assetFamilyIdentifier, 10);
+        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForAssetFamily($assetFamilyIdentifier,
             10);
 
-        $anotherReferenceEntityIdentifier = $this->createReferenceEntity();
-        $this->createAttributesHelper->loadLocalizableOnlyAttributesForReferenceEntity($anotherReferenceEntityIdentifier,
+        $anotherAssetFamilyIdentifier = $this->createAssetFamily();
+        $this->createAttributesHelper->loadLocalizableOnlyAttributesForAssetFamily($anotherAssetFamilyIdentifier,
             2);
-        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForReferenceEntity($anotherReferenceEntityIdentifier,
+        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForAssetFamily($anotherAssetFamilyIdentifier,
             10);
-        $this->createAttributesHelper->loadScopableOnlyAttributesForReferenceEntity($anotherReferenceEntityIdentifier,
+        $this->createAttributesHelper->loadScopableOnlyAttributesForAssetFamily($anotherAssetFamilyIdentifier,
             10);
-        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForReferenceEntity($anotherReferenceEntityIdentifier,
+        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForAssetFamily($anotherAssetFamilyIdentifier,
             10);
 
-        $volume = $this->averageMaxPercentageOfLocalizableOnlyAttributessPerReferenceEntity->fetch();
+        $volume = $this->averageMaxPercentageOfLocalizableOnlyAttributessPerAssetFamily->fetch();
 
         $this->assertEquals('11', $volume->getMaxVolume());
         $this->assertEquals('10', $volume->getAverageVolume());
     }
 
-    private function createReferenceEntity(): ReferenceEntityIdentifier
+    private function createAssetFamily(): AssetFamilyIdentifier
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = $this->getRandomIdentifier();
-        $referenceEntityRepository->create(ReferenceEntity::create(
-            $referenceEntityIdentifier,
+        $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $assetFamilyIdentifier = $this->getRandomIdentifier();
+        $assetFamilyRepository->create(AssetFamily::create(
+            $assetFamilyIdentifier,
             [],
             Image::createEmpty()
         ));
 
-        return $referenceEntityIdentifier;
+        return $assetFamilyIdentifier;
     }
 
-    private function getRandomIdentifier(): ReferenceEntityIdentifier
+    private function getRandomIdentifier(): AssetFamilyIdentifier
     {
-        return ReferenceEntityIdentifier::fromString(str_replace('-', '_', Uuid::uuid4()->toString()));
+        return AssetFamilyIdentifier::fromString(str_replace('-', '_', Uuid::uuid4()->toString()));
     }
 }

@@ -1,14 +1,14 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_reference_entities_record_edit_rest",
+    "route": "akeneo_asset_manager_asset_edit_rest",
     "query": {
-      "recordCode": "starck",
-      "referenceEntityIdentifier": "designer"
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer"
     },
     "body": {
       "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
-      "reference_entity_identifier": "designer",
+      "asset_family_identifier": "designer",
       "code": "starck",
       "labels": {
         "fr_FR": "Philippe Starck"
@@ -65,12 +65,12 @@
         "plural": null,
         "message": "This value is not a valid URL.",
         "root": {
-          "referenceEntityIdentifier": "designer",
+          "assetFamilyIdentifier": "designer",
           "code": "starck",
           "labels": [
           ],
           "image": null,
-          "editRecordValueCommands": [
+          "editAssetValueCommands": [
             {
               "text": "Philippe Starck",
               "attribute": {
@@ -87,7 +87,7 @@
                 "type": "text",
                 "identifier": [
                 ],
-                "referenceEntityIdentifier": [
+                "assetFamilyIdentifier": [
                 ],
                 "code": [
                 ],
@@ -117,7 +117,7 @@
                 "type": "text",
                 "identifier": [
                 ],
-                "referenceEntityIdentifier": [
+                "assetFamilyIdentifier": [
                 ],
                 "code": [
                 ],
@@ -147,7 +147,7 @@
                 "type": "text",
                 "identifier": [
                 ],
-                "referenceEntityIdentifier": [
+                "assetFamilyIdentifier": [
                 ],
                 "code": [
                 ],
@@ -178,7 +178,7 @@
                 "type": "text",
                 "identifier": [
                 ],
-                "referenceEntityIdentifier": [
+                "assetFamilyIdentifier": [
                 ],
                 "code": [
                 ],
@@ -204,7 +204,7 @@
                   "allAllowed": false
                 },
                 "identifier": [],
-                "referenceEntityIdentifier": [],
+                "assetFamilyIdentifier": [],
                 "code": [],
                 "labelCodes": [
                   "fr_FR",
@@ -223,7 +223,7 @@
                 "minLimitless": false,
                 "maxLimitless": false,
                 "identifier": [],
-                "referenceEntityIdentifier": [],
+                "assetFamilyIdentifier": [],
                 "code": [],
                 "labelCodes": [
                   "en_US"
@@ -254,7 +254,7 @@
             "type": "text",
             "identifier": [
             ],
-            "referenceEntityIdentifier": [
+            "assetFamilyIdentifier": [
             ],
             "code": [
             ],

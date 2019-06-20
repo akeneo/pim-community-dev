@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
+namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionCollectionAttributeHydrator;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionCollectionAttributeHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
@@ -40,7 +40,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
         $optionAttribute = $this->hydrate([
             'identifier' => 'colors_designer_fingerprint',
             'code' => 'colors',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'labels' => json_encode(['fr_FR' => 'Couleurs']),
             'attribute_type' => 'option',
             'attribute_order' => '0',
@@ -54,7 +54,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
         $optionAttribute->shouldBeAnInstanceOf(OptionCollectionAttribute::class);
         $optionAttribute->normalize()->shouldBe([
             'identifier' => 'colors_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'colors',
             'labels' => ['fr_FR' => 'Couleurs'],
             'order' => 0,
@@ -71,7 +71,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
         $optionAttribute = $this->hydrate([
             'identifier' => 'colors_designer_fingerprint',
             'code' => 'colors',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'labels' => json_encode(['fr_FR' => 'Couleurs']),
             'attribute_type' => 'option',
             'attribute_order' => '0',
@@ -98,7 +98,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
         $optionAttribute->shouldBeAnInstanceOf(OptionCollectionAttribute::class);
         $optionAttribute->normalize()->shouldBe([
             'identifier' => 'colors_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
+            'asset_family_identifier' => 'designer',
             'code' => 'colors',
             'labels' => ['fr_FR' => 'Couleurs'],
             'order' => 0,

@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
+namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterRegistry;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterRegistry;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater;
+use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
 class AttributeUpdaterRegistrySpec extends ObjectBehavior

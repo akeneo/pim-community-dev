@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
+namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorRegistry;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\OptionTypeValidator;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\TextTypeValidator;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorRegistry;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\OptionTypeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\TextTypeValidator;
 use PhpSpec\ObjectBehavior;
 
-class RecordValueValidatorRegistrySpec extends ObjectBehavior
+class AssetValueValidatorRegistrySpec extends ObjectBehavior
 {
     function let()
     {
@@ -31,10 +31,10 @@ class RecordValueValidatorRegistrySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordValueValidatorRegistry::class);
+        $this->shouldHaveType(AssetValueValidatorRegistry::class);
     }
 
-    function it_returns_the_record_value_validator_for_a_given_attribute_type()
+    function it_returns_the_asset_value_validator_for_a_given_attribute_type()
     {
         $this->getValidator(TextAttribute::class)->shouldReturnAnInstanceOf(TextTypeValidator::class);
     }

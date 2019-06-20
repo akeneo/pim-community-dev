@@ -1,36 +1,36 @@
-import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
-import promisify from 'akeneoreferenceentity/tools/promisify';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
+import promisify from 'akeneoassetmanager/tools/promisify';
 import {
   productListAttributeListUpdated,
   productListProductListUpdated,
   productListAttributeSelected,
-} from 'akeneoreferenceentity/domain/event/record/product';
-import productFetcher from 'akeneoreferenceentity/infrastructure/fetcher/product';
-import ReferenceEntityIdentifier, {
+} from 'akeneoassetmanager/domain/event/asset/product';
+import productFetcher from 'akeneoassetmanager/infrastructure/fetcher/product';
+import AssetFamilyIdentifier, {
   createIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
-import {createCode as createAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
-import hydrate from 'akeneoreferenceentity/application/hydrator/product/attribute';
-import AttributeCode from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {createCode as createAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
+import hydrate from 'akeneoassetmanager/application/hydrator/product/attribute';
+import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
+import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 
-export const updateAttributeList = (referenceEntityIdentifier: ReferenceEntityIdentifier) => async (
+export const updateAttributeList = (assetFamilyIdentifier: AssetFamilyIdentifier) => async (
   dispatch: any
 ): Promise<void> => {
   const attributes = await promisify(
     fetcherRegistry
       .getFetcher('attribute')
-      .fetchByTypes(['akeneo_reference_entity_collection', 'akeneo_reference_entity'], false)
+      .fetchByTypes(['akeneo_asset_multiple_link', 'akeneo_asset'], false)
   );
 
   const linkedAttributes = attributes
     .filter(
-      (attribute: NormalizedAttribute) => referenceEntityIdentifier.stringValue() === attribute.reference_data_name
+      (attribute: NormalizedAttribute) => assetFamilyIdentifier.stringValue() === attribute.reference_data_name
     )
     .map(hydrate);
 
@@ -47,15 +47,15 @@ export const updateProductList = () => async (dispatch: any, getState: () => Edi
     return;
   }
 
-  const referenceEntityIdentifier = createIdentifier(getState().form.data.reference_entity_identifier);
-  const recordCode = createRecordCode(getState().form.data.code);
+  const assetFamilyIdentifier = createIdentifier(getState().form.data.asset_family_identifier);
+  const assetCode = createAssetCode(getState().form.data.code);
   const attributeCode = createAttributeCode(normalizedAttribute.code);
   const channel = createChannelReference(getState().user.catalogChannel);
   const locale = createLocaleReference(getState().user.catalogLocale);
 
   const products = await productFetcher.fetchLinkedProducts(
-    referenceEntityIdentifier,
-    recordCode,
+    assetFamilyIdentifier,
+    assetCode,
     attributeCode,
     channel,
     locale

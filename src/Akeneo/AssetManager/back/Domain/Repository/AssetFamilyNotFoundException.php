@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Repository;
+namespace Akeneo\AssetManager\Domain\Repository;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityNotFoundException extends \RuntimeException
+class AssetFamilyNotFoundException extends \RuntimeException
 {
-    public static function withIdentifier(ReferenceEntityIdentifier $identifier): self
+    public static function withIdentifier(AssetFamilyIdentifier $identifier): self
     {
         $message = sprintf(
-            'Could not find reference entity with identifier "%s"',
+            'Could not find asset family with identifier "%s"',
             (string) $identifier
         );
 

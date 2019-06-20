@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -23,20 +23,20 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ThereShouldBeLessReferenceEntityThanLimitValidator extends ConstraintValidator
+class ThereShouldBeLessAssetFamilyThanLimitValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
 
     /** @var int */
-    private $referenceEntityLimit;
+    private $assetFamilyLimit;
 
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        int $referenceEntityLimit
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        int $assetFamilyLimit
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->referenceEntityLimit = $referenceEntityLimit;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->assetFamilyLimit = $assetFamilyLimit;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -51,11 +51,11 @@ class ThereShouldBeLessReferenceEntityThanLimitValidator extends ConstraintValid
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof CreateReferenceEntityCommand) {
+        if (!$command instanceof CreateAssetFamilyCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
-                    CreateReferenceEntityCommand::class,
+                    CreateAssetFamilyCommand::class,
                     get_class($command)
                 )
             );
@@ -67,19 +67,19 @@ class ThereShouldBeLessReferenceEntityThanLimitValidator extends ConstraintValid
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof ThereShouldBeLessReferenceEntityThanLimit) {
+        if (!$constraint instanceof ThereShouldBeLessAssetFamilyThanLimit) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(CreateReferenceEntityCommand $command): void
+    private function validateCommand(CreateAssetFamilyCommand $command): void
     {
-        $total = $this->referenceEntityRepository->count();
+        $total = $this->assetFamilyRepository->count();
 
-        if ($total >= $this->referenceEntityLimit) {
-            $this->context->buildViolation(ThereShouldBeLessReferenceEntityThanLimit::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_label%', current($command->labels))
-                ->setParameter('%limit%', $this->referenceEntityLimit)
+        if ($total >= $this->assetFamilyLimit) {
+            $this->context->buildViolation(ThereShouldBeLessAssetFamilyThanLimit::ERROR_MESSAGE)
+                ->setParameter('%asset_family_label%', current($command->labels))
+                ->setParameter('%limit%', $this->assetFamilyLimit)
                 ->atPath('labels')
                 ->addViolation();
         }

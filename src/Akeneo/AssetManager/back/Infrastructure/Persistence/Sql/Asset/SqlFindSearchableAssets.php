@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindSearchableRecordsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindSearchableAssetsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -15,7 +15,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindSearchableRecords implements FindSearchableRecordsInterface
+class SqlFindSearchableAssets implements FindSearchableAssetsInterface
 {
     /** @var Connection */
     private $connection;
@@ -25,41 +25,41 @@ class SqlFindSearchableRecords implements FindSearchableRecordsInterface
         $this->connection = $connection;
     }
 
-    public function byRecordIdentifier(RecordIdentifier $recordIdentifier): ?SearchableRecordItem
+    public function byAssetIdentifier(AssetIdentifier $assetIdentifier): ?SearchableAssetItem
     {
         $sqlQuery = <<<SQL
-        SELECT rec.identifier, rec.reference_entity_identifier, rec.code, rec.value_collection, ref.attribute_as_label
-        FROM akeneo_reference_entity_record rec
-        INNER JOIN akeneo_reference_entity_reference_entity ref ON ref.identifier = rec.reference_entity_identifier
-        WHERE rec.identifier = :record_identifier;
+        SELECT rec.identifier, rec.asset_family_identifier, rec.code, rec.value_collection, ref.attribute_as_label
+        FROM akeneo_asset_manager_asset rec
+        INNER JOIN akeneo_asset_manager_asset_family ref ON ref.identifier = rec.asset_family_identifier
+        WHERE rec.identifier = :asset_identifier;
 SQL;
 
-        $statement = $this->connection->executeQuery($sqlQuery, ['record_identifier' => (string) $recordIdentifier]);
+        $statement = $this->connection->executeQuery($sqlQuery, ['asset_identifier' => (string) $assetIdentifier]);
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return !$result ? null : $this->hydrateRecordToIndex(
+        return !$result ? null : $this->hydrateAssetToIndex(
             $result['identifier'],
-            $result['reference_entity_identifier'],
+            $result['asset_family_identifier'],
             $result['code'],
             ValuesDecoder::decode($result['value_collection']),
             $result['attribute_as_label']
         );
     }
 
-    public function byReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
+    public function byAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator
     {
         $sqlQuery = <<<SQL
-        SELECT rec.identifier, rec.reference_entity_identifier, rec.code, rec.value_collection, ref.attribute_as_label
-        FROM akeneo_reference_entity_record rec
-        INNER JOIN akeneo_reference_entity_reference_entity ref ON ref.identifier = rec.reference_entity_identifier
-        WHERE ref.identifier = :reference_entity_identifier;
+        SELECT rec.identifier, rec.asset_family_identifier, rec.code, rec.value_collection, ref.attribute_as_label
+        FROM akeneo_asset_manager_asset rec
+        INNER JOIN akeneo_asset_manager_asset_family ref ON ref.identifier = rec.asset_family_identifier
+        WHERE ref.identifier = :asset_family_identifier;
 SQL;
 
-        $statement = $this->connection->executeQuery($sqlQuery, ['reference_entity_identifier' => (string) $referenceEntityIdentifier]);
+        $statement = $this->connection->executeQuery($sqlQuery, ['asset_family_identifier' => (string) $assetFamilyIdentifier]);
         while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
-            yield $this->hydrateRecordToIndex(
+            yield $this->hydrateAssetToIndex(
                 $result['identifier'],
-                $result['reference_entity_identifier'],
+                $result['asset_family_identifier'],
                 $result['code'],
                 ValuesDecoder::decode($result['value_collection']),
                 $result['attribute_as_label']
@@ -67,29 +67,29 @@ SQL;
         }
     }
 
-    private function hydrateRecordToIndex(
+    private function hydrateAssetToIndex(
         string $identifier,
-        string $referenceEntityIdentifier,
+        string $assetFamilyIdentifier,
         string $code,
         array $values,
         ?string $attributeAsLabel
-    ): SearchableRecordItem {
+    ): SearchableAssetItem {
         $platform = $this->connection->getDatabasePlatform();
 
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
-            ->convertToPHPValue($referenceEntityIdentifier, $platform);
+        $assetFamilyIdentifier = Type::getType(Type::STRING)
+            ->convertToPHPValue($assetFamilyIdentifier, $platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($attributeAsLabel, $platform);
 
-        $recordItem = new SearchableRecordItem();
-        $recordItem->identifier = $identifier;
-        $recordItem->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $recordItem->code = $code;
-        $recordItem->labels = $this->getLabels($attributeAsLabel, $values);
-        $recordItem->values = $values;
+        $assetItem = new SearchableAssetItem();
+        $assetItem->identifier = $identifier;
+        $assetItem->assetFamilyIdentifier = $assetFamilyIdentifier;
+        $assetItem->code = $code;
+        $assetItem->labels = $this->getLabels($attributeAsLabel, $values);
+        $assetItem->values = $values;
 
-        return $recordItem;
+        return $assetItem;
     }
 
     private function getLabels(?string $attributeAsLabelIdentifier, array $values): array

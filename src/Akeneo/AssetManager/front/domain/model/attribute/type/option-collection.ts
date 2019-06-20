@@ -1,15 +1,15 @@
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  createIdentifier as createAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {
   Attribute,
   ConcreteAttribute,
   NormalizedAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {AttributeWithOptions} from './option';
 
 export interface NormalizedOptionCollectionAttribute extends NormalizedAttribute {
@@ -30,7 +30,7 @@ export class InvalidArgumentError extends Error {}
 export class ConcreteOptionCollectionAttribute extends ConcreteAttribute implements OptionCollectionAttribute {
   private constructor(
     identifier: Identifier,
-    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
     valuePerChannel: boolean,
@@ -41,7 +41,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
   ) {
     super(
       identifier,
-      referenceEntityIdentifier,
+      assetFamilyIdentifier,
       code,
       labelCollection,
       'option_collection',
@@ -63,7 +63,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
   public static createFromNormalized(normalizedOptionCollectionAttribute: NormalizedOptionCollectionAttribute) {
     return new ConcreteOptionCollectionAttribute(
       createIdentifier(normalizedOptionCollectionAttribute.identifier),
-      createReferenceEntityIdentifier(normalizedOptionCollectionAttribute.reference_entity_identifier),
+      createAssetFamilyIdentifier(normalizedOptionCollectionAttribute.asset_family_identifier),
       createCode(normalizedOptionCollectionAttribute.code),
       createLabelCollection(normalizedOptionCollectionAttribute.labels),
       normalizedOptionCollectionAttribute.value_per_channel,
@@ -85,7 +85,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
   public setOptions(options: Option[]) {
     return new ConcreteOptionCollectionAttribute(
       this.identifier,
-      this.referenceEntityIdentifier,
+      this.assetFamilyIdentifier,
       this.code,
       this.labelCollection,
       this.valuePerChannel,

@@ -11,78 +11,78 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByIdentifiersInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
- * Bulk hydrator of RecordItems.
- * We take the advantage of bulk to unify heavy operations such as retrieving linked record labels.
+ * Bulk hydrator of AssetItems.
+ * We take the advantage of bulk to unify heavy operations such as retrieving linked asset labels.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class BulkRecordItemHydrator
+class BulkAssetItemHydrator
 {
-    /** @var RecordItemHydratorInterface */
-    private $recordItemHydrator;
+    /** @var AssetItemHydratorInterface */
+    private $assetItemHydrator;
 
     /** @var FindValueKeysByAttributeTypeInterface */
     private $findValueKeysByAttributeType;
 
-    /** @var FindRecordLabelsByIdentifiersInterface */
-    private $findRecordLabelsByIdentifiers;
+    /** @var FindAssetLabelsByIdentifiersInterface */
+    private $findAssetLabelsByIdentifiers;
 
     public function __construct(
-        RecordItemHydratorInterface $recordItemHydrator,
+        AssetItemHydratorInterface $assetItemHydrator,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        FindRecordLabelsByIdentifiersInterface $findRecordLabelsByIdentifiers
+        FindAssetLabelsByIdentifiersInterface $findAssetLabelsByIdentifiers
     ) {
-        $this->recordItemHydrator = $recordItemHydrator;
+        $this->assetItemHydrator = $assetItemHydrator;
         $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
-        $this->findRecordLabelsByIdentifiers = $findRecordLabelsByIdentifiers;
+        $this->findAssetLabelsByIdentifiers = $findAssetLabelsByIdentifiers;
     }
 
-    public function hydrateAll(array $rows, RecordQuery $query): array
+    public function hydrateAll(array $rows, AssetQuery $query): array
     {
-        $recordItems = [];
+        $assetItems = [];
 
-        $referenceEntityFilter = $query->getFilter('reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);
+        $assetFamilyFilter = $query->getFilter('asset_family');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyFilter['value']);
 
-        $labelsIndexedByRecordIdentifier = $this->getLabelsForIdentifier($rows, $referenceEntityIdentifier);
+        $labelsIndexedByAssetIdentifier = $this->getLabelsForIdentifier($rows, $assetFamilyIdentifier);
 
         foreach ($rows as $row) {
-            $recordItems[] = $this->recordItemHydrator->hydrate($row, $query, ['labels' => $labelsIndexedByRecordIdentifier]);
+            $assetItems[] = $this->assetItemHydrator->hydrate($row, $query, ['labels' => $labelsIndexedByAssetIdentifier]);
         }
 
-        return $recordItems;
+        return $assetItems;
     }
 
-    private function getLabelsForIdentifier(array $rows, ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function getLabelsForIdentifier(array $rows, AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        $recordIdentifiers = [];
-        $recordLinkValueKeys = $this->findValueKeysByAttributeType->find(
-            $referenceEntityIdentifier,
-            ['record', 'record_collection']
+        $assetIdentifiers = [];
+        $assetLinkValueKeys = $this->findValueKeysByAttributeType->find(
+            $assetFamilyIdentifier,
+            ['asset', 'asset_collection']
         );
-        $mask = array_flip($recordLinkValueKeys);
+        $mask = array_flip($assetLinkValueKeys);
 
         foreach ($rows as $row) {
             $valueCollection = json_decode($row['value_collection'], true);
-            $rawRecordValues = array_intersect_key($valueCollection, $mask);
+            $rawAssetValues = array_intersect_key($valueCollection, $mask);
 
-            foreach ($rawRecordValues as $rawValue) {
+            foreach ($rawAssetValues as $rawValue) {
                 $data = is_array($rawValue['data']) ? $rawValue['data'] : [$rawValue['data']];
-                $recordIdentifiers = array_merge($recordIdentifiers, $data);
+                $assetIdentifiers = array_merge($assetIdentifiers, $data);
             }
         }
 
-        $labelsIndexedByRecordIdentifier = $this->findRecordLabelsByIdentifiers->find($recordIdentifiers);
+        $labelsIndexedByAssetIdentifier = $this->findAssetLabelsByIdentifiers->find($assetIdentifiers);
 
-        return $labelsIndexedByRecordIdentifier;
+        return $labelsIndexedByAssetIdentifier;
     }
 }

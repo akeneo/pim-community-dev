@@ -11,139 +11,139 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryRecordRepository implements RecordRepositoryInterface
+class InMemoryAssetRepository implements AssetRepositoryInterface
 {
-    /** @var Record[] */
-    protected $records = [];
+    /** @var Asset[] */
+    protected $assets = [];
 
-    public function create(Record $record): void
+    public function create(Asset $asset): void
     {
-        if (isset($this->records[$record->getIdentifier()->__toString()])) {
-            throw new \RuntimeException('Record already exists');
+        if (isset($this->assets[$asset->getIdentifier()->__toString()])) {
+            throw new \RuntimeException('Asset already exists');
         }
 
         try {
-            $this->getByReferenceEntityAndCode($record->getReferenceEntityIdentifier(), $record->getCode());
-        } catch (RecordNotFoundException $exception) {
-            $this->records[$record->getIdentifier()->__toString()] = $record;
+            $this->getByAssetFamilyAndCode($asset->getAssetFamilyIdentifier(), $asset->getCode());
+        } catch (AssetNotFoundException $exception) {
+            $this->assets[$asset->getIdentifier()->__toString()] = $asset;
 
             return;
         }
 
-        throw new \RuntimeException('Record already exists');
+        throw new \RuntimeException('Asset already exists');
     }
 
-    public function update(Record $record): void
+    public function update(Asset $asset): void
     {
-        if (!isset($this->records[$record->getIdentifier()->__toString()])) {
-            throw new \RuntimeException('Expected to update one record, but none was saved');
+        if (!isset($this->assets[$asset->getIdentifier()->__toString()])) {
+            throw new \RuntimeException('Expected to update one asset, but none was saved');
         }
 
-        $this->records[$record->getIdentifier()->__toString()] = $record;
+        $this->assets[$asset->getIdentifier()->__toString()] = $asset;
     }
 
-    public function getByIdentifier(RecordIdentifier $identifier): Record
+    public function getByIdentifier(AssetIdentifier $identifier): Asset
     {
-        if (!isset($this->records[$identifier->__toString()])) {
-            throw RecordNotFoundException::withIdentifier($identifier);
+        if (!isset($this->assets[$identifier->__toString()])) {
+            throw AssetNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->records[$identifier->__toString()];
+        return $this->assets[$identifier->__toString()];
     }
 
-    public function getByReferenceEntityAndCode(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code
-    ): Record {
-        foreach ($this->records as $record) {
-            if ($record->getCode()->equals($code) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
-                return $record;
+    public function getByAssetFamilyAndCode(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code
+    ): Asset {
+        foreach ($this->assets as $asset) {
+            if ($asset->getCode()->equals($code) && $asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
+                return $asset;
             }
         }
 
-        throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
+        throw AssetNotFoundException::withAssetFamilyAndCode($assetFamilyIdentifier, $code);
     }
 
-    public function getByReferenceEntityAndCodes(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        array $recordCodes
+    public function getByAssetFamilyAndCodes(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        array $assetCodes
     ): array {
-        $recordsFound = [];
+        $assetsFound = [];
 
-        foreach ($this->records as $record) {
-            foreach ($recordCodes as $recordCode) {
-                if ($record->getCode()->equals(RecordCode::fromString($recordCode)) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
-                    $recordsFound[] = $record;
+        foreach ($this->assets as $asset) {
+            foreach ($assetCodes as $assetCode) {
+                if ($asset->getCode()->equals(AssetCode::fromString($assetCode)) && $asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
+                    $assetsFound[] = $asset;
                 }
             }
         }
 
-        return $recordsFound;
+        return $assetsFound;
     }
 
-    public function deleteByReferenceEntityAndCode(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code
+    public function deleteByAssetFamilyAndCode(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code
     ): void {
-        foreach ($this->records as $index => $record) {
-            if ($record->getCode()->equals($code) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
-                unset($this->records[$index]);
+        foreach ($this->assets as $index => $asset) {
+            if ($asset->getCode()->equals($code) && $asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
+                unset($this->assets[$index]);
 
                 return;
             }
         }
 
-        throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
+        throw AssetNotFoundException::withAssetFamilyAndCode($assetFamilyIdentifier, $code);
     }
 
-    public function deleteByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
+    public function deleteByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        foreach ($this->records as $index => $record) {
-            if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
-                unset($this->records[$index]);
+        foreach ($this->assets as $index => $asset) {
+            if ($asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
+                unset($this->assets[$index]);
             }
         }
     }
 
     public function count(): int
     {
-        return count($this->records);
+        return count($this->assets);
     }
 
     public function nextIdentifier(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code
-    ): RecordIdentifier {
-        return RecordIdentifier::create(
-            $referenceEntityIdentifier->__toString(),
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code
+    ): AssetIdentifier {
+        return AssetIdentifier::create(
+            $assetFamilyIdentifier->__toString(),
             $code->__toString(),
             Uuid::uuid4()->toString()
         );
     }
 
-    public function hasRecord(RecordIdentifier $identifier)
+    public function hasAsset(AssetIdentifier $identifier)
     {
-        return isset($this->records[$identifier->__toString()]);
+        return isset($this->assets[$identifier->__toString()]);
     }
 
-    public function referenceEntityHasRecords(ReferenceEntityIdentifier $referenceEntityIdentifier)
+    public function assetFamilyHasAssets(AssetFamilyIdentifier $assetFamilyIdentifier)
     {
-        foreach ($this->records as $record) {
-            if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+        foreach ($this->assets as $asset) {
+            if ($asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
                 return true;
             }
         }
@@ -152,18 +152,18 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
     }
 
     /**
-     * @return Record[]
+     * @return Asset[]
      */
     public function all(): array
     {
-        return $this->records;
+        return $this->assets;
     }
 
-    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
     {
         $count = 0;
-        foreach ($this->records as $record) {
-            if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+        foreach ($this->assets as $asset) {
+            if ($asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
                 $count ++;
             }
         }

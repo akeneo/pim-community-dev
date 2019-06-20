@@ -1,40 +1,40 @@
-import notify from 'akeneoreferenceentity/application/event/notify';
-import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import notify from 'akeneoassetmanager/application/event/notify';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 
-export const notifyReferenceEntityWellSaved = () => {
-  return notify('success', 'pim_reference_entity.reference_entity.notification.save.success');
+export const notifyAssetFamilyWellSaved = () => {
+  return notify('success', 'pim_asset_manager.asset_family.notification.save.success');
 };
 
-export const notifyReferenceEntitySaveFailed = () => {
-  return notify('error', 'pim_reference_entity.reference_entity.notification.save.fail');
+export const notifyAssetFamilySaveFailed = () => {
+  return notify('error', 'pim_asset_manager.asset_family.notification.save.fail');
 };
 
-export const notifyReferenceEntityWellCreated = () => {
-  return notify('success', 'pim_reference_entity.reference_entity.notification.create.success');
+export const notifyAssetFamilyWellCreated = () => {
+  return notify('success', 'pim_asset_manager.asset_family.notification.create.success');
 };
 
-export const notifyReferenceEntityCreateFailed = () => {
-  return notify('error', 'pim_reference_entity.reference_entity.notification.create.fail');
+export const notifyAssetFamilyCreateFailed = () => {
+  return notify('error', 'pim_asset_manager.asset_family.notification.create.fail');
 };
 
-export const notifyReferenceEntityWellDeleted = () => {
-  return notify('success', 'pim_reference_entity.reference_entity.notification.delete.success');
+export const notifyAssetFamilyWellDeleted = () => {
+  return notify('success', 'pim_asset_manager.asset_family.notification.delete.success');
 };
 
-export const notifyReferenceEntityDeleteFailed = () => {
-  return notify('error', 'pim_reference_entity.reference_entity.notification.delete.fail');
+export const notifyAssetFamilyDeleteFailed = () => {
+  return notify('error', 'pim_asset_manager.asset_family.notification.delete.fail');
 };
 
-export const notifyReferenceEntityDeletionErrorOccured = (errors: ValidationError[]) => {
+export const notifyAssetFamilyDeletionErrorOccured = (errors: ValidationError[]) => {
   const firstError = errors[0];
 
   return notify('error', firstError.message);
 };
 
 export const notifyPermissionWellSaved = () => {
-  return notify('success', 'pim_reference_entity.permission.notification.save.success');
+  return notify('success', 'pim_asset_manager.permission.notification.save.success');
 };
 
 export const notifyPermissionSaveFailed = () => {
-  return notify('error', 'pim_reference_entity.permission.notification.save.fail');
+  return notify('error', 'pim_asset_manager.permission.notification.save.fail');
 };

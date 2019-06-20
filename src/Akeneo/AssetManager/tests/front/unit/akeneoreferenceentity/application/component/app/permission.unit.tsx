@@ -1,8 +1,8 @@
-import PermissionCollectionEditor from 'akeneoreferenceentity/tools/component/permission';
+import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permission';
 import {
   denormalizePermissionCollection,
   RightLevel,
-} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+} from 'akeneoassetmanager/domain/model/asset-family/permission';
 
 import * as React from 'react';
 import {mount} from 'enzyme';
