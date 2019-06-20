@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Rule;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\RuleTemplate;
 use Akeneo\ReferenceEntity\Domain\Query\Record\AccessibleRecord;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -24,18 +25,15 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 class RuleCompiler
 {
-    private const KEYS_TO_REPLACE = ['field', 'value'];
+    private const CONDITIONS_KEYS_TO_REPLACE = ['field', 'value'];
+    private const ACTIONS_KEYS_TO_REPLACE = ['field', 'value'];
 
     /** @var DenormalizerInterface */
     private $ruleDenormalizer;
 
-    /** @var string */
-    private $ruleClass;
-
-    public function __construct(DenormalizerInterface $ruleDenormalizer, string $ruleClass)
+    public function __construct(DenormalizerInterface $ruleDenormalizer)
     {
         $this->ruleDenormalizer = $ruleDenormalizer;
-        $this->ruleClass = $ruleClass;
     }
 
     /**
@@ -60,26 +58,36 @@ class RuleCompiler
      */
     public function compile(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): RuleInterface
     {
-        $content = $this->fillTemplateWithAccessibleRecord($ruleTemplate, $accessibleRecord);
+        $compiledContent = $this->compileTemplateWithAccessibleRecord($ruleTemplate, $accessibleRecord);
 
         $ruleData = [
             'code' => '',
             'priority' => '',
-            'conditions' => $content['conditions'],
-            'actions' => $content['actions']
+            'conditions' => $compiledContent['conditions'],
+            'actions' => $compiledContent['actions']
         ];
 
-        return $this->ruleDenormalizer->denormalize($ruleData, $this->ruleClass);
+        return $this->ruleDenormalizer->denormalize($ruleData, Rule::class);
     }
 
-    private function fillTemplateWithAccessibleRecord(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): array
+    private function compileTemplateWithAccessibleRecord(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): array
+    {
+        $compiledConditions = $this->compileConditionsWithAccessibleRecord($ruleTemplate, $accessibleRecord);
+        $compiledActions = $this->compileActionsWithAccessibleRecord($ruleTemplate, $accessibleRecord);
+
+        return [
+            'conditions' => $compiledConditions,
+            'actions' => $compiledActions,
+        ];
+    }
+
+    private function compileConditionsWithAccessibleRecord(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): array
     {
         $compiledConditions = [];
-        $compiledActions = [];
 
         foreach ($ruleTemplate->getConditions() as $condition) {
             foreach ($condition as $key => $value) {
-                if (!in_array($key, self::KEYS_TO_REPLACE)) {
+                if (!in_array($key, self::CONDITIONS_KEYS_TO_REPLACE)) {
                     continue;
                 }
 
@@ -89,9 +97,16 @@ class RuleCompiler
             $compiledConditions[] = $condition;
         }
 
+        return $compiledConditions;
+    }
+
+    private function compileActionsWithAccessibleRecord(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): array
+    {
+        $compiledActions = [];
+
         foreach ($ruleTemplate->getActions() as $action) {
             foreach ($action as $key => $value) {
-                if (!in_array($key, self::KEYS_TO_REPLACE)) {
+                if (!in_array($key, self::ACTIONS_KEYS_TO_REPLACE)) {
                     continue;
                 }
 
@@ -101,10 +116,7 @@ class RuleCompiler
             $compiledActions[] = $action;
         }
 
-        return [
-            'conditions' => $compiledConditions,
-            'actions' => $compiledActions,
-        ];
+        return $compiledActions;
     }
 
     private function replacePatterns(string $ruleValue, AccessibleRecord $accessibleRecord): string
@@ -112,11 +124,11 @@ class RuleCompiler
         preg_match_all('#{{(.*?)}}#', $ruleValue, $matchedPatterns);
 
         foreach ($matchedPatterns[1] as $pattern) {
-            if (!$accessibleRecord->hasValue($pattern)) {
+            if (!$accessibleRecord->hasValue(trim($pattern))) {
                 continue;
             }
 
-            $assetValue = $accessibleRecord->getValue($pattern);
+            $assetValue = $accessibleRecord->getValue(trim($pattern));
             if (is_array($assetValue)) {
                 $assetValue = implode(',', $assetValue);
             }

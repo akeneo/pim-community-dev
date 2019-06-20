@@ -40,7 +40,7 @@ class RuleCompilerSpec extends ObjectBehavior
             [
                 'type' => 'add',
                 'field' => '{{target_attribute}}',
-                'value' => '{{code}}'
+                'value' => '{{ code }}'
             ]
         ];
 

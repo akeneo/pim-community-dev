@@ -27,6 +27,11 @@ class RuleTemplate
         $this->content = $content;
     }
 
+    public function createFromNormalized(array $content)
+    {
+        return new self($content);
+    }
+
     public function getContent(): array
     {
         return $this->content;
