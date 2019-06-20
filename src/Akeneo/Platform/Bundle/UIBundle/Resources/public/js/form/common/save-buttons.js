@@ -45,10 +45,12 @@ define(
              */
             render: function () {
                 var buttons = this.model.get('buttons');
-                this.$el.html(this.template({
-                    primaryButton: _.first(buttons),
-                    secondaryButtons: buttons.slice(1)
-                }));
+                if (buttons.length > 0) {
+                    this.$el.html(this.template({
+                        primaryButton: _.first(buttons),
+                        secondaryButtons: buttons.slice(1)
+                    }));
+                }
                 this.delegateEvents();
 
                 return this;
