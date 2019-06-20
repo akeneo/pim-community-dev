@@ -1,0 +1,11 @@
+services:
+    # Query functions
+    akeneo_assetmanager.infrastructure.persistence.query.onboarder.find_asset_labels_by_identifiers:
+            class: Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder\FindAssetLabelsByIdentifiers
+            arguments:
+                - '@database_connection'
+                
+    akeneo_assetmanager.infrastructure.persistence.query.onboarder.find_all_asset_labels:
+                class: Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder\FindAllAssetLabels
+                arguments:
+                    - '@database_connection'

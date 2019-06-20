@@ -1,0 +1,317 @@
+services:
+    # Asset family
+    akeneo_assetmanager.infrastructure.action.asset_family.create:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\CreateAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+            - '@asset_family_serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+            - '@pim_user.context.user'
+
+    akeneo_assetmanager.infrastructure.action.asset_family.index:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\IndexAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items'
+
+    akeneo_assetmanager.infrastructure.action.asset_family.get:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\GetAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+
+    akeneo_assetmanager.infrastructure.action.asset_family.edit:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\EditAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset_family.edit_asset_family_handler'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@asset_family_serializer'
+            - '@validator'
+
+    akeneo_assetmanager.infrastructure.action.asset_family.delete:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\DeleteAction
+        arguments:
+        - '@oro_security.security_facade'
+        - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+        - '@security.token_storage'
+        - '@serializer'
+        - '@validator'
+        - '@akeneo_assetmanager.application.asset_family.delete_asset_family_handler'
+
+    # Asset Family Permissions
+    akeneo_assetmanager.infrastructure.action.asset_family_permission.get:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamilyPermission\GetAction
+        arguments:
+            - '@akeneoassetmanager.infrastructure.persistence.query.find_asset_family_permissions_details'
+            - '@validator'
+            - '@serializer'
+
+    akeneo_assetmanager.infrastructure.action.asset_family_permission.set:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamilyPermission\SetAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset_family_permission.set_asset_family_permissions_handler'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@serializer'
+
+    # Attributes
+    akeneo_assetmanager.infrastructure.action.attribute.create:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Attribute\CreateAction
+        arguments:
+            - '@akeneo_assetmanager.application.attribute.create_attribute_handler'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order'
+            - '@akeneo_assetmanager.application.registry.create_attribute_command_factory_registry'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_assetmanager.infrastructure.action.attribute.index:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Attribute\IndexAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+
+    akeneo_assetmanager.infrastructure.action.attribute.edit:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Attribute\EditAction
+        arguments:
+            - '@akeneo_assetmanager.application.factory.edit_attribute_command_factory'
+            - '@akeneo_assetmanager.application.attribute.edit_attribute_handler'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_assetmanager.infrastructure.action.attribute.delete:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Attribute\DeleteAction
+        arguments:
+            - '@akeneo_assetmanager.application.attribute.delete_attribute_handler'
+            - '@oro_security.security_facade'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+
+    #  Assets
+    akeneo_assetmanager.infrastructure.action.asset.create:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\CreateAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset.create_asset_handler'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@asset_family_serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_assetmanager.infrastructure.action.asset.index:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\IndexAction
+        arguments:
+          - '@akeneo_assetmanager.application.asset.search_asset'
+
+    akeneo_assetmanager.infrastructure.action.asset.get:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\GetAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_details'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+
+    akeneo_assetmanager.infrastructure.action.asset.edit:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\EditAction
+        arguments:
+            - '@akeneo_assetmanager.application.factory.asset.edit_asset_command_factory'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@serializer'
+
+    akeneo_assetmanager.infrastructure.action.asset.delete:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\DeleteAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset.delete_asset_handler'
+            - '@oro_security.security_facade'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+
+    akeneo_assetmanager.infrastructure.action.asset.delete_all:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\DeleteAllAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset.delete_all_asset_family_assets_handler'
+            - '@oro_security.security_facade'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+
+    akeneo_assetmanager.infrastructure.action.image_preview:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\ImagePreviewAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.registry.preview_generator'
+
+    # Connector
+    akeneo_assetmanager.infrastructure.connector.action.asset.get:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\GetConnectorAssetAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_by_asset_family_and_code'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_images'
+
+    akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_images:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages
+        arguments:
+            - '@router'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes'
+
+    akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage
+        arguments:
+            - '@router'
+
+    akeneo_assetmanager.infrastructure.connector.add_hal_self_link_to_normalized_connector_attribute:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\Hal\AddHalSelfLinkToNormalizedConnectorAttribute
+        arguments:
+            - '@router'
+
+    akeneo_assetmanager.infrastructure.connector.validate_attribute_properties_immutability:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\ValidateAttributePropertiesImmutability
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
+
+    akeneo_assetmanager.infrastructure.connector.action.assets.get:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\GetConnectorAssetsAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@akeneo_assetmanager.application.asset.search_connector_asset'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_images'
+            - '%asset_family_connector_assets_limit_per_page%'
+            - '@validator'
+            - '@akeneo_assetmanager.infrastructure.connector.api.search_filters_validator'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_family.get:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\GetConnectorAssetFamilyAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_by_asset_family_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_families.get:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\GetConnectorAssetFamiliesAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_items'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image'
+            - '%asset_family_connector_asset_families_limit_per_page%'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_family.create_or_update:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\CreateOrUpdateAssetFamilyAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@validator'
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+            - '@akeneo_assetmanager.application.asset_family.edit_asset_family_handler'
+            - '@router'
+            - '@akeneo_assetmanager.infrastructure.connector.api.asset_family_validator'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset.create_or_update:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\CreateOrUpdateAssetAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+            - '@akeneo_assetmanager.application.factory.asset.connector.edit_asset_command_factory'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@akeneo_assetmanager.application.asset.create_asset_handler'
+            - '@router'
+            - '@akeneo_assetmanager.infrastructure.connector.api.asset_validator'
+            - '@validator'
+
+    akeneo_assetmanager.infrastructure.connector.action.assets.create_or_update:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\CreateOrUpdateAssetsAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+            - '@akeneo_assetmanager.application.factory.asset.connector.edit_asset_command_factory'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@akeneo_assetmanager.application.asset.create_asset_handler'
+            - '@router'
+            - '@validator'
+            - '@pim_api.normalizer.exception.violation'
+            - '@akeneo_assetmanager.infrastructure.connector.api.asset_validator'
+            - '@akeneo_assetmanager.infrastructure.connector.api.asset_list_validator'
+            - '%asset_family_connector_maximum_assets_to_process_per_request%'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_family_attributes.get:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\GetConnectorAssetFamilyAttributesAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_attributes_by_asset_family_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@akeneo_assetmanager.infrastructure.connector.add_hal_self_link_to_normalized_connector_attribute'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute.get:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute.create_or_update:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeAction
+        arguments:
+            - '@akeneo_assetmanager.application.registry.create_attribute_command_factory_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_assetmanager.application.attribute.create_attribute_handler'
+            - '@router'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.application.factory.edit_attribute_command_factory'
+            - '@akeneo_assetmanager.application.attribute.edit_attribute_handler'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@validator'
+            - '@akeneo_assetmanager.infrastructure.connector.api.create.attribute_creation_validator'
+            - '@akeneo_assetmanager.infrastructure.connector.api.edit.attribute_edition_validator'
+            - '@akeneo_assetmanager.infrastructure.connector.validate_attribute_properties_immutability'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_option.create_or_update:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeOptionAction
+        arguments:
+            - '@router'
+            - '@akeneo_assetmanager.infrastructure.connector.api.attribute_option_validator'
+            - '@validator'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_assetmanager.domain.persistence.query.attribute_supports_options'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.attribute.edit_attribute_option_handler'
+            - '@akeneo_assetmanager.application.attribute.append_attribute_option_handler'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_option.get:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_option'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+
+    akeneo_assetmanager.infrastructure.connector.action.media_file_download:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile\DownloadMediaFileAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.media_file'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_options.get:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionsAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_options'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_assetmanager.domain.persistence.query.attribute_supports_options'
+
+    akeneo_assetmanager.infrastructure.connector.action.media_file_upload:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile\UploadMediaFileAction
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@router'

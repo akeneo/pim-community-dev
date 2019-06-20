@@ -1,0 +1,159 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
+        "query": {
+            "assetFamilyIdentifier": "brand",
+            "channel": "ecommerce"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?channel=ecommerce"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?channel=ecommerce"
+                },
+                "next": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?channel=ecommerce&search_after=brand_3"
+                }
+            },
+            "_embedded": {
+                "items": [
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_1"
+                            }
+                        },
+                        "code": "brand_1",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 1"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for Brand number 1 and channel ecommerce"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_1_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_1_image.jpg"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_2"
+                            }
+                        },
+                        "code": "brand_2",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 2"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for Brand number 2 and channel ecommerce"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_2_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_2_image.jpg"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_3"
+                            }
+                        },
+                        "code": "brand_3",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 3"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for Brand number 3 and channel ecommerce"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_3_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_3_image.jpg"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

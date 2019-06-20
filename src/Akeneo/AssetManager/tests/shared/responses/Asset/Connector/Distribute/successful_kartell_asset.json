@@ -1,0 +1,49 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_rest_connector_get",
+    "query": {
+      "assetFamilyIdentifier": "Brand",
+      "code": "Kartell"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "code": "Kartell",
+      "values": {
+        "label": [
+          {
+            "channel": null,
+            "locale": "fr_FR",
+            "value": "A label"
+          }
+        ],
+        "name": [
+          {
+            "channel": "ecommerce",
+            "locale": null,
+            "data": "My Name"
+          },
+          {
+            "channel": "tablet",
+            "locale": null,
+            "data": "My Tablet Name"
+          }
+        ],
+        "cover_image": [
+          {
+            "channel": null,
+            "locale": null,
+            "data": "2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg",
+            "_links": {
+              "download": {
+                "href": "http://localhost/api/rest/v1/asset-families-media-files/2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    AssetFamily:
+        namespace: Akeneo\AssetManager
+        psr4_prefix: Akeneo\AssetManager
+        spec_path: src/Akeneo/AssetManager/tests/back
+        src_path: src/Akeneo/AssetManager/back

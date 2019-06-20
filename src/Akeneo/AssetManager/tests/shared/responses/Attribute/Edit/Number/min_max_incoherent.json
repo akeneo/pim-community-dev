@@ -1,0 +1,56 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_asset_manager_attribute_edit_rest",
+    "query": {
+      "assetFamilyIdentifier": "designer",
+      "attributeIdentifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+    },
+    "body": {
+      "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf",
+      "asset_family_identifier": "designer",
+      "decimals_allowed": true,
+      "min_value": "5",
+      "max_value": "1"
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": [
+      {
+        "messageTemplate": "The min cannot be greater than the max",
+        "parameters": [],
+        "plural": null,
+        "message": "The min cannot be greater than the max",
+        "root": {
+          "editCommands": [
+            {
+              "decimalsAllowed": true,
+              "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+            },
+            {
+              "minValue": "5",
+              "maxValue": "1",
+              "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+            }
+          ],
+          "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+        },
+        "propertyPath": "minValue",
+        "invalidValue": {
+          "minValue": "5",
+          "maxValue": "1",
+          "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+        },
+        "constraint": {
+          "targets": "class",
+          "defaultOption": null,
+          "requiredOptions": [],
+          "payload": null
+        },
+        "cause": null,
+        "code": null
+      }
+    ]
+  }
+}

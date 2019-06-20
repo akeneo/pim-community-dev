@@ -1,0 +1,109 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
+        "query": {
+            "assetFamilyIdentifier": "brand",
+            "search": "{\"complete\":{\"operator\":\"=\",\"value\":true,\"channel\":\"ecommerce\",\"locales\":[\"en_US\",\"fr_FR\"]}}"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22complete%22%3A%7B%22operator%22%3A%22%3D%22%2C%22value%22%3Atrue%2C%22channel%22%3A%22ecommerce%22%2C%22locales%22%3A%5B%22en_US%22%2C%22fr_FR%22%5D%7D%7D"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22complete%22%3A%7B%22operator%22%3A%22%3D%22%2C%22value%22%3Atrue%2C%22channel%22%3A%22ecommerce%22%2C%22locales%22%3A%5B%22en_US%22%2C%22fr_FR%22%5D%7D%7D"
+                }
+            },
+            "_embedded": {
+                "items": [
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/complete_brand_asset_1"
+                            }
+                        },
+                        "code": "complete_brand_asset_1",
+                        "values": {
+                            "label": [
+                                {
+                                    "channel": null,
+                                    "locale": "en_US",
+                                    "value": "Complete Brand asset number 1"
+                                }
+                            ],
+                            "required_attribute": [
+                                {
+                                    "locale": "fr_FR",
+                                    "channel": "ecommerce",
+                                    "data": "Required attribute ecommerce fr_FR"
+                                },
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Required attribute ecommerce en_US"
+                                }
+                            ],
+                            "not_required_attribute": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Not required attribute ecommerce en_US"
+                                },
+                                {
+                                    "locale": "fr_FR",
+                                    "channel": "ecommerce",
+                                    "data": "Not required attribute ecommerce fr_FR"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/complete_brand_asset_2"
+                            }
+                        },
+                        "code": "complete_brand_asset_2",
+                        "values": {
+                            "label": [
+                                {
+                                    "channel": null,
+                                    "locale": "en_US",
+                                    "value": "Complete Brand asset number 2"
+                                }
+                            ],
+                            "required_attribute": [
+                                {
+                                    "locale": "fr_FR",
+                                    "channel": "ecommerce",
+                                    "data": "Required attribute ecommerce fr_FR"
+                                },
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Required attribute ecommerce en_US"
+                                }
+                            ],
+                            "not_required_attribute": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Not required attribute ecommerce en_US"
+                                },
+                                {
+                                    "locale": "fr_FR",
+                                    "channel": "ecommerce",
+                                    "data": "Not required attribute ecommerce fr_FR"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

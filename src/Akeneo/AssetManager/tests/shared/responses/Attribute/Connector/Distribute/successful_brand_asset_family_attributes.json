@@ -1,0 +1,119 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_family_attributes_rest_connector_get",
+    "query": {
+      "assetFamilyIdentifier": "brand"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "code": "description",
+        "labels": {
+          "en_US": "Description",
+          "fr_FR": "Description"
+        },
+        "type": "text",
+        "value_per_locale": true,
+        "value_per_channel": false,
+        "is_required_for_completeness": true,
+        "max_characters": 155,
+        "is_textarea": false,
+        "is_rich_text_editor": false,
+        "validation_rule": null,
+        "validation_regexp": null,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/description"
+          }
+        }
+      },
+      {
+        "code": "image",
+        "labels": {
+          "en_US": "Photo",
+          "fr_FR": "Photo"
+        },
+        "type": "image",
+        "value_per_locale": false,
+        "value_per_channel": false,
+        "is_required_for_completeness": true,
+        "allowed_extensions": ["jpg"],
+        "max_file_size": "10",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/image"
+          }
+        }
+      },
+      {
+        "code": "nationality",
+        "labels": {
+          "en_US": "Nationality",
+          "fr_FR": "Nationalité"
+        },
+        "type": "single_option",
+        "value_per_locale": false,
+        "value_per_channel": false,
+        "is_required_for_completeness": false,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/nationality"
+          }
+        }
+      },
+      {
+        "code": "sales_areas",
+        "labels": {
+          "fr_FR": "Zones de vente",
+          "en_US": "Sales areas"
+        },
+        "type": "multiple_options",
+        "value_per_locale": false,
+        "value_per_channel": false,
+        "is_required_for_completeness": false,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/sales_areas"
+          }
+        }
+      },
+      {
+        "code": "country",
+        "labels": {
+          "en_US": "Country",
+          "fr_FR": "Pays"
+        },
+        "type": "asset_family_single_link",
+        "value_per_locale": false,
+        "value_per_channel": false,
+        "is_required_for_completeness": false,
+        "asset_family_code": "country",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/country"
+          }
+        }
+      },
+      {
+        "code": "designers",
+        "labels": {
+          "en_US": "Designers",
+          "fr_FR": "Designeurs"
+        },
+        "type": "asset_family_multiple_links",
+        "value_per_locale": false,
+        "value_per_channel": false,
+        "is_required_for_completeness": true,
+        "asset_family_code": "designer",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/designers"
+          }
+        }
+      }
+    ]
+  }
+}

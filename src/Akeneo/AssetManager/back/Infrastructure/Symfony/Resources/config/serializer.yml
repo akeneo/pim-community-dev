@@ -1,0 +1,15 @@
+services:
+    asset_family_serializer:
+        class: Symfony\Component\Serializer\Serializer
+
+    akeneo_asset_manager_serializer.encoder.json:
+        public: false
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
+        tags:
+            - { name: asset_family_serializer.encoder }
+
+    akeneo_asset_manager.normalizer.exception.violation:
+        public: false
+        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+        tags:
+            - { name: asset_family_serializer.normalizer }

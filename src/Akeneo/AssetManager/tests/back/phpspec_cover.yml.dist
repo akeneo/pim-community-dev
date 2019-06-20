@@ -1,0 +1,17 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    AssetFamily:
+        namespace: Akeneo\AssetManager
+        psr4_prefix: Akeneo\AssetManager
+        spec_path: src/Akeneo/AssetManager/tests/back
+        src_path: src/Akeneo/AssetManager/back
+
+extensions:
+    LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+        format:
+            - html
+        whitelist:
+            - src/Akeneo/AssetManager/back
+        blacklist:
+            - src/Akeneo/AssetManager/back/Domain/Repository
+            - src/Akeneo/AssetManager/back/Infrastructure/Symfony

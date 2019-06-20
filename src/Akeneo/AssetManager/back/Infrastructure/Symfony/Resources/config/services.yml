@@ -1,0 +1,71 @@
+services:
+    akeneo_assetmanager.command.installer.fixtures_installer:
+        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesInstaller
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_assetmanager.client.asset'
+            - '@pim_catalog.command_launcher'
+
+    akeneo_assetmanager.command.installer.assets_installer:
+        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\AssetsInstaller
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
+
+    akeneo_assetmanager.event_subscriber.installer:
+        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\InstallerCommand
+        arguments:
+            - '@akeneo_assetmanager.command.installer.fixtures_installer'
+            - '@akeneo_assetmanager.command.installer.assets_installer'
+            - '%installer_data%'
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: 'console.command'}
+
+    akeneo_assetmanager.command.refresh_assets:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\CLI\RefreshAssetsCommand
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.sql.asset.refresh_assets.refresh_asset'
+            - '@doctrine.dbal.default_connection'
+        tags:
+            - { name: 'console.command'}
+
+    akeneo_assetmanager.event_subscriber.remove_user_group:
+        class: Akeneo\AssetManager\Infrastructure\EventSubscriber\RemoveUserGroupSubscriber
+        arguments:
+            - '@akeneoassetmanager.infrastructure.persistence.query.find_asset_family_where_user_group_is_last_to_have_edit_right'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_assetmanager.updater.adder.asset_multiple_link:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Adder\AssetMultipleLinkAdder
+        arguments:
+        - '@pim_catalog.builder.entity_with_values'
+        - ['akeneo_asset_multiple_link']
+        tags:
+        - { name: 'pim_catalog.updater.adder' }
+
+    akeneo_assetmanager.application.attribute.subscribers.set_default_attributes_on_asset_family_creation_subscriber:
+        class: Akeneo\AssetManager\Application\Attribute\Subscribers\SetDefaultAttributesOnAssetFamilyCreationSubscriber
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.attribute.create_attribute_handler'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_assetmanager.application.asset_family.subscribers.set_null_on_default_attributes_deletion_subscriber:
+        class: Akeneo\AssetManager\Application\AssetFamily\Subscribers\SetNullOnDefaultAttributesDeletionSubscriber
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_assetmanager.infrastructure.asset_family.subscribers.refresh_asset_subscriber:
+            class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Subscribers\RefreshAssetsSubscriber
+            arguments:
+                - '@pim_catalog.command_launcher'
+            tags:
+                - { name: kernel.event_subscriber }

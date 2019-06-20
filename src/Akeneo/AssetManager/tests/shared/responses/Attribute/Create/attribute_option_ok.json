@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_asset_manager_attribute_create_rest",
+    "query": {
+      "assetFamilyIdentifier": "designer"
+    },
+    "body": {
+      "asset_family_identifier": "designer",
+      "code": "favorite_color",
+      "type": "option",
+      "labels": {
+        "en_US": "Favorite color"
+      },
+      "value_per_locale": false,
+      "value_per_channel": false
+    }
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}

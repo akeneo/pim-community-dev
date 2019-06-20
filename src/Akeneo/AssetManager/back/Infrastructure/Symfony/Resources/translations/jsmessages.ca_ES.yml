@@ -1,0 +1,283 @@
+pim_title:
+  akeneo_asset_manager_asset_family_index: Crear una nova entitat
+  akeneo_asset_manager_asset_family_edit: Editar una entitat de referència
+  akeneo_asset_manager_asset_edit: Editar un registre
+pim_asset_manager:
+  app:
+    image:
+      wide:
+        remove: Eliminar la imatge
+        download: Descarregar imatge
+        upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+      small:
+        remove: Eliminar
+        download: Descarregar
+        upload: Arrossegar i deixar anar per carregar
+  asset_family:
+    validation:
+      code:
+        pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
+        should_be_unique: 'Aquest codi ja existeix per a aquesta entitat.'
+        limit_reached: 'Vostè no pot crear l''entitat de referència "{{ %asset_family_label% }}" perquè vostè ha arribat al límit d''entitats de referència {{ %limit% }}'
+    button:
+      save: Desar
+      save_permission: Desar
+      create: Crear
+    permission:
+      title: Permisos d'entitat
+    title: Entitats
+    breadcrumb: Entitats de referència
+    img: La imatge principal de l'entitat de referència designada "{{ label }}"
+    tab:
+      assets: Registres
+      attribute: Atributs
+      properties: Propietats
+      permission: Permisos
+    properties:
+      title: Propietats de l'entitat
+      identifier: Codi
+      label: Etiqueta
+      image: Imatge
+    attribute:
+      title: Registre atributs
+      attribute:
+        error:
+          render_list: 'S''ha produït un error durant la representació de l''atribut "{{ %attribute_code% }}"'
+          render_edit: 'S''ha produït un error durant la representació dels camps addicionals de propietat de l''atribut "{{ %attribute_code% }}"'
+    module:
+      delete:
+        button: Eliminar entitat
+        confirm: Segur que voleu suprimir aquesta entitat?
+    index:
+      grid:
+        count: '{0} Sense entitats de referència|{1} {{ count }} Entitats de referència|]1,Inf] {{ count }} Entitats de referència'
+        help:
+          title: 'Benvingut a les entitats de referència!'
+          description_part_three: Feu clic al botó "Crea" per crear la teva primera entitat de referència, i estableixi els seus atributs i registres.
+    create:
+      header:
+        title: Crear
+      subtitle: Entitats de referència
+      title: Crear una nova entitat
+      input:
+        label: Etiqueta
+        code: Codi (requerit)
+      confirm: Desar
+    delete:
+      message: Esteu segur que voleu suprimir l'entitat "{{ assetFamilyLabel }}"?
+      title: Atribut
+    notification:
+      save:
+        success: Entitat de referència actualitzada correctament.
+        fail: S'ha produït un error durant el guardat de l'entitat de referència
+      create:
+        success: Entitat de referència creada correctament.
+        fail: S'ha produït un error durant la creació de l'entitat de referència
+      delete:
+        success: Entitat de referència eliminada correctament.
+        fail: S'ha produït un error durant l'eliminació de l'entitat de referència
+  permission:
+    no_data:
+      title: No teniu cap grup d'usuaris
+      link: Clic aquí per afegir el teu primer grup usuari
+  asset:
+    validation:
+      limit_reached: 'Vostè no pot crear el registre "{{ %asset_label% }}" perquè vostè ha arribat al límit de registres {{ %limit% }} per a aquesta entitat de referència'
+      code:
+        pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
+        should_be_unique: 'Aquest codi ja existeix per a aquesta entitat.'
+    no_data:
+      title: No hi ha cap registre per {{ entityLabel }}
+      subtitle: Feu clic al botó "Afegir nou" per crear el primer registre
+    no_result:
+      title: No hi ha cap resultat de la cerca
+      subtitle: Provi amb nous criteris de cerca.
+    selector:
+      no_value: Feu clic aquí per seleccionar un registre.
+    error:
+      value: Vaja, sembla que la representació del camp "{{ fieldName }}" ha fallat. Mira la consola de desenvolupador per a més detalls.
+    button:
+      save: Desar
+      create: Afegir nou
+      delete: Suprimir
+      delete_all: Suprimeix tots els registres
+      back: Torna a la llista
+    enrich:
+      title: Registre atributs
+      code: Codi
+      label: Etiqueta
+    title: Registres
+    create:
+      header:
+        title: Crear
+      subtitle: Entitats de referència
+      title: Afegir nou {{ entityLabel }}
+      input:
+        label: Etiqueta
+        code: Codi (requerit)
+        create_another: Crear un altre registre
+      confirm: Desar
+    delete:
+      message: Esteu segur que voleu suprimir el registre "{{ assetLabel }}"? Si està vinculat a productes o registres se suprimiran els enllaços.
+      title: Registre
+    delete_all:
+      confirm: Esteu segur que voleu suprimir tots els registres "{{ entityIdentifier }}"? Si està vinculat a productes, es suprimiran els enllaços dels productes.
+    grid:
+      search: Cerca a l'etiqueta, el codi i el text dels atributs
+      filter:
+        counter: '{{ matchesCount }} resultat|{{ matchesCount }} resultats'
+        completeness:
+          label: Complet
+          all: Tots
+          'yes': 'Sí'
+          'no': 'No'
+        option:
+          all: Tots
+          operator:
+            in: A la llista
+      column:
+        code: Codi
+        image: Imatge
+        label: Etiqueta
+        complete: Complet
+        action: Accions
+      more_result:
+        title: Això no és!
+        description: Només heu desplaçat els primers 500 resultats de registres {{ total }}. Per veure més, proveu amb criteris de cerca més específics.
+      completeness:
+        title_no_required: Cap atribut requerit
+        title_non_complete: 0 dels atributs {{ required }} complets
+        title_ongoing: '{{ complete }} de {{ required }} atributs complets'
+        title_complete: Tots els atributs complets {{ required }}
+    tab:
+      enrich: Enriquir
+    notification:
+      save:
+        success: Registre actualitzat correctament.
+        fail: S'ha produït un error durant el guardat del registre
+        validation_error: El registre no podria ser actualitzat
+      create:
+        success: Registre creat correctament.
+        fail: S'ha produït un error durant la creació del registre
+      delete:
+        success: Registre "{{ code }}" correctament eliminat.
+        fail: S'ha produït un error durant l'eliminació del registre
+      delete_all:
+        success: Tots el registres de "{{ entityIdentifier }}" s'han eliminat correctament.
+        fail: S'ha produït un error durant l'eliminació de tots els registres de l'entitat de referència
+    completeness:
+      label: Complet
+  attribute:
+    validation:
+      limit_reached: 'Vostè no pot crear l''atribut "{{ %attribute_label% }}" perquè vostè ha arribat al límit d''atributs de {{ %limit% }} per a aquesta entitat de referència'
+    default:
+      code: Codi
+      label: Etiqueta
+      image: Imatge
+    type:
+      text: Texte
+      image: Imatge
+      asset: Enllaç simple de l'entitat de referència
+      asset_collection: Enllaç múltiple d'entitat de referència
+      option: Única opció
+      option_collection: Múltiples opcions
+    is_required: necessaris per a la integritat
+    no_data:
+      title: No hi ha atributs personalitzats per {{ entityLabel }}
+      subtitle: Feu clic al botó "Afegeix un atribut" per configurar el primer atribut personalitzat
+    button:
+      add: Afegeix un atribut
+    create:
+      header:
+        title: Crear
+      subtitle: Entitats de referència
+      title: Afegir nou atribut de registre
+      input:
+        code: Codi (requerit)
+        label: Etiqueta
+        type: Tipus d'atribut
+        asset_type: Entitat de referència per enllaçar (obligatori)
+        value_per_locale: Valor per local
+        value_per_channel: Valor per canal
+      confirm: Desar
+    edit:
+      delete: Eliminar l'atribut
+      title: Editar atribut {{ code }}
+      save: Desar
+      cancel: Cancelar
+      input:
+        code: Codi (requerit)
+        label: Etiqueta
+        type: Tipus d'atribut
+        asset_type: Entitats de referència relacionades (obligatori)
+        value_per_locale: Valor per local
+        value_per_channel: Valor per canal
+        is_required: Necessaris per a la integritat
+        max_length: Màxim de caràcters
+        textarea: Àrea de Text
+        is_rich_text_editor: Editor de text enriquit
+        max_file_size: Mida màxima de l'arxiu (MB)
+        allowed_extensions: Extensions permeses
+        validation_rule: Regla de validació
+        regular_expression: Expressió regular
+        manage_options:
+          confirmation:
+            discard_changes: Perdreu els canvis realitzats en la llista d'opcions si sortiu de la pàgina
+          quick_edit:
+            label: Administrar opcions
+          option:
+            label:
+              placeholder: Escriu una nova etiqueta d'opció aquí
+        options:
+          validation_rule:
+            none: Cap
+            email: Correu electrònic
+            regular_expression: Expressió regular
+            url: URL
+    delete:
+      message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
+      title: Atribut
+    notification:
+      list:
+        fail: S'ha produït un error durant l'actualització de la llista d'atributs
+      save:
+        success: Atribut actualitzat correctament.
+        fail: S'ha produït un error durant el guardat de l'atribut
+        validation_error: No s'ha pogut actualitzar l'atribut
+      create:
+        success: Atribut creat correctament.
+        fail: S'ha produït un error durant la creació de l'atribut
+        validation_error: No s'ha pogut crear l'atribut
+      delete:
+        success: Atribut eliminat correctament.
+        fail: S'ha produït un error durant l'eliminació de l'atribut
+    options:
+      no_value: Feu clic aquí per seleccionar una opció.
+      sub_title: Entitats de referència
+      helper:
+        title: Traduccions d'etiquetes
+  modal:
+    delete:
+      subtitle: Confirmar l'eliminació
+      button:
+        cancel: Cancelar
+        confirm: Suprimir
+pim_enrich:
+  confirmation:
+    discard_changes: 'Perdreu els canvis a la "{{ entity }}" entitat si sortiu de la pàgina.'
+  entity:
+    attribute:
+      property:
+        type:
+          akeneo_asset_multiple_link: Enllaç múltiple d'entitat de referència
+          akeneo_asset_single_link: Enllaç simple de l'entitat de referència
+        section:
+          type_specific: Escriu els paràmetres específics
+        asset_family:
+          identifier: Entitats de referència relacionades (obligatori)
+          default_label: Si us plau, selecciona una entitat de referència
+permission:
+  mass_action: Aplicar {{ rightLevel }} regles en tots els grups
+pim_catalog_volume:
+  axis:
+    count_asset_family: Entitats de referència

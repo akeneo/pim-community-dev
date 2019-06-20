@@ -1,0 +1,60 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_asset_manager_asset_edit_rest",
+    "query": {
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer"
+    },
+    "body": {
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "asset_family_identifier": "designer",
+      "code": "starck",
+      "labels": {
+        "fr_FR": "Philippe Starck"
+      },
+      "image": null,
+      "values":[
+        {
+          "attribute":"name_designer_fingerprint",
+          "channel":null,
+          "locale":null,
+          "data":"Philippe Starck"
+        },
+        {
+          "attribute":"description_designer_fingerprint",
+          "channel":null,
+          "locale":"en_US",
+          "data":null
+        },
+        {
+          "attribute":"description_designer_fingerprint",
+          "channel":null,
+          "locale":"fr_FR",
+          "data":null
+        },
+        {
+          "attribute":"website_designer_fingerprint",
+          "channel":null,
+          "locale":null,
+          "data":null
+        },
+        {
+          "attribute":"portrait_designer_fingerprint",
+          "channel":null,
+          "locale":null,
+          "data":null
+        },
+        {
+          "attribute":"age_designer_fingerprint",
+          "channel":null,
+          "locale":null,
+          "data":"39"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 204
+  }
+}

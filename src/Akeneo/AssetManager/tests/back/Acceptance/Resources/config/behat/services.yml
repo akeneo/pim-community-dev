@@ -1,0 +1,190 @@
+services:
+    akeneo_assetmanager.tests.back.acceptance.context.exception_context:
+        class: Akeneo\AssetManager\Acceptance\Context\ExceptionContext
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context:
+        class: Akeneo\AssetManager\Acceptance\Context\ConstraintViolationsContext
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context:
+        class: Akeneo\AssetManager\Acceptance\Context\EditAssetFamilyContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.application.asset_family.edit_asset_family_handler'
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context:
+        class: Akeneo\AssetManager\Acceptance\Context\DeleteAssetFamilyContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.application.asset_family.delete_asset_family_handler'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.create_asset_family_context:
+        class: Akeneo\AssetManager\Acceptance\Context\CreateAssetFamilyContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.create_asset_context:
+        class: Akeneo\AssetManager\Acceptance\Context\CreateAssetContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.application.asset.create_asset_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.list_asset_context:
+        class: Akeneo\AssetManager\Acceptance\Context\ListAssetContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query'
+            - '@akeneo_assetmanager.application.asset.search_asset'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.set_asset_family_permission_context:
+        class: Akeneo\AssetManager\Acceptance\Context\SetAssetFamilyPermissionContext
+        arguments:
+        - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission'
+        - '@akeneo_assetmanager.application.asset_family_permission.set_asset_family_permissions_handler'
+        - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+        - '@validator'
+        - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+        tags:
+        - { name: fob.context_service }
+
+    akeneo_assetmanager.tests.back.acceptance.context.create_attribute_context:
+        class: Akeneo\AssetManager\Acceptance\Context\CreateAttributeContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.registry.create_attribute_command_factory_registry'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.application.attribute.create_attribute_handler'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.edit_attribute_context:
+        class: Akeneo\AssetManager\Acceptance\Context\EditAttributeContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.factory.edit_attribute_command_factory'
+            - '@akeneo_assetmanager.application.attribute.edit_attribute_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.delete_attribute_context:
+        class: Akeneo\AssetManager\Acceptance\Context\DeleteAttributeContext
+        arguments:
+            - '@akeneo_assetmanager.application.attribute.edit_attribute_handler'
+            - '@akeneo_assetmanager.application.attribute.delete_attribute_handler'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.append_attribute_option_context:
+        class: Akeneo\AssetManager\Acceptance\Context\AppendAttributeOptionContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.attribute.append_attribute_option_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.edit_attribute_option_context:
+        class: Akeneo\AssetManager\Acceptance\Context\EditAttributeOptionContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.attribute.edit_attribute_option_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+
+
+    akeneo_assetmanager.tests.back.acceptance.context.edit_asset_context:
+        class: Akeneo\AssetManager\tests\back\Acceptance\Context\EditAssetContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.application.factory.asset.edit_asset_command_factory'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+
+    akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_url:
+        class: Akeneo\AssetManager\Acceptance\Context\EditAsset\EditUrlContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.application.factory.asset.edit_asset_command_factory'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+
+    akeneo_assetmanager.tests.back.acceptance.context.delete_asset_context:
+        class: Akeneo\AssetManager\Acceptance\Context\DeleteAssetContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.application.asset.delete_asset_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+        tags:
+        - { name: fob.context_service }
+
+    akeneo_assetmanager.tests.back.acceptance.context.delete_all_assets_context:
+        class: Akeneo\AssetManager\Acceptance\Context\DeleteAllAssetsContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.application.asset.delete_all_asset_family_assets_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+        tags:
+        - { name: fob.context_service }
+
+    akeneo_assetmanager.tests.back.acceptance.context.index_assets_context:
+        class: Akeneo\AssetManager\Acceptance\Context\IndexAssetsContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.application.asset.index_assets_handler'
+            - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+        tags:
+          - { name: fob.context_service }

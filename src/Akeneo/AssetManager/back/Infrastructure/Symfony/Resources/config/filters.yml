@@ -1,0 +1,16 @@
+parameters:
+    akeneo_asset.query.elasticsearch.filter.asset_family.class: Akeneo\Pim\Enrichment\AssetManager\Component\Filter\AssetFamilyFilter
+
+services:
+    pim.asset_family.query.filter.asset_family:
+        class: '%akeneo_asset.query.elasticsearch.filter.asset_family.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - ['akeneo_asset_multiple_link']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 50 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 50 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 50 }

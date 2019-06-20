@@ -1,0 +1,534 @@
+services:
+    # Repositories
+    akeneo_assetmanager.infrastructure.persistence.repository.asset_family:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyRepository
+        arguments:
+            - '@database_connection'
+            - '@event_dispatcher'
+
+    akeneo_assetmanager.infrastructure.persistence.repository.attribute:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@event_dispatcher'
+
+    akeneo_assetmanager.infrastructure.persistence.repository.asset:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlAssetRepository
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@event_dispatcher'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+
+    akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission\SqlAssetFamilyPermissionRepository
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.repository.media_file:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\MediaFile\SqlMediaFileRepository
+        arguments:
+            - '@pim_api.repository.media_file'
+
+    # Reference entities query functions
+    akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyItems
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyDetails
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_items_for_identifiers_and_query:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetItemsForIdentifiersAndQuery
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.bulk_asset_item'
+
+    akeneo_assetmanager.infrastructure.persistence.query.asset_family_has_assets:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyHasAssets
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.asset_family_is_linked_to_at_least_one_product_attribute:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyIsLinkedToAtLeastOneProductAttribute
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.asset_family_is_linked_to_at_least_one_asset_family_attribute:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyIsLinkedToAtLeastOneAssetFamilyAttribute
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyAttributeAsLabel
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyAttributeAsImage
+        arguments:
+            - '@database_connection'
+
+    # Asset query functions
+    akeneo_assetmanager.infrastructure.persistence.query.asset_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlAssetExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.assets_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlAssetsExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_details:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetDetails
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_details'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.generate_empty_values'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_existing_asset_codes:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindExistingAssetCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_by_asset_family_and_code:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindConnectorAssetByAssetFamilyAndCode
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.connector_asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_by_asset_family_identifier:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindConnectorAssetFamilyByAssetFamilyIdentifier
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_asset_family'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_items:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindConnectorAssetFamilyItems
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_asset_family'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_attributes_by_asset_family_identifier:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributesByAssetFamilyIdentifier
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeByIdentifierAndCode
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_option:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOption
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_options:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOptions
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_connector_assets_by_identifiers:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindConnectorAssetsByIdentifiers
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.connector_asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_codes:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByCodes
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_identifiers:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByIdentifiers
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindIdentifiersByAssetFamilyAndCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindCodesByIdentifiers
+        arguments:
+            - '@database_connection'
+
+    # Attributes query functions
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributeNextOrder
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesDetails
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollection
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocales
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.generate_empty_values:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlGenerateEmptyValues
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindImageAttributeCodes
+        arguments:
+             - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysByAttributeType
+        arguments:
+            - '@database_connection'
+
+    # attribute hydrators
+    akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry
+
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.text_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\TextAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_assetmanager.attribute_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.image_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_assetmanager.attribute_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.asset_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AssetAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_assetmanager.attribute_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.asset_collection_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AssetCollectionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_assetmanager.attribute_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.option_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_assetmanager.attribute_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.option_collection_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionCollectionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_assetmanager.attribute_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.number_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\NumberAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_assetmanager.attribute_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.url_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\UrlAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_assetmanager.attribute_hydrator }
+
+    # Asset value hydrators
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.data_hydrator_registry:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\DataHydratorRegistry
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_details:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetDetailsHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value'
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.bulk_asset_item:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\BulkAssetItemHydrator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_item'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_identifiers'
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_item:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItemHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_item_value_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_item_value_hydrator_registry:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorRegistry
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.connector_asset:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ConnectorAssetHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.transformer.connector_value_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_asset_family:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorAssetFamilyHydrator
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.asset_item.hydrator.asset_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\AssetValueHydrator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_codes'
+        tags:
+            - { name: akeneo_assetmanager.asset_item_value_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.data_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.text_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\TextDataHydrator
+        tags:
+            - { name: akeneo_assetmanager.data_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.url_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\UrlDataHydrator
+        tags:
+            - { name: akeneo_assetmanager.data_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.file_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\FileDataHydrator
+        tags:
+            - { name: akeneo_assetmanager.data_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetDataHydrator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
+        tags:
+            - { name: akeneo_assetmanager.data_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_collection_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetCollectionDataHydrator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
+        tags:
+            - { name: akeneo_assetmanager.data_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.option_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\OptionDataHydrator
+        tags:
+            - { name: akeneo_assetmanager.data_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.option_collection_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\OptionCollectionDataHydrator
+        tags:
+            - { name: akeneo_assetmanager.data_hydrator }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.number_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\NumberDataHydrator
+        tags:
+            - { name: akeneo_assetmanager.data_hydrator }
+
+    # Asset value transformers
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.connector_value_registry:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerRegistry
+        arguments:
+            - !tagged akeneo_assetmanager.connector_value_transformer
+
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.text_connector_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\TextConnectorValueTransformer
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.number_connector_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\NumberConnectorValueTransformer
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.image_connector_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ImageConnectorValueTransformer
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.asset_connector_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\AssetConnectorValueTransformer
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.asset_collection_connector_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\AssetCollectionConnectorValueTransformer
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.option_connector_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\OptionConnectorValueTransformer
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.option_collection_connector_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\OptionCollectionConnectorValueTransformer
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
+    # Structure query functions
+    akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Channel\SqlChannelExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheChannelExists
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocalesByIdentifiers
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales:
+            class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocales
+            arguments:
+                - '@database_connection'
+
+    akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+
+    akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+
+    akeneoassetmanager.infrastructure.persistence.query.find_user_groups_for_security_identifier:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\UserGroup\SqlFindUserGroupsForSecurityIdentifier
+        arguments:
+            - '@database_connection'
+            -
+    akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlGetAttributeIdentifier
+        arguments:
+            - '@database_connection'
+
+    # Reference entities permissions queries
+    akeneoassetmanager.infrastructure.persistence.query.find_asset_family_permissions_details:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission\SqlFindAssetFamilyPermissionsDetails
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.domain.persistence.query.attribute_supports_options:
+        class: Akeneo\AssetManager\Domain\Query\Attribute\AttributeSupportsOptions
+        arguments:
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+    akeneoassetmanager.infrastructure.persistence.query.find_asset_family_where_user_group_is_last_to_have_edit_right:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission\SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight
+        arguments:
+            - '@database_connection'
+
+    # File query functions
+    akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\File\SqlFindFileDataByFileKey
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.file_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\File\SqlFileExists
+        arguments:
+            - '@database_connection'
+
+    # CLI
+    akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\FindAllAssetIdentifiers
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.sql.asset.refresh_assets.refresh_asset:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAsset
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+
+    # Commands
+    akeneo_assetmanager.infrastructure.persistence.assets.refresh_all_assets:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAllAssets
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.sql.asset.refresh_assets.refresh_asset'

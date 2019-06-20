@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_attribute_index_rest",
+    "query": {
+      "assetFamilyIdentifier": "brand"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": []
+  }
+}

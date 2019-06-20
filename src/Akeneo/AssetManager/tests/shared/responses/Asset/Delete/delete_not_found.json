@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "DELETE",
+    "route": "akeneo_asset_manager_asset_delete_rest",
+    "query": {
+      "assetFamilyIdentifier": "designer",
+      "assetCode": "not_found"
+    }
+  },
+  "response": {
+    "status": 404
+  }
+}

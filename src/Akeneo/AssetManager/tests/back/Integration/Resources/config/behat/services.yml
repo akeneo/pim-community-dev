@@ -1,0 +1,145 @@
+services:
+    akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_asset_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAssetContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_by_asset_family_and_code'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.media_file'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_assets_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAssetsContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_assets_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.date'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.distribute.not_found_asset_family_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\NotFoundAssetFamilyContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_asset_family_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAssetFamilyContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_by_asset_family_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        tags:
+        - { name: fob.context_service }
+
+    akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_asset_families_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAssetFamiliesContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_items'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        tags:
+        - { name: fob.context_service }
+
+    akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_asset_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\CreateOrUpdateAssetContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attributes_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributesContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_attributes_by_asset_family_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_option_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_option'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_asset_family_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\CreateOrUpdateAssetFamilyContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_options_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionsContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_options'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+
+    akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_attribute_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
+
+    akeneo_assetmanager.tests.back.integration.connector.collection.create_or_update_attribute_option_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeOptionContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+

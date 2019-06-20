@@ -1,0 +1,51 @@
+default:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/../features'
+            contexts:
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context
+                - akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context
+                - akeneo_assetmanager.tests.back.acceptance.context.create_asset_family_context
+                - akeneo_assetmanager.tests.back.acceptance.context.create_asset_context
+                - akeneo_assetmanager.tests.back.acceptance.context.list_asset_context
+                - akeneo_assetmanager.tests.back.acceptance.context.delete_asset_context
+                - akeneo_assetmanager.tests.back.acceptance.context.delete_all_assets_context
+                - akeneo_assetmanager.tests.back.acceptance.context.create_attribute_context
+                - akeneo_assetmanager.tests.back.acceptance.context.append_attribute_option_context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_attribute_option_context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_attribute_context
+                - akeneo_assetmanager.tests.back.acceptance.context.delete_attribute_context
+                - akeneo_assetmanager.tests.back.acceptance.context.exception_context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_attribute_context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_context
+                - akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context
+                - akeneo_assetmanager.tests.back.acceptance.context.index_assets_context
+                - akeneo_assetmanager.tests.back.acceptance.context.set_asset_family_permission_context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_url
+            filters:
+                tags: '@acceptance-back'
+        integration:
+            paths:
+                - '%paths.base%/../features'
+            contexts:
+                - akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_asset_context
+                - akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_asset_family_context
+                - akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_attribute_context
+                - akeneo_assetmanager.tests.back.integration.connector.collection.create_or_update_attribute_option_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_asset_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_assets_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.not_found_asset_family_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_asset_family_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_asset_families_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attributes_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_option_context
+                - akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_options_context
+            filters:
+                tags: '@integration-back'
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                environment: test_fake
+                debug: false

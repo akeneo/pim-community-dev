@@ -1,0 +1,35 @@
+import {hydrator} from 'akeneoassetmanager/application/hydrator/attribute';
+
+describe('akeneo > asset family > application > hydrator --- attribute', () => {
+  test('I can hydrate a new attribute', () => {
+    const hydrate = hydrator(
+      ({identifier, asset_family_identifier, code, labels, is_required, valuePerLocale, valuePerChannel, type}) => {
+        expect(identifier).toEqual('description_1234');
+        expect(code).toEqual('description');
+        expect(asset_family_identifier).toEqual('designer');
+        expect(labels).toEqual({en_US: 'Description'});
+      }
+    );
+
+    expect(
+      hydrate({
+        identifier: 'description_1234',
+        asset_family_identifier: 'designer',
+        code: 'description',
+        labels: {en_US: 'Description'},
+        is_required: true,
+        value_per_locale: false,
+        value_per_channel: true,
+        type: 'text',
+      })
+    );
+  });
+
+  test('It throw an error if I pass a malformed attribute', () => {
+    expect(() => hydrator()({})).toThrow();
+    expect(() => hydrator()({labels: {}})).toThrow();
+    expect(() => hydrator()({identifier: 'starck_1234'})).toThrow();
+    expect(() => hydrator()({asset_family_identifier: 'designer'})).toThrow();
+    expect(() => hydrator()({valuePerLocale: false})).toThrow();
+  });
+});

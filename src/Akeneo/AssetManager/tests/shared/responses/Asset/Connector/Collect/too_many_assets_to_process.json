@@ -1,0 +1,51 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_asset_manager_assets_rest_connector_create_or_update",
+        "query": {
+            "assetFamilyIdentifier": "brand"
+        },
+        "body": [
+            {
+                "code": "asset_1"
+            },
+            {
+                "code": "asset_2"
+            },
+            {
+                "code": "asset_3"
+            },
+            {
+                "code": "asset_4"
+            },
+            {
+                "code": "asset_5"
+            },
+            {
+                "code": "asset_6"
+            },
+            {
+                "code": "asset_7"
+            },
+            {
+                "code": "asset_8"
+            },
+            {
+                "code": "asset_9"
+            },
+            {
+                "code": "asset_10"
+            },
+            {
+                "code": "asset_11"
+            }
+        ]
+    },
+    "response": {
+        "status": 413,
+        "body": {
+            "code": 413,
+            "message": "Too many resources to process, 10 is the maximum allowed."
+        }
+    }
+}

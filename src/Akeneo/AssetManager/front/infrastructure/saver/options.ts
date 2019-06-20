@@ -1,0 +1,33 @@
+import {postJSON} from 'akeneoassetmanager/tools/fetch';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
+import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {AttributeWithOptions, OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+
+const routing = require('routing');
+
+export class AttributeOptionSaver {
+  constructor() {
+    Object.freeze(this);
+  }
+
+  async save(attribute: Attribute): Promise<ValidationError[] | null> {
+    const normalizedOptionAttribute = (attribute as OptionAttribute).normalize() as any;
+
+    return await postJSON(
+      routing.generate('akeneo_asset_manager_attribute_edit_rest', {
+        assetFamilyIdentifier: (attribute as OptionAttribute).getAssetFamilyIdentifier().stringValue(),
+        attributeIdentifier: (attribute as OptionAttribute).getIdentifier().identifier,
+      }),
+      {
+        identifier: normalizedOptionAttribute.identifier,
+        asset_family_identifier: normalizedOptionAttribute.asset_family_identifier,
+        options: ((attribute as any) as AttributeWithOptions).getOptions().map((option: Option) => option.normalize()),
+      }
+    ).catch(handleError);
+  }
+}
+
+const attributeOptionSaver = new AttributeOptionSaver();
+export default attributeOptionSaver;

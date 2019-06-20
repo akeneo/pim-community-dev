@@ -1,0 +1,63 @@
+services:
+    # Edit asset command factory
+    akeneo_assetmanager.application.factory.asset.edit_asset_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory
+        arguments:
+            - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistry
+
+    akeneo_assetmanager.application.factory.asset.edit_text_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.edit_stored_file_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommandFactory
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.edit_asset_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.edit_asset_collection_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCollectionValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.empty_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.edit_option_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.edit_option_collection_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollectionValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.edit_number_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.connector.edit_asset_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory
+        arguments:
+            - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_assetmanager.application.factory.asset.edit_url_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditUrlValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }

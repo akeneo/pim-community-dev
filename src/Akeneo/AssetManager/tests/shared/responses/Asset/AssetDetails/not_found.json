@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_get_rest",
+    "query": {
+      "assetFamilyIdentifier": "designer",
+      "assetCode": "wrong_asset_code"
+    }
+  },
+  "response": {
+    "status": 404
+  }
+}

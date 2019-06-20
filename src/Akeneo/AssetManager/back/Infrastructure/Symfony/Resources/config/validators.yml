@@ -1,0 +1,215 @@
+services:
+    akeneo_assetmanager.infrastructure.validation.asset.asset_code_should_be_unique:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetCodeShouldBeUniqueValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.asset_is_unique' }
+
+    akeneo_assetmanager.infrastructure.validation.asset_family.asset_family_code_should_be_unique:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyCodeShouldBeUniqueValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.code_is_unique' }
+
+    akeneo_assetmanager.infrastructure.validation.asset_family.asset_family_should_exist:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.should_exist' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.attribute_should_not_exist:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_should_not_exist' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.attribute_should_exist:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_should_exist' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.attribute_asset_type_is_required:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeAssetTypeIsRequiredValidator
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_asset_type_is_required' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.attribute_asset_type_asset_family_should_exist:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeAssetTypeAssetFamilyShouldExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_asset_type_asset_family_should_exist' }
+
+    akeneo_assetmanager.infrastructure.validation.asset_family.asset_family_should_have_no_asset:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldHaveNoAssetValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_has_assets'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.should_have_no_asset' }
+
+    akeneo_assetmanager.validator.asset_family.should_not_be_linked_any_product_attribute:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldNotBeLinkedToAnyProductAttributeValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_is_linked_to_at_least_one_product_attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.should_not_be_linked_any_product_attribute' }
+
+    akeneo_assetmanager.validator.asset_family.should_not_be_linked_any_asset_family_attribute:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldNotBeLinkedToAnyAssetFamilyAttributeValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_is_linked_to_at_least_one_asset_family_attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.should_not_be_linked_any_asset_family_attribute' }
+
+    akeneo_assetmanager.validator.asset_family.there_should_be_less_asset_family_than_limit:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessAssetFamilyThanLimitValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '%asset_family_limit%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.there_should_be_less_asset_family_than_limit' }
+
+    akeneo_assetmanager.validator.asset_family_permission.at_least_one_user_group_should_have_edit_permission:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamilyPermission\AtLeastOneUserGroupShouldHaveEditPermissionValidator
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family_permission.at_least_one_user_group_should_have_edit_permission' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.edit_command_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\EditCommandsValidator
+        arguments:
+            - '@validator'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.edit_command_validator' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.text_property_updates_should_be_coherent_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherentValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.text_property_updates_should_be_coherent_validator' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.there_should_be_less_attributes_than_limit:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimitValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '%asset_family_maximum_attribute%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.there_should_be_less_attributes_than_limit' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.edit_value_commands_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommandsValidator
+        arguments:
+            - '@validator'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_asset_value_commands' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.edit_asset_value_command_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommandValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_asset_value_command' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.edit_asset_collection_value_command_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetCollectionValueCommandValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_existing_asset_codes'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_asset_collection_value_command' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.asset_should_exist:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetShouldExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.asset_should_exist' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.there_should_be_less_assets_than_limit:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\ThereShouldBeLessAssetsThanLimitValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '%asset_manager_asset_limit_per_asset_family%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.there_should_be_less_assets_than_limit' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.attribute_options:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionsValidator
+        arguments:
+            - '%asset_family_option_limit_per_list_attribute%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.attribute_options' }
+
+    akeneo_assetmanager.infrastructure.validation.channel.channel_should_exist:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Channel\ChannelShouldExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.channel.channel_should_exist' }
+
+    akeneo_assetmanager.infrastructure.validation.channel.locales_should_be_activated:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Locale\LocalesShouldBeActivatedValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.channel.locales_should_be_activated' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.edit_value_command:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommandValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists'
+            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.infrastructure.validation.asset.edit_value_command' }
+
+    akeneo_assetmanager.infrastructure.validation.asset_family.label_collection:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollectionValidator
+        arguments:
+            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.infrastructure.validation.asset_family.label_collection' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.filter_assets_by_completeness:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\FilterAssetsByCompletenessValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.infrastructure.validation.asset.filter_assets_by_completeness' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.there_should_less_attribute_options_than_limit:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributeOptionsThanLimitValidator
+        arguments:
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '%asset_family_option_limit_per_list_attribute%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.there_should_be_less_attribute_options_than_limit' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.attribute_option_should_not_exist:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionShouldNotExistValidator
+        arguments:
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_option_should_not_exist' }
+
+    akeneo_assetmanager.infrastructure.validation.asset.edit_stored_file_value_command_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditStoredFileValueCommandValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_stored_file_value_command' }
+
+    akeneo_assetmanager.infrastructure.validation.attribute.attribute_option_should_exist:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionShouldExistValidator
+        arguments:
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_option_should_exist' }

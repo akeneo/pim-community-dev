@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_asset_manager_asset_edit_rest",
+    "query": {
+      "assetCode": "celine_dion",
+      "assetFamilyIdentifier": "singer"
+    },
+    "body": {
+      "identifier": "singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392",
+      "code": "celine_dion",
+      "asset_family_identifier": "driver",
+      "labels": {
+        "en_US": "Celine Dion",
+        "fr_FR": "Madame Celine Dion"
+      },
+      "image": null,
+      "values": []
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": "The identifier provided in the route and the one given in the body of the request are different"
+  }
+}

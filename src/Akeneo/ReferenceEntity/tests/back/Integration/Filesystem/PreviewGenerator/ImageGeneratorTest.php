@@ -86,7 +86,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
         $this->imageGenerator->supports('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->imageGenerator->generate('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString(sprintf('media/cache/%s/pim_asset_file_image_default_image', PreviewGeneratorRegistry::THUMBNAIL_TYPE), $previewImage);
+        $this->assertStringContainsString(sprintf('media/cache/%s/pim_reference_entity.file_image_default_image', PreviewGeneratorRegistry::THUMBNAIL_TYPE), $previewImage);
     }
 
     private function loadFixtures(): void

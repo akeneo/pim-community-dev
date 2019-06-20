@@ -1,0 +1,176 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_asset_family_get_rest",
+        "query": {
+            "identifier": "designer"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "identifier": "designer",
+            "labels": {
+                "en_US": "Designer",
+                "fr_FR": "Concepteur"
+            },
+            "image": {
+                "filePath": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_designer.jpg",
+                "originalFilename": "designer.jpg"
+            },
+            "asset_count": 123,
+            "attributes": [
+                {
+                    "type": "text",
+                    "identifier": "designer_name_123456",
+                    "asset_family_identifier": "designer",
+                    "code": "name",
+                    "labels": {
+                        "en_US": "Name",
+                        "fr_FR": "Nom"
+                    },
+                    "is_required": false,
+                    "order": 0,
+                    "value_per_locale": true,
+                    "value_per_channel": false,
+                    "max_length": 255,
+                    "is_textarea": false,
+                    "is_rich_text_editor": false,
+                    "validation_rule": "none",
+                    "regular_expression": null
+                },
+                {
+                    "type": "text",
+                    "identifier": "designer_bio_123456",
+                    "asset_family_identifier": "designer",
+                    "code": "bio",
+                    "labels": {
+                        "en_US": "Bio",
+                        "fr_FR": "Biographie"
+                    },
+                    "is_required": false,
+                    "order": 1,
+                    "value_per_locale": true,
+                    "value_per_channel": false,
+                    "max_length": 255,
+                    "is_textarea": false,
+                    "is_rich_text_editor": false,
+                    "validation_rule": "none",
+                    "regular_expression": null
+                },
+                {
+                    "type": "image",
+                    "identifier": "designer_portrait_123456",
+                    "asset_family_identifier": "designer",
+                    "code": "portrait",
+                    "labels": {
+                        "en_US": "Portrait",
+                        "fr_FR": "Image"
+                    },
+                    "is_required": false,
+                    "order": 2,
+                    "value_per_locale": true,
+                    "value_per_channel": false,
+                    "max_file_size": "124.12",
+                    "allowed_extensions": [
+                        "png",
+                        "jpg"
+                    ]
+                },
+                {
+                    "type": "option",
+                    "identifier": "favorite_color_designer_52609e00b7ee307e79eb100099b9a8bf",
+                    "asset_family_identifier": "designer",
+                    "code": "favorite_color",
+                    "labels": {
+                        "en_US": "Favorite color"
+                    },
+                    "is_required": true,
+                    "order": 3,
+                    "value_per_locale": true,
+                    "value_per_channel": true,
+                    "options": [
+                        {
+                            "code": "red",
+                            "labels": {
+                                "en_US": "Red",
+                                "fr_FR": "Rouge"
+                            }
+                        },
+                        {
+                            "code": "green",
+                            "labels": {
+                                "en_US": "Green",
+                                "fr_FR": "Vert"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "option_collection",
+                    "identifier": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
+                    "asset_family_identifier": "designer",
+                    "code": "colors",
+                    "labels": {
+                        "en_US": "Colors"
+                    },
+                    "is_required": true,
+                    "order": 4,
+                    "value_per_locale": true,
+                    "value_per_channel": true,
+                    "options": [
+                        {
+                            "code": "red",
+                            "labels": {
+                                "en_US": "Red",
+                                "fr_FR": "Rouge"
+                            }
+                        },
+                        {
+                            "code": "blue",
+                            "labels": {
+                                "en_US": "Blue",
+                                "fr_FR": "Bleu"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "asset",
+                    "identifier": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
+                    "asset_family_identifier": "designer",
+                    "code": "city",
+                    "labels": {
+                        "en_US": "City"
+                    },
+                    "is_required": false,
+                    "order": 5,
+                    "value_per_locale": false,
+                    "value_per_channel": false,
+                    "asset_type": "city"
+                },
+                {
+                    "type": "number",
+                    "identifier": "year_of_birth_designer_79eb100099b9a8bf52609e00b7ee307e",
+                    "asset_family_identifier": "designer",
+                    "code": "year_of_birth",
+                    "labels": {
+                        "en_US": "Year of Birth"
+                    },
+                    "is_required": false,
+                    "order": 6,
+                    "value_per_locale": false,
+                    "value_per_channel": false,
+                    "decimals_allowed": false,
+                    "min_value": "10",
+                    "max_value": "50"
+                }
+            ],
+            "permission": {
+                "edit": false
+            },
+            "attribute_as_label": "designer_name_123456",
+            "attribute_as_image": "designer_portrait_123456"
+        }
+    }
+}

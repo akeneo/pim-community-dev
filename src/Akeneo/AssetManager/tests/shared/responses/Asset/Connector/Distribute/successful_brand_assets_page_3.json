@@ -1,0 +1,70 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
+        "query": {
+            "assetFamilyIdentifier": "brand",
+            "search_after": "brand_6"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search_after=brand_6"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets"
+                }
+            },
+            "_embedded": {
+                "items": [
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_7"
+                            }
+                        },
+                        "code": "brand_7",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 7"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 7"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_7_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_7_image.jpg"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

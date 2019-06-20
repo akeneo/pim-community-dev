@@ -1,0 +1,39 @@
+settings:
+    analysis:
+        normalizer:
+            text_normalizer:
+                filter: ['lowercase']
+mappings:
+    pimee_asset_family_asset:
+        properties:
+            identifier:
+                type: 'keyword'
+            asset_family_code:
+                type: 'keyword'
+            code:
+                type: 'keyword'
+            updated_at:
+                type: 'date'
+        dynamic_templates:
+            -
+                asset_full_text_search:
+                    path_match: 'asset_full_text_search.*.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'text_normalizer'
+            -
+                asset_code_label_search:
+                    path_match: 'asset_code_label_search.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'text_normalizer'
+            -
+                complete_value_keys:
+                    path_match: 'complete_value_keys.*'
+                    mapping:
+                        type: 'boolean'
+            -
+                values:
+                    path_match: 'values.*'
+                    mapping:
+                        type: 'keyword'

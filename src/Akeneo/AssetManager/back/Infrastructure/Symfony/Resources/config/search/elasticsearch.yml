@@ -1,0 +1,11 @@
+parameters:
+    asset_index_configuration:
+        - '%pim_ee_dev_src_folder_location%/src/Akeneo/AssetManager/back/Infrastructure/Symfony/Resources/config/search/asset_index_configuration.yml'
+
+akeneo_elasticsearch:
+    hosts: "%index_hosts%"
+    indexes:
+        -
+            service_name: "akeneo_assetmanager.client.asset"
+            index_name: "%asset_index_name%"
+            configuration_files: "%asset_index_configuration%"

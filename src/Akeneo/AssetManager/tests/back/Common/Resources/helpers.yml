@@ -1,0 +1,29 @@
+services:
+    akeneoasset_manager.tests.helper.oauth_authenticated_client_factory:
+        class: Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory
+        arguments:
+        - '@pim_user.repository.user'
+        - '@kernel'
+
+    akeneoasset_manager.tests.helper.web_client_helper:
+        class: Akeneo\AssetManager\Common\Helper\WebClientHelper
+        arguments:
+            - '@router'
+
+    akeneoasset_manager.tests.helper.database_helper:
+        class: Akeneo\AssetManager\Integration\Persistence\Helper\DatabaseHelper
+        arguments:
+            - '@database_connection'
+
+    akeneoasset_manager.tests.helper.search_index_helper:
+        class: Akeneo\AssetManager\Integration\Persistence\Helper\SearchAssetIndexHelper
+        arguments:
+            - '@akeneo_assetmanager.client.asset'
+
+    akeneoasset_manager.tests.helper.fixtures_loader:
+        class: Akeneo\AssetManager\Common\Helper\FixturesLoader
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value'

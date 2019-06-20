@@ -1,0 +1,43 @@
+services:
+    akeneo_assetmanager.application.registry.attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistry
+
+    akeneo_assetmanager.application.factory.text_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory
+        tags:
+            - { name: akeneo_assetmanager.attribute_factory }
+
+    akeneo_assetmanager.application.factory.image_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory
+        tags:
+            - { name: akeneo_assetmanager.attribute_factory }
+
+    akeneo_assetmanager.application.factory.asset_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AssetAttributeFactory
+        tags:
+            - { name: akeneo_assetmanager.attribute_factory }
+
+    akeneo_assetmanager.application.factory.asset_collection_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AssetCollectionAttributeFactory
+        tags:
+            - { name: akeneo_assetmanager.attribute_factory }
+
+    akeneo_assetmanager.application.factory.option_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\OptionAttributeFactory
+        tags:
+            - { name: akeneo_assetmanager.attribute_factory }
+
+    akeneo_assetmanager.application.factory.option_collection_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\OptionCollectionAttributeFactory
+        tags:
+            - { name: akeneo_assetmanager.attribute_factory }
+
+    akeneo_assetmanager.application.factory.number_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\NumberAttributeFactory
+        tags:
+            - { name: akeneo_assetmanager.attribute_factory }
+
+    akeneo_assetmanager.application.factory.url_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\UrlAttributeFactory
+        tags:
+            - { name: akeneo_assetmanager.attribute_factory }

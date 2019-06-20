@@ -1,0 +1,10 @@
+services:
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.index_asset:
+        class: Akeneo\AssetManager\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.remove_asset_from_index:
+        class: Akeneo\AssetManager\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }

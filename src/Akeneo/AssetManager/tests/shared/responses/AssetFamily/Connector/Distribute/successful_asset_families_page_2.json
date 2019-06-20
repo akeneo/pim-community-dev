@@ -1,0 +1,74 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_families_rest_connector_get",
+    "query": {
+      "search_after": "asset_family_3"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "_links": {
+        "self": {
+          "href": "http://localhost/api/rest/v1/asset-families?search_after=asset_family_3"
+        },
+        "first": {
+          "href": "http://localhost/api/rest/v1/asset-families"
+        },
+        "next": {
+          "href": "http://localhost/api/rest/v1/asset-families?search_after=asset_family_6"
+        }
+      },
+      "_embedded": {
+        "items": [
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/asset-families/asset_family_4"
+              },
+              "image_download": {
+                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_4.jpg"
+              }
+            },
+            "code": "asset_family_4",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "image": "test/image_asset_family_4.jpg"
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/asset-families/asset_family_5"
+              },
+              "image_download": {
+                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_5.jpg"
+              }
+            },
+            "code": "asset_family_5",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "image": "test/image_asset_family_5.jpg"
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/asset-families/asset_family_6"
+              },
+              "image_download": {
+                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_6.jpg"
+              }
+            },
+            "code": "asset_family_6",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "image": "test/image_asset_family_6.jpg"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,127 @@
+pim_asset_manager:
+  app:
+    image:
+      wide:
+        upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
+      small:
+        remove: 削除
+        download: ダウンロード
+  asset_family:
+    button:
+      save: 保存
+      save_permission: 保存
+      create: 作成
+    tab:
+      attribute: 属性
+      properties: プロパティ
+      permission: パーミッション
+    properties:
+      identifier: コード
+      label: ラベル
+      image: イメージ
+    create:
+      header:
+        title: 作成
+      input:
+        label: ラベル
+      confirm: 保存
+    delete:
+      title: 属性
+  asset:
+    no_result:
+      subtitle: 新しい検索条件を再度実行してください。
+    button:
+      save: 保存
+      create: 新しく追加
+      delete: 削除
+    enrich:
+      code: コード
+      label: ラベル
+    create:
+      header:
+        title: 作成
+      input:
+        label: ラベル
+      confirm: 保存
+    grid:
+      filter:
+        completeness:
+          label: 網羅率
+          all: すべて
+          'yes': 'はい'
+          'no': 'いいえ'
+        option:
+          all: すべて
+          operator:
+            in: リストに存在する
+      column:
+        code: コード
+        image: イメージ
+        label: ラベル
+        complete: 網羅率
+        action: アクション
+    tab:
+      enrich: マスタ
+    completeness:
+      label: 網羅率
+  attribute:
+    default:
+      code: コード
+      label: ラベル
+      image: イメージ
+    type:
+      text: テキスト
+      image: イメージ
+    create:
+      header:
+        title: 作成
+      input:
+        label: ラベル
+        type: 属性タイプ
+        value_per_locale: ロケールごとの値
+        value_per_channel: チャンネルごとの値
+      confirm: 保存
+    edit:
+      save: 保存
+      cancel: キャンセル
+      input:
+        label: ラベル
+        type: 属性タイプ
+        value_per_locale: ロケールごとの値
+        value_per_channel: チャンネルごとの値
+        max_length: 最大文字数
+        textarea: テキスト エリア
+        max_file_size: 最大ファイル サイズ (MB)
+        allowed_extensions: 利用できる拡張子
+        validation_rule: 値チェックルール
+        regular_expression: 正規表現
+        options:
+          validation_rule:
+            none: なし
+            email: 電子メール
+            regular_expression: 正規表現
+            url: URL
+    delete:
+      title: 属性
+    notification:
+      save:
+        success: 属性を更新しました
+      create:
+        success: 属性を作成しました
+      delete:
+        success: 属性を削除しました
+    options:
+      helper:
+        title: ラベルの翻訳
+  modal:
+    delete:
+      subtitle: 削除を確認する
+      button:
+        cancel: キャンセル
+        confirm: 削除
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: タイプ固有のパラメーター

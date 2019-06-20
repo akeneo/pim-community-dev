@@ -1,0 +1,127 @@
+pim_asset_manager:
+  app:
+    image:
+      wide:
+        upload: Træk og slip for at uploade eller klik her
+      small:
+        remove: Fjern
+        download: Hent
+  asset_family:
+    button:
+      save: Gem
+      save_permission: Gem
+      create: Opret
+    tab:
+      attribute: Egenskaber
+      properties: Egenskaber
+      permission: Rettigheder
+    properties:
+      identifier: Kode
+      label: Etiket
+      image: Billede
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+      confirm: Gem
+    delete:
+      title: Attribut
+  asset:
+    no_result:
+      subtitle: Prøv igen med nye søgekriterier.
+    button:
+      save: Gem
+      create: Tilføj ny
+      delete: Slet
+    enrich:
+      code: Kode
+      label: Etiket
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+      confirm: Gem
+    grid:
+      filter:
+        completeness:
+          label: Fuldført
+          all: Alle
+          'yes': 'Ja'
+          'no': 'Nej'
+        option:
+          all: Alle
+          operator:
+            in: I listen
+      column:
+        code: Kode
+        image: Billede
+        label: Etiket
+        complete: Fuldført
+        action: Aktioner
+    tab:
+      enrich: Berige
+    completeness:
+      label: Fuldført
+  attribute:
+    default:
+      code: Kode
+      label: Etiket
+      image: Billede
+    type:
+      text: Tekst
+      image: Billede
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+        type: Attributtype
+        value_per_locale: Værdi pr. landestandard
+        value_per_channel: Værdi pr. kanal
+      confirm: Gem
+    edit:
+      save: Gem
+      cancel: Annuller
+      input:
+        label: Etiket
+        type: Attributtype
+        value_per_locale: Værdi pr. landestandard
+        value_per_channel: Værdi pr. kanal
+        max_length: Maks. tegn
+        textarea: Tekstområde
+        max_file_size: Maks. filstørrelse (MB)
+        allowed_extensions: Tilladte filendelser
+        validation_rule: Valideringsregel
+        regular_expression: Regulære udtryk
+        options:
+          validation_rule:
+            none: Ingen
+            email: E-mail
+            regular_expression: Regulære udtryk
+            url: URL
+    delete:
+      title: Attribut
+    notification:
+      save:
+        success: Atributten blev opdateret.
+      create:
+        success: Atributten blev oprettet.
+      delete:
+        success: Atributten blev slettet.
+    options:
+      helper:
+        title: Etiket oversættelser
+  modal:
+    delete:
+      subtitle: Bekræft sletning
+      button:
+        cancel: Annuller
+        confirm: Slet
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Specifik type parametre

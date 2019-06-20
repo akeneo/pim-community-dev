@@ -1,0 +1,24 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
+        "query": {
+            "assetFamilyIdentifier": "Brand",
+            "channel": "wrong_channel"
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "Invalid query parameters",
+            "errors": [
+                {
+                    "property": "channel",
+                    "message":"Channel \"wrong_channel\" does not exist."
+                }
+            ]
+
+        }
+    }
+}
