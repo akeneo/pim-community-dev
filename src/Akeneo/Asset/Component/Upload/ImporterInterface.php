@@ -33,4 +33,13 @@ interface ImporterInterface
      * @return \SplFileInfo[]
      */
     public function getImportedFiles(UploadContext $uploadContext);
+
+
+    /**
+     * @param UploadContext $uploadContext
+     * @param array         $fileNames
+     *
+     * @return \SplFileInfo[]
+     */
+    public function getImportedFilesFromNames(UploadContext $uploadContext, array $fileNames);
 }
