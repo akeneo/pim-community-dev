@@ -53,7 +53,7 @@ class AttributeMapping
         ?string $targetAttributeLabel,
         ?string $targetAttributeType,
         ?string $pimAttributeCode,
-        int $status,
+        string $status,
         ?array $summary = null
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
@@ -89,9 +89,9 @@ class AttributeMapping
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getStatus(): int
+    public function getStatus(): string
     {
         return $this->status;
     }

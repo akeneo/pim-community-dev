@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import AttributeMappingStatus from './attribute-mapping-status';
+
 export default interface AttributeMapping {
   franklinAttribute: {
     label: string;
@@ -14,5 +16,5 @@ export default interface AttributeMapping {
     summary: string[];
   };
   attribute: string | null;
-  status: number;
+  status: AttributeMappingStatus;
 };

@@ -141,6 +141,6 @@ class AttributesMappingController
             return new JsonResponse([[$e->getMessage()]], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($data);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

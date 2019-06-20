@@ -61,8 +61,8 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeRepository
     ): void {
         $attributesMappingResponse = new AttributesMappingResponse();
-        $attributesMappingResponse->addAttribute(new AttributeMapping('color', 'Color', 'text', 'pim_color', 1));
-        $attributesMappingResponse->addAttribute(new AttributeMapping('size', 'Size', 'text', 'pim_size', 1));
+        $attributesMappingResponse->addAttribute(new AttributeMapping('color', 'Color', 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE));
+        $attributesMappingResponse->addAttribute(new AttributeMapping('size', 'Size', 'text', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE));
 
         $attributeRepository->findByCodes(['pim_color', 'pim_size'])->willReturn([
             AttributeBuilder::fromCode('pim_color'),

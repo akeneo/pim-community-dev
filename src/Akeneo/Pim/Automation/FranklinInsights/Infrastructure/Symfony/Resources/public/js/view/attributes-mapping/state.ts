@@ -6,6 +6,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+import AttributeMappingStatus from "../../model/attribute-mapping-status";
 
 const BaseState = require('pim/form/common/state');
 
@@ -27,7 +28,7 @@ class State extends BaseState {
     const formData = this.getFormData();
     for (let property in formData.mapping) {
       const attributeMapping = formData.mapping[property];
-      if (attributeMapping.status === 0 && attributeMapping.attribute !== null) {
+      if (attributeMapping.status === AttributeMappingStatus.ATTRIBUTE_PENDING && attributeMapping.attribute !== null) {
         return true;
       }
     }

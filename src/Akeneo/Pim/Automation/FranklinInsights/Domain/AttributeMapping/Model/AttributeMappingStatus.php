@@ -19,11 +19,11 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model;
 interface AttributeMappingStatus
 {
     /* The attribute is not mapped yet */
-    public const ATTRIBUTE_PENDING = 0;
+    public const ATTRIBUTE_PENDING = 'pending';
 
     /** The attribute is mapped */
-    public const ATTRIBUTE_ACTIVE = 1;
+    public const ATTRIBUTE_ACTIVE = 'active';
 
     /** The attribute was registered to not be mapped */
-    public const ATTRIBUTE_INACTIVE = 2;
+    public const ATTRIBUTE_INACTIVE = 'inactive';
 }
