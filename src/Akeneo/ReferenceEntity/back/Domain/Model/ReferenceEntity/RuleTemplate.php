@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -27,8 +29,11 @@ class RuleTemplate
         $this->content = $content;
     }
 
-    public function createFromNormalized(array $content)
+    public static function createFromNormalized(array $content)
     {
+        Assert::keyExists($content, 'conditions');
+        Assert::keyExists($content, 'actions');
+
         return new self($content);
     }
 
