@@ -104,8 +104,8 @@ class ListProductModelsQueryHandler
 
         if (null !== $query->searchAfter) {
             $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($query->searchAfter);
-            $pqbOptions['search_after_unique_key'] = $searchParameterDecrypted;
-            $pqbOptions['search_after'] = [$searchParameterDecrypted];
+            $pqbOptions['search_after_unique_key'] = 'product_model_'.$searchParameterDecrypted;
+            $pqbOptions['search_after'] = ['product_model_'.$searchParameterDecrypted];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);
