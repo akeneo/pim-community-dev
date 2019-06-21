@@ -91,10 +91,6 @@ class SaveAttributesMappingByFamilyHandler
             $attributes[(string) $attribute->getCode()] = $attribute;
         }
 
-        if (empty($attributes)) {
-            throw AttributeMappingException::emptyAttributesMapping();
-        }
-
         $attributesMapping = new AttributesMapping($familyCode);
         foreach ($command->getMapping() as $franklinAttrId => $attributeMapping) {
             $attributesMapping->map(
