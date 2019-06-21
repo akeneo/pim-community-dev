@@ -1,9 +1,9 @@
 Area: Área
-ACRE: Acre
-ARE: Are
+ACRE: Acre é o nome de uma antiga unidade de medida usada para medir terras. Atualmente, o acre é uma unidade de área utilizada no sistema imperial e no sistema tradicional dos Estados Unidos. O acre não é mais usado na maioria dos países, apesar de algumas exceções notáveis, que incluem os EUA, Austrália, Índia, Paquistão e Birmânia. A partir de 2010, o acre deixou de ser oficialmente utilizado no Reino Unido, embora ainda seja usado em descrições de imóveis. Ele continua sendo usado, ainda, em certa medida, no Canadá. No Brasil e em Portugal, essa medida nunca foi utilizada, sendo que nestes países se utiliza o alqueire e o hectare (que seria a unidade mais simples de utilização) como unidades de medida em áreas rurais.
+ARE: Area
 ARPENT: Arpent
 CENTIARE: Centiare
-HECTARE: Hectare
+HECTARE: Um hectare (conhecido também como hectômetro/hectómetro quadrado [hm²]), representado pelo símbolo ha,[1] é uma unidade de medida de área equivalente a 100 (cem) ares ou a 10. 000 (dez mil) metros quadrados
 SQUARE_CENTIMETER: Centímetro quadrado
 SQUARE_DECIMETER: Decímetro quadrado
 SQUARE_DEKAMETER: Decametro quadrado
@@ -18,8 +18,8 @@ SQUARE_MILE: Milha quadrada
 SQUARE_MILLIMETER: Milímetro quadrado
 SQUARE_YARD: Jarda quadrada
 Binary: Binário
-BIT: Bit (0-1)
-BYTE: Byte (B)
+BIT: Bit
+BYTE: Byte
 KILOBYTE: Kilobyte (KB)
 MEGABYTE: Megabyte (MB)
 GIGABYTE: Gigabyte (GB)

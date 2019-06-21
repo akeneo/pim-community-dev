@@ -12,7 +12,7 @@ oro.grid.mass_action.delete.label: Suprimir
 oro.grid.mass_action.delete.confirm_title: Confirmació d'eliminació massiva
 oro.grid.mass_action.delete.confirm_content: Esteu segur que voleu suprimir els elements seleccionats?
 oro.grid.mass_action.delete.item_limit: Vostè no pot suprimir en massa més %limit% productes (%count% seleccionats)
-oro.grid.datagrid.page_size.all: Tots
+oro.grid.datagrid.page_size.all: Tot
 oro.grid.mass_action.delete.success_message: "{0} no s'ha eliminat cap entitat|{1} s'ha eliminat una entitat|] 1, Inf [s'han eliminat %count% entitats"
 datagrid_view:
   columns:

@@ -1,7 +1,7 @@
 btn:
   post: Додати новий коментар
   reply: Відповісти
-  cancel: Скасувати
+  cancel: Відмінити
 confirmation:
   remove:
     comment: Ви впевнені, що хочете видалити цей коментар?

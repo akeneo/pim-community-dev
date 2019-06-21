@@ -123,7 +123,7 @@ pim_enrich:
       launched_flash: L'acció en massa "afegir a grups" ja s'ha engegat. Se li notificarà una cop acabi.
       no_group: Cap grup ara mateix. Si us plau, comenceu creant un grup.
     set-attribute-requirements:
-      label: Establir els requeriments d'atribut
+      label: Establir els requeriments d'atributs
       description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
       success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
       launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -159,7 +159,7 @@ pim_enrich:
       history: Veure l'històric del producte
     product_model:
       create: Crear un model de producte
-      edit_attributes: Edita els atributs d'un model de producte
+      edit_attributes: Editar els atributs d'un model de producte
       categories_view: Consultar les categories d'un model de producte
       history: Veure l'històric del model de producte
       remove: Eliminar un model de producte
@@ -319,7 +319,7 @@ btn:
     group: crear grup
     association type: crear tipus d'associació
     group type: crear tipus de grup
-    drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+    drag_or_upload: Arrossegar i deixar per carrgar o feu clic aquí
   edit: editar
   save: guardar
   save and create: guardar i crear-ne de nous
@@ -363,7 +363,7 @@ flash:
   attribute:
     created: Atribut creat correctament
     updated: Atribut actualitzat correctament
-    removed: Atribut suprimit correctament
+    removed: L'atribut s'ha suprimit correctament
     identifier_not_removable: L'atribut identificador no es pot suprimir
   attribute group:
     created: Grup d'atributs creat correctament
@@ -624,7 +624,7 @@ Disable: Deshabilitar
 pim_enrich.sequential_edit_action:
   product:
     previous: Tornar a "%product%" sense guardar.
-    next: Vés a "%product%" sense guardar.
+    next: Anar a "%product%" sense guardar.
 pim_enrich.mass_edit_action:
   limit_exceeded: Trieu menys de %limit% elements per editar
   product:
@@ -674,7 +674,7 @@ pim_enrich.mass_edit_action:
     description: Seleccioneu els grups on volgueu afegir els productes seleccionats
     success_flash: Els productes s'han afegit correctament als grups seleccionats
   set-attribute-requirements:
-    label: Establir els requeriments d'atribut
+    label: Establir els requeriments d'atributs
     description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
     success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
 To enable: Per activar
@@ -832,9 +832,9 @@ batch_jobs:
     perform:
       label: Afegir a un model de producte existent
   set_attribute_requirements:
-    label: Establir els requeriments d'atribut
+    label: Establir els requeriments d'atributs
     perform:
-      label: Establir els requeriments d'atribut
+      label: Establir els requeriments d'atributs
   csv_product_quick_export:
     quick_export.label: Exportació ràpida de producte en CSV
     perform:

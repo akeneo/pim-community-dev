@@ -11,7 +11,7 @@ pim_import_export:
     3: Començat
     4: Aturant
     5: Aturat
-    6: Erroni
+    6: Fallit
     7: Abandonat
     8: Desconegut
   download_archive:
@@ -148,7 +148,7 @@ STARTING: Començant
 STARTED: Començat
 STOPPING: Aturant
 STOPPED: Aturat
-FAILED: Erroni
+FAILED: Fallit
 ABANDONED: Abandonat
 UNKNOWN: Desconegut
 warning.label: Avís
