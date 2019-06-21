@@ -11,7 +11,7 @@
 enum AttributeMappingStatus {
   ATTRIBUTE_PENDING = 'pending',
   ATTRIBUTE_ACTIVE = 'active',
-  ATTRIBUTE_INACTIVE = 'inactive',
+  ATTRIBUTE_INACTIVE = 'inactive'
 }
 
 export default AttributeMappingStatus;
