@@ -92,6 +92,7 @@ services:
                 - '@pimee_enrich.step.edit_common_attributes_with_permission.perform'
                 - '@pim_enrich.step.clean'
                 - '@pimee_enrich.step.execute_rules'
+                - '@pimee_workflow.step.mass_edit.send_for_approval'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -104,6 +105,7 @@ services:
              -
                  - '@pimee_enrich.step.add_attribute_value.mass_edit.perform'
                  - '@pimee_enrich.step.execute_rules'
+                 - '@pimee_workflow.step.mass_edit.send_for_approval'
          tags:
              - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 

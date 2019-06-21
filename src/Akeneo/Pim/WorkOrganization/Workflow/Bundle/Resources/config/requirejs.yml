@@ -47,6 +47,7 @@ config:
         pimee/proposal/partial-approve-proposal-comment:   akeneopimworkflow/js/proposal/form/partial-approve-proposal-comment
         pimee/dashboard/proposal-widget:                   akeneopimworkflow/js/proposal/widget/proposal-widget
         pimee/user/fields/visible-boolean:                 akeneopimworkflow/js/user/fields/visible-boolean.ts
+        pimee/mass-edit-form/product/send-for-approval:    akeneopimworkflow/js/mass-edit/product/send-for-approval.ts
 
         # Templates
         pimee/template/product/meta/published:                  akeneopimworkflow/templates/product/meta/published.html

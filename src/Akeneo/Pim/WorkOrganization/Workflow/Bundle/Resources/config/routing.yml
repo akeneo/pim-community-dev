@@ -43,6 +43,10 @@ pimee_workflow_rest_author_draft:
     resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/rest/author_draft.yml'
     prefix: /draft
 
+pimee_workflow_rest_proposal:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/rest/proposal.yml'
+    prefix: /workflow/rest
+
 pimee_datagrid_export:
     resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/pimee_export.yml'
     prefix: /datagrid/export

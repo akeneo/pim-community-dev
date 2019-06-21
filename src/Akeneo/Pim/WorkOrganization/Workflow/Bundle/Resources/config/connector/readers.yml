@@ -40,3 +40,12 @@ services:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.converter.metric'
+
+    # Product drafts
+    pimee_workflow.reader.database.product_draft:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Reader\Database\ProductDraftReader
+        arguments:
+            - '@pim_enrich.reader.database.product_and_product_model'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+

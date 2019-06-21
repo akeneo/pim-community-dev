@@ -125,3 +125,13 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.mass_edit_tasklet.unpublish_product'
+
+    pimee_workflow.step.mass_edit.send_for_approval:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'send_for_approval'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.reader.database.product_draft'
+            - '@pimee_workflow.processor.mark_product_draft_as_ready'
+            - '@pimee_workflow.writer.database.product_and_product_model_draft'

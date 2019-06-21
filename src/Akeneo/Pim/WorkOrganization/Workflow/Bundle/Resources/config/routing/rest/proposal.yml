@@ -1,0 +1,4 @@
+pimee_workflow_rest_proposal_is_user_owner_on_all_products:
+  path: /should-propose-send-for-approval
+  defaults: { _controller: pimee_workflow.controller.rest.is_user_owner_on_all_products:checkAction }
+  methods: [POST]
