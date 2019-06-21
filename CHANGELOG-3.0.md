@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.26 (2019-06-21)
+
 ## Bug fixes
 
 - PIM-8383: Do not take products without family into account when filtering on empty values
