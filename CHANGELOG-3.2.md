@@ -6,11 +6,13 @@
 
 ## BC Breaks
 
+- The `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface` interface has been renamed into `Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollectionInterface`
 - Rename `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorFilter` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorIdFilter` 
-
  - DAPI-137: Fix the PQB to not aggregate results when there is a filter on id
 
+## Enhancements
 
+- The search on option.codes in ES is now case insensible
 
 
 

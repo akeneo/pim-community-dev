@@ -169,6 +169,19 @@ Before updating the dependencies and migrating your data, please deactivate all 
     yarn install
     ```
 
+10. Migrate your Elasticsearch indices:
+
+    In case you updated the settings of Elasticsearch (like normalizers, filters and analyzers), please make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.1/app/config/pim_parameters.yml#L58-L68).
+
+    Same in case you have a big catalog and increased the [index.mapping.total_fields.limit](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/mapping.html#mapping-limit-settings). Make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-community-standard/blob/3.1/app/config/pim_parameters.yml#L55-L57).
+    
+    You need to run the following command because:
+        - ES does not take in account case insensitivity of option codes when searching. As we modified the way products values are loaded from Mysql, ES search has to be case insensitive when searching on option codes.
+
+    ```bash
+    php bin/console akeneo:elasticsearch:update-mapping --all
+    ```
+
 ## Migrate your custom code
 
 1. Apply the sed commands
@@ -177,6 +190,7 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorIdFilter/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ValueCollectionInterface/WriteValueCollectionInterface/g'
 ```
 
 2. Adapt your custom codes to handle this breaking changes we introduced:
