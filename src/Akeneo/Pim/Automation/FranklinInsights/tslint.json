@@ -8,10 +8,19 @@
     "no-var-requires": false,
     "object-literal-sort-keys": [false],
     "prefer-for-of": false,
-    "quotemark": [true, "single"],
+    "quotemark": [true, "single", "avoid-escape"],
     "radix": false,
     "switch-default": false,
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
-    "max-line-length": false
+    "max-line-length": false,
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "no-shadowed-variable": false,
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never"
+      }
+    ]
   }
 }

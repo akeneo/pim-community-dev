@@ -31,49 +31,46 @@ class MappingController extends BaseController {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
+  constructor(options: {config: Config}) {
     super(options);
 
-    this.config = { ...this.config, ...options.config };
+    this.config = {...this.config, ...options.config};
   }
 
   /**
    * {@inheritdoc}
    */
   public renderForm(): JQueryPromise<any> {
-    return getConnectionStatus(false)
-      .then((connectionStatus: ConnectionStatus) => {
-        if (!connectionStatus.isActive) {
-          return FormBuilder
-            .build('akeneo-franklin-insights-settings-inactive-connection')
-            .then((form: any) => {
-              this.on('pim:controller:can-leave', (event: any) => {
-                form.trigger('pim_enrich:form:can-leave', event);
-              });
-              form.setElement(this.$el).render();
+    return getConnectionStatus(false).then((connectionStatus: ConnectionStatus) => {
+      if (!connectionStatus.isActive) {
+        return FormBuilder.build('akeneo-franklin-insights-settings-inactive-connection').then((form: any) => {
+          this.on('pim:controller:can-leave', (event: any) => {
+            form.trigger('pim_enrich:form:can-leave', event);
+          });
+          form.setElement(this.$el).render();
 
-              return form;
-            });
-        }
+          return form;
+        });
+      }
 
-        const lastMappingVisited: string | null = localStorage.getItem(this.config.lastMappingVisitedKey);
-        const lastFamilyVisited: string | null = localStorage.getItem(this.config.lastFamilyVisitedKey);
-        if ('attributes_mapping' === lastMappingVisited && null !== lastFamilyVisited) {
-          Router.redirectToRoute('akeneo_franklin_insights_attributes_mapping_edit', {familyCode: lastFamilyVisited});
-
-          return;
-        }
-
-        if ('attributes_mapping' === lastMappingVisited) {
-          Router.redirectToRoute('akeneo_franklin_insights_attributes_mapping_index');
-
-          return;
-        }
-
-        Router.redirectToRoute('akeneo_franklin_insights_identifiers_mapping_edit');
+      const lastMappingVisited: string | null = localStorage.getItem(this.config.lastMappingVisitedKey);
+      const lastFamilyVisited: string | null = localStorage.getItem(this.config.lastFamilyVisitedKey);
+      if ('attributes_mapping' === lastMappingVisited && null !== lastFamilyVisited) {
+        Router.redirectToRoute('akeneo_franklin_insights_attributes_mapping_edit', {familyCode: lastFamilyVisited});
 
         return;
-      });
+      }
+
+      if ('attributes_mapping' === lastMappingVisited) {
+        Router.redirectToRoute('akeneo_franklin_insights_attributes_mapping_index');
+
+        return;
+      }
+
+      Router.redirectToRoute('akeneo_franklin_insights_identifiers_mapping_edit');
+
+      return;
+    });
   }
 }
 

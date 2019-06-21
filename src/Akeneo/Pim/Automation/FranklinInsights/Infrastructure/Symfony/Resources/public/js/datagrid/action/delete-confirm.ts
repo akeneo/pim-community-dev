@@ -28,11 +28,7 @@ class DeleteConfirm {
    * @param {string} entityHint
    * @return {Promise}
    */
-  public static getConfirmDialog(
-    entityCode: string,
-    callback: any,
-    entityHint: string,
-  ) {
+  public static getConfirmDialog(entityCode: string, callback: any, entityHint: string) {
     if (entityCode !== 'attribute') {
       return this.getDefaultConfirmDialog(entityCode, callback, entityHint);
     }
@@ -43,11 +39,11 @@ class DeleteConfirm {
           __(
             'pim_enrich.entity.attribute.module.save.warning',
             {count: connectionStatus.productSubscriptionCount},
-            connectionStatus.productSubscriptionCount,
+            connectionStatus.productSubscriptionCount
           ),
           __('pim_enrich.entity.attribute.module.save.title'),
           callback,
-          entityHint,
+          entityHint
         );
       }
 
@@ -63,16 +59,12 @@ class DeleteConfirm {
    * @param {string} entityHint
    * @return {Promise}
    */
-  private static getDefaultConfirmDialog(
-    entityCode: string,
-    callback: any,
-    entityHint: string,
-  ) {
+  private static getDefaultConfirmDialog(entityCode: string, callback: any, entityHint: string) {
     return Dialog.confirmDelete(
       __(`pim_enrich.entity.${entityCode}.module.delete.confirm`),
       __('pim_common.confirm_deletion'),
       callback,
-      entityHint,
+      entityHint
     );
   }
 }

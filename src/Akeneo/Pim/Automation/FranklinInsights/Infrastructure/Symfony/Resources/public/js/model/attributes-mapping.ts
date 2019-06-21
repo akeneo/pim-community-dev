@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import AttributeMapping from "./attribute-mapping";
+import AttributeMapping from './attribute-mapping';
 
 export default interface AttributesMapping {
-  [franklinAttributeCode: string]: AttributeMapping
+  [franklinAttributeCode: string]: AttributeMapping;
 }

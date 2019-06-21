@@ -28,14 +28,14 @@ interface CreateAttributeResponse {
 }
 
 export default class AttributeSaver {
-  static async create(request: CreateAttributeRequest): Promise<CreateAttributeResponse> {
+  public static async create(request: CreateAttributeRequest): Promise<CreateAttributeResponse> {
     try {
       const response = await new Promise<CreateAttributeResponse>((resolve, reject) => {
         ajax({
           url: Routing.generate('akeneo_franklin_insights_structure_create_attribute'),
           method: 'POST',
           contentType: 'application/json',
-          data: JSON.stringify(request),
+          data: JSON.stringify(request)
         })
           .then(resolve)
           .catch(reject);
@@ -44,7 +44,7 @@ export default class AttributeSaver {
       this.notifySuccess(request.familyCode);
 
       return response;
-    } catch(error) {
+    } catch (error) {
       this.notifyError();
 
       throw error;
@@ -53,7 +53,7 @@ export default class AttributeSaver {
 
   private static async notifySuccess(familyCode: string): Promise<void> {
     const family: Family = await FetcherRegistry.getFetcher('family').fetch(familyCode);
-    
+
     const familyLabel = I18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
     Messenger.notify(
       'success',
@@ -62,9 +62,6 @@ export default class AttributeSaver {
   }
 
   private static notifyError(): void {
-    Messenger.notify(
-      'error',
-      __('akeneo_franklin_insights.entity.attributes_mapping.flash.create_attribute_error')
-    )
+    Messenger.notify('error', __('akeneo_franklin_insights.entity.attributes_mapping.flash.create_attribute_error'));
   }
 }

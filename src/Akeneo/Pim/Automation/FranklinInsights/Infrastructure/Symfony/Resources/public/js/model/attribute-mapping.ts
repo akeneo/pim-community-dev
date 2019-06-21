@@ -17,4 +17,4 @@ export default interface AttributeMapping {
   };
   attribute: string | null;
   status: AttributeMappingStatus;
-};
+}

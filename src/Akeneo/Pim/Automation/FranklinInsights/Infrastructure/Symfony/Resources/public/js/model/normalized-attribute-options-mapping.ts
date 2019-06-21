@@ -17,7 +17,7 @@
 export enum AttributeOptionStatus {
   Pending = 0,
   Active = 1,
-  Inactive = 2,
+  Inactive = 2
 }
 
 export interface NormalizedAttributeOptionsMapping {
@@ -28,9 +28,9 @@ export interface NormalizedAttributeOptionsMapping {
     [franklinAttributeOptionCode: string]: {
       franklinAttributeOptionCode: {
         label: string;
-      },
+      };
       catalogAttributeOptionCode: string;
       status: number;
-    },
+    };
   };
 }

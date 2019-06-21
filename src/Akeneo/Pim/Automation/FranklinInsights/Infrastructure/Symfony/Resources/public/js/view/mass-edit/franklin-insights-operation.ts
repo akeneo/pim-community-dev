@@ -59,13 +59,13 @@ class FranklinInsightsOperation extends Operation {
     subscribeLabel: '',
     unsubscribeLabel: '',
     franklinActivationConstraint: '',
-    invalidMappingConstraint: '',
+    invalidMappingConstraint: ''
   };
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
+  constructor(options: {config: Config}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -77,7 +77,7 @@ class FranklinInsightsOperation extends Operation {
   public events(): Backbone.EventsHash {
     return {
       'click .operation-type': this.switchAction,
-      'click [data-action]': FranklinInsightsOperation.redirectToFranklinConnection,
+      'click [data-action]': FranklinInsightsOperation.redirectToFranklinConnection
     };
   }
 
@@ -100,14 +100,16 @@ class FranklinInsightsOperation extends Operation {
         this.getParent().disableNextButton();
       }
 
-      this.$el.html(this.template({
-        subscribeLabel: __(this.config.subscribeLabel),
-        unsubscribeLabel: __(this.config.unsubscribeLabel),
-        errorMessage,
-        currentAction: this.getFormData().action,
-        isActive: connectionStatus.isValid && connectionStatus.isIdentifiersMappingValid,
-        readonly: this.readOnly,
-      }));
+      this.$el.html(
+        this.template({
+          subscribeLabel: __(this.config.subscribeLabel),
+          unsubscribeLabel: __(this.config.unsubscribeLabel),
+          errorMessage,
+          currentAction: this.getFormData().action,
+          isActive: connectionStatus.isValid && connectionStatus.isIdentifiersMappingValid,
+          readonly: this.readOnly
+        })
+      );
 
       this.delegateEvents();
     });
@@ -116,9 +118,11 @@ class FranklinInsightsOperation extends Operation {
   /**
    * @param event
    */
-  private switchAction(event: { target: any }): void {
+  private switchAction(event: {target: any}): void {
     const action: string = $(event.target).attr('data-value') as string;
-    const $button = $(event.target).parent().find('.AknButton--apply');
+    const $button = $(event.target)
+      .parent()
+      .find('.AknButton--apply');
 
     this.setAction(action);
     $button.removeClass('AknButton--apply');

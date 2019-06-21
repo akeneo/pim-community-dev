@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { Model, View } from 'backbone';
+import {Model, View} from 'backbone';
 import * as _ from 'underscore';
 import AttributeSaver from '../../saver/attribute-saver';
 
@@ -24,14 +24,14 @@ class CreateAttributeButton extends View<Model> {
   constructor(
     private familyCode: string,
     private franklinAttributeLabel: string,
-    private franklinAttributeType: string,
+    private franklinAttributeType: string
   ) {
     super();
   }
 
   public events() {
     return {
-      'click button': this.onCreate,
+      'click button': this.onCreate
     };
   }
 
@@ -49,7 +49,7 @@ class CreateAttributeButton extends View<Model> {
     const response = await AttributeSaver.create({
       familyCode: this.familyCode,
       franklinAttributeLabel: this.franklinAttributeLabel,
-      franklinAttributeType: this.franklinAttributeType,
+      franklinAttributeType: this.franklinAttributeType
     });
 
     this.trigger('attribute_created', response.code);

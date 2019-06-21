@@ -24,7 +24,7 @@ class DescriptionHeader extends SimpleView {
    */
   public events(): EventsHash {
     return {
-      'click .link': this.redirect,
+      'click .link': this.redirect
     };
   }
 

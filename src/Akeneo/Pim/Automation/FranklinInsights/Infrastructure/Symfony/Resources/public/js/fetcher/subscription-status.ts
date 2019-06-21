@@ -21,10 +21,7 @@ const Routing = require('routing');
  * @param {number} productId
  */
 export function getSubscriptionStatus(productId: number): JQueryPromise<any> {
-  const url = Routing.generate(
-    'akeneo_franklin_insights_franklin_subscription_status',
-    {productId},
-  );
+  const url = Routing.generate('akeneo_franklin_insights_franklin_subscription_status', {productId});
 
   return JQuery.get(url);
 }
