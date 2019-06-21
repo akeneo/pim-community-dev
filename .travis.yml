@@ -64,7 +64,6 @@ jobs:
           - vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
           - vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
           - vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back
-          - vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back
           - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
           - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction
           # phpspec coverage
@@ -82,10 +81,9 @@ jobs:
         - vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --no-interaction --format=progress
         - vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back
         - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-        - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction
         - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction
         # phpspec coverage
-        # - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec_cover.yml.dist --no-interaction
+        # - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec_cover.yml.dist --no-interaction
 
 notifications:
   email: false
