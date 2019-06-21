@@ -6,18 +6,19 @@
   height: 34px;
   margin-top: 20px;
   display: flex;
+  overflow: hidden;
 
   &-item {
     display: inline-flex;
-    padding: 0 20px;
+    padding-left: 20px;
     height: 32px;
     line-height: 32px;
-    position: relative;
     z-index: 5;
+    min-width: 120px;
 
     &:after {
       content:"";
-      position: absolute;
+      position: relative;
       display: block;
       right:-13px;
       top:4px;
@@ -37,43 +38,38 @@
       z-index: 4;
 
       &:after {
-        content:"";
-        position: absolute;
-        display: block;
-        right:-13px;
-        top:4px;
-        width: 24px;
-        height: 24px;
         background: @AknLightGray;
-        transform: rotate(45deg);
-        box-sizing: border-box;
-        border: 1px solid @AknBorderColor;
-        border-width: 1px 1px 0 0;
-        border-radius: 2px;
       }
     }
 
     & + & {
-      margin-left: 10px;
+      padding-left: 30px;
     }
   }
 
   &-itemLabel {
     cursor: pointer;
     display: flex;
+    flex: 1;
+    overflow: hidden;
   }
 
   &-axisName {
     text-transform: uppercase;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: ~"calc(100vw / 5)";
-    display: inline-block;
+    overflow: hidden;
+    max-width: 240px;
+  }
+
+  &-axisValue {
+    text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
   }
 
   &-axisName&-axisName--selected + &-axisValue:before {
-    content:":";
+    content:": ";
   }
 
   &-listItem {
