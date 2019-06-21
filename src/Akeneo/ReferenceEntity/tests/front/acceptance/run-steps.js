@@ -9,12 +9,12 @@ const communitySteps = path.resolve(
   base,
   './vendor/akeneo/pim-community-dev/tests/front/acceptance/cucumber/step-definitions'
 );
-const ReferenceEntitySteps = path.resolve(
+const referenceEntitySteps = path.resolve(
   base,
   './src/Akeneo/ReferenceEntity/tests/front/acceptance/cucumber/step-definitions'
 );
 
 require(world)(cucumber);
 glob
-  .sync(`{${enterpriseSteps},${communitySteps},${ReferenceEntitySteps}}/**/*.js`)
+  .sync(`{${enterpriseSteps},${communitySteps},${referenceEntitySteps}}/**/*.js`)
   .forEach(file => require(file)(cucumber));
