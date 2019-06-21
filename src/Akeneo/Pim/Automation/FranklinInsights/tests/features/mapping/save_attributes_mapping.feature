@@ -56,15 +56,6 @@ Feature: Map the PIM attributes with Franklin attributes
     Then Franklin's attribute product_weight should be mapped to weight
     And Franklin's attribute color should not be mapped
 
-  Scenario: Fails to save the attributes mapping if all the attributes do not exist
-    Given the family "router"
-    And Franklin is configured with a valid token
-    When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code |
-      | color                 | unknown_attribute  |
-    Then the attributes mapping should not be saved
-    And an empty attributes mapping message should be sent
-
   Scenario Outline: Fails to save the attributes mapping if an attribute type is invalid
     Given the following attribute:
       | code              | type                   |
