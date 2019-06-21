@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.26 (2019-06-21)
+
 ## Bug fixes
 
 - AOB-556: Fix SSO SP certificate expiration date
