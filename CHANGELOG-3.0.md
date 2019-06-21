@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8463: Explicit error message for import profile upload max file size
+
 # 3.0.26 (2019-06-21)
 
 ## Bug fixes

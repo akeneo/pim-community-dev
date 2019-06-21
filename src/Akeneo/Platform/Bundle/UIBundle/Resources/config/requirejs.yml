@@ -931,6 +931,7 @@ config:
     pim/common/simple-view:            pimui/js/form/common/simple-view
     pim/common/grid-title:             pimui/js/form/common/grid-title
     pim/common/item-picker:            pimui/js/common/item-picker
+    pim/common/environment:            pimui/js/common/environment
 
     # Root
     pim/form/common/edit-form: pimui/js/form/common/edit-form

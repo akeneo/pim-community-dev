@@ -31,6 +31,8 @@ pim_import_export:
             flash:
                 create:
                     success: Import profile successfully created
+                upload:
+                    error_too_big: File size exceed the server limit
             page_title:
                 index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
             module:
