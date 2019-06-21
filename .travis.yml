@@ -66,8 +66,6 @@ jobs:
           - vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back
           - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
           - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction
-          # phpspec coverage
-          # - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec_cover.yml.dist --no-interaction
 
     - stage: Asset Manager Tests
       if: branch =~ /^assets-?.*$/
@@ -82,8 +80,6 @@ jobs:
         - vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back
         - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
         - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction
-        # phpspec coverage
-        # - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec_cover.yml.dist --no-interaction
 
 notifications:
   email: false
