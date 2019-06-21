@@ -1,14 +1,14 @@
 extensions:
-    pim-menu-asset-family:
-        module: pim/menu/tab
-        parent: pim-menu
-        # aclResourceId: pimee_product_asset_index //TODO einrich
-        position: 33
-        targetZone: mainMenu
-        config:
-            title: pim_asset_manager.asset_family.title
-            iconModifier: iconAssetFamily
-            to: akeneo_asset_manager_asset_family_index
+    # pim-menu-asset-family:
+    #     module: pim/menu/tab
+    #     parent: pim-menu
+    #     # aclResourceId: pimee_product_asset_index //TODO einrich
+    #     position: 33
+    #     targetZone: mainMenu
+    #     config:
+    #         title: pim_asset_manager.asset_family.title
+    #         iconModifier: iconAssetFamily
+    #         to: akeneo_asset_manager_asset_family_index
 
     pim-asset-family-index-user-navigation:
         module: pim/menu/user-navigation
