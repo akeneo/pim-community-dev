@@ -1,7 +1,7 @@
-Job: Job
+Job: Treball
 Connector: Connector
 pim_import_export:
-  job: Job
+  job: Treball
   connector: Connector
   status:
     0: A punt
@@ -142,7 +142,7 @@ Warnings: Avisos
 Summary: Sumari
 Start: Començar
 End: Fi
-set_attribute_requirements: Establir els requeriments d'atributs
+set_attribute_requirements: Establir els requeriments d'atribut
 COMPLETED: Acabat
 STARTING: Començant
 STARTED: Començat
