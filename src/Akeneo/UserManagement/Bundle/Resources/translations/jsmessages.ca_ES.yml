@@ -45,7 +45,7 @@ pim_user_management:
         name_prefix: Prefix del nom
         first_name: Nom
         middle_name: Primer cognom
-        last_name: Segon cognom
+        last_name: Cognoms
         name_suffix: Sufix del nom
         phone: Telèfon
         avatar: Avatar

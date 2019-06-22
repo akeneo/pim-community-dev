@@ -135,10 +135,16 @@ pim_enrich:
       module:
         delete:
           confirm: Er du sikker på du vil slette denne import profil?
+      flash:
+        delete:
+          success: Importer profil blev slettet
     export_profile:
       module:
         delete:
           confirm: Er du sikker på du vil slette denne eksportprofil?
+      flash:
+        delete:
+          success: Eksport profil blev slettet
 pim_title:
   pim_importexport_export_profile_index: Eksporter profil håndtering
   pim_importexport_export_profile_edit: Eksportere profiler {{ job.label }} | Rediger
