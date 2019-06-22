@@ -31,15 +31,15 @@ pim_api:
     overall_access: Acesso total à API Web
     attribute: Atributos
     attribute_option: Opções de atributo
-    attribute_group: Grupo de atributos
+    attribute_group: Grupos de Atributos
     category: Categorias
     family: Famílias
     family_variant: Variantes de família
     channel: Canais
-    locale: Localidades
+    locale: Locais
     currency: Moedas
-    association_type: Tipos de associação
+    association_type: Tipos de Associação
 pim_user:
   roles:
     tab:
-      api: Permissões de API Web
+      api: Permissões da API Web

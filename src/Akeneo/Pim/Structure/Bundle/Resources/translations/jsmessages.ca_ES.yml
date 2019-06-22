@@ -86,7 +86,7 @@ pim_enrich.entity.association_type:
     create:
       success: Tipus d'associació creat correctament
     delete:
-      success: Tipus d'associació suprimit correctament
+      success: Tipus d'associació suprimid correctament
       fail: No podeu eliminar aquest tipus d'associació
   page_title:
     index: "]-Inf, 1]{{ count }} tipus d'associació|]1, Inf[{{ count }} tipus d'associació"
@@ -123,7 +123,7 @@ pim_enrich.entity.attribute:
       fail: No s'ha pogut actualitzar l'atribut.
       fields_not_ready: "Ara no es pot guardar l'atribut. Els següents camps no estan preparats: {{ fields }}"
     delete:
-      success: Atribut suprimit correctament
+      success: L'atribut s'ha suprimit correctament
       fail: No podeu eliminar aquest atribut
   page_title:
     index: "]-Inf, 1]{{ count }} atribut|]1, Inf[{{ count }} atributs"
@@ -233,5 +233,5 @@ pim_enrich.mass_edit.family:
   operation:
     set_requirements:
       label: Establir els requeriments d'atributs
-      description: Els següents requeriments d'atributs s'aplicaran a les famílies seleccionades
+      description: Els següents requisits d'atributs s'aplicaran a les famílies seleccionades
       label_count: "{1}Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">1 família</span>|]1, Inf[Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílies</span>"

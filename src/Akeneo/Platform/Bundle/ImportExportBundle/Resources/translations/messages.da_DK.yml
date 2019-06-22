@@ -15,9 +15,9 @@ pim_import_export:
     7: Opgivet
     8: Ukendt
   download_archive:
-    archive: Download genereret Arkiv | download genereret arkiver
-    output: download genererede fil|download genererede filer
-    input: download læs file|download læse filer
+    archive: Download genereret arkiv | download genererede arkiver
+    output: hent genererede fil|hent genererede filer
+    input: hent læs file|hent læse filer
     invalid_xlsx: download ugyldige data
     invalid_csv: download ugyldige data
   notification:
@@ -59,19 +59,19 @@ pim_importexport:
       show: Vis en eksportprofil
       edit: Rediger en eksportprofil
       remove: Fjern en eksportprofil
-      launch: Aktiver en eksportprofil
-      property_edit: Redigere en eksport profil generelle egenskaber
-      property_show: Redigere en eksport profil generelle egenskaber
+      launch: Iværksæt en eksportprofil
+      property_edit: Redigere ksport profilens generelle egenskaber
+      property_show: Redigere eksport profilens generelle egenskaber
       history: Se eksport profil historik
-      content_edit: Redigere en eksport profilindhold
-      content_show: Vis en eksport profilindhold
+      content_edit: Redigere ksport profilindhold
+      content_show: Vis eksport profilindhold
     import_profile:
       index: Se import profillisten
-      create: Opret en import profil
-      show: Vis en import profil
-      edit: Rediger en importprofil
-      remove: Fjern en importprofil
-      launch: Aktiver en importprofil
+      create: Opret import profil
+      show: Vis import profil
+      edit: Rediger importprofil
+      remove: Fjern importprofil
+      launch: Aktiver importprofil
       history: Se eksporter profil historik
     export_execution:
       index: Se eksport rapportlisten
@@ -81,8 +81,8 @@ pim_importexport:
     import_execution:
       index: Se import rapport liste
       show: Se import rapportdetaljer
-      dl_log: Download import rapport log
-      dl_files: Download importerede filer
+      dl_log: Hent import rapport log
+      dl_files: Hent importerede filer
   acl_group:
     export: Eksport profiler
     import: Import profiler
@@ -123,10 +123,10 @@ popin.create:
 'You must select a file to upload': Du skal vælge den fil der skal indlæses
 Download log: Download log
 Show profile: Vis profil
-execution details: udførelse detaljer
+execution details: udførelses detaljer
 job_execution.summary:
   read: læs
-  write: skrevet
+  write: gemt
   skip: sprunget over
   create: oprettet
   update: opdateret
