@@ -110,10 +110,10 @@ class UserNormalizer implements NormalizerInterface
                         null :
                         $this->fileNormalizer->normalize($user->getAvatar())['filePath'],
                 ],
-            ],
-            'environment' => [
-                'upload_max_filesize' => $this->uploadMaxFilesize(),
-            ],
+                'environment' => [
+                    'upload_max_filesize' => $this->uploadMaxFilesize(),
+                ],
+            ]
         ];
 
         $types = $this->datagridViewRepo->getDatagridViewTypeByUser($user);

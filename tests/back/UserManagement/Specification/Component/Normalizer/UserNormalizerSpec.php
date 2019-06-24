@@ -88,10 +88,10 @@ class UserNormalizerSpec extends ObjectBehavior
                 'form'  => 'pim-user-show',
                 'image' => [
                     'filePath' => null
+                ],
+                'environment' => [
+                    'upload_max_filesize' => 33554432,
                 ]
-            ],
-            'environment' => [
-                'upload_max_filesize' => 33554432,
             ],
             'properties' => [
                 'property_name' => 'value',
