@@ -819,7 +819,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (null === $this->parent && null !== $parent) {
             $this->events->add(new ParentOfProductAdded($parent->getCode()));
-        } elseif (null !== $this->parent && null !== $parent) {
+        } elseif (null !== $this->parent && null !== $parent && $parent !== $this->parent) {
             $this->events->add(new ParentOfProductChanged($this->parent->getCode(), $parent->getCode()));
         }
 
