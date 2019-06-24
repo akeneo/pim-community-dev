@@ -54,16 +54,13 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
     /** @var LocaleAccessManager */
     private $localeAccessManager;
 
-    /**
-     * @todo merge 3.2: the last argument ($localeAccessManager) must not be nullable anymore
-     */
     public function __construct(
         GroupRepository $groupRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
         JobProfileAccessManager $jobInstanceAccessManager,
         CategoryAccessManager $productCategoryAccessManager,
         CategoryAccessManager $productAssetCategoryAccessManager,
-        ?LocaleAccessManager $localeAccessManager = null
+        LocaleAccessManager $localeAccessManager
     ) {
         $this->groupRepository = $groupRepository;
         $this->attributeGroupAccessManager = $attributeGroupAccessManager;
@@ -116,10 +113,7 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
         } elseif ($subject instanceof ProductAssetCategoryInterface) {
             $this->productAssetCategoryAccessManager->setAccessLikeParent($subject, ['owner' => false]);
         } elseif ($subject instanceof LocaleInterface) {
-            // @todo merge 3.2: remove condition
-            if (null !== $this->localeAccessManager) {
-                $this->localeAccessManager->setAccess($subject, [$defaultGroup], [$defaultGroup]);
-            }
+            $this->localeAccessManager->setAccess($subject, [$defaultGroup], [$defaultGroup]);
         }
     }
 }
