@@ -59,6 +59,8 @@ class PendingSubscriptionProcessorSpec extends ObjectBehavior
         $subscription = new ProductSubscription(new ProductId(42), new SubscriptionId('subscription-42'), []);
         $suggestedDataFactory->fromSubscription($subscription)->willReturn(null);
 
-        $this->shouldThrow(InvalidItemException::class)->during('process', [$subscription]);
+        $this
+            ->shouldThrow(InvalidItemException::class)
+            ->during('process', [$subscription]);
     }
 }
