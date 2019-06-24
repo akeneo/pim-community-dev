@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.50 (2019-06-24)
+
 ## Bug fixes:
 
 - PIM-8464: Fix the product variant breadcrumb size
