@@ -18,6 +18,3 @@ services:
         class: 'Akeneo\Platform\Bundle\UIBundle\Controller\InternalApi\FormExtensionController'
         arguments:
             - '@pim_enrich.provider.form_extension'
-
-    pim_ui.controller.environment:
-        class: Akeneo\Platform\Bundle\UIBundle\Controller\InternalApi\EnvironmentController

@@ -12,10 +12,10 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
-    'pim/common/environment',
+    'pim/user-context',
     'oro/messenger',
     'pim/template/export/common/edit/upload'
-], function ($, _, __, BaseForm, Environment, messenger, template) {
+], function ($, _, __, BaseForm, UserContext, messenger, template) {
     return BaseForm.extend({
         template: _.template(template),
         events: {
@@ -58,19 +58,17 @@ define([
 
             const uploadedFile = input.files[0];
 
-            this.validateUploadedFileSize(uploadedFile).then((isValid) => {
-                if (!isValid) {
-                    messenger.notify('error', __('pim_import_export.entity.import_profile.flash.upload.error_too_big'));
+            if (!this.validateUploadedFileSize(uploadedFile)) {
+                messenger.notify('error', __('pim_import_export.entity.import_profile.flash.upload.error_too_big'));
 
-                    return;
-                }
+                return;
+            }
 
-                this.setData({file: uploadedFile});
+            this.setData({file: uploadedFile});
 
-                this.getRoot().trigger('pim_enrich:form:job:file_updated');
+            this.getRoot().trigger('pim_enrich:form:job:file_updated');
 
-                this.render();
-            });
+            this.render();
 
         },
 
@@ -92,11 +90,10 @@ define([
          * @returns {boolean}
          */
         validateUploadedFileSize(uploadedFile) {
-            const fileSize = uploadedFile.size / 1024 / 1024; // in MB
+            const fileSize = uploadedFile.size;
+            const environment = UserContext.get('environment');
 
-            return Environment.getVariables().then((config) => {
-                return fileSize < config.upload_max_file_size;
-            });
+            return fileSize < environment.upload_max_filesize;
         }
     });
 });

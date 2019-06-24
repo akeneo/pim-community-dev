@@ -108,9 +108,12 @@ class UserNormalizer implements NormalizerInterface
                 'image' => [
                     'filePath' => null === $user->getAvatar() ?
                         null :
-                        $this->fileNormalizer->normalize($user->getAvatar())['filePath']
-                ]
-            ]
+                        $this->fileNormalizer->normalize($user->getAvatar())['filePath'],
+                ],
+            ],
+            'environment' => [
+                'upload_max_filesize' => $this->uploadMaxFilesize(),
+            ],
         ];
 
         $types = $this->datagridViewRepo->getDatagridViewTypeByUser($user);
@@ -121,11 +124,11 @@ class UserNormalizer implements NormalizerInterface
                 = $defaultView === null ? null : $defaultView->getId();
         }
 
-        $normalizedProperties = array_reduce($this->properties, function ($result, string $propertyName) use ($user) {
+        $normalizedProperties = array_reduce($this->properties, function($result, string $propertyName) use ($user) {
             return $result + [$propertyName => $user->getProperty($propertyName)];
         }, []);
 
-        $normalizedCompound = array_map(function ($normalizer) use ($user, $format, $context) {
+        $normalizedCompound = array_map(function($normalizer) use ($user, $format, $context) {
             return $normalizer->normalize($user, $format, $context);
         }, $this->userNormalizers);
 
@@ -143,23 +146,16 @@ class UserNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param UserInterface $user
-     *
      * @return string[]
      */
     private function getRoleNames(UserInterface $user): array
     {
-        return $user->getRolesCollection()->map(function (Role $role) {
+        return $user->getRolesCollection()->map(function(Role $role) {
             return $role->getRole();
         })->toArray();
     }
 
-    /**
-     * @param UserInterface $user
-     *
-     * @return string
-     */
-    private function getFormName($user): string
+    private function getFormName(UserInterface $user): string
     {
         if ($this->securityFacade->isGranted('pim_user_user_edit')) {
             return 'pim-user-edit-form';
@@ -173,5 +169,28 @@ class UserNormalizer implements NormalizerInterface
         }
 
         return 'pim-user-show';
+    }
+
+    /**
+     * Server upload limit in bytes
+     */
+    private function uploadMaxFilesize(): int
+    {
+        $uploadMaxFilesize = trim(ini_get('upload_max_filesize'));
+        if (is_numeric($uploadMaxFilesize)) {
+            return (int) $uploadMaxFilesize;
+        }
+        $unit = strtolower($uploadMaxFilesize[strlen($uploadMaxFilesize) - 1]);
+        $uploadMaxFilesize = (int) substr($uploadMaxFilesize, 0, -1);
+        switch ($unit) {
+            case 'g':
+                $uploadMaxFilesize *= 1024;
+            case 'm':
+                $uploadMaxFilesize *= 1024;
+            case 'k':
+                $uploadMaxFilesize *= 1024;
+        }
+
+        return $uploadMaxFilesize;
     }
 }

@@ -14,8 +14,3 @@ form_extensions_internal_api:
 measures:
     resource: '@PimUIBundle/Resources/config/routing/internal_api/measures.yml'
     prefix: /configuration/measures
-
-pim_ui_environment_rest_list:
-    path: /environment
-    defaults: { _controller: PimUIBundle:InternalApi\Environment:get }
-    methods: [GET]
