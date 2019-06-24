@@ -16,6 +16,9 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 use Webmozart\Assert\Assert;
 
 /**
+ * A RuleTemplate is the skeleton of a RuleInterface.
+ * It allows patterns that will be filled by values of an asset.
+ *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
@@ -24,16 +27,16 @@ class RuleTemplate
     /** @var array  */
     private $content;
 
-    public function __construct(array $content)
+    private function __construct(array $content)
     {
+        Assert::keyExists($content, 'conditions');
+        Assert::keyExists($content, 'actions');
+
         $this->content = $content;
     }
 
     public static function createFromNormalized(array $content)
     {
-        Assert::keyExists($content, 'conditions');
-        Assert::keyExists($content, 'actions');
-
         return new self($content);
     }
 

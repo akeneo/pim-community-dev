@@ -20,12 +20,17 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
+ * Compile a RuleTemplate given an AccessibleAsset to create a RuleInterface
+ *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
 class RuleCompiler
 {
+    /** @var array We only allow those keys to be replaced by asset values in conditions */
     private const CONDITIONS_KEYS_TO_REPLACE = ['field', 'value'];
+
+    /** @var array We only allow those keys to be replaced by asset values in actions */
     private const ACTIONS_KEYS_TO_REPLACE = ['field', 'value'];
 
     /** @var DenormalizerInterface */
@@ -37,19 +42,23 @@ class RuleCompiler
     }
 
     /**
+     * Takes an $accessibleAsset to fill in the given $ruleTemplate. This results in a ready-to-use RuleInterface
+     * for the RuleEngine of the PIM.
+     *
+     * Example of a rule template:
      * {
      *   conditions: [
      *      {
      *          field: "sku",
      *          operator: "EQUALS",
-     *          value: "{{product_sku}}"
+     *          value: "{{product_sku}}" # Will be replaced by the attribute "product_sku" of the asset
      *      }
      *   ],
      *   actions: [
      *      {
      *          type: "add",
-     *          field: "{{attribute}}",
-     *          value: "{{code}}"
+     *          field: "{{attribute}}", # Will be replaced by the attribute "attribute" of the asset
+     *          value: "{{code}}" # Will be replaced by the code of the asset
      *      }
      *   ]
      * }
