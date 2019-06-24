@@ -124,11 +124,11 @@ class UserNormalizer implements NormalizerInterface
                 = $defaultView === null ? null : $defaultView->getId();
         }
 
-        $normalizedProperties = array_reduce($this->properties, function($result, string $propertyName) use ($user) {
+        $normalizedProperties = array_reduce($this->properties, function ($result, string $propertyName) use ($user) {
             return $result + [$propertyName => $user->getProperty($propertyName)];
         }, []);
 
-        $normalizedCompound = array_map(function($normalizer) use ($user, $format, $context) {
+        $normalizedCompound = array_map(function ($normalizer) use ($user, $format, $context) {
             return $normalizer->normalize($user, $format, $context);
         }, $this->userNormalizers);
 
@@ -150,7 +150,7 @@ class UserNormalizer implements NormalizerInterface
      */
     private function getRoleNames(UserInterface $user): array
     {
-        return $user->getRolesCollection()->map(function(Role $role) {
+        return $user->getRolesCollection()->map(function (Role $role) {
             return $role->getRole();
         })->toArray();
     }
@@ -182,13 +182,17 @@ class UserNormalizer implements NormalizerInterface
         }
         $unit = strtolower($uploadMaxFilesize[strlen($uploadMaxFilesize) - 1]);
         $uploadMaxFilesize = (int) substr($uploadMaxFilesize, 0, -1);
+
         switch ($unit) {
             case 'g':
-                $uploadMaxFilesize *= 1024;
+                $uploadMaxFilesize *= 1024 * 1024 *1024;
+                break;
             case 'm':
-                $uploadMaxFilesize *= 1024;
+                $uploadMaxFilesize *= 1024 * 1024;
+                break;
             case 'k':
                 $uploadMaxFilesize *= 1024;
+                break;
         }
 
         return $uploadMaxFilesize;
