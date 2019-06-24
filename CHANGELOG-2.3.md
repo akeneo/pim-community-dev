@@ -11,6 +11,10 @@
     added: `Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface` and `Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface`
     removed: `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface` and `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 
+## Improvement
+
+- PIM-8469: Bump Symfony version to 3.4.28 to fix Intl issues.
+
 # 2.3.49 (2019-06-19)
 
 ## Bug fixes
