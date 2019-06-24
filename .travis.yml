@@ -6,7 +6,7 @@ php:
 # Only build branches starting by "einrich-""
 branches:
   only:
-    - /^einrich-?.*$/
+    - /^(einrich|assets)-?.*$/
 
 # Extra dependencies
 services:
@@ -51,25 +51,35 @@ install:
     - yarn less
     - yarn webpack-test --env=prod
 
-script:
-    - yarn unit
-    - yarn integration
-    - NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js src/Akeneo/ReferenceEntity/tests/features
-    - NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./src/Akeneo/AssetManager/tests/front/acceptance/run-steps.js src/Akeneo/AssetManager/tests/features
-    - yarn lint
-    - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
-    - vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
-    - vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
-    - vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back
-    - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back
-    - vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
-    - vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --no-interaction --format=progress
-    - vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back
-    - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-    - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction
-    - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction
-    # phpspec coverage
-    # - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec_cover.yml.dist --no-interaction
+jobs:
+  include:
+    - stage: Reference Entities Tests
+      if: branch =~ /^einrich-?.*$/
+      script:
+          - yarn unit
+          - yarn integration
+          - NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js src/Akeneo/ReferenceEntity/tests/features
+          - yarn lint
+          - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
+          - vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
+          - vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
+          - vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back
+          - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+          - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction
+
+    - stage: Asset Manager Tests
+      if: branch =~ /^assets-?.*$/
+      script:
+        - yarn unit
+        - yarn integration
+        - NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./src/Akeneo/AssetManager/tests/front/acceptance/run-steps.js src/Akeneo/AssetManager/tests/features
+        - yarn lint
+        - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back
+        - vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
+        - vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --no-interaction --format=progress
+        - vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back
+        - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+        - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction
 
 notifications:
   email: false
