@@ -44,27 +44,23 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     protected $filter;
 
     /** @var int */
-    protected $batchSize;
+    protected $batchSize = 100;
 
-    /** @var CountProductModelsAndChildrenProductModelsInterface|null */
+    /** @var CountProductModelsAndChildrenProductModelsInterface */
     private $countProductModelsAndChildrenProductModels;
 
-    /** @var CountVariantProductsInterface|null */
+    /** @var CountVariantProductsInterface */
     private $countVariantProducts;
 
-    /**
-     * @todo pull-up 3.2 Remove `null` on dependencies injection for `$countProductModelsAndChildrenProductModels` and
-     *      `$countVariantProducts` and check `countProductsToDelete` and `countProductModelsToDelete` functions for more.
-     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         BulkRemoverInterface $productRemover,
         BulkRemoverInterface $productModelRemover,
         EntityManagerClearerInterface $cacheClearer,
         ObjectFilterInterface $filter,
-        int $batchSize = 100,
-        ?CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels = null,
-        ?CountVariantProductsInterface $countVariantProducts = null
+        int $batchSize,
+        CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
+        CountVariantProductsInterface $countVariantProducts
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->productRemover = $productRemover;
@@ -199,14 +195,11 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     /**
      * @param ProductInterface[] $products
      * @param ProductModelInterface[] $productModels
+     *
+     * @return int
      */
     private function countProductsToDelete(array $products, array $productModels): int
     {
-        /* @todo pull-up 3.2 To remove */
-        if (null === $this->countVariantProducts) {
-            return count($products);
-        }
-
         return count($products) + $this->countVariantProducts->forProductModelCodes(
             array_map(
                 function (ProductModelInterface $productModel) {
@@ -219,14 +212,11 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
 
     /**
      * @param ProductModelInterface[] $productModels
+     *
+     * @return int
      */
     private function countProductModelsToDelete(array $productModels): int
     {
-        /* @todo pull-up 3.2 To remove */
-        if (null === $this->countProductModelsAndChildrenProductModels) {
-            return count($productModels);
-        }
-
         return $this->countProductModelsAndChildrenProductModels->forProductModelCodes(
             array_map(
                 function (ProductModelInterface $productModel) {
