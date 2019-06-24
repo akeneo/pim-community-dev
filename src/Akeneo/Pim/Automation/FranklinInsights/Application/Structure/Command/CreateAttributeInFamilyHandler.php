@@ -15,12 +15,15 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeAddedToFamily;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeAddedToFamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -49,9 +52,8 @@ class CreateAttributeInFamilyHandler
 
     public function handle(CreateAttributeInFamilyCommand $command): void
     {
-        $this->validate($command);
+        $pimAttributeType = $this->convertFranklinAttributeTypeToPimAttributeType($command->getFranklinAttributeType());
 
-        $pimAttributeType = $command->getFranklinAttributeType()->convertToPimAttributeType();
         $this->createAttribute->create(
             $command->getPimAttributeCode(),
             new AttributeLabel((string) $command->getFranklinAttributeLabel()),
@@ -67,13 +69,14 @@ class CreateAttributeInFamilyHandler
         );
     }
 
-    private function validate(CreateAttributeInFamilyCommand $command): void
+    public function convertFranklinAttributeTypeToPimAttributeType(FranklinAttributeType $franklinAttributeType): AttributeType
     {
-        if (FranklinAttributeType::METRIC_TYPE === (string) $command->getFranklinAttributeType()) {
-            throw new \InvalidArgumentException(sprintf(
-                'Can not create attribute. Attribute of type "%s" is not allowed',
-                FranklinAttributeType::METRIC_TYPE
-            ));
+        if (FranklinAttributeType::METRIC_TYPE === (string) $franklinAttributeType) {
+            return new AttributeType(AttributeTypes::TEXT);
         }
+
+        return new AttributeType(
+            array_search((string) $franklinAttributeType, AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS)
+        );
     }
 }

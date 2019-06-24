@@ -36,12 +36,11 @@ Feature: Create an attribute and add it to the family
     When I create the boolean attribute "ports count" in the family "router"
     Then the family "router" should have the boolean attribute "ports_count"
 
-  Scenario: Fail to create a metric attribute and add it to a family
+  Scenario: Successfully create a metric attribute as a text attribute and add it to a family
     Given the family "router"
     And the attribute group "franklin"
-    When I create the metric attribute "ports count" in the family "router"
-    Then the attribute "ports_count" should not be created
-    And a not supported metric type message should be sent
+    When I create the metric attribute "product size" in the family "router"
+    Then the family "router" should have the text attribute "product_size"
 
   Scenario: Successfully create an attribute in an unexisting group
     Given the family "router"

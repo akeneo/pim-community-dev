@@ -77,7 +77,7 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
 
         $addAttributeToFamily->addAttributeToFamily($pimAttrCode, $pimFamilyCode)->shouldBeCalled();
 
-        $command= new CreateAttributeInFamilyCommand(
+        $command = new CreateAttributeInFamilyCommand(
             $pimFamilyCode,
             $pimAttrCode,
             $franklinAttrLabel,
@@ -86,14 +86,27 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
         $this->handle($command)->shouldReturn(null);
     }
 
-    public function it_throws_exception_on_attribute_creation_when_type_is_metric()
-    {
-        $pimAttrCode = AttributeCode::fromLabel('Franklin attr label');
+    public function it_creates_a_text_attribute_for_a_metric_attribute(
+        $createAttribute,
+        $addAttributeToFamily,
+        $attributeCreatedRepository,
+        $attributeAddedToFamilyRepository
+    ) {
+        $pimAttrCode = AttributeCode::fromLabel('Franklin metric attribute label');
         $pimFamilyCode = new FamilyCode('my_family_code');
-        $franklinAttrLabel = new FranklinAttributeLabel('Franklin attr label');
+        $franklinAttrLabel = new FranklinAttributeLabel('Franklin metric attribute label');
         $franklinAttrType = new FranklinAttributeType('metric');
 
-        $exception = new \InvalidArgumentException('Can not create attribute. Attribute of type "metric" is not allowed');
+        $createAttribute->create(
+            $pimAttrCode,
+            new AttributeLabel('Franklin metric attribute label'),
+            new AttributeType(AttributeTypes::TEXT)
+        )->shouldBeCalled();
+
+        $attributeCreatedRepository->save(Argument::type(FranklinAttributeCreated::class));
+        $attributeAddedToFamilyRepository->save(Argument::type(FranklinAttributeAddedToFamily::class));
+
+        $addAttributeToFamily->addAttributeToFamily($pimAttrCode, $pimFamilyCode)->shouldBeCalled();
 
         $command = new CreateAttributeInFamilyCommand(
             $pimFamilyCode,
@@ -101,7 +114,6 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
             $franklinAttrLabel,
             $franklinAttrType
         );
-
-        $this->shouldThrow($exception)->during('handle', [$command]);
+        $this->handle($command)->shouldReturn(null);
     }
 }
