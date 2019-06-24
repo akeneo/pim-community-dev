@@ -69,6 +69,22 @@ SQL;
         return $this->isIdentifierExisting($statement);
     }
 
+    public function withCode(AssetCode $code): bool
+    {
+        $query = <<<SQL
+        SELECT EXISTS (
+            SELECT 1
+            FROM akeneo_asset_manager_asset
+            WHERE code = :code
+        ) as is_existing
+SQL;
+        $statement = $this->sqlConnection->executeQuery($query, [
+            'code' => (string) $code
+        ]);
+
+        return $this->isIdentifierExisting($statement);
+    }
+
     private function isIdentifierExisting(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();

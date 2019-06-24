@@ -27,7 +27,7 @@ Feature: Delete one asset
     When the user deletes the asset
     Then the user should see a success message on the edit page
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Cannot delete a asset without the rights
     Given a valid asset
     And the user has the locale permission to edit the asset
