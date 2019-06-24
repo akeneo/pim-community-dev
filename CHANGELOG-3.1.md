@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - DAPI-9: Fix use of the database name in a SQL query
+- PIM-8451: Add pagination for rules grid in attribute edit form
 
 # 3.1.6 (2019-06-11)
 
@@ -26,13 +27,13 @@
 
 ## Bug fixes
 
-- PIM-8337: fix duplicate 'View' type in view selector 
+- PIM-8337: fix duplicate 'View' type in view selector
 
 # 3.1.2 (2019-05-03)
 
 ## Bug fixes
 
-- Fix the migration script `Version_3_1_20190305152628_change_attribute_column_in_franklin_mapping` to correctly remove the foreign key and unique constraints on `pimee_franklin_insights_identifier_mapping` 
+- Fix the migration script `Version_3_1_20190305152628_change_attribute_column_in_franklin_mapping` to correctly remove the foreign key and unique constraints on `pimee_franklin_insights_identifier_mapping`
 
 # 3.1.1 (2019-05-02)
 
