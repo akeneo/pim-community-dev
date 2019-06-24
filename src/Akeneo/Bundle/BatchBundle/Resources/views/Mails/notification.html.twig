@@ -17,10 +17,10 @@
     </ul>
 </p>
 
-{% if base_url is not empty %}
+{% if akeneo_pim_url is not empty %}
 <p>
     You can view full summary page in the
-    <a href="{{ base_url }}/{{ path('pim_enrich_job_tracker_show', {'id': jobExecution.id}) }}">Process Tracker</a>.
+    <a href="{{ akeneo_pim_url }}/{{ path('pim_enrich_job_tracker_show', {'id': jobExecution.id}) }}">Process Tracker</a>.
 </p>
 {% endif %}
 
