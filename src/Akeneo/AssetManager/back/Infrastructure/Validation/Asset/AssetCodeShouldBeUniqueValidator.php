@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -67,15 +66,11 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
 
     private function validateCommand(CreateAssetCommand $command): void
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier);
         $code = AssetCode::fromString($command->code);
-        $alreadyExists = $this->assetExists->withAssetFamilyAndCode(
-            $assetFamilyIdentifier,
-            $code
-        );
+        $alreadyExists = $this->assetExists->withCode($code);
+
         if ($alreadyExists) {
             $this->context->buildViolation(AssetCodeShouldBeUnique::ERROR_MESSAGE)
-                ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier)
                 ->setParameter('%code%', $code)
                 ->atPath('code')
                 ->addViolation();

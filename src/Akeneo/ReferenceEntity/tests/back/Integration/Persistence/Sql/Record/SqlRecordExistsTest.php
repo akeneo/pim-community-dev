@@ -76,17 +76,6 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * TODO: PIM-8405 this class should be removed from reference entity context
-     */
-    public function it_tells_if_there_is_a_corresponding_record_code()
-    {
-        $this->assertTrue($this->recordExists->withCode($this->recordCode));
-        $this->assertFalse($this->recordExists->withCode(RecordCode::fromString('unknown')));
-    }
-
     private function resetDB(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();

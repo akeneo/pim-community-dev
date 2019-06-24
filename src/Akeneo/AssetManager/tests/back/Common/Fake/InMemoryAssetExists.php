@@ -49,4 +49,15 @@ class InMemoryAssetExists implements AssetExistsInterface
 
         return $hasAsset;
     }
+
+    public function withCode(AssetCode $code): bool
+    {
+        foreach ($this->assetRepository->all() as $asset) {
+            if ($asset->getCode()->equals($code)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

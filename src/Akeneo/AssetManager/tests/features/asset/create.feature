@@ -40,6 +40,16 @@ Feature: Create a asset
       | {"en_US": "Starck"} |
     Then there should be a validation error with message 'You cannot create the asset "Starck" because you have reached the limit of 1000 assets for this asset family'
 
+  @acceptance-back
+  Scenario: Cannot create an asset if code already exists
+    When the user creates a asset "my_code" for entity "designer" with:
+      | labels |
+      | {}     |
+    And the user creates a asset "my_code" for entity "designer" with:
+      | labels |
+      | {}     |
+    Then there should be a validation error with message 'An asset already exists with code "my_code"'
+
   @acceptance-front
   Scenario: Creating a asset
     When the user asks for the asset family "designer"

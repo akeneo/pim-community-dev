@@ -76,6 +76,15 @@ class SqlAssetExistsTest extends SqlIntegrationTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_tells_if_there_is_a_corresponding_record_code()
+    {
+        $this->assertTrue($this->assetExists->withCode($this->assetCode));
+        $this->assertFalse($this->assetExists->withCode(AssetCode::fromString('unknown')));
+    }
+
     private function resetDB(): void
     {
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();

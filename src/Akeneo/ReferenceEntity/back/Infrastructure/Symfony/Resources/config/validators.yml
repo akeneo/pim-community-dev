@@ -6,14 +6,6 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.record_is_unique' }
 
-    # TODO: PIM-8405 this service should be removed from reference entity context
-    akeneo_referenceentity.infrastructure.validation.record.asset_code_should_be_unique:
-        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\AssetCodeShouldBeUniqueValidator
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.asset_is_unique' }
-
     akeneo_referenceentity.infrastructure.validation.reference_entity.reference_entity_code_should_be_unique:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityCodeShouldBeUniqueValidator
         arguments:

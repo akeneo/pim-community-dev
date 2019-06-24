@@ -18,7 +18,7 @@ pim_asset_manager:
         validation:
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
-                should_be_unique: 'The asset code already exists for asset family "%asset_family_identifier%" and asset code "%code%"'
+                should_be_unique: 'An asset already exists with code "%code%"'
                 should_exist: 'The asset was not found'
             text:
                 incompatible_with_regular_expression: 'The text is incompatible with the regular expression "%regular_expression%"'

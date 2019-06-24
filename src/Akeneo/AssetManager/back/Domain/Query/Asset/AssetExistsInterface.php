@@ -22,4 +22,6 @@ interface AssetExistsInterface
     public function withIdentifier(AssetIdentifier $assetIdentifier): bool;
 
     public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): bool;
+
+    public function withCode(AssetCode $code): bool;
 }

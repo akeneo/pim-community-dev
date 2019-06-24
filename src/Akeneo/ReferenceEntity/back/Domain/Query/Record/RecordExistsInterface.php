@@ -22,9 +22,4 @@ interface RecordExistsInterface
     public function withIdentifier(RecordIdentifier $recordIdentifier): bool;
 
     public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): bool;
-
-    /**
-     * TODO: PIM-8405 This method should be removed from the Reference Entity bounded context after split
-     */
-    public function withCode(RecordCode $code): bool;
 }
