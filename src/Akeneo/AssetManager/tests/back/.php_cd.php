@@ -25,6 +25,7 @@ $rules = [
         'Akeneo\AssetManager\Application',
         'Akeneo\AssetManager\Domain',
         'Akeneo\Tool\Component',
+        'Akeneo\Tool\Bundle\RuleEngineBundle\Model',
         'Akeneo\Tool\Bundle\ElasticsearchBundle',
         'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',

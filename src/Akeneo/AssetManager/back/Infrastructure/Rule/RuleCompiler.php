@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Rule;
+namespace Akeneo\AssetManager\Infrastructure\Rule;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\RuleTemplate;
-use Akeneo\ReferenceEntity\Domain\Query\Record\AccessibleRecord;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
+use Akeneo\AssetManager\Domain\Query\Asset\AccessibleAsset;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -56,9 +56,9 @@ class RuleCompiler
      *
      * @throws \Exception
      */
-    public function compile(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): RuleInterface
+    public function compile(RuleTemplate $ruleTemplate, AccessibleAsset $accessibleAsset): RuleInterface
     {
-        $compiledContent = $this->compileTemplateWithAccessibleRecord($ruleTemplate, $accessibleRecord);
+        $compiledContent = $this->compileTemplateWithAccessibleAsset($ruleTemplate, $accessibleAsset);
 
         $ruleData = [
             'code' => '',
@@ -70,10 +70,10 @@ class RuleCompiler
         return $this->ruleDenormalizer->denormalize($ruleData, Rule::class);
     }
 
-    private function compileTemplateWithAccessibleRecord(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): array
+    private function compileTemplateWithAccessibleAsset(RuleTemplate $ruleTemplate, AccessibleAsset $accessibleAsset): array
     {
-        $compiledConditions = $this->compileConditionsWithAccessibleRecord($ruleTemplate, $accessibleRecord);
-        $compiledActions = $this->compileActionsWithAccessibleRecord($ruleTemplate, $accessibleRecord);
+        $compiledConditions = $this->compileConditionsWithAccessibleAsset($ruleTemplate, $accessibleAsset);
+        $compiledActions = $this->compileActionsWithAccessibleAsset($ruleTemplate, $accessibleAsset);
 
         return [
             'conditions' => $compiledConditions,
@@ -81,7 +81,7 @@ class RuleCompiler
         ];
     }
 
-    private function compileConditionsWithAccessibleRecord(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): array
+    private function compileConditionsWithAccessibleAsset(RuleTemplate $ruleTemplate, AccessibleAsset $accessibleAsset): array
     {
         $compiledConditions = [];
 
@@ -91,7 +91,7 @@ class RuleCompiler
                     continue;
                 }
 
-                $condition[$key] = $this->replacePatterns($value, $accessibleRecord);
+                $condition[$key] = $this->replacePatterns($value, $accessibleAsset);
             }
 
             $compiledConditions[] = $condition;
@@ -100,7 +100,7 @@ class RuleCompiler
         return $compiledConditions;
     }
 
-    private function compileActionsWithAccessibleRecord(RuleTemplate $ruleTemplate, AccessibleRecord $accessibleRecord): array
+    private function compileActionsWithAccessibleAsset(RuleTemplate $ruleTemplate, AccessibleAsset $accessibleAsset): array
     {
         $compiledActions = [];
 
@@ -110,7 +110,7 @@ class RuleCompiler
                     continue;
                 }
 
-                $action[$key] = $this->replacePatterns($value, $accessibleRecord);
+                $action[$key] = $this->replacePatterns($value, $accessibleAsset);
             }
 
             $compiledActions[] = $action;
@@ -119,16 +119,16 @@ class RuleCompiler
         return $compiledActions;
     }
 
-    private function replacePatterns(string $ruleValue, AccessibleRecord $accessibleRecord): string
+    private function replacePatterns(string $ruleValue, AccessibleAsset $accessibleAsset): string
     {
         preg_match_all('#{{(.*?)}}#', $ruleValue, $matchedPatterns);
 
         foreach ($matchedPatterns[1] as $pattern) {
-            if (!$accessibleRecord->hasValue(trim($pattern))) {
+            if (!$accessibleAsset->hasValue(trim($pattern))) {
                 continue;
             }
 
-            $assetValue = $accessibleRecord->getValue(trim($pattern));
+            $assetValue = $accessibleAsset->getValue(trim($pattern));
             if (is_array($assetValue)) {
                 $assetValue = implode(',', $assetValue);
             }

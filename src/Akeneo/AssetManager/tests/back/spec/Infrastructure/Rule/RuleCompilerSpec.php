@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Rule;
+namespace spec\Akeneo\AssetManager\Infrastructure\Rule;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\RuleTemplate;
-use Akeneo\ReferenceEntity\Domain\Query\Record\AccessibleRecord;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
+use Akeneo\AssetManager\Domain\Query\Asset\AccessibleAsset;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -17,10 +17,10 @@ class RuleCompilerSpec extends ObjectBehavior
         $this->beConstructedWith($ruleDenormalizer, Rule::class);
     }
 
-    public function it_compiles_a_rule_template_with_an_accessible_record(
+    public function it_compiles_a_rule_template_with_an_accessible_asset(
         DenormalizerInterface $ruleDenormalizer,
         RuleTemplate $ruleTemplate,
-        AccessibleRecord $accessibleRecord,
+        AccessibleAsset $accessibleAsset,
         Rule $rule
     ) {
         $conditions = [
@@ -47,13 +47,13 @@ class RuleCompilerSpec extends ObjectBehavior
         $ruleTemplate->getConditions()->willReturn($conditions);
         $ruleTemplate->getActions()->willReturn($actions);
 
-        $accessibleRecord->hasValue('code')->willReturn(true);
-        $accessibleRecord->hasValue('product_sku')->willReturn(true);
-        $accessibleRecord->hasValue('target_attribute')->willReturn(true);
+        $accessibleAsset->hasValue('code')->willReturn(true);
+        $accessibleAsset->hasValue('product_sku')->willReturn(true);
+        $accessibleAsset->hasValue('target_attribute')->willReturn(true);
 
-        $accessibleRecord->getValue('code')->willReturn('packshot_123');
-        $accessibleRecord->getValue('product_sku')->willReturn('product_53');
-        $accessibleRecord->getValue('target_attribute')->willReturn('packshot');
+        $accessibleAsset->getValue('code')->willReturn('packshot_123');
+        $accessibleAsset->getValue('product_sku')->willReturn('product_53');
+        $accessibleAsset->getValue('target_attribute')->willReturn('packshot');
 
         $expectedConditions = [
             [
@@ -83,13 +83,13 @@ class RuleCompilerSpec extends ObjectBehavior
             'actions' => $expectedActions
         ], Rule::class)->willReturn($rule);
 
-        $this->compile($ruleTemplate, $accessibleRecord);
+        $this->compile($ruleTemplate, $accessibleAsset);
     }
     
     public function it_replaces_only_fields_and_values_in_the_template(
         DenormalizerInterface $ruleDenormalizer,
         RuleTemplate $ruleTemplate,
-        AccessibleRecord $accessibleRecord,
+        AccessibleAsset $accessibleAsset,
         Rule $rule
     ) {
         $conditions = [
@@ -116,13 +116,13 @@ class RuleCompilerSpec extends ObjectBehavior
         $ruleTemplate->getConditions()->willReturn($conditions);
         $ruleTemplate->getActions()->willReturn($actions);
 
-        $accessibleRecord->hasValue('code')->willReturn(true);
-        $accessibleRecord->hasValue('product_sku')->willReturn(true);
-        $accessibleRecord->hasValue('target_attribute')->willReturn(true);
+        $accessibleAsset->hasValue('code')->willReturn(true);
+        $accessibleAsset->hasValue('product_sku')->willReturn(true);
+        $accessibleAsset->hasValue('target_attribute')->willReturn(true);
 
-        $accessibleRecord->getValue('code')->willReturn('packshot_123');
-        $accessibleRecord->getValue('product_sku')->willReturn('product_53');
-        $accessibleRecord->getValue('target_attribute')->willReturn('packshot');
+        $accessibleAsset->getValue('code')->willReturn('packshot_123');
+        $accessibleAsset->getValue('product_sku')->willReturn('product_53');
+        $accessibleAsset->getValue('target_attribute')->willReturn('packshot');
 
         $expectedConditions = [
             [
@@ -152,13 +152,13 @@ class RuleCompilerSpec extends ObjectBehavior
             'actions' => $expectedActions
         ], Rule::class)->willReturn($rule);
 
-        $this->compile($ruleTemplate, $accessibleRecord);
+        $this->compile($ruleTemplate, $accessibleAsset);
     }
     
-    public function it_does_not_replace_if_accessible_record_does_not_have_the_value(
+    public function it_does_not_replace_if_accessible_asset_does_not_have_the_value(
         DenormalizerInterface $ruleDenormalizer,
         RuleTemplate $ruleTemplate,
-        AccessibleRecord $accessibleRecord,
+        AccessibleAsset $accessibleAsset,
         Rule $rule
     ) {
         $conditions = [
@@ -185,12 +185,12 @@ class RuleCompilerSpec extends ObjectBehavior
         $ruleTemplate->getConditions()->willReturn($conditions);
         $ruleTemplate->getActions()->willReturn($actions);
 
-        $accessibleRecord->hasValue('code')->willReturn(true);
-        $accessibleRecord->hasValue('product_sku')->willReturn(true);
-        $accessibleRecord->hasValue('target_attribute')->willReturn(false);
+        $accessibleAsset->hasValue('code')->willReturn(true);
+        $accessibleAsset->hasValue('product_sku')->willReturn(true);
+        $accessibleAsset->hasValue('target_attribute')->willReturn(false);
 
-        $accessibleRecord->getValue('code')->willReturn('packshot_123');
-        $accessibleRecord->getValue('product_sku')->willReturn('product_53');
+        $accessibleAsset->getValue('code')->willReturn('packshot_123');
+        $accessibleAsset->getValue('product_sku')->willReturn('product_53');
 
         $expectedConditions = [
             [
@@ -220,6 +220,6 @@ class RuleCompilerSpec extends ObjectBehavior
             'actions' => $expectedActions
         ], Rule::class)->willReturn($rule);
 
-        $this->compile($ruleTemplate, $accessibleRecord);
+        $this->compile($ruleTemplate, $accessibleAsset);
     }
 }
