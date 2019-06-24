@@ -58,9 +58,7 @@ define([
 
             const uploadedFile = input.files[0];
 
-            if (!this.validateUploadedFileSize(uploadedFile)) {
-                messenger.notify('error', __('pim_import_export.entity.import_profile.flash.upload.error_too_big'));
-
+            if (!this.isUploadedFilesizeValid(uploadedFile)) {
                 return;
             }
 
@@ -89,11 +87,17 @@ define([
          * @param uploadedFile
          * @returns {boolean}
          */
-        validateUploadedFileSize(uploadedFile) {
+        isUploadedFilesizeValid(uploadedFile) {
             const fileSize = uploadedFile.size;
             const environment = UserContext.get('environment');
 
-            return fileSize < environment.upload_max_filesize;
+            if (fileSize > environment.upload_max_filesize) {
+                messenger.notify('error', __('pim_import_export.entity.import_profile.flash.upload.error_too_big'));
+
+                return false;
+            }
+
+            return true;
         }
     });
 });
