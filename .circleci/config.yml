@@ -268,7 +268,7 @@ jobs:
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
-          command:
+          command: |
             export ES_JAVA_OPTS='-Xms2g -Xmx2g'
             docker-compose up -d
       - run:

@@ -44,7 +44,7 @@ class ListProductWithApiPerformance extends WebTestCase
 
         $profileConfig->assert('metrics.sql.queries.count < 40', 'SQL queries');
         $profileConfig->assert('main.wall_time < 9s', 'Total time');
-        $profileConfig->assert('main.peak_memory < 80mb', 'Memory');
+        $profileConfig->assert('main.peak_memory < 100mb', 'Memory');
 
         $client = $this->createAuthenticatedClient();
 
