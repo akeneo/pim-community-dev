@@ -32,6 +32,11 @@ final class ProductId
         return $this->productId;
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->productId;
+    }
+
     public function equals(ProductId $productId): bool
     {
         return $this->productId === $productId->toInt();

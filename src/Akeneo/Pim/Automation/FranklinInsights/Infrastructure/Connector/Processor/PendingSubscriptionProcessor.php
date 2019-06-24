@@ -43,7 +43,7 @@ class PendingSubscriptionProcessor implements ItemProcessorInterface
         if (null === $suggestedData) {
             throw new InvalidItemException(
                 'No suggested data for the following product',
-                new DataInvalidItem(['product_id' => $subscription->getProductId()])
+                new DataInvalidItem(['product_id' => (string) $subscription->getProductId()])
             );
         }
 

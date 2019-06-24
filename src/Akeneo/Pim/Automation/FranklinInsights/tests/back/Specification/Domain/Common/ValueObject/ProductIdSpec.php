@@ -30,6 +30,12 @@ class ProductIdSpec extends ObjectBehavior
         $this->toInt()->shouldReturn(42);
     }
 
+    function it_returns_the_product_id_as_string()
+    {
+        $this->beConstructedWith(42);
+        $this->__toString()->shouldReturn('42');
+    }
+
     function it_throws_an_exception_if_the_id_is_zero()
     {
         $this->beConstructedWith(0);
