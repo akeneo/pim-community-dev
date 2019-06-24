@@ -89,12 +89,12 @@ services:
         class: '%pim_catalog.tasklet.compute_family_variant_structure_changes.class%'
         arguments:
             - '@pim_catalog.repository.family_variant'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
+            - '@pim_connector.doctrine.cache_clearer'
             - '%pim_job_product_batch_size%'
         public: false
 
