@@ -92,7 +92,7 @@ class MailNotifier implements Notifier
 
         $txtBody = $this->twig->render('AkeneoBatchBundle:Mails:notification.txt.twig', $parameters);
         $htmlBody = $this->twig->render('AkeneoBatchBundle:Mails:notification.html.twig', $parameters);
-var_dump($txtBody);
+
         $message = $this->mailer->createMessage();
         $message->setSubject('Job has been executed');
         $message->setFrom($this->senderEmail);
