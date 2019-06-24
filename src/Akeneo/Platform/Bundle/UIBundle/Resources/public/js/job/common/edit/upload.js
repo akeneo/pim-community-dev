@@ -89,10 +89,16 @@ define([
          */
         isUploadedFilesizeValid(uploadedFile) {
             const fileSize = uploadedFile.size;
-            const environment = UserContext.get('meta');
+            const maxsize = UserContext.get('meta').environment.upload_max_filesize;
 
-            if (fileSize > environment.environment.upload_max_filesize) {
-                messenger.notify('error', __('pim_import_export.entity.import_profile.flash.upload.error_too_big'));
+            if (fileSize > maxsize) {
+                messenger.notify(
+                    'error',
+                    __(
+                        'pim_import_export.entity.import_profile.flash.upload.error_too_big',
+                        {maxsize: maxsize / 1024 / 1024}
+                        )
+                );
 
                 return false;
             }

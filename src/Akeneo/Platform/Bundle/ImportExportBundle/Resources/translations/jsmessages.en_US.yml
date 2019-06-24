@@ -32,7 +32,7 @@ pim_import_export:
                 create:
                     success: Import profile successfully created
                 upload:
-                    error_too_big: File size exceeds the server limit
+                    error_too_big: File size exceeds the server limit ({{ maxsize }} Mb)
             page_title:
                 index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
             module:
