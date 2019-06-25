@@ -69,7 +69,7 @@ Feature: Lists all attributes related to an asset family
     And the user edits the attribute property "MaxFileSize" with value "120.4"
     And the user edits the attribute property "AllowedExtensions" with value "gif"
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: User can't edit the image attribute
     Given a valid asset family
     And the user has the following rights:
@@ -81,7 +81,7 @@ Feature: Lists all attributes related to an asset family
     And the user can't edit the attribute property "MaxFileSize"
     And the user can't edit the attribute property "AllowedExtensions"
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Edit the option attribute
     Given a valid asset family
     And the user has the following rights:
@@ -121,7 +121,7 @@ Feature: Lists all attributes related to an asset family
     Then the user edits the attribute property "Label" with value "Nice Name"
     And the user edits the attribute property "IsRequired" with value "true"
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: User can't edit the option attribute
     Given a valid asset family
     And the user has the following rights:
@@ -131,7 +131,7 @@ Feature: Lists all attributes related to an asset family
     Then the user can't edit the attribute property "Label"
     And the user can't edit the attribute property "IsRequired"
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Manage the list of options by adding a new option code
     Given a valid asset family
     And the user has the following rights:
@@ -207,7 +207,7 @@ Feature: Lists all attributes related to an asset family
     And the user goes to the next option to translate with the keyboard
     Then the focus should be on the "green" option label
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Go to the next code to enrich when the user presses enter
     Given a valid asset family
     And the user has the following rights:
@@ -289,7 +289,7 @@ Feature: Lists all attributes related to an asset family
     When the user cannot save the options successfully because an option is duplicated
     Then there is an error message next to the "red" field
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: A validation occured because the number of attribute options has reached the limit
     Given a valid asset family
     And the user has the following rights:

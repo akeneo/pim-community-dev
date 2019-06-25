@@ -61,7 +61,7 @@ Feature: Create a asset
     Then the asset will be saved
     And the user saves the asset
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Creating multiple assets in sequence
     When the user asks for the asset family "designer"
     Given the user has the following rights:

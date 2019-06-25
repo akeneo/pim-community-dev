@@ -607,7 +607,7 @@ Feature: Edit an asset
       | akeneo_assetmanager_asset_edit | false |
     Then the user cannot update the single asset linked value
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Updating a asset with a multiple asset linked
     Given a valid asset with an asset family multiple link attribute
     And the user has the locale permission to edit the asset
@@ -633,7 +633,7 @@ Feature: Edit an asset
     When the user saves the valid asset with a number value
     Then the user should see a success message on the edit page
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Updating a asset with a number value out of range
     Given a valid asset
     And the user has the locale permission to edit the asset

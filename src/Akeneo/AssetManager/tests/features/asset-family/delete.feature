@@ -21,7 +21,7 @@ Feature: Delete an asset family
       | identifier | labels                                       | image |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Delete an asset family from the edit view
     Given the user has the following rights:
       | akeneo_assetmanager_asset_family_edit   | true |

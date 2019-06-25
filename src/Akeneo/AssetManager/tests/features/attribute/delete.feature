@@ -41,7 +41,7 @@ Feature: Delete an attribute linked to an asset family
       | name     | text  |
       | portrait | image |
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Cannot delete a text attribute linked to an asset family
     Given a valid asset family
     And the user has the following rights:
@@ -61,7 +61,7 @@ Feature: Delete an attribute linked to an asset family
       | bio     | text  |
       | portrait | image |
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: User doesn't have the right to delete a text attribute linked to an asset family
     Given a valid asset family
     And the user has the following rights:

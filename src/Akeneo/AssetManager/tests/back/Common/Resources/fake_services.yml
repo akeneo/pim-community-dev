@@ -135,6 +135,9 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
             - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.bulk_asset_item'
 
+    akeneo_assetmanager.infrastructure.persistence.query.find_property_accessible_asset:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFindPropertyAccessibleAsset
+
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetIdentifiersForQuery
         arguments:
