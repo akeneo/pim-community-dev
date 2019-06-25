@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Fetches the binary preview of the url
+ * Fetches the binary preview of the mediaLink
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
@@ -45,7 +45,7 @@ class ImagePreviewAction
         string $attributeIdentifier,
         string $type
     ): Response {
-        /** @var UrlAttribute $attribute */
+        /** @var MediaLinkAttribute $attribute */
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
         $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
 

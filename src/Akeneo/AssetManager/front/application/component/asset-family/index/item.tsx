@@ -43,7 +43,7 @@ export default ({
       <span
         className="AknGrid-fullImage"
         style={{
-          backgroundImage: `url("${getImageShowUrl(assetFamily.getImage(), 'thumbnail')}")`,
+          backgroundImage: `mediaLink("${getImageShowUrl(assetFamily.getImage(), 'thumbnail')}")`,
         }}
       />
       <span className="AknGrid-title">{assetFamily.getLabel(locale)}</span>

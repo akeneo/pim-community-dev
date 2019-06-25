@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
-use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -39,7 +39,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
     /** @var FixturesLoader */
     private $fixturesLoader;
 
-    /** @var UrlAttribute */
+    /** @var MediaLinkAttribute */
     private $attribute;
 
     /** @var CacheManager */

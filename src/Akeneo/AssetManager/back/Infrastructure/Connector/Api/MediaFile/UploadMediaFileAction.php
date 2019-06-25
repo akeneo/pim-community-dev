@@ -54,7 +54,7 @@ class UploadMediaFileAction
             throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }
 
-        $downloadMediaFileUrl = $this->router->generate(
+        $downloadMediaFileMediaLink = $this->router->generate(
             'akeneo_asset_manager_media_file_rest_connector_download',
             ['fileCode' => $fileInfo->getKey()],
             UrlGeneratorInterface::ABSOLUTE_URL
@@ -62,7 +62,7 @@ class UploadMediaFileAction
 
         $headers = [
             'Reference-entities-media-file-code' => $fileInfo->getKey(),
-            'Location' => $downloadMediaFileUrl
+            'Location' => $downloadMediaFileMediaLink
         ];
 
         return Response::create('', Response::HTTP_CREATED, $headers);

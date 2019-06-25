@@ -33,7 +33,7 @@ const normalizedWebsite = {
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
-  validation_rule: 'url',
+  validation_rule: 'mediaLink',
   regular_expression: null,
 };
 const description = denormalizeTextAttribute(normalizedDescription);

@@ -51,7 +51,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getImageUrl($fileType, $filter)
+    public function getImageMediaLink($fileType, $filter)
     {
         $fileKey = sprintf('%s_default_image', $fileType);
         if (!$this->cacheManager->isStored($fileKey, $filter)) {

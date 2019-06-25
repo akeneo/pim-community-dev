@@ -105,7 +105,7 @@ class EditAction
     }
 
     /**
-     * Checks whether the identifier given in the url parameter and in the body are the same.
+     * Checks whether the identifier given in the mediaLink parameter and in the body are the same.
      */
     private function hasDesynchronizedIdentifier(Request $request): bool
     {

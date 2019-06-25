@@ -37,14 +37,14 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
@@ -279,12 +279,12 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_attribute_of_type_url_and_returns_it()
+    public function it_creates_an_attribute_of_type_mediaLink_and_returns_it()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->nextIdentifier($assetFamilyIdentifier, AttributeCode::fromString('number'));
-        $expectedUrl = UrlAttribute::create(
+        $expectedMediaLink = MediaLinkAttribute::create(
             $identifier,
             $assetFamilyIdentifier,
             AttributeCode::fromString('preview'),
@@ -298,10 +298,10 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             MediaType::fromString('image')
         );
 
-        $this->attributeRepository->create($expectedUrl);
+        $this->attributeRepository->create($expectedMediaLink);
 
-        $actualUrl = $this->attributeRepository->getByIdentifier($identifier);
-        $this->assertAttribute($expectedUrl, $actualUrl);
+        $actualMediaLink = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedMediaLink, $actualMediaLink);
     }
 
     /**

@@ -99,7 +99,9 @@ class AssetFamilyListView extends React.Component<StateProps & DispatchProps> {
                       <div className="AknDescriptionHeader AknDescriptionHeader--sticky AknDescriptionHeader--push">
                         <div
                           className="AknDescriptionHeader-icon"
-                          style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Reference-entities.svg")'}}
+                          style={{
+                            backgroundImage: 'mediaLink("/bundles/pimui/images/illustrations/Reference-entities.svg")',
+                          }}
                         />
                         <div className="AknDescriptionHeader-title">
                           {__('pim_asset_manager.asset_family.index.grid.help.title')}

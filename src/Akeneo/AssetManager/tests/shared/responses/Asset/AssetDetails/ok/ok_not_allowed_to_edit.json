@@ -103,7 +103,7 @@
             "max_length": 25,
             "is_textarea": false,
             "is_rich_text_editor": false,
-            "validation_rule": "url",
+            "validation_rule": "mediaLink",
             "regular_expression": null
           },
           "channel": null,
