@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\EventSubscriber;
 
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\Query\CreateTableAttributeAddedToFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\Query\CreateTableAttributeCreatedQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
@@ -39,34 +41,7 @@ class InitFranklinInsightsDbSchemaSubscriber implements EventSubscriberInterface
 
     public function initDbSchema(InstallerEvent $event): void
     {
-        $this->initAttributeCreatedTable();
-        $this->initAttributeAddedToFamilyTable();
-    }
-
-    private function initAttributeCreatedTable(): void
-    {
-        $sqlQuery = <<<'SQL'
-CREATE TABLE IF NOT EXISTS pimee_franklin_insights_attribute_created(
-    attribute_code VARCHAR(100) NOT NULL,
-    attribute_type VARCHAR(255) NOT NULL,
-    created DATETIME NOT NULL COMMENT '(DC2Type:datetime)' DEFAULT CURRENT_TIMESTAMP, 
-    INDEX IDX_FI_AATF_attribute_code (attribute_code)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
-SQL;
-        $this->dbalConnection->executeQuery($sqlQuery);
-    }
-
-    private function initAttributeAddedToFamilyTable(): void
-    {
-        $sqlQuery = <<<'SQL'
-CREATE TABLE IF NOT EXISTS pimee_franklin_insights_attribute_added_to_family(
-    attribute_code VARCHAR(100) NOT NULL,
-    family_code VARCHAR(100) NOT NULL,
-    created DATETIME NOT NULL COMMENT '(DC2Type:datetime)' DEFAULT CURRENT_TIMESTAMP, 
-    INDEX IDX_FI_aatf_attribute_code (attribute_code),
-    INDEX IDX_FI_aatf_family_code (family_code)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
-SQL;
-        $this->dbalConnection->executeQuery($sqlQuery);
+        $this->dbalConnection->executeQuery(CreateTableAttributeCreatedQuery::QUERY);
+        $this->dbalConnection->executeQuery(CreateTableAttributeAddedToFamilyQuery::QUERY);
     }
 }
