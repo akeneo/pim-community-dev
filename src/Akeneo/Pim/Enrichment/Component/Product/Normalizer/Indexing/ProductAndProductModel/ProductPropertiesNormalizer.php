@@ -72,7 +72,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $format
         );
         $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->serializer->normalize(
-            $product->getUpdated(),
+            $this->getUpdatedAt($product),
             $format
         );
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->serializer->normalize(
@@ -339,5 +339,22 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
                 throw new \InvalidArgumentException('$normalizer is not a Normalizer');
             }
         }
+    }
+
+    private function getUpdatedAt(ProductInterface $product): \DateTime
+    {
+        $date = $product->getUpdated();
+        if ($product->isVariant()) {
+            $dates = [$date];
+            $parent = $product->getParent();
+            while (null !== $parent) {
+                $dates[] = $parent->getUpdated();
+                $parent = $parent->getParent();
+            }
+
+            $date = max($dates);
+        }
+
+        return $date;
     }
 }
