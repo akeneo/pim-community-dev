@@ -5,9 +5,9 @@
  */
 'use strict';
 
-import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
-import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+const recordFetcher = require('akeneoreferenceentity/infrastructure/fetcher/record');
+const RecordCode = require('akeneoreferenceentity/domain/model/record/code');
+const ReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier');
 
 define([
   'pim/form/common/fields/simple-select-async',
@@ -105,12 +105,14 @@ define([
             ajax: ajaxConfig,
             initSelection: (element, callback) => {
               const initialValue = element.val();
-              recordFetcher
-                .fetch(ReferenceEntityIdentifier.create(attribute.reference_data_name), RecordCode.create(initialValue))
-                .then(result => {
-                  callback(this.formatItem(result.record.normalize()));
-                });
-            },
+              recordFetcher.default
+                  .fetch(
+                      ReferenceEntityIdentifier.default.create(attribute.reference_data_name),
+                      RecordCode.default.create(initialValue)
+                  ).then(result => {
+                    callback(this.formatItem(result.record.normalize()));
+                  });
+              },
             multiple: false,
             placeholder: __('pim_reference_entity.record.selector.no_value'),
             placeholderOption: '',

@@ -5,6 +5,7 @@
 - DAPI-9: Fix use of the database name in a SQL query
 - PIM-8451: Add pagination for rules grid in attribute edit form
 - PIM-8468: Fix link button on the WYSIWYG that was not fully clickable
+- PIM-8472: Fix product model creation with a reference entity axis
 
 # 3.1.6 (2019-06-11)
 
