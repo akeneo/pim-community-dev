@@ -32,9 +32,9 @@ Feature: Connection to MDM or ERP systems
     Then the Birth Date attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP
 
   @integration-back
-  Scenario: Collect a new mediaLink attribute for an asset family from the ERP
+  Scenario: Collect a new url attribute for an asset family from the ERP
     Given the Designer asset family existing both in the ERP and in the PIM
-    And the mediaLink attribute Preview that is only part of the structure of the Designer asset family in the ERP but not in the PIM
+    And the url attribute Preview that is only part of the structure of the Designer asset family in the ERP but not in the PIM
     When the connector collects this attribute from the ERP to synchronize it with the PIM
     Then the Preview attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP
 
@@ -67,9 +67,9 @@ Feature: Connection to MDM or ERP systems
     Then the properties of the Birth Date attribute are updated in the PIM with the properties coming from the ERP
 
   @integration-back
-  Scenario: Collect an existing mediaLink type attribute for an asset family from the ERP
+  Scenario: Collect an existing url type attribute for an asset family from the ERP
     Given the Designer asset family existing both in the ERP and in the PIM
-    And the mediaLink attribute Preview that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties
+    And the url attribute Preview that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties
     When the connector collects this attribute from the ERP to synchronize it with the PIM
     Then the properties of the Preview attribute are updated in the PIM with the properties coming from the ERP
 

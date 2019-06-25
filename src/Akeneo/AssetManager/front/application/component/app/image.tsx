@@ -104,7 +104,7 @@ class Image extends React.Component<
 
   render() {
     const wide = this.props.wide;
-    const imageMediaLink = getImageShowUrl(this.props.image, true === this.props.wide ? 'preview' : 'thumbnail');
+    const imageUrl = getImageShowUrl(this.props.image, true === this.props.wide ? 'preview' : 'thumbnail');
 
     // If the image is in read only mode, we return a simple version of the component
     if (undefined === this.props.onImageChange) {
@@ -113,9 +113,9 @@ class Image extends React.Component<
       return (
         <div className={className}>
           {true === this.props.wide && !this.props.image.isEmpty() ? (
-            <div className="AknImage-drop" style={{backgroundImage: `mediaLink("${imageMediaLink}")`}} />
+            <div className="AknImage-drop" style={{backgroundImage: `url("${imageUrl}")`}} />
           ) : null}
-          <img className="AknImage-display" src={imageMediaLink} />
+          <img className="AknImage-display" src={imageUrl} />
         </div>
       );
     }
@@ -134,7 +134,7 @@ class Image extends React.Component<
     return (
       <div className={className}>
         {true === this.props.wide && !this.props.image.isEmpty() ? (
-          <div className="AknImage-drop" style={{backgroundImage: `mediaLink("${imageMediaLink}")`}} />
+          <div className="AknImage-drop" style={{backgroundImage: `url("${imageUrl}")`}} />
         ) : null}
         <input
           id={this.props.id}
@@ -173,15 +173,14 @@ class Image extends React.Component<
             <div
               className="AknImage-drop"
               style={{
-                backgroundImage:
-                  0 !== this.state.uploadingImage.length ? `mediaLink("${this.state.uploadingImage}")` : '',
+                backgroundImage: 0 !== this.state.uploadingImage.length ? `url("${this.state.uploadingImage}")` : '',
               }}
             />
           </div>
         ) : null}
         {!this.props.image.isEmpty() ? (
           <div className="AknImage-displayContainer">
-            <img className="AknImage-display" src={imageMediaLink} />
+            <img className="AknImage-display" src={imageUrl} />
           </div>
         ) : null}
         {this.props.image.isEmpty() && undefined !== this.props.onImageChange ? (

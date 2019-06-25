@@ -109,7 +109,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 assetFamilyIdentifier: {identifier: 'designer'},
                 regularExpression: {regularExpression: null},
                 type: 'text',
-                validationRule: {validationRule: 'mediaLink'},
+                validationRule: {validationRule: 'url'},
                 valuePerChannel: false,
                 valuePerLocale: false,
               },

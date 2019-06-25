@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
 use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
@@ -17,7 +17,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /** @var PreviewGeneratorInterface */
     private $imageGenerator;
 
-    /** @var MediaLinkAttribute */
+    /** @var UrlAttribute */
     private $attribute;
 
     public function setUp(): void
@@ -31,7 +31,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_can_support_only_media_type_image_of_an_mediaLink_attribute()
+    public function it_can_support_only_media_type_image_of_an_url_attribute()
     {
         $isSupported = $this->imageGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
@@ -41,7 +41,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_can_support_only_supported_type_image_of_an_mediaLink_attribute()
+    public function it_can_support_only_supported_type_image_of_an_url_attribute()
     {
         $isSupported = $this->imageGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
@@ -55,7 +55,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_preview_for_an_image_mediaLink_attribute()
+    public function it_get_a_preview_for_an_image_url_attribute()
     {
         $this->imageGenerator->supports('google-logo.png', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->imageGenerator->generate(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
@@ -66,7 +66,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_preview_for_an_image_mediaLink_attribute_from_the_cache()
+    public function it_get_a_preview_for_an_image_url_attribute_from_the_cache()
     {
         $this->imageGenerator->supports('akeneo.png', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->imageGenerator->generate(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
@@ -81,7 +81,7 @@ final class ImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_default_preview_for_an_unknown_image_mediaLink()
+    public function it_get_a_default_preview_for_an_unknown_image_url()
     {
         $this->imageGenerator->supports('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->imageGenerator->generate('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);

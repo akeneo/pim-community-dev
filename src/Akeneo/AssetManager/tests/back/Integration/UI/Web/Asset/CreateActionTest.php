@@ -143,7 +143,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_when_the_asset_identifier_is_not_unique()
     {
-        $mediaLinkParameters = ['assetFamilyIdentifier' => 'designer'];
+        $urlParameters = ['assetFamilyIdentifier' => 'designer'];
         $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
         $content = [
             'identifier'                 => 'designer_starck_1',
@@ -153,9 +153,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         ];
         $method = 'POST';
-        $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_ROUTE, $mediaLinkParameters, $method, $headers,
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_ROUTE, $urlParameters, $method, $headers,
             $content);
-        $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_ROUTE, $mediaLinkParameters, $method, $headers,
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_ROUTE, $urlParameters, $method, $headers,
             $content);
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),

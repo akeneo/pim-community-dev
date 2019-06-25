@@ -132,7 +132,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
         dropdownCssClass,
         containerCssClass,
         ajax: {
-          mediaLink: routing.generate('akeneo_asset_manager_asset_index_rest', {
+          url: routing.generate('akeneo_asset_manager_asset_index_rest', {
             assetFamilyIdentifier: this.props.assetFamilyIdentifier.stringValue(),
           }),
           quietMillis: 250,

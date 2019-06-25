@@ -26,8 +26,8 @@ define(
   ) {
     return TextFilter.extend({
       operatorChoices: [],
-      choiceMediaLink: null,
-      choiceMediaLinkParams: {},
+      choiceUrl: null,
+      choiceUrlParams: {},
       emptyChoice: false,
       resultsPerPage: 20,
       assetFamilyIdentifier: null,
@@ -43,7 +43,7 @@ define(
         _.extend(this.events, TextFilter.prototype.events);
 
         if (!_.isUndefined(options)) {
-          _.extend(this, _.pick(options, 'choiceMediaLink', 'choiceMediaLinkParams', 'emptyChoice'));
+          _.extend(this, _.pick(options, 'choiceUrl', 'choiceUrlParams', 'emptyChoice'));
         }
 
         if (_.isUndefined(this.emptyValue)) {
@@ -81,9 +81,9 @@ define(
           minimumInputLength: 0
         };
 
-        if (null !== this.choiceMediaLink) {
+        if (null !== this.choiceUrl) {
           config.ajax = {
-            mediaLink: Routing.generate(this.choiceMediaLink, this.choiceMediaLinkParams),
+            url: Routing.generate(this.choiceUrl, this.choiceUrlParams),
             quietMillis: 250,
             cache: true,
             type: 'PUT',
@@ -99,7 +99,7 @@ define(
                   {
                     field: 'asset_family',
                     operator: '=',
-                    value: this.choiceMediaLinkParams.assetFamilyIdentifier,
+                    value: this.choiceUrlParams.assetFamilyIdentifier,
                   },
                   {
                     field: 'code_label',
@@ -199,7 +199,7 @@ define(
         var results = [];
 
         const config = {
-          mediaLink: Routing.generate(this.choiceMediaLink, this.choiceMediaLinkParams),
+          url: Routing.generate(this.choiceUrl, this.choiceUrlParams),
           async: false,
           quietMillis: 250,
           cache: true,
@@ -215,7 +215,7 @@ define(
                 {
                   field: 'asset_family',
                   operator: '=',
-                  value: this.choiceMediaLinkParams.assetFamilyIdentifier,
+                  value: this.choiceUrlParams.assetFamilyIdentifier,
                 },
                 {
                   field: 'code',

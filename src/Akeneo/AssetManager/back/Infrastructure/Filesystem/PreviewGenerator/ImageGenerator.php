@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
@@ -55,29 +55,29 @@ class ImageGenerator implements PreviewGeneratorInterface
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
-        return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
+        return UrlAttribute::ATTRIBUTE_TYPE === $attribute->getType()
             && MediaType::IMAGE === $attribute->getMediaType()->normalize()
             && in_array($type, PreviewGeneratorRegistry::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
-        $mediaLink = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
+        $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
 
-        if (!$this->cacheManager->isStored($mediaLink, $type)) {
+        if (!$this->cacheManager->isStored($url, $type)) {
             try {
-                $binary = $this->dataManager->find($type, $mediaLink);
+                $binary = $this->dataManager->find($type, $url);
             } catch (NotLoadableException $e) {
-                return $this->defaultImageProvider->getImageMediaLink(self::DEFAULT_IMAGE, $type);
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $type);
             }
 
             $this->cacheManager->store(
                 $this->filterManager->applyFilter($binary, $type),
-                $mediaLink,
+                $url,
                 $type
             );
         }
 
-        return $this->cacheManager->resolve($mediaLink, $type);
+        return $this->cacheManager->resolve($url, $type);
     }
 }

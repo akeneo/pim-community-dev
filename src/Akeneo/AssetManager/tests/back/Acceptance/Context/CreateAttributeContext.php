@@ -590,13 +590,13 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates an mediaLink attribute "([^"]*)" to the asset family "([^"]*)" with:$/
+     * @When /^the user creates an url attribute "([^"]*)" to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesAnMediaLinkAttributeToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
+    public function theUserCreatesAnUrlAttributeToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
-        $attributeData['type'] = 'mediaLink';
+        $attributeData['type'] = 'url';
         $attributeData['identifier']['identifier'] = $attributeCode;
         $attributeData['identifier']['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
@@ -620,9 +620,9 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is an mediaLink attribute "([^"]*)" in the asset family "([^"]*)" with:$/
+     * @Then /^there is an url attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
-    public function thereIsAnMediaLinkAttributeInTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $expected): void
+    public function thereIsAnUrlAttributeInTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $expected): void
     {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),

@@ -128,7 +128,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
             ]);
         }
 
-        if ($command->attribute->isValidationRuleSetToMediaLink()) {
+        if ($command->attribute->isValidationRuleSetToUrl()) {
             return $validator->validate($command->text, [new Constraints\Url()]);
         }
 

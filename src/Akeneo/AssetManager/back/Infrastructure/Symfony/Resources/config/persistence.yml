@@ -296,8 +296,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_hydrator }
 
-    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.mediaLink_attribute_hydrator:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\MediaLinkAttributeHydrator
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.url_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\UrlAttributeHydrator
         arguments:
             - '@database_connection'
         tags:
@@ -369,8 +369,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.data_hydrator }
 
-    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.mediaLink_data:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\MediaLinkDataHydrator
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.url_data:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\UrlDataHydrator
         tags:
             - { name: akeneo_assetmanager.data_hydrator }
 

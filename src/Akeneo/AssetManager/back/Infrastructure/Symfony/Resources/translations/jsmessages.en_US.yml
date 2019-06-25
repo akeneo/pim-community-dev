@@ -270,7 +270,7 @@ pim_asset_manager:
             none: None
             email: E-mail
             regular_expression: Regular expression
-            mediaLink: URL
+            url: URL
         decimals_allowed: Decimal values allowed
     delete:
       message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?

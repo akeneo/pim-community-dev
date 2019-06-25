@@ -597,10 +597,10 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with a text attribute with an mediaLink validation rule$/
+     * @Given /^an asset family with a text attribute with an url validation rule$/
      * @throws \Exception
      */
-    public function anAssetFamilyWithATextAttributeWithAnMediaLinkValidationRule()
+    public function anAssetFamilyWithATextAttributeWithAnUrlValidationRule()
     {
         $this->attributeRepository->create(
             TextAttribute::createText(

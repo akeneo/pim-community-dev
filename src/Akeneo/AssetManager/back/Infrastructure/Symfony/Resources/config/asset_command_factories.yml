@@ -57,7 +57,7 @@ services:
             - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
 
-    akeneo_assetmanager.application.factory.asset.edit_mediaLink_value_command_factory:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommandFactory
+    akeneo_assetmanager.application.factory.asset.edit_url_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditUrlValueCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_asset_value_command_factory }

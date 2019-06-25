@@ -178,15 +178,15 @@ Feature: Edit an asset
     And the asset should have the text value "didier@dummy.com" for this attribute
 
   @acceptance-back
-  Scenario: Updating an mediaLink with an invalid mediaLink value
-    Given an asset family with a text attribute with an mediaLink validation rule
+  Scenario: Updating an url with an invalid url value
+    Given an asset family with a text attribute with an url validation rule
     And a asset belonging to this asset family with a value of "https://www.akeneo.com/" for the text attribute
     When the user updates the text attribute of the asset to "htt://akeneo.com/"
     Then there should be a validation error on the property text attribute with message "This value is not a valid URL."
 
   @acceptance-back
-  Scenario: Updating an mediaLink with an valid mediaLink value
-    Given an asset family with a text attribute with an mediaLink validation rule
+  Scenario: Updating an url with an valid url value
+    Given an asset family with a text attribute with an url validation rule
     And a asset belonging to this asset family with a value of "https://www.akeneo.com/" for the text attribute
     When the user updates the text attribute of the asset to "http://akeneo.com/"
     Then there is no exception thrown
@@ -468,10 +468,10 @@ Feature: Edit an asset
     Then there should be a validation error on the number value with message "This integer is too big"
 
   @acceptance-back
-  Scenario: Updating an mediaLink value
-    Given an asset family with an mediaLink attribute and a asset belonging to this asset family
-    When the user updates the mediaLink value of the asset
-    Then the asset should have the mediaLink value for this attribute
+  Scenario: Updating an url value
+    Given an asset family with an url attribute and a asset belonging to this asset family
+    When the user updates the url value of the asset
+    Then the asset should have the url value for this attribute
 
   @acceptance-front
   Scenario: Updating a asset details

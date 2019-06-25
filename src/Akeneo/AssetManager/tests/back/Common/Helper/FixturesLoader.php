@@ -27,14 +27,14 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
@@ -478,7 +478,7 @@ class FixturesLoader
 
         // WEBSITE
         if (in_array('website', $this->loadedAttributes)) {
-            $attributes['website'] = MediaLinkAttribute::create(
+            $attributes['website'] = UrlAttribute::create(
                 $this->attributeRepository->nextIdentifier(
                     $assetFamilyIdentifier,
                     AttributeCode::fromString('website')
@@ -500,7 +500,7 @@ class FixturesLoader
 
         // VIDEO
         if (in_array('video', $this->loadedAttributes)) {
-            $attributes['video'] = MediaLinkAttribute::create(
+            $attributes['video'] = UrlAttribute::create(
                 $this->attributeRepository->nextIdentifier(
                     $assetFamilyIdentifier,
                     AttributeCode::fromString('video')

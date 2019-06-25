@@ -18,12 +18,12 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 interface DefaultImageProviderInterface
 {
     /**
-     * Return the mediaLink of the default image corresponding to the specified file type
+     * Return the url of the default image corresponding to the specified file type
      *
      * @param string $fileType File type, defined in Akeneo\Pim\Enrichment\Bundle\File\FileTypes
      * @param string $filter   Transformation filter name
      *
      * @return string
      */
-    public function getImageMediaLink($fileType, $filter);
+    public function getImageUrl($fileType, $filter);
 }

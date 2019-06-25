@@ -27,14 +27,14 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
@@ -1704,9 +1704,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an mediaLink attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an asset family with an url attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function aAssetFamilyWithAnMediaLinkAttributeAndTheLabelEqualTo(
+    public function aAssetFamilyWithAnUrlAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $localeCode,
         string $label
@@ -1717,7 +1717,7 @@ class EditAttributeContext implements Context
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            MediaLinkAttribute::create(
+            UrlAttribute::create(
                 $identifier,
                 AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
@@ -1734,15 +1734,15 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an mediaLink attribute \'([^\']*)\'$/
+     * @Given /^an asset family with an url attribute \'([^\']*)\'$/
      */
-    public function aAssetFamilyWithAnMediaLinkAttribute(string $attributeCode): void
+    public function aAssetFamilyWithAnUrlAttribute(string $attributeCode): void
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            MediaLinkAttribute::create(
+            UrlAttribute::create(
                 $identifier,
                 AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
