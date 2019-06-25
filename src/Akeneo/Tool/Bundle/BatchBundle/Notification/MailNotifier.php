@@ -16,32 +16,32 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class MailNotifier implements Notifier
 {
     /**
-     * @var BatchLogHandler $logger
+     * @var BatchLogHandler
      */
     protected $logger;
 
     /**
-     * @var TokenStorageInterface $tokenStorage
+     * @var TokenStorageInterface
      */
     protected $tokenStorage;
 
     /**
-     * @var Twig_Environment $twig
+     * @var \Twig_Environment
      */
     protected $twig;
 
     /**
-     * @var Swift_Mailer $mailer
+     * @var \Swift_Mailer
      */
     protected $mailer;
 
     /**
-     * @var string $senderEmail
+     * @var string
      */
     protected $senderEmail;
 
     /**
-     * @var string $recipientEmail
+     * @var string
      */
     protected $recipientEmail;
 
@@ -67,13 +67,9 @@ class MailNotifier implements Notifier
     }
 
     /**
-     * Set the recipient email
-     *
      * @param string $recipientEmail
-     *
-     * @return MailNotifier
      */
-    public function setRecipientEmail($recipientEmail)
+    public function setRecipientEmail($recipientEmail): self
     {
         $this->recipientEmail = $recipientEmail;
 
@@ -119,11 +115,11 @@ class MailNotifier implements Notifier
         }
 
         if (null === $token = $this->tokenStorage->getToken()) {
-            return;
+            return null;
         }
 
         if (!is_object($user = $token->getUser())) {
-            return;
+            return null;
         }
 
         return $user->getEmail();

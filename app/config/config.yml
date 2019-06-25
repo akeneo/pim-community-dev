@@ -38,6 +38,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         uservoice_key: "%uservoice_key%"
+        akeneo_pim_url: '%env(AKENEO_PIM_URL)%'
 
 # Assetic Configuration
 assetic:
