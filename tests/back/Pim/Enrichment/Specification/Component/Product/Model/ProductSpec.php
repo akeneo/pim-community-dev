@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyAddedToProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyOfProductChanged;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\FamilyRemovedFromProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductAdded;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ParentOfProductChanged;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductAddedToGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCategorized;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Events\ProductCreated;
@@ -418,6 +419,25 @@ class ProductSpec extends ObjectBehavior
         $this->shouldHaveEventsLike([
             new ParentOfProductAdded('parent_code')
         ]);
+    }
+
+    function it_can_have_its_parent_changed()
+    {
+        $this->setId(1);
+
+        $formerParent = new ProductModel();
+        $formerParent->setCode('model_1');
+        $this->setParent($formerParent);
+        $this->popEvents();
+
+        $newParent = new ProductModel();
+        $newParent->setCode('new_model');
+        $this->setParent($newParent);
+
+        $this->shouldHaveEventsLike([new ParentOfProductChanged('model_1', 'new_model')]);
+
+        $this->setParent($newParent);
+        $this->popEvents()->shouldReturn([]);
     }
 
     function it_has_the_values_of_the_variation()
