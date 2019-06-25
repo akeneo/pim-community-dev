@@ -270,6 +270,10 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $this->setSerializer($serializer);
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $afterNow = new \DateTime('now', new \DateTimeZone('UTC'));
+        $afterNow->add(new \DateInterval('P10D'));
+        $beforeNow = new \DateTime('now', new \DateTimeZone('UTC'));
+        $beforeNow->sub(new \DateInterval('P10D'));
 
         $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getId()->willReturn(67);
@@ -282,10 +286,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         )->willReturn($now->format('c'));
 
         $variantProduct->getUpdated()->willReturn($now);
-        $serializer->normalize(
-            $variantProduct->getWrappedObject()->getUpdated(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-        )->willReturn($now->format('c'));
 
         $variantProduct->getFamily()->willReturn($family);
         $serializer
@@ -356,9 +356,11 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $subProductModel->getCode()->willReturn('model-tshirt-xs');
         $subProductModel->getParent()->willReturn($rootProductModel);
         $subProductModel->getCategoryCodes()->willReturn(['second_category']);
+        $subProductModel->getUpdated()->willReturn($afterNow);
         $rootProductModel->getId()->willReturn(1);
         $rootProductModel->getCode()->willReturn('model-tshirt');
         $rootProductModel->getParent()->willReturn(null);
+        $rootProductModel->getUpdated()->willReturn($beforeNow);
 
         $family->getAttributeAsLabel()->willReturn($sku);
         $sku->getCode()->willReturn('sku');
@@ -380,13 +382,18 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $variantProduct->getValue('sku', 'en_US', 'print')->willReturn($enPrintSku);
         $enPrintSku->getData()->willReturn('Sku EN print');
 
+        $serializer->normalize(
+            $subProductModel->getWrappedObject()->getUpdated(),
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        )->willReturn($afterNow->format('c'));
+
         $this->normalize($variantProduct,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'id' => 'product_67',
                 'identifier' => 'sku-001',
                 'created' => $now->format('c'),
-                'updated' => $now->format('c'),
+                'updated' => $afterNow->format('c'),
                 'family' => [
                     'code' => 'family',
                     'labels' => [
@@ -511,9 +518,11 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $subProductModel->getCode()->willReturn('model-tshirt-xs');
         $subProductModel->getParent()->willReturn($rootProductModel);
         $subProductModel->getCategoryCodes()->willReturn([]);
+        $subProductModel->getUpdated()->willReturn($now);
         $rootProductModel->getId()->willReturn(1);
         $rootProductModel->getCode()->willReturn('model-tshirt');
         $rootProductModel->getParent()->willReturn(null);
+        $rootProductModel->getUpdated()->willReturn($now);
 
         $channelRepository->getChannelCodes()->willReturn(['ecommerce', 'print']);
 
@@ -667,6 +676,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $rootProductModel->getCode()->willReturn('model-tshirt');
         $rootProductModel->getParent()->willReturn(null);
         $rootProductModel->getCategoryCodes()->willReturn(['first_category']);
+        $rootProductModel->getUpdated()->willReturn($now);
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
