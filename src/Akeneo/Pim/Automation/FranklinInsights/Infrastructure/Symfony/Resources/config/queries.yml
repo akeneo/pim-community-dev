@@ -65,3 +65,13 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectActiveLocaleCodesManagedByFranklinQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.count_franklin_attributes_created:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\CountFranklinAttributesCreatedQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.count_franklin_attributes_added_to_families:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\CountFranklinAttributesAddedToFamiliesQuery'
+        arguments:
+            - '@database_connection'

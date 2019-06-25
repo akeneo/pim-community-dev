@@ -28,3 +28,6 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.attribute'
+
+    akeneo.pim.automation.franklin_insights.normalizer.key_figure_collection:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\KeyFigureCollectionNormalizer'

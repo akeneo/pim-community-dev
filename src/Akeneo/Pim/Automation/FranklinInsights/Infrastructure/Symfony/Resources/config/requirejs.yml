@@ -29,6 +29,10 @@ config:
                     config:
                         lastMappingVisitedKey: 'franklin-insight-mapping:last-visited-mapping'
                         lastFamilyVisitedKey: 'franklin-insight-mapping:last-family-visited'
+                akeneo_franklin_insights_key_figures_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: franklin-key-figures
 
         # Savers configuration
         akeneo/franklin-insights/saver/franklin-connection:
@@ -97,6 +101,7 @@ config:
         akeneo/franklin-insights/view/franklin-connection/edit: akeneofranklininsights/js/view/franklin-connection/edit.ts
         akeneo/franklin-insights/view/mass-edit/franklin-insights-operation: akeneofranklininsights/js/view/mass-edit/franklin-insights-operation.ts
         akeneo/franklin-insights/view/product-edit-form/subscription-status-switcher: akeneofranklininsights/js/view/product-edit-form/subscription-status-switcher.ts
+        akeneo/franklin-insights/view/key-figures/menu-item: akeneofranklininsights/js/view/key-figures/menu-item.ts
 
         # Templates
         akeneo/franklin-insights/template/settings/identifiers-mapping/table: akeneofranklininsights/templates/identifiers-mapping/table.html
@@ -115,3 +120,4 @@ config:
         akeneo/franklin-insights/template/mass-edit/franklin-insights-operation: akeneofranklininsights/templates/mass-edit/franklin-insights-operation.html
         akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher: akeneofranklininsights/templates/product-edit-form/subscription-status-switcher.html
         akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher-read-only: akeneofranklininsights/templates/product-edit-form/subscription-status-switcher-read-only.html
+        akeneo/franklin-insights/template/key-figures: akeneofranklininsights/templates/key-figures/key-figures.html
