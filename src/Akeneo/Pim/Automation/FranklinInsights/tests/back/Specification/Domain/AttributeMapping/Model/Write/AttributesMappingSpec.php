@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -45,7 +46,7 @@ class AttributesMappingSpec extends ObjectBehavior
 
     public function it_maps_a_franklin_attribute_to_a_pim_attribute(): void
     {
-        $this->map('franklin_attr', 'text', AttributeBuilder::fromCode('code'))->shouldReturn(null);
+        $this->map('franklin_attr', 'text', AttributeBuilder::fromCode('code'), AttributeMappingStatus::ATTRIBUTE_ACTIVE)->shouldReturn(null);
         $this->mapping()->shouldHaveCount(1);
         $this->mapping()[0]->shouldBeAnInstanceOf(AttributeMapping::class);
     }
@@ -56,6 +57,6 @@ class AttributesMappingSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(AttributeMappingException::localizableAttributeNotAllowed())
-            ->during('map', ['franklin_attr', 'text', $attribute]);
+            ->during('map', ['franklin_attr', 'text', $attribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE]);
     }
 }

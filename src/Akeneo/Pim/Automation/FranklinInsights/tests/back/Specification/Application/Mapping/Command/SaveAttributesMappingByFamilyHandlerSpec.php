@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ScheduleFetchProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -67,6 +68,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             'color' => [
                 'franklinAttribute' => ['type' => 'multiselect'],
                 'attribute' => 'tshirt_style',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ]);
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
@@ -86,6 +88,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'ram',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
             'weight' => [
                 'franklinAttribute' => [
@@ -93,6 +96,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'product_weight',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ];
         $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributesMapping);
@@ -108,8 +112,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ->willReturn([$memoryAttribute]);
 
         $expectedAttributesMapping = new AttributesMapping($familyCode);
-        $expectedAttributesMapping->map('memory', 'metric', $memoryAttribute);
-        $expectedAttributesMapping->map('weight', 'metric', null);
+        $expectedAttributesMapping->map('memory', 'metric', $memoryAttribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        $expectedAttributesMapping->map('weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
 
         $attributesMappingProvider
             ->saveAttributesMapping($familyCode, $expectedAttributesMapping)
@@ -136,6 +140,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'ram',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
             'weight' => [
                 'franklinAttribute' => [
@@ -143,6 +148,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'product_weight',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ];
         $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributesMapping);
@@ -158,8 +164,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ->willReturn([$memoryAttribute]);
 
         $expectedAttributesMapping = new AttributesMapping($familyCode);
-        $expectedAttributesMapping->map('memory', 'metric', $memoryAttribute);
-        $expectedAttributesMapping->map('weight', 'metric', null);
+        $expectedAttributesMapping->map('memory', 'metric', $memoryAttribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        $expectedAttributesMapping->map('weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
 
         $attributesMappingProvider
             ->saveAttributesMapping($familyCode, $expectedAttributesMapping)
@@ -184,6 +190,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'text',
                 ],
                 'attribute' => 'release_date',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ]);
 
@@ -215,6 +222,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'ram',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
             'weight' => [
                 'franklinAttribute' => [
@@ -222,6 +230,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'product_weight',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ];
         $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributesMapping);
@@ -238,8 +247,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ->willReturn([$memoryAttribute, $weightAttribute]);
 
         $attributesMapping = new AttributesMapping($familyCode);
-        $attributesMapping->map('memory', 'metric', $memoryAttribute);
-        $attributesMapping->map('weight', 'metric', $weightAttribute);
+        $attributesMapping->map('memory', 'metric', $memoryAttribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        $attributesMapping->map('weight', 'metric', $weightAttribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
 
         $attributesMappingProvider
             ->saveAttributesMapping($familyCode, $attributesMapping)
@@ -266,6 +275,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'ram',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ]);
 
@@ -292,6 +302,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'ram',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ];
         $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributeMapping);
@@ -320,6 +331,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                     'type' => 'metric',
                 ],
                 'attribute' => 'ram',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ];
         $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributeMapping);

@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -104,10 +105,12 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
                     'type' => $mapping->getTargetAttributeType(),
                 ],
                 'attribute' => $mapping->getPimAttributeCode(),
+                'status' => $mapping->getStatus(),
             ];
 
             if (false !== array_search($mapping->getPimAttributeCode(), $pimAttributeCodes)) {
                 $attributeMapping['attribute'] = null;
+                $attributeMapping['status'] = AttributeMappingStatus::ATTRIBUTE_PENDING;
             }
 
             $newMapping[$mapping->getTargetAttributeCode()] = $attributeMapping;

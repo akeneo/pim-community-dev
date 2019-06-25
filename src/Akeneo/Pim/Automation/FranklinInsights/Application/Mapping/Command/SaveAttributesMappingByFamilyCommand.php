@@ -86,6 +86,10 @@ class SaveAttributesMappingByFamilyCommand
                 throw InvalidMappingException::expectedKey($targetKey, 'attribute');
             }
 
+            if (!array_key_exists('status', $mappingRow)) {
+                throw InvalidMappingException::expectedKey($targetKey, 'status');
+            }
+
             if (empty($mappingRow['attribute'])) {
                 $mapping[$targetKey]['attribute'] = null;
             }

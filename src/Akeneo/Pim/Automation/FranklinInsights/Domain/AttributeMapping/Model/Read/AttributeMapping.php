@@ -118,6 +118,11 @@ class AttributeMapping
 
     public function isMapped(): bool
     {
-        return $this->status === AttributeMappingStatus::ATTRIBUTE_ACTIVE;
+        return AttributeMappingStatus::ATTRIBUTE_ACTIVE === $this->status;
+    }
+
+    public function isInactive(): bool
+    {
+        return AttributeMappingStatus::ATTRIBUTE_INACTIVE === $this->status;
     }
 }

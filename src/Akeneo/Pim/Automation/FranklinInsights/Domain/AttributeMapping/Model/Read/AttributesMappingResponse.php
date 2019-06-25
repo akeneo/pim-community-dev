@@ -39,10 +39,16 @@ class AttributesMappingResponse implements \IteratorAggregate
         $this->attributes[] = $attribute;
 
         usort($this->attributes, function (AttributeMapping $a, AttributeMapping $b) {
-            $mapped = $a->isMapped() <=> $b->isMapped();
-            if ($mapped !== 0) {
-                return $mapped;
+            $inactive = $a->isInactive() <=> $b->isInactive();
+            if ($inactive !== 0) {
+                return $inactive;
             }
+
+            $isMapped = $a->isMapped() <=> $b->isMapped();
+            if ($isMapped !== 0) {
+                return $isMapped;
+            }
+
             return $a->getTargetAttributeLabel() <=> $b->getTargetAttributeLabel();
         });
 

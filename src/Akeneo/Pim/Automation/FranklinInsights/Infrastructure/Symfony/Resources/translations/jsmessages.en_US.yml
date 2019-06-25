@@ -61,6 +61,8 @@ akeneo_franklin_insights:
                     inactive: Inactive
                 create_attribute:
                     btn: Create attribute
+                secondary_actions:
+                    deactivate_franklin_attribute: "Don't map"
             module:
                 subscribe:
                     subscribe: 'Subscribe family to Franklin'
@@ -77,7 +79,11 @@ akeneo_franklin_insights:
                         title: 'Number of mapped attributes'
                         description: "Use this bar to see at a glance your work status"
                         mapped_attribute_count: '{{ count }} mapped attributes'
-
+            modal:
+                deactivate_franklin_attribute:
+                    title: "Are you sure you don't want to map this attribute?"
+                    subtitle: 'Franklin Insights'
+                    ok: "Don't map"
             constraint:
                 missing_target_key: 'Missing target key for mapping'
                 missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'

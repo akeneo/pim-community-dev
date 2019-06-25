@@ -5,21 +5,22 @@
         <th class="AknGrid-headerCell"><%- franklinAttribute %></th>
         <th class="AknGrid-headerCell catalog-attribute"><%- catalogAttribute %></th>
         <th class="AknGrid-headerCell"></th>
+        <th class="AknGrid-headerCell"></th>
     </tr>
 
-    <% Object.keys(mapping).forEach((franklin_attribute_code) => { %>
+    <% Object.entries(mapping).forEach(([franklinAttributeCode, attributeMapping]) => { %>
     <tr
         class="AknGrid-bodyRow searchable-row line"
-        data-franklin-attribute="<%- mapping[franklin_attribute_code].franklinAttribute.label %>"
-        data-status="<%- mapping[franklin_attribute_code].status %>"
+        data-franklin-attribute="<%- attributeMapping.franklinAttribute.label %>"
+        data-status="<%- attributeMapping.status %>"
     >
         <td class="AknGrid-bodyCell franklin-attribute">
             <div class="label">
-                <%- mapping[franklin_attribute_code].franklinAttribute.label %>
+                <%- attributeMapping.franklinAttribute.label %>
             </div>
             <div class="type">
                 <%- __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_attribute_type', { type:
-                __(`akeneo_franklin_insights.entity.franklin_attribute.type.${mapping[franklin_attribute_code].franklinAttribute.type}`)
+                __(`akeneo_franklin_insights.entity.franklin_attribute.type.${attributeMapping.franklinAttribute.type}`)
                 }) %>
             </div>
             <div class="summary">
@@ -27,7 +28,7 @@
                     <%- __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_value_sample') %>
                 </span>
                 <ol>
-                    <% mapping[franklin_attribute_code].franklinAttribute.summary.forEach((summaryItem) => { %>
+                    <% attributeMapping.franklinAttribute.summary.forEach((summaryItem) => { %>
                     <li><%- summaryItem %></li>
                     <% }) %>
                 </ol>
@@ -35,12 +36,29 @@
         </td>
         <td
             class="AknGrid-bodyCell attribute-selector"
-            data-franklin-attribute-code="<%- franklin_attribute_code %>"
+            data-franklin-attribute-code="<%- franklinAttributeCode %>"
         ></td>
         <td
             class="AknGrid-bodyCell create-attribute-button attribute-type-mismatch-warning"
-            data-franklin-attribute-code="<%- franklin_attribute_code %>"
+            data-franklin-attribute-code="<%- franklinAttributeCode %>"
         ></td>
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+            <% if (true === isFranklinAttributeDeactivable(attributeMapping)) { %>
+            <div class="AknDropdown">
+                <div class="AknSecondaryActions-button" style="display: inline-block;" data-toggle="dropdown"></div>
+                <div class="AknDropdown-menu">
+                    <div
+                        class="AknDropdown-menuLink deactivate-franklin-attribute"
+                        data-franklin-attribute-code="<%- franklinAttributeCode %>"
+                    >
+                        <%-
+                        __('akeneo_franklin_insights.entity.attributes_mapping.fields.secondary_actions.deactivate_franklin_attribute')
+                        %>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </td>
     </tr>
     <% }) %>
 </table>

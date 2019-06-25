@@ -28,6 +28,7 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
         'color' => [
             'franklinAttribute' => ['type' => 'multiselect'],
             'attribute' => 'tshirt_style',
+            'status' => 'active',
         ],
     ];
 
@@ -71,13 +72,13 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_does_not_keep_in_account_status_key(): void
+    public function it_throws_an_exception_if_status_is_missing(): void
     {
-        $mapping = ['color' => ['attribute' => 'tshirt_style', 'status' => 1]];
+        $mapping = ['color' => ['attribute' => 'tshirt_style']];
         $this->beConstructedWith(new FamilyCode('family_code'), $mapping);
 
         $this
-            ->shouldNotThrow(InvalidMappingException::expectedKey('color', 'status'))
+            ->shouldThrow(InvalidMappingException::expectedKey('color', 'status'))
             ->duringInstantiation();
     }
 
@@ -87,18 +88,22 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
             'main_color' => [
                 'franklinAttribute' => ['type' => 'multiselect'],
                 'attribute' => 'pim_color',
+                'status' => 'active',
             ],
             'secondary_color' => [
                 'franklinAttribute' => ['type' => 'simpleselect'],
                 'attribute' => 'pim_color',
+                'status' => 'active',
             ],
             'test' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => null,
+                'status' => 'pending',
             ],
             'test2' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => '',
+                'status' => 'pending',
             ],
         ];
 

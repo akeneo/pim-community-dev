@@ -218,7 +218,29 @@ final class AttributesMappingContext implements Context
             $this->createAttributeInFamilyHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
-            var_dump($e->getMessage());
+        }
+    }
+
+    /**
+     * @When the attribute :franklinAttribute of the family :familyCode is deactivated
+     */
+    public function aFranklinAttributeIsDeactivated(string $franklinAttribute, string $familyCode)
+    {
+        $mapping = [
+            $franklinAttribute => [
+                'franklinAttribute' => [
+                    'label' => 'A label',
+                    'type' => 'text',
+                ],
+                'attribute' => null,
+                'status' => AttributeMappingStatus::ATTRIBUTE_INACTIVE,
+            ]
+        ];
+        try {
+            $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode($familyCode), $mapping);
+            $this->saveAttributesMappingByFamilyHandler->handle($command);
+        } catch (\Exception $e) {
+            ExceptionContext::setThrownException($e);
         }
     }
 
@@ -340,6 +362,24 @@ final class AttributesMappingContext implements Context
                 return;
             }
         }
+        Assert::true(false, 'Expectation not found for Franklin\'s attribute: ' . $franklinAttribute);
+    }
+
+    /**
+     * @Then Franklin's attribute :franklinAttribute should be inactive
+     */
+    public function franklinAttributeShouldBeInactive(string $franklinAttribute)
+    {
+        $attributesMapping = $this->fakeClient->getAttributesMapping();
+        foreach ($attributesMapping as $attributeMapping) {
+            if ($franklinAttribute === $attributeMapping['from']['id']) {
+                Assert::eq($attributeMapping['to']['id'], null);
+                Assert::eq($attributeMapping['status'], AttributeMappingStatus::ATTRIBUTE_INACTIVE);
+
+                return;
+            }
+        }
+        Assert::null(ExceptionContext::getThrownException());
         Assert::true(false, 'Expectation not found for Franklin\'s attribute: ' . $franklinAttribute);
     }
 
@@ -486,7 +526,7 @@ final class AttributesMappingContext implements Context
                     'type' => 'text',
                 ],
                 'attribute' => $mapping['pim_attribute_code'],
-                'status' => 'pending',
+                'status' => $mapping['status'],
             ];
         }
 

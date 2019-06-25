@@ -70,14 +70,17 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
             'franklin_size' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => null,
+                'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
             ],
             'franklin_color' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => null,
+                'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
             ],
             'franklin_weight' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => 'pim_weight',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ],
         ]))->shouldBeCalled();
 

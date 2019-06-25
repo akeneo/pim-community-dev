@@ -10,6 +10,7 @@
 import * as Backbone from 'backbone';
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
+import {ajax} from 'jquery';
 import * as _ from 'underscore';
 
 import {EscapeHtml} from '../../common/escape-html';
@@ -37,6 +38,7 @@ const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 const Property = require('pim/common/property');
 const Messenger = require('oro/messenger');
+const Routing = require('routing');
 
 interface Config {
   labels: {
@@ -107,7 +109,9 @@ class AttributeMapping extends BaseView {
    */
   public events(): EventsHash {
     return {
-      'click .option-mapping': this.openAttributeOptionsMappingModal
+      'click .option-mapping': this.openAttributeOptionsMappingModal,
+      'click .deactivate-franklin-attribute': (event: any) =>
+        this.deactivateFranklinAttribute(event.target.dataset.franklinAttributeCode)
     };
   }
 
@@ -136,7 +140,8 @@ class AttributeMapping extends BaseView {
         mapping: attributesMapping,
         escapeHtml: EscapeHtml.escapeHtml,
         franklinAttribute: __(this.config.labels.franklinAttribute),
-        catalogAttribute: __(this.config.labels.catalogAttribute)
+        catalogAttribute: __(this.config.labels.catalogAttribute),
+        isFranklinAttributeDeactivable: this.isFranklinAttributeDeactivable.bind(this)
       })
     );
 
@@ -202,7 +207,7 @@ class AttributeMapping extends BaseView {
   }
 
   private isPimAttributeAlreadyMapped(pimAttributeCode: string | null): boolean {
-    if (null === pimAttributeCode) {
+    if (null === pimAttributeCode || '' === pimAttributeCode) {
       return false;
     }
 
@@ -440,6 +445,68 @@ class AttributeMapping extends BaseView {
    */
   private setScroll(): void {
     $('.edit-form').scrollTop(this.scroll);
+  }
+
+  /**
+   * Return true if the franklin attribute can be deactivated.
+   */
+  private isFranklinAttributeDeactivable(mapping: IAttributeMapping): boolean {
+    return mapping.status !== AttributeMappingStatus.ATTRIBUTE_INACTIVE;
+  }
+
+  /**
+   * Display a confirmation modal for the deactivation of a franklin attribute.
+   */
+  private renderDeactivateFranklinAttributeConfirmationModal(): Promise<void> {
+    const modal = new (Backbone as any).BootstrapModal({
+      title: __('akeneo_franklin_insights.entity.attributes_mapping.modal.deactivate_franklin_attribute.title'),
+      subtitle: __('akeneo_franklin_insights.entity.attributes_mapping.modal.deactivate_franklin_attribute.subtitle'),
+      content: '',
+      illustrationClass: 'delete',
+      okText: __('akeneo_franklin_insights.entity.attributes_mapping.modal.deactivate_franklin_attribute.ok'),
+      buttonClass: 'AknButton--important'
+    });
+
+    modal.open();
+
+    return new Promise((resolve, reject) => {
+      this.listenTo(modal, 'ok', resolve);
+      this.listenTo(modal, 'cancel', reject);
+    });
+  }
+
+  /**
+   * Deactivate a franklin attribute.
+   */
+  private async deactivateFranklinAttribute(franklinAttributeCode: string) {
+    try {
+      await this.renderDeactivateFranklinAttributeConfirmationModal();
+    } catch (e) {
+      return;
+    }
+
+    const familyMapping = this.getFormData() as IAttributesMappingForFamily;
+
+    familyMapping.mapping[franklinAttributeCode].status = AttributeMappingStatus.ATTRIBUTE_INACTIVE;
+
+    const request = {
+      code: familyMapping.code,
+      mapping: {
+        [franklinAttributeCode]: familyMapping.mapping[franklinAttributeCode]
+      }
+    };
+
+    await ajax({
+      url: Routing.generate('akeneo_franklin_insights_attributes_mapping_update', {identifier: familyMapping.code}),
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(request)
+    });
+
+    this.getRoot().trigger('franklin_attribute_deactivated', franklinAttributeCode);
+    this.setData(familyMapping);
+
+    this.render();
   }
 }
 

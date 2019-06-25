@@ -48,6 +48,7 @@ class AttributesMappingResponseSpec extends ObjectBehavior
 
     public function it_sorts_attributes_mapping(): void
     {
+        $attrDescription = new AttributeMapping('description', 'Description', 'text', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE);
         $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
         $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $attrColor = new AttributeMapping('color', 'Color', 'select', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
@@ -55,6 +56,7 @@ class AttributesMappingResponseSpec extends ObjectBehavior
         $attrHeight = new AttributeMapping('height', 'Height', 'metric', null, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
 
         $this
+            ->addAttribute($attrDescription)
             ->addAttribute($attrWeight)
             ->addAttribute($attrSize)
             ->addAttribute($attrColor)
@@ -65,7 +67,7 @@ class AttributesMappingResponseSpec extends ObjectBehavior
         foreach ($this->getIterator()->getWrappedObject() as $attrMapping) {
             $franklinAttrCodes[] = $attrMapping;
         }
-        Assert::eq($franklinAttrCodes, [$attrColor, $attrLabel, $attrWeight, $attrHeight, $attrSize]);
+        Assert::eq($franklinAttrCodes, [$attrColor, $attrWeight, $attrHeight, $attrSize, $attrDescription, $attrLabel]);
     }
 
     public function it_can_check_if_mapping_is_empty(): void
@@ -93,9 +95,6 @@ class AttributesMappingResponseSpec extends ObjectBehavior
             ->addAttribute($attrLabel)
             ->addAttribute($attrHeight);
 
-        $this->getPendingAttributesFranklinLabels()->shouldBeLike([
-            0 => 'Color',
-            2 => 'Weight',
-        ]);
+        Assert::eq(array_values($this->getWrappedObject()->getPendingAttributesFranklinLabels()), ['Color', 'Weight']);
     }
 }

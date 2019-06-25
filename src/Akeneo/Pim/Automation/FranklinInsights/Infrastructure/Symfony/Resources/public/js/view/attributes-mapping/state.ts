@@ -7,38 +7,56 @@
  * file that was distributed with this source code.
  */
 import AttributeMappingStatus from '../../model/attribute-mapping-status';
+import AttributesMapping from '../../model/attributes-mapping';
+import AttributesMappingForFamily from '../../model/attributes-mapping-for-family';
 
 const BaseState = require('pim/form/common/state');
 
 /**
- * State module for the mapping screen.
- * The goal of this module is to not detect state as changed if the value is changed from null to ''.
- *
- * @author Pierre Allard <pierre.allard@akeneo.com>
+ * State module for the attribute mapping screen.
  */
 class State extends BaseState {
+  public configure() {
+    this.listenTo(this.getRoot(), 'franklin_attribute_deactivated', this.setAttributeMappingStatusAsInactive);
+
+    return super.configure();
+  }
+
   /**
    * {@inheritdoc}
    */
   public hasModelChanged(): boolean {
-    if (this.state !== JSON.stringify(this.getFormData())) {
+    const model: AttributesMappingForFamily = this.getFormData();
+
+    if (this.state !== JSON.stringify(model)) {
       return true;
     }
 
-    const formData = this.getFormData();
-    for (const property in formData.mapping) {
-      if (formData.mapping.hasOwnProperty(property)) {
-        const attributeMapping = formData.mapping[property];
-        if (
-          attributeMapping.status === AttributeMappingStatus.ATTRIBUTE_PENDING &&
-          attributeMapping.attribute !== null
-        ) {
-          return true;
-        }
+    return this.checkAttributeWithPerfectMatch(model.mapping);
+  }
+
+  /**
+   * Return true when a PENDING attribute have suggested value (perfect match) and need to be saved.
+   */
+  private checkAttributeWithPerfectMatch(mappings: AttributesMapping) {
+    for (const mapping of Object.values(mappings)) {
+      if (
+        mapping.status === AttributeMappingStatus.ATTRIBUTE_PENDING &&
+        mapping.attribute !== null &&
+        mapping.attribute !== ''
+      ) {
+        return true;
       }
     }
-
     return false;
+  }
+
+  private setAttributeMappingStatusAsInactive(franklinAttributeCode: string) {
+    const model = JSON.parse(this.state) as AttributesMappingForFamily;
+
+    model.mapping[franklinAttributeCode].status = AttributeMappingStatus.ATTRIBUTE_INACTIVE;
+
+    (this.state as string) = JSON.stringify(model);
   }
 }
 

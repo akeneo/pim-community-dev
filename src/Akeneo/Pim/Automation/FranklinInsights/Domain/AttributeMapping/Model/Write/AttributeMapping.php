@@ -55,7 +55,8 @@ class AttributeMapping
     public function __construct(
         string $targetAttributeCode,
         string $targetAttributeType,
-        ?Attribute $attribute = null
+        ?Attribute $attribute,
+        string $status
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
 
@@ -73,7 +74,7 @@ class AttributeMapping
             $this->validateAttribute($attribute);
         }
         $this->attribute = $attribute;
-        $this->status = null === $this->attribute ? AttributeMappingStatus::ATTRIBUTE_PENDING : AttributeMappingStatus::ATTRIBUTE_ACTIVE;
+        $this->status = $status;
     }
 
     /**

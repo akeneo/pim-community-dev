@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
@@ -34,7 +35,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
     public function it_normalizes_attributes_mapping_that_does_not_contain_attribute(): void
     {
         $attributesMapping = new AttributesMapping(new FamilyCode('router'));
-        $attributesMapping->map('label', 'text', null);
+        $attributesMapping->map('label', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
 
         $expectedData = [
             'from' => ['id' => 'label'],
@@ -50,7 +51,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $attrColor = (new AttributeBuilder())->withCode('pim_color')->withType(AttributeTypes::OPTION_SIMPLE_SELECT)->build();
 
         $attributesMapping = new AttributesMapping(new FamilyCode('router'));
-        $attributesMapping->map('color', 'select', $attrColor);
+        $attributesMapping->map('color', 'select', $attrColor, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
 
         $expectedData = [
             'from' => ['id' => 'color'],
@@ -70,7 +71,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $attrWeight = (new AttributeBuilder())->withCode('pim_weight')->withType(AttributeTypes::METRIC)->withDefaultMetricUnit('KILOGRAM')->build();
 
         $attributesMapping = new AttributesMapping(new FamilyCode('router'));
-        $attributesMapping->map('weight', 'metric', $attrWeight);
+        $attributesMapping->map('weight', 'metric', $attrWeight, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
 
         $expectedData = [
             'from' => ['id' => 'weight'],
@@ -96,7 +97,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         )->build();
 
         $attributesMapping = new AttributesMapping(new FamilyCode('router'));
-        $attributesMapping->map('name', 'text', $attrName);
+        $attributesMapping->map('name', 'text', $attrName, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
 
         $expectedData = [
             'from' => ['id' => 'name'],

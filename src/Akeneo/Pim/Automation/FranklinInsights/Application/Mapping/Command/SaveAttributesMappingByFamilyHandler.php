@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ScheduleFetchProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
@@ -95,7 +96,8 @@ class SaveAttributesMappingByFamilyHandler
             $attributesMapping->map(
                 $franklinAttrId,
                 $attributeMapping['franklinAttribute']['type'],
-                $attributes[$attributeMapping['attribute']] ?? null
+                $attributes[$attributeMapping['attribute']] ?? null,
+                $this->resolveAttributeMappingStatus($attributes, $attributeMapping['attribute'], $attributeMapping['status'])
             );
         }
 
@@ -104,5 +106,17 @@ class SaveAttributesMappingByFamilyHandler
 
         // Ideally, it should not be done here, but triggered from an event.
         $this->scheduleFetchProducts->schedule();
+    }
+
+    private function resolveAttributeMappingStatus(array $attributes, ?string $attribute, string $status): string
+    {
+        if (!isset($attributes[$attribute]) && AttributeMappingStatus::ATTRIBUTE_ACTIVE === $status) {
+            return AttributeMappingStatus::ATTRIBUTE_PENDING;
+        }
+        if (isset($attributes[$attribute])) {
+            return AttributeMappingStatus::ATTRIBUTE_ACTIVE;
+        }
+
+        return $status;
     }
 }

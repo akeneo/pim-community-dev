@@ -27,37 +27,37 @@ class AttributeMappingSpec extends ObjectBehavior
 {
     public function it_is_initializable_with_an_attribute(): void
     {
-        $this->beConstructedWith('target', 'text', AttributeBuilder::fromCode('code'));
+        $this->beConstructedWith('target', 'text', AttributeBuilder::fromCode('code'), AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
     public function it_is_initializable_without_attribute(): void
     {
-        $this->beConstructedWith('target', 'multiselect', null);
+        $this->beConstructedWith('target', 'multiselect', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
     public function it_returns_an_active_status_when_attribute_is_mapped(): void
     {
-        $this->beConstructedWith('target', 'multiselect', AttributeBuilder::fromCode('code'));
+        $this->beConstructedWith('target', 'multiselect', AttributeBuilder::fromCode('code'), AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_ACTIVE);
     }
 
     public function it_returns_a_pending_status_when_attribute_is_not_mapped(): void
     {
-        $this->beConstructedWith('target', 'multiselect', null);
+        $this->beConstructedWith('target', 'multiselect', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
         $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_PENDING);
     }
 
     public function it_returns_the_target_attribute_code(): void
     {
-        $this->beConstructedWith('target', 'multiselect', null);
+        $this->beConstructedWith('target', 'multiselect', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
         $this->getTargetAttributeCode()->shouldReturn('target');
     }
 
     public function it_throws_an_exception_if_franklin_attribute_type_is_invalid(): void
     {
-        $this->beConstructedWith('target', 'invalid-type', AttributeBuilder::fromCode('code'));
+        $this->beConstructedWith('target', 'invalid-type', AttributeBuilder::fromCode('code'), AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this
             ->shouldThrow(\InvalidArgumentException::class)
             ->duringInstantiation();
@@ -66,7 +66,7 @@ class AttributeMappingSpec extends ObjectBehavior
     public function it_throws_an_exception_if_pim_attribute_type_is_invalid(): void
     {
         $attribute = (new AttributeBuilder())->withType(AttributeTypes::DATE)->build();
-        $this->beConstructedWith('target', 'text', $attribute);
+        $this->beConstructedWith('target', 'text', $attribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this
             ->shouldThrow(
                 AttributeMappingException::incompatibleAttributeTypeMapping(AttributeTypes::DATE)
@@ -78,7 +78,7 @@ class AttributeMappingSpec extends ObjectBehavior
     {
         $attribute = (new AttributeBuilder())->isLocalizable()->build();
 
-        $this->beConstructedWith('target', 'text', $attribute);
+        $this->beConstructedWith('target', 'text', $attribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this
             ->shouldThrow(AttributeMappingException::localizableAttributeNotAllowed())
             ->duringInstantiation();
@@ -88,7 +88,7 @@ class AttributeMappingSpec extends ObjectBehavior
     {
         $attribute = (new AttributeBuilder())->isScopable()->build();
 
-        $this->beConstructedWith('target', 'text', $attribute);
+        $this->beConstructedWith('target', 'text', $attribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this
             ->shouldThrow(AttributeMappingException::scopableAttributeNotAllowed())
             ->duringInstantiation();
@@ -98,7 +98,7 @@ class AttributeMappingSpec extends ObjectBehavior
     {
         $attribute = (new AttributeBuilder())->isLocaleSpecific()->build();
 
-        $this->beConstructedWith('target', 'text', $attribute);
+        $this->beConstructedWith('target', 'text', $attribute, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this
             ->shouldThrow(AttributeMappingException::localeSpecificAttributeNotAllowed())
             ->duringInstantiation();

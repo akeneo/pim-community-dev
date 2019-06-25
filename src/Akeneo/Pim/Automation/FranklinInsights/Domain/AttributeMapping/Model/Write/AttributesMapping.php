@@ -55,8 +55,8 @@ class AttributesMapping
      *
      * @throws \Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException
      */
-    public function map(string $franklinAttrId, string $franklinAttrType, ?Attribute $pimAttribute): void
+    public function map(string $franklinAttrId, string $franklinAttrType, ?Attribute $pimAttribute, string $status): void
     {
-        $this->mapping[] = new AttributeMapping($franklinAttrId, $franklinAttrType, $pimAttribute);
+        $this->mapping[] = new AttributeMapping($franklinAttrId, $franklinAttrType, $pimAttribute, $status);
     }
 }
