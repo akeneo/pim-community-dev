@@ -1,8 +1,11 @@
 # 2.3.x
 
+# 2.3.50 (2019-06-24)
+
 # 2.3.49 (2019-06-19)
 
 ## Bug fixes
+
 - PIM-8444: Asset mass upload has been fixed when editing many products.
 
 # 2.3.48 (2019-06-12)
