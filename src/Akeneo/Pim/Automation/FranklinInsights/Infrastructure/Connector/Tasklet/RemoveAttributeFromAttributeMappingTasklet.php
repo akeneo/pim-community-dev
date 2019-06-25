@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -90,12 +90,12 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
     }
 
     /**
-     * @param AttributesMappingResponse $attributesMapping
+     * @param AttributeMappingCollection $attributesMapping
      * @param string[] $pimAttributeCodes
      *
      * @return array
      */
-    private function buildNewAttributesMapping(AttributesMappingResponse $attributesMapping, array $pimAttributeCodes)
+    private function buildNewAttributesMapping(AttributeMappingCollection $attributesMapping, array $pimAttributeCodes)
     {
         $newMapping = [];
 

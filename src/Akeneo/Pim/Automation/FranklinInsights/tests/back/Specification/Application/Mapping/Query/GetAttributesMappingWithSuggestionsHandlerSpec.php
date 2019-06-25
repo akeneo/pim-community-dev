@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodeQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
@@ -45,26 +45,26 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery
     ) {
-        $attributesMappingResponse = new AttributesMappingResponse();
-        $attributesMappingResponse->addAttribute(
+        $attributeMappingCollection = new AttributeMappingCollection();
+        $attributeMappingCollection->addAttribute(
             new AttributeMapping('color', 'Color', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING)
         );
-        $attributesMappingResponse->addAttribute(
+        $attributeMappingCollection->addAttribute(
             new AttributeMapping('weight', 'Weight', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING)
         );
-        $attributesMappingResponse->addAttribute(
+        $attributeMappingCollection->addAttribute(
             new AttributeMapping('size', 'Size', 'text', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE)
         );
 
         $getAttributesMappingByFamilyHandler
             ->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
-            ->willReturn($attributesMappingResponse);
+            ->willReturn($attributeMappingCollection);
 
         $selectExactMatchAttributeCodeQuery
             ->execute(new FamilyCode('router'), ['Color', 'Weight'])
             ->willReturn(['Color' => 'color', 'Weight' => null]);
 
-        $expectedMapping = new AttributesMappingResponse();
+        $expectedMapping = new AttributeMappingCollection();
         $expectedMapping->addAttribute(
             new AttributeMapping('color', 'Color', 'text', 'color', AttributeMappingStatus::ATTRIBUTE_PENDING)
         );
@@ -81,26 +81,26 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery
     ) {
-        $attributesMappingResponse = new AttributesMappingResponse();
-        $attributesMappingResponse->addAttribute(
+        $attributeMappingCollection = new AttributeMappingCollection();
+        $attributeMappingCollection->addAttribute(
             new AttributeMapping('color', 'Color', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING)
         );
-        $attributesMappingResponse->addAttribute(
+        $attributeMappingCollection->addAttribute(
             new AttributeMapping('weight', 'Weight', 'text', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE)
         );
-        $attributesMappingResponse->addAttribute(
+        $attributeMappingCollection->addAttribute(
             new AttributeMapping('size', 'Size', 'text', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE)
         );
 
         $getAttributesMappingByFamilyHandler
             ->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
-            ->willReturn($attributesMappingResponse);
+            ->willReturn($attributeMappingCollection);
 
         $selectExactMatchAttributeCodeQuery
             ->execute(new FamilyCode('router'), ['Color'])
             ->willReturn(['Color' => 'color']);
 
-        $expectedMapping = new AttributesMappingResponse();
+        $expectedMapping = new AttributeMappingCollection();
         $expectedMapping->addAttribute(
             new AttributeMapping('color', 'Color', 'text', 'color', AttributeMappingStatus::ATTRIBUTE_PENDING)
         );
@@ -117,23 +117,23 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery
     ) {
-        $attributesMappingResponse = new AttributesMappingResponse();
-        $attributesMappingResponse->addAttribute(
+        $attributeMappingCollection = new AttributeMappingCollection();
+        $attributeMappingCollection->addAttribute(
             new AttributeMapping('color', 'Color', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING)
         );
-        $attributesMappingResponse->addAttribute(
+        $attributeMappingCollection->addAttribute(
             new AttributeMapping('finish', 'Color/finish', 'text', 'color', AttributeMappingStatus::ATTRIBUTE_ACTIVE)
         );
 
         $getAttributesMappingByFamilyHandler
             ->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
-            ->willReturn($attributesMappingResponse);
+            ->willReturn($attributeMappingCollection);
 
         $selectExactMatchAttributeCodeQuery
             ->execute(new FamilyCode('router'), ['Color'])
             ->willReturn(['Color' => 'color']);
 
-        $expectedMapping = new AttributesMappingResponse();
+        $expectedMapping = new AttributeMappingCollection();
         $expectedMapping->addAttribute(
             new AttributeMapping('color', 'Color', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING)
         );

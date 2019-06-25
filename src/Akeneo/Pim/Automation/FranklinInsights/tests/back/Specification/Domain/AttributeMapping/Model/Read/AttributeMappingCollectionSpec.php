@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeM
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
@@ -23,11 +23,11 @@ use Webmozart\Assert\Assert;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributesMappingResponseSpec extends ObjectBehavior
+class AttributeMappingCollectionSpec extends ObjectBehavior
 {
-    public function it_is_an_attributes_mapping_response(): void
+    public function it_is_an_attributes_mapping_colletion(): void
     {
-        $this->shouldHaveType(AttributesMappingResponse::class);
+        $this->shouldHaveType(AttributeMappingCollection::class);
     }
 
     public function it_is_traversable(): void

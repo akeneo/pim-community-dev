@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\RemoveAttributeFromAttributeMappingTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -57,7 +57,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
         $getAttributesMappingHandler,
         $saveAttributesMappingHandler
     ): void {
-        $franklinResponse = new AttributesMappingResponse();
+        $franklinResponse = new AttributeMappingCollection();
         $franklinResponse
             ->addAttribute(new AttributeMapping('franklin_size', null, 'text', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null))
             ->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null))
@@ -91,7 +91,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
         $getAttributesMappingHandler,
         $saveAttributesMappingHandler
     ): void {
-        $franklinResponse = new AttributesMappingResponse();
+        $franklinResponse = new AttributeMappingCollection();
         $franklinResponse->addAttribute(new AttributeMapping('franklin_weight', null, 'text', 'pim_weight', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null));
 
         $getAttributesMappingHandler
@@ -109,7 +109,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     ): void {
         $getAttributesMappingHandler
             ->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
-            ->willReturn(new AttributesMappingResponse());
+            ->willReturn(new AttributeMappingCollection());
 
         $saveAttributesMappingHandler->handle()->shouldNotBeCalled();
 

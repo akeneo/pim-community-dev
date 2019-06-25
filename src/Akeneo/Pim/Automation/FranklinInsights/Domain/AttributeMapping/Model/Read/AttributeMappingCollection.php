@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributesMappingResponse implements \IteratorAggregate
+class AttributeMappingCollection implements \IteratorAggregate
 {
     /** @var array */
     private $attributes;
@@ -32,7 +32,7 @@ class AttributesMappingResponse implements \IteratorAggregate
     /**
      * @param AttributeMapping $attribute
      *
-     * @return AttributesMappingResponse
+     * @return AttributeMappingCollection
      */
     public function addAttribute(AttributeMapping $attribute): self
     {

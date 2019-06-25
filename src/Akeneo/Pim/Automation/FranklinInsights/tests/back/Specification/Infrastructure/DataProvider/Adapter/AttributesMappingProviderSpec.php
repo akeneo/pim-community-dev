@@ -71,8 +71,8 @@ class AttributesMappingProviderSpec extends ObjectBehavior
         ]);
         $api->fetchByFamily('camcorders')->willReturn($response);
 
-        $attributesMappingResponse = $this->getAttributesMapping(new FamilyCode('camcorders'));
-        $attributesMappingResponse->shouldHaveCount(2);
+        $attributeMappingCollection = $this->getAttributesMapping(new FamilyCode('camcorders'));
+        $attributeMappingCollection->shouldHaveCount(2);
     }
 
     public function it_updates_attributes_mapping($api): void

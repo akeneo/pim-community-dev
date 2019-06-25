@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodeQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -39,14 +39,14 @@ class GetAttributesMappingWithSuggestionsHandler
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
     }
 
-    public function handle(GetAttributesMappingWithSuggestionsQuery $query): AttributesMappingResponse
+    public function handle(GetAttributesMappingWithSuggestionsQuery $query): AttributeMappingCollection
     {
         $familyAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle(
             new GetAttributesMappingByFamilyQuery($query->getFamilyCode())
         );
 
         $suggestedPimAttributeCodes = $this->findSuggestedPimAttributeCodes($query->getFamilyCode(), $familyAttributesMapping);
-        $newMapping = new AttributesMappingResponse();
+        $newMapping = new AttributeMappingCollection();
 
         foreach ($familyAttributesMapping as $attributeMapping) {
             $pimAttributeCode = $attributeMapping->getPimAttributeCode();
@@ -73,7 +73,7 @@ class GetAttributesMappingWithSuggestionsHandler
     /**
      * @return string[]
      */
-    private function findSuggestedPimAttributeCodes(FamilyCode $familyCode, AttributesMappingResponse $familyAttributesMapping): array
+    private function findSuggestedPimAttributeCodes(FamilyCode $familyCode, AttributeMappingCollection $familyAttributesMapping): array
     {
         $suggestedPimAttributeCodes = $this->selectExactMatchAttributeCodeQuery->execute(
             $familyCode,

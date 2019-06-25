@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -54,11 +54,11 @@ class GetAttributesMappingByFamilyHandler
     /**
      * @param GetAttributesMappingByFamilyQuery $query
      *
+     * @return AttributeMappingCollection
      * @throws DataProviderException
      *
-     * @return AttributesMappingResponse
      */
-    public function handle(GetAttributesMappingByFamilyQuery $query): AttributesMappingResponse
+    public function handle(GetAttributesMappingByFamilyQuery $query): AttributeMappingCollection
     {
         $this->ensureFamilyExists($query->getFamilyCode());
 
@@ -81,34 +81,34 @@ class GetAttributesMappingByFamilyHandler
     }
 
     /**
-     * @param AttributesMappingResponse $attributesMappingResponse
+     * @param AttributeMappingCollection $attributeMappingCollection
      *
-     * @return AttributesMappingResponse
+     * @return AttributeMappingCollection
      */
-    private function unmapUnknownAttributes(AttributesMappingResponse $attributesMappingResponse)
+    private function unmapUnknownAttributes(AttributeMappingCollection $attributeMappingCollection)
     {
-        if ($attributesMappingResponse->isEmpty()) {
-            return $attributesMappingResponse;
+        if ($attributeMappingCollection->isEmpty()) {
+            return $attributeMappingCollection;
         }
 
-        $unknownAttributeCodes = $this->computeUnknownAttributesCodes($attributesMappingResponse);
+        $unknownAttributeCodes = $this->computeUnknownAttributesCodes($attributeMappingCollection);
 
         if (empty($unknownAttributeCodes)) {
-            return $attributesMappingResponse;
+            return $attributeMappingCollection;
         }
 
-        return $this->computeNewAttributesMapping($attributesMappingResponse, $unknownAttributeCodes);
+        return $this->computeNewAttributesMapping($attributeMappingCollection, $unknownAttributeCodes);
     }
 
     /**
-     * @param AttributesMappingResponse $attributesMappingResponse
+     * @param AttributeMappingCollection $attributeMappingCollection
      *
      * @return array
      */
-    private function computeUnknownAttributesCodes(AttributesMappingResponse $attributesMappingResponse): array
+    private function computeUnknownAttributesCodes(AttributeMappingCollection $attributeMappingCollection): array
     {
         $attributeCodesFromResponse = [];
-        foreach ($attributesMappingResponse as $attributeMapping) {
+        foreach ($attributeMappingCollection as $attributeMapping) {
             if (null !== $attributeMapping->getPimAttributeCode()) {
                 $attributeCodesFromResponse[] = $attributeMapping->getPimAttributeCode();
             }
@@ -123,15 +123,15 @@ class GetAttributesMappingByFamilyHandler
     }
 
     /**
-     * @param AttributesMappingResponse $attributesMappingResponse
+     * @param AttributeMappingCollection $attributeMappingCollection
      * @param string[] $unknownAttributeCodes
      *
-     * @return AttributesMappingResponse
+     * @return AttributeMappingCollection
      */
-    private function computeNewAttributesMapping(AttributesMappingResponse $attributesMappingResponse, array $unknownAttributeCodes): AttributesMappingResponse
+    private function computeNewAttributesMapping(AttributeMappingCollection $attributeMappingCollection, array $unknownAttributeCodes): AttributeMappingCollection
     {
-        $newMapping = new AttributesMappingResponse();
-        foreach ($attributesMappingResponse as $attributeMapping) {
+        $newMapping = new AttributeMappingCollection();
+        foreach ($attributeMappingCollection as $attributeMapping) {
             $status = $attributeMapping->getStatus();
             $pimAttributeCode = $attributeMapping->getPimAttributeCode();
             if (in_array($attributeMapping->getPimAttributeCode(), $unknownAttributeCodes)) {
