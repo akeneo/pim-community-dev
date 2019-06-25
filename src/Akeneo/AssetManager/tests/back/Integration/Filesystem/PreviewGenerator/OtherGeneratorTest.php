@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\OtherGenerator;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
@@ -18,7 +18,7 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /** @var PreviewGeneratorInterface */
     private $otherGenerator;
 
-    /** @var UrlAttribute */
+    /** @var MediaLinkAttribute */
     private $attribute;
 
     public function setUp(): void
@@ -32,7 +32,7 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_can_support_only_media_type_other_of_an_url_attribute()
+    public function it_can_support_only_media_type_other_of_an_mediaLink_attribute()
     {
         $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, OtherGenerator::THUMBNAIL_TYPE);
 
@@ -42,7 +42,7 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_can_support_only_supported_type_image_of_an_url_attribute()
+    public function it_can_support_only_supported_type_image_of_an_mediaLink_attribute()
     {
         $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, OtherGenerator::THUMBNAIL_TYPE);
 

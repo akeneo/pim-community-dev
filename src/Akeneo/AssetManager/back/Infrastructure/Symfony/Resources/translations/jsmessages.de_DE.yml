@@ -243,7 +243,7 @@ pim_asset_manager:
             none: Keine
             email: E-Mail
             regular_expression: Regulärer Ausdruck
-            url: URL
+            mediaLink: URL
     delete:
       message: Sind Sie sicher, dass Sie das Attribut "{{ attributeLabel }}}" löschen wollen?
       title: Attribut

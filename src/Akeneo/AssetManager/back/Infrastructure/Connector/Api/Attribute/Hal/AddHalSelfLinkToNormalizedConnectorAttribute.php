@@ -30,7 +30,7 @@ class AddHalSelfLinkToNormalizedConnectorAttribute
 
     public function __invoke(string $assetFamilyIdentifier, array $normalizedAttribute): array
     {
-        $selfUrl = $this->router->generate(
+        $selfMediaLink = $this->router->generate(
             'akeneo_asset_manager_asset_family_attribute_rest_connector_get',
             [
                 'assetFamilyIdentifier' => $assetFamilyIdentifier,
@@ -39,7 +39,7 @@ class AddHalSelfLinkToNormalizedConnectorAttribute
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        $selfLink = new Link('self', $selfUrl);
+        $selfLink = new Link('self', $selfMediaLink);
         $normalizedAttribute['_links'] = ($normalizedAttribute['_links'] ?? []) + $selfLink->toArray();
 
         return $normalizedAttribute;

@@ -64,17 +64,17 @@ services:
             - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
 
     akeneo_assetmanager.application.edit_attribute.attribute_updater.prefix:
-        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\Url\PrefixUpdater
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MediaLink\PrefixUpdater
         tags:
             - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
 
     akeneo_assetmanager.application.edit_attribute.attribute_updater.suffix:
-        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\Url\SuffixUpdater
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MediaLink\SuffixUpdater
         tags:
             - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
 
     akeneo_assetmanager.application.edit_attribute.attribute_updater.media_type:
-        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\Url\MediaTypeUpdater
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MediaLink\MediaTypeUpdater
         tags:
             - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
 
@@ -122,7 +122,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.asset_value_updater }
 
-    akeneo_assetmanager.application.edit_asset.asset_value_updater.url_updater:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\UrlUpdater
+    akeneo_assetmanager.application.edit_asset.asset_value_updater.mediaLink_updater:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\MediaLinkUpdater
         tags:
             - { name: akeneo_assetmanager.asset_value_updater }

@@ -295,9 +295,9 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeC
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
-Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateUrlAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaLinkAttributeCommand:
     group_sequence:
-        - CreateUrlAttributeCommand
+        - CreateMediaLinkAttributeCommand
         - other_constraints
     properties:
         assetFamilyIdentifier:
@@ -313,11 +313,11 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateUrlAttributeComm
         valuePerLocale:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         mediaType:
-            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\MediaType: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\MediaType: ~
         prefix:
-            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\Prefix: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\Prefix: ~
         suffix:
-            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\Suffix: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\Suffix: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
@@ -395,20 +395,20 @@ Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxVa
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MaxValue: ~
 
-Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Url\EditPrefixCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink\EditPrefixCommand:
     properties:
         prefix:
-            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\Prefix: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\Prefix: ~
 
-Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Url\EditSuffixCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink\EditSuffixCommand:
     properties:
         suffix:
-            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\Suffix: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\Suffix: ~
 
-Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Url\EditMediaTypeCommand:
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink\EditMediaTypeCommand:
     properties:
         mediaType:
-            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Url\MediaType: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\MediaType: ~
 
 Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
     properties:

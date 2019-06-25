@@ -22,7 +22,7 @@ default:
                 - akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context
                 - akeneo_assetmanager.tests.back.acceptance.context.index_assets_context
                 - akeneo_assetmanager.tests.back.acceptance.context.set_asset_family_permission_context
-                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_url
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_mediaLink
             filters:
                 tags: '@acceptance-back'
         integration:

@@ -139,8 +139,8 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
 
-    akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_url:
-        class: Akeneo\AssetManager\Acceptance\Context\EditAsset\EditUrlContext
+    akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_mediaLink:
+        class: Akeneo\AssetManager\Acceptance\Context\EditAsset\EditMediaLinkContext
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'

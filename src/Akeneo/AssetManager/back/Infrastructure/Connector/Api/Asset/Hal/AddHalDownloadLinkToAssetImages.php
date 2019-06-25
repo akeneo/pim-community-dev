@@ -72,15 +72,15 @@ class AddHalDownloadLinkToAssetImages
     {
         return array_map(function (array $value) {
             if (!empty($value['data'])) {
-                $url = $this->generateImageUrl($value['data']);
-                $link = new Link('download', $url);
+                $mediaLink = $this->generateImageMediaLink($value['data']);
+                $link = new Link('download', $mediaLink);
                 $value['_links'] = $link->toArray();
             }
             return $value;
         }, $values);
     }
 
-    private function generateImageUrl(string $imageCode): string
+    private function generateImageMediaLink(string $imageCode): string
     {
         return $this->router->generate(
             'akeneo_asset_manager_media_file_rest_connector_download',

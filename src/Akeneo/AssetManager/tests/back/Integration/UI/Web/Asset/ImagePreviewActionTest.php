@@ -16,9 +16,9 @@ namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
-use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkImageGenerator;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
-use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\UrlImageGenerator;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -40,7 +40,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
     /** @var FixturesLoader */
     private $fixturesLoader;
 
-    /** @var UrlAttribute */
+    /** @var MediaLinkAttribute */
     private $attribute;
 
     /** @var CacheManager */
@@ -76,7 +76,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             [
                 'data'                => self::FILENAME,
                 'attributeIdentifier' => $this->attribute->getIdentifier(),
-                'type'                => UrlImageGenerator::THUMBNAIL_TYPE
+                'type'                => MediaLinkImageGenerator::THUMBNAIL_TYPE
             ]
         );
         $response = $this->client->getResponse();

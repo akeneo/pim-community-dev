@@ -25,7 +25,7 @@ Feature: Lists all attributes related to an asset family
     And the attribute property "regularExpression" should not be visible
     And the user edits the attribute property "ValidationRule" with value "email"
     And the attribute property "regularExpression" should not be visible
-    And the user edits the attribute property "ValidationRule" with value "url"
+    And the user edits the attribute property "ValidationRule" with value "mediaLink"
     And the attribute property "regularExpression" should not be visible
     And the user edits the attribute property "ValidationRule" with value "regular_expression"
     And the user edits the attribute property "RegularExpression" with value "nice!"

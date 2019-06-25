@@ -87,7 +87,7 @@ pim_asset_manager:
             none: Нет
             email: E-mail
             regular_expression: Регулярное выражение
-            url: URL
+            mediaLink: URL
     delete:
       title: Атрибут
     notification:

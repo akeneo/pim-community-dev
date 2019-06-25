@@ -24,8 +24,8 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\MediaLinkData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\UrlData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -335,7 +335,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     $this->fixturesDesigner['attributes']['website']->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    UrlData::fromString('http://my-dam.com/assets/house_255311/500x500')
+                    MediaLinkData::fromString('http://my-dam.com/assets/house_255311/500x500')
                 )
             ])
         );

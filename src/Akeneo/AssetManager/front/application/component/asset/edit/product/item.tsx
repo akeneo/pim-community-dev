@@ -38,7 +38,7 @@ export default ({
       <div
         className="AknGrid-fullImage"
         style={{
-          backgroundImage: `url("${getImageShowUrl(product.getImage(), 'thumbnail')}")`,
+          backgroundImage: `mediaLink("${getImageShowUrl(product.getImage(), 'thumbnail')}")`,
         }}
       >
         <ProductCompletenessLabel completeness={completeness} type={product.getType()} />

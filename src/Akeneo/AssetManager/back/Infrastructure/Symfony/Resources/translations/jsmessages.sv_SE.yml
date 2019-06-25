@@ -86,7 +86,7 @@ pim_asset_manager:
             none: Ingen
             email: E-mail
             regular_expression: Reguljära uttryck
-            url: URL
+            mediaLink: URL
     delete:
       title: Attribut
     options:

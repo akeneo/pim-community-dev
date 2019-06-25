@@ -12,8 +12,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.preview_generator }
 
-    akeneo_assetmanager.infrastructure.generator.url_image_generator:
-        class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\UrlImageGenerator
+    akeneo_assetmanager.infrastructure.generator.mediaLink_image_generator:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkImageGenerator
         arguments:
             - '@liip_imagine.data.manager'
             - '@liip_imagine.cache.manager'

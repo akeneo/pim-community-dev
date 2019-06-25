@@ -12,7 +12,7 @@ const getRequestContract = fileName => {
 };
 
 const listenRequest = async function(page, requestContract, once = false) {
-  const url = await page.evaluate(
+  const mediaLink = await page.evaluate(
     async (route, query) => {
       const router = require('pim/router');
 
@@ -24,7 +24,7 @@ const listenRequest = async function(page, requestContract, once = false) {
 
   const answerRequest = request => {
     if (
-      url === request.url() &&
+      mediaLink === request.url() &&
       requestContract.request.method === request.method() &&
       (JSON.stringify(requestContract.request.body) === request.postData() ||
         requestContract.request.body === request.postData())

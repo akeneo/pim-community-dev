@@ -58,7 +58,7 @@ define([
         .fetch(attributeCode)
         .then(attribute => {
           const ajaxConfig = {
-            url: this.getChoiceUrl(attribute),
+            mediaLink: this.getChoiceMediaLink(attribute),
             quietMillis: 250,
             cache: true,
             type: 'PUT',
@@ -118,8 +118,8 @@ define([
         });
     },
 
-    getChoiceUrl: function(attribute) {
-      return Routing.generate(this.config.url, {assetFamilyIdentifier: attribute.reference_data_name});
+    getChoiceMediaLink: function(attribute) {
+      return Routing.generate(this.config.mediaLink, {assetFamilyIdentifier: attribute.reference_data_name});
     },
 
     formatItem: normalizedAsset => {

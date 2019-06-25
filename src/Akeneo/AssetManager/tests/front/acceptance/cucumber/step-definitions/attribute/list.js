@@ -159,10 +159,10 @@ module.exports = async function(cucumber) {
 
     await editAttribute(this.page, attributeIdentifier, true);
     this.page.on('request', request => {
-      const baseUrl = 'http://pim.com/rest/asset_manager';
+      const baseMediaLink = 'http://pim.com/rest/asset_manager';
       const identifier = `${assetFamilyIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
-      const deleteUrl = `${baseUrl}/${assetFamilyIdentifier}/attribute/${identifier}`;
-      if (deleteUrl === request.url() && 'DELETE' === request.method()) {
+      const deleteMediaLink = `${baseMediaLink}/${assetFamilyIdentifier}/attribute/${identifier}`;
+      if (deleteMediaLink === request.url() && 'DELETE' === request.method()) {
         answerJson(request, {}, 204);
       }
 
@@ -194,10 +194,10 @@ module.exports = async function(cucumber) {
     await editAttribute(this.page, attributeIdentifier, true);
 
     this.page.on('request', request => {
-      const baseUrl = 'http://pim.com/rest/asset_manager';
+      const baseMediaLink = 'http://pim.com/rest/asset_manager';
       const identifier = `${assetFamilyIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
-      const deleteUrl = `${baseUrl}/${assetFamilyIdentifier}/attribute/${identifier}`;
-      if (deleteUrl === request.url() && 'DELETE' === request.method()) {
+      const deleteMediaLink = `${baseMediaLink}/${assetFamilyIdentifier}/attribute/${identifier}`;
+      if (deleteMediaLink === request.url() && 'DELETE' === request.method()) {
         answerJson(request, {}, 404);
       }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\BinaryImageGenerator;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
@@ -90,7 +90,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_default_preview_for_an_unknown_image_url()
+    public function it_get_a_default_preview_for_an_unknown_image_mediaLink()
     {
         $this->binaryImageGenerator->supports('test', $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate('test', $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);

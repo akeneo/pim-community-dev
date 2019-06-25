@@ -4,7 +4,7 @@ import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/at
 export enum ValidationRuleOption {
   Email = 'email',
   RegularExpression = 'regular_expression',
-  Url = 'url',
+  MediaLink = 'mediaLink',
   None = 'none',
 }
 export type NormalizedValidationRule = ValidationRuleOption;

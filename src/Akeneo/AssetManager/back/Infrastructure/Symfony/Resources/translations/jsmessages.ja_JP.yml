@@ -100,7 +100,7 @@ pim_asset_manager:
             none: なし
             email: 電子メール
             regular_expression: 正規表現
-            url: URL
+            mediaLink: URL
     delete:
       title: 属性
     notification:

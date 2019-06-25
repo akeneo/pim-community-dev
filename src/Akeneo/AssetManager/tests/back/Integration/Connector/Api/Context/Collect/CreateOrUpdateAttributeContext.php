@@ -32,12 +32,12 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\AssetManager\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\AssetManager\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
@@ -282,9 +282,9 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the url attribute Preview that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
+     * @Given /^the mediaLink attribute Preview that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
      */
-    public function theUrlAttributePreviewThatIsOnlyPartOfTheStructureOfTheDesignerAssetFamilyInTheERPButNotInThePIM()
+    public function theMediaLinkAttributePreviewThatIsOnlyPartOfTheStructureOfTheDesignerAssetFamilyInTheERPButNotInThePIM()
     {
         $this->requestContract = 'successful_preview_asset_family_attribute_creation.json';
     }
@@ -301,7 +301,7 @@ class CreateOrUpdateAttributeContext implements Context
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'preview', md5('designer_preview'));
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = UrlAttribute::create(
+        $expectedAttribute = MediaLinkAttribute::create(
             $attributeIdentifier,
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('preview'),
@@ -573,11 +573,11 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the url attribute Preview that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties$/
+     * @Given /^the mediaLink attribute Preview that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties$/
      */
-    public function theUrlAttributePreviewThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    public function theMediaLinkAttributePreviewThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
-        $attribute = UrlAttribute::create(
+        $attribute = MediaLinkAttribute::create(
             AttributeIdentifier::create('designer', 'preview', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('preview'),
@@ -595,7 +595,7 @@ class CreateOrUpdateAttributeContext implements Context
         $connectorAttribute = new ConnectorAttribute(
             $attribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Preview']),
-            'url',
+            'mediaLink',
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
@@ -619,7 +619,7 @@ class CreateOrUpdateAttributeContext implements Context
 
         $attributeIdentifier = AttributeIdentifier::create('designer', 'preview', 'fingerprint');
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = UrlAttribute::create(
+        $expectedAttribute = MediaLinkAttribute::create(
             $attributeIdentifier,
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('preview'),
