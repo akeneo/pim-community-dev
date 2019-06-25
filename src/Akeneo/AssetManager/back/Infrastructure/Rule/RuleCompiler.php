@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Rule;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
-use Akeneo\AssetManager\Domain\Query\Asset\AccessibleAsset;
+use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -42,7 +42,7 @@ class RuleCompiler
     }
 
     /**
-     * Takes an $accessibleAsset to fill in the given $ruleTemplate. This results in a ready-to-use RuleInterface
+     * Takes an $propertyAccessibleAsset to fill in the given $ruleTemplate. This results in a ready-to-use RuleInterface
      * for the RuleEngine of the PIM.
      *
      * Example of a rule template:
@@ -65,9 +65,9 @@ class RuleCompiler
      *
      * @throws \Exception
      */
-    public function compile(RuleTemplate $ruleTemplate, AccessibleAsset $accessibleAsset): RuleInterface
+    public function compile(RuleTemplate $ruleTemplate, PropertyAccessibleAsset $propertyAccessibleAsset): RuleInterface
     {
-        $compiledContent = $this->compileTemplateWithAccessibleAsset($ruleTemplate, $accessibleAsset);
+        $compiledContent = $this->compileTemplateWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
 
         $ruleData = [
             'code' => '',
@@ -79,10 +79,12 @@ class RuleCompiler
         return $this->ruleDenormalizer->denormalize($ruleData, Rule::class);
     }
 
-    private function compileTemplateWithAccessibleAsset(RuleTemplate $ruleTemplate, AccessibleAsset $accessibleAsset): array
-    {
-        $compiledConditions = $this->compileConditionsWithAccessibleAsset($ruleTemplate, $accessibleAsset);
-        $compiledActions = $this->compileActionsWithAccessibleAsset($ruleTemplate, $accessibleAsset);
+    private function compileTemplateWithPropertyAccessibleAsset(
+        RuleTemplate $ruleTemplate,
+        PropertyAccessibleAsset $propertyAccessibleAsset
+    ): array {
+        $compiledConditions = $this->compileConditionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
+        $compiledActions = $this->compileActionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
 
         return [
             'conditions' => $compiledConditions,
@@ -90,8 +92,10 @@ class RuleCompiler
         ];
     }
 
-    private function compileConditionsWithAccessibleAsset(RuleTemplate $ruleTemplate, AccessibleAsset $accessibleAsset): array
-    {
+    private function compileConditionsWithPropertyAccessibleAsset(
+        RuleTemplate $ruleTemplate,
+        PropertyAccessibleAsset $propertyAccessibleAsset
+    ): array {
         $compiledConditions = [];
 
         foreach ($ruleTemplate->getConditions() as $condition) {
@@ -100,7 +104,7 @@ class RuleCompiler
                     continue;
                 }
 
-                $condition[$key] = $this->replacePatterns($value, $accessibleAsset);
+                $condition[$key] = $this->replacePatterns($value, $propertyAccessibleAsset);
             }
 
             $compiledConditions[] = $condition;
@@ -109,8 +113,10 @@ class RuleCompiler
         return $compiledConditions;
     }
 
-    private function compileActionsWithAccessibleAsset(RuleTemplate $ruleTemplate, AccessibleAsset $accessibleAsset): array
-    {
+    private function compileActionsWithPropertyAccessibleAsset(
+        RuleTemplate $ruleTemplate,
+        PropertyAccessibleAsset $propertyAccessibleAsset
+    ): array {
         $compiledActions = [];
 
         foreach ($ruleTemplate->getActions() as $action) {
@@ -119,7 +125,7 @@ class RuleCompiler
                     continue;
                 }
 
-                $action[$key] = $this->replacePatterns($value, $accessibleAsset);
+                $action[$key] = $this->replacePatterns($value, $propertyAccessibleAsset);
             }
 
             $compiledActions[] = $action;
@@ -128,16 +134,16 @@ class RuleCompiler
         return $compiledActions;
     }
 
-    private function replacePatterns(string $ruleValue, AccessibleAsset $accessibleAsset): string
+    private function replacePatterns(string $ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset): string
     {
         preg_match_all('#{{(.*?)}}#', $ruleValue, $matchedPatterns);
 
         foreach ($matchedPatterns[1] as $pattern) {
-            if (!$accessibleAsset->hasValue(trim($pattern))) {
+            if (!$propertyAccessibleAsset->hasValue(trim($pattern))) {
                 continue;
             }
 
-            $assetValue = $accessibleAsset->getValue(trim($pattern));
+            $assetValue = $propertyAccessibleAsset->getValue(trim($pattern));
             if (is_array($assetValue)) {
                 $assetValue = implode(',', $assetValue);
             }
