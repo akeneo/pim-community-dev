@@ -542,7 +542,7 @@ Feature: Edit an asset
       | akeneo_assetmanager_asset_edit | false |
     Then the user cannot update the simple option value
 
-  @acceptance-front
+  #@acceptance-front
   Scenario: Updating a asset with a multiple option value
     Given a valid asset with an option collection attribute
     And the user has the locale permission to edit the asset

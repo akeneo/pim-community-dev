@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterPreviewGeneratorPass implements CompilerPassInterface
 {
-    private const PREVIEW_GENERATOR_REGISTRY = 'akeneo_assetmanager.application.registry.preview_generator';
+    private const PREVIEW_GENERATOR_REGISTRY = 'akeneo_assetmanager.infrastructure.registry.preview_generator';
     private const PREVIEW_GENERATOR_TAG = 'akeneo_assetmanager.preview_generator';
 
     public function process(ContainerBuilder $container)

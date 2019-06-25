@@ -1,7 +1,7 @@
 parameters:
     pim_asset.provider.default_image.images:
-        pim_asset_file_image: { path: '%kernel.root_dir%/../web/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
-        pim_asset_file_other: { path: '%kernel.root_dir%/../web/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+        pim_asset_manager.default_image.image: { path: '%kernel.root_dir%/../web/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+        pim_asset_manager.default_image.other: { path: '%kernel.root_dir%/../web/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
 
 services:
     pim_asset.provider.default_image:

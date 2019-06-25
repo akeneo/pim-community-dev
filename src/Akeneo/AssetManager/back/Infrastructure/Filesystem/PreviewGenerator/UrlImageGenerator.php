@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
@@ -25,9 +26,17 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class ImageGenerator implements PreviewGeneratorInterface
+class UrlImageGenerator implements PreviewGeneratorInterface
 {
-    private const DEFAULT_IMAGE = 'pim_asset_file_image';
+    private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image';
+    public const THUMBNAIL_TYPE = 'thumbnail';
+    public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
+    public const PREVIEW_TYPE = 'preview';
+    public const SUPPORTED_TYPES = [
+        self::THUMBNAIL_TYPE => 'am_thumbnail',
+        self::THUMBNAIL_SMALL_TYPE => 'am_thumbnail_small',
+        self::PREVIEW_TYPE => 'am_preview',
+    ];
 
     /** @var DataManager  */
     private $dataManager;
@@ -56,28 +65,28 @@ class ImageGenerator implements PreviewGeneratorInterface
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return UrlAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-            && MediaType::IMAGE === $attribute->getMediaType()->normalize()
-            && in_array($type, PreviewGeneratorRegistry::SUPPORTED_TYPES);
+               && MediaType::IMAGE === $attribute->getMediaType()->normalize()
+               && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
         $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
 
-        if (!$this->cacheManager->isStored($url, $type)) {
+        if (!$this->cacheManager->isStored($url, self::SUPPORTED_TYPES[$type])) {
             try {
-                $binary = $this->dataManager->find($type, $url);
+                $binary = $this->dataManager->find(self::SUPPORTED_TYPES[$type], $url);
             } catch (NotLoadableException $e) {
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $type);
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
             }
 
             $this->cacheManager->store(
-                $this->filterManager->applyFilter($binary, $type),
+                $this->filterManager->applyFilter($binary, self::SUPPORTED_TYPES[$type]),
                 $url,
                 $type
             );
         }
 
-        return $this->cacheManager->resolve($url, $type);
+        return $this->cacheManager->resolve($url, self::SUPPORTED_TYPES[$type]);
     }
 }

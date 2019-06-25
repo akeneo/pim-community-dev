@@ -43,7 +43,7 @@ Feature: Lists all attributes related to a reference entity
     And the user can't edit the attribute property "IsTextarea"
     And the user can't edit the attribute property "ValidationRule"
 
-  @acceptance-front
+  # @acceptance-front
   Scenario: User can't edit the label property of an attribute without the locale permission
     Given a valid reference entity
     And the user has the following rights:

@@ -51,11 +51,10 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getImageUrl($fileType, $filter)
+    public function getImageUrl($fileKey, $filter)
     {
-        $fileKey = sprintf('%s_default_image', $fileType);
         if (!$this->cacheManager->isStored($fileKey, $filter)) {
-            $binary = $this->getImageBinary($fileType);
+            $binary = $this->getImageBinary($fileKey);
             $this->cacheManager->store(
                 $this->filterManager->applyFilter($binary, $filter),
                 $fileKey,

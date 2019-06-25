@@ -1,7 +1,7 @@
 parameters:
     pim_reference_entity.provider.default_image.images:
-        pim_reference_entity.file_image: { path: '%kernel.root_dir%/../web/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
-        pim_reference_entity.file_other: { path: '%kernel.root_dir%/../web/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+        pim_reference_entity.default_image.image: { path: '%kernel.root_dir%/../web/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+        pim_reference_entity.default_image.other: { path: '%kernel.root_dir%/../web/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
 
 services:
     pim_reference_entity.provider.default_image:

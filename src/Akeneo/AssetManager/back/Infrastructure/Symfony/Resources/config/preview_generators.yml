@@ -1,9 +1,9 @@
 services:
-    akeneo_assetmanager.application.registry.preview_generator:
+    akeneo_assetmanager.infrastructure.registry.preview_generator:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry
 
-    akeneo_assetmanager.application.generator.image_generator:
-        class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\ImageGenerator
+    akeneo_assetmanager.infrastructure.generator.binary_image_generator:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\BinaryImageGenerator
         arguments:
             - '@liip_imagine.data.manager'
             - '@liip_imagine.cache.manager'
@@ -12,7 +12,17 @@ services:
         tags:
             - { name: akeneo_assetmanager.preview_generator }
 
-    akeneo_assetmanager.application.generator.other_generator:
+    akeneo_assetmanager.infrastructure.generator.url_image_generator:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\UrlImageGenerator
+        arguments:
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@pim_asset.provider.default_image'
+        tags:
+            - { name: akeneo_assetmanager.preview_generator }
+
+    akeneo_assetmanager.infrastructure.generator.other_generator:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\OtherGenerator
         arguments:
             - '@pim_asset.provider.default_image'

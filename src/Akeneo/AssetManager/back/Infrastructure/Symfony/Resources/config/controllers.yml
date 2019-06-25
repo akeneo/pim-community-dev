@@ -150,7 +150,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\ImagePreviewAction
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
-            - '@akeneo_assetmanager.application.registry.preview_generator'
+            - '@akeneo_assetmanager.infrastructure.registry.preview_generator'
 
     # Connector
     akeneo_assetmanager.infrastructure.connector.action.asset.get:

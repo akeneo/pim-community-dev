@@ -11,11 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Filesystem\PreviewGenerator;
+namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\Url\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
@@ -25,9 +26,17 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class ImageGenerator implements PreviewGeneratorInterface
+class BinaryImageGenerator implements PreviewGeneratorInterface
 {
-    private const DEFAULT_IMAGE = 'pim_reference_entity.file_image';
+    private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image';
+    public const THUMBNAIL_TYPE = 'thumbnail';
+    public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
+    public const PREVIEW_TYPE = 'preview';
+    public const SUPPORTED_TYPES = [
+        self::THUMBNAIL_TYPE,
+        self::THUMBNAIL_SMALL_TYPE,
+        self::PREVIEW_TYPE
+    ];
 
     /** @var DataManager  */
     private $dataManager;
@@ -55,29 +64,26 @@ class ImageGenerator implements PreviewGeneratorInterface
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
-        return UrlAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-            && MediaType::IMAGE === $attribute->getMediaType()->normalize()
-            && in_array($type, PreviewGeneratorRegistry::SUPPORTED_TYPES);
+        return ImageAttribute::ATTRIBUTE_TYPE === $attribute->getType()
+               && in_array($type, self::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
-        $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
-
-        if (!$this->cacheManager->isStored($url, $type)) {
+        if (!$this->cacheManager->isStored($data, $type)) {
             try {
-                $binary = $this->dataManager->find($type, $url);
+                $binary = $this->dataManager->find($type, $data);
             } catch (NotLoadableException $e) {
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $type);
             }
 
             $this->cacheManager->store(
                 $this->filterManager->applyFilter($binary, $type),
-                $url,
+                $data,
                 $type
             );
         }
 
-        return $this->cacheManager->resolve($url, $type);
+        return $this->cacheManager->resolve($data, $type);
     }
 }

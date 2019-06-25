@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\UrlImageGenerator;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -75,7 +76,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             [
                 'data'                => self::FILENAME,
                 'attributeIdentifier' => $this->attribute->getIdentifier(),
-                'type'                => PreviewGeneratorRegistry::THUMBNAIL_TYPE
+                'type'                => UrlImageGenerator::THUMBNAIL_TYPE
             ]
         );
         $response = $this->client->getResponse();

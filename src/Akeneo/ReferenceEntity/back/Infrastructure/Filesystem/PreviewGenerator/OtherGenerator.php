@@ -23,7 +23,15 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
  */
 class OtherGenerator implements PreviewGeneratorInterface
 {
-    private const DEFAULT_OTHER = 'pim_reference_entity.file_other';
+    private const DEFAULT_OTHER = 'pim_reference_entity.default_image.other';
+    public const THUMBNAIL_TYPE = 'thumbnail';
+    public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
+    public const PREVIEW_TYPE = 'preview';
+    public const SUPPORTED_TYPES = [
+        self::THUMBNAIL_TYPE,
+        self::THUMBNAIL_SMALL_TYPE,
+        self::PREVIEW_TYPE
+    ];
 
     /** @var DefaultImageProviderInterface  */
     private $defaultImageProvider;
@@ -37,7 +45,7 @@ class OtherGenerator implements PreviewGeneratorInterface
     {
         return UrlAttribute::ATTRIBUTE_TYPE === $attribute->getType()
             && MediaType::OTHER === $attribute->getMediaType()->normalize()
-            && in_array($type, PreviewGeneratorRegistry::SUPPORTED_TYPES);
+            && in_array($type, self::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
