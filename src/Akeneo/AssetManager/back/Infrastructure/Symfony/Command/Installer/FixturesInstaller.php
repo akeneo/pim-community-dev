@@ -61,6 +61,7 @@ CREATE TABLE `akeneo_asset_manager_asset_family` (
     `image` VARCHAR(255) NULL,
     `attribute_as_label` VARCHAR(255) NULL,
     `attribute_as_image` VARCHAR(255) NULL,
+    `rule_templates` JSON NOT NULL,
     PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -158,8 +159,8 @@ SQL;
         $newYork = $this->uploadImage('newyork')->getKey();
         $sql = <<<SQL
 SET foreign_key_checks = 0;
-INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`)
-VALUES ('city','{\"en_US\": \"City\"}', '${city}', 'label_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc', 'image_city_491b2b80-474a-4254-a4ef-5f12ba30d6d');
+INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`, `rule_templates`)
+VALUES ('city','{\"en_US\": \"City\"}', '${city}', 'label_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc', 'image_city_491b2b80-474a-4254-a4ef-5f12ba30d6d', '{}');
 
 INSERT INTO `akeneo_asset_manager_attribute` (
   `identifier`,
@@ -274,8 +275,8 @@ SQL;
         $black = $this->uploadImage('mainblack')->getKey();
         $sql = <<<SQL
 SET foreign_key_checks = 0;
-INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`)
-VALUES ('maincolor', '{\"en_US\": \"Main Color\"}', '${refEntityImage}', 'label_maincolor_491b2b80-474a-4254-a4ef-5f12ba30d7fc', 'image_maincolor_491b2b80-474a-4254-a4ef-5f12ba30d6d')
+INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`, `rule_templates`)
+VALUES ('maincolor', '{\"en_US\": \"Main Color\"}', '${refEntityImage}', 'label_maincolor_491b2b80-474a-4254-a4ef-5f12ba30d7fc', 'image_maincolor_491b2b80-474a-4254-a4ef-5f12ba30d6d', '{}')
 ;
 INSERT INTO `akeneo_asset_manager_attribute` (
   `identifier`,
@@ -316,8 +317,8 @@ SQL;
         $marcNewson = $this->uploadImage('Dezeen_Marc-Newson_1')->getKey();
         $sql = <<<SQL
 SET foreign_key_checks = 0;
-INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`)
-VALUES ('designer','{\"en_US\": \"Designer\", \"fr_FR\": \"Concepteur\"}', '${designer}', 'label_designer_491b2b80-474a-4254-a4ef-5f12ba30d8fc', 'image_designer_491b2b80-474a-4254-a4ef-5f12ba30d6e');
+INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`, `rule_templates`)
+VALUES ('designer','{\"en_US\": \"Designer\", \"fr_FR\": \"Concepteur\"}', '${designer}', 'label_designer_491b2b80-474a-4254-a4ef-5f12ba30d8fc', 'image_designer_491b2b80-474a-4254-a4ef-5f12ba30d6e', '{}');
 
 INSERT INTO `akeneo_asset_manager_attribute` (
   `identifier`,
@@ -376,8 +377,8 @@ SQL;
         $tomdixonProducts = $this->uploadImage('tom-dixon_products')->getKey();
         $sql = <<<SQL
 SET foreign_key_checks = 0;
-INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`)
-VALUES ('brand','{\"en_US\": \"Brand\", \"fr_FR\": \"Marque\"}', '${brand}', 'label_brand_491b2b80-474a-4254-a4ef-5f12ba10d8fc', 'image_brand_491b2b80-474a-4254-a4ef-5f12ba30d6d');
+INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`, `rule_templates`)
+VALUES ('brand','{\"en_US\": \"Brand\", \"fr_FR\": \"Marque\"}', '${brand}', 'label_brand_491b2b80-474a-4254-a4ef-5f12ba10d8fc', 'image_brand_491b2b80-474a-4254-a4ef-5f12ba30d6d', '{}');
 INSERT INTO `akeneo_asset_manager_attribute` (
   `identifier`,
   `code`,
@@ -425,8 +426,8 @@ SQL;
         $rougePiment = $this->uploadImage('rougepiment')->getKey();
         $sql = <<< SQL
 SET foreign_key_checks = 0;
-INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`)
-VALUES ('color','{\"en_US\": \"Color\"}', '${color}', 'label_color_491b2b80-474a-4254-a4ef-5f19ba10d8fc', 'image_color_491b2b80-474a-4254-a4ef-5f12ba30d6d');
+INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`, `rule_templates`)
+VALUES ('color','{\"en_US\": \"Color\"}', '${color}', 'label_color_491b2b80-474a-4254-a4ef-5f19ba10d8fc', 'image_color_491b2b80-474a-4254-a4ef-5f12ba30d6d', '{}');
 
 INSERT INTO `akeneo_asset_manager_attribute` (
   `identifier`,
@@ -464,8 +465,8 @@ SQL;
         $country = $this->uploadImage('country')->getKey();
         $sql = <<<SQL
 SET foreign_key_checks = 0;
-INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`)
-VALUES ('country','{\"en_US\": \"Country\"}', '${country}', 'label_country_491b2b80-474a-4254-a4ef-5f19ba12d8fc', 'image_country_491b2b80-474a-4254-a4ef-5f12ba30d6d');
+INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`, `rule_templates`)
+VALUES ('country','{\"en_US\": \"Country\"}', '${country}', 'label_country_491b2b80-474a-4254-a4ef-5f19ba12d8fc', 'image_country_491b2b80-474a-4254-a4ef-5f12ba30d6d', '{}');
 INSERT INTO `akeneo_asset_manager_attribute` (
   `identifier`,
   `code`,
@@ -499,9 +500,9 @@ SQL;
         $material = $this->uploadImage('material')->getKey();
         $sql = <<<SQL
 SET foreign_key_checks = 0;
-INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`)
+INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_image`, `rule_templates`)
 VALUES
-('material','{\"en_US\": \"Material\"}', '${material}', 'label_material_491b2b80-474a-4254-a4ef-5f19ba12d8fc', 'image_material_491b2b80-474a-4254-a4ef-5f12ba30d6d');
+('material','{\"en_US\": \"Material\"}', '${material}', 'label_material_491b2b80-474a-4254-a4ef-5f19ba12d8fc', 'image_material_491b2b80-474a-4254-a4ef-5f12ba30d6d', '{}');
 INSERT INTO `akeneo_asset_manager_attribute` (
   `identifier`,
   `code`,
