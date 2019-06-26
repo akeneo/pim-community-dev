@@ -319,6 +319,8 @@ class AttributeGroupController
      *
      * @param  Request $request
      *
+     * @AclAncestor("pim_enrich_attributegroup_sort")
+     *
      * @return Response
      */
     public function sortAction(Request $request)
