@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.51 (2019-06-26)
+
 ## Improvement
 
 - PIM-8449: AKENEO_PIM_URL configured in community edition
