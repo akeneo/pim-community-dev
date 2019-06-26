@@ -30,6 +30,7 @@ imports:
 #
 parameters:
     pim_job_product_batch_size: 100
+    env(AKENEO_PIM_URL): ''
 
 services:
     oro.cache.abstract:
@@ -38,6 +39,8 @@ services:
         arguments: ['%kernel.cache_dir%']
     twig.extension.intl:
          class: Twig_Extensions_Extension_Intl
+         globals:
+             akeneo_pim_url: '%env(AKENEO_PIM_URL)%'
          tags:
              - { name: twig.extension }
     doctrine.dbal.default.wrapped_connection:
