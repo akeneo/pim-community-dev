@@ -10,7 +10,7 @@ nfs:
   persistence:
     storageClass: standard
     size: 11Gi
-  storageClass:  
+  storageClass:
     reclaimPolicy: Delete
 
 pim:
@@ -58,7 +58,14 @@ elasticsearch:
     persistence:
       size: 10Gi
       storageClass: standard
+    heapSize: "256m"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "1024Mi"
+      requests:
+        cpu: "25m"
+        memory: "512Mi"
 
 certmanager:
   issuer: letsencrypt-staging
-

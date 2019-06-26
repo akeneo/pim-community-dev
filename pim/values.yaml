@@ -201,7 +201,15 @@ mysql:
     dataDiskSize: 100Gi
     stateful:
       enabled: false
-
+    resources:
+      requests:
+        memory: 3072Mi
+    readinessProbe:
+      initialDelaySeconds: 5
+      periodSeconds: 120
+      timeoutSeconds: 30
+      successThreshold: 1
+      failureThreshold: 3
 memcached:
   fullnameOverride: memcached
   replicaCount: 1
@@ -264,14 +272,14 @@ elasticsearch:
     persistence:
       size: 10Gi
       storageClass: ssd-retain
-    heapSize: "256m"
+    heapSize: "1G"
     resources:
       limits:
         cpu: "1"
-        memory: "1024Mi"
+        memory: "1536Mi"
       requests:
         cpu: "25m"
-        memory: "512Mi"
+        memory: "1024Mi"
     updateStrategy:
       type: RollingUpdate
 
