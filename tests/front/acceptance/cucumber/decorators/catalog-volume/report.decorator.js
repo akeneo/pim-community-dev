@@ -8,7 +8,7 @@ const Report = async (nodeElement, createElementDecorator, parent) => {
       decorator: Header
     },
     'Volume': {
-      selector: '.AknCatalogVolume-axis',
+      selector: '.AknShowFigures-axis',
       decorator: Volume,
       multiple: true
     }

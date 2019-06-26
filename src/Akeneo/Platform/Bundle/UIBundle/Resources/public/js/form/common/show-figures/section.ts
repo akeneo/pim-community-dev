@@ -31,7 +31,7 @@ interface Axis {
 }
 
 /**
- * Section view for catalog volume screen
+ * Section view for show figures
  *
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -42,8 +42,8 @@ class SectionView extends BaseView {
     align: 'left',
     warningText: __('pim_catalog_volume.axis.warning'),
     templates: {
-      averageMax: 'pim/template/catalog-volume/average-max',
-      count: 'pim/template/catalog-volume/number',
+      averageMax: 'pim/template/common/show-figures/average-max',
+      count: 'pim/template/common/show-figures/number',
     },
     axes: [],
   };
@@ -52,7 +52,7 @@ class SectionView extends BaseView {
    * {@inheritdoc}
    */
   constructor(options: {config: SectionConfig}) {
-    super({...options, ...{className: 'AknCatalogVolume-axisContainer'}});
+    super({...options, ...{className: 'AknShowFigures-axisContainer'}});
 
     this.config = {...this.config, ...options.config};
   }
@@ -82,7 +82,7 @@ class SectionView extends BaseView {
     }
 
     if (this.config.align === 'right') {
-      this.$el.addClass('AknCatalogVolume-axisContainer--right')
+      this.$el.addClass('AknShowFigures-axisContainer--right')
     }
 
     this.renderAxes(this.config.axes, sectionData);

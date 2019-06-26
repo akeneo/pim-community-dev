@@ -3,7 +3,7 @@ import * as _ from 'underscore';
 import BaseView = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
-const template = require('pim/template/common/section');
+const template = require('pim/template/common/show-figures/header');
 
 interface SectionConfig {
   hint: {
@@ -21,7 +21,7 @@ interface SectionConfig {
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SectionView extends BaseView {
+class SectionHeader extends BaseView {
   private static HIDDEN = 'hidden';
   readonly template = _.template(template);
   public hideHint: boolean = false;
@@ -61,7 +61,7 @@ class SectionView extends BaseView {
    */
   hintIsHidden(): boolean {
     if (localStorage.getItem(this.config.hint.code) !== null) {
-      return localStorage.getItem(this.config.hint.code) === SectionView.HIDDEN;
+      return localStorage.getItem(this.config.hint.code) === SectionHeader.HIDDEN;
     }
 
     return this.hideHint;
@@ -93,7 +93,7 @@ class SectionView extends BaseView {
    * Close the hint box and store the key in localStorage
    */
   closeHint(): void {
-    localStorage.setItem(this.config.hint.code, SectionView.HIDDEN);
+    localStorage.setItem(this.config.hint.code, SectionHeader.HIDDEN);
     this.hideHint = true;
     this.render();
   }
@@ -108,4 +108,4 @@ class SectionView extends BaseView {
   }
 }
 
-export = SectionView;
+export = SectionHeader;

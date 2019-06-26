@@ -1,0 +1,14 @@
+<div class="AknShowFigures-axis">
+    <div class="AknShowFigures-icon AknShowFigures-icon--<%- icon %> <%- (true === hasWarning) ? 'AknShowFigures-icon--warning': '' %>"></div>
+    <div class="AknShowFigures-title">
+        <%- title %>
+        <div class="AknShowFigures-value" data-field="<%- name %>">
+            <%- value.toLocaleString(userLocale, { useGrouping: true }) %>
+        </div>
+        <% if (true === hasWarning) { %>
+            <div class="AknShowFigures-warning">
+                <%- warningText %>
+            </div>
+        <% } %>
+    </div>
+</div>

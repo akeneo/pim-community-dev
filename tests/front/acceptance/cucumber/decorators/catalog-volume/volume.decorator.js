@@ -7,9 +7,9 @@ const Volume = async (nodeElement) => {
   };
 
   const getValue = async () => {
-    const value = await nodeElement.$('.AknCatalogVolume-value');
-    const mean = await value.$('.AknCatalogVolume-value span:nth-child(1) div');
-    const max = await value.$('.AknCatalogVolume-value span:nth-child(2) div');
+    const value = await nodeElement.$('.AknShowFigures-value');
+    const mean = await value.$('.AknShowFigures-value span:nth-child(1) div');
+    const max = await value.$('.AknShowFigures-value span:nth-child(2) div');
 
     if (mean || max) {
       return {
@@ -24,7 +24,7 @@ const Volume = async (nodeElement) => {
   };
 
   const getWarning = async () => {
-    const warningElement = await nodeElement.$('.AknCatalogVolume-warning');
+    const warningElement = await nodeElement.$('.AknShowFigures-warning');
     const warning = await (await warningElement.getProperty('textContent')).jsonValue();
 
     return warning.trim()

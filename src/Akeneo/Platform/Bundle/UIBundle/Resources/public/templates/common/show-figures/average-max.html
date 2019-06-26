@@ -1,14 +1,14 @@
-<div class="AknCatalogVolume-axis">
-    <div class="AknCatalogVolume-icon AknCatalogVolume-icon--<%- icon %> <%- (true === hasWarning) ? 'AknCatalogVolume-icon--warning': '' %>"></div>
-    <div class="AknCatalogVolume-title">
+<div class="AknShowFigures-axis">
+    <div class="AknShowFigures-icon AknShowFigures-icon--<%- icon %> <%- (true === hasWarning) ? 'AknShowFigures-icon--warning': '' %>"></div>
+    <div class="AknShowFigures-title">
         <%- title %>
-        <div class="AknCatalogVolume-value" data-field="<%- name %>">
+        <div class="AknShowFigures-value" data-field="<%- name %>">
             <span><%- meanLabel %> <div><%- value.average.toLocaleString(userLocale, { useGrouping: true }) %></div></span>
             <span><%- maxLabel %> <div><%- value.max.toLocaleString(userLocale, { useGrouping: true }) %></div></span>
         </div>
 
         <% if (true === hasWarning) { %>
-            <div class="AknCatalogVolume-warning">
+            <div class="AknShowFigures-warning">
                 <%- warningText %>
             </div>
         <% } %>
