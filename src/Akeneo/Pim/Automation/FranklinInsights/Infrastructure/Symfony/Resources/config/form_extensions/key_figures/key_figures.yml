@@ -7,7 +7,67 @@ extensions:
             title: akeneo_franklin_insights.menu.key_figures
             to: akeneo_franklin_insights_key_figures_index
 
-    pim-franklin-key-figures-index:
+    akeneo-franklin-insights-key-figures-index:
         module: pim/common/simple-view
         config:
-            template: akeneo/franklin-insights/template/key-figures
+            template: pim/template/common/default-template
+
+    akeneo-franklin-insights-key-figures-breadcrumb:
+        module: pim/common/breadcrumbs
+        parent: akeneo-franklin-insights-key-figures-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-activity
+            item: akeneo-franklin-insights-menu-activity-key-figures
+
+    akeneo-franklin-insights-key-figures-user-navigation:
+        module: pim/menu/user-navigation
+        parent: akeneo-franklin-insights-key-figures-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    akeneo-franklin-insights-key-figures-title:
+        module: pim/common/grid-title
+        parent: akeneo-franklin-insights-key-figures-index
+        targetZone: title
+        config:
+            title: akeneo_franklin_insights.menu.key_figures
+            countable: false
+
+    akeneo-franklin-insights-key-figures-credits:
+        module: akeneo/franklin-insights/view/key-figures/section-header
+        parent: akeneo-franklin-insights-key-figures-index
+        targetZone: content
+        position: 100
+        config:
+            title: pim_catalog_volume.section.catalog_structure.title
+            hint:
+                code: hint-catalog-structure
+                title: pim_catalog_volume.section.catalog_structure.hint
+
+    akeneo-franklin-insights-key-figures-credits-content:
+        module: akeneo/franklin-insights/view/key-figures/section
+        parent: akeneo-franklin-insights-key-figures-credits
+        targetZone: content
+        config:
+            axes: []
+
+    akeneo-franklin-insights-key-figures-attributes:
+        module: akeneo/franklin-insights/view/key-figures/section-header
+        parent: akeneo-franklin-insights-key-figures-index
+        targetZone: content
+        position: 200
+        config:
+            title: pim_catalog_volume.section.catalog_structure.title
+            hint:
+                code: hint-catalog-structure
+                title: pim_catalog_volume.section.catalog_structure.hint
+
+    akeneo-franklin-insights-key-figures-attributes-content:
+        module: akeneo/franklin-insights/view/key-figures/section
+        parent: akeneo-franklin-insights-key-figures-attributes
+        targetZone: content
+        config:
+            axes: []

@@ -1,0 +1,12 @@
+<div class="AknSubsection">
+    <div class="AknSubsection-title AknSubsection-title--glued">
+        <%- title %>
+        <div class="AknIconButton AknIconButton--info AknIconButton--big toggle-hint <%- hintIsHidden ? 'AknIconButton--inactive' : 'active-hint' %>"></div>
+    </div>
+    <div class="AknSubsection-hint <%- hintIsHidden ? 'AknSubsection-hint--hidden' : '' %>">
+        <div class="AknSubsection-hintIcon AknIconButton AknIconButton--info AknIconButton--big"></div>
+        <div class="AknSubsection-hintTitle"> <%= hintTitle %></div>
+        <div class="AknIconButton AknIconButton--remove toggle-hint active-hint"></div>
+    </div>
+</div>
+<div data-drop-zone="content"></div>

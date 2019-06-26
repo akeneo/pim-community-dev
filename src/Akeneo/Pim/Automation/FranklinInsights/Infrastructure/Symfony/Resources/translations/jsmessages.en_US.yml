@@ -225,6 +225,8 @@ pim_title:
     akeneo_franklin_insights_mapping_index: Franklin Insights Mapping
     akeneo_franklin_insights_identifiers_mapping_edit: Franklin Insights Edit Identifiers Mapping
     akeneo_franklin_insights_attributes_mapping_edit: Franklin Insights Edit Attributes Mapping
+    akeneo_franklin_insights_attributes_mapping_edit: Franklin Insights Edit Attributes Mapping
+    akeneo_franklin_insights_key_figures_index: Franklin Insights Key Figures
 
 pim_notification:
     types:

@@ -30,9 +30,7 @@ config:
                         lastMappingVisitedKey: 'franklin-insight-mapping:last-visited-mapping'
                         lastFamilyVisitedKey: 'franklin-insight-mapping:last-family-visited'
                 akeneo_franklin_insights_key_figures_index:
-                    module: pim/controller/common/index
-                    config:
-                        entity: franklin-key-figures
+                    module: akeneo/franklin-insights/controller/key-figures-index
 
         # Savers configuration
         akeneo/franklin-insights/saver/franklin-connection:
@@ -71,6 +69,7 @@ config:
         akeneo/franklin-insights/controller/identifiers-mapping: akeneofranklininsights/js/controller/identifiers-mapping.ts
         akeneo/franklin-insights/controller/attributes-mapping-index: akeneofranklininsights/js/controller/attributes-mapping-index.ts
         akeneo/franklin-insights/controller/attributes-mapping-edit: akeneofranklininsights/js/controller/attributes-mapping-edit.ts
+        akeneo/franklin-insights/controller/key-figures-index: akeneofranklininsights/js/controller/key-figures.ts
 
         # Savers
         akeneo/franklin-insights/saver/franklin-connection: akeneofranklininsights/js/saver/franklin-connection
@@ -102,6 +101,8 @@ config:
         akeneo/franklin-insights/view/mass-edit/franklin-insights-operation: akeneofranklininsights/js/view/mass-edit/franklin-insights-operation.ts
         akeneo/franklin-insights/view/product-edit-form/subscription-status-switcher: akeneofranklininsights/js/view/product-edit-form/subscription-status-switcher.ts
         akeneo/franklin-insights/view/key-figures/menu-item: akeneofranklininsights/js/view/key-figures/menu-item.ts
+        akeneo/franklin-insights/view/key-figures/section: akeneofranklininsights/js/view/key-figures/section.ts
+        akeneo/franklin-insights/view/key-figures/section-header: akeneofranklininsights/js/view/key-figures/section-header.ts
 
         # Templates
         akeneo/franklin-insights/template/settings/identifiers-mapping/table: akeneofranklininsights/templates/identifiers-mapping/table.html
@@ -120,4 +121,5 @@ config:
         akeneo/franklin-insights/template/mass-edit/franklin-insights-operation: akeneofranklininsights/templates/mass-edit/franklin-insights-operation.html
         akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher: akeneofranklininsights/templates/product-edit-form/subscription-status-switcher.html
         akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher-read-only: akeneofranklininsights/templates/product-edit-form/subscription-status-switcher-read-only.html
-        akeneo/franklin-insights/template/key-figures: akeneofranklininsights/templates/key-figures/key-figures.html
+        akeneo/franklin-insights/template/key-figures/number: akeneofranklininsights/templates/key-figures/number.html
+        akeneo/franklin-insights/template/key-figures/section-container: akeneofranklininsights/templates/key-figures/section-container.html
