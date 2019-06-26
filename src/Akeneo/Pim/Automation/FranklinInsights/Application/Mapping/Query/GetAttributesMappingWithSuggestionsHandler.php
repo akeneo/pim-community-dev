@@ -41,19 +41,48 @@ class GetAttributesMappingWithSuggestionsHandler
 
     public function handle(GetAttributesMappingWithSuggestionsQuery $query): AttributeMappingCollection
     {
-        $familyAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle(
+        $familyCode = $query->getFamilyCode();
+        $attributeMappingCollection = $this->getAttributesMappingByFamilyHandler->handle(
             new GetAttributesMappingByFamilyQuery($query->getFamilyCode())
         );
 
-        $suggestedPimAttributeCodes = $this->findSuggestedPimAttributeCodes($query->getFamilyCode(), $familyAttributesMapping);
+        $attributeMappingCollection = $this->applyExactMatches($familyCode, $attributeMappingCollection);
+
+        return $attributeMappingCollection;
+    }
+
+    /**
+     * @param FamilyCode $familyCode
+     * @param AttributeMappingCollection $familyAttributesMapping
+     * @return string[]
+     */
+    private function findPimAttributeCodeMatches(FamilyCode $familyCode, AttributeMappingCollection $familyAttributesMapping): array
+    {
+        $matchedPimAttributeCodes = $this->selectExactMatchAttributeCodeQuery->execute(
+            $familyCode,
+            $familyAttributesMapping->getPendingAttributesFranklinLabels()
+        );
+
+        return $this->filterNotMappedAttributeCodes($matchedPimAttributeCodes, $familyAttributesMapping);
+    }
+
+    private function filterNotMappedAttributeCodes(array $attributeCodes, AttributeMappingCollection $attributeMappingCollection): array
+    {
+        return array_filter($attributeCodes, function ($attributeCode) use ($attributeMappingCollection) {;
+            return null === $attributeCode || !$attributeMappingCollection->hasPimAttribute(new AttributeCode($attributeCode));
+        });
+    }
+
+    private function buildAttributeMappingCollectionWithMatchedAttributeCodes(array $matchedPimAttributeCodes, AttributeMappingCollection $attributeMappingCollection)
+    {
         $newMapping = new AttributeMappingCollection();
 
-        foreach ($familyAttributesMapping as $attributeMapping) {
+        foreach ($attributeMappingCollection as $attributeMapping) {
             $pimAttributeCode = $attributeMapping->getPimAttributeCode();
             if ($attributeMapping->getStatus() === AttributeMappingStatus::ATTRIBUTE_PENDING &&
-                array_key_exists($attributeMapping->getTargetAttributeLabel(), $suggestedPimAttributeCodes)
+                array_key_exists($attributeMapping->getTargetAttributeLabel(), $matchedPimAttributeCodes)
             ) {
-                $pimAttributeCode = $suggestedPimAttributeCodes[$attributeMapping->getTargetAttributeLabel()];
+                $pimAttributeCode = $matchedPimAttributeCodes[$attributeMapping->getTargetAttributeLabel()];
             }
 
             $newAttributeMapping = new AttributeMapping(
@@ -70,18 +99,10 @@ class GetAttributesMappingWithSuggestionsHandler
         return $newMapping;
     }
 
-    /**
-     * @return string[]
-     */
-    private function findSuggestedPimAttributeCodes(FamilyCode $familyCode, AttributeMappingCollection $familyAttributesMapping): array
+    private function applyExactMatches(FamilyCode $familyCode, AttributeMappingCollection $attributeMappingCollection)
     {
-        $suggestedPimAttributeCodes = $this->selectExactMatchAttributeCodeQuery->execute(
-            $familyCode,
-            $familyAttributesMapping->getPendingAttributesFranklinLabels()
-        );
+        $matchedPimAttributeCodes = $this->findPimAttributeCodeMatches($familyCode, $attributeMappingCollection);
 
-        return array_filter($suggestedPimAttributeCodes, function ($attributeCode) use ($familyAttributesMapping) {
-            return null === $attributeCode || !$familyAttributesMapping->hasPimAttribute(new AttributeCode($attributeCode));
-        });
+        return $this->buildAttributeMappingCollectionWithMatchedAttributeCodes($matchedPimAttributeCodes, $attributeMappingCollection);
     }
 }
