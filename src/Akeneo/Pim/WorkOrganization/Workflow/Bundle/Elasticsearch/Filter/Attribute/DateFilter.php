@@ -163,6 +163,11 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
 
                 $this->searchQueryBuilder->addMustNot($existsClause);
 
+                $familyExistsClause = [
+                    'exists' => ['field' => 'family.code']
+                ];
+                $this->searchQueryBuilder->addFilter($familyExistsClause);
+
                 break;
             case Operators::IS_NOT_EMPTY:
                 $clauses = array_map(function ($attributePath) {

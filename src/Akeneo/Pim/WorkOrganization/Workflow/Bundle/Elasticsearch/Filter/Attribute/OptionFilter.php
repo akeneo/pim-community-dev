@@ -93,6 +93,11 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
                 $clause = $this->addBooleanClause($clauses);
                 $this->searchQueryBuilder->addMustNot($clause);
+
+                $familyExistsClause = [
+                    'exists' => ['field' => 'family.code']
+                ];
+                $this->searchQueryBuilder->addFilter($familyExistsClause);
                 break;
 
             case Operators::IS_NOT_EMPTY:
