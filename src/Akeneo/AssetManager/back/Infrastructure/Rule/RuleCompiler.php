@@ -20,7 +20,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
- * Compile a RuleTemplate given an AccessibleAsset to create a RuleInterface
+ * Compile a RuleTemplate given an PropertyAccessibleAsset to create a RuleInterface
  *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
