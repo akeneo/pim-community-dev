@@ -29,6 +29,7 @@ imports:
 #
 parameters:
     pim_job_product_batch_size: 100
+    env(AKENEO_PIM_URL): ''
 
 services:
     oro.cache.abstract:
@@ -87,3 +88,7 @@ framework:
         pools:
             name:
                 adapter: cache.adapter.apcu
+
+twig:
+    globals:
+        akeneo_pim_url: '%env(AKENEO_PIM_URL)%'
