@@ -15,6 +15,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
@@ -28,7 +29,7 @@ class AssetFamilySpec extends ObjectBehavior
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
         ];
-        $this->beConstructedThrough('create', [$identifier, $labelCollection, Image::createEmpty()]);
+        $this->beConstructedThrough('create', [$identifier, $labelCollection, Image::createEmpty(), RuleTemplateCollection::fromArray([])]);
     }
 
     public function it_is_initializable()
@@ -48,7 +49,8 @@ class AssetFamilySpec extends ObjectBehavior
         $sameAssetFamily = AssetFamily::create(
             $sameIdentifier,
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::fromArray([])
         );
         $this->equals($sameAssetFamily)->shouldReturn(true);
 
@@ -56,7 +58,8 @@ class AssetFamilySpec extends ObjectBehavior
         $sameAssetFamily = AssetFamily::create(
             $anotherIdentifier,
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::fromArray([])
         );
         $this->equals($sameAssetFamily)->shouldReturn(false);
     }
