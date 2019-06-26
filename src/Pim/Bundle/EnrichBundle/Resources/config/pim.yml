@@ -39,8 +39,6 @@ services:
         arguments: ['%kernel.cache_dir%']
     twig.extension.intl:
          class: Twig_Extensions_Extension_Intl
-         globals:
-             akeneo_pim_url: '%env(AKENEO_PIM_URL)%'
          tags:
              - { name: twig.extension }
     doctrine.dbal.default.wrapped_connection:
@@ -94,3 +92,7 @@ framework:
         pools:
             name:
                 adapter: cache.adapter.apcu
+
+twig:
+    globals:
+        akeneo_pim_url: '%env(AKENEO_PIM_URL)%'
