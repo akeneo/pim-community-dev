@@ -289,6 +289,7 @@ class DateFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(['exists' => ['field' => 'values.publishedOn-date.ecommerce.en_US']])->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter(

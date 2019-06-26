@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -76,10 +77,12 @@ class UserController
     /** @var RemoverInterface */
     private $remover;
 
+    /** @var TranslatorInterface */
+    private $translator;
     /**
      * @todo merge 3.2:
      *       - remove the $objectManager argument
-     *       - the last argument ($remover) must not be nullable anymore
+     *       - the last two arguments ($translator $remover) must not be nullable anymore
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -94,7 +97,8 @@ class UserController
         EventDispatcherInterface $eventDispatcher,
         Session $session,
         ObjectManager $objectManager,
-        ?RemoverInterface $remover = null
+        ?RemoverInterface $remover = null,
+        ?TranslatorInterface $translator = null
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -109,6 +113,7 @@ class UserController
         $this->session = $session;
         $this->objectManager = $objectManager;
         $this->remover = $remover;
+        $this->translator = $translator;
     }
 
     /**
@@ -154,6 +159,7 @@ class UserController
 
         $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
+
 
         //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
@@ -301,16 +307,19 @@ class UserController
     private function updateUser(UserInterface $user, array $data): JsonResponse
     {
         $previousUserName = $data['username'];
-        $passwordViolations = $this->validatePassword($user, $data);
-        if ($this->isPasswordUpdating($data) && $passwordViolations->count() === 0) {
-            $data['password'] = $data['new_password'];
+        if ($this->isPasswordUpdating($data)) {
+            $passwordViolations = $this->validatePassword($user, $data);
+            if ($passwordViolations->count() === 0) {
+                $data['password'] = $data['new_password'];
+            }
         }
+
         unset($data['current_password'], $data['new_password'], $data['new_password_repeat']);
 
         $this->updater->update($user, $data);
 
         $violations = $this->validator->validate($user);
-        if (0 < $violations->count() || 0 < $passwordViolations->count()) {
+        if (0 < $violations->count() || (isset($passwordViolations) && 0 < $passwordViolations->count())) {
             $normalizedViolations = [];
             foreach ($violations as $violation) {
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
@@ -318,13 +327,15 @@ class UserController
                     'internal_api'
                 );
             }
-            foreach ($passwordViolations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api'
-                );
+            if (isset($passwordViolations)) {
+                unset($data['password']);
+                foreach ($passwordViolations as $violation) {
+                    $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                        $violation,
+                        'internal_api'
+                    );
+                }
             }
-
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 
@@ -353,15 +364,31 @@ class UserController
         return new ConstraintViolationList($violations);
     }
 
+    /**
+     * @todo merge 3.2:
+     *       - remove check null for translator
+     */
     private function validatePassword(UserInterface $user, $data): ConstraintViolationListInterface
     {
         $violations = [];
         if (
             isset($data['current_password']) &&
             '' !== $data['current_password'] &&
-            !$this->encoder->isPasswordValid($user, $data['current_password'])
+            !$this->encoder->isPasswordValid($user, $data['current_password']) ||
+            (isset($data['current_password']) && '' === $data['current_password']) ||
+            !isset($data['current_password'])
         ) {
-            $violations[] = new ConstraintViolation('Wrong password', '', [], '', 'current_password', '');
+            $violations[] = new ConstraintViolation(
+                $this->translator ?
+                    $this->translator->trans(
+                        'pim_user.user.fields_errors.current_password.wrong'
+                    ) : 'Wrong password',
+                '',
+                [],
+                '',
+                'current_password',
+                ''
+            );
         }
         if (
             isset($data['new_password']) &&
@@ -370,20 +397,31 @@ class UserController
             '' !== $data['new_password_repeat'] &&
             $data['new_password'] !== $data['new_password_repeat']
         ) {
-            $violations[] = new ConstraintViolation('Password does not match', '', [], '', 'new_password_repeat', '');
+            $violations[] = new ConstraintViolation(
+                $this->translator ?
+                    $this->translator->trans(
+                        'pim_user.user.fields_errors.new_password_repeat.not_match'
+                    ) : 'Password does not match', '', [], '', 'new_password_repeat', ''
+            );
         }
-
+        if (
+            isset($data['new_password']) &&  strlen($data['new_password']) < 2
+        ) {
+            $violations[] = new ConstraintViolation(
+                $this->translator ?
+                    $this->translator->trans(
+                        'pim_user.user.fields_errors.new_password.minimum_length'
+                    ) : 'Password must contains at least 2 characters', '', [], '', 'new_password', ''
+            );
+        }
         return new ConstraintViolationList($violations);
     }
 
     private function isPasswordUpdating($data): bool
     {
         return
-            isset($data['current_password']) &&
-            isset($data['new_password']) &&
-            isset($data['new_password_repeat']) &&
-            '' !== $data['current_password'] &&
-            '' !== $data['new_password'] &&
-            '' !== $data['new_password_repeat'];
+            (isset($data['current_password']) && !empty($data['current_password'])) ||
+            (isset($data['new_password']) && !empty($data['new_password'])) ||
+            (isset($data['new_password_repeat']) && !empty($data['new_password_repeat']));
     }
 }

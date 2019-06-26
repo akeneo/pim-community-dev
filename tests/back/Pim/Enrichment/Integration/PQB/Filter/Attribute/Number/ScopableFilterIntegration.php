@@ -30,7 +30,13 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'decimals_allowed'    => true,
         ]);
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_scopable_number']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_number' => [
                     ['data' => -15, 'locale' => null, 'scope' => 'ecommerce'],
@@ -40,6 +46,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_number' => [
                     ['data' => 19, 'locale' => null, 'scope' => 'tablet']
@@ -47,7 +54,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorInferior()

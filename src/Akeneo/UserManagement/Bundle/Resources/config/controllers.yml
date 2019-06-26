@@ -20,6 +20,7 @@ services:
             - '@session'
             - '@doctrine.orm.entity_manager' # todo merge 3.2: remove this line
             - '@pim_user.remover.user'
+            - '@translator'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'

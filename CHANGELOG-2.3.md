@@ -1,5 +1,46 @@
 # 2.3.x
 
+# 2.3.51 (2019-06-26)
+
+## Improvement
+
+- PIM-8449: AKENEO_PIM_URL configured in community edition
+
+# 2.3.50 (2019-06-24)
+
+## Bug fixes:
+
+- PIM-8464: Fix the product variant breadcrumb size
+- PIM-8462: Fix memory leak in `Pim\Component\Catalog\Job\ComputeFamilyVariantStructureChangesTasklet`.
+
+## BC Break
+
+- Change constructor of `src/Pim/Component/Catalog/Job/ComputeFamilyVariantStructureChangesTasklet.php`:
+    added: `Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface` and `Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface`
+    removed: `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface` and `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+
+## Improvement
+
+- PIM-8469: Bump Symfony version to 3.4.28 to fix Intl issues.
+
+# 2.3.49 (2019-06-19)
+
+## Bug fixes
+
+- GITHUB-9557: Fix yarn product dependencies requirements, cheers @AngelVazquezArroyo!
+- PIM-8450: Fix assets search with underscore in the code
+
+## Technical improvement
+
+- PIM-8449: Improve job notification by adding a link to the job.
+
+# 2.3.48 (2019-06-12)
+
+## Bug fixes
+
+- PIM-7942: Fix tooltip minimal width
+- PIM-8417: Fix inconsistent behavior in WYSIWYG editor by disabling HTML prettify
+
 # 2.3.47 (2019-06-03)
 
 ## Technical improvement
@@ -21,13 +62,13 @@
 - PIM-8374: Fix timeout when launching the completeness purge command
 - PIM-7596: Fix margins on datagrids under tabs
 - PIM-6829: Fix mass edit enabled steps
+- PIM-7321: Fix blinking grid elements in gallery mode
 
 # 2.3.45 (2019-05-23)
 
 ## Bug fixes
 
 - PIM-8351: Fix entity overriding priority
-- PIM-7321: Fix blinking grid elements in gallery mode
 
 # 2.3.44 (2019-05-20)
 

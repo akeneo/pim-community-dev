@@ -115,7 +115,7 @@ class ProductPdfRenderer implements RendererInterface
 
     protected function getAttributeCodes(ProductInterface $product): array
     {
-        return $product->getUsedAttributeCodes();
+        return $product->getValues()->getAttributeCodes();
     }
 
     /**

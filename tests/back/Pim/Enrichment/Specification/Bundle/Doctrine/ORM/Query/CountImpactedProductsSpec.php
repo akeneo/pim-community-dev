@@ -2,13 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class CountImpactedProductsSpec extends ObjectBehavior
 {
@@ -27,6 +29,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
     function it_returns_the_catalog_products_count_when_a_user_selects_all_products_in_the_grid(
         $productAndProductModelQueryBuilderFactory,
         $productQueryBuilderFactory,
+        SearchQueryBuilder $sqb,
         ProductQueryBuilderInterface $pqb,
         \Countable $countable
     ) {
@@ -35,6 +38,14 @@ class CountImpactedProductsSpec extends ObjectBehavior
         $productAndProductModelQueryBuilderFactory->create(['filters' => [
             ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class]
         ]])->willReturn($pqb);
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $pqb->getRawFilters()->willReturn([
+            [
+                'field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class, 'type' => 'field', 'context' => []
+            ]
+        ]);
+        $sqb->addFilter(Argument::any())->shouldNotBeCalled();
+
         $pqb->execute()->willReturn($countable);
         $countable->count()->willReturn(2500);
 
@@ -47,6 +58,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
         $productAndProductModelQueryBuilderFactory,
         $productQueryBuilderFactory,
         ProductQueryBuilderInterface $pqb,
+        SearchQueryBuilder $sqb,
         \Countable $countable
     ) {
         $pqbFilters = [
@@ -57,6 +69,14 @@ class CountImpactedProductsSpec extends ObjectBehavior
             ['field' => 'self_and_ancestor.label_or_identifier', 'operator' => 'CONTAINS', 'value' => 'something'],
             ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class]
         ]])->willReturn($pqb);
+
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $pqb->getRawFilters()->willReturn([
+            ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class, 'type' => 'field', 'context' => []],
+            ['field' => 'self_and_ancestor.label_or_identifier', 'operator' => 'CONTAINS', 'value' => 'something', 'type' => 'field', 'context' => []],
+        ]);
+        $sqb->addFilter(Argument::any())->shouldNotBeCalled();
+
         $pqb->execute()->willReturn($countable);
         $countable->count()->willReturn(2500);
 
@@ -161,6 +181,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
     public function it_substracts_the_product_catalog_count_to_the_selected_entities_when_a_user_selects_all_and_unchecks_products(
         $productAndProductModelQueryBuilderFactory,
         ProductQueryBuilderInterface $pqbForAllProducts,
+        SearchQueryBuilder $searchQueryBuilder,
         ProductQueryBuilderInterface $pqbForProducts,
         ProductQueryBuilderInterface $pqbForProductsInsideProductModels,
         CursorInterface $cursorForAllProducts,
@@ -180,6 +201,11 @@ class CountImpactedProductsSpec extends ObjectBehavior
             ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class]
         ]])->willReturn($pqbForAllProducts);
         $pqbForAllProducts->execute()->willReturn($cursorForAllProducts);
+        $pqbForAllProducts->getQueryBuilder()->willReturn($searchQueryBuilder);
+        $pqbForAllProducts->getRawFilters()->willReturn([
+            ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class, 'type' => 'field', 'context' => []],
+        ]);
+        $searchQueryBuilder->addFilter(Argument::any())->shouldNotBeCalled();
 
         $productAndProductModelQueryBuilderFactory->create(['filters' => [
             [
@@ -205,6 +231,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
     }
 
     public function it_substracts_the_product_catalog_count_to_the_selected_entities_when_a_user_selects_all_and_unchecks_products_and_product_models(
+        SearchQueryBuilder $searchQueryBuilder,
         $productAndProductModelQueryBuilderFactory,
         ProductQueryBuilderInterface $pqbForAllProducts,
         ProductQueryBuilderInterface $pqbForProducts,
@@ -226,6 +253,11 @@ class CountImpactedProductsSpec extends ObjectBehavior
             ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class]
         ]])->willReturn($pqbForAllProducts);
         $pqbForAllProducts->execute()->willReturn($cursorForAllProducts);
+        $pqbForAllProducts->getQueryBuilder()->willReturn($searchQueryBuilder);
+        $pqbForAllProducts->getRawFilters()->willReturn([
+            ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class, 'type' => 'field', 'context' => []],
+        ]);
+        $searchQueryBuilder->addFilter(Argument::any())->shouldNotBeCalled();
 
         $productAndProductModelQueryBuilderFactory->create(['filters' => [
             [
@@ -253,6 +285,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
     public function it_substracts_the_product_catalog_count_to_the_selected_entities_when_a_user_selects_all_and_unchecks_products_and_product_models_with_a_completeness_filter(
         $productAndProductModelQueryBuilderFactory,
         ProductQueryBuilderInterface $pqbForAllProducts,
+        SearchQueryBuilder $sqb,
         ProductQueryBuilderInterface $pqbForProducts,
         ProductQueryBuilderInterface $pqbForProductsInsideProductModels,
         CursorInterface $cursorForAllProducts,
@@ -300,6 +333,32 @@ class CountImpactedProductsSpec extends ObjectBehavior
 
         $productAndProductModelQueryBuilderFactory->create(['filters' => $pqbFiltersForAllProducts])->willReturn($pqbForAllProducts);
         $pqbForAllProducts->execute()->willReturn($cursorForAllProducts);
+        $pqbForAllProducts->getQueryBuilder()->willReturn($sqb);
+        $pqbForAllProducts->getRawFilters()->willReturn([
+            [
+                'field'    => 'id',
+                'operator' => 'NOT IN',
+                'value'    => ['product_model_1', 'product_model_2', 'product_1', 'product_2'],
+                'context'  => [],
+                'type'     => 'field'
+            ],
+            [
+                'field'    => 'completeness',
+                'operator' => '=',
+                'value'    => 100,
+                'context'  => [],
+                'type' => 'field'
+            ],
+            [
+                'field'    => 'entity_type',
+                'operator' => '=',
+                'value'    => ProductInterface::class,
+                'type'     => 'field',
+                'context'  => []
+            ],
+        ]);
+
+        $sqb->addFilter(Argument::any())->shouldNotBeCalled();
 
         $productAndProductModelQueryBuilderFactory->create(['filters' => [
             [
@@ -332,6 +391,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
 
     public function it_computes_when_a_user_selects_all_entities_with_other_filters(
         $productAndProductModelQueryBuilderFactory,
+        SearchQueryBuilder $sqb,
         ProductQueryBuilderInterface $pqb,
         \Countable $countable
     ) {
@@ -373,6 +433,91 @@ class CountImpactedProductsSpec extends ObjectBehavior
                 ]
             ]
         )->willReturn($pqb);
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $pqb->getRawFilters()->willReturn([
+            [
+                'field' => 'color',
+                'operator' => '=',
+                'value' => 'red',
+                'context' => [],
+                'type' => 'attribute'
+            ],
+            [
+                'field' => 'size',
+                'operator' => 'IN LIST',
+                'value' => ['l', 'm'],
+                'context' => [],
+                'type' => 'attribute'
+            ],
+        ]);
+
+        $sqb->addFilter(Argument::any())->shouldNotBeCalled();
+
+        $pqb->execute()->willReturn($countable);
+        $countable->count()->willReturn(12);
+
+        $this->count($pqbFilters)->shouldReturn(12);
+    }
+
+    public function it_adds_a_filter_on_attributes_level_when_there_are_empty_attribute_filters(
+        $productAndProductModelQueryBuilderFactory,
+        SearchQueryBuilder $sqb,
+        ProductQueryBuilderInterface $pqb,
+        \Countable $countable
+    ) {
+        $pqbFilters = [
+            [
+                'field' => 'color',
+                'operator' => Operators::IS_EMPTY,
+                'value' => '',
+                'context' => []
+            ],
+        ];
+
+        $productAndProductModelQueryBuilderFactory->create(
+            [
+                'filters' => [
+                    [
+                        'field' => 'color',
+                        'operator' => Operators::IS_EMPTY,
+                        'value' => '',
+                        'context' => []
+                    ],
+                    [
+                        'field'    => 'entity_type',
+                        'operator' => '=',
+                        'value'    => ProductInterface::class
+                    ],
+                ]
+            ]
+        )->willReturn($pqb);
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $pqb->getRawFilters()->willReturn([
+            [
+                'field' => 'color',
+                'operator' => Operators::IS_EMPTY,
+                'value' => '',
+                'context' => [],
+                'type' => 'attribute'
+            ],
+        ]);
+
+        $sqb->addFilter([
+            'bool' => [
+                'should' => [
+                    [
+                        'terms' => [
+                            'attributes_for_this_level' => ['color']
+                        ],
+                    ],
+                    [
+                        'terms' => [
+                            'attributes_of_ancestors' => ['color']
+                        ],
+                    ]
+                ]
+            ]
+        ])->shouldBeCalled();
 
         $pqb->execute()->willReturn($countable);
         $countable->count()->willReturn(12);

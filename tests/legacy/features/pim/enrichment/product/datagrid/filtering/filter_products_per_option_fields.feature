@@ -27,7 +27,7 @@ Feature: Filter products per option
     Then I should be able to use the following filters:
       | filter | operator     | value | result |
       | size   | in list      | M     | Sweat  |
-      | size   | is empty     |       | Shirt  |
+      | size   | is empty     |       |        |
       | size   | is not empty |       | Sweat  |
 
   @critical
@@ -37,7 +37,7 @@ Feature: Filter products per option
     Then I should be able to use the following filters:
       | filter | operator     | value | result |
       | color  | in list      | Black | Shoes  |
-      | color  | is empty     |       | Shirt  |
+      | color  | is empty     |       |        |
       | color  | is not empty |       | Shoes  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5802
