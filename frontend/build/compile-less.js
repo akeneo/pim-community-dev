@@ -1,9 +1,10 @@
 require('colors')
-const { dirname, resolve } = require('path')
+const { resolve, basename } = require('path')
 const { writeFileSync, readFileSync, existsSync, mkdirSync } = require('fs')
 const rootDir = process.cwd()
 const isDev = process.argv && process.argv.indexOf('--dev') > -1;
 const lessc = require('less')
+const glob = require('glob')
 
 // A plugin to rewrite the image urls
 const RewriteImageURLs = require('./less-rewrite-urls')
@@ -61,6 +62,25 @@ function collectBundleImports(bundlePaths) {
     return bundleImports.join('')
 }
 
+function collectOverrideImports(bundlePaths) {
+    const overrideFiles = [];
+
+    bundlePaths.forEach((bundlePath) => {
+        const resolvedPath = bundlePath.replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
+        const overrides = glob.sync(`${resolvedPath}/**/overrides-**.less`)
+        overrides.forEach(override => overrideFiles.push(override));
+    });
+
+    const overrideImports = {}
+
+    for(filePath of overrideFiles) {
+        const fileName = basename(filePath, '.less');
+        overrideImports[fileName] = getFileContents(filePath)
+    }
+
+    return overrideImports;
+}
+
 /**
  * Format a lessjs compilation error
  *
@@ -75,38 +95,50 @@ function formatParseError(error) {
  * Write the final CSS output into a file
  *
  * @param {String} css The combined CSS from each bundle
+ * @param {String} fileName
  */
-function writeCSSOutput(css) {
+function writeCSSOutput(css, fileName) {
     const folderPath = resolve(rootDir, 'web/css')
-    const filePath = resolve(rootDir, OUTPUT_CSS_PATH);
+    const filePath = resolve(rootDir, fileName);
 
     try {
         if (existsSync(folderPath) === false) {
             mkdirSync(folderPath, { recursive: true });
         }
         writeFileSync(filePath, css, 'utf-8')
-        console.log(`✓ Saved CSS to ${OUTPUT_CSS_PATH}`.green)
+        console.log(`✓ Saved CSS to ${fileName}`.green)
     } catch (e) {
         console.log(`❌ Error writing CSS ${e.message}`.red)
     }
 }
 
-lessc.render(collectBundleImports(bundlePaths), {
-    sourceMap: {
-        sourceMapFileInline: isDev
-    },
-    compress: true,
-    plugins: [new RewriteImageURLs({
-        // Remove the 'web' part of the image/font urls
-        replace: [{
-            search: './web/bundles',
-            replace: '/bundles'
-        }]
-    })]
-}).then(
-    output => writeCSSOutput(output.css),
-    error => {
-        formatParseError(error)
-        process.exit(1)
-    })
-    .catch(error => console.log('Error', error))
+function convertLessToCss(cssFiles, fileName) {
+    lessc.render(cssFiles, {
+        sourceMap: {
+            sourceMapFileInline: isDev
+        },
+        compress: false,
+        plugins: [new RewriteImageURLs({
+            // Remove the 'web' part of the image/font urls
+            replace: [{
+                search: './web/bundles',
+                replace: '/bundles'
+            }]
+        })]
+    }).then(
+        output => writeCSSOutput(output.css, fileName),
+        error => {
+            formatParseError(error)
+            process.exit(1)
+        })
+        .catch(error => console.log('Error', error))
+}
+
+const index = collectBundleImports(bundlePaths)
+const overrides = collectOverrideImports(bundlePaths)
+
+convertLessToCss(index, OUTPUT_CSS_PATH)
+
+Object.entries(overrides).forEach(([fileName, contents]) => {
+    convertLessToCss(contents, `web/css/${fileName}.css`);
+})
