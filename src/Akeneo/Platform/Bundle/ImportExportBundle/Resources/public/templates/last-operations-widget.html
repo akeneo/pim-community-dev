@@ -23,8 +23,8 @@
     <% _.each(data, function (operation) { %>
         <% var status = 'success'; %>
         <% status = (operation.warningCount !== null && parseInt(operation.warningCount) !== 0) ? 'warning' : status %>
-        <% status = (6 === operation.status) ? 'important' : status %>
-        <% var counter = (6 === operation.status) ? 1 : operation.warningCount %>
+        <% status = (6 === parseInt(operation.status)) ? 'important' : status %>
+        <% var counter = (6 === parseInt(operation.status)) ? 1 : operation.warningCount %>
 
         <tr class="AknGrid-bodyRow">
             <td class="AknGrid-bodyCell"> <%- operation.date %></td>

@@ -6,6 +6,7 @@
 
 - PIM-8428: PIM displays pim_common.code on grids
 - PIM-8447: Fix grids thumbnails display
+- PIM-8467: Fix warning counts in case of failed jobs in last operations widget
 
 # 3.1.6 (2019-06-11)
 

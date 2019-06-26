@@ -12,16 +12,6 @@ define(
         'use strict';
 
         return AbstractWidget.extend({
-            labelClasses: {
-                1: 'AknBadge--success',
-                3: '',
-                4: 'AknBadge--important',
-                5: 'AknBadge--important',
-                6: 'AknBadge--important',
-                7: 'AknBadge--important',
-                8: 'AknBadge--error'
-            },
-
             viewAllTitle: 'Show job tracker',
 
             options: {
@@ -112,10 +102,6 @@ define(
 
                 _.each(data, function (operation) {
                     const statusLabel = __(operation.statusLabel);
-
-                    operation.labelClass = this.labelClasses[operation.status] ?
-                        this.labelClasses[operation.status]
-                        : '';
 
                     operation.statusLabel = statusLabel.slice(0, 1).toUpperCase() +
                         statusLabel.slice(1).toLowerCase();
