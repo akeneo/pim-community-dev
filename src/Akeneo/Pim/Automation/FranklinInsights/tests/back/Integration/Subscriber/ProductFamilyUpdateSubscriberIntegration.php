@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Subscriber;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
@@ -44,7 +46,8 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
 
         $this->updateProduct($productA, ['family' => null]);
         $this->updateProduct($productB, ['family' => 'familyA1']);
-        $this->updateProduct($productC, ['values' => ['a_text' => [['scope' => null, 'locale' => null, 'data' => 'some text']]]]);
+        $this->updateProduct($productC,
+            ['values' => ['a_text' => [['scope' => null, 'locale' => null, 'data' => 'some text']]]]);
 
         $this->assertProductSubscriptionDoesNotExist($productA->getId());
         $this->assertProductSubscriptionExist($productB->getId());
@@ -75,7 +78,11 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
     private function subscribeProduct(int $productId): void
     {
         $subscriptionId = sprintf('subscription_id_%d', $productId);
-        $productSubscription = new ProductSubscription($productId, $subscriptionId, ['asin' => 'an_asin_code']);
+        $productSubscription = new ProductSubscription(
+            new ProductId($productId),
+            new SubscriptionId($subscriptionId),
+            ['asin' => 'an_asin_code']
+        );
 
         $this->get('akeneo.pim.automation.franklin_insights.repository.product_subscription')->save($productSubscription);
     }
@@ -88,14 +95,16 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
 
     private function assertProductSubscriptionDoesNotExist(int $productId): void
     {
-        $subscription = $this->get('akeneo.pim.automation.franklin_insights.repository.product_subscription')->findOneByProductId($productId);
+        $subscription = $this->get('akeneo.pim.automation.franklin_insights.repository.product_subscription')
+            ->findOneByProductId($productId);
 
         $this->assertNull($subscription);
     }
 
     private function assertProductSubscriptionExist(int $productId): void
     {
-        $subscription = $this->get('akeneo.pim.automation.franklin_insights.repository.product_subscription')->findOneByProductId($productId);
+        $subscription = $this->get('akeneo.pim.automation.franklin_insights.repository.product_subscription')
+            ->findOneByProductId($productId);
 
         $this->assertNotNull($subscription);
     }
@@ -113,7 +122,7 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
         $asin = $this->getFromTestContainer('akeneo_integration_tests.base.attribute.builder')->build([
             'code' => 'asin',
             'type' => AttributeTypes::TEXT,
-            'group' => 'other'
+            'group' => 'other',
         ]);
 
         $this->getFromTestContainer('pim_catalog.saver.attribute')->save($asin);
