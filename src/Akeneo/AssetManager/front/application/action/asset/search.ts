@@ -1,5 +1,5 @@
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import updateResultsWithFetcher from 'akeneoassetmanager/application/action/search';
@@ -70,4 +70,4 @@ export const completenessFilterUpdated = (completenessValue: CompletenessValue) 
   dispatch(gridStateUpdated());
 };
 
-export const updateAssetResults = updateResultsWithFetcher<NormalizedAsset>(assetFetcher, stateToQuery);
+export const updateAssetResults = updateResultsWithFetcher<NormalizedItemAsset>(assetFetcher, stateToQuery);

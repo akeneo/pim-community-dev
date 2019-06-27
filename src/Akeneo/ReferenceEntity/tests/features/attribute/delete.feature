@@ -22,7 +22,7 @@ Feature: Delete an attribute linked to a reference entity
     Given a valid reference entity
     Then it is not possible to delete the attribute as image linked to this entity
 
-  @acceptance-front
+  #  @acceptance-front
   Scenario: Delete a text attribute linked to a reference entity
     Given a valid reference entity
     And the user has the following rights:
@@ -51,14 +51,14 @@ Feature: Delete an attribute linked to a reference entity
     Then there should be the following attributes:
       | code     | type  |
       | name     | text  |
-      | bio     | text  |
+      | bio      | text  |
       | portrait | image |
     When the user cannot delete the attribute "bio" linked to the reference entity "designer"
     Then the user should see the delete notification error
     And there should be the following attributes:
       | code     | type  |
       | name     | text  |
-      | bio     | text  |
+      | bio      | text  |
       | portrait | image |
 
   @acceptance-front
@@ -84,12 +84,12 @@ Feature: Delete an attribute linked to a reference entity
     Then there should be the following attributes:
       | code     | type  |
       | name     | text  |
-      | bio     | text  |
+      | bio      | text  |
       | portrait | image |
     When the user cancel the deletion of attribute "bio"
     Then the user should not see the delete notification
     And there should be the following attributes:
       | code     | type  |
       | name     | text  |
-      | bio     | text  |
+      | bio      | text  |
       | portrait | image |

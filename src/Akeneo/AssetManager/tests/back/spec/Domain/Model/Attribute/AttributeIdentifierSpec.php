@@ -77,7 +77,10 @@ class AttributeIdentifierSpec extends ObjectBehavior
 
     public function it_can_be_constructed_from_a_string()
     {
-        $this->beConstructedThrough('fromString', ['asset_family_identifier_description_test']);
+        $identifier = 'asset_family_identifier_description_test';
+        $this->beConstructedThrough('fromString', [$identifier]);
+        $this->stringValue()->shouldBe($identifier);
+        $this->__toString()->shouldBe($identifier);
     }
 
     public function it_cannot_be_constructed_with_a_string_too_long()

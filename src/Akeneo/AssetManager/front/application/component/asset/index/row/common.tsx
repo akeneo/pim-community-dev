@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
-import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
@@ -49,12 +47,7 @@ const CommonRow = memo(
         }}
       >
         <td className="AknGrid-bodyCell AknGrid-bodyCell--image">
-          <img
-            className="AknGrid-image AknLoadingPlaceHolder"
-            width="44"
-            height="44"
-            src={getImageShowUrl(denormalizeFile(asset.image), 'thumbnail_small')}
-          />
+          <img className="AknGrid-image AknLoadingPlaceHolder" width="44" height="44" src={asset.image} />
         </td>
         <td className="AknGrid-bodyCell" title={label}>
           {label}

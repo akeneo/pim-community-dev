@@ -104,8 +104,13 @@ class AttributeIdentifier
         return $this->identifier;
     }
 
-    public function __toString(): string
+    public function stringValue(): string
     {
         return $this->identifier;
+    }
+
+    public function __toString(): string
+    {
+        return $this->stringValue();
     }
 }

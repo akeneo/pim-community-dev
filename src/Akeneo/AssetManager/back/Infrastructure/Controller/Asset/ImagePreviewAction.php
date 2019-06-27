@@ -47,7 +47,7 @@ class ImagePreviewAction
     ): Response {
         /** @var MediaLinkAttribute $attribute */
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
-        $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
+        $imagePreview = $this->previewGenerator->generate(urldecode($data), $attribute, $type);
 
         return new RedirectResponse($imagePreview, Response::HTTP_MOVED_PERMANENTLY);
     }

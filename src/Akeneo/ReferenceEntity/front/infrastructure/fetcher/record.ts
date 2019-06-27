@@ -1,6 +1,6 @@
 import RecordFetcher from 'akeneoreferenceentity/domain/fetcher/record';
 import {Query, SearchResult} from 'akeneoreferenceentity/domain/fetcher/fetcher';
-import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import Record, {NormalizedItemRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import hydrator from 'akeneoreferenceentity/application/hydrator/record';
 import {getJSON, putJSON} from 'akeneoreferenceentity/tools/fetch';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
@@ -19,7 +19,7 @@ export type RecordResult = {
 
 export class RecordFetcherImplementation implements RecordFetcher {
   private recordsByCodesCache: {
-    [key: string]: Promise<SearchResult<NormalizedRecord>>;
+    [key: string]: Promise<SearchResult<NormalizedItemRecord>>;
   } = {};
 
   async fetch(referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode): Promise<RecordResult> {
@@ -39,7 +39,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
     };
   }
 
-  async search(query: Query): Promise<SearchResult<NormalizedRecord>> {
+  async search(query: Query): Promise<SearchResult<NormalizedItemRecord>> {
     const referenceEntityCode = query.filters.find((filter: Filter) => 'reference_entity' === filter.field);
     if (undefined === referenceEntityCode) {
       throw new InvalidArgument('The search repository expects a reference_entity filter');
@@ -67,7 +67,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
       locale: string;
     },
     cached: boolean = false
-  ): Promise<NormalizedRecord[]> {
+  ): Promise<NormalizedItemRecord[]> {
     const query = {
       channel: context.channel,
       locale: context.locale,

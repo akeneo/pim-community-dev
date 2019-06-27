@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ImagePreviewUrlGenerator;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\ValuesDecoder;
 use Doctrine\DBAL\Connection;
@@ -33,6 +34,8 @@ use Doctrine\DBAL\Types\Type;
  */
 class AssetItemHydrator implements AssetItemHydratorInterface
 {
+    public const THUMBNAIL_PREVIEW_TYPE = 'thumbnail';
+
     /** @var AbstractPlatform */
     private $platform;
 
@@ -45,32 +48,42 @@ class AssetItemHydrator implements AssetItemHydratorInterface
     /** @var ValueHydratorInterface */
     private $valueHydrator;
 
+    /** @var ImagePreviewUrlGenerator */
+    private $imagePreviewUrlGenerator;
+
     public function __construct(
         Connection $connection,
         FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        ValueHydratorInterface $valueHydrator
+        ValueHydratorInterface $valueHydrator,
+        ImagePreviewUrlGenerator $imagePreviewUrlGenerator
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
         $this->valueHydrator = $valueHydrator;
+        $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
     }
 
     public function hydrate(array $row, AssetQuery $query, $context = []): AssetItem
     {
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $this->platform);
-        $assetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['asset_family_identifier'], $this->platform);
+        $assetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+            $row['asset_family_identifier'],
+            $this->platform
+        );
         $code = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $this->platform);
 
-        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(AssetFamilyIdentifier::fromString($assetFamilyIdentifier));
+        $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
+        );
         $valueCollection = ValuesDecoder::decode($row['value_collection']);
         $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes, $context);
 
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
-        $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
-        $image = $this->getImage($valueCollection, $attributeAsImage);
+        $attributeAsImageIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
+        $image = $this->getImage($valueCollection, $attributeAsImageIdentifier);
 
         $assetItem = new AssetItem();
         $assetItem->identifier = $identifier;
@@ -132,19 +145,19 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         );
     }
 
-    private function getImage(array $valueCollection, string $attributeAsImage): ?array
+    private function getImage(array $valueCollection, string $attributeAsImageIdentifier): ?string
     {
-        $emptyImage = null;
-
-        $value = current(array_filter(
-            $valueCollection,
-            function (array $value) use ($attributeAsImage) {
-                return $value['attribute'] === $attributeAsImage;
-            }
-        ));
+        $value = current(
+            array_filter(
+                $valueCollection,
+                function (array $value) use ($attributeAsImageIdentifier) {
+                    return $value['attribute'] === $attributeAsImageIdentifier;
+                }
+            )
+        );
 
         if (false === $value) {
-            return $emptyImage;
+            return null;
         }
 
         return $value['data'];
