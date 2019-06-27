@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8413: Fix modal of category selection in product and product model exports
+- PIM-8477: Fix rich text area link dialog
 
 # 3.0.26 (2019-06-21)
 
