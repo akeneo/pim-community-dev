@@ -12,7 +12,6 @@
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor;
 
-
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 

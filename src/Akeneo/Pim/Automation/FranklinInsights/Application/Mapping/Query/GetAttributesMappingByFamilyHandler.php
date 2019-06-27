@@ -27,7 +27,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\Att
  */
 class GetAttributesMappingByFamilyHandler
 {
-
     private $attributesMappingProvider;
 
     private $familyRepository;

@@ -12,7 +12,6 @@
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor;
 
-
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
@@ -117,8 +116,7 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
                 $familyCode,
                 $this->attributesMappingNormalizer->normalize($attributeMappingCollection)
             ));
-        }
-        catch (AttributeMappingException | DataProviderException $e) {
+        } catch (AttributeMappingException | DataProviderException $e) {
             $this->logger->error(
                 sprintf('The attribute mapping can not be saved for family %s', (string) $familyCode),
                 ['message' => $e->getMessage()]
