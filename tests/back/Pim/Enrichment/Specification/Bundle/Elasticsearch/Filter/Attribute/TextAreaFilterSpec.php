@@ -122,6 +122,7 @@ class TextAreaFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($description, Operators::IS_EMPTY, null, 'en_US', 'ecommerce', []);

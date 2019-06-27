@@ -28,7 +28,13 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'scopable'            => true
         ]);
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_localizable_media']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_image' => [
                     ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'scope' => 'ecommerce', 'locale' => null],
@@ -38,6 +44,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_scopable_image' => [
                     ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'scope' => 'ecommerce', 'locale' => null],
@@ -46,7 +53,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorStartWith()

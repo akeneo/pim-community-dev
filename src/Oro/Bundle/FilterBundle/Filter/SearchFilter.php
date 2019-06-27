@@ -29,7 +29,7 @@ class SearchFilter extends AbstractFilter
                     true
                 )
             );
-            $ds->setParameter($parameterName, $word);
+            $ds->setParameter($parameterName, addcslashes($word, '_'));
         }
 
         return true;

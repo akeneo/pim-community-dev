@@ -12,9 +12,7 @@ define([
     'pim/template/filter/product/category',
     'jquery.select2'
 ], function ($, _, __, Backbone, BaseFilter, Routing, CategoryTree, fetcherRegistry, template) {
-    var TreeModal = Backbone.BootstrapModal.extend({
-        className: 'modal jstree-modal'
-    });
+    var TreeModal = Backbone.BootstrapModal.extend({});
 
     return BaseFilter.extend({
         shortname: 'category',
@@ -91,7 +89,8 @@ define([
                 title: __('pim_connector.export.categories.selector.modal.title'),
                 cancelText: __('pim_common.cancel'),
                 okText: __('pim_common.confirm'),
-                content: ''
+                content: '',
+                illustrationClass: 'categories',
             });
 
             modal.render();
