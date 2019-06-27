@@ -97,4 +97,21 @@ class AttributeMappingCollection implements \IteratorAggregate
     {
         return new \ArrayIterator($this->attributes);
     }
+
+    public function formatForFranklin()
+    {
+        $mapping = [];
+
+        foreach ($this as $attributeMapping) {
+            $mapping[$attributeMapping->getTargetAttributeCode()] = [
+                'franklinAttribute' => [
+                    'type' => $attributeMapping->getTargetAttributeType(),
+                ],
+                'attribute' => $attributeMapping->getPimAttributeCode(),
+                'status' => $attributeMapping->getStatus(),
+            ];
+        }
+
+        return $mapping;
+    }
 }
