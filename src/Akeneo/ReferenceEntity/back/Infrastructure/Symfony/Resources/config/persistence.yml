@@ -362,11 +362,6 @@ services:
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
-    akeneo_referenceentity.infrastructure.persistence.record.hydrator.url_data:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\UrlDataHydrator
-        tags:
-            - { name: akeneo_referenceentity.data_hydrator }
-
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.file_data:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\FileDataHydrator
         tags:
