@@ -13,6 +13,7 @@
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor;
 
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
@@ -21,6 +22,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodeQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -33,19 +35,51 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
     public function let(
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
+        AttributesMappingNormalizer $attributesMappingNormalizer,
         LoggerInterface $logger
     ): void
     {
-        $this->beConstructedWith($selectExactMatchAttributeCodeQuery, $saveAttributesMappingByFamilyHandler, $logger);
+        $this->beConstructedWith($selectExactMatchAttributeCodeQuery, $saveAttributesMappingByFamilyHandler, $attributesMappingNormalizer, $logger);
     }
 
     public function it_applies_matched_pim_attributes(
         SelectExactMatchAttributeCodeQueryInterface$selectExactMatchAttributeCodeQuery,
-        SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
+        SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
+        AttributesMappingNormalizer $attributesMappingNormalizer,
+        SaveAttributesMappingByFamilyCommand $command
     ) {
         $familyCode = new FamilyCode('family_code');
         $matchedPimAttributeCodes = ['Color' => 'color', 'Weight' => null];
         $pendingAttributesFranklinLabels = ['Color', 'Weight'];
+        $normalizedAttributeMapping = [
+            'color' => [
+                'franklinAttribute' => [
+                    'label' => 'Color',
+                    'type' => 'text',
+                    'summary' => [],
+                ],
+                'attribute' => 'color',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
+            ],
+            'weight' => [
+                'franklinAttribute' => [
+                    'label' => 'Weight',
+                    'type' => 'text',
+                    'summary' => [],
+                ],
+                'attribute' => null,
+                'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
+            ],
+            'size' => [
+                'franklinAttribute' => [
+                    'label' => 'Size',
+                    'type' => 'text',
+                    'summary' => [],
+                ],
+                'attribute' => 'pim_size',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
+            ],
+        ];
 
         $attributeMappingCollection = new AttributeMappingCollection();
         $attributeMappingCollection
@@ -65,8 +99,14 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
 
+        $attributesMappingNormalizer
+            ->normalize($expectedAttributeMappingCollection)
+            ->willReturn($normalizedAttributeMapping);
+
+        $command->beConstructedWith([$familyCode, $normalizedAttributeMapping]);
+
         $saveAttributesMappingByFamilyHandler
-            ->handle(Argument::any())
+            ->handle(Argument::type(SaveAttributesMappingByFamilyCommand::class))
             ->shouldBeCalled();
 
         $this->process($attributeMappingCollection, $familyCode)->shouldBeLike($expectedAttributeMappingCollection);
@@ -74,11 +114,42 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
 
     public function it_applies_matched_pim_attributes_only_for_pending_status(
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery,
-        SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
+        SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
+        AttributesMappingNormalizer $attributesMappingNormalizer,
+        SaveAttributesMappingByFamilyCommand $command
     ) {
         $familyCode = new FamilyCode('router');
         $matchedPimAttributeCodes = ['Color' => 'color'];
         $pendingAttributesFranklinLabels = ['Color'];
+        $normalizedAttributeMapping = [
+            'weight' => [
+                'franklinAttribute' => [
+                    'label' => 'Weight',
+                    'type' => 'text',
+                    'summary' => [],
+                ],
+                'attribute' => null,
+                'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
+            ],
+            'color' => [
+                'franklinAttribute' => [
+                    'label' => 'Color',
+                    'type' => 'text',
+                    'summary' => [],
+                ],
+                'attribute' => 'color',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
+            ],
+            'size' => [
+                'franklinAttribute' => [
+                    'label' => 'Size',
+                    'type' => 'text',
+                    'summary' => [],
+                ],
+                'attribute' => 'pim_size',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
+            ],
+        ];
 
         $attributeMappingCollection = new AttributeMappingCollection();
         $attributeMappingCollection
@@ -98,8 +169,14 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
 
+        $attributesMappingNormalizer
+            ->normalize($expectedAttributeMappingCollection)
+            ->willReturn($normalizedAttributeMapping);
+
+        $command->beConstructedWith([$familyCode, $normalizedAttributeMapping]);
+
         $saveAttributesMappingByFamilyHandler
-            ->handle(Argument::any())
+            ->handle(Argument::type(SaveAttributesMappingByFamilyCommand::class))
             ->shouldBeCalled();
 
         $this->process($attributeMappingCollection, $familyCode)->shouldBeLike($expectedAttributeMappingCollection);
@@ -132,6 +209,7 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
     public function it_applies_matched_pim_attributes_and_logs_error_when_saving_throws_data_provider_exception(
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
+        AttributesMappingNormalizer $attributesMappingNormalizer,
         LoggerInterface $logger
     ) {
         $familyCode = new FamilyCode('family_code');
@@ -155,6 +233,10 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         $selectExactMatchAttributeCodeQuery
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
+
+        $attributesMappingNormalizer
+            ->normalize($expectedAttributeMappingCollection)
+            ->shouldBeCalled();
 
         $saveAttributesMappingByFamilyHandler
             ->handle(Argument::any())
@@ -168,6 +250,7 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
     public function it_applies_matched_pim_attributes_and_logs_error_when_saving_throws_attribute_mapping_exception(
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
+        AttributesMappingNormalizer $attributesMappingNormalizer,
         LoggerInterface $logger
     ) {
         $familyCode = new FamilyCode('family_code');
@@ -191,6 +274,10 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         $selectExactMatchAttributeCodeQuery
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
+
+        $attributesMappingNormalizer
+            ->normalize($expectedAttributeMappingCollection)
+            ->shouldBeCalled();
 
         $saveAttributesMappingByFamilyHandler
             ->handle(Argument::any())

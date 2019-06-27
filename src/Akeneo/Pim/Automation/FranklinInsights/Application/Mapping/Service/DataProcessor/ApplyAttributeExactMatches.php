@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectE
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
@@ -37,19 +38,23 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
     private $selectExactMatchAttributeCodeQuery;
     /** @var SaveAttributesMappingByFamilyHandler */
     private $saveAttributesMappingByFamilyHandler;
+    /** @var AttributesMappingNormalizer */
+    private $attributesMappingNormalizer;
 
     /**
      * ApplyAttributeExactMatchesData constructor.
      * @param SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery
      * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
+     * @param AttributesMappingNormalizer $attributesMappingNormalizer
      * @param LoggerInterface $logger
      */
-    public function __construct(SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery, SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler, LoggerInterface $logger)
+    public function __construct(SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery, SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler, AttributesMappingNormalizer $attributesMappingNormalizer, LoggerInterface $logger)
     {
         $this->selectExactMatchAttributeCodeQuery = $selectExactMatchAttributeCodeQuery;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
 
         $this->setLogger($logger);
+        $this->attributesMappingNormalizer = $attributesMappingNormalizer;
     }
 
     public function process(AttributeMappingCollection $attributeMappingCollection, FamilyCode $familyCode): AttributeMappingCollection
@@ -125,8 +130,8 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
         try {
             $this->saveAttributesMappingByFamilyHandler->handle(new SaveAttributesMappingByFamilyCommand(
                 $familyCode,
-                $attributeMappingCollection->formatForFranklin())
-            );
+                $this->attributesMappingNormalizer->normalize($attributeMappingCollection)
+            ));
         }
         catch (AttributeMappingException | DataProviderException $e) {
             $this->logger->error(
