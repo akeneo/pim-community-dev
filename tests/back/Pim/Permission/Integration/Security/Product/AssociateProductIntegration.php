@@ -51,8 +51,8 @@ class AssociateProductIntegration extends AbstractSecurityTestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         $this->assertSame([
-            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
             ['code' => 'X_SELL', 'identifier' => 'product_not_visible_by_redactor'],
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
             ['code' => 'X_SELL', 'identifier' => 'product_visible_b'],
             ['code' => 'X_SELL', 'identifier' => 'product_visible_c'],
         ], $this->getAssociationFromDatabase('product'));
@@ -73,8 +73,8 @@ class AssociateProductIntegration extends AbstractSecurityTestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         $this->assertSame([
-            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
             ['code' => 'X_SELL', 'identifier' => 'product_not_visible_by_redactor'],
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
         ], $this->getAssociationFromDatabase('product'));
     }
 
@@ -113,8 +113,8 @@ class AssociateProductIntegration extends AbstractSecurityTestCase
 
         $this->assertSame([
             ['code' => 'UPSELL', 'identifier' => 'product_visible_a'],
-            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
             ['code' => 'X_SELL', 'identifier' => 'product_not_visible_by_redactor'],
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
             ['code' => 'X_SELL', 'identifier' => 'product_visible_b'],
         ], $this->getAssociationFromDatabase('product'));
     }
