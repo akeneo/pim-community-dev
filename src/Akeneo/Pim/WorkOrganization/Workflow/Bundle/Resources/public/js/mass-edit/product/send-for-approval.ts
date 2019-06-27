@@ -7,11 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {ajax} from 'jquery';
 import View = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
-const Routing = require('routing');
 const __ = require('oro/translator');
 
 const SUPPORTED_OPERATIONS = ['edit_common', 'add_attribute_value'];
@@ -57,26 +55,11 @@ class SendForApproval extends View {
       return;
     }
 
-    if (await this.shouldProposeSendForApproval()) {
-      this.renderSendForApprovalCheckbox();
-    }
+    this.renderSendForApprovalCheckbox();
   }
 
   private isOperationSupported(operation: string): boolean {
     return undefined !== SUPPORTED_OPERATIONS.find((currentOperation) => operation === currentOperation);
-  }
-
-  private async shouldProposeSendForApproval(): Promise<boolean> {
-    const model: Model = this.getFormData();
-
-    const isUserOwnerOnAllProducts = await ajax({
-        method: 'POST',
-        contentType: 'application/json',
-        url: Routing.generate('pimee_workflow_rest_proposal_is_user_owner_on_all_products'),
-        data: JSON.stringify({'filters': model.filters})
-      }) as unknown as Promise<boolean>;
-
-    return !isUserOwnerOnAllProducts;
   }
 
   private renderSendForApprovalCheckbox(): void {
