@@ -13,25 +13,21 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
 class RuleTemplateCollection
 {
+    public const EMPTY = [];
+
     private $ruleTemplates;
 
     private function __construct(array $ruleTemplates)
     {
-        foreach ($ruleTemplates as $ruleTemplate) {
-            if (!is_object($ruleTemplate)) {
-                throw new \InvalidArgumentException(sprintf('Expecting rule template to be an object, %s given.', gettype($ruleTemplate)));
-            }
-
-            if (!($ruleTemplate instanceof RuleTemplate)) {
-                throw new \InvalidArgumentException(sprintf('Expecting rule template to be an instance of RuleTemplate, %s given.', get_class($ruleTemplate)));
-            }
-        }
+        Assert::allIsInstanceOf($ruleTemplates, RuleTemplate::class);
 
         $this->ruleTemplates = $ruleTemplates;
     }
@@ -39,6 +35,16 @@ class RuleTemplateCollection
     public static function fromArray(array $ruleTemplates): self
     {
         return new self($ruleTemplates);
+    }
+
+    public static function empty(): self
+    {
+        return new self(self::EMPTY);
+    }
+
+    public function isEmpty(): bool
+    {
+        return self::EMPTY === $this->ruleTemplates;
     }
 
     public function normalize(): array

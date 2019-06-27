@@ -100,13 +100,13 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             AssetFamilyIdentifier::fromString('designer'),
             ['en_US' => 'Designer'],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $brand = AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
             ['en_US' => 'Brand'],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $this->repository->create($designer);
         $this->repository->create($brand);
@@ -126,7 +126,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $this->repository->create($assetFamily);
 
@@ -144,7 +144,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $this->repository->create($assetFamily);
         $assetFamily->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
@@ -179,7 +179,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $this->repository->create($assetFamily);
 
@@ -199,7 +199,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $assetFamilyIdentifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $this->repository->create($assetFamily);
 
@@ -238,14 +238,14 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $designerIdentifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $brandIdentifier = AssetFamilyIdentifier::fromString('brand');
         $brand = AssetFamily::create(
             $brandIdentifier,
             ['en_US' => 'Brand', 'fr_FR' => 'Marque'],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
 
         $this->repository->create($designer);

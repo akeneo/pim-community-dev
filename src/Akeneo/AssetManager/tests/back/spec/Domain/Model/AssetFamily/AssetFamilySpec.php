@@ -29,7 +29,7 @@ class AssetFamilySpec extends ObjectBehavior
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
         ];
-        $this->beConstructedThrough('create', [$identifier, $labelCollection, Image::createEmpty(), RuleTemplateCollection::fromArray([])]);
+        $this->beConstructedThrough('create', [$identifier, $labelCollection, Image::createEmpty(), RuleTemplateCollection::empty()]);
     }
 
     public function it_is_initializable()
@@ -50,7 +50,7 @@ class AssetFamilySpec extends ObjectBehavior
             $sameIdentifier,
             [],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $this->equals($sameAssetFamily)->shouldReturn(true);
 
@@ -59,7 +59,7 @@ class AssetFamilySpec extends ObjectBehavior
             $anotherIdentifier,
             [],
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray([])
+            RuleTemplateCollection::empty()
         );
         $this->equals($sameAssetFamily)->shouldReturn(false);
     }

@@ -41,34 +41,23 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
         $this->shouldHaveType(RuleTemplateCollection::class);
     }
 
-    public function it_should_contain_objects()
+    public function it_should_contain_only_rule_template_objects()
     {
         $ruleTemplate = 'wrong_rule_template';
         $this->beConstructedThrough('fromArray', [[$ruleTemplate]]);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
-    public function it_should_contain_rule_template_objects()
+    function it_can_be_created_with_no_rule_templates()
     {
-        $content = [
-            'conditions' => [
-                [
-                    'field' => 'sku',
-                    'operator' => 'EQUALS',
-                    'value' => '{{product_sku}}',
-                ]
-            ],
-            'actions' => [
-                [
-                    'type' => 'add',
-                    'field' => '{{target_attribute}}',
-                    'value' => '{{ code }}'
-                ]
-            ]
-        ];
-        $ruleTemplate = new \stdClass($content);
-        $this->beConstructedThrough('fromArray', [[$ruleTemplate]]);
-        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
+        $noPrefix = $this::empty();
+        $noPrefix->normalize()->shouldReturn([]);
+    }
+
+    function it_says_if_it_holds_no_rule_templates()
+    {
+        $this->isEmpty()->shouldReturn(false);
+        $this::empty()->isEmpty()->shouldReturn(true);
     }
 
     public function it_can_normalize_itself()
