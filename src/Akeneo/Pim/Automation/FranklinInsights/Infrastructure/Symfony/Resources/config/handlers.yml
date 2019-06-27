@@ -118,6 +118,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
             - '@akeneo.pim.automation.franklin_insights.application.mapping.service.data_processor.apply_attribute_exact_matches'
+            - '@akeneo.pim.automation.franklin_insights.application.mapping.service.data_processor.suggest_attribute_exact_matches_from_other_family'
 
     akeneo.pim.automation.franklin_insights.handler.create_attribute_in_family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler'

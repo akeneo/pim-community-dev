@@ -93,3 +93,6 @@ services:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes'
             - '@akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
             - '@monolog.logger.franklin'
+
+    akeneo.pim.automation.franklin_insights.application.mapping.service.data_processor.suggest_attribute_exact_matches_from_other_family:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\SuggestAttributeExactMatchesFromOtherFamily'

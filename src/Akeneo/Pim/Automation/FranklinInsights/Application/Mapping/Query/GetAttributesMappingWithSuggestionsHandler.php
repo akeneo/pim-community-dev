@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\ApplyAttributeExactMatches;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\SuggestAttributeExactMatchesFromOtherFamily;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 
 /**
@@ -21,18 +22,21 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
  */
 class GetAttributesMappingWithSuggestionsHandler
 {
-    /** @var GetAttributesMappingByFamilyHandler */
+
     private $getAttributesMappingByFamilyHandler;
 
-    /** @var ApplyAttributeExactMatches */
     private $applyAttributeExactMatches;
+
+    private $suggestAttributeExactMatchesFromOtherFamilyDataProcessor;
 
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
-        ApplyAttributeExactMatches $applyAttributeExactMatches
+        ApplyAttributeExactMatches $applyAttributeExactMatches,
+        SuggestAttributeExactMatchesFromOtherFamily $suggestAttributeExactMatchesFromOtherFamilyDataProcessor
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->applyAttributeExactMatches = $applyAttributeExactMatches;
+        $this->suggestAttributeExactMatchesFromOtherFamilyDataProcessor = $suggestAttributeExactMatchesFromOtherFamilyDataProcessor;
     }
 
     public function handle(GetAttributesMappingWithSuggestionsQuery $query): AttributeMappingCollection
@@ -42,6 +46,9 @@ class GetAttributesMappingWithSuggestionsHandler
             new GetAttributesMappingByFamilyQuery($familyCode)
         );
 
-        return $this->applyAttributeExactMatches->process($attributeMappingCollection, $familyCode);
+        $attributeMappingCollection = $this->applyAttributeExactMatches->process($attributeMappingCollection, $familyCode);
+        $attributeMappingCollection = $this->suggestAttributeExactMatchesFromOtherFamilyDataProcessor->process($attributeMappingCollection, $familyCode);
+
+        return $attributeMappingCollection;
     }
 }
