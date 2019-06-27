@@ -27,20 +27,13 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\Att
  */
 class GetAttributesMappingByFamilyHandler
 {
-    /** @var AttributesMappingProviderInterface */
+
     private $attributesMappingProvider;
 
-    /** @var FamilyRepositoryInterface */
     private $familyRepository;
 
-    /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /**
-     * @param AttributesMappingProviderInterface $attributesMappingProvider
-     * @param FamilyRepositoryInterface $familyRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
     public function __construct(
         AttributesMappingProviderInterface $attributesMappingProvider,
         FamilyRepositoryInterface $familyRepository,
@@ -51,13 +44,6 @@ class GetAttributesMappingByFamilyHandler
         $this->attributeRepository = $attributeRepository;
     }
 
-    /**
-     * @param GetAttributesMappingByFamilyQuery $query
-     *
-     * @return AttributeMappingCollection
-     * @throws DataProviderException
-     *
-     */
     public function handle(GetAttributesMappingByFamilyQuery $query): AttributeMappingCollection
     {
         $this->ensureFamilyExists($query->getFamilyCode());
@@ -67,9 +53,6 @@ class GetAttributesMappingByFamilyHandler
         return $this->unmapUnknownAttributes($attributesMapping);
     }
 
-    /**
-     * @param FamilyCode $familyCode
-     */
     private function ensureFamilyExists(FamilyCode $familyCode): void
     {
         if (!$this->familyRepository->exist($familyCode)) {
@@ -80,12 +63,7 @@ class GetAttributesMappingByFamilyHandler
         }
     }
 
-    /**
-     * @param AttributeMappingCollection $attributeMappingCollection
-     *
-     * @return AttributeMappingCollection
-     */
-    private function unmapUnknownAttributes(AttributeMappingCollection $attributeMappingCollection)
+    private function unmapUnknownAttributes(AttributeMappingCollection $attributeMappingCollection): AttributeMappingCollection
     {
         if ($attributeMappingCollection->isEmpty()) {
             return $attributeMappingCollection;
@@ -100,11 +78,6 @@ class GetAttributesMappingByFamilyHandler
         return $this->computeNewAttributesMapping($attributeMappingCollection, $unknownAttributeCodes);
     }
 
-    /**
-     * @param AttributeMappingCollection $attributeMappingCollection
-     *
-     * @return array
-     */
     private function computeUnknownAttributesCodes(AttributeMappingCollection $attributeMappingCollection): array
     {
         $attributeCodesFromResponse = [];

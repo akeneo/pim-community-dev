@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
  */
 class AttributeMappingCollection implements \IteratorAggregate
 {
-    /** @var array */
     private $attributes;
 
     public function __construct()
@@ -29,11 +28,6 @@ class AttributeMappingCollection implements \IteratorAggregate
         $this->attributes = [];
     }
 
-    /**
-     * @param AttributeMapping $attribute
-     *
-     * @return AttributeMappingCollection
-     */
     public function addAttribute(AttributeMapping $attribute): self
     {
         $this->attributes[] = $attribute;
@@ -55,11 +49,6 @@ class AttributeMappingCollection implements \IteratorAggregate
         return $this;
     }
 
-    /**
-     * @param AttributeCode $attributeCode
-     *
-     * @return bool
-     */
     public function hasPimAttribute(AttributeCode $attributeCode): bool
     {
         foreach ($this->attributes as $attribute) {
@@ -82,17 +71,11 @@ class AttributeMappingCollection implements \IteratorAggregate
         }, $attributes);
     }
 
-    /**
-     * @return bool
-     */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return 0 === count($this->attributes);
     }
 
-    /**
-     * @return \Iterator
-     */
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator($this->attributes);

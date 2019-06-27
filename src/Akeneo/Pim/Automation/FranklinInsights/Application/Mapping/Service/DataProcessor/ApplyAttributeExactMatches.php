@@ -31,22 +31,14 @@ use Psr\Log\LoggerInterface;
  */
 class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProcessorInterface
 {
-    /** @var SelectExactMatchAttributeCodeQueryInterface */
     private $selectExactMatchAttributeCodeQuery;
-    /** @var SaveAttributesMappingByFamilyHandler */
+
     private $saveAttributesMappingByFamilyHandler;
-    /** @var AttributesMappingNormalizer */
+
     private $attributesMappingNormalizer;
-    /** @var LoggerInterface */
+
     private $logger;
 
-    /**
-     * ApplyAttributeExactMatchesData constructor.
-     * @param SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery
-     * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
-     * @param AttributesMappingNormalizer $attributesMappingNormalizer
-     * @param LoggerInterface $logger
-     */
     public function __construct(SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery, SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler, AttributesMappingNormalizer $attributesMappingNormalizer, LoggerInterface $logger)
     {
         $this->selectExactMatchAttributeCodeQuery = $selectExactMatchAttributeCodeQuery;
@@ -68,11 +60,6 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
         return $processedAttributeMappingCollection;
     }
 
-    /**
-     * @param FamilyCode $familyCode
-     * @param AttributeMappingCollection $familyAttributesMapping
-     * @return string[]
-     */
     private function findPimAttributeCodeMatches(FamilyCode $familyCode, AttributeMappingCollection $familyAttributesMapping): array
     {
         $matchedPimAttributeCodes = $this->selectExactMatchAttributeCodeQuery->execute(
