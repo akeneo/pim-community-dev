@@ -39,27 +39,11 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         $this->beConstructedWith($selectExactMatchAttributeCodeQuery, $saveAttributesMappingByFamilyHandler, $logger);
     }
 
-    public function it_returns_unmodified_collection_when_family_code_is_null(AttributeMappingCollection $attributeMappingCollection)
-    {
-        $context = ['familyCode' => null];
-
-        $this->process($attributeMappingCollection, $context)->shouldReturn($attributeMappingCollection);
-    }
-
-    public function it_returns_unmodified_collection_when_family_code_is_invalid_type(AttributeMappingCollection $attributeMappingCollection)
-    {
-        $context = ['familyCode' => 'family_code_as_string'];
-
-        $this->process($attributeMappingCollection, $context)->shouldReturn($attributeMappingCollection);
-    }
-
-
     public function it_applies_matched_pim_attributes(
         SelectExactMatchAttributeCodeQueryInterface$selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
     ) {
         $familyCode = new FamilyCode('family_code');
-        $context = ['familyCode' => $familyCode];
         $matchedPimAttributeCodes = ['Color' => 'color', 'Weight' => null];
         $pendingAttributesFranklinLabels = ['Color', 'Weight'];
 
@@ -85,7 +69,7 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
             ->handle(Argument::any())
             ->shouldBeCalled();
 
-        $this->process($attributeMappingCollection, $context)->shouldBeLike($expectedAttributeMappingCollection);
+        $this->process($attributeMappingCollection, $familyCode)->shouldBeLike($expectedAttributeMappingCollection);
     }
 
     public function it_applies_matched_pim_attributes_only_for_pending_status(
@@ -93,7 +77,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
     ) {
         $familyCode = new FamilyCode('router');
-        $context = ['familyCode' => $familyCode];
         $matchedPimAttributeCodes = ['Color' => 'color'];
         $pendingAttributesFranklinLabels = ['Color'];
 
@@ -119,7 +102,7 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
             ->handle(Argument::any())
             ->shouldBeCalled();
 
-        $this->process($attributeMappingCollection, $context)->shouldBeLike($expectedAttributeMappingCollection);
+        $this->process($attributeMappingCollection, $familyCode)->shouldBeLike($expectedAttributeMappingCollection);
     }
 
     public function it_does_not_apply_matched_pim_attributes_if_the_attribute_is_already_mapped(
@@ -127,7 +110,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
     ) {
         $familyCode = new FamilyCode('router');
-        $context = ['familyCode' => $familyCode];
         $matchedPimAttributeCodes = ['Color' => 'color'];
         $pendingAttributesFranklinLabels = ['Color'];
 
@@ -144,7 +126,7 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
             ->handle(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->process($attributeMappingCollection, $context)->shouldBeLike($attributeMappingCollection);
+        $this->process($attributeMappingCollection, $familyCode)->shouldBeLike($attributeMappingCollection);
     }
 
     public function it_applies_matched_pim_attributes_and_logs_error_when_saving_throws_data_provider_exception(
@@ -153,7 +135,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         LoggerInterface $logger
     ) {
         $familyCode = new FamilyCode('family_code');
-        $context = ['familyCode' => $familyCode];
         $matchedPimAttributeCodes = ['Color' => 'color', 'Weight' => null];
         $pendingAttributesFranklinLabels = ['Color', 'Weight'];
 
@@ -181,7 +162,7 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
 
         $logger->error(Argument::cetera())->shouldBeCalled();
 
-        $this->process($attributeMappingCollection, $context)->shouldBeLike($expectedAttributeMappingCollection);
+        $this->process($attributeMappingCollection, $familyCode)->shouldBeLike($expectedAttributeMappingCollection);
     }
 
     public function it_applies_matched_pim_attributes_and_logs_error_when_saving_throws_attribute_mapping_exception(
@@ -190,7 +171,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         LoggerInterface $logger
     ) {
         $familyCode = new FamilyCode('family_code');
-        $context = ['familyCode' => $familyCode];
         $matchedPimAttributeCodes = ['Color' => 'color', 'Weight' => null];
         $pendingAttributesFranklinLabels = ['Color', 'Weight'];
 
@@ -218,6 +198,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
 
         $logger->error(Argument::cetera())->shouldBeCalled();
 
-        $this->process($attributeMappingCollection, $context)->shouldBeLike($expectedAttributeMappingCollection);
+        $this->process($attributeMappingCollection, $familyCode)->shouldBeLike($expectedAttributeMappingCollection);
     }
 }

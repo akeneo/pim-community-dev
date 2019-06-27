@@ -48,13 +48,12 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
     {
         $familyCode = new FamilyCode('family_code');
         $query = new GetAttributesMappingWithSuggestionsQuery($familyCode);
-        $context = ['familyCode' => $familyCode];
 
         $getAttributesMappingByFamilyHandler->handle(Argument::any())
             ->willReturn($attributeMappingCollection);
 
         $applyAttributeExactMatchesDataProcessor
-            ->process($attributeMappingCollection, $context)
+            ->process($attributeMappingCollection, $familyCode)
             ->willReturn($processedAttributeMappingCollection);
 
         $this->handle($query)->shouldReturn($processedAttributeMappingCollection);

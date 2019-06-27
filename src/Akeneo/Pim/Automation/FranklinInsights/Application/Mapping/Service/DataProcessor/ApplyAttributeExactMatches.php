@@ -52,14 +52,8 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
         $this->setLogger($logger);
     }
 
-    public function process(AttributeMappingCollection $attributeMappingCollection, array $context = []): AttributeMappingCollection
+    public function process(AttributeMappingCollection $attributeMappingCollection, FamilyCode $familyCode): AttributeMappingCollection
     {
-        $familyCode = $context['familyCode'] ?? null;
-
-        if (!$familyCode instanceof FamilyCode) {
-            return $attributeMappingCollection;
-        }
-
         $matchedPimAttributeCodes = $this->findPimAttributeCodeMatches($familyCode, $attributeMappingCollection);
 
         $processedAttributeMappingCollection = $this->buildAttributeMappingCollectionWithMatchedAttributeCodes($matchedPimAttributeCodes, $attributeMappingCollection);

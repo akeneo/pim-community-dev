@@ -14,11 +14,12 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\Dat
 
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
 interface AttributeMappingCollectionDataProcessorInterface
 {
-    public function process(AttributeMappingCollection $attributeMappingCollection, array $context): AttributeMappingCollection;
+    public function process(AttributeMappingCollection $attributeMappingCollection, FamilyCode $familyCode): AttributeMappingCollection;
 }

@@ -42,8 +42,6 @@ class GetAttributesMappingWithSuggestionsHandler
             new GetAttributesMappingByFamilyQuery($familyCode)
         );
 
-        return $this->applyAttributeExactMatchesDataProcessor->process($attributeMappingCollection, [
-            'familyCode' => $familyCode,
-        ]);
+        return $this->applyAttributeExactMatchesDataProcessor->process($attributeMappingCollection, $familyCode);
     }
 }
