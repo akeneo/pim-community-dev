@@ -122,7 +122,7 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $uploadContext = new UploadContext($this->getParameter('tmp_storage_dir'), 'admin');

@@ -24,7 +24,7 @@ use Akeneo\Test\Integration\TestCase;
 
 class ProductFamilyUpdateSubscriberIntegration extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
