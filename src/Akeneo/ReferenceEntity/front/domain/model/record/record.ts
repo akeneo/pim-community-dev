@@ -15,21 +15,19 @@ interface CommonNormalizedRecord {
   reference_entity_identifier: string;
   code: NormalizedRecordCode;
   labels: NormalizedLabelCollection;
+  image: NormalizedFile;
 }
 
 export interface NormalizedRecord extends CommonNormalizedRecord {
-  image: NormalizedFile;
   values: NormalizedValue[];
 }
 
 export interface NormalizedItemRecord extends CommonNormalizedRecord {
-  image: string;
   values: NormalizedValue[];
   completeness: NormalizedCompleteness;
 }
 
 export interface NormalizedMinimalRecord extends CommonNormalizedRecord {
-  image: NormalizedFile;
   values: NormalizedMinimalValue[];
 }
 
