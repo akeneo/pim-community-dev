@@ -96,7 +96,7 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
     private function assertProductSubscriptionDoesNotExist(int $productId): void
     {
         $subscription = $this->get('akeneo.pim.automation.franklin_insights.repository.product_subscription')
-            ->findOneByProductId($productId);
+            ->findOneByProductId(new ProductId($productId));
 
         $this->assertNull($subscription);
     }
@@ -104,7 +104,7 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
     private function assertProductSubscriptionExist(int $productId): void
     {
         $subscription = $this->get('akeneo.pim.automation.franklin_insights.repository.product_subscription')
-            ->findOneByProductId($productId);
+            ->findOneByProductId(new ProductId($productId));
 
         $this->assertNotNull($subscription);
     }
