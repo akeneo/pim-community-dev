@@ -131,7 +131,7 @@ define(['jquery', 'backbone', 'underscore', 'pim/router', 'oro/translator', 'oro
                         let contentType = response.getResponseHeader('content-type');
                         let message = __('Unexpected error occurred. Please contact system administrator.');
 
-                        if (contentType.indexOf("application/json") !== -1) {
+                        if (contentType.indexOf('application/json') !== -1) {
                             const decodedResponse = JSON.parse(response.responseText);
                             if (undefined !== decodedResponse.message) {
                                 message = decodedResponse.message
