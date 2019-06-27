@@ -24,7 +24,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderE
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -32,14 +31,14 @@ use Psr\Log\LoggerInterface;
  */
 class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProcessorInterface
 {
-    use LoggerAwareTrait;
-
     /** @var SelectExactMatchAttributeCodeQueryInterface */
     private $selectExactMatchAttributeCodeQuery;
     /** @var SaveAttributesMappingByFamilyHandler */
     private $saveAttributesMappingByFamilyHandler;
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
+    /** @var LoggerInterface */
+    private $logger;
 
     /**
      * ApplyAttributeExactMatchesData constructor.
@@ -52,9 +51,8 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
     {
         $this->selectExactMatchAttributeCodeQuery = $selectExactMatchAttributeCodeQuery;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
-
-        $this->setLogger($logger);
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
+        $this->logger = $logger;
     }
 
     public function process(AttributeMappingCollection $attributeMappingCollection, FamilyCode $familyCode): AttributeMappingCollection
