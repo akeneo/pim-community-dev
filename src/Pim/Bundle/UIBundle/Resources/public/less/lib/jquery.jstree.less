@@ -1,5 +1,66 @@
 @import '../base/variables';
 
+
+.jstree {
+  li {
+    margin-left: 35px;
+  }
+
+  &.jstree-default {
+    font-size: @AknFontSizeBig;
+
+    a {
+      color: @AknDarkBlue;
+      vertical-align: sub;
+    }
+
+    ins {
+      height: 22px;
+      width: 22px;
+      margin-top: 13px;
+    }
+
+    .jstree-closed > ins {
+      background-size: 20px 20px;
+      background-image: url(../../images/jstree/icon-right.svg);
+      opacity: 0.5;
+      background-position: 0 3px;
+      margin-right: 0;
+    }
+
+    .jstree-open > ins {
+      background-size: 20px 20px;
+      background-image: url("../../images/jstree/icon-down.svg");
+      opacity: 0.5;
+      background-position: 0 3px;
+      margin-right: 0;
+    }
+
+    a .jstree-icon {
+      // Default folder
+      background-size: 20px 20px;
+      background: url("../../images/jstree/icon-folders.svg") 0 -3px;
+      opacity: 1;
+      height: 22px;
+      width: 22px;
+      margin-top: 8px;
+      margin-right: 6px;
+    }
+
+    a.jstree-clicked .jstree-icon {
+      // Default folder
+      background-size: 20px 20px;
+      background: url("../../images/jstree/icon-foldersfull.svg") 0 -3px;
+      opacity: 1;
+      height: 22px;
+      width: 22px;
+      margin-top: 8px;
+      margin-right: 6px;
+    }
+  }
+}
+
+/*
 .jstree-icon(@url) {
   background: url(@url) 50% 50% no-repeat;
   height: 22px;
@@ -230,3 +291,4 @@
     position: inherit;
   }
 }
+*/
