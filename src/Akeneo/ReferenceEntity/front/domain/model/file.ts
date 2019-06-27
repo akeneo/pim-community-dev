@@ -1,5 +1,6 @@
+export type FilePath = string;
 export type NormalizedFile = {
-  filePath: string;
+  filePath: FilePath;
   originalFilename: string;
   size?: number;
   mimeType?: string;

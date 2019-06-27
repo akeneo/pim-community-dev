@@ -1,6 +1,6 @@
 import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import Asset, {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import Asset, {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import hydrator from 'akeneoassetmanager/application/hydrator/asset';
 import {getJSON, putJSON} from 'akeneoassetmanager/tools/fetch';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -19,7 +19,7 @@ export type AssetResult = {
 
 export class AssetFetcherImplementation implements AssetFetcher {
   private assetsByCodesCache: {
-    [key: string]: Promise<SearchResult<NormalizedAsset>>;
+    [key: string]: Promise<SearchResult<NormalizedItemAsset>>;
   } = {};
 
   async fetch(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<AssetResult> {
@@ -39,7 +39,7 @@ export class AssetFetcherImplementation implements AssetFetcher {
     };
   }
 
-  async search(query: Query): Promise<SearchResult<NormalizedAsset>> {
+  async search(query: Query): Promise<SearchResult<NormalizedItemAsset>> {
     const assetFamilyCode = query.filters.find((filter: Filter) => 'asset_family' === filter.field);
     if (undefined === assetFamilyCode) {
       throw new InvalidArgument('The search repository expects a asset_family filter');
@@ -67,7 +67,7 @@ export class AssetFetcherImplementation implements AssetFetcher {
       locale: string;
     },
     cached: boolean = false
-  ): Promise<NormalizedAsset[]> {
+  ): Promise<NormalizedItemAsset[]> {
     const query = {
       channel: context.channel,
       locale: context.locale,

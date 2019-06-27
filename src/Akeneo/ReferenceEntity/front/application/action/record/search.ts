@@ -1,5 +1,5 @@
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import {NormalizedItemRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import updateResultsWithFetcher from 'akeneoreferenceentity/application/action/search';
@@ -70,4 +70,4 @@ export const completenessFilterUpdated = (completenessValue: CompletenessValue) 
   dispatch(gridStateUpdated());
 };
 
-export const updateRecordResults = updateResultsWithFetcher<NormalizedRecord>(recordFetcher, stateToQuery);
+export const updateRecordResults = updateResultsWithFetcher<NormalizedItemRecord>(recordFetcher, stateToQuery);

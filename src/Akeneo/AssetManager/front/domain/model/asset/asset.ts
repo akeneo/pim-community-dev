@@ -15,19 +15,21 @@ interface CommonNormalizedAsset {
   asset_family_identifier: string;
   code: NormalizedAssetCode;
   labels: NormalizedLabelCollection;
-  image: NormalizedFile;
 }
 
 export interface NormalizedAsset extends CommonNormalizedAsset {
+  image: NormalizedFile;
   values: NormalizedValue[];
 }
 
 export interface NormalizedItemAsset extends CommonNormalizedAsset {
+  image: string;
   values: NormalizedValue[];
   completeness: NormalizedCompleteness;
 }
 
 export interface NormalizedMinimalAsset extends CommonNormalizedAsset {
+  image: NormalizedFile;
   values: NormalizedMinimalValue[];
 }
 

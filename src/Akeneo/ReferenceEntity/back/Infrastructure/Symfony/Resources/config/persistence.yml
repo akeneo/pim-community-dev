@@ -328,10 +328,32 @@ services:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
-            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item_value_hydrator_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.value_hydrator_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.image_preview_url_generator'
 
-    akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item_value_hydrator_registry:
+    akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.image_preview_url_generator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ImagePreviewUrlGenerator
+        arguments:
+            - '@router'
+
+    akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.value_hydrator_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ValueHydratorRegistry
+        tags:
+            - { name: akeneo_referenceentity.record_item.hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.image_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ImageValueHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.image_preview_url_generator'
+        tags:
+            - { name: akeneo_referenceentity.record_item_value_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.url_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\UrlValueHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.image_preview_url_generator'
+        tags:
+            - { name: akeneo_referenceentity.record_item_value_hydrator }
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator

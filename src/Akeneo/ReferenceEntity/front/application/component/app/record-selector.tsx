@@ -7,8 +7,6 @@ import {NormalizedRecord, NormalizedItemRecord} from 'akeneoreferenceentity/doma
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
-import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {
@@ -18,8 +16,8 @@ import {
 } from 'akeneoreferenceentity/application/component/app/completeness';
 import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
 
-const renderRow = (label: string, normalizedRecord: NormalizedRecord, withLink: boolean, compact: boolean) => {
-  const normalizedCompleteness = (normalizedRecord as NormalizedItemRecord).completeness;
+const renderRow = (label: string, normalizedRecord: NormalizedItemRecord, withLink: boolean, compact: boolean) => {
+  const normalizedCompleteness = normalizedRecord.completeness;
   const completeness =
     undefined !== normalizedCompleteness ? Completeness.createFromNormalized(normalizedCompleteness) : undefined;
   const completenessHTML =
@@ -37,7 +35,7 @@ const renderRow = (label: string, normalizedRecord: NormalizedRecord, withLink: 
       : '';
 
   return `
-  <img width="34" height="34" src="${getImageShowUrl(denormalizeFile(normalizedRecord.image), 'thumbnail_small')}"/>
+  <img width="34" height="34" src="${normalizedRecord.image}"/>
   <span class="select2-result-label-main">
     <span class="select2-result-label-top">
       ${normalizedRecord.code}
@@ -75,7 +73,7 @@ export type RecordSelectorProps = {
   onChange: (value: RecordCode[] | RecordCode | null) => void;
 };
 
-type Select2Item = {id: string; text: string; original: NormalizedRecord};
+type Select2Item = {id: string; text: string; original: NormalizedItemRecord};
 
 export default class RecordSelector extends React.Component<RecordSelectorProps & any> {
   PAGE_SIZE = 200;
@@ -93,7 +91,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
     this.DOMel = React.createRef();
   }
 
-  formatItem(normalizedRecord: NormalizedRecord): Select2Item {
+  formatItem(normalizedRecord: NormalizedItemRecord): Select2Item {
     return {
       id: normalizedRecord.code,
       text: getLabel(normalizedRecord.labels, this.props.locale.stringValue(), normalizedRecord.code),
@@ -197,7 +195,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
                 channel: this.props.channel.stringValue(),
                 locale: this.props.locale.stringValue(),
               })
-              .then((records: NormalizedRecord[]) => {
+              .then((records: NormalizedItemRecord[]) => {
                 callback(this.formatItem(records[0]));
               });
           }

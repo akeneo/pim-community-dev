@@ -14,8 +14,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\
 use PhpSpec\ObjectBehavior;
 
 class AssetValueHydratorSpec extends ObjectBehavior
-{
-    public function let(FindAssetLabelsByCodesInterface $findAssetLabelsByCodes)
+{    public function let(FindAssetLabelsByCodesInterface $findAssetLabelsByCodes)
     {
         $this->beConstructedWith($findAssetLabelsByCodes);
     }

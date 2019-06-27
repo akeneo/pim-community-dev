@@ -7,8 +7,6 @@ import {NormalizedAsset, NormalizedItemAsset} from 'akeneoassetmanager/domain/mo
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
-import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoassetmanager/tools/translator';
 import {
@@ -18,8 +16,8 @@ import {
 } from 'akeneoassetmanager/application/component/app/completeness';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 
-const renderRow = (label: string, normalizedAsset: NormalizedAsset, withLink: boolean, compact: boolean) => {
-  const normalizedCompleteness = (normalizedAsset as NormalizedItemAsset).completeness;
+const renderRow = (label: string, normalizedAsset: NormalizedItemAsset, withLink: boolean, compact: boolean) => {
+  const normalizedCompleteness = normalizedAsset.completeness;
   const completeness =
     undefined !== normalizedCompleteness ? Completeness.createFromNormalized(normalizedCompleteness) : undefined;
   const completenessHTML =
@@ -37,7 +35,7 @@ const renderRow = (label: string, normalizedAsset: NormalizedAsset, withLink: bo
       : '';
 
   return `
-  <img width="34" height="34" src="${getImageShowUrl(denormalizeFile(normalizedAsset.image), 'thumbnail_small')}"/>
+  <img width="34" height="34" src="${normalizedAsset.image}"/>
   <span class="select2-result-label-main">
     <span class="select2-result-label-top">
       ${normalizedAsset.code}
@@ -75,7 +73,7 @@ export type AssetSelectorProps = {
   onChange: (value: AssetCode[] | AssetCode | null) => void;
 };
 
-type Select2Item = {id: string; text: string; original: NormalizedAsset};
+type Select2Item = {id: string; text: string; original: NormalizedItemAsset};
 
 export default class AssetSelector extends React.Component<AssetSelectorProps & any> {
   PAGE_SIZE = 200;
@@ -93,7 +91,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
     this.DOMel = React.createRef();
   }
 
-  formatItem(normalizedAsset: NormalizedAsset): Select2Item {
+  formatItem(normalizedAsset: NormalizedItemAsset): Select2Item {
     return {
       id: normalizedAsset.code,
       text: getLabel(normalizedAsset.labels, this.props.locale.stringValue(), normalizedAsset.code),
@@ -197,7 +195,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
                 channel: this.props.channel.stringValue(),
                 locale: this.props.locale.stringValue(),
               })
-              .then((assets: NormalizedAsset[]) => {
+              .then((assets: NormalizedItemAsset[]) => {
                 callback(this.formatItem(assets[0]));
               });
           }
