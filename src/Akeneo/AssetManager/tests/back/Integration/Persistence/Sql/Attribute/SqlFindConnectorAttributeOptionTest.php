@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -147,7 +148,8 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
         $assetFamily = AssetFamily::create(
             $assetFamilyIdentifier,
             ['en_US' => $rawIdentifier],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($assetFamily);

@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -117,7 +118,8 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyWithoutAttributes = AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
@@ -125,7 +127,8 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($assetFamilyWithAttributes);
         $assetFamilyWithAttributes = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));

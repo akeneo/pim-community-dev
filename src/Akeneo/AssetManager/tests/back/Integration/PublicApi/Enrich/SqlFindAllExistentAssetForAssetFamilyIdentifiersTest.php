@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlFindAllExistentAssetsForAssetFamilyIdentifiers;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -84,7 +85,7 @@ final class SqlFindAllExistentAssetForAssetFamilyIdentifiersTest extends SqlInte
         }, range(1, 4));
 
         foreach ($assetFamilyIdentifiers as $assetFamilyIdentifier) {
-            $assetFamilyRepository->create(AssetFamily::create($assetFamilyIdentifier, [], Image::createEmpty()));
+            $assetFamilyRepository->create(AssetFamily::create($assetFamilyIdentifier, [], Image::createEmpty(), RuleTemplateCollection::empty()));
         }
 
         foreach ($assetFamilyIdentifiers as $assetFamilyIdentifier) {

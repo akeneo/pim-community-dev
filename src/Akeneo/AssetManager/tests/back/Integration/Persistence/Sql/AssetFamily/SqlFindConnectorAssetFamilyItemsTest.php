@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
@@ -134,7 +135,8 @@ class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
         $assetFamily = AssetFamily::create(
             $assetFamilyIdentifier,
             ['en_US' => $rawIdentifier],
-            Image::fromFileInfo($imageInfo)
+            Image::fromFileInfo($imageInfo),
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($assetFamily);

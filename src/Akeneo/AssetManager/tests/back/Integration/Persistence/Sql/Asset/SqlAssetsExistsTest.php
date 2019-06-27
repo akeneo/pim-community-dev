@@ -23,6 +23,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlAssetsExists;
@@ -88,7 +89,8 @@ class SqlAssetsExistsTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($assetFamily);
     }

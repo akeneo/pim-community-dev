@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Integration\SearchIntegrationTestCase;
@@ -67,7 +68,8 @@ class CountAssetsTest extends SearchIntegrationTestCase
             AssetFamily::create(
                 $this->emptyAssetFamilyIdentifier,
                 [],
-                Image::createEmpty()
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
             )
         );
         $this->assetFamilyIdentifiersWithAssets = AssetFamilyIdentifier::fromString('designer');
@@ -75,7 +77,8 @@ class CountAssetsTest extends SearchIntegrationTestCase
             AssetFamily::create(
                 $this->assetFamilyIdentifiersWithAssets,
                 [],
-                Image::createEmpty()
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
             )
         );
 

@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -74,7 +75,8 @@ class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrat
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($assetFamily);
 
@@ -84,7 +86,8 @@ class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrat
                 'fr_FR' => 'Ville',
                 'en_US' => 'City',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($assetFamily);
     }

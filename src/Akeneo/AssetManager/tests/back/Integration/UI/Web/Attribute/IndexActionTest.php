@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
@@ -90,12 +91,14 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $assetFamilyRepository->create(AssetFamily::create(
             AssetFamilyIdentifier::fromString('designer'),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         ));
         $assetFamilyRepository->create(AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         ));
     }
 

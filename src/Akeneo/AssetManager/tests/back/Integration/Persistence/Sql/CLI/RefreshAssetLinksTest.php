@@ -15,6 +15,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -105,7 +106,8 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
             AssetFamily::create(
                 $assetFamilyIdentifier,
                 [],
-                Image::createEmpty()
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
             )
         );
     }

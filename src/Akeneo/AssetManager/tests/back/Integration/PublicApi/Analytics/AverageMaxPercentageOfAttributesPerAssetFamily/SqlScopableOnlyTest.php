@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\PublicApi\Analytics\AverageMaxPercenta
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableAndLocalizable;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -82,7 +83,8 @@ class SqlScopableOnlyTest extends SqlIntegrationTestCase
         $assetFamilyRepository->create(AssetFamily::create(
             $assetFamilyIdentifier,
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         ));
 
         return $assetFamilyIdentifier;

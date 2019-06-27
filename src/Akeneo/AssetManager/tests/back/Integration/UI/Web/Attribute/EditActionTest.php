@@ -8,6 +8,7 @@ use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
@@ -157,12 +158,14 @@ class EditActionTest extends ControllerIntegrationTestCase
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $assetFamilyRepository->create(AssetFamily::create(AssetFamilyIdentifier::fromString('designer'),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         ));
         $assetFamilyRepository->create(AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         ));
 
         $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');

@@ -23,6 +23,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -313,7 +314,8 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString('designer'),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $repository->create($assetFamily);
 

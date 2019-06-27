@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -83,7 +84,8 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($assetFamilyFull);
 
@@ -113,7 +115,8 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($assetFamilyEmpty);
     }

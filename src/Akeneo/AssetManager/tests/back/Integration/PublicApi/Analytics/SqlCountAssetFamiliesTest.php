@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\PublicApi\Analytics;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlCountAssetFamilies;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -58,7 +59,8 @@ class SqlCountAssetFamiliesTest extends SqlIntegrationTestCase
             $assetFamily = AssetFamily::create(
                 AssetFamilyIdentifier::fromString(sprintf('%d', $i)),
                 [],
-                Image::createEmpty()
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
             );
             $assetFamilyRepository->create($assetFamily);
         }

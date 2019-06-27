@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\FindAllAssetIdentifiers;
@@ -62,7 +63,8 @@ class FindAllAssetIdentifiersTest extends SqlIntegrationTestCase
                     'fr_FR' => 'Concepteur',
                     'en_US' => 'Designer',
                 ],
-                Image::createEmpty()
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
             )
         );
 

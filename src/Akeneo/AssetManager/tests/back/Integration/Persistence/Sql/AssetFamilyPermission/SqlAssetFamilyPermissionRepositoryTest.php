@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamilyPermission;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
 use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
@@ -145,7 +146,8 @@ class SqlAssetFamilyPermissionRepositoryTest extends SqlIntegrationTestCase
                 AssetFamily::create(
                     AssetFamilyIdentifier::fromString('designer'),
                     [],
-                    Image::createEmpty()
+                    Image::createEmpty(),
+                    RuleTemplateCollection::empty()
                 )
             );
         $insertFakeGroups = <<<SQL

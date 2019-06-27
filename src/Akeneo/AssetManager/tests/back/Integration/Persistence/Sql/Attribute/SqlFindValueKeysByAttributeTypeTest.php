@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -89,7 +90,8 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($assetFamily);
     }

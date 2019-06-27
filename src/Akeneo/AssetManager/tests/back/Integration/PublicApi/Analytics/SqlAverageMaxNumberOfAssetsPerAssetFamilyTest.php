@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -68,7 +69,8 @@ class SqlAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegrationTestCa
         $assetFamilyRepository->create(AssetFamily::create(
             $assetFamilyIdentifier,
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         ));
 
         $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
