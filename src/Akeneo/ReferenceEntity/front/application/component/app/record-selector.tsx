@@ -7,6 +7,8 @@ import {NormalizedRecord, NormalizedItemRecord} from 'akeneoreferenceentity/doma
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
+import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
+import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {
@@ -35,7 +37,7 @@ const renderRow = (label: string, normalizedRecord: NormalizedItemRecord, withLi
       : '';
 
   return `
-  <img width="34" height="34" src="${normalizedRecord.image}"/>
+  <img width="34" height="34" src="${getImageShowUrl(denormalizeFile(normalizedRecord.image), 'thumbnail_small')}"/>
   <span class="select2-result-label-main">
     <span class="select2-result-label-top">
       ${normalizedRecord.code}
