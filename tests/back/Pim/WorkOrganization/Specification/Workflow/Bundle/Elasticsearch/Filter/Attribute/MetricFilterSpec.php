@@ -326,6 +326,7 @@ class MetricFilterSpec extends ObjectBehavior
                 ]
             ]
         )->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($metric, Operators::IS_EMPTY, [], 'en_US', 'ecommerce', []);

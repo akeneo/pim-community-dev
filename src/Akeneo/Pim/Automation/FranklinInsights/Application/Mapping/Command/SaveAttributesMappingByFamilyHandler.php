@@ -90,7 +90,6 @@ class SaveAttributesMappingByFamilyHandler
         foreach ($this->attributeRepository->findByCodes($mappedAttrCodes) as $attribute) {
             $attributes[(string) $attribute->getCode()] = $attribute;
         }
-
         $attributesMapping = new AttributesMapping($familyCode);
         foreach ($command->getMapping() as $franklinAttrId => $attributeMapping) {
             $attributesMapping->map(
