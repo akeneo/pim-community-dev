@@ -27,7 +27,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\UrlData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -330,12 +329,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($fileInfo)
-                ),
-                Value::create(
-                    $this->fixturesDesigner['attributes']['website']->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::noReference(),
-                    UrlData::fromString('http://my-dam.com/assets/house_255311/500x500')
                 )
             ])
         );
