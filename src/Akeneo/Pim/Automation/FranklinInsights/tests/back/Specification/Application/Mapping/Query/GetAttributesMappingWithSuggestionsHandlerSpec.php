@@ -14,14 +14,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\AttributeMappingCollectionDataProcessorInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\ApplyAttributeExactMatches;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodeQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -33,9 +29,9 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
 {
     public function let(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
-        AttributeMappingCollectionDataProcessorInterface $attributeMappingDataProcessor
+        ApplyAttributeExactMatches $applyAttributeExactMatchesDataProcessor
     ): void {
-        $this->beConstructedWith($getAttributesMappingByFamilyHandler, $attributeMappingDataProcessor);
+        $this->beConstructedWith($getAttributesMappingByFamilyHandler, $applyAttributeExactMatchesDataProcessor);
     }
 
     public function it_is_a_get_attributes_mapping_with_suggestions_query_handler(): void
@@ -45,7 +41,7 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
 
     public function it_handles_a_get_attributes_mapping(
         $getAttributesMappingByFamilyHandler,
-        $attributeMappingDataProcessor,
+        $applyAttributeExactMatchesDataProcessor,
         AttributeMappingCollection $attributeMappingCollection,
         AttributeMappingCollection $processedAttributeMappingCollection
     ): void
@@ -57,7 +53,7 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
         $getAttributesMappingByFamilyHandler->handle(Argument::any())
             ->willReturn($attributeMappingCollection);
 
-        $attributeMappingDataProcessor
+        $applyAttributeExactMatchesDataProcessor
             ->process($attributeMappingCollection, $context)
             ->willReturn($processedAttributeMappingCollection);
 

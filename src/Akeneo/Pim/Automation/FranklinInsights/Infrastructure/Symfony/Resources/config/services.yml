@@ -75,13 +75,9 @@ services:
             - '@validator'
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin'
 
-
-    akeneo.pim.automation.franklin_insights.application.mapping.service.data_processor:
-        alias: 'akeneo.pim.automation.franklin_insights.application.mapping.service.data_processor.apply_attribute_exact_matches'
-
     akeneo.pim.automation.franklin_insights.application.mapping.service.data_processor.apply_attribute_exact_matches:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\ApplyAttributeExactMatches'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes'
             - '@akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
-            - '@logger'
+            - '@monolog.logger.franklin'

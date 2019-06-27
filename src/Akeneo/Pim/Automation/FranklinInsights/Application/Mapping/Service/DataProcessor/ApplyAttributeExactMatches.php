@@ -36,18 +36,18 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
     /** @var SelectExactMatchAttributeCodeQueryInterface */
     private $selectExactMatchAttributeCodeQuery;
     /** @var SaveAttributesMappingByFamilyHandler */
-    private $attributesMappingByFamilyHandler;
+    private $saveAttributesMappingByFamilyHandler;
 
     /**
      * ApplyAttributeExactMatchesData constructor.
      * @param SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery
-     * @param SaveAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler
+     * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
      * @param LoggerInterface $logger
      */
-    public function __construct(SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery, SaveAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler, LoggerInterface $logger)
+    public function __construct(SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery, SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler, LoggerInterface $logger)
     {
         $this->selectExactMatchAttributeCodeQuery = $selectExactMatchAttributeCodeQuery;
-        $this->attributesMappingByFamilyHandler = $attributesMappingByFamilyHandler;
+        $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
 
         $this->setLogger($logger);
     }
@@ -129,14 +129,14 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
     private function saveAttributeMapping(FamilyCode $familyCode, AttributeMappingCollection $attributeMappingCollection): void
     {
         try {
-            $this->attributesMappingByFamilyHandler->handle(new SaveAttributesMappingByFamilyCommand(
+            $this->saveAttributesMappingByFamilyHandler->handle(new SaveAttributesMappingByFamilyCommand(
                 $familyCode,
                 $attributeMappingCollection->formatForFranklin())
             );
         }
         catch (AttributeMappingException | DataProviderException $e) {
             $this->logger->error(
-                sprintf('[Franklin Insights] The attribute mapping can not be saved for family %s', (string) $familyCode),
+                sprintf('The attribute mapping can not be saved for family %s', (string) $familyCode),
                 ['message' => $e->getMessage()]
             );
         }

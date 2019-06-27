@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\AttributeMappingCollectionDataProcessorInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\ApplyAttributeExactMatches;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 
 /**
@@ -24,15 +24,15 @@ class GetAttributesMappingWithSuggestionsHandler
     /** @var GetAttributesMappingByFamilyHandler */
     private $getAttributesMappingByFamilyHandler;
 
-    /** @var AttributeMappingCollectionDataProcessorInterface */
-    private $attributeMappingDataProcessor;
+    /** @var ApplyAttributeExactMatches */
+    private $applyAttributeExactMatchesDataProcessor;
 
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
-        AttributeMappingCollectionDataProcessorInterface $attributeMappingDataProcessor
+        ApplyAttributeExactMatches $applyAttributeExactMatchesDataProcessor
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
-        $this->attributeMappingDataProcessor = $attributeMappingDataProcessor;
+        $this->applyAttributeExactMatchesDataProcessor = $applyAttributeExactMatchesDataProcessor;
     }
 
     public function handle(GetAttributesMappingWithSuggestionsQuery $query): AttributeMappingCollection
@@ -42,7 +42,7 @@ class GetAttributesMappingWithSuggestionsHandler
             new GetAttributesMappingByFamilyQuery($familyCode)
         );
 
-        return $this->attributeMappingDataProcessor->process($attributeMappingCollection, [
+        return $this->applyAttributeExactMatchesDataProcessor->process($attributeMappingCollection, [
             'familyCode' => $familyCode,
         ]);
     }
