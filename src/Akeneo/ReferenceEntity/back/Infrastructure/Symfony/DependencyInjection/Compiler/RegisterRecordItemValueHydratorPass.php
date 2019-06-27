@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterRecordItemValueHydratorPass implements CompilerPassInterface
 {
-    private const VALUE_HYDRATOR_REGISTRY = 'akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.value_hydrator_registry';
+    private const VALUE_HYDRATOR_REGISTRY = 'akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item_value_hydrator_registry';
     private const VALUE_HYDRATOR_TAG = 'akeneo_referenceentity.record_item_value_hydrator';
 
     /**
