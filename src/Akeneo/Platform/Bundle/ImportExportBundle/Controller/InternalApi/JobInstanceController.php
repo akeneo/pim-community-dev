@@ -650,8 +650,10 @@ class JobInstanceController
     }
 
     /**
-     * This is the only way we found to test that a file too big was uploaded. If the file size exceeds the server limit,
-     * a warning is thrown on the apache container logs and the request does not contain any information that a file was uploaded on the FPM side.
+     * This is the only way we found to test that a file too big was uploaded.
+     * If the file size exceeds the server limit, a warning is thrown on the apache container logs
+     * and the request does not contain any information that a file was uploaded on the FPM side.
+     * Note: it happens only when the upload exceeds 'post_max_size'
      *
      * @return bool
      */
