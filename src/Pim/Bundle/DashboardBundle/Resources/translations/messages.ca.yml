@@ -21,8 +21,8 @@ pim_dashboard:
       "profile name": Nom del perfil
       details: Detalls
       job_type:
-        import: Importar
-        export: Exportar
+        import: Importació
+        export: Exportació
         mass_edit: Edició massiva
         quick_export: Exportació ràpida
         compute_product_models_descendants: Calcular descendents dels models de producte

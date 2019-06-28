@@ -67,20 +67,20 @@ pim_enrich:
       confirm: Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir des produits
-        second: Choisir une opération
+        second: Choisissez une opération
         third: Configurer
         fourth: Confirmer
     family:
       page_title: Familles
       page_subtitle: Édition en masse (1 famille)|Édition en masse (%count% familles)
-      title: Choisir une opération
+      title: Choisissez une opération
       subtitle: Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées
       confirm: Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir des familles
-        second: Choisir une opération
-        third: Configurer
-        fourth: Confirmer
+        second: Choisissez une opération
+        third: Configurez l'opération à effectuer
+        fourth: Confirmation
     change-status:
       label: Changer le statut
       description: Les produits sélectionnés vont être activés ou désactivés.
@@ -183,7 +183,7 @@ pim_enrich:
       create: Créer une famille
       edit_properties: Modifier les propriétés d'une famille
       edit_attributes: Modifier les attributs d'une famille
-      edit_variants: Editer une variante de famille
+      edit_variants: Modifier une variante de famille
       remove: Supprimer une famille
       history: Afficher l'historique de la famille
     family_variant:
@@ -312,13 +312,13 @@ btn:
     category: Créer une catégorie
     tree: créer un arbre de catégories
     channel: Créer un canal
-    currency: Créer une monnaie
+    currency: Créer une devise
     family: Créer une famille
     locale: Créer une locale
     product: Créer un produit
     group: Créer un groupe
     association type: Créer un type d'association
-    group type: Créer le type de groupe
+    group type: Créer un type de groupe
     drag_or_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
   edit: Modifier
   save: Enregistrer
@@ -363,7 +363,7 @@ flash:
   attribute:
     created: Attribut créé avec succès
     updated: Attribut mis à jour avec succès
-    removed: Attribut supprimé avec succès
+    removed: L'attribut a bien été supprimé
     identifier_not_removable: Un attribut de type identifiant ne peut pas être supprimé
   attribute group:
     created: Groupe d'attributs créé avec succès
@@ -388,7 +388,7 @@ flash:
     error.linked_to_channel: Vous ne pouvez pas désactiver une devise liée à un canal.
   family:
     updated: Famille mise à jour avec succès
-    removed: Famille supprimée avec succès
+    removed: La famille a bien été supprimée
     identifier not removable: Un attribut de type identifiant ne peut pas être retiré d'une famille
     label attribute not removable: Cet attribut ne peut pas être retiré car il est utilisé comme libellé pour cette famille
     attribute not found: Cet attribut n'appartient pas à cette famille
@@ -397,7 +397,7 @@ flash:
   product:
     created: Produit créé avec succès
     updated: Produit mis à jour avec succès
-    removed: Produit supprimé avec succès
+    removed: Le produit a bien été supprimé
     invalid: Merci de vérifier votre saisie et essayer à nouveau
     attributes added: Attributs ajoutés avec succès au produit
     attribute removed: Attribut retirés avec succès du produit
@@ -406,7 +406,7 @@ flash:
     disabled: Produit désactivé
   group:
     updated: Groupe mis à jour avec succès
-    removed: Groupe supprimé avec succès
+    removed: Le groupe a bien été supprimé
   group type:
     created: Le type de groupe a bien été créé
     updated: Le type de groupe a bien été mis à jour
@@ -417,7 +417,7 @@ flash:
     updated: Le type d'association est mis à jour avec succès
     removed: Le type d'association a été supprimé avec succès
   user:
-    removed: Utilisateur supprimé avec succès
+    removed: L'utilisateur a bien été supprimé
   error ocurred: Opération échouée. Merci de réessayer.
 info:
   updated: Des modifications n'ont pas encore été sauvegardées.
@@ -459,7 +459,7 @@ Updated at: Mis à jour le
 Created: Créé
 Updated: Mis à jour
 Last update: Dernière mise à jour
-by: par
+by: Par
 N/A: N/A
 Manage products: Gérer les produits
 Manage groups: Gérer les groupes
@@ -480,7 +480,7 @@ Variants behavior when edited: Comportement des variantes lors de l'édition
 Edit: Modifier
 Remove: Supprimer
 Delete: Supprimer
-Parameters: Paramètres
+Parameters: Paramètres 
 System: Système
 Values: Valeurs
 General parameters: Paramètres généraux
@@ -491,7 +491,7 @@ Default value: Valeur par défaut
 Attributetype: Type d'attribut
 Attribute type: Type d'attribut
 Defaultvalue: Valeur par défaut
-Variant: Variante
+Variant: Groupe de variantes
 Smart: Intelligent
 Useable as grid column: Utilisable dans les colonnes de la grille
 Useable as grid filter: Utilisable sur la grille
@@ -552,7 +552,7 @@ Metric family: Type de mesure
 Default metric unit: Unité de mesure par défaut
 Max file size: Taille de fichier maximale (MB)
 Allowed extensions: Extensions autorisées
-None: Aucun
+None: Aucune
 E-mail: E-mail
 URL: URL
 Regular expression: Expression régulière
@@ -593,14 +593,14 @@ pim_title.association_type:
   index: "Types d'association"
   edit: "Types d'association %association type.label% | Édition"
 pim_title.group_type:
-  index: "Types de groupe"
+  index: "Types de groupes"
   edit: "Type de groupe %group type.label% | Édition"
 pim_title.mass_edit_product_action:
   choose: "Édition en masse | Choisir"
   configure: "Édition en masse | Configurer"
 pim_title.mass_edit_family_action:
-  choose: "Édition en masse | Choisir"
-  configure: "Édition en masse | Configurer"
+  choose: "Édition de masse | Choisir"
+  configure: "Édition de masse | Configurer"
 pim_title.job_tracker:
   index: Traqueur de processus
   show: "Traqueur de processus | Voir la tâche"
@@ -630,29 +630,29 @@ pim_enrich.mass_edit_action:
   product:
     page_title: Produits
     page_subtitle: Édition en masse (1 produit)|Édition en masse (%count% produits)
-    title: Choisir une opération
+    title: Choisissez une opération
     subtitle: Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés
     confirm: Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.
     steps:
       first: Choisir des produits
-      second: Choisir une opération
-      third: Configurer
-      fourth: Confirmer
+      second: Choisissez une opération
+      third: Configurez l'opération à effectuer
+      fourth: Confirmation
   family:
     page_title: Familles
     page_subtitle: Édition en masse (1 famille)|Édition en masse (%count% familles)
-    title: Choisir une opération
+    title: Choisissez une opération
     subtitle: Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées
     confirm: Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.
     steps:
       first: Choisir des familles
-      second: Choisir une opération
-      third: Configurer
-      fourth: Confirmer
+      second: Choisissez une opération
+      third: Configurez l'opération à effectuer
+      fourth: Confirmation
   change-status:
     label: Changer le statut
     description: Les produits sélectionnés vont être activés ou désactivés.
-    success_flash: Le statut des produits ont été changés
+    success_flash: Le statut du/des produit(s) a/ont été changé(s)
   edit-common-attributes:
     label: Modifier des attributs
     description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
@@ -692,7 +692,7 @@ pane.accordion:
   node_values: Valeurs du nœud
   general_properties: Propriétés générales
   locale_values: Valeurs de locale
-  backend_parameters: Paramètres de l'interface
+  backend_parameters: Paramètres de stockage
   general_parameters: Paramètres généraux
   validation_parameters: Paramètres de validation
   label_translations: Traduction des libellés
@@ -707,7 +707,7 @@ In group: Dans le groupe
 Attribute as label: Attribut en tant que libellé
 Is associated: Est associé
 Complete: Complet
-Created At: Crée le
+Created At: Créé le
 Updated At: Mis à jour le
 Enabled: Activé
 Disabled: Désactivé

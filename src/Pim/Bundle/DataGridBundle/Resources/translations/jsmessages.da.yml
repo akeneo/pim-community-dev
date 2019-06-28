@@ -1,32 +1,32 @@
 Item deleted: Element slettet
 Are you sure you want to delete this item?: Er du sikker på at du vil slette dette emne?
 Delete Error: Fejl ved sletning
-Are you sure you want to do remove selected items?: Er du sikker på at du vil slette de markerede elementer?
+Are you sure you want to do remove selected items?: Er du sikker på at du vil slette de markede elementer?
 Selected items were removed.: De valgte varer blev fjernet.
 Selected items were not removed.: De valgte varer kunne ikke fjernes.
-Please, select items to remove.: Vælg elementer, der skal fjernes.
-Cannot delete item.: Det er ikke muligt at slette elementet.
+Please, select items to remove.: Vælg de varer der skal fjernes.
+Cannot delete item.: Det er ikke muligt at slette varerne.
 Refresh Confirmation: Opdater bekræftelse
-Your local changes will be lost. Are you sure you want to refresh grid?: Dine lokale ændringer vil gå tabt. Er du sikker på, du vil opdatere?
+Your local changes will be lost. Are you sure you want to refresh grid?: Din lokale ændringer vil gå tabt. Er du sikker på, du vil opdatere?
 Reset Confirmation: Nulstil bekræftelse
-Your local changes will be lost. Are you sure you want to reset grid?: Dine lokale ændringer vil gå tabt. Er du sikker på, du vil opdatere?
+Your local changes will be lost. Are you sure you want to reset grid?: Din lokale ændringer vil gå tabt. Er du sikker på, du vil opdatere?
 Confirmation: Bekræftelse
 edit: rediger
-copy: kopier
+copy: Kopier
 remove: fjern
 Status: Status
 All: Alle
 Per page: Per side
-Mass Action Confirmation: Bekræftelse af massehandling
-Mass action performed.: Masse handling udført.
-Mass action is not performed.: Masse handlingen kunne ikke udføres.
-Please, select items to perform mass action.: Vælg de elementer, der skal medtages i masse handlingen.
-Execution Confirmation: Bekræft kørsel
-Are you sure you want to do this?: Er du sikker på at du ønsker at gøre det?
+Mass Action Confirmation: Bekræftelse af handling
+Mass action performed.: Handlingen er udført.
+Mass action is not performed.: Handlingen kunne ikke udføres.
+Please, select items to perform mass action.: Vælg de elementer, der skal medtages i handlingen.
+Execution Confirmation: Udfør bekræftelse
+Are you sure you want to do this?: Er du sikker på du ønsker at gøre det?
 Action performed.: Handlingen er udført.
-Action is not performed.: Handling er ikke udført.
-Please, select item to perform action.: Vælg element for at udføre handling.
-View per page: Antal pr. side
+Action is not performed.: Handling udføres ikke.
+Please, select item to perform action.: Vælg vare for at udføre handling.
+View per page: Se pr. side
 Enabled: Aktiveret
 Disabled: Deaktiveret
 not_available: Ikke tilgængelig
@@ -47,16 +47,12 @@ oro_datagrid.select.visible: "Alle synlige"
 oro_datagrid.select.none: "Ingen"
 oro_datagrid.select.select: "Vælg"
 pim.grid.ajax_choice_filter.label_empty: er tom
-pim.grid.ajax_choice_filter.label_not_empty: ikke er tom
+pim.grid.ajax_choice_filter.label_not_empty: er ikke tom
 pim:
   grid:
     choice_filter:
-      label_contains: indeholder
-      label_does_not_contain: indeholder ikke
-      label_equal: er lig med
-      label_start_with: starter med
       label_empty: er tom
-      label_not_empty: ikke er tom
+      label_not_empty: er ikke tom
       label_in_list: i listen
       operator: Operatør
     price_filter:
@@ -69,7 +65,7 @@ datagrid_view.columns.min_message: Du skal vælge mindst én datagrid kolonne de
 pim_datagrid:
   column_configurator:
     label: Kolonner
-    title: Konfigurer kolonner
+    title: Konfigurere kolonner
     all_groups: Alle grupper
     search: Søg
     clear: Ryd
@@ -85,7 +81,7 @@ pim_datagrid:
       confirm_ok: OK
       empty_selection: Du har ikke valgt et produkt
 pim.grid.mass_action.quick_export.title: Hurtig eksport
-pim.grid.mass_action.quick_export.launched: Hurtig eksport er startet
+pim.grid.mass_action.quick_export.launched: Hurtig eksport er blevet startet
 pim.grid.action.launch.title: Kør
 pim.grid.action.show.title: Vis
 Please select view: Vælg visning

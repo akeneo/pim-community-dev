@@ -126,7 +126,7 @@ Show profile: Vis profil
 execution details: udførelse detaljer
 job_execution.summary:
   read: læs
-  write: skrevet
+  write: gemt
   skip: sprunget over
   create: oprettet
   update: opdateret

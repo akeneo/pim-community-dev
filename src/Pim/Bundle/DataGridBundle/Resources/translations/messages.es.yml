@@ -3,16 +3,16 @@ oro_datagrid.not_found_hint: Su búsqueda no obtuvo ningún resultado.
 oro_datagrid.label_add_filter: Administrar filtros
 oro_datagrid.label_loading_mask: Cargando...
 oro.grid.mass_action.selected_rows: Filas seleccionadas
-oro.grid.mass_action.confirm_title: Confirmación de acción de masiva
-oro.grid.mass_action.confirm_content: '¿Está seguro de quere hacer esto?'
+oro.grid.mass_action.confirm_title: Confirmación de acción en masa
+oro.grid.mass_action.confirm_content: '¿Estás seguro que desea hacer esto?'
 oro.grid.mass_action.confirm_ok: Sí, hazlo
 oro.grid.mass_action.error_title: Error de acción masiva
 oro.grid.mass_action.error_content: No puede realizar la acción masiva
-oro.grid.mass_action.delete.label: Eliminar
+oro.grid.mass_action.delete.label: Borrar
 oro.grid.mass_action.delete.confirm_title: Confirmación de eliminación masiva
 oro.grid.mass_action.delete.confirm_content: '¿Está seguro que desea eliminar los elementos seleccionados?'
 oro.grid.mass_action.delete.item_limit: Usted no puede eliminar en mas más de %limit% productos (%count% seleccionados)
-oro.grid.datagrid.page_size.all: Todos
+oro.grid.datagrid.page_size.all: Todo
 oro.grid.mass_action.delete.success_message: "{0} Ninguna entidad fue  eliminada|{1} Una entidad eliminada|]1, Inf [%count% entidades fueron eliminadas"
 datagrid_view:
   columns:
