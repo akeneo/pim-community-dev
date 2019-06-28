@@ -135,3 +135,5 @@ services:
 
     akeneo.pim.automation.franklin_insights.handler.get_ask_franklin_credits:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetAskFranklinCreditsHandler'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.data_provider.statistics'

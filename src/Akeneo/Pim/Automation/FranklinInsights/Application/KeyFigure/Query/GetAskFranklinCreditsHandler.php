@@ -13,18 +13,29 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\StatisticsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigure;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigureCollection;
 
 final class GetAskFranklinCreditsHandler
 {
+    /** @var StatisticsProviderInterface */
+    private $statisticsProvider;
+
+    public function __construct(StatisticsProviderInterface $statisticsProvider)
+    {
+        $this->statisticsProvider = $statisticsProvider;
+    }
+
     public function handle(GetAskFranklinCreditsQuery $query): KeyFigureCollection
     {
+        $statistics = $this->statisticsProvider->getCreditsUsageStatistics();
+
         return new KeyFigureCollection(
             [
-                new KeyFigure('credits_total', 0),
-                new KeyFigure('credits_consumed', 0),
-                new KeyFigure('credits_left', 0),
+                new KeyFigure('credits_consumed', $statistics->getConsumed()),
+                new KeyFigure('credits_left', $statistics->getLeft()),
+                new KeyFigure('credits_total', $statistics->getTotal()),
             ]
         );
     }

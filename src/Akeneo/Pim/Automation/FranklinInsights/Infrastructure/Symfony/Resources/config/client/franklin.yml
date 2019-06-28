@@ -68,3 +68,9 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
             - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+
+    akeneo.pim.automation.franklin_insights.franklin_client.statistics:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Stats\StatisticsWebService'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
