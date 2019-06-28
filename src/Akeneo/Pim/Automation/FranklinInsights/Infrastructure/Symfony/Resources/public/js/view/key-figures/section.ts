@@ -1,5 +1,16 @@
-import * as _ from 'underscore';
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import BaseView = require('pimui/js/view/base');
+import * as _ from 'underscore';
+import Axes from '../../model/key-figure-axes';
+import Axis from '../../model/key-figure-axis';
 
 const __ = require('oro/translator');
 const requireContext = require('require-context');
@@ -12,19 +23,10 @@ interface Templates {
   [propName: string]: any;
 }
 
-interface SectionData {
-  [propName: string]: any;
-}
-
 interface SectionConfig {
   align: string;
   templates: Templates;
-  axes: Array<string>;
-}
-
-interface Axis {
-  value: number;
-  type: string;
+  axes: string[];
 }
 
 /**
@@ -35,12 +37,12 @@ interface Axis {
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class SectionView extends BaseView {
-  readonly config: SectionConfig = {
+  public readonly config: SectionConfig = {
     align: 'left',
     templates: {
-      number: 'akeneo/franklin-insights/template/key-figures/number',
+      number: 'akeneo/franklin-insights/template/key-figures/number'
     },
-    axes: [],
+    axes: []
   };
 
   /**
@@ -55,18 +57,18 @@ class SectionView extends BaseView {
   /**
    * Returns true if the section contains data
    *
-   * @param sectionData
+   * @param axes
    * @param sectionAxes
    */
-  sectionHasData(sectionData: SectionData, sectionAxes: string[]): boolean {
-    return Object.keys(sectionData).filter(field => sectionAxes.includes(field)).length > 0;
+  public sectionHasData(axes: Axes, sectionAxes: string[]): boolean {
+    return Object.keys(axes).filter(field => sectionAxes.includes(field)).length > 0;
   }
 
   /**
    * {@inheritdoc}
    */
-  render(): BaseView {
-    const sectionData: SectionData = this.getRoot().getFormData();
+  public render(): BaseView {
+    const sectionData: Axes = this.getRoot().getFormData();
     const sectionAxes: string[] = this.config.axes;
     const sectionHasData = this.sectionHasData(sectionData, sectionAxes);
 
@@ -77,7 +79,7 @@ class SectionView extends BaseView {
     }
 
     if (this.config.align === 'right') {
-      this.$el.addClass('AknShowFigures-axisContainer--right')
+      this.$el.addClass('AknShowFigures-axisContainer--right');
     }
 
     this.renderAxes(this.config.axes, sectionData);
@@ -90,7 +92,7 @@ class SectionView extends BaseView {
    *
    * @param name
    */
-  getIconName(name: string): string {
+  public getIconName(name: string): string {
     return name.replace(/_/g, '-');
   }
 
@@ -99,7 +101,7 @@ class SectionView extends BaseView {
    *
    * @param name
    */
-  getTemplateName(name: string): string {
+  public getTemplateName(name: string): string {
     return name
       .toLowerCase()
       .replace(/_(.)/g, letter => letter.toUpperCase())
@@ -111,7 +113,7 @@ class SectionView extends BaseView {
    * @param  {Array} axes An array of field names for each axis
    * @param  {Object} data An object containing data for each axis
    */
-  renderAxes(axes: string[], data: {[key: string]: any}): void {
+  public renderAxes(axes: string[], data: Axes): void {
     axes.forEach((name: string) => {
       const axisData: {[key: string]: any} | undefined = data[name];
 
@@ -121,7 +123,7 @@ class SectionView extends BaseView {
 
       const axis: Axis = {
         value: axisData.value,
-        type: axisData.type,
+        type: axisData.type
       };
 
       const templateName: string = this.getTemplateName(axis.type);
@@ -137,8 +139,8 @@ class SectionView extends BaseView {
         name,
         icon: this.getIconName(name),
         value: axis.value,
-        title: __(`pim_catalog_volume.axis.${name}`),
-        userLocale: userContext.get('uiLocale').split('_')[0],
+        title: __(`akeneo_franklin_insights.key_figures.axis.${name}`),
+        userLocale: userContext.get('uiLocale').split('_')[0]
       });
 
       this.$el.append(el);

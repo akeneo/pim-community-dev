@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigure;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigureCollection;
 
 final class KeyFigureCollectionNormalizer
@@ -21,8 +20,6 @@ final class KeyFigureCollectionNormalizer
     public function normalize(KeyFigureCollection $keyFigureCollection): array
     {
         $data = [];
-
-        /** @var KeyFigure $keyFigure */
         foreach ($keyFigureCollection as $keyFigure) {
             $data[$keyFigure->getName()] = [
                 'type' => $keyFigure->getType(),

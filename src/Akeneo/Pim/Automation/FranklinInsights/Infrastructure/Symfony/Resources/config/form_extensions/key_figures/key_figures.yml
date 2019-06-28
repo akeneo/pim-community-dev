@@ -4,8 +4,8 @@ extensions:
         parent: pim-menu-activity-navigation-block
         position: 102
         config:
-            title: akeneo_franklin_insights.menu.key_figures
-            to: akeneo_franklin_insights_key_figures_index
+            title: akeneo_franklin_insights.key_figures.menu
+            to: akeneo_franklin_insights_key_figure_index
 
     akeneo-franklin-insights-key-figures-index:
         module: pim/common/simple-view
@@ -33,34 +33,31 @@ extensions:
         parent: akeneo-franklin-insights-key-figures-index
         targetZone: title
         config:
-            title: akeneo_franklin_insights.menu.key_figures
+            title: akeneo_franklin_insights.key_figures.menu
             countable: false
 
     akeneo-franklin-insights-key-figures-credits:
         module: akeneo/franklin-insights/view/key-figures/section-header
         parent: akeneo-franklin-insights-key-figures-index
         targetZone: content
-        position: 100
+        position: 200
         config:
-            title: pim_catalog_volume.section.catalog_structure.title
-            hint:
-                code: hint-catalog-structure
-                title: pim_catalog_volume.section.catalog_structure.hint
+            title: akeneo_franklin_insights.key_figures.section_title.credits
 
     akeneo-franklin-insights-key-figures-credits-content:
         module: akeneo/franklin-insights/view/key-figures/section
         parent: akeneo-franklin-insights-key-figures-credits
         targetZone: content
         config:
-            axes: []
+            axes: [credits_total, credits_consumed, credits_left]
 
     akeneo-franklin-insights-key-figures-attributes:
         module: akeneo/franklin-insights/view/key-figures/section-header
         parent: akeneo-franklin-insights-key-figures-index
         targetZone: content
-        position: 200
+        position: 100
         config:
-            title: pim_catalog_volume.section.catalog_structure.title
+            title: akeneo_franklin_insights.key_figures.section_title.key_figures
             hint:
                 code: hint-catalog-structure
                 title: pim_catalog_volume.section.catalog_structure.hint
@@ -70,4 +67,4 @@ extensions:
         parent: akeneo-franklin-insights-key-figures-attributes
         targetZone: content
         config:
-            axes: []
+            axes: [franklin_attribute_created, franklin_attributed_added_to_family]

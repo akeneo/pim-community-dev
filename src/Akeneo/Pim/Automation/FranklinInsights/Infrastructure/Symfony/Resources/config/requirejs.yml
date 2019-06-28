@@ -29,7 +29,7 @@ config:
                     config:
                         lastMappingVisitedKey: 'franklin-insight-mapping:last-visited-mapping'
                         lastFamilyVisitedKey: 'franklin-insight-mapping:last-family-visited'
-                akeneo_franklin_insights_key_figures_index:
+                akeneo_franklin_insights_key_figure_index:
                     module: akeneo/franklin-insights/controller/key-figures-index
 
         # Savers configuration
@@ -47,6 +47,11 @@ config:
                     options:
                         urls:
                             list: akeneo_franklin_insights_identifiers_mapping_get
+                key-figures:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: akeneo_franklin_insights_key_figure_get_all
                 attributes-mapping-by-family:
                     module: pim/base-fetcher
                     options:

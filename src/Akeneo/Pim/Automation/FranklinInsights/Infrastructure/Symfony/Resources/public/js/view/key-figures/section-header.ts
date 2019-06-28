@@ -1,6 +1,6 @@
 import * as Backbone from 'backbone';
-import * as _ from 'underscore';
 import BaseView = require('pimui/js/view/base');
+import * as _ from 'underscore';
 
 const __ = require('oro/translator');
 const template = require('akeneo/franklin-insights/template/key-figures/section-container');
@@ -23,27 +23,17 @@ interface SectionConfig {
  */
 class SectionHeader extends BaseView {
   private static HIDDEN = 'hidden';
-  readonly template = _.template(template);
+  public readonly template = _.template(template);
   public hideHint: boolean = false;
 
-  readonly config: SectionConfig = {
+  public readonly config: SectionConfig = {
     hint: {
       code: '',
       title: '',
-      link: '',
+      link: ''
     },
-    title: '',
+    title: ''
   };
-
-  /**
-   * {@inheritdoc}
-   */
-  public events(): Backbone.EventsHash {
-    return {
-      'click .toggle-hint.active-hint': 'closeHint',
-      'click .toggle-hint:not(.active-hint)': 'openHint',
-    };
-  }
 
   /**
    * {@inheritdoc}
@@ -56,26 +46,23 @@ class SectionHeader extends BaseView {
   }
 
   /**
-   * If the hint key is in localStorage, don't show it on first render
-   * @return {Boolean}
+   * {@inheritdoc}
    */
-  hintIsHidden(): boolean {
-    if (localStorage.getItem(this.config.hint.code) !== null) {
-      return localStorage.getItem(this.config.hint.code) === SectionHeader.HIDDEN;
-    }
-
-    return this.hideHint;
+  public events(): Backbone.EventsHash {
+    return {
+      'click .toggle-hint.active-hint': 'closeHint',
+      'click .toggle-hint:not(.active-hint)': 'openHint'
+    };
   }
 
   /**
    * {@inheritdoc}
    */
-  render(): BaseView {
+  public render(): BaseView {
     this.$el.empty().html(
       this.template({
         title: __(this.config.title),
-        hintTitle: __(this.config.hint.title).replace('{{link}}', this.config.hint.link),
-        hintIsHidden: this.hintIsHidden(),
+        hint: this.getHint()
       })
     );
 
@@ -92,7 +79,7 @@ class SectionHeader extends BaseView {
   /**
    * Close the hint box and store the key in localStorage
    */
-  closeHint(): void {
+  public closeHint(): void {
     localStorage.setItem(this.config.hint.code, SectionHeader.HIDDEN);
     this.hideHint = true;
     this.render();
@@ -101,10 +88,33 @@ class SectionHeader extends BaseView {
   /**
    * Open the hint box
    */
-  openHint(): void {
+  public openHint(): void {
     localStorage.removeItem(this.config.hint.code);
     this.hideHint = false;
     this.render();
+  }
+
+  /**
+   * If the hint key is in localStorage, don't show it on first render
+   * @return {Boolean}
+   */
+  private hintIsHidden(): boolean {
+    if (localStorage.getItem(this.config.hint.code) !== null) {
+      return localStorage.getItem(this.config.hint.code) === SectionHeader.HIDDEN;
+    }
+
+    return this.hideHint;
+  }
+
+  private getHint(): {title: string; isHidden: boolean} | false {
+    if ('' === this.config.hint.title) {
+      return false;
+    }
+
+    return {
+      title: __(this.config.hint.title).replace('{{link}}', this.config.hint.link),
+      isHidden: this.hintIsHidden()
+    };
   }
 }
 

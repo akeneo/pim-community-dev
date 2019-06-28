@@ -12,6 +12,9 @@ import ConnectionStatus from '../../model/connection-status';
 
 const BaseItem = require('pim/menu/item');
 
+/**
+ * @author Willy MESNAGE <willy.mesnage@akeneo.com>
+ */
 class MenuItem extends BaseItem {
   public render(): any {
     return getConnectionStatus(false).then((connectionStatus: ConnectionStatus) => {
