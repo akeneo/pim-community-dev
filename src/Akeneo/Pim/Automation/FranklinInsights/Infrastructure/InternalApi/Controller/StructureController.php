@@ -82,10 +82,10 @@ class StructureController
         }
 
         $data = json_decode($request->getContent(), true);
-
-        $pimAttributeCode = AttributeCode::fromLabel($data['franklinAttributeLabel']);
+die(__METHOD__);
+        $pimAttributeCode = new AttributeCode($data['attributeCode']);
         $command = new AttachAttributeToFamilyCommand(
-            $pimAttributeCode,
+            new AttributeCode($data['attributeCode']),
             new FamilyCode($data['familyCode'])
         );
         $this->attachAttributeToFamilyHandler->handle($command);

@@ -27,6 +27,7 @@ import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute from '../common/simple-select-attribute';
 import AttributeTypeMismatchWarning from './attribute-type-mismatch-warning';
 import CreateAttributeButton from './create-attribute-button';
+import AddAttributeToFamilyButton from './add-attribute-to-family-button';
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -185,6 +186,20 @@ class AttributeMapping extends BaseView {
             });
           }
 
+          if (true === this.isAllowedToAddAttributeToFamily(attributeMapping)) {
+            const addAttributeToFamilyButton = this.appendAddAttributeToFamilyButton(
+              franklinAttributeCode,
+              familyMapping.code
+            );
+
+            addAttributeToFamilyButton.on('attribute_added_to_family', (catalogAttributeCode: string) => {
+              addAttributeToFamilyButton.remove();
+
+              this.suggestAttributeMapping(franklinAttributeCode, catalogAttributeCode);
+              this.render();
+            });
+          }
+
           if (type !== '' && false === this.isTypeMappingValid(attributeMapping.franklinAttribute.type, type)) {
             this.appendAttributeTypeMismatchWarning(franklinAttributeCode);
           }
@@ -319,6 +334,18 @@ class AttributeMapping extends BaseView {
     return createAttributeButton;
   }
 
+  private appendAddAttributeToFamilyButton(
+    attributeCode: string,
+    familyCode: string
+  ) {
+    const addAttributeToFamilyButton = new AddAttributeToFamilyButton(familyCode, attributeCode);
+
+    const $host = this.$el.find(`.add-attribute-to-family-button[data-franklin-attribute-code="${attributeCode}"]`);
+    $host.append(addAttributeToFamilyButton.render().el);
+
+    return addAttributeToFamilyButton;
+  }
+
   private isTypeMappingValid(franklinAttributeType: string, pimAttributeType: string) {
     return PERFECT_MAPPINGS[franklinAttributeType].includes(pimAttributeType);
   }
@@ -343,6 +370,14 @@ class AttributeMapping extends BaseView {
     }
 
     return true;
+  }
+
+  private isAllowedToAddAttributeToFamily(franklinAttributeMapping: IAttributeMapping): boolean {
+    return (
+      null !== franklinAttributeMapping.attribute &&
+      '' !== franklinAttributeMapping.attribute &&
+      AttributeMappingStatus.ATTRIBUTE_PENDING === franklinAttributeMapping.status
+    );
   }
 
   /**

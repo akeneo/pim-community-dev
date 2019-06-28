@@ -6,6 +6,7 @@
         <th class="AknGrid-headerCell catalog-attribute"><%- catalogAttribute %></th>
         <th class="AknGrid-headerCell"></th>
         <th class="AknGrid-headerCell"></th>
+        <th class="AknGrid-headerCell"></th>
     </tr>
 
     <% Object.entries(mapping).forEach(([franklinAttributeCode, attributeMapping]) => { %>
@@ -40,6 +41,10 @@
         ></td>
         <td
             class="AknGrid-bodyCell create-attribute-button attribute-type-mismatch-warning"
+            data-franklin-attribute-code="<%- franklinAttributeCode %>"
+        ></td>
+        <td
+            class="AknGrid-bodyCell add-attribute-to-family-button"
             data-franklin-attribute-code="<%- franklinAttributeCode %>"
         ></td>
         <td class="AknGrid-bodyCell AknGrid-bodyCell--right">

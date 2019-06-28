@@ -51,6 +51,8 @@ akeneo_franklin_insights:
                 create_attribute_success: 'Attribute successfully created and attached to the family "{{ family }}".'
                 create_attribute_error: 'Sorry, an error occurred while creating or attaching the attribute to the family.'
                 suggest_attribute_mapping_error: 'Catalog attribute "[{{ catalogAttributeCode }}]" is already mapped on the Franklin attribute "{{ franklinAttributeLabel }}".'
+                add_attribute_to_family_success: 'Attribute "{{ attribute }}" successfully attached to the family "{{ family }}".'
+                add_attribute_to_family_error: 'Sorry, an error occurred while attaching the attribute to the family.'
             fields:
                 franklin_attribute: 'Franklin attribute'
                 franklin_attribute_type: '{{ type }} attribute'
@@ -62,6 +64,8 @@ akeneo_franklin_insights:
                     inactive: Inactive
                 create_attribute:
                     btn: Create attribute
+                add_attribute_to_family:
+                    btn: Add to family
                 secondary_actions:
                     deactivate_franklin_attribute: "Don't map"
             module:
