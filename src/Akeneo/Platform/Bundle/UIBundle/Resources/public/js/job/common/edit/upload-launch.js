@@ -49,8 +49,12 @@ define(
                     .then((response) => {
                         router.redirect(response.redirectUrl);
                     })
-                    .fail(() => {
-                        messenger.notify('error', __('pim_import_export.form.job_instance.fail.launch'));
+                    .fail((response) => {
+                        if (undefined !== response.responseJSON.message) {
+                            messenger.notify('error', __(response.responseJSON.message));
+                        } else {
+                            messenger.notify('error', __('pim_import_export.form.job_instance.fail.launch'));
+                        }
                     })
                     .always(() => {
                         loadingMask.hide().$el.remove();
