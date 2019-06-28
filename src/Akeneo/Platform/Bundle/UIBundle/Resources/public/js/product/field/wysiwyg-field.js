@@ -124,7 +124,7 @@ define(
                     // Move Dialog to <body>
                     const oreviousParent = modal.parent();
                     modal.appendTo('body');
-                    modal.one('hidden.bs.modal', function (e) {
+                    modal.one('hidden.bs.modal', function () {
                         modal.appendTo(oreviousParent);
                     });
                 }
