@@ -196,6 +196,7 @@ define(
              */
             _disableInput() {
                 this.$el.find('.AknFilterChoice-inputContainer').hide();
+                this._updateCriteriaSelectorPosition();
             },
 
             /**
@@ -203,6 +204,7 @@ define(
              */
             _enableInput() {
                 this.$el.find('.AknFilterChoice-inputContainer').show();
+                this._updateCriteriaSelectorPosition();
             }
         });
     }

@@ -41,17 +41,21 @@
     min-width: 100px;
   }
 
-  &-currency, &-unit {
-    right: 30px;
-    position: absolute;
-    top: 80px;
-
-    &--centered {
-      right: auto;
-    }
-  }
-
   &-inputContainer {
     height: 40px;
+    display: flex;
+  }
+
+  &-unit,
+  &-currency {
+    height: @AknFormHeight;
+    border: 1px solid @AknBorderColor;
+    border-left: none;
+    background: white;
+    margin-left: -1px;
+    z-index: 1;
+    padding: 7px;
+
+    &--centered {}
   }
 }
