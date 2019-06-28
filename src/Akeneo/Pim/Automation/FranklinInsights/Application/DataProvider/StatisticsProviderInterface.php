@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\CreditsUsageStatistics;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Statistics\Model\Read\CreditsUsageStatistics;
 
 interface StatisticsProviderInterface
 {

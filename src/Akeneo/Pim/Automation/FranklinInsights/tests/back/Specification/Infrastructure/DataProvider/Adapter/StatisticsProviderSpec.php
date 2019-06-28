@@ -22,7 +22,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\St
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\CreditsUsageStatistics;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\StatisticsProvider;
 use PhpSpec\ObjectBehavior;
 
@@ -47,7 +46,7 @@ class StatisticsProviderSpec extends ObjectBehavior
 
     public function it_gets_credits_usage_statistics($api): void
     {
-        $statistics = new CreditsUsageStatistics(
+        $statistics = new \Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\CreditsUsageStatistics(
             [
                 'consumed' => 2,
                 'left' => 1,
@@ -57,7 +56,11 @@ class StatisticsProviderSpec extends ObjectBehavior
         $api->getCreditsUsageStatistics()->willReturn($statistics);
 
         $api->setToken('valid-token')->shouldBeCalled();
-        $this->getCreditsUsageStatistics()->shouldBe($statistics);
+        $this->getCreditsUsageStatistics()->shouldBeLike(
+            new \Akeneo\Pim\Automation\FranklinInsights\Domain\Statistics\Model\Read\CreditsUsageStatistics(
+                2, 1, 3
+            )
+        );
     }
 
     public function it_throws_a_data_provider_exception_when_server_is_down($api): void

@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetAskFra
 use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetAskFranklinCreditsQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigure;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigureCollection;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\CreditsUsageStatistics;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Statistics\Model\Read\CreditsUsageStatistics;
 use PhpSpec\ObjectBehavior;
 
 class GetAskFranklinCreditsHandlerSpec extends ObjectBehavior
@@ -38,13 +38,7 @@ class GetAskFranklinCreditsHandlerSpec extends ObjectBehavior
         $statisticsProvider
     ): void {
         $statisticsProvider->getCreditsUsageStatistics()->willReturn(
-            new CreditsUsageStatistics(
-                [
-                    'consumed' => 2,
-                    'left' => 1,
-                    'total' => 3,
-                ]
-            )
+            new CreditsUsageStatistics(2, 1, 3)
         );
 
         $query = new GetAskFranklinCreditsQuery();
