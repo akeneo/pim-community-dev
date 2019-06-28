@@ -122,10 +122,10 @@ define(
                     modal.find('.close').addClass('AknFullPage-cancel');
 
                     // Move Dialog to <body>
-                    const previousPosition = modal.parent();
+                    const oreviousParent = modal.parent();
                     modal.appendTo('body');
                     modal.one('hidden.bs.modal', function (e) {
-                        modal.appendTo(previousPosition);
+                        modal.appendTo(oreviousParent);
                     });
                 }
             }
