@@ -4,3 +4,11 @@ services:
         arguments:
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '%akeneo_rule_engine.model.rule.class%'
+
+    akeneo_assetmanager.infrastructure.rule.rule_executor:
+        class: Akeneo\AssetManager\Infrastructure\Rule\RuleExecutor
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.rule.rule_compiler'
+            - '@pimee_catalog_rule.runner.product'
+            - '@akeneo_rule_engine.normalizer.rule_definition'
+            - '@pim_catalog.command_launcher'

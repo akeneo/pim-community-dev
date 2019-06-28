@@ -35,7 +35,8 @@ class IndexAssetSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AssetUpdatedEvent::class    => 'whenAssetUpdated',
+            AssetUpdatedEvent::class     => 'whenAssetUpdated',
+            AssetCreatedEvent::class     => 'whenAssetCreated',
             AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
         ];
     }
@@ -43,6 +44,11 @@ class IndexAssetSubscriber implements EventSubscriberInterface
     public function whenAssetUpdated(AssetUpdatedEvent $assetUpdatedEvent): void
     {
         $this->assetIndexer->index($assetUpdatedEvent->getAssetIdentifier());
+    }
+
+    public function whenAssetCreated(AssetCreatedEvent $assetCreatedEvent): void
+    {
+        $this->assetIndexer->index($assetCreatedEvent->getAssetIdentifier());
     }
 
     public function whenAttributeIsDeleted(AttributeDeletedEvent $attributeDeletedEvent): void

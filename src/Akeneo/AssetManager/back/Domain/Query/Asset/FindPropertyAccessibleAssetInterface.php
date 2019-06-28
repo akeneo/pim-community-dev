@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Query\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -21,5 +22,5 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
  */
 interface FindPropertyAccessibleAssetInterface
 {
-    public function find(AssetCode $assetCode): ?PropertyAccessibleAsset;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?PropertyAccessibleAsset;
 }

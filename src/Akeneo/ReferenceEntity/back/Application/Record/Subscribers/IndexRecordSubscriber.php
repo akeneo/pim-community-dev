@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordCreatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,6 +37,7 @@ class IndexRecordSubscriber implements EventSubscriberInterface
     {
         return [
             RecordUpdatedEvent::class    => 'whenRecordUpdated',
+            RecordCreatedEvent::class    => 'whenRecordCreated',
             AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
         ];
     }
@@ -43,6 +45,11 @@ class IndexRecordSubscriber implements EventSubscriberInterface
     public function whenRecordUpdated(RecordUpdatedEvent $recordUpdatedEvent): void
     {
         $this->recordIndexer->index($recordUpdatedEvent->getRecordIdentifier());
+    }
+
+    public function whenRecordCreated(RecordCreatedEvent $recordCreatedEvent): void
+    {
+        $this->recordIndexer->index($recordCreatedEvent->getRecordIdentifier());
     }
 
     public function whenAttributeIsDeleted(AttributeDeletedEvent $attributeDeletedEvent): void

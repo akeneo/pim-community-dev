@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Common\Fake;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Query\Asset\FindPropertyAccessibleAssetInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
@@ -27,7 +28,7 @@ class InMemoryFindPropertyAccessibleAsset implements FindPropertyAccessibleAsset
     /**
      * {@inheritdoc}
      */
-    public function find(AssetCode $assetCode): ?PropertyAccessibleAsset
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?PropertyAccessibleAsset
     {
         throw new NotImplementedException('find');
     }
