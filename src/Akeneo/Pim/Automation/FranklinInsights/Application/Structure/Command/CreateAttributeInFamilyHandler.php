@@ -32,22 +32,18 @@ class CreateAttributeInFamilyHandler
 {
     private $createAttribute;
 
-    private $updateFamily;
-
     private $franklinAttributeCreatedRepository;
 
-    private $franklinAttributeAddedToFamilyRepository;
+    private $attachAttributeToFamilyHandler;
 
     public function __construct(
         CreateAttributeInterface $createAttribute,
-        AddAttributeToFamilyInterface $updateFamily,
         FranklinAttributeCreatedRepositoryInterface $franklinAttributeCreatedRepository,
-        FranklinAttributeAddedToFamilyRepositoryInterface $franklinAttributeAddedToFamilyRepository
+        AttachAttributeToFamilyHandler $attachAttributeToFamilyHandler
     ) {
         $this->createAttribute = $createAttribute;
-        $this->updateFamily = $updateFamily;
         $this->franklinAttributeCreatedRepository = $franklinAttributeCreatedRepository;
-        $this->franklinAttributeAddedToFamilyRepository = $franklinAttributeAddedToFamilyRepository;
+        $this->attachAttributeToFamilyHandler = $attachAttributeToFamilyHandler;
     }
 
     public function handle(CreateAttributeInFamilyCommand $command): void
@@ -59,14 +55,15 @@ class CreateAttributeInFamilyHandler
             new AttributeLabel((string) $command->getFranklinAttributeLabel()),
              $pimAttributeType
         );
+
         $this->franklinAttributeCreatedRepository->save(
             new FranklinAttributeCreated($command->getPimAttributeCode(), $pimAttributeType)
         );
 
-        $this->updateFamily->addAttributeToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode());
-        $this->franklinAttributeAddedToFamilyRepository->save(
-            new FranklinAttributeAddedToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode())
-        );
+        $this->attachAttributeToFamilyHandler->handle(new AttachAttributeToFamilyCommand(
+            $command->getPimAttributeCode(),
+            $command->getPimFamilyCode()
+        ));
     }
 
     public function convertFranklinAttributeTypeToPimAttributeType(FranklinAttributeType $franklinAttributeType): AttributeType

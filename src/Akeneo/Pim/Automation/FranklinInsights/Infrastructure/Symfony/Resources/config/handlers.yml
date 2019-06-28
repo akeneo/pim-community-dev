@@ -124,8 +124,13 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.structure.service.create_attribute'
-            - '@akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family'
             - '@akeneo.pim.automation.franklin_insights.repository.franklin_attribute_created'
+            - '@akeneo.pim.automation.franklin_insights.handler.attach_attribute_to_family'
+
+    akeneo.pim.automation.franklin_insights.handler.attach_attribute_to_family:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyHandler'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family'
             - '@akeneo.pim.automation.franklin_insights.repository.franklin_attribute_added_to_family'
 
     akeneo.pim.automation.franklin_insights.handler.get_key_measurements:
