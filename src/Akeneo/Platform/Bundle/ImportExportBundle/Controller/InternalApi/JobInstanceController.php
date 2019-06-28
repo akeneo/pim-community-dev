@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -401,11 +402,10 @@ class JobInstanceController
             throw new AccessDeniedHttpException();
         }
 
+        /** @var UploadedFile|null $file */
         $file = $request->files->get('file');
-        if (null === $file) {
-            if ($this->isFileWasUploaded()) {
-                return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error_too_big'], 400);
-            }
+        if (null === $file && $this->isFileUpload()) {
+            return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error_too_big'], 400);
         }
 
         if (null !== $file) {
@@ -655,7 +655,7 @@ class JobInstanceController
      *
      * @return bool
      */
-    private function isFileWasUploaded(): bool
+    private function isFileUpload(): bool
     {
         return isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0;
     }

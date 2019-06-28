@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8413: Fix modal of category selection in product and product model exports
+- PIM-8463: display an explicit error message when an uploaded file is too big on import profiles
 
 # 3.0.26 (2019-06-21)
 
