@@ -1,23 +1,41 @@
 @import '../base/variables';
 
+#jstree-marker {
+  margin-top: 5px !important;
+}
+
+#jstree-marker-line {
+  margin-top: 5px !important;
+}
 
 .jstree {
-  li {
-    margin-left: 35px;
-  }
-
   &.jstree-default {
-    font-size: @AknFontSizeBig;
-
-    a {
-      color: @AknDarkBlue;
-      vertical-align: sub;
+    ins {
+      height: 25px;
+      width: 25px;
     }
 
-    ins {
-      height: 22px;
-      width: 22px;
-      margin-top: 13px;
+    li {
+      line-height: 24px;
+    }
+
+    .jstree-hovered {
+      background: none;
+      border-color: transparent;
+    }
+
+    .jstree-clicked {
+      background: none;
+      border-color: transparent;
+      font-weight: bold;
+      color: @AknDarkBlue;
+    }
+
+    a {
+      font-size: @AknFontSizeBig;
+      color: @AknDarkBlue;
+      line-height: 24px;
+      padding-right: 30px;
     }
 
     .jstree-closed > ins {
@@ -25,7 +43,24 @@
       background-image: url(../../images/jstree/icon-right.svg);
       opacity: 0.5;
       background-position: 0 3px;
-      margin-right: 0;
+    }
+
+    .jstree-leaf > ins {
+      background: none;
+    }
+
+    .jstree-leaf > a > ins.jstree-icon {
+      background-size: 20px 20px;
+      background-image: url(../../images/jstree/icon-folder.svg);
+      opacity: 1;
+      background-position: 0 3px;
+    }
+
+    .jstree-leaf.jstree-checked > a > ins.jstree-icon {
+      background-size: 20px 20px;
+      background-image: url(../../images/jstree/icon-folderfull.svg);
+      opacity: 1;
+      background-position: 0 3px;
     }
 
     .jstree-open > ins {
@@ -33,32 +68,22 @@
       background-image: url("../../images/jstree/icon-down.svg");
       opacity: 0.5;
       background-position: 0 3px;
-      margin-right: 0;
     }
 
     a .jstree-icon {
-      // Default folder
       background-size: 20px 20px;
-      background: url("../../images/jstree/icon-folders.svg") 0 -3px;
+      background: url("../../images/jstree/icon-folders.svg") 0 0;
       opacity: 1;
-      height: 22px;
       width: 22px;
-      margin-top: 8px;
-      margin-right: 6px;
     }
 
     a.jstree-clicked .jstree-icon {
-      // Default folder
       background-size: 20px 20px;
-      background: url("../../images/jstree/icon-foldersfull.svg") 0 -3px;
+      background: url("../../images/jstree/icon-foldersfull.svg") 0 0;
       opacity: 1;
       height: 22px;
-      width: 22px;
-      margin-top: 8px;
-      margin-right: 6px;
     }
   }
-}
 
 /*
 .jstree-icon(@url) {
@@ -198,6 +223,8 @@
     }
   }
 
+ */
+
   .jstree-tree-toolbar {
     .select2-container {
       .select2-choice {
@@ -209,6 +236,7 @@
         padding: 0;
         margin-top: -10px;
         font-size: @AknFontSizeBig;
+        line-height: 44px;
 
         .select2-arrow {
           border-left: none;
@@ -275,7 +303,10 @@
   }
 
   > .jstree-icon {
-    .jstree-icon("../../images/jstree/icon-folders.svg")
+    background-size: 20px 20px;
+    background: url("../../images/jstree/icon-folders.svg") 0 0;
+    opacity: 1;
+    height: 22px;
   }
 }
 
@@ -291,4 +322,3 @@
     position: inherit;
   }
 }
-*/
