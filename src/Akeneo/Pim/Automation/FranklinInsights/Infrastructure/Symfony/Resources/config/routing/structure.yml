@@ -2,3 +2,8 @@ akeneo_franklin_insights_structure_create_attribute:
     path: /attribute
     defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.structure:createAttributeAction }
     methods: [POST]
+
+akeneo_franklin_insights_structure_attach_attribute_to_family:
+    path: /attach_attribute_to_family
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.structure:attachAttributeToFamilyAction }
+    methods: [POST]

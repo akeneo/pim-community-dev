@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
@@ -34,12 +36,17 @@ class StructureController
     /** @var CreateAttributeInFamilyHandler */
     private $createAttributeInFamilyHandler;
 
+    /** @var AttachAttributeToFamilyHandler */
+    private $attachAttributeToFamilyHandler;
+
     public function __construct(
         SecurityFacade $securityFacade,
-        CreateAttributeInFamilyHandler $createAttributeInFamilyHandler
+        CreateAttributeInFamilyHandler $createAttributeInFamilyHandler,
+        AttachAttributeToFamilyHandler $attachAttributeToFamilyHandler
     ) {
         $this->securityFacade = $securityFacade;
         $this->createAttributeInFamilyHandler = $createAttributeInFamilyHandler;
+        $this->attachAttributeToFamilyHandler = $attachAttributeToFamilyHandler;
     }
 
     public function createAttributeAction(Request $request): Response
@@ -65,10 +72,39 @@ class StructureController
         return new JsonResponse(['code' => (string)$pimAttributeCode]);
     }
 
+    public function attachAttributeToFamilyAction(Request $request): Response
+    {
+        if (false === $request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+        if (false === $this->isUserAllowedToAttachToFamily()) {
+            throw new AccessDeniedException();
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $pimAttributeCode = AttributeCode::fromLabel($data['franklinAttributeLabel']);
+        $command = new AttachAttributeToFamilyCommand(
+            $pimAttributeCode,
+            new FamilyCode($data['familyCode'])
+        );
+        $this->attachAttributeToFamilyHandler->handle($command);
+
+        return new JsonResponse([
+            'code' => (string) $pimAttributeCode
+        ]);
+    }
+
     private function isUserAllowedToCreate(): bool
     {
         return $this->securityFacade->isGranted('akeneo_franklin_insights_settings_mapping')
             && $this->securityFacade->isGranted('pim_enrich_attribute_create')
+            && $this->securityFacade->isGranted('pim_enrich_family_edit_attributes');
+    }
+
+    private function isUserAllowedToAttachToFamily(): bool
+    {
+        return $this->securityFacade->isGranted('akeneo_franklin_insights_settings_mapping')
             && $this->securityFacade->isGranted('pim_enrich_family_edit_attributes');
     }
 }
