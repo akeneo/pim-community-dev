@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.8 (2019-06-28)
+
 ## Bug fixes
 
 - PIM-8472: Fix product model creation with a reference entity axis
