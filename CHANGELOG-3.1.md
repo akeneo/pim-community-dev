@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.8 (2019-06-28)
+
 ## Bug fixes
 
 - PIM-8475: Fix permission of sorting attribute groups
