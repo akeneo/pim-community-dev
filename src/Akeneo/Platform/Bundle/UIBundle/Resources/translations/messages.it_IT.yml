@@ -1,6 +1,6 @@
 User: Utente
 Run demo: Eseguire la demo
-Product: Prodotto
+Product: Articolo
 Attribute list: Elenco degli attributi
 Attribute Group list: Elenco attributi di gruppo
 Users: Utenti
@@ -18,7 +18,7 @@ Channel list: Elenco canali
 Select file: Seleziona il file
 Change file: Modifica file
 Remove file: Rimuovi file
-Delete: Eliminare
+Delete: Elimina
 Save: Salva
 Get help: Chiedi aiuto
 My User: Il mio profilo
@@ -36,7 +36,7 @@ Most Viewed: Più visualizzati
 "Loading ...": "Caricamento in corso ..."
 "Yes": "Sì"
 "No": "No"
-required: (obbligatorio)
+required: (richiesto)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Abilita i messaggi di caricamento
@@ -49,13 +49,13 @@ other_actions: Altre azioni
 pim_common:
   cancel: Annulla
   save: Salva
-  delete: Eliminare
+  delete: Elimina
   update: Carica
   view: Visualizzazione
   edit: Modifica
   created: Creato
   updated: Caricato
-  create: Crea
+  create: Creare
   permissions: Autorizzazioni
   properties: Proprietà
   name: Nome
@@ -78,12 +78,11 @@ pim_enrich:
       associations_view: Visualizza le associazioni di un prodotto
       associations_edit: Aggiungi associazioni ad un prodotto
       change_family: Cambia la famiglia dell'articolo
-      change_state: Cambia lo stato dell'articolo
       add_to_groups: Aggiungi l'articolo ai gruppi
       mass_edit: Azione di modifica di massa dell'articolo
       comment: Commenta i prodotti
       download: Scarica il prodotto in formato PDF
-      history: Visualizza lo storico del prodotto
+      history: Visualizza la storia del prodotto
     product_model:
       create: Crea un modello di prodotto
       edit_attributes: Modifica gli attributi di modello di prodotto
@@ -91,7 +90,7 @@ pim_enrich:
       history: Visualizza la cronologia del modello di prodotto
       remove: Rimuovi un modello di prodotto
     category:
-      list: Lista Categorie
+      list: Elenco categorie
       create: Creare una categoria
       edit: Modificare una categoria
       remove: Rimuovere una categoria
@@ -104,7 +103,7 @@ pim_enrich:
       create: Creare un canale
       edit: Modificare un canale
       remove: Rimuovere un canale
-      history: Visualizza lo storico del canale
+      history: Visualizza la storia del canale
     family:
       index: Elenco famiglie
       create: Creare una famiglia
@@ -156,7 +155,7 @@ pim_enrich:
       manage: Gestisci le connessioni API
   acl_group:
     association_type: Tipi di associazione
-    attribute: Attributi
+    attribute: Atributi
     attribute_group: Gruppi di attributi
     category: Categorie
     channel: Canali
@@ -165,7 +164,7 @@ pim_enrich:
     group: Gruppi
     group_type: Tipi di gruppo
     locale: Impostazioni locali
-    product: Articoli
+    product: Prodotti
     product_model: Modelli di prodotto
   notification:
     settings:
@@ -177,15 +176,15 @@ pim_enrich:
     attribute group: crea gruppo attributi
     category: Crea categoria
     tree: Crea struttura
-    channel: crea il canale
+    channel: crea canale
     currency: crea valuta
-    family: Crea Famiglia
+    family: Crea famiglia
     locale: Crea impostazioni locali
     product: Crea articolo
     group: Crea gruppo
     association type: Crea tipo associazione
     group type: Crea tipo gruppo
-    drag_or_upload: Drag and drop per caricare un file o fai click qui
+    drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
 confirmation:
   delete: Conferma cancellazione
   leave: Sei sicuro di voler lasciare questa pagina?
@@ -202,7 +201,6 @@ flash:
     removed: Categoria rimossa con successo
   tree:
     removed: Struttura rimossa con successo
-    not removable: Le strutture connesse a dei canali non possono essere rimossi.
   currency:
     updated: Valuta aggiornata con successo
     error.linked_to_channel: Non è possibile disabilitare una valuta collegata ad un canale.
@@ -231,7 +229,7 @@ info:
     enable: Attiva
     enabled: Attivato
     disable: Disabilita
-    disabled: Disabilitato
+    disabled: Disattivato
   group:
     axis: 'Asse di variazione: %attributes%'
     select products: Seleziona i prodotti che dovrebbero appartenere a questo gruppo.
@@ -269,7 +267,6 @@ Unique value: Valore univoco
 Attribute group: Gruppo attributi
 Other: Altri
 Variants behavior when edited: Comportamento della variante quando viene modificata
-Edit: Modifica
 Remove: Rimuovere
 Parameters: Parametri
 System: Sistema
@@ -294,7 +291,6 @@ Locale specific: Impostazioni locali specifiche
 default: Predefinito
 Axis: Asse
 Add attributes: Aggiungi attributi
-Translate from: Traduci da
 switch_on: "Sì"
 switch_off: "No"
 Close: Chiudi
@@ -309,7 +305,7 @@ Please select: Seleziona
 Active: Attivo
 Inactive: Inattivo
 Do not convert: Non convertire
-Create: Crea
+Create: Creare
 Choose a family: Scegli una famiglia
 Choose a unit: Scegli un'unità
 No matches found: Nessuna corrispondenza trovata
@@ -342,13 +338,13 @@ Metric family: Famiglia metrica
 Default metric unit: Unità metrica di default
 Max file size: Dimensione massima del file (MB)
 Allowed extensions: Estensioni consentite
-None: Nessun
+None: Nessuno
 E-mail: E-mail
 URL: URL
 Regular expression: Espressione regolare
 Minimum input length: Lunghezza minima di input
 Default: Predefinito
-Attributes: Attributi
+Attributes: Atributi
 Title: Titolo
 pim_catalog_identifier: Identificatore
 pim_catalog_text: Testo
@@ -365,16 +361,18 @@ pim_catalog_metric: Metrico
 pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
 pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
 Activated: Attivato
+Edit: Modifica
 Disable: Disabilita
 To enable: Per attivare
 Select attributes: Selezionare gli attributi
 Select: Selezionare
 Remove this attribute: Rimuovere l'attributo
 Copy: Copia
+Translate from: Traduci da
 Current tab: Scheda corrente
 Group: Gruppo
 View group: Visualizzazione gruppo
-Products: Articoli
+Products: Prodotti
 Properties: Proprietà
 History: Cronologia
 pane.accordion:
@@ -397,9 +395,9 @@ Attribute as label: Attributo come etichetta
 Is associated: È associato
 Complete: Completo
 Created At: Creato il
-Updated At: Caricato il
+Updated At: Aggiornato il
 Enabled: Attivato
-Disabled: Disabilitato
+Disabled: Disattivato
 Status: Stato
 Change History: Cambia la cronologia
 Data Audit: Revisione dei dati
@@ -450,8 +448,8 @@ pim_mass_edit:
   notification:
     mass_edit:
       error: Modifica di massa <strong>%label%</strong> non riuscita
-      warning: Modifica di massa <strong>%label%</strong> completata con alcuni avvisi
-      success: Modifica di massa <strong>%label%</strong> completata
+      warning: La modifica di massa <strong>%label%</strong> è stata completata con alcuni avvisi
+      success: La modifica di massa <strong>%label%</strong> è stata completata
     quick_export:
       error: Esportazione rapida <strong>%label%</strong> non riuscita
       warning: Esportazione rapida <strong>%label%</strong> completata con alcuni avvisi
@@ -470,8 +468,8 @@ job_execution.summary:
   deleted_product_models: Modelli di prodotto eliminati
 pim_mass_edit_execution_show: Esecuzione modifiche di massa | Dettagli
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modificare gli attributi
-update_product_value.steps.update_product_value_processor.title: Modifica un valore di prodotto
-remove_product_value.steps.update_product_value_processor.title: Rimuovi un valore di prodotto
+update_product_value.steps.update_product_value_processor.title: Aggiorna il valore di prodotto
+remove_product_value.steps.update_product_value_processor.title: Rimuovi il valore di prodotto
 edit_common_attributes: Modificare gli attributi
 edit_common_attributes_clean: Pulisci i file per gli attributi
 perform.steps.duplicated.title: Dimensione Duplicata
@@ -483,5 +481,3 @@ job_tracker:
     title: Tracker di processo
   filter:
     started_at: Iniziato alle
-
-

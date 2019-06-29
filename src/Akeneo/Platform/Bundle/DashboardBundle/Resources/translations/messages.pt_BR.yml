@@ -1,9 +1,9 @@
 pim_dashboard:
-  title: Painel de controle
+  title: Dashboard
   version: Versão
   widget:
     completeness:
-      title: Plenitude Sobre Canais e Locais
+      title: Completude dos Canais e Locais
     last_operations:
       title: Últimas Operações
       status: Status

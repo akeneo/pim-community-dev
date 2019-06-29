@@ -109,7 +109,7 @@ pim_measure:
     MONTH: Mois
     YEAR: Année
     FOOT_PER_SECOND: Pied par seconde
-    FOOT_PER_HOUR: Pied par heure
+    FOOT_PER_HOUR: Pied / heure
     KILOMETER_PER_HOUR: Kilomètre par heure
     METER_PER_HOUR: Mètre par heure
     METER_PER_MINUTE: Mètre par minute
