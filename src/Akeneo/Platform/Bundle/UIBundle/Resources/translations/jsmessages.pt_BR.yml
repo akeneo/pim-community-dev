@@ -27,10 +27,10 @@ Action: Ação
 Unit: Unidade
 Currency: Moeda
 jstree:
-  all: Todos os produtos
+  all: Todos os Produtos
   unclassified: Produtos não classificados
   product:
-    all: Todos os produtos
+    all: Todos os Produtos
     unclassified: Produtos não classificados
   no_tree: Nenhuma árvore de classificação disponível
   include_sub: Incluir subcategorias
@@ -114,7 +114,7 @@ pim_ui:
 pim_common:
   actions: Ações
   add: Adicionar
-  add_attributes: Adicionar atributos
+  add_attributes: Adicionar Atributos
   after: Depois
   all: Todos
   and: e
@@ -128,13 +128,13 @@ pim_common:
   confirm_revocation: Confirmar revogação
   create: Criar
   created: Criado
-  delete: Excluir
+  delete: Deletar
   done: Cocluído
   edit: Editar
-  entity_updated: Há alterações que ainda não foram salvas.
+  entity_updated: Existem alterações não salvas.
   from: De
   general_properties: Propriedades gerais
-  history: Histórico
+  history: História
   label: Rótulo
   label_translations: Traduções do rótulo
   less_than: Menos de
@@ -144,12 +144,12 @@ pim_common:
   next: Próximo
   "no": "Não"
   none: Nenhum
-  not_available: Não aplicável
+  not_available: N/A
   now: Agora
   ok: OK
   permissions: Permissões
   previous: Anterior
-  properties: Propriedades
+  properties: Propriedade
   remove: Remover
   required_label: (Obrigatório)
   save: Salvar
@@ -202,7 +202,7 @@ pim_enrich.entity.fallback:
       item: Tem certeza de que deseja excluir este item?
       item_placeholder: Tem certeza que deseja excluir este {{ itemName }}? Não é possível desfazer esta ação.
     edit:
-      leave: Tem certeza de que deseja sair desta página?
+      leave: Tem certeza que deseja sair desta página?
       discard_changes: Você perderá as alterações feitas em %entity% se sair dessa página.
       discard_changes_title: Tem certeza?
 pim_enrich.entity.api_connection:
@@ -230,8 +230,8 @@ pim_enrich.entity.job_execution:
       invalid_xlsx: Baixar dados inválidos
       invalid_csv: Baixar dados inválidos
 pim_title:
-  oro_default: Painel de controle
-  pim_enrich_attributegroup_index: Grupo de atributos
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Grupos de Atributos
   pim_enrich_attributegroup_create: Grupo de atributos | Criar
   pim_enrich_attributegroup_edit: Grupo de atributo {{ group.label }} | Editar
   pim_enrich_catalog_volume_index: Monitoramento de volume do catálogo
@@ -251,10 +251,10 @@ pim_title:
   pim_enrich_channel_create: Canais | Criar
   pim_enrich_channel_edit: Canal {{ channel.label }} | Editar
   pim_enrich_currency_index: Moedas
-  pim_enrich_locale_index: Localidades
+  pim_enrich_locale_index: Locais
   pim_enrich_group_index: Grupos
   pim_enrich_group_edit: Grupo {{ group.label }} | Editar
-  pim_enrich_associationtype_index: Tipos de associação
+  pim_enrich_associationtype_index: Tipos de Associação
   pim_enrich_associationtype_edit: Tipo de associação {{ association type.label }} | Editar
   pim_enrich_grouptype_index: Tipos de grupos
   pim_enrich_grouptype_edit: Tipo de grupo {{ group type.label }} | Editar
@@ -278,24 +278,24 @@ pim_menu:
       title: Ajuda
       helper: Centro de Ajuda Akeneo
   item:
-    association_type: Tipos de associação
-    attribute_group: Grupo de atributos
+    association_type: Tipos de Associação
+    attribute_group: Grupos de Atributos
     channel: Canais
     currency: Moedas
-    dashboard: Painel de controle
+    dashboard: Dashboard
     family: Famílias
     group: Grupos
     group_type: Tipos de grupos
     product_model: Modelos de produto
     export_history: Histórico de exportações
-    export_profile: Perfis de exportação
+    export_profile: Exportar perfis
     import_history: Histórico de importações
-    import_profile: Perfis de importação
+    import_profile: Importar perfis
     configuration: Configuração
     user_management: Gerenciamento de usuários
     user: Usuários
     user_group: Grupo de usuários
-    user_role: Funções
+    user_role: Papeis
     info: Informações do Sistema
     job_tracker: Rastreamento de processo
     api_connection: Conexões de API
@@ -312,7 +312,7 @@ pim_menu:
     user_account: Minha Conta
 pim_notification:
   types:
-    import: Importar
-    export: Exportar
-    quick_export: Exportação rápida
+    import: Importação
+    export: Exportação
+    quick_export: Exportação Rápida
     mass_edit: Edição em Massa
