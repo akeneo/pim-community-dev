@@ -1,6 +1,6 @@
 batch_jobs:
   default_steps:
-    validation: Validar arxius
+    validation: Validació d'arxiu
     import_associations: Importar associacions
     import_root_product_model: Importar el model de producte base
     import_sub_product_model: Importar el model de subproducte
@@ -11,8 +11,8 @@ batch_jobs:
     compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
     compute_completeness_of_products_family: Calcular la completesa de la família de productes
   csv_product_export:
-    label: Exportar productes a CSV
-    export.label: Exportar productes
+    label: Exportar producte a CSV
+    export.label: Exportar producte
   csv_product_model_export:
     label: Exportar model de producte a CSV
     export.label: Exportar model de producte
@@ -27,7 +27,7 @@ batch_jobs:
     export.label: Exportar opcions d'atribut
   csv_association_type_export:
     label: Exportar tipus d'associació en CSV
-    export.label: Exportar tipus d'associacions
+    export.label: Exportar tipus d'associació
   csv_group_export:
     label: Exportar grups en CSV
     export.label: Exportar grups
@@ -64,7 +64,7 @@ batch_jobs:
     import.label: Importar variant de família
   csv_group_import:
     label: Importar grups en CSV
-    import.label: Importar grups
+    import.label: Importar grup
   csv_attribute_group_export:
     label: Exportació de grup d'atributs en CSV
     export.label: Exportació de grup d'atributs
@@ -97,7 +97,7 @@ batch_jobs:
     import.label: Importar variant de família
   xlsx_product_export:
     label: Exportació de producte en XLSX
-    export.label: Exportar productes
+    export.label: Exportar producte
   xlsx_product_model_export:
     label: Exportar model de producte a XLSX
     export.label: Exportar model de producte
@@ -112,7 +112,7 @@ batch_jobs:
     export.label: Exportar grups
   xlsx_group_import:
     label: Importació de grup en XLSX
-    import.label: Importar grups
+    import.label: Importar grup
   xlsx_family_export:
     label: Exportació de família en XLSX
     export.label: Exportar família
