@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -22,6 +23,13 @@ final class GetProductCompletenesses
         $this->connection = $connection;
     }
 
+    /**
+     * @param int $productId
+     *
+     * @return ProductCompleteness[]
+     *
+     * @throws DBALException
+     */
     public function fromProductId(int $productId): array
     {
         $sql = <<<SQL
