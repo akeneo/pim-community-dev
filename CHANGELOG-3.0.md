@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7894: Fix metric and price filters design
+- PIM-8447: Fix deformed images in dropdowns
 
 # 3.0.27 (2019-06-27)
 
