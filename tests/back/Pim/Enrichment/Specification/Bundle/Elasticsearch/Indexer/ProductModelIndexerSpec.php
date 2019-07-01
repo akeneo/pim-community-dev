@@ -174,7 +174,7 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $this->removeAll([40, 33])->shouldReturn(null);
     }
 
-    function it_indexes_product_models_and_disable_refresh_of_the_index_by_default(
+    function it_indexes_product_models_and_disables_refresh_of_the_index_by_default(
         $normalizer,
         $productModelClient,
         $productAndProductModelClient,
