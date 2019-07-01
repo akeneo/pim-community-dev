@@ -21,7 +21,7 @@ Feature: Delete a reference entity
       | identifier | labels                                       | image |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Delete a reference entity from the edit view
     Given the user has the following rights:
       | akeneo_referenceentity_reference_entity_edit   | true |
