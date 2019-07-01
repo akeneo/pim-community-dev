@@ -40,7 +40,7 @@ before_install:
     - composer config -g github-oauth.github.com $GITHUB_TOKEN
     - phpenv config-add tests/travis/travis.php.ini
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.4.deb && sudo dpkg -i --force-confnew elasticsearch-5.6.4.deb && sudo service elasticsearch restart
+    - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.4.deb && sudo dpkg -i --force-confnew elasticsearch-6.5.4.deb && sudo service elasticsearch restart
 
 install:
     - composer install --prefer-dist --no-interaction
