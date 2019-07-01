@@ -32,7 +32,7 @@ pim_import_export:
                 create:
                     success: Import profile successfully created
                 upload:
-                    error: Unable to upload the file. Its size may exceed the configured upload max size on your PHP or HTTP server configuration?
+                    error: Unable to upload the file. Its size may exceed the configured maximum upload size on your PHP or HTTP server configuration
             page_title:
                 index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
             module:
