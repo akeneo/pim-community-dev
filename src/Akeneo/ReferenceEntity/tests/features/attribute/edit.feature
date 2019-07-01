@@ -69,7 +69,7 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "MaxFileSize" with value "120.4"
     And the user edits the attribute property "AllowedExtensions" with value "gif"
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: User can't edit the image attribute
     Given a valid reference entity
     And the user has the following rights:
