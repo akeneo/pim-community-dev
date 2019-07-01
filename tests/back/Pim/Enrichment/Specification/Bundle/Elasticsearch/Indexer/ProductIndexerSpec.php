@@ -180,7 +180,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->indexAll([$product1, $product2], ['index_refresh' => Refresh::waitFor()]);
     }
 
-    function it_indexes_products_and_disable_index_refresh_by_default(
+    function it_indexes_products_and_disables_index_refresh_by_default(
         ProductInterface $product1,
         ProductInterface $product2,
         $normalizer,
