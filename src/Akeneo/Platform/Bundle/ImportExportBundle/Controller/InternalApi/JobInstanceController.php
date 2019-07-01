@@ -402,9 +402,8 @@ class JobInstanceController
             throw new AccessDeniedHttpException();
         }
 
-        /** @var UploadedFile|null $file */
         $file = $request->files->get('file');
-        if (null === $file && $this->isFileUpload()) {
+        if (null === $file && $this->isFileUpload($request)) {
             return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error_too_big'], 400);
         }
 
@@ -653,12 +652,13 @@ class JobInstanceController
      * This is the only way we found to test that a file too big was uploaded.
      * If the file size exceeds the server limit, a warning is thrown on the apache container logs
      * and the request does not contain any information that a file was uploaded on the FPM side.
-     * Note: it happens only when the upload exceeds 'post_max_size'
+     * This happens only when the upload exceeds 'post_max_size' and we can detect it by having a positive
+     * Content-Length header corresponding to the file length that was sent.
      *
      * @return bool
      */
-    private function isFileUpload(): bool
+    private function isFileUpload(Request $request): bool
     {
-        return isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0;
+        return $request->server->get('CONTENT_LENGTH') > 0;
     }
 }
