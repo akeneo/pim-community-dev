@@ -654,8 +654,6 @@ class JobInstanceController
      * and the request does not contain any information that a file was uploaded on the FPM side.
      * This happens only when the upload exceeds 'post_max_size' and we can detect it by having a positive
      * Content-Length header corresponding to the file length that was sent.
-     *
-     * @return bool
      */
     private function isFileUpload(Request $request): bool
     {
