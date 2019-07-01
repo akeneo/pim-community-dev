@@ -284,10 +284,7 @@ class ProductNormalizer implements NormalizerInterface
     {
         $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
         if (count($completenessCollection) === 0) {
-
-            // TODO CompletenessCalculator should return ProductCompleteness object
             $newCompletenesses = $this->completenessCalculator->calculate($product);
-
             foreach ($newCompletenesses as $completeness) {
                 $completenessCollection[] = $completeness;
             }

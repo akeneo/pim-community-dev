@@ -225,7 +225,6 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         if ($entity instanceof ProductInterface && $entity->isVariant()) {
             $completenessCollection = $this->getProductCompletenesses->fromProductId($entity->getId());
             if (count($completenessCollection) === 0) {
-                // TODO completenessCalculator should return ProductCompleteness
                 $newCompletenesses = $this->completenessCalculator->calculate($entity);
                 foreach ($newCompletenesses as $completeness) {
                     $completenessCollection[] = $completeness;

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 
 /**
  * Calculates the completenesses for a provided product.
@@ -14,13 +14,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 interface CompletenessCalculatorInterface
 {
-
     /**
      * Generates an array of completenesses.
      *
      * @param ProductInterface $product
      *
-     * @return CompletenessInterface[]
+     * @return ProductCompleteness[]
      */
     public function calculate(ProductInterface $product);
 }
