@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes:
+
+- PIM-8480: Remove the job execution message orphans after a job execution purge.
+
 # 2.3.51 (2019-06-26)
 
 ## Improvement
