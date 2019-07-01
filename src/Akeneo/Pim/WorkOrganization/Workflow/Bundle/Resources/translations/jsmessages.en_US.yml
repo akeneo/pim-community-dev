@@ -95,6 +95,7 @@ pim_notification:
         pimee_workflow_product_draft_notification_approve: Proposal approved
         pimee_workflow_product_draft_notification_refuse: Proposal rejected
         pimee_workflow_product_draft_notification_remove: Proposal deleted
+        pimee_workflow_product_draft_notification_sent: Proposals sent
 
 pimee_dashboard:
     widget:
