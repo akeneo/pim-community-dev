@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -26,16 +27,17 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /** @var CompletenessCalculatorInterface */
     protected $completenessCalculator;
 
-    /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param CompletenessCalculatorInterface     $completenessCalculator
-     */
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        CompletenessCalculatorInterface $completenessCalculator
+        CompletenessCalculatorInterface $completenessCalculator,
+        GetProductCompletenesses $getProductCompletenesses
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->completenessCalculator = $completenessCalculator;
+        $this->getProductCompletenesses = $getProductCompletenesses;
     }
 
     /**
@@ -54,11 +56,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function calculateProductCompletenesses(ProductInterface $product)
     {
-        // TODO This one!
-        $completenessCollection = $product->getCompletenesses();
+        $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
 
         $newCompletenesses = $this->completenessCalculator->calculate($product);
 
+        // TODO this code only works with Doctrine. It will fail.
+        /*
         $this->updateExistingCompletenesses($completenessCollection, $newCompletenesses);
 
         $completenessLocaleAndChannelCodes = [];
@@ -88,6 +91,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $newLocalesChannels
         );
         $this->removeOutdatedCompletenesses($completenessCollection, $localeAndChannelCodesOfCompletenessesToRemove);
+        */
     }
 
     /**
