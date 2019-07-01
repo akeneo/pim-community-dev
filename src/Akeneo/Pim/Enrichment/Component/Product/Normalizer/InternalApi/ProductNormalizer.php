@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
@@ -108,32 +109,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CatalogContext */
     protected $catalogContext;
 
-    /**
-     * @param NormalizerInterface                       $normalizer
-     * @param NormalizerInterface                       $versionNormalizer
-     * @param VersionManager                            $versionManager
-     * @param ImageNormalizer                           $imageNormalizer
-     * @param LocaleRepositoryInterface                 $localeRepository
-     * @param StructureVersionProviderInterface         $structureVersionProvider
-     * @param FormProviderInterface                     $formProvider
-     * @param AttributeConverterInterface               $localizedConverter
-     * @param ConverterInterface                        $productValueConverter
-     * @param ObjectManager                             $productManager
-     * @param CompletenessManager                       $completenessManager
-     * @param ChannelRepositoryInterface                $channelRepository
-     * @param CollectionFilterInterface                 $collectionFilter
-     * @param NormalizerInterface                       $completenessCollectionNormalizer
-     * @param UserContext                               $userContext
-     * @param CompletenessCalculatorInterface           $completenessCalculator
-     * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
-     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
-     * @param VariantNavigationNormalizer               $navigationNormalizer
-     * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
-     * @param NormalizerInterface                       $incompleteValuesNormalizer
-     * @param MissingAssociationAdder                   $missingAssociationAdder
-     * @param NormalizerInterface                       $parentAssociationsNormalizer
-     * @param CatalogContext                            $catalogContext
-     */
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
@@ -158,7 +136,8 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
-        CatalogContext $catalogContext
+        CatalogContext $catalogContext,
+        GetProductCompletenesses $getProductCompletenesses
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -184,6 +163,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
         $this->missingAssociationAdder          = $missingAssociationAdder;
         $this->catalogContext                   = $catalogContext;
+        $this->getProductCompletenesses = $getProductCompletenesses;
     }
 
     /**
@@ -302,11 +282,14 @@ class ProductNormalizer implements NormalizerInterface
      */
     protected function getNormalizedCompletenesses(ProductInterface $product)
     {
-        $completenessCollection = $product->getCompletenesses();
-        if ($completenessCollection->isEmpty()) {
+        $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
+        if (count($completenessCollection) === 0) {
+
+            // TODO CompletenessCalculator should return ProductCompleteness object
             $newCompletenesses = $this->completenessCalculator->calculate($product);
+
             foreach ($newCompletenesses as $completeness) {
-                $completenessCollection->add($completeness);
+                $completenessCollection[] = $completeness;
             }
         }
         return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
@@ -24,10 +25,21 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     const FIELD_COMPLETENESS = 'completeness';
     const FIELD_IN_GROUP = 'in_group';
     const FIELD_ID = 'id';
+
     private const FIELD_ANCESTORS = 'ancestors';
+
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
+    public function __construct(GetProductCompletenesses $getProductCompletenesses)
+    {
+        $this->getProductCompletenesses = $getProductCompletenesses;
+    }
 
     /**
      * {@inheritdoc}
+     *
+     * @var ProductInterface $product
      */
     public function normalize($product, $format = null, array $context = [])
     {
@@ -61,9 +73,11 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
 
-        $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
+        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+
+        $data[self::FIELD_COMPLETENESS] = (count($completenesses) > 0)
             ? $this->serializer->normalize(
-                $product->getCompletenesses(),
+                $completenesses,
                 ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
                 $context
             ) : [];

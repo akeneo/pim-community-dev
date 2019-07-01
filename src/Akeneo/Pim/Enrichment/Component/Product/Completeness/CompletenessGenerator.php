@@ -54,6 +54,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function calculateProductCompletenesses(ProductInterface $product)
     {
+        // TODO This one!
         $completenessCollection = $product->getCompletenesses();
 
         $newCompletenesses = $this->completenessCalculator->calculate($product);

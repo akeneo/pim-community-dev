@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -67,6 +68,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var CatalogContext */
     private $catalogContext;
 
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     public function __construct(
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
@@ -77,6 +81,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         ImageAsLabel $imageAsLabel,
         CatalogContext $catalogContext,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        GetProductCompletenesses $getProductCompletenesses,
         AxisValueLabelsNormalizer ...$normalizers
     ) {
         $this->imageNormalizer                  = $imageNormalizer;
@@ -88,6 +93,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         $this->imageAsLabel                     = $imageAsLabel;
         $this->catalogContext                   = $catalogContext;
         $this->attributeOptionRepository        = $attributeOptionRepository;
+        $this->getProductCompletenesses = $getProductCompletenesses;
         $this->normalizers = $normalizers;
     }
 
@@ -217,11 +223,12 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         }
 
         if ($entity instanceof ProductInterface && $entity->isVariant()) {
-            $completenessCollection = $entity->getCompletenesses();
-            if ($completenessCollection->isEmpty()) {
+            $completenessCollection = $this->getProductCompletenesses->fromProductId($entity->getId());
+            if (count($completenessCollection) === 0) {
+                // TODO completenessCalculator should return ProductCompleteness
                 $newCompletenesses = $this->completenessCalculator->calculate($entity);
                 foreach ($newCompletenesses as $completeness) {
-                    $completenessCollection->add($completeness);
+                    $completenessCollection[] = $completeness;
                 }
             }
 

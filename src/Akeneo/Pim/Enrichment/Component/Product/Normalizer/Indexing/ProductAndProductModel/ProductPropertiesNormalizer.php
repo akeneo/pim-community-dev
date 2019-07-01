@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAnd
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -43,13 +44,18 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     /** @var NormalizerInterface[] */
     private $additionalDataNormalizers;
 
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
+        GetProductCompletenesses $getProductCompletenesses,
         iterable $additionalDataNormalizers = []
     ) {
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+        $this->getProductCompletenesses = $getProductCompletenesses;
 
         $this->ensureAdditionalNormalizersAreValid($additionalDataNormalizers);
         $this->additionalDataNormalizers = $additionalDataNormalizers;
@@ -57,6 +63,8 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
 
     /**
      * {@inheritdoc}
+     *
+     * @var ProductInterface $product
      */
     public function normalize($product, $format = null, array $context = [])
     {
@@ -95,9 +103,11 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
 
-        $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
+        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+
+        $data[self::FIELD_COMPLETENESS] = (count($completenesses) > 0)
             ? $this->serializer->normalize(
-                $product->getCompletenesses(),
+                $completenesses,
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
             ) : [];
