@@ -2,21 +2,19 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * @deprecated
- *
  * Normalize the completeness collection to the indexing format.
  *
- * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessCollectionNormalizer implements NormalizerInterface
+class ProductCompletenessCollectionNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
@@ -26,9 +24,10 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         $data = [];
 
         foreach ($completenesses as $completeness) {
-            $channelCode = $completeness->getChannel()->getCode();
-            $localeCode = $completeness->getLocale()->getCode();
-            $data[$channelCode][$localeCode] = $completeness->getRatio();
+            /** @var ProductCompleteness $completeness */
+            $channelCode = $completeness->channelCode();
+            $localeCode = $completeness->localeCode();
+            $data[$channelCode][$localeCode] = $completeness->ratio();
         }
 
         return $data;
@@ -40,14 +39,14 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return
-            (
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format ||
-                ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX === $format ||
-                ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
-            ) &&
+            in_array($format, [
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+                ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX,
+                ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            ]) &&
             $data instanceof Collection &&
             !$data->isEmpty() &&
-            $data->first() instanceof CompletenessInterface
+            $data->first() instanceof ProductCompleteness
         ;
     }
 }

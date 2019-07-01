@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
+ * @deprecated Use ProductCompletenessNormalizer instead
+ *
  * Completeness normalizer
  *
  * @author    Julien Sanchez <julien@akeneo.com>

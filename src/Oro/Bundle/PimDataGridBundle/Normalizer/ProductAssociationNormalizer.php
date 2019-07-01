@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Normalizer;
 
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,12 +23,18 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     /** @var ImageNormalizer */
     protected $imageNormalizer;
 
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     /**
      * @param ImageNormalizer $imageNormalizer
      */
-    public function __construct(ImageNormalizer $imageNormalizer)
-    {
+    public function __construct(
+        ImageNormalizer $imageNormalizer,
+        GetProductCompletenesses $getProductCompletenesses
+    ) {
         $this->imageNormalizer = $imageNormalizer;
+        $this->getProductCompletenesses = $getProductCompletenesses;
     }
 
     /**
@@ -52,7 +59,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
         $data['is_checked'] = $context['is_associated'];
         $data['is_associated'] = $context['is_associated'];
         $data['label'] = $product->getLabel($locale, $channel);
-        $data['completeness'] = $this->getCompleteness($product, $context);
+        $data['completeness'] = $this->getCompletenessRatio($product, $context);
         $data['image'] = $this->imageNormalizer->normalize($product->getImage(), $context['data_locale']);
 
         return $data;
@@ -92,20 +99,20 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
      *
      * @return int|null
      */
-    protected function getCompleteness(ProductInterface $product, array $context)
+    protected function getCompletenessRatio(ProductInterface $product, array $context): ?int
     {
-        $completenesses = null;
+        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
         $locale = current($context['locales']);
         $channel = current($context['channels']);
 
-        foreach ($product->getCompletenesses() as $completeness) {
-            if ($completeness->getChannel()->getCode() === $channel &&
-                $completeness->getLocale()->getCode() === $locale) {
-                $completenesses = $completeness->getRatio();
+        foreach ($completenesses as $completeness) {
+            if ($completeness->channelCode() === $channel &&
+                $completeness->localeCode() === $locale) {
+                return $completeness->ratio();
             }
         }
 
-        return $completenesses;
+        return null;
     }
 
     /**

@@ -49,8 +49,14 @@ services:
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
+    # @deprecated
     pim_catalog.normalizer.indexing_product.product.completeness_collection:
         class: '%pim_catalog.normalizer.indexing_product.product.completeness_collection.class%'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.product_completeness_collection:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductCompletenessCollectionNormalizer'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
