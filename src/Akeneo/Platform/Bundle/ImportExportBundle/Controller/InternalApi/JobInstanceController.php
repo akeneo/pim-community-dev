@@ -404,12 +404,12 @@ class JobInstanceController
 
         $file = $request->files->get('file');
         if (null === $file && $this->isFileUpload($request)) {
-            return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error_too_big'], 400);
+            return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error'], 400);
         }
 
         if (null !== $file) {
-            if (UPLOAD_ERR_INI_SIZE === $file->getError()) {
-                return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error_too_big'], 400);
+            if (UPLOAD_ERR_OK !== $file->getError()) {
+                return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error'], 400);
             }
 
             $violations = $this->validator->validate($file);
