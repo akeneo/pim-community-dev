@@ -149,7 +149,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->removeAll([40, 33])->shouldReturn(null);
     }
 
-    function it_indexes_products_and_wait_for_index_refresh(
+    function it_indexes_products_and_waits_for_index_refresh(
         ProductInterface $product1,
         ProductInterface $product2,
         $normalizer,
