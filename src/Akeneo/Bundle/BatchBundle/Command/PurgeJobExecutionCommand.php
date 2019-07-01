@@ -51,7 +51,6 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
             $output->write(sprintf("%s jobs execution deleted ...\n", count($jobsExecutions)));
         }
 
-        // Purge the message queue, even if there was no job executions to remove this time.
         $this->deleteJobExecutionMessageOrphans();
     }
 
