@@ -228,3 +228,4 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\CountVariantProducts
         arguments:
             - '@database_connection'
+
