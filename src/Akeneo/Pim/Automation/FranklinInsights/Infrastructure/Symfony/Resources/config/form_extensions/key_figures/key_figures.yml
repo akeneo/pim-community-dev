@@ -58,9 +58,6 @@ extensions:
         position: 100
         config:
             title: akeneo_franklin_insights.key_figures.section_title.key_figures
-            hint:
-                code: hint-catalog-structure
-                title: pim_catalog_volume.section.catalog_structure.hint
 
     akeneo-franklin-insights-key-figures-attributes-content:
         module: akeneo/franklin-insights/view/key-figures/section
