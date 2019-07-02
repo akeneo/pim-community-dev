@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\PublicApi\Analytics;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -75,7 +76,8 @@ class SqlAverageMaxNumberOfAttributesPerAssetFamilyTest extends SqlIntegrationTe
         $assetFamilyRepository->create(AssetFamily::create(
             $assetFamilyIdentifier,
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         ));
 
         // By default, there are already 2 attributes created for each asset family

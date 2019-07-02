@@ -18,6 +18,8 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
@@ -59,9 +61,9 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
         $serializedLabels = $this->getSerializedLabels($assetFamily);
         $insert = <<<SQL
         INSERT INTO akeneo_asset_manager_asset_family 
-            (identifier, labels, attribute_as_label, attribute_as_image) 
+            (identifier, labels, attribute_as_label, attribute_as_image, rule_templates) 
         VALUES 
-            (:identifier, :labels, :attributeAsLabel, :attributeAsImage);
+            (:identifier, :labels, :attributeAsLabel, :attributeAsImage, :ruleTemplates);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -69,7 +71,8 @@ SQL;
                 'identifier' => (string) $assetFamily->getIdentifier(),
                 'labels' => $serializedLabels,
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
-                'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize()
+                'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
+                'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize())
             ]
         );
         if ($affectedRows !== 1) {
@@ -97,7 +100,8 @@ SQL;
             labels = :labels, 
             image = :image, 
             attribute_as_label = :attributeAsLabel, 
-            attribute_as_image = :attributeAsImage
+            attribute_as_image = :attributeAsImage,
+            rule_templates = :ruleTemplates
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -108,6 +112,7 @@ SQL;
                 'image' => $assetFamily->getImage()->isEmpty() ? null : $assetFamily->getImage()->getKey(),
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
                 'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
+                'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize())
             ]
         );
 
@@ -121,12 +126,12 @@ SQL;
     public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily
     {
         $fetch = <<<SQL
-        SELECT ee.identifier, ee.labels, fi.image, ee.attribute_as_label, ee.attribute_as_image
-        FROM akeneo_asset_manager_asset_family ee
+        SELECT af.identifier, af.labels, fi.image, af.attribute_as_label, af.attribute_as_image, af.rule_templates
+        FROM akeneo_asset_manager_asset_family af
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
-        ) AS fi ON fi.file_key = ee.image
+        ) AS fi ON fi.file_key = af.image
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
@@ -145,14 +150,15 @@ SQL;
             $result['labels'],
             null !== $result['image'] ? json_decode($result['image'], true) : null,
             $result['attribute_as_label'],
-            $result['attribute_as_image']
+            $result['attribute_as_image'],
+            $result['rule_templates']
         );
     }
 
     public function all(): \Iterator
     {
         $selectAllQuery = <<<SQL
-        SELECT identifier, labels, attribute_as_label, attribute_as_image
+        SELECT identifier, labels, attribute_as_label, attribute_as_image, rule_templates
         FROM akeneo_asset_manager_asset_family;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
@@ -165,7 +171,8 @@ SQL;
                 $result['labels'],
                 null,
                 $result['attribute_as_label'],
-                $result['attribute_as_image']
+                $result['attribute_as_image'],
+                $result['rule_templates']
             );
         }
     }
@@ -206,20 +213,23 @@ SQL;
         string $normalizedLabels,
         ?array $image,
         ?string $attributeAsLabel,
-        ?string $attributeAsImage
+        ?string $attributeAsImage,
+        string $normalizedRuleTemplates
     ): AssetFamily {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
+        $ruleTemplateCollection = $this->hydrateRuleTemplates($normalizedRuleTemplates);
 
         $assetFamily = AssetFamily::createWithAttributes(
             AssetFamilyIdentifier::fromString($identifier),
             $labels,
             $entityImage,
             AttributeAsLabelReference::createFromNormalized($attributeAsLabel),
-            AttributeAsImageReference::createFromNormalized($attributeAsImage)
+            AttributeAsImageReference::createFromNormalized($attributeAsImage),
+            $ruleTemplateCollection
         );
 
         return $assetFamily;
@@ -247,5 +257,17 @@ SQL;
         }
 
         return $image;
+    }
+
+    private function hydrateRuleTemplates(string $normalizedRuleTemplates): RuleTemplateCollection
+    {
+        $ruleTemplates = [];
+        $normalizedRuleTemplates = json_decode($normalizedRuleTemplates, true);
+
+        foreach ($normalizedRuleTemplates as $ruleTemplate) {
+            $ruleTemplates[] = RuleTemplate::createFromNormalized($ruleTemplate);
+        }
+
+        return RuleTemplateCollection::fromArray($ruleTemplates);
     }
 }

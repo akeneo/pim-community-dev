@@ -40,24 +40,30 @@ class AssetFamily
     /** @var AttributeAsImageReference */
     private $attributeAsImage;
 
+    /** @var RuleTemplateCollection  */
+    private $ruleTemplateCollection;
+
     private function __construct(
         AssetFamilyIdentifier $identifier,
         LabelCollection $labelCollection,
         Image $image,
         AttributeAsLabelReference $attributeAsLabel,
-        AttributeAsImageReference $attributeAsImage
+        AttributeAsImageReference $attributeAsImage,
+        RuleTemplateCollection $ruleTemplateCollection
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
         $this->image = $image;
         $this->attributeAsLabel = $attributeAsLabel;
         $this->attributeAsImage = $attributeAsImage;
+        $this->ruleTemplateCollection = $ruleTemplateCollection;
     }
 
     public static function create(
         AssetFamilyIdentifier $identifier,
         array $rawLabelCollection,
-        Image $image
+        Image $image,
+        RuleTemplateCollection $ruleTemplateCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
@@ -66,7 +72,8 @@ class AssetFamily
             $labelCollection,
             $image,
             AttributeAsLabelReference::noReference(),
-            AttributeAsImageReference::noReference()
+            AttributeAsImageReference::noReference(),
+            $ruleTemplateCollection
         );
     }
 
@@ -75,7 +82,8 @@ class AssetFamily
         array $rawLabelCollection,
         Image $image,
         AttributeAsLabelReference $attributeAsLabel,
-        AttributeAsImageReference $attributeAsImage
+        AttributeAsImageReference $attributeAsImage,
+        RuleTemplateCollection $ruleTemplateCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
@@ -84,7 +92,8 @@ class AssetFamily
             $labelCollection,
             $image,
             $attributeAsLabel,
-            $attributeAsImage
+            $attributeAsImage,
+            $ruleTemplateCollection
         );
     }
 
@@ -143,5 +152,10 @@ class AssetFamily
     public function updateAttributeAsImageReference(AttributeAsImageReference $attributeAsImage): void
     {
         $this->attributeAsImage = $attributeAsImage;
+    }
+
+    public function getRuleTemplateCollection(): RuleTemplateCollection
+    {
+        return $this->ruleTemplateCollection;
     }
 }

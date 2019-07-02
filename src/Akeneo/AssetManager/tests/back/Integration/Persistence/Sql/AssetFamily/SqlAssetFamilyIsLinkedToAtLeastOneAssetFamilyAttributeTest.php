@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -76,17 +77,20 @@ class SqlAssetFamilyIsLinkedToAtLeastOneAssetFamilyAttributeTest extends SqlInte
         $designer = AssetFamily::create(
             AssetFamilyIdentifier::fromString('designer'),
             ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $brand = AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
             ['fr_FR' => 'Marque', 'en_US' => 'Brand'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $color = AssetFamily::create(
             AssetFamilyIdentifier::fromString('color'),
             ['fr_FR' => 'Couleur', 'en_US' => 'Color'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($designer);
         $assetFamilyRepository->create($brand);

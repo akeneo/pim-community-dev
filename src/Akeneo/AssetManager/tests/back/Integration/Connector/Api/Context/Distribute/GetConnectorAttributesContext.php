@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -95,7 +96,8 @@ class GetConnectorAttributesContext implements Context
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($assetFamily);
@@ -137,7 +139,8 @@ class GetConnectorAttributesContext implements Context
         $firstAssetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString($firstIdentifier),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($firstAssetFamily);
@@ -149,7 +152,8 @@ class GetConnectorAttributesContext implements Context
         $secondAssetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString($secondIdentifier),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($secondAssetFamily);

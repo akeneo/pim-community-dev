@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
@@ -150,7 +151,8 @@ class FixturesLoader
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $brand = AssetFamily::create(
@@ -159,7 +161,8 @@ class FixturesLoader
                 'en_US' => 'Brand',
                 'fr_FR' => 'Marque',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $country = AssetFamily::create(
@@ -168,7 +171,8 @@ class FixturesLoader
                 'en_US' => 'Country',
                 'fr_FR' => 'Pays',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         switch ($this->loadedRefEntity) {

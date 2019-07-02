@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamilyPermission;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\Permission\AssetFamilyPermission;
 use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
@@ -53,10 +54,10 @@ class SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRightTest extends SqlInteg
 
     private function loadFixtures(): void
     {
-        $designer = AssetFamily::create(AssetFamilyIdentifier::fromString('designer'), [], Image::createEmpty());
-        $color = AssetFamily::create(AssetFamilyIdentifier::fromString('color'), [], Image::createEmpty());
-        $brand = AssetFamily::create(AssetFamilyIdentifier::fromString('brand'), [], Image::createEmpty());
-        $city = AssetFamily::create(AssetFamilyIdentifier::fromString('city'), [], Image::createEmpty());
+        $designer = AssetFamily::create(AssetFamilyIdentifier::fromString('designer'), [], Image::createEmpty(), RuleTemplateCollection::empty());
+        $color = AssetFamily::create(AssetFamilyIdentifier::fromString('color'), [], Image::createEmpty(), RuleTemplateCollection::empty());
+        $brand = AssetFamily::create(AssetFamilyIdentifier::fromString('brand'), [], Image::createEmpty(), RuleTemplateCollection::empty());
+        $city = AssetFamily::create(AssetFamilyIdentifier::fromString('city'), [], Image::createEmpty(), RuleTemplateCollection::empty());
 
         $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')->create($designer);
         $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')->create($color);

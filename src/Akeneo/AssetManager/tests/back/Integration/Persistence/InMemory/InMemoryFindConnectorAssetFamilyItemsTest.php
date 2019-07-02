@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyItems;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
@@ -125,7 +126,8 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
         $assetFamily = AssetFamily::create(
             $assetFamilyIdentifier,
             ['en_US' => $rawIdentifier],
-            Image::fromFileInfo($imageInfo)
+            Image::fromFileInfo($imageInfo),
+            RuleTemplateCollection::empty()
         );
 
         return $assetFamily;

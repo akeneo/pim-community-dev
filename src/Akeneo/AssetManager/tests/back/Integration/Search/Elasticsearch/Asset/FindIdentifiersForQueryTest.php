@@ -8,6 +8,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -602,7 +603,8 @@ TEXT;
         $assetFamilyDesigner = AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $repository->create($assetFamilyDesigner);
 

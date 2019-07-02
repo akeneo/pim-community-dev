@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -52,7 +53,8 @@ class InMemoryFindAssetFamilyAttributeAsLabelTest extends TestCase
             [],
             Image::createEmpty(),
             $expectedAttributeAsLabel,
-            AttributeAsImageReference::noReference()
+            AttributeAsImageReference::noReference(),
+            RuleTemplateCollection::empty()
         );
         $this->assetFamilyRepository->create($assetFamily);
 
