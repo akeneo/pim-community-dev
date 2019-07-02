@@ -76,7 +76,7 @@ services:
             - '@pim_catalog.product_models.image_as_label'
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.cached_attribute_option'
-            - '@pim_catalog.query.get_product_completenesses'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
 
     pim_enrich.normalizer.entity_with_family_variant.simple_select.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\SimpleSelectOptionNormalizer'
@@ -188,7 +188,7 @@ services:
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
             - '@pim_catalog.context.catalog'
-            - '@pim_catalog.query.get_product_completenesses'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 

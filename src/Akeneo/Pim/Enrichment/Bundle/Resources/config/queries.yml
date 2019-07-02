@@ -6,11 +6,6 @@ parameters:
     pim_catalog.doctrine.query.find_attributes_for_family.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily'
 
 services:
-    pim_catalog.query.get_product_completenesses:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\GetProductCompletenesses'
-        arguments:
-            - '@database_connection'
-
     pim_catalog.doctrine.query.find_variant_product_completeness:
         class: '%pim_catalog.doctrine.query.find_variant_product_completeness.class%'
         arguments:

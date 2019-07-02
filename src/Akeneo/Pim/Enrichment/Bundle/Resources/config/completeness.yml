@@ -14,5 +14,5 @@ services:
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.completeness.calculator'
-            - '@pim_catalog.query.get_product_completenesses'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
 
