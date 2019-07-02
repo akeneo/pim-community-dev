@@ -50,6 +50,8 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
             $this->getJobExecutionRepository()->remove($jobsExecutions);
             $output->write(sprintf("%s jobs execution deleted ...\n", count($jobsExecutions)));
         }
+
+        $this->deleteJobExecutionMessageOrphans();
     }
 
     /**
@@ -72,5 +74,10 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     protected function getJobExecutionRepository()
     {
         return $this->getContainer()->get('akeneo_batch.job_repository');
+    }
+
+    private function deleteJobExecutionMessageOrphans(): void
+    {
+        $this->getContainer()->get('akeneo_batch_queue.query.delete_job_execution_message_orphans')->execute();
     }
 }
