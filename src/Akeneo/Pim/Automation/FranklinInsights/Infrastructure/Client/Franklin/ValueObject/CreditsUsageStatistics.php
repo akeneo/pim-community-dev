@@ -30,8 +30,11 @@ final class CreditsUsageStatistics
             if (!isset($statistics[$name])) {
                 throw new \InvalidArgumentException(sprintf('Missing credits usage statistic "%s"', $name));
             }
-            $this->$name = (int)$statistics[$name];
         }
+
+        $this->consumed = $statistics['consumed'];
+        $this->left = $statistics['left'];
+        $this->total = $statistics['total'];
     }
 
     public function getConsumed(): int

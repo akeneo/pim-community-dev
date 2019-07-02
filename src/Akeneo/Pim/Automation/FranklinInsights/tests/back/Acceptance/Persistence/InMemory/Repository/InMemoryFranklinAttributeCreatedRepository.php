@@ -27,4 +27,9 @@ class InMemoryFranklinAttributeCreatedRepository implements FranklinAttributeCre
     {
         $this->events[] = $franklinAttributeCreated;
     }
+
+    public function count(): int
+    {
+        return count($this->events);
+    }
 }

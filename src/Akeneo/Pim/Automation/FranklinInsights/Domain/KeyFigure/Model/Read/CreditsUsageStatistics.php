@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Statistics\Model\Read;
+namespace Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read;
 
 final class CreditsUsageStatistics
 {

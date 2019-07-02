@@ -51,6 +51,24 @@ SQL;
         Assert::assertNotNull($retrievedEvents[0]['created']);
     }
 
+    public function test_it_counts_attributes_added_to_family_events(): void
+    {
+        $this->insertAttributeAddedToFamily('color', 'camcorders');
+        $this->insertAttributeAddedToFamily('bandwidth', 'routers');
+        $this->insertAttributeAddedToFamily('secondary_color', 'camcorders');
+
+        Assert::assertEquals(3, $this->getRepository()->count());
+    }
+
+    private function insertAttributeAddedToFamily(string $attributeCode, string $familyCode)
+    {
+        $event = new FranklinAttributeAddedToFamily(
+            new AttributeCode($attributeCode),
+            new FamilyCode($familyCode)
+        );
+        $this->getRepository()->save($event);
+    }
+
     private function getRepository(): FranklinAttributeAddedToFamilyRepository
     {
         return $this->get('akeneo.pim.automation.franklin_insights.repository.franklin_attribute_added_to_family');

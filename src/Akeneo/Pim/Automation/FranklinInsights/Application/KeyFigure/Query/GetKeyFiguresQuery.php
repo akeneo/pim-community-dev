@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query;
 
-final class GetAskFranklinCreditsQuery
+final class GetKeyFiguresQuery
 {
 }

@@ -21,4 +21,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttrib
 interface FranklinAttributeAddedToFamilyRepositoryInterface
 {
     public function save(FranklinAttributeAddedToFamily $franklinAttributeAddedToFamily): void;
+
+    public function count(): int;
 }

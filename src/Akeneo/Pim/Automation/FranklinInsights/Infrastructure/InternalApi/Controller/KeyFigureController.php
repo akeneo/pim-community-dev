@@ -13,45 +13,43 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetAskFranklinCreditsHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetAskFranklinCreditsQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetKeyMeasurementsHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetKeyMeasurementsQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetCreditsHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetCreditsQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetKeyFiguresHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetKeyFiguresQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\CreditUsageStatisticsNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\KeyFigureCollectionNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class KeyFigureController
 {
-    /** @var GetKeyMeasurementsHandler */
-    private $getKeyMeasurementsHandler;
+    /** @var GetKeyFiguresHandler */
+    private $getKeyFiguresHandler;
 
-    /** @var GetAskFranklinCreditsHandler */
-    private $getAskFranklinCreditsHandler;
-
-    /** @var KeyFigureCollectionNormalizer */
-    private $keyFigureCollectionNormalizer;
+    /** @var GetCreditsHandler */
+    private $GetCreditsHandler;
 
     public function __construct(
-        GetKeyMeasurementsHandler $getKeyMeasurementsHandler,
-        GetAskFranklinCreditsHandler $getAskFranklinCreditsHandler,
-        KeyFigureCollectionNormalizer $keyFigureCollectionNormalizer
+        GetKeyFiguresHandler $getKeyFiguresHandler,
+        GetCreditsHandler $GetCreditsHandler
     ) {
-        $this->getKeyMeasurementsHandler = $getKeyMeasurementsHandler;
-        $this->getAskFranklinCreditsHandler = $getAskFranklinCreditsHandler;
-        $this->keyFigureCollectionNormalizer = $keyFigureCollectionNormalizer;
+        $this->getKeyFiguresHandler = $getKeyFiguresHandler;
+        $this->GetCreditsHandler = $GetCreditsHandler;
     }
 
     public function getAllAction(): Response
     {
+        $keyFigureCollection = $this->getKeyFiguresHandler->handle(new GetKeyFiguresQuery());
+        $creditUsageStatistics = $this->GetCreditsHandler->handle(new GetCreditsQuery());
+
+        $keyFigureCollectionNormalizer = new KeyFigureCollectionNormalizer();
+        $creditUsageStatisticsNormalizer = new CreditUsageStatisticsNormalizer();
+
         return new JsonResponse(
             array_merge(
-                $this->keyFigureCollectionNormalizer->normalize(
-                    $this->getKeyMeasurementsHandler->handle(new GetKeyMeasurementsQuery())
-                ),
-                $this->keyFigureCollectionNormalizer->normalize(
-                    $this->getAskFranklinCreditsHandler->handle(new GetAskFranklinCreditsQuery())
-                )
+                $keyFigureCollectionNormalizer->normalize($keyFigureCollection),
+                $creditUsageStatisticsNormalizer->normalize($creditUsageStatistics)
             )
         );
     }

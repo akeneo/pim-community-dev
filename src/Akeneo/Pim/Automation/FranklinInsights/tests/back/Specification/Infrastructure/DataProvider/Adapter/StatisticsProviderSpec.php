@@ -57,7 +57,7 @@ class StatisticsProviderSpec extends ObjectBehavior
 
         $api->setToken('valid-token')->shouldBeCalled();
         $this->getCreditsUsageStatistics()->shouldBeLike(
-            new \Akeneo\Pim\Automation\FranklinInsights\Domain\Statistics\Model\Read\CreditsUsageStatistics(
+            new \Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\CreditsUsageStatistics(
                 2, 1, 3
             )
         );
