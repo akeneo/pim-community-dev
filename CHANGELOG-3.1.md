@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.9 (2019-07-02)
+
 ## Bug fixes
 
 - PIM-8479: Fix broken select dropdown in reference entity filters
