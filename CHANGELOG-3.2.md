@@ -68,7 +68,7 @@
 
 
 
-
+- TIP-1190: Refresh of the ES index is not at wait_for but disabled by default for performance reason
 
 
 

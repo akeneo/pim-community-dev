@@ -88,7 +88,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
             return;
         }
 
-        $indexRefresh = $options['index_refresh'] ?? Refresh::waitFor();
+        $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
         $normalizedProducts = [];
         $normalizedProductModels = [];

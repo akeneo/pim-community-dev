@@ -6,6 +6,7 @@ namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -86,7 +87,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $fixturesHash = $this->getHashForFiles($files);
 
         $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
-
         if (file_exists($dumpFile)) {
             $this->databaseSchemaHandler->reset();
 
@@ -98,6 +98,7 @@ class FixturesLoader implements FixturesLoaderInterface
             $this->indexProductModels();
             $this->indexProducts();
 
+            $this->refreshES();
             return;
         }
 
@@ -105,6 +106,8 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->clearAclCache();
 
         $this->loadData();
+        $this->refreshES();
+
         $this->dumpDatabase($dumpFile);
 
         $this->systemUserAuthenticator->createSystemUser();
@@ -358,12 +361,18 @@ class FixturesLoader implements FixturesLoaderInterface
         $aclManager->clearCache();
     }
 
+    /**
+     * We don't wait for the refresh to execute only once per test with `refreshES` method.
+     */
     protected function indexProducts(): void
     {
         $products = $this->container->get('pim_catalog.repository.product')->findAll();
         $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
     }
 
+    /**
+     * We don't wait for the refresh to execute only once per test with `refreshES` method.
+     */
     protected function indexProductModels(): void
     {
         $productModels = $this->container->get('pim_catalog.repository.product_model')->findAll();
@@ -378,5 +387,13 @@ class FixturesLoader implements FixturesLoaderInterface
         foreach ($clients as $client) {
             $client->resetIndex();
         }
+    }
+
+    private function refreshES(): void
+    {
+        $this->container->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+
     }
 }

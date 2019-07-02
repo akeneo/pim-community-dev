@@ -109,7 +109,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $productIndexClient->bulkIndexes('an_index_type_for_test_purpose', [
             ['id' => 'foo', 'a key' => 'a value'],
             ['id' => 'bar', 'a key' => 'another value'],
-        ], 'id', Refresh::waitFor())->shouldBeCalled();
+        ], 'id', Refresh::disable())->shouldBeCalled();
 
         $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => 'foo', 'a key' => 'a value']);
@@ -119,7 +119,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $productModelIndexClient->bulkIndexes('an_index_type_for_test_purpose', [
             ['id' => 'foo', 'a key' => 'a value'],
             ['id' => 'bar', 'a key' => 'another value'],
-        ], 'id', Refresh::waitFor())->shouldBeCalled();
+        ], 'id', Refresh::disable())->shouldBeCalled();
 
         $this->indexAll([$product1, $product2]);
     }
@@ -149,7 +149,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->removeAll([40, 33])->shouldReturn(null);
     }
 
-    function it_indexes_products_and_wait_for_index_refresh_by_default(
+    function it_indexes_products_and_waits_for_index_refresh(
         ProductInterface $product1,
         ProductInterface $product2,
         $normalizer,
@@ -177,10 +177,10 @@ class ProductIndexerSpec extends ObjectBehavior
             ['id' => 'bar', 'a key' => 'another value'],
         ], 'id', Refresh::waitFor())->shouldBeCalled();
 
-        $this->indexAll([$product1, $product2]);
+        $this->indexAll([$product1, $product2], ['index_refresh' => Refresh::waitFor()]);
     }
 
-    function it_indexes_products_and_disable_index_refresh(
+    function it_indexes_products_and_disables_index_refresh_by_default(
         ProductInterface $product1,
         ProductInterface $product2,
         $normalizer,

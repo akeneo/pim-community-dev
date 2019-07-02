@@ -67,6 +67,7 @@ final class ProductGridFixturesLoader
         Assert::assertCount(0, $errors);
 
         $this->container->get('pim_catalog.saver.product')->save($product);
+        $this->refreshEsIndex();
 
         return $rootProductModelWithoutSubProductModel;
     }
@@ -103,6 +104,7 @@ final class ProductGridFixturesLoader
         $errors = $this->container->get('pim_catalog.validator.product')->validate($subProductModel);
         Assert::assertCount(0, $errors);
         $this->container->get('pim_catalog.saver.product_model')->save($subProductModel);
+        $this->refreshEsIndex();
 
         return $subProductModel;
     }
@@ -138,16 +140,21 @@ final class ProductGridFixturesLoader
         $errors = $this->container->get('pim_catalog.validator.product')->validate($subProductModel);
         Assert::assertCount(0, $errors);
         $this->container->get('pim_catalog.saver.product_model')->save($subProductModel);
+        $this->refreshEsIndex();
 
         return $rootProductModelWithoutSubProductModel;
     }
 
     public function createProductAndProductModels()
     {
-        return [
+        $fixtures = [
             'product_models' => $this->createProductModels(),
             'products' => $this->createProducts()
         ];
+
+        $this->refreshEsIndex();
+
+        return $fixtures;
     }
 
     private function createProductModels() : array
@@ -312,5 +319,12 @@ final class ProductGridFixturesLoader
         $errors = $this->container->get('validator')->validate($familyVariant);
         Assert::assertCount(0, $errors);
         $this->container->get('pim_catalog.saver.family_variant')->save($familyVariant);
+    }
+
+    private function refreshEsIndex(): void
+    {
+        $this->container->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
     }
 }
