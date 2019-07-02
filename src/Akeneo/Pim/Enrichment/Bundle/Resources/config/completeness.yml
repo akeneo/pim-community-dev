@@ -15,4 +15,7 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_catalog.repository.cached_channel'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
 

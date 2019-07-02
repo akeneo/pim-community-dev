@@ -114,6 +114,15 @@ interface ProductInterface extends
     public function isEnabled();
 
     /**
+     * Get product completenesses
+     *
+     * TODO Remove getCompletenesses
+     *
+     * @return Collection of CompletenessInterface
+     */
+    public function getCompletenesses();
+
+    /**
      * Set product completenesses
      *
      * @param Collection $completenesses
