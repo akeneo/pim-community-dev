@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinA
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class AttachAttributeToFamilyHandler
+class AddAttributeToFamilyHandler
 {
     private $updateFamily;
 
@@ -34,7 +34,7 @@ class AttachAttributeToFamilyHandler
         $this->franklinAttributeAddedToFamilyRepository = $franklinAttributeAddedToFamilyRepository;
     }
 
-    public function handle(AttachAttributeToFamilyCommand $command)
+    public function handle(AddAttributeToFamilyCommand $command)
     {
         $this->updateFamily->addAttributeToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode());
 

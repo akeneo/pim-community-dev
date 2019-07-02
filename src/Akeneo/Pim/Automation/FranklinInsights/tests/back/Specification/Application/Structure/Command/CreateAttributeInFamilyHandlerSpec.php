@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyCommand;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
@@ -38,12 +38,12 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
     public function let(
         CreateAttributeInterface $createAttribute,
         FranklinAttributeCreatedRepositoryInterface $attributeCreatedRepository,
-        AttachAttributeToFamilyHandler $attachAttributeToFamilyHandler
+        AddAttributeToFamilyHandler $addAttributeToFamilyHandler
     ) {
         $this->beConstructedWith(
             $createAttribute,
             $attributeCreatedRepository,
-            $attachAttributeToFamilyHandler
+            $addAttributeToFamilyHandler
         );
     }
 
@@ -55,7 +55,7 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
     public function it_creates_an_attribute_and_adds_it_to_the_family(
         $createAttribute,
         $attributeCreatedRepository,
-        $attachAttributeToFamilyHandler
+        $addAttributeToFamilyHandler
     ) {
         $pimAttrCode = AttributeCode::fromLabel('Franklin attr label');
         $pimFamilyCode = new FamilyCode('my_family_code');
@@ -70,8 +70,8 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
 
         $attributeCreatedRepository->save(Argument::type(FranklinAttributeCreated::class));
 
-        $attachAttributeToFamilyHandler
-            ->handle(Argument::type(AttachAttributeToFamilyCommand::class))
+        $addAttributeToFamilyHandler
+            ->handle(Argument::type(AddAttributeToFamilyCommand::class))
             ->shouldBeCalled();
 
         $command = new CreateAttributeInFamilyCommand(
@@ -86,7 +86,7 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
     public function it_creates_a_text_attribute_for_a_metric_attribute(
         $createAttribute,
         $attributeCreatedRepository,
-        $attachAttributeToFamilyHandler
+        $addAttributeToFamilyHandler
     ) {
         $pimAttrCode = AttributeCode::fromLabel('Franklin metric attribute label');
         $pimFamilyCode = new FamilyCode('my_family_code');
@@ -101,8 +101,8 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
 
         $attributeCreatedRepository->save(Argument::type(FranklinAttributeCreated::class));
 
-        $attachAttributeToFamilyHandler
-            ->handle(Argument::type(AttachAttributeToFamilyCommand::class))
+        $addAttributeToFamilyHandler
+            ->handle(Argument::type(AddAttributeToFamilyCommand::class))
             ->shouldBeCalled();
 
         $command = new CreateAttributeInFamilyCommand(

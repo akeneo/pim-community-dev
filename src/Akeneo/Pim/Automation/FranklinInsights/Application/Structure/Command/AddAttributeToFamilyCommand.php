@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class AttachAttributeToFamilyCommand
+class AddAttributeToFamilyCommand
 {
     private $attributeCode;
 

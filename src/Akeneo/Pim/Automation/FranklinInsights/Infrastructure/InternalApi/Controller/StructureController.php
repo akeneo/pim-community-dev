@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyCommand;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
@@ -36,17 +36,17 @@ class StructureController
     /** @var CreateAttributeInFamilyHandler */
     private $createAttributeInFamilyHandler;
 
-    /** @var AttachAttributeToFamilyHandler */
-    private $attachAttributeToFamilyHandler;
+    /** @var AddAttributeToFamilyHandler */
+    private $addAttributeToFamilyHandler;
 
     public function __construct(
         SecurityFacade $securityFacade,
         CreateAttributeInFamilyHandler $createAttributeInFamilyHandler,
-        AttachAttributeToFamilyHandler $attachAttributeToFamilyHandler
+        AddAttributeToFamilyHandler $addAttributeToFamilyHandler
     ) {
         $this->securityFacade = $securityFacade;
         $this->createAttributeInFamilyHandler = $createAttributeInFamilyHandler;
-        $this->attachAttributeToFamilyHandler = $attachAttributeToFamilyHandler;
+        $this->addAttributeToFamilyHandler = $addAttributeToFamilyHandler;
     }
 
     public function createAttributeAction(Request $request): Response
@@ -72,7 +72,7 @@ class StructureController
         return new JsonResponse(['code' => (string)$pimAttributeCode]);
     }
 
-    public function attachAttributeToFamilyAction(Request $request): Response
+    public function addAttributeToFamilyAction(Request $request): Response
     {
         if (false === $request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -84,11 +84,11 @@ class StructureController
         $data = json_decode($request->getContent(), true);
 
         $pimAttributeCode = new AttributeCode($data['attributeCode']);
-        $command = new AttachAttributeToFamilyCommand(
+        $command = new AddAttributeToFamilyCommand(
             new AttributeCode($data['attributeCode']),
             new FamilyCode($data['familyCode'])
         );
-        $this->attachAttributeToFamilyHandler->handle($command);
+        $this->addAttributeToFamilyHandler->handle($command);
 
         return new JsonResponse([
             'code' => (string) $pimAttributeCode

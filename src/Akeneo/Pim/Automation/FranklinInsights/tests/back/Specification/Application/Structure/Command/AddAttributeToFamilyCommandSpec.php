@@ -13,7 +13,7 @@
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class AttachAttributeToFamilyCommandSpec extends ObjectBehavior
+class AddAttributeToFamilyCommandSpec extends ObjectBehavior
 {
     private $pimAttributeCode;
 
@@ -37,7 +37,7 @@ class AttachAttributeToFamilyCommandSpec extends ObjectBehavior
 
     public function it_should_be_an_attach_attribute_to_family_command(): void
     {
-        $this->shouldBeAnInstanceOf(AttachAttributeToFamilyCommand::class);
+        $this->shouldBeAnInstanceOf(AddAttributeToFamilyCommand::class);
 
         $this->getPimAttributeCode()->shouldBe($this->pimAttributeCode);
         $this->getPimFamilyCode()->shouldBe($this->pimFamilyCode);

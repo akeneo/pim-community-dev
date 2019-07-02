@@ -13,7 +13,7 @@
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -25,7 +25,7 @@ use Prophecy\Argument;
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class AttachAttributeToFamilyHandlerSpec extends ObjectBehavior
+class AddAttributeToFamilyHandlerSpec extends ObjectBehavior
 {
     public function let(
         AddAttributeToFamilyInterface $updateFamily,
@@ -38,7 +38,7 @@ class AttachAttributeToFamilyHandlerSpec extends ObjectBehavior
     public function it_attaches_an_attribute_to_a_family(
         AddAttributeToFamilyInterface $updateFamily,
         FranklinAttributeAddedToFamilyRepositoryInterface $franklinAttributeAddedToFamilyRepository,
-        AttachAttributeToFamilyCommand $command
+        AddAttributeToFamilyCommand $command
     ): void
     {
         $attributeCode = new AttributeCode('attribute_code');

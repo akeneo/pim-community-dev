@@ -3,7 +3,7 @@ akeneo_franklin_insights_structure_create_attribute:
     defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.structure:createAttributeAction }
     methods: [POST]
 
-akeneo_franklin_insights_structure_attach_attribute_to_family:
-    path: /attach_attribute_to_family
-    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.structure:attachAttributeToFamilyAction }
+akeneo_franklin_insights_structure_add_attribute_to_family:
+    path: /add_attribute_to_family
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.structure:addAttributeToFamilyAction }
     methods: [POST]

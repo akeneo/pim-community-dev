@@ -21,8 +21,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyCommand;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AttachAttributeToFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
@@ -85,9 +85,9 @@ final class AttributesMappingContext implements Context
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
     /**
-     * @var AttachAttributeToFamilyHandler
+     * @var AddAttributeToFamilyHandler
      */
-    private $attachAttributeToFamilyHandler;
+    private $addAttributeToFamilyHandler;
 
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
@@ -99,7 +99,7 @@ final class AttributesMappingContext implements Context
         InMemorySelectExactMatchAttributeCodeQuery $inMemorySelectExactMatchAttributeCodeQuery,
         InMemoryFamilyRepository $familyRepository,
         InMemoryAttributeRepository $attributeRepository,
-        AttachAttributeToFamilyHandler $attachAttributeToFamilyHandler
+        AddAttributeToFamilyHandler $addAttributeToFamilyHandler
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
@@ -110,7 +110,7 @@ final class AttributesMappingContext implements Context
         $this->inMemorySelectExactMatchAttributeCodeQuery = $inMemorySelectExactMatchAttributeCodeQuery;
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->attachAttributeToFamilyHandler = $attachAttributeToFamilyHandler;
+        $this->addAttributeToFamilyHandler = $addAttributeToFamilyHandler;
 
         $this->originalAttributesMapping = null;
         $this->retrievedFamilies = [];
@@ -235,12 +235,12 @@ final class AttributesMappingContext implements Context
     public function iAddTheAttributeToTheFamily(string $attributeCode, string $familyCode): void
     {
         try {
-            $command = new AttachAttributeToFamilyCommand(
+            $command = new AddAttributeToFamilyCommand(
                 new AttributeCode($attributeCode),
                 new FamilyCode($familyCode)
             );
 
-            $this->attachAttributeToFamilyHandler->handle($command);
+            $this->addAttributeToFamilyHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
         }

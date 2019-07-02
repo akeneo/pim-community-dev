@@ -31,16 +31,16 @@ class CreateAttributeInFamilyHandler
 
     private $franklinAttributeCreatedRepository;
 
-    private $attachAttributeToFamilyHandler;
+    private $addAttributeToFamilyHandler;
 
     public function __construct(
         CreateAttributeInterface $createAttribute,
         FranklinAttributeCreatedRepositoryInterface $franklinAttributeCreatedRepository,
-        AttachAttributeToFamilyHandler $attachAttributeToFamilyHandler
+        AddAttributeToFamilyHandler $addAttributeToFamilyHandler
     ) {
         $this->createAttribute = $createAttribute;
         $this->franklinAttributeCreatedRepository = $franklinAttributeCreatedRepository;
-        $this->attachAttributeToFamilyHandler = $attachAttributeToFamilyHandler;
+        $this->addAttributeToFamilyHandler = $addAttributeToFamilyHandler;
     }
 
     public function handle(CreateAttributeInFamilyCommand $command): void
@@ -57,7 +57,7 @@ class CreateAttributeInFamilyHandler
             new FranklinAttributeCreated($command->getPimAttributeCode(), $pimAttributeType)
         );
 
-        $this->attachAttributeToFamilyHandler->handle(new AttachAttributeToFamilyCommand(
+        $this->addAttributeToFamilyHandler->handle(new AddAttributeToFamilyCommand(
             $command->getPimAttributeCode(),
             $command->getPimFamilyCode()
         ));

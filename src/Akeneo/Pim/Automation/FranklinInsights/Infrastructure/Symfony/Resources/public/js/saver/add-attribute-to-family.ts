@@ -32,7 +32,7 @@ export default class AddAttributeToFamily {
     try {
       const response = await new Promise<AddAttributeToFamilyResponse>((resolve, reject) => {
         ajax({
-          url: Routing.generate('akeneo_franklin_insights_structure_attach_attribute_to_family'),
+          url: Routing.generate('akeneo_franklin_insights_structure_add_attribute_to_family'),
           method: 'POST',
           contentType: 'application/json',
           data: JSON.stringify(request)
