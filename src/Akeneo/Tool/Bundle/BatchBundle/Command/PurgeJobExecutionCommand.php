@@ -52,6 +52,9 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
             return;
         }
 
+        $this->deleteJobExecutionMessageOrphans();
+    }
+
         $deleteJobExecution = $this->getDeleteJobExecutionQuery();
         $numberOfDeletedJobExecution = $deleteJobExecution->olderThanDays($days);
 
@@ -64,5 +67,10 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     protected function getDeleteJobExecutionQuery(): DeleteJobExecution
     {
         return $this->getContainer()->get('akeneo_batch.delete_job_execution');
+    }
+
+    private function deleteJobExecutionMessageOrphans(): void
+    {
+        $this->getContainer()->get('akeneo_batch_queue.query.delete_job_execution_message_orphans')->execute();
     }
 }
