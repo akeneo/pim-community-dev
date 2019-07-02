@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.9 (2019-07-02)
+
 ## Bug fixes
 
 - PIM-8481: Fix space between long labels and buttons in simple selects
