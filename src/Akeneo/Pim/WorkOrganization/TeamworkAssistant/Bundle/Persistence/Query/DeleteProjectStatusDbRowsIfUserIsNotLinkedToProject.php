@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -35,15 +36,19 @@ class DeleteProjectStatusDbRowsIfUserIsNotLinkedToProject implements DeleteProje
 DELETE FROM pimee_teamwork_assistant_project_status
 WHERE user_id = :userId
 AND
-(SELECT COUNT(project_id)
-FROM oro_user_access_group g
-INNER JOIN pimee_teamwork_assistant_project_user_group pug
-ON pug.user_group_id = g.group_id
-WHERE g.user_id = :userId) = 0
+(
+    SELECT COUNT(project_id)
+    FROM oro_user_access_group uag
+    INNER JOIN pimee_teamwork_assistant_project_user_group pug ON pug.user_group_id = uag.group_id
+    INNER JOIN oro_access_group ag on uag.group_id = ag.id
+    WHERE uag.user_id = :userId
+    AND ag.name != :groupAll
+) = 0
 SQL;
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('userId', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue('groupAll', User::GROUP_DEFAULT, \PDO::PARAM_STR);
         $stmt->execute();
     }
 }
