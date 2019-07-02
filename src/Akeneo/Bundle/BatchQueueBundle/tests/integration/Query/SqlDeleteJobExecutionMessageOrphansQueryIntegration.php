@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Bundle\BatchQueueBundle\tests\integration\Query;
 
-use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Doctrine\DBAL\Driver\Connection;
 
 class SqlDeleteJobExecutionMessageOrphansQueryIntegration extends TestCase
