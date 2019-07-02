@@ -83,3 +83,8 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlGetPublishedProductCompletenesses'
         arguments:
             - '@database_connection'
+
+    pimee_workflow.query.save_published_product_completeneses:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlSavePublishedProductCompletenesses'
+        arguments:
+            - '@database_connection'
