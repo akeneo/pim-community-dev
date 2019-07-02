@@ -136,6 +136,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.save_product_completenesses:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlSaveProductCompletenesses'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers'
         arguments:
@@ -223,4 +228,3 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\CountVariantProducts
         arguments:
             - '@database_connection'
-
