@@ -37,7 +37,6 @@ class AkeneoReferenceEntityExtension extends Extension
         $loader->load('record_command_factories.yml');
         $loader->load('controllers.yml');
         $loader->load('enrichment.yml');
-        $loader->load('files.yml');
         $loader->load('filters.yml');
         $loader->load('handlers.yml');
         $loader->load('onboarder.yml');

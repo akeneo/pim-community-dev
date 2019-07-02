@@ -248,7 +248,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
-        $this->assertCount(8, $errors);
+        $this->assertCount(7, $errors);
         $this->assertContains(
             [
                 'property' => 'values.country[0].data',
@@ -294,13 +294,6 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $this->assertContains(
             [
                 'property' => 'values.year[0].data',
-                'message'  => 'Integer value found, but a string or a null is required'
-            ],
-            $errors
-        );
-        $this->assertContains(
-            [
-                'property' => 'values.website[0].data',
                 'message'  => 'Integer value found, but a string or a null is required'
             ],
             $errors

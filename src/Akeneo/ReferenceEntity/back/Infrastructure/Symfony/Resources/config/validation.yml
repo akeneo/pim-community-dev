@@ -295,33 +295,6 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNumberAttribu
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateUrlAttributeCommand:
-    group_sequence:
-        - CreateUrlAttributeCommand
-        - other_constraints
-    properties:
-        referenceEntityIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
-        code:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
-        labels:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
-        isRequired:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
-        valuePerChannel:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
-        valuePerLocale:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
-        mediaType:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\MediaType: ~
-        prefix:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Prefix: ~
-        suffix:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Suffix: ~
-    constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
-
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
     group_sequence:
         - EditAttributeCommand
@@ -394,21 +367,6 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMi
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxValue: ~
-
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditPrefixCommand:
-    properties:
-        prefix:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Prefix: ~
-
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditSuffixCommand:
-    properties:
-        suffix:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\Suffix: ~
-
-Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\Url\EditMediaTypeCommand:
-    properties:
-        mediaType:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Url\MediaType: ~
 
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
     properties:
