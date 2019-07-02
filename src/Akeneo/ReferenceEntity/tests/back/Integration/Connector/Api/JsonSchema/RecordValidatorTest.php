@@ -66,8 +66,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                 'main_image',           // image
                 'main_material',        // option
                 'materials',            // option collection
-                'year',                 // number
-                'website'               // url
+                'year'                  // number
             ])
             ->load();
     }
@@ -150,13 +149,6 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => '1949',
                     ],
                 ],
-                'website' => [
-                    [
-                        'locale' => null,
-                        'channel' => null,
-                        'data' => 'id-screenshot-website650'
-                    ]
-                ]
             ],
         ];
 
@@ -235,13 +227,6 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => 1949,
                     ],
                 ],
-                'website' => [
-                    [
-                        'locale' => null,
-                        'channel' => null,
-                        'data' => 250
-                    ]
-                ]
             ],
         ];
 
