@@ -15,8 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer;
-use Akeneo\Test\Common\EntityWithValue\Builder\Product;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -100,7 +99,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
 
         $serializer->normalize(
-            [$completeness],
+            new ArrayCollection([$completeness]),
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             []
         )->willReturn(['normalized_completeness']);
@@ -183,7 +182,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
         $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
-        $serializer->normalize([$completeness], ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+        $serializer->normalize(new ArrayCollection([$completeness]), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(
             [
                 'ecommerce' => [
@@ -326,12 +325,12 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             $completeness4
         ]);
         $serializer->normalize(
-            [
+            new ArrayCollection([
                 $completeness1,
                 $completeness2,
                 $completeness3,
                 $completeness4
-            ],
+            ]),
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             []
         )->willReturn(
@@ -524,7 +523,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 0, []);
         $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
-        $serializer->normalize([$completeness], ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+        $serializer->normalize(new ArrayCollection([$completeness]), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
             ->willReturn(['normalized_completeness']);
 
         $variantProduct->getParent()->willReturn($subProductModel);
@@ -646,7 +645,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
         $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
-        $serializer->normalize([$completeness], ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+        $serializer->normalize(new ArrayCollection([$completeness]), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(
             [
                 'ecommerce' => [
@@ -807,7 +806,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $completeness = new ProductCompleteness('channelCode', 'localeCode', 0, []);
         $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
 
-        $serializer->normalize([$completeness], ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+        $serializer->normalize(new ArrayCollection([$completeness]), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(['normalized_completeness']);
 
         $normalizer1

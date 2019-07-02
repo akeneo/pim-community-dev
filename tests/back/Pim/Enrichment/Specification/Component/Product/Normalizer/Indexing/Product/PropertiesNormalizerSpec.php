@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -74,6 +75,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->isVariant()->willReturn(false);
 
         $getProductCompletenesses->fromProductId(67)->willReturn([]);
+        $serializer->normalize(new ArrayCollection(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn([]);
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
@@ -133,7 +135,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $completeness = new ProductCompleteness('channelCode', 'localCode', 0, []);
         $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
 
-        $serializer->normalize([$completeness], ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(['normalized_completeness']);
+        $serializer->normalize(new ArrayCollection([$completeness]), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(['normalized_completeness']);
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
@@ -202,7 +204,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
         $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
-        $serializer->normalize([$completeness], ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
+        $serializer->normalize(new ArrayCollection([$completeness]), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
             [
                 'ecommerce' => [
                     'en_US' => [
@@ -399,6 +401,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
 
         $getProductCompletenesses->fromProductId(67)->willReturn([]);
+        $serializer->normalize(new ArrayCollection(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn([]);
 
         $product->getValues()->willReturn($valueCollection);
         $valueCollection->isEmpty()->willReturn(true);
