@@ -52,13 +52,12 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
             return;
         }
 
-        $this->deleteJobExecutionMessageOrphans();
-    }
-
         $deleteJobExecution = $this->getDeleteJobExecutionQuery();
         $numberOfDeletedJobExecution = $deleteJobExecution->olderThanDays($days);
 
         $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecution));
+
+        $this->deleteJobExecutionMessageOrphans();
     }
 
     /**
