@@ -3,7 +3,9 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -38,6 +40,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ImageAsLabel $imageAsLabel,
         CatalogContext $catalogContext,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        GetProductCompletenesses $getProductCompletenesses,
         AxisValueLabelsNormalizer $simpleSelectOptionNormalizer,
         AxisValueLabelsNormalizer $metricNormalizer
     ) {
@@ -51,6 +54,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $imageAsLabel,
             $catalogContext,
             $attributeOptionRepository,
+            $getProductCompletenesses,
             $simpleSelectOptionNormalizer,
             $metricNormalizer
         );
@@ -69,6 +73,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $attributesProvider,
         $completenessCollectionNormalizer,
         $completenessCalculator,
+        $getProductCompletenesses,
         ProductInterface $variantProduct,
         AttributeInterface $colorAttribute,
         AttributeInterface $sizeAttribute,
@@ -81,7 +86,6 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         AttributeOptionValueInterface $colorAttributeOptionValue,
         CompletenessInterface $completeness1,
         CompletenessInterface $completeness2,
-        Collection $productCompletenesses,
         $attributeOptionRepository,
         $simpleSelectOptionNormalizer,
         $metricNormalizer
@@ -134,13 +138,10 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getImage()->willReturn(null);
 
-        $variantProduct->getCompletenesses()->willReturn($productCompletenesses);
+        $getProductCompletenesses->fromProductId(42)->willReturn([]);
+        $completenessCollectionNormalizer->normalize([], 'internal_api')->willReturn(['NORMALIZED_COMPLETENESS']);
 
-        $productCompletenesses->isEmpty()->willReturn(true);
         $completenessCalculator->calculate($variantProduct)->willReturn($completeness1, $completeness2);
-
-        $completenessCollectionNormalizer->normalize($productCompletenesses, 'internal_api')
-            ->willReturn(['NORMALIZED_COMPLETENESS']);
 
         $simpleSelectOptionNormalizer->supports(Argument::any())->willReturn(false);
         $simpleSelectOptionNormalizer->supports('pim_catalog_simpleselect')->willReturn(true);

@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -16,8 +18,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class PropertiesNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
-    {
+    function let(
+        SerializerInterface $serializer,
+        GetProductCompletenesses $getProductCompletenesses
+    ) {
+        $this->beConstructedWith($getProductCompletenesses);
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
     }
@@ -37,9 +42,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_properties_with_empty_fields_and_values(
         $serializer,
+        $getProductCompletenesses,
         ProductInterface $product,
-        WriteValueCollection $valueCollection,
-        Collection $completenesses
+        WriteValueCollection $valueCollection
     ) {
         $product->getId()->willReturn(67);
         $family = null;
@@ -67,8 +72,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $valueCollection->isEmpty()->willReturn(true);
 
         $product->isVariant()->willReturn(false);
-        $product->getCompletenesses()->willReturn($completenesses);
-        $completenesses->isEmpty()->willReturn(true);
+
+        $getProductCompletenesses->fromProductId(67)->willReturn([]);
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
@@ -90,10 +95,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_with_completenesses(
         $serializer,
+        $getProductCompletenesses,
         ProductInterface $product,
-        WriteValueCollection $valueCollection,
-        Collection $completenesses,
-        AttributeInterface $sku
+        WriteValueCollection $valueCollection
     ) {
         $product->getId()->willReturn(67);
         $family = null;
@@ -125,10 +129,11 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $valueCollection->isEmpty()->willReturn(true);
 
         $product->isVariant()->willReturn(false);
-        $product->getCompletenesses()->willReturn($completenesses);
-        $completenesses->isEmpty()->willReturn(false);
 
-        $serializer->normalize($completenesses, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(['the completenesses']);
+        $completeness = new ProductCompleteness('channelCode', 'localCode', 0, []);
+        $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
+
+        $serializer->normalize([$completeness], ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(['normalized_completeness']);
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
@@ -140,7 +145,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'enabled'       => false,
                 'categories'    => [],
                 'groups'        => [],
-                'completeness'  => ['the completenesses'],
+                'completeness'  => ['normalized_completeness'],
                 'values'        => [],
                 'label'         => [],
                 'ancestors'     => ['ids' => [], 'codes' => []],
@@ -150,10 +155,10 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_fields_and_values(
         $serializer,
+        $getProductCompletenesses,
         ProductInterface $product,
         WriteValueCollection $valueCollection,
         FamilyInterface $family,
-        Collection $completenesses,
         AttributeInterface $sku
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -195,9 +200,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completenesses->isEmpty()->willReturn(false);
-        $product->getCompletenesses()->willReturn($completenesses);
-        $serializer->normalize($completenesses, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
+        $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
+        $getProductCompletenesses->fromProductId(67)->willReturn([$completeness]);
+        $serializer->normalize([$completeness], ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
             [
                 'ecommerce' => [
                     'en_US' => [
@@ -332,6 +337,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product_updated_at_with_youngest_date_in_ancestors(
         $serializer,
+        $getProductCompletenesses,
         ProductInterface $product,
         ProductModelInterface $subProductModel,
         ProductModelInterface $rootProductModel,
@@ -392,11 +398,10 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getGroupCodes()->willReturn([]);
         $product->getCategoryCodes()->willReturn([]);
 
-        $completenesses->isEmpty()->willReturn(true);
-        $product->isVariant()->willReturn(true);
-        $product->getCompletenesses()->willReturn($completenesses);
-        $valueCollection->isEmpty()->willReturn(true);
+        $getProductCompletenesses->fromProductId(67)->willReturn([]);
+
         $product->getValues()->willReturn($valueCollection);
+        $valueCollection->isEmpty()->willReturn(true);
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [

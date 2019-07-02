@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -60,7 +61,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
-        CatalogContext $catalogContext
+        CatalogContext $catalogContext,
+        GetProductCompletenesses $getProductCompletenesses
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -86,7 +88,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $incompleteValuesNormalizer,
             $missingAssociationAdder,
             $parentAssociationsNormalizer,
-            $catalogContext
+            $catalogContext,
+            $getProductCompletenesses
         );
     }
 
@@ -111,6 +114,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productValuesFiller,
         $incompleteValuesNormalizer,
         $missingAssociationAdder,
+        $getProductCompletenesses,
+        $completenessCalculator,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -194,7 +199,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $mug->getCompletenesses()->willReturn(new ArrayCollection(['']));
+        $getProductCompletenesses->fromProductId(12)->willReturn([]);
+        $completenessCalculator->calculate($mug)->willReturn([]);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
@@ -264,6 +270,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $ascendantCategories,
         $incompleteValuesNormalizer,
         $missingAssociationAdder,
+        $getProductCompletenesses,
+        $completenessCalculator,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -352,7 +360,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $mug->getCompletenesses()->willReturn(new ArrayCollection(['']));
+        $getProductCompletenesses->fromProductId(12)->willReturn([]);
+        $completenessCalculator->calculate($mug)->willReturn([]);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');

@@ -2,6 +2,8 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
@@ -19,9 +21,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductAssociationNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, ImageNormalizer $imageNormalizer)
-    {
-        $this->beConstructedWith($imageNormalizer);
+    function let(
+        SerializerInterface $serializer,
+        ImageNormalizer $imageNormalizer,
+        GetProductCompletenesses $getProductCompletenesses
+    ) {
+        $this->beConstructedWith($imageNormalizer, $getProductCompletenesses);
 
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
@@ -49,12 +54,10 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_with_label(
         $serializer,
         $imageNormalizer,
+        $getProductCompletenesses,
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        Completeness $completeness,
-        LocaleInterface $localeEN,
-        ChannelInterface $channelEcommerce,
         ProductInterface $currentProduct,
         ValueInterface $image
     ) {
@@ -70,6 +73,8 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $currentProduct->getAssociations()->willReturn([]);
 
         $product->getFamily()->willReturn($family);
+        $product->getId()->willReturn(42);
+
         $family->getCode()->willReturn('tshirt');
         $family->getTranslation('en_US')->willReturn($familyEN);
         $familyEN->getLabel()->willReturn('Tshirt');
@@ -84,13 +89,10 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $product->getUpdated()->willReturn($updated);
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
-        $product->getCompletenesses()->willReturn([$completeness]);
-        $completeness->getLocale()->willReturn($localeEN);
-        $completeness->getChannel()->willReturn($channelEcommerce);
-        $completeness->getRatio()->willReturn(76);
 
-        $localeEN->getCode()->willReturn('en_US');
-        $channelEcommerce->getCode()->willReturn('ecommerce');
+        $getProductCompletenesses->fromProductId(42)->willReturn([
+            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
+        ]);
 
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
@@ -107,7 +109,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
             'is_checked'    => false,
             'is_associated' => false,
             'label'         => 'Purple tshirt',
-            'completeness'  => 76,
+            'completeness'  => 90,
             'image'         => [
                 'filePath' => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
@@ -120,6 +122,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_without_label(
         $serializer,
         $imageNormalizer,
+        $getProductCompletenesses,
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
@@ -141,6 +144,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $currentProduct->getAssociations()->willReturn([]);
 
         $product->getFamily()->willReturn($family);
+        $product->getId()->willReturn(42);
         $family->getCode()->willReturn('tshirt');
         $family->getTranslation('en_US')->willReturn($familyEN);
         $familyEN->getLabel()->willReturn(null);
@@ -155,13 +159,10 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $product->getUpdated()->willReturn($updated);
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
-        $product->getCompletenesses()->willReturn([$completeness]);
-        $completeness->getLocale()->willReturn($localeEN);
-        $completeness->getChannel()->willReturn($channelEcommerce);
-        $completeness->getRatio()->willReturn(76);
 
-        $localeEN->getCode()->willReturn('en_US');
-        $channelEcommerce->getCode()->willReturn('ecommerce');
+        $getProductCompletenesses->fromProductId(42)->willReturn([
+            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
+        ]);
 
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
@@ -178,7 +179,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
             'is_checked'    => false,
             'is_associated' => false,
             'label'         => 'Purple tshirt',
-            'completeness'  => 76,
+            'completeness'  => 90,
             'image'         => [
                 'filePath' => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',

@@ -2,12 +2,13 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -23,9 +24,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, CollectionFilterInterface $filter, ImageNormalizer $imageNormalizer)
-    {
-        $this->beConstructedWith($filter, $imageNormalizer);
+    function let(
+        NormalizerInterface $normalizer,
+        CollectionFilterInterface $filter,
+        ImageNormalizer $imageNormalizer,
+        GetProductCompletenesses $getProductCompletenesses
+    ) {
+        $this->beConstructedWith($filter, $imageNormalizer, $getProductCompletenesses);
 
         $normalizer->implement(NormalizerInterface::class);
         $this->setNormalizer($normalizer);
@@ -54,15 +59,13 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $imageNormalizer,
+        $getProductCompletenesses,
         ProductInterface $product,
         GroupInterface $promotion,
         GroupTranslationInterface $promotionEN,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
         WriteValueCollection $values,
-        Completeness $completeness,
-        LocaleInterface $localeEN,
-        ChannelInterface $channelEcommerce,
         ValueInterface $image
     ) {
         $context = [
@@ -108,18 +111,16 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getUpdated()->willReturn($updated);
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
-        $product->getCompletenesses()->willReturn([$completeness]);
+
+        $getProductCompletenesses->fromProductId(78)->willReturn([
+            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attribute'])
+        ]);
+
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
-        $completeness->getLocale()->willReturn($localeEN);
-        $completeness->getChannel()->willReturn($channelEcommerce);
-        $completeness->getRatio()->willReturn(76);
-
-        $localeEN->getCode()->willReturn('en_US');
-        $channelEcommerce->getCode()->willReturn('ecommerce');
 
         $data = [
             'identifier'   => 'purple_tshirt',
@@ -142,7 +143,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'completeness' => 76,
+            'completeness' => 90,
             'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
@@ -158,13 +159,13 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $imageNormalizer,
+        $getProductCompletenesses,
         ProductInterface $product,
         GroupInterface $promotion,
         GroupTranslationInterface $promotionEN,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
         WriteValueCollection $productValues,
-        Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ValueInterface $image
@@ -212,18 +213,15 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getUpdated()->willReturn($updated);
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
-        $product->getCompletenesses()->willReturn([$completeness]);
+
+        $getProductCompletenesses->fromProductId(78)->willReturn([
+            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attribute'])
+        ]);
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png'
         ]);
-        $completeness->getLocale()->willReturn($localeEN);
-        $completeness->getChannel()->willReturn($channelEcommerce);
-        $completeness->getRatio()->willReturn(76);
-
-        $localeEN->getCode()->willReturn('en_US');
-        $channelEcommerce->getCode()->willReturn('ecommerce');
 
         $data = [
             'identifier'   => 'purple_tshirt',
@@ -246,7 +244,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'completeness' => 76,
+            'completeness' => 90,
             'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
@@ -262,6 +260,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $imageNormalizer,
+        $getProductCompletenesses,
         ProductInterface $product,
         ProductModelInterface $productModel,
         GroupInterface $promotion,
@@ -269,9 +268,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
         WriteValueCollection $productValues,
-        Completeness $completeness,
-        LocaleInterface $localeEN,
-        ChannelInterface $channelEcommerce,
         ValueInterface $image
     ) {
         $context = [
@@ -320,18 +316,15 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getUpdated()->willReturn($updated);
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
-        $product->getCompletenesses()->willReturn([$completeness]);
+
+        $getProductCompletenesses->fromProductId(78)->willReturn([
+            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
+        ]);
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png'
         ]);
-        $completeness->getLocale()->willReturn($localeEN);
-        $completeness->getChannel()->willReturn($channelEcommerce);
-        $completeness->getRatio()->willReturn(76);
-
-        $localeEN->getCode()->willReturn('en_US');
-        $channelEcommerce->getCode()->willReturn('ecommerce');
 
         $data = [
             'identifier'   => 'purple_tshirt',
@@ -354,7 +347,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'completeness' => 76,
+            'completeness' => 90,
             'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
