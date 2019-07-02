@@ -235,6 +235,9 @@ define(
                         'zone "' + extension.targetZone + '" does not exist');
                 }
 
+                zone.appendChild(document.createComment('FORM - extension: "' + extension.code + '" in: "' +
+                    this.code + '": ' + 'zone: "' + extension.targetZone + '"'));
+
                 zone.appendChild(extension.el);
 
                 extension.render();
