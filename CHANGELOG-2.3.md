@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.52 (2019-07-02)
+
 ## Bug fixes
 
 - PIM-8474: Fix user deletion when he belongs to only the group All and he is a project contributor
