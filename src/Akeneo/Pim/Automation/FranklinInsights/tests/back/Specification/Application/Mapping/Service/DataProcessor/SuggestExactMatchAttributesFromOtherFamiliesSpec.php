@@ -17,23 +17,23 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Attribu
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectExactMatchAttributeCodeFromOtherFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectExactMatchAttributeCodesFromOtherFamiliesQuery;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class SuggestAttributeExactMatchesFromOtherFamilySpec extends ObjectBehavior
+class SuggestExactMatchAttributesFromOtherFamiliesSpec extends ObjectBehavior
 {
     public function let(
-        SelectExactMatchAttributeCodeFromOtherFamilyQuery $selectExactMatchAttributeCodeFromOtherFamilyQuery
+        SelectExactMatchAttributeCodesFromOtherFamiliesQuery $selectExactMatchAttributeCodesFromOtherFamiliesQuery
     ): void
     {
-        $this->beConstructedWith($selectExactMatchAttributeCodeFromOtherFamilyQuery);
+        $this->beConstructedWith($selectExactMatchAttributeCodesFromOtherFamiliesQuery);
     }
 
     public function it_suggests_attributes_from_other_family(
-        SelectExactMatchAttributeCodeFromOtherFamilyQuery $selectExactMatchAttributeCodeFromOtherFamilyQuery
+        SelectExactMatchAttributeCodesFromOtherFamiliesQuery $selectExactMatchAttributeCodesFromOtherFamiliesQuery
     ): void
     {
         $familyCode = new FamilyCode('family_code');
@@ -54,7 +54,7 @@ class SuggestAttributeExactMatchesFromOtherFamilySpec extends ObjectBehavior
             ->addAttribute(new AttributeMapping('size', 'Size', 'text', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE))
         ;
 
-        $selectExactMatchAttributeCodeFromOtherFamilyQuery
+        $selectExactMatchAttributeCodesFromOtherFamiliesQuery
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
 

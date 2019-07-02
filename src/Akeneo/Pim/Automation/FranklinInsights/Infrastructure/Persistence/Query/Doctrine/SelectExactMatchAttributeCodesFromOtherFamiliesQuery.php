@@ -20,7 +20,7 @@ use Doctrine\DBAL\Connection;
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class SelectExactMatchAttributeCodeFromOtherFamilyQuery
+class SelectExactMatchAttributeCodesFromOtherFamiliesQuery
 {
     private $connection;
 

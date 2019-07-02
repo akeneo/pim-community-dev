@@ -95,6 +95,6 @@ services:
             - '@monolog.logger.franklin'
 
     akeneo.pim.automation.franklin_insights.application.mapping.service.data_processor.suggest_attribute_exact_matches_from_other_family:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\SuggestAttributeExactMatchesFromOtherFamily'
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\SuggestExactMatchAttributesFromOtherFamilies'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.doctrine.select_exact_match_attribute_code_from_other_family_query'
