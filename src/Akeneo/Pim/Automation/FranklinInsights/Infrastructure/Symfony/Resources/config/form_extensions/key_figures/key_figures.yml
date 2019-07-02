@@ -51,7 +51,7 @@ extensions:
         config:
             axes: [credits_total, credits_consumed, credits_left]
 
-    akeneo-franklin-insights-key-figures-attributes:
+    akeneo-franklin-insights-key-figures-structure-improvements:
         module: akeneo/franklin-insights/view/key-figures/section-header
         parent: akeneo-franklin-insights-key-figures-index
         targetZone: content
@@ -59,9 +59,9 @@ extensions:
         config:
             title: akeneo_franklin_insights.key_figures.section_title.key_figures
 
-    akeneo-franklin-insights-key-figures-attributes-content:
+    akeneo-franklin-insights-key-figures-structure-improvements-content:
         module: akeneo/franklin-insights/view/key-figures/section
-        parent: akeneo-franklin-insights-key-figures-attributes
+        parent: akeneo-franklin-insights-key-figures-structure-improvements
         targetZone: content
         config:
-            axes: [franklin_attribute_created, franklin_attributed_added_to_family]
+            axes: [franklin_attribute_created, franklin_attribute_added_to_family]
