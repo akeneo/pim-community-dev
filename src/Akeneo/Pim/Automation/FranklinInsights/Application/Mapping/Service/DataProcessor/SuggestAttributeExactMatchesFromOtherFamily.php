@@ -61,22 +61,23 @@ class SuggestAttributeExactMatchesFromOtherFamily implements AttributeMappingCol
         $newMapping = new AttributeMappingCollection();
 
         foreach ($attributeMappingCollection as $attributeMapping) {
-            $pimAttributeCode = $attributeMapping->getPimAttributeCode();
+            $exactMatchAttributeFromOtherFamily = null;
 
             if (
                 $attributeMapping->getStatus() === AttributeMappingStatus::ATTRIBUTE_PENDING &&
                 array_key_exists($attributeMapping->getTargetAttributeLabel(), $matchedPimAttributeCodes)
             ) {
-                $pimAttributeCode = $matchedPimAttributeCodes[$attributeMapping->getTargetAttributeLabel()];
+                $exactMatchAttributeFromOtherFamily = $matchedPimAttributeCodes[$attributeMapping->getTargetAttributeLabel()];
             }
 
             $newAttributeMapping = new AttributeMapping(
                 $attributeMapping->getTargetAttributeCode(),
                 $attributeMapping->getTargetAttributeLabel(),
                 $attributeMapping->getTargetAttributeType(),
-                $pimAttributeCode,
+                $attributeMapping->getPimAttributeCode(),
                 $attributeMapping->getStatus(),
-                $attributeMapping->getSummary()
+                $attributeMapping->getSummary(),
+                $exactMatchAttributeFromOtherFamily
             );
             $newMapping->addAttribute($newAttributeMapping);
         }

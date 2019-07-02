@@ -171,7 +171,7 @@ class AttributeMapping extends BaseView {
             isDuplicatedAttribute
           );
 
-          if (true === this.isAllowedToCreateAttribute(attributeMapping)) {
+          if (true === attributeMapping.canCreateAttribute) {
             const createAttributeButton = this.appendCreateAttributeButton(
               franklinAttributeCode,
               familyMapping.code,
@@ -184,15 +184,14 @@ class AttributeMapping extends BaseView {
               this.suggestAttributeMapping(franklinAttributeCode, catalogAttributeCode);
               this.render();
             });
-          }
-
-          if (true === this.isAllowedToAddAttributeToFamily(attributeMapping)) {
+          } else if (null !== attributeMapping.exactMatchAttributeFromOtherFamily) {
             const addAttributeToFamilyButton = this.appendAddAttributeToFamilyButton(
-              franklinAttributeCode,
+              attributeMapping.exactMatchAttributeFromOtherFamily,
               familyMapping.code
             );
 
             addAttributeToFamilyButton.on('attribute_added_to_family', (catalogAttributeCode: string) => {
+              attributeMapping.exactMatchAttributeFromOtherFamily = null;
               addAttributeToFamilyButton.remove();
 
               this.suggestAttributeMapping(franklinAttributeCode, catalogAttributeCode);
@@ -359,25 +358,6 @@ class AttributeMapping extends BaseView {
     $host.append(attributeTypeMismatchWarning.render().el);
 
     return attributeTypeMismatchWarning;
-  }
-
-  private isAllowedToCreateAttribute(franklinAttributeMapping: IAttributeMapping): boolean {
-    if (null !== franklinAttributeMapping.attribute && '' !== franklinAttributeMapping.attribute) {
-      return false;
-    }
-    if (AttributeMappingStatus.ATTRIBUTE_PENDING !== franklinAttributeMapping.status) {
-      return false;
-    }
-
-    return true;
-  }
-
-  private isAllowedToAddAttributeToFamily(franklinAttributeMapping: IAttributeMapping): boolean {
-    return (
-      null !== franklinAttributeMapping.attribute &&
-      '' !== franklinAttributeMapping.attribute &&
-      AttributeMappingStatus.ATTRIBUTE_PENDING === franklinAttributeMapping.status
-    );
   }
 
   /**

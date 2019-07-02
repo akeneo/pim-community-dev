@@ -40,13 +40,16 @@ class AttributeMapping
     /** @var string[]|null */
     private $summary;
 
+    private $exactMatchAttributeFromOtherFamily;
+
     /**
      * @param string $targetAttributeCode
      * @param string|null $targetAttributeLabel
      * @param string|null $targetAttributeType
      * @param string|null $pimAttributeCode
-     * @param int $status
+     * @param string $status
      * @param string[]|null $summary
+     * @param string|null $exactMatchAttributeFromOtherFamily
      */
     public function __construct(
         string $targetAttributeCode,
@@ -54,7 +57,8 @@ class AttributeMapping
         ?string $targetAttributeType,
         ?string $pimAttributeCode,
         string $status,
-        ?array $summary = null
+        ?array $summary = null,
+        ?string $exactMatchAttributeFromOtherFamily = null
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
         $this->targetAttributeLabel = $targetAttributeLabel;
@@ -62,6 +66,7 @@ class AttributeMapping
         $this->pimAttributeCode = $pimAttributeCode;
         $this->status = $status;
         $this->summary = $summary;
+        $this->exactMatchAttributeFromOtherFamily = $exactMatchAttributeFromOtherFamily;
     }
 
     /**
@@ -125,4 +130,23 @@ class AttributeMapping
     {
         return AttributeMappingStatus::ATTRIBUTE_INACTIVE === $this->status;
     }
+
+    public function isPending(): bool
+    {
+        return AttributeMappingStatus::ATTRIBUTE_PENDING === $this->status;
+    }
+
+    public function getExactMatchAttributeFromOtherFamily(): ?string
+    {
+        return $this->exactMatchAttributeFromOtherFamily;
+    }
+
+    public function canCreateAttribute(): bool
+    {
+        return (
+            true === $this->isPending() &&
+            null === $this->getExactMatchAttributeFromOtherFamily()
+        );
+    }
+
 }

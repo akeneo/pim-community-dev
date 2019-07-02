@@ -48,6 +48,9 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this->getSummary()->shouldReturn(['Hair care']);
         $this->isMapped()->shouldReturn(true);
+        $this->isPending()->shouldReturn(false);
+        $this->getExactMatchAttributeFromOtherFamily()->shouldReturn(null);
+        $this->canCreateAttribute()->shouldReturn(false);
     }
 
     public function it_can_have_null_target_label_and_summary(): void
@@ -101,5 +104,36 @@ class AttributeMappingSpec extends ObjectBehavior
             null
         );
         $this->isMapped()->shouldReturn(false);
+    }
+
+    public function it_can_create_attribute_from_franklin(): void
+    {
+        $this->beConstructedWith(
+            'series',
+            'Series',
+            'text',
+            null,
+            AttributeMappingStatus::ATTRIBUTE_PENDING,
+            null,
+            null
+        );
+
+        $this->canCreateAttribute()->shouldReturn(true);
+    }
+
+    public function it_has_exact_match_from_other_family(): void
+    {
+        $this->beConstructedWith(
+            'series',
+            'Series',
+            'text',
+            null,
+            AttributeMappingStatus::ATTRIBUTE_PENDING,
+            null,
+            'pim_series'
+        );
+
+        $this->canCreateAttribute()->shouldReturn(false);
+        $this->getExactMatchAttributeFromOtherFamily()->shouldReturn('pim_series');
     }
 }

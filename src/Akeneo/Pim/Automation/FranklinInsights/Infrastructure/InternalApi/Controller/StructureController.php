@@ -82,7 +82,7 @@ class StructureController
         }
 
         $data = json_decode($request->getContent(), true);
-die(__METHOD__);
+
         $pimAttributeCode = new AttributeCode($data['attributeCode']);
         $command = new AttachAttributeToFamilyCommand(
             new AttributeCode($data['attributeCode']),
