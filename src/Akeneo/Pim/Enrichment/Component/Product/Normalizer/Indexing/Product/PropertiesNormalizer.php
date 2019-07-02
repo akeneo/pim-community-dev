@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -73,7 +74,11 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
 
-        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        // TODO Use CollectionProductCompleteness and create a normalizer for it
+        $completenesses = new ArrayCollection();
+        foreach ($this->getProductCompletenesses->fromProductId($product->getId()) as $completeness) {
+            $completenesses->add($completeness);
+        }
 
         $data[self::FIELD_COMPLETENESS] = (count($completenesses) > 0)
             ? $this->serializer->normalize(
