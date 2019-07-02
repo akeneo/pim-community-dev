@@ -183,7 +183,7 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
-             '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
             - !tagged pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties
 
         tags:
