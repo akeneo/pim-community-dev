@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.28 (2019-07-02)
+
 ## Bug fixes
 
 - PIM-7894: Fix metric and price filters design
