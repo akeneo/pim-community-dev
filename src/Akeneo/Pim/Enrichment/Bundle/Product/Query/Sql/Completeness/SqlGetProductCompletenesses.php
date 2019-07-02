@@ -42,7 +42,7 @@ SQL;
         $rows = $this->connection->executeQuery($sql, ['productId' => $productId])->fetchAll();
 
         return array_map(
-            function (array $row) use ($productId): ProductCompleteness {
+            function (array $row): ProductCompleteness {
                 return new ProductCompleteness(
                     $row['channel_code'],
                     $row['locale_code'],
