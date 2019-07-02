@@ -130,7 +130,14 @@ services:
         arguments:
             - '@pimee_teamwork_assistant.query.sql.delete_project_status_if_user_is_not_linked_to_project'
         tags:
-            - { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber, priority: 0 }
+
+    pimee_teamwork_assistant.event_subscriber.ensure_user_can_be_deleted:
+        class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\EnsureUserCanBeDeletedSubscriber'
+        arguments:
+            - '@pimee_teamwork_assistant.query.sql.is_user_linked_to_project'
+        tags:
+            - { name: kernel.event_subscriber, priority: 10 }
 
     ### Widget
     pimee_teamwork_assistant.widget.completeness:
@@ -202,5 +209,10 @@ services:
     ### Queries
     pimee_teamwork_assistant.query.sql.delete_project_status_if_user_is_not_linked_to_project:
         class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\Query\Sql\DeleteProjectStatusDbRowsIfUserIsNotLinkedToProject'
+        arguments:
+            - '@database_connection'
+
+    pimee_teamwork_assistant.query.sql.is_user_linked_to_project:
+        class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\Query\Sql\IsUserLinkedToProjectsQuery'
         arguments:
             - '@database_connection'
