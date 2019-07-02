@@ -1,8 +1,19 @@
 # 3.0.x
 
+# 3.0.28 (2019-07-02)
+
+## Bug fixes
+
+- PIM-7894: Fix metric and price filters design
+- PIM-8447: Fix deformed images in dropdowns and grids
+
+# 3.0.27 (2019-06-27)
+
 ## Bug fixes
 
 - PIM-8413: Fix modal of category selection in product and product model exports
+- PIM-8477: Fix rich text area link dialog
+- PIM-8463: On import profiles, displays an explicit error message when file upload fails, for example when the file is too big
 
 # 3.0.26 (2019-06-21)
 

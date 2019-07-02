@@ -40,6 +40,7 @@ define(
              */
             postRender: function () {
                 this.$('textarea:not(.note-codable)').summernote({
+                    onToolbarClick: this.setStyleForLinkModal,
                     disableResizeEditor: true,
                     height: 200,
                     iconPrefix: 'icon-',
@@ -94,6 +95,39 @@ define(
              */
             moveModalBackdrop: function () {
                 $('.modal-backdrop').prependTo('.AknFullPage');
+            },
+
+            /**
+             * Since 3.0, default pages includes a lot of .sticky and .fixed elements. It implies it's impossible to
+             * display elements on top of the page, without setting z-index in every element of the page.
+             * Here, summernote create a modal directly from the button, and this modal is hidden in the bottom of the
+             * page. We override the default behavior of the modal opening, to put it in the root of the <body>, then
+             * put it back once user selected its link.
+             *
+             * @param jqueryEvent
+             */
+            setStyleForLinkModal: function (jqueryEvent) {
+                const source = $(jqueryEvent.originalEvent.path[0]);
+
+                if (source.hasClass('icon-link') || source.hasClass('btn-sm')) {
+                    const modal = $('.note-link-dialog.modal');
+
+                    // Set PIM style
+                    modal.find('.note-link-text, .note-link-url').addClass('AknTextField');
+                    modal.find('label').addClass('AknFieldContainer-label');
+                    modal.find('.form-group.row').addClass('AknFieldContainer');
+                    modal.find('.modal-title').addClass('AknFullPage-subTitle');
+                    modal.find('.btn.btn-primary.note-link-btn').addClass('AknButton AknButton--apply');
+                    modal.find('.modal-footer').addClass('AknButtonList AknButtonList--single');
+                    modal.find('.close').addClass('AknFullPage-cancel');
+
+                    // Move Dialog to <body>
+                    const oreviousParent = modal.parent();
+                    modal.appendTo('body');
+                    modal.one('hidden.bs.modal', function () {
+                        modal.appendTo(oreviousParent);
+                    });
+                }
             }
         });
     }
