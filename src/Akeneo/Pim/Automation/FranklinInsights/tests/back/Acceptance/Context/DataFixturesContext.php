@@ -34,6 +34,7 @@ use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\
 use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryProductSubscriptionRepository;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
@@ -357,6 +358,22 @@ class DataFixturesContext implements Context
         $identifiersMapping = $this->identifiersMappingRepository->find();
         $identifiersMapping->map($franklinIdentifier, null);
         $this->identifiersMappingRepository->save($identifiersMapping);
+    }
+
+    /**
+     * @Given the attribute :attributeCode is not in family :familyCode
+     */
+    public function theAttributeIsNotInFamily($attributeCode, $familyCode)
+    {
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
+
+        if ($family->hasAttributeCode($attributeCode))
+        {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $family->removeAttribute($attribute);
+            $this->familyRepository->save($family);
+
+        }
     }
 
     /**
