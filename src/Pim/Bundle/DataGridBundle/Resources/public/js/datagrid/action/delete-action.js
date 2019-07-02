@@ -104,20 +104,23 @@ define([
              * @return {oro.Modal}
              */
             getErrorDialog: function(response) {
-                if (!this.errorModal) {
-                    try {
-                        var response = JSON.parse(response);
-                        var message = response.message;
-                    } catch(e) {
-                        var message = __('error.removing.' + this.getEntityHint());
-                    }
+                let message = '';
 
-                    this.errorModal = new Modal({
-                        title: __('Delete Error'),
-                        content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
-                        cancelText: false
-                    });
+                if (typeof response === 'string') {
+                    message = response;
+                } else {
+                    try {
+                        message = JSON.parse(response).message;
+                    } catch(e) {
+                        message = __('error.removing.' + this.getEntityHint());
+                    }
                 }
+
+                this.errorModal = new Modal({
+                    title: __('Delete Error'),
+                    content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
+                    cancelText: false
+                });
                 return this.errorModal;
             }
         });
