@@ -17,7 +17,6 @@ const Messenger = require('oro/messenger');
 const Routing = require('routing');
 const UserContext = require('pim/user-context');
 
-// @todo[DAPI-280] define the request interface
 interface AddAttributeToFamilyRequest {
   familyCode: string;
   attributeCode: string;
