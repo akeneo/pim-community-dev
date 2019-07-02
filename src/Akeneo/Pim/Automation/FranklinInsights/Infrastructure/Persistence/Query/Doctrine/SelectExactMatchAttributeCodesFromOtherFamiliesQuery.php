@@ -43,7 +43,7 @@ WHERE f.code != :family_code
 AND a.is_scopable = 0
 AND a.is_localizable = 0
 AND a.attribute_type IN(:allowed_attribute_types)
-AND NOT EXISTS (SELECT 1 from pim_catalog_attribute_locale WHERE attribute_id = a.id)
+AND NOT EXISTS (SELECT 1 from pim_catalog_attribute_locale WHERE attribute_id = a.id) # Checks if this attribute code is not defined as "locale specific attribute"
 AND (a.code IN(:franklin_attribute_labels) OR at.label IN(:franklin_attribute_labels))
 SQL;
 
