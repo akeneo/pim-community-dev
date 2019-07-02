@@ -84,10 +84,7 @@ class StructureController
         $data = json_decode($request->getContent(), true);
 
         $pimAttributeCode = new AttributeCode($data['attributeCode']);
-        $command = new AddAttributeToFamilyCommand(
-            new AttributeCode($data['attributeCode']),
-            new FamilyCode($data['familyCode'])
-        );
+        $command = new AddAttributeToFamilyCommand($pimAttributeCode, new FamilyCode($data['familyCode']));
         $this->addAttributeToFamilyHandler->handle($command);
 
         return new JsonResponse([
