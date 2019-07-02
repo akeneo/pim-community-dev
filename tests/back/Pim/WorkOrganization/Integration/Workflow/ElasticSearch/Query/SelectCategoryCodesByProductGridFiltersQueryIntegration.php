@@ -30,6 +30,7 @@ class SelectCategoryCodesByProductGridFiltersQueryIntegration extends TestCase
         $productUpdater->update($productB, ['categories' => ['sandals', '2014_collection']]);
 
         $this->get('pim_catalog.saver.product')->saveAll([$productA, $productB]);
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         $filters = [
             [
@@ -60,6 +61,7 @@ class SelectCategoryCodesByProductGridFiltersQueryIntegration extends TestCase
         $productUpdater->update($productB, ['categories' => ['sandals', '2014_collection']]);
 
         $this->get('pim_catalog.saver.product')->saveAll([$productA, $productB]);
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         $filters = [
             [

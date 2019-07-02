@@ -17,3 +17,12 @@ services:
             - '%pim_notification.entity.notification.class%'
         tags:
             - { name: kernel.event_subscriber}
+
+    pimee_catalog_rule.event_subscriber.refresh_indexes_before_rule_selection:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RefreshIndexesBeforeRuleSelectionSubscriber'
+        arguments:
+            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@akeneo_elasticsearch.client.product_model'
+        tags:
+            - { name: kernel.event_subscriber}
