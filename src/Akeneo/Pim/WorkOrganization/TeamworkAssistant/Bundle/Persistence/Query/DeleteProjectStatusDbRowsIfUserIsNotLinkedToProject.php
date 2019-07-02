@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
-use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -48,7 +47,7 @@ SQL;
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('userId', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue('groupAll', User::GROUP_DEFAULT, \PDO::PARAM_STR);
+        $stmt->bindValue('groupAll', 'All', \PDO::PARAM_STR);
         $stmt->execute();
     }
 }
