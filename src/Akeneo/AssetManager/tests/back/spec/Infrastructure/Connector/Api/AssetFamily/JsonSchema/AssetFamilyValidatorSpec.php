@@ -31,6 +31,24 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
                 'en_US' => 'Philippe Starck'
             ],
             'image' => 'images/starck.png',
+            'rule_templates' => [
+                [
+                    'conditions' => [
+                        [
+                            'field' => 'sku',
+                            'operator' => 'equals',
+                            'value' => '{{product_sku}}'
+                        ]
+                    ],
+                    'actions' => [
+                        [
+                            'type' => 'add',
+                            'field' => '{{attribute}}',
+                            'value' => '{{code}}'
+                        ]
+                    ]
+                ]
+            ],
             '_links'  => [
                 'image_download' => [
                     'href' => 'http://localhost/api/rest/v1/asset-families-media-files/images/starck.png'
@@ -109,5 +127,126 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
 
         $errors->shouldBeArray();
         $errors->shouldHaveCount(1);
+    }
+
+    public function it_returns_an_error_when_rule_templates_is_not_an_array()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'rule_templates' => 'wrong_rule'
+        ];
+
+        $errors = $this->validate($assetFamily);
+
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    public function it_returns_an_error_when_rule_templates_does_not_have_conditions()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'rule_templates' => [
+                [
+                    'actions' => [
+                        [
+                            'type' => 'add',
+                            'field' => '{{attribute}}',
+                            'value' => '{{code}}'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $errors = $this->validate($assetFamily);
+
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    public function it_returns_an_error_when_rule_templates_does_not_have_actions()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'rule_templates' => [
+                [
+                    'conditions' => [
+                        [
+                            'field' => 'sku',
+                            'operator' => 'equals',
+                            'value' => '{{product_sku}}'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $errors = $this->validate($assetFamily);
+
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    public function it_returns_an_error_when_rule_templates_has_null_values_on_a_property()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'rule_templates' => [
+                [
+                    'conditions' => [
+                        [
+                            'field' => 'sku',
+                            'operator' => 'equals',
+                            'value' => null
+                        ]
+                    ],
+                    'actions' => [
+                        [
+                            'type' => 'add',
+                            'field' => '{{attribute}}'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $errors = $this->validate($assetFamily);
+
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(2);
+    }
+
+    public function it_returns_an_error_when_rule_templates_has_additional_properties()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'rule_templates' => [
+                [
+                    'conditions' => [
+                        [
+                            'field' => 'sku',
+                            'operator' => 'equals',
+                            'value' => '{{product_code}}',
+                            'unknown_property' => 'michel'
+                        ]
+                    ],
+                    'actions' => [
+                        [
+                            'type' => 'add',
+                            'field' => '{{attribute}}',
+                            'value' => '{{code}}',
+                            'unknown_property' => 'michel'
+                        ]
+                    ],
+                    'unknown_property' => 'michel'
+                ]
+            ]
+        ];
+
+        $errors = $this->validate($assetFamily);
+
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(3);
     }
 }
