@@ -74,7 +74,7 @@ Feature: Create a asset
     And the user saves the asset
     Then the asset creation form should be displayed
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: User doesn't have the right to create a asset
     Given the user has the following rights:
       | akeneo_assetmanager_asset_create | false |

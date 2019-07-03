@@ -16,7 +16,7 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $content = [
+        $ruleTemplate = [
             'conditions' => [
                 [
                     'field' => 'sku',
@@ -32,8 +32,7 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $ruleTemplate = RuleTemplate::createFromNormalized($content);
-        $this->beConstructedThrough('fromArray', [[$ruleTemplate]]);
+        $this->beConstructedThrough('createFromNormalized', [[$ruleTemplate]]);
     }
 
     public function it_is_initializable()
@@ -44,7 +43,7 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
     public function it_should_contain_only_rule_template_objects()
     {
         $ruleTemplate = 'wrong_rule_template';
-        $this->beConstructedThrough('fromArray', [[$ruleTemplate]]);
+        $this->beConstructedThrough('createFromNormalized', [[$ruleTemplate]]);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 

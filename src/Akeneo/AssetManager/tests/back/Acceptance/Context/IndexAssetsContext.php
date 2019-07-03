@@ -62,7 +62,7 @@ class IndexAssetsContext implements Context
      */
     public function theAssetFamily(string $assetFamilyIdentifier): void
     {
-        $createCommand = new CreateAssetFamilyCommand($assetFamilyIdentifier, []);
+        $createCommand = new CreateAssetFamilyCommand($assetFamilyIdentifier, [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {

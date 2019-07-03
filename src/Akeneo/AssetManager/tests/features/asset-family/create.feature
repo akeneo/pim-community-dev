@@ -61,6 +61,11 @@ Feature: Create an asset family
       | identifier | labels                                     | attribute_as_image |
       | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | image              |
 
+  @acceptance-back
+  Scenario: Creating an asset family with a collection of rule templates
+    When the user creates an asset family 'packshot' with a collection of rule templates
+    Then there is an asset family 'packshot' with a collection of rule templates
+
   @acceptance-front
   Scenario: Creating an asset family
     Given the user has the following rights:

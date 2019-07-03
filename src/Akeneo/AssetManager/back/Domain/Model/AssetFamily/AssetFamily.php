@@ -158,4 +158,9 @@ class AssetFamily
     {
         return $this->ruleTemplateCollection;
     }
+
+    public function updateRuleTemplateCollection(RuleTemplateCollection $ruleTemplateCollection): void
+    {
+        $this->ruleTemplateCollection = $ruleTemplateCollection;
+    }
 }

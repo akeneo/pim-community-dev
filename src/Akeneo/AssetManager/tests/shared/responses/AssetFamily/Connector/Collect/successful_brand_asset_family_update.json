@@ -10,7 +10,25 @@
       "labels": {
         "en_US": "Brand english label",
         "fr_FR": "Brand french label"
-      }
+      },
+      "rule_templates": [
+        {
+          "conditions": [
+            {
+              "field": "sku",
+              "operator": "equals",
+              "value": "{{product_sku}}"
+            }
+          ],
+          "actions": [
+            {
+              "type": "add",
+              "field": "{{attribute}}",
+              "value": "{{code}}"
+            }
+          ]
+        }
+      ]
     }
   },
   "response": {

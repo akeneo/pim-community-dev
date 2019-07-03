@@ -19,12 +19,13 @@ use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -74,7 +75,8 @@ final class CreateAssetFamilyContext implements Context
         $updates = current($updateTable->getHash());
         $command = new CreateAssetFamilyCommand(
             $code,
-            json_decode($updates['labels'], true)
+            json_decode($updates['labels'], true),
+            []
         );
 
         $this->violationsContext->addViolations($this->validator->validate($command));
@@ -112,7 +114,7 @@ final class CreateAssetFamilyContext implements Context
             array_diff($actualLabels, $expectedLabels)
         );
 
-        Assert::isEmpty(
+        Assert::assertEmpty(
             $differences,
             sprintf('Expected labels "%s", but found %s', json_encode($expectedLabels), json_encode($actualLabels))
         );
@@ -124,7 +126,7 @@ final class CreateAssetFamilyContext implements Context
     public function thereShouldBeNoAssetFamily()
     {
         $assetFamilyCount = $this->assetFamilyRepository->count();
-        Assert::same(
+        Assert::assertSame(
             0,
             $assetFamilyCount,
             sprintf('Expected to have 0 asset family. %d found.', $assetFamilyCount)
@@ -142,7 +144,8 @@ final class CreateAssetFamilyContext implements Context
         for ($i = 0; $i < $number; $i++) {
             $command = new CreateAssetFamilyCommand(
                 uniqid(),
-                ['en_US' => uniqid('label_')]
+                ['en_US' => uniqid('label_')],
+                []
             );
 
             $violations = $this->validator->validate($command);
@@ -155,5 +158,70 @@ final class CreateAssetFamilyContext implements Context
 
             ($this->createAssetFamilyHandler)($command);
         }
+    }
+
+    /**
+     * @When /^the user creates an asset family '([^"]*)' with a collection of rule templates$/
+     */
+    public function theUserCreatesAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
+    {
+        $ruleTemplate = [
+            'conditions' => [
+                [
+                    'field' => 'sku',
+                    'operator' => 'equals',
+                    'value' => '{{product_sku}}'
+                ]
+            ],
+            'actions'=> [
+                [
+                    'type' => 'add',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
+
+        $command = new CreateAssetFamilyCommand(
+            $code,
+            [],
+            [$ruleTemplate]
+        );
+
+        $this->violationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->createAssetFamilyHandler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Then /^there is an asset family '([^"]*)' with a collection of rule templates$/
+     */
+    public function thereIsAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
+    {
+        $expectedIdentifier = AssetFamilyIdentifier::fromString($code);
+        $actualAssetFamily = $this->assetFamilyRepository->getByIdentifier($expectedIdentifier);
+        $expectedRuleTemplate = [
+            'conditions' => [
+                [
+                    'field' => 'sku',
+                    'operator' => 'equals',
+                    'value' => '{{product_sku}}'
+                ]
+            ],
+            'actions'=> [
+                [
+                    'type' => 'add',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
+        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
+
+        Assert::assertEquals($expectedRuleTemplateCollection, $actualAssetFamily->getRuleTemplateCollection());
     }
 }

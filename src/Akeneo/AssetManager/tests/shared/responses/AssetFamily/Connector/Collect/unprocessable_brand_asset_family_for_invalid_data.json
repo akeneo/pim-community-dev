@@ -10,7 +10,25 @@
             "labels": {
                 "de_DE": "Label for an activated locale",
                 "de_AU": "Label for an activated locale that is not activated"
-            }
+            },
+            "rule_templates": [
+                {
+                    "conditions": [
+                        {
+                            "field": "sku",
+                            "operator": "equals",
+                            "value": "{{product_sku}}"
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "type": "add",
+                            "field": "{{attribute}}",
+                            "value": "{{code}}"
+                        }
+                    ]
+                }
+            ]
         }
     },
     "response": {

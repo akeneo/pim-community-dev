@@ -268,6 +268,6 @@ SQL;
             $ruleTemplates[] = RuleTemplate::createFromNormalized($ruleTemplate);
         }
 
-        return RuleTemplateCollection::fromArray($ruleTemplates);
+        return RuleTemplateCollection::createFromNormalized($ruleTemplates);
     }
 }

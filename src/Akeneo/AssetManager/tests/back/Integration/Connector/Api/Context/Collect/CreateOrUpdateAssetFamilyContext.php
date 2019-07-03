@@ -25,6 +25,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
@@ -144,6 +145,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
+        $ruleTemplate = $this->getExpectedRuleTemplate();
 
         $brand = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('brand'));
         $expectedBrand = AssetFamily::createWithAttributes(
@@ -155,7 +157,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             $this->getBrandImage(),
             AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
             AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
         );
 
         Assert::assertEquals($brand, $expectedBrand);
@@ -221,6 +223,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
+        $ruleTemplate = $this->getExpectedRuleTemplate();
 
         $brand = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('brand'));
         $expectedBrand = AssetFamily::createWithAttributes(
@@ -232,7 +235,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             $this->getBrandImage(),
             AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
             AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
         );
 
         Assert::assertEquals($brand, $expectedBrand);
@@ -315,5 +318,28 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $image = Image::fromFileInfo($imageFileInfo);
 
         return $image;
+    }
+
+    /**
+     * @return array
+     */
+    private function getExpectedRuleTemplate(): array
+    {
+        return [
+            'conditions' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'equals',
+                    'value'    => '{{product_sku}}'
+                ]
+            ],
+            'actions'    => [
+                [
+                    'type'  => 'add',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
     }
 }

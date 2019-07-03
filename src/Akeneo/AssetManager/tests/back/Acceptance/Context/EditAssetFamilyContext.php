@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyH
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
@@ -89,7 +90,8 @@ final class EditAssetFamilyContext implements Context
             [
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur'
-            ]
+            ],
+            []
         );
 
         $violations = $this->validator->validate($createCommand);
@@ -109,7 +111,8 @@ final class EditAssetFamilyContext implements Context
         $command = new EditAssetFamilyCommand(
             $identifier,
             json_decode($updates['labels'], true),
-            null
+            null,
+            []
         );
         ($this->editAssetFamilyHandler)($command);
     }
@@ -183,7 +186,7 @@ final class EditAssetFamilyContext implements Context
 
         $label = json_decode($label);
 
-        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label]);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -198,7 +201,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function anImageOnAnAssetFamilyWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
-        $createCommand = new CreateAssetFamilyCommand($identifier, []);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -236,7 +239,8 @@ final class EditAssetFamilyContext implements Context
             [
                 'filePath' => $filePath,
                 'originalFilename' => $filename
-            ]
+            ],
+            []
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -251,7 +255,8 @@ final class EditAssetFamilyContext implements Context
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
             $identifier,
             [$localCode => $label],
-            null
+            null,
+            []
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -261,7 +266,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function theUserUpdatesTheAssetFamilyWithAnEmptyImage(string $identifier)
     {
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null, []);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -300,5 +305,66 @@ final class EditAssetFamilyContext implements Context
         if (!$this->constraintViolationsContext->hasViolations()) {
             ($this->editAssetFamilyHandler)($editAssetFamilyCommand);
         }
+    }
+
+    /**
+     * @Given /^an empty rule template collection on the asset family \'([^\']*)\'$/
+     */
+    public function anEmptyRuleTemplateCollectionOnTheAssetFamily(string $code)
+    {
+        $createCommand = new CreateAssetFamilyCommand($code, [], []);
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createAssetFamilyHandler)($createCommand);
+    }
+
+    /**
+     * @When /^the user updates the asset family \'([^\']*)\' to set a collection of rule templates$/
+     */
+    public function theUserUpdatesTheAssetFamilyToSetACollectionOfRuleTemplates(string $code)
+    {
+        $ruleTemplate = $this->getExpectedRuleTemplate();
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, [], null, [$ruleTemplate]);
+        $this->editAssetFamily($editAssetFamilyCommand);
+    }
+
+    /**
+     * @Then /^the asset family \'([^\']*)\' should have the collection of rule templates$/
+     */
+    public function theAssetFamilyShouldHaveTheCollectionOfRuleTemplates(string $code)
+    {
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+
+        $expectedRuleTemplate = $this->getExpectedRuleTemplate();
+        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
+
+        $assetFamily = $this->assetFamilyRepository
+            ->getByIdentifier(AssetFamilyIdentifier::fromString($code));
+
+        Assert::assertEquals($expectedRuleTemplateCollection, $assetFamily->getRuleTemplateCollection());
+    }
+
+    private function getExpectedRuleTemplate(): array
+    {
+        return [
+            'conditions' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'equals',
+                    'value'    => '{{product_sku}}'
+                ]
+            ],
+            'actions'    => [
+                [
+                    'type'  => 'set',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
     }
 }

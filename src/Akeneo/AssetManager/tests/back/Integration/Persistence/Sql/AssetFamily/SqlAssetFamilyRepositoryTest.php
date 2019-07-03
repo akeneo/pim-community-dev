@@ -60,29 +60,11 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     public function it_creates_an_asset_family_and_returns_it()
     {
         $identifier = AssetFamilyIdentifier::fromString('identifier');
-        $content = [
-            'conditions' => [
-                [
-                    'field' => 'sku',
-                    'operator' => 'EQUALS',
-                    'value' => '{{product_sku}}',
-                ]
-            ],
-            'actions' => [
-                [
-                    'type' => 'add',
-                    'field' => '{{target_attribute}}',
-                    'value' => '{{ code }}'
-                ]
-            ]
-        ];
-        $ruleTemplate = RuleTemplate::createFromNormalized($content);
-        $ruleTemplateCollection = RuleTemplateCollection::fromArray([$ruleTemplate]);
         $assetFamily = AssetFamily::create(
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            $ruleTemplateCollection
+            RuleTemplateCollection::empty()
         );
 
         $this->repository->create($assetFamily);

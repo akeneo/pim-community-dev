@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
@@ -51,9 +52,11 @@ class EditAssetFamilyHandler
     {
         $identifier = AssetFamilyIdentifier::fromString($editAssetFamilyCommand->identifier);
         $labelCollection = LabelCollection::fromArray($editAssetFamilyCommand->labels);
+        $ruleTemplateCollection = RuleTemplateCollection::createFromNormalized($editAssetFamilyCommand->ruleTemplates);
 
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($identifier);
         $assetFamily->updateLabels($labelCollection);
+        $assetFamily->updateRuleTemplateCollection($ruleTemplateCollection);
 
         if (null !== $editAssetFamilyCommand->image) {
             $existingImage = $assetFamily->getImage();

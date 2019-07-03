@@ -43,6 +43,54 @@ class AssetFamilyValidator
                 'image' => [
                     'type' => ['string', 'null']
                 ],
+                'rule_templates' => [
+                    'type'  => 'array',
+                    'items' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'conditions' => [
+                                'type' => 'array',
+                                'items' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'field' => [
+                                            'type' => 'string',
+                                        ],
+                                        'operator' => [
+                                            'type' => 'string',
+                                        ],
+                                        'value' => [
+                                            'type' => 'string',
+                                        ],
+                                    ],
+                                    'required' => ['field', 'operator', 'value'],
+                                    'additionalProperties' => false,
+                                ],
+                            ],
+                            'actions' => [
+                                'type' => 'array',
+                                'items' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'type' => [
+                                            'type' => 'string',
+                                        ],
+                                        'field' => [
+                                            'type' => 'string',
+                                        ],
+                                        'value' => [
+                                            'type' => 'string',
+                                        ],
+                                    ],
+                                    'required' => ['type', 'field', 'value'],
+                                    'additionalProperties' => false,
+                                ],
+                            ]
+                        ],
+                        'required' => ['conditions', 'actions'],
+                        'additionalProperties' => false,
+                    ],
+                ],
                 '_links' => [
                     'type' => 'object'
                 ]
