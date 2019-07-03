@@ -63,20 +63,24 @@ SQL;
 
         $searchResults = $statement->fetchAll();
 
-        $result = array_fill_keys($franklinAttributeLabels, null);
-
-        foreach ($franklinAttributeLabels as $franklinAttributeLabel) {
-            foreach ($searchResults as $searchResult) {
-                if (strcasecmp($franklinAttributeLabel, $searchResult['code']) === 0 ||
-                    strcasecmp($franklinAttributeLabel, $searchResult['label']) === 0
-                ) {
-                    $result[$franklinAttributeLabel] = $searchResult['code'];
-                    break;
-                }
-            }
+        $matchedAttributes = array_fill_keys($franklinAttributeLabels, null);
+        foreach ($matchedAttributes as $franklinAttributeLabel => $matchedAttribute) {
+            $matchedAttributes[$franklinAttributeLabel] = $this->getMatchedAttributeCode($franklinAttributeLabel, $searchResults);
         }
 
-        return $result;
+        return $matchedAttributes;
+    }
+
+    private function getMatchedAttributeCode($franklinAttributeLabel, array $pimAttributes): ?string
+    {
+        $matchedAttributes = array_filter($pimAttributes, function($attribute) use($franklinAttributeLabel) {
+            return (
+                strcasecmp($franklinAttributeLabel, $attribute['code']) === 0 ||
+                strcasecmp($franklinAttributeLabel, $attribute['label']) === 0
+            );
+        });
+
+        return $matchedAttributes[0]['code'] ?? null;
     }
 
 }

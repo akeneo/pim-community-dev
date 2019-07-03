@@ -46,13 +46,21 @@ class SuggestExactMatchAttributesFromOtherFamilies implements AttributeMappingCo
             $attributeMappingCollection->getPendingAttributesFranklinLabels()
         );
 
-        return $this->filterNotMappedAttributeCodes($matchedPimAttributeCodes, $attributeMappingCollection);
+        return $this->filterValidMatchedAttributeCodes($matchedPimAttributeCodes, $attributeMappingCollection);
     }
 
-    private function filterNotMappedAttributeCodes(array $attributeCodes, AttributeMappingCollection $attributeMappingCollection): array
+    /**
+     * @param array[string] $matchedAttributeCodes
+     * @param AttributeMappingCollection $attributeMappingCollection
+     * @return array
+     *
+     * @example $matchedAttributeCodes = ['Matched Franklin label' => 'pim_matched_attribute_code', 'Color' => 'color', 'Not Matched Franklin label' => null, 'Weight' => null]
+     *          returns: ['Matched Franklin label' => 'pim_matched_attribute_code', 'Color' => 'color']
+     */
+    private function filterValidMatchedAttributeCodes(array $matchedAttributeCodes, AttributeMappingCollection $attributeMappingCollection): array
     {
-        return array_filter($attributeCodes, function ($attributeCode) use ($attributeMappingCollection) {
-            return null === $attributeCode || !$attributeMappingCollection->hasPimAttribute(new AttributeCode($attributeCode));
+        return array_filter($matchedAttributeCodes, function ($attributeCode) use ($attributeMappingCollection) {
+            return null !== $attributeCode && !$attributeMappingCollection->hasPimAttribute(new AttributeCode($attributeCode));
         });
     }
 

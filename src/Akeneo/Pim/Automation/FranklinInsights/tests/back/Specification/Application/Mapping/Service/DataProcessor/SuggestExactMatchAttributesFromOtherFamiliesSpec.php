@@ -38,7 +38,7 @@ class SuggestExactMatchAttributesFromOtherFamiliesSpec extends ObjectBehavior
     {
         $familyCode = new FamilyCode('family_code');
         $pendingAttributesFranklinLabels = ['Color', 'Weight'];
-        $matchedPimAttributeCodes = ['Color' => 'color', 'Weight' => null];
+        $matchedPimAttributeCodes = ['Color' => 'color'];
 
         $attributeMappingCollection = new AttributeMappingCollection();
         $attributeMappingCollection
