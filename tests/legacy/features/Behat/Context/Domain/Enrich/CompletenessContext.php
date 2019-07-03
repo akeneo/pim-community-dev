@@ -161,12 +161,14 @@ class CompletenessContext extends PimContext
             foreach ($table as $index => $expected) {
                 // This allows to omit columns in the table
                 $expected = array_merge($completenessData[$index], $expected);
+                sort($completenessData[$index]['missing_required_attributes']);
 
                 if (isset($expected['missing_required_attributes'])) {
                     $expected['missing_required_attributes'] = array_map(
                         'trim',
                         explode(',', $expected['missing_required_attributes'])
                     );
+                    sort($expected['missing_required_attributes']);
                 }
 
                 if ($completenessData[$index] !== $expected ||
