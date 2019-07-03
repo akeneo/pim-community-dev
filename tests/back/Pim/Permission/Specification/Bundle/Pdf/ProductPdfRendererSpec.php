@@ -10,8 +10,8 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
@@ -62,7 +62,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $filterHelper,
         $templating,
         ProductInterface $blender,
-        ValueCollectionInterface $blenderValues,
+        WriteValueCollection $blenderValues,
         AttributeGroupInterface $design,
         AttributeInterface $color,
         ValueInterface $blue,
@@ -71,6 +71,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
 
         $blender->getValues()->willReturn($blenderValues);
+        $blender->getUsedAttributeCodes()->willReturn(['color']);
         $blenderValues->getAttributeCodes()->willReturn(['color']);
         $blenderValues->toArray()->willReturn([$blue]);
 
@@ -108,7 +109,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $templating,
         $cacheManager,
         ProductInterface $blender,
-        ValueCollectionInterface $blenderValues,
+        WriteValueCollection $blenderValues,
         AttributeGroupInterface $media,
         AttributeInterface $mainImage,
         ValueInterface $productValue,
@@ -120,6 +121,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
         $filterHelper->filter([$productValue], 'en_US')->willReturn([$productValue]);
         $blender->getValues()->willReturn($blenderValues);
+        $blender->getUsedAttributeCodes()->willReturn(['main_image']);
         $blenderValues->toArray()->willReturn([$productValue]);
 
         $blenderValues->getAttributeCodes()->willReturn(['main_image']);
@@ -170,7 +172,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $channelRepository,
         $localeRepository,
         ProductInterface $blender,
-        ValueCollectionInterface $blenderValues,
+        WriteValueCollection $blenderValues,
         AttributeGroupInterface $media,
         AttributeInterface $assetCollectionAttr,
         ValueInterface $productValue,
@@ -190,6 +192,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
         $filterHelper->filter([$productValue], 'fr_FR')->willReturn([$productValue]);
         $blender->getValues()->willReturn($blenderValues);
+        $blender->getUsedAttributeCodes()->willReturn(['front_view']);
         $blenderValues->toArray()->willReturn([$productValue]);
 
         $blenderValues->getAttributeCodes()->willReturn(['front_view']);
@@ -256,7 +259,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $channelRepository,
         $localeRepository,
         ProductInterface $blender,
-        ValueCollectionInterface $blenderValues,
+        WriteValueCollection $blenderValues,
         AttributeGroupInterface $media,
         AttributeInterface $assetCollectionAttr,
         ValueInterface $productValue,
@@ -276,6 +279,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
         $filterHelper->filter([$productValue], 'fr_FR')->willReturn([$productValue]);
         $blender->getValues()->willReturn($blenderValues);
+        $blender->getUsedAttributeCodes()->willReturn(['front_view']);
         $blenderValues->toArray()->willReturn([$productValue]);
 
         $blenderValues->getAttributeCodes()->willReturn(['front_view']);
