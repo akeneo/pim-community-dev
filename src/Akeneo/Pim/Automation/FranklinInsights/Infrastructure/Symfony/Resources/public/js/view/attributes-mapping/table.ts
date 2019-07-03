@@ -171,7 +171,10 @@ class AttributeMapping extends BaseView {
             isDuplicatedAttribute
           );
 
-          if (true === attributeMapping.canCreateAttribute) {
+          if (
+            attributeMapping.canCreateAttribute &&
+            (null === attributeMapping.attribute || '' === attributeMapping.attribute)
+          ) {
             const createAttributeButton = this.appendCreateAttributeButton(
               franklinAttributeCode,
               familyMapping.code,
@@ -184,7 +187,10 @@ class AttributeMapping extends BaseView {
               this.suggestAttributeMapping(franklinAttributeCode, catalogAttributeCode);
               this.render();
             });
-          } else if (null !== attributeMapping.exactMatchAttributeFromOtherFamily) {
+          } else if (
+            null !== attributeMapping.exactMatchAttributeFromOtherFamily &&
+            (null === attributeMapping.attribute || '' === attributeMapping.attribute)
+          ) {
             const addAttributeToFamilyButton = this.appendAddAttributeToFamilyButton(
               attributeMapping.exactMatchAttributeFromOtherFamily,
               familyMapping.code
