@@ -65,13 +65,11 @@ class StatusFilter extends BaseForm {
    * {@inheritdoc}
    */
   public render(): BaseForm {
-    this.$el.html(
-      this.template({
-        label: __('pim_common.status'),
-        currentValue: this.currentFilterValue,
-        filters: StatusFilter.getFilters()
-      })
-    );
+    this.$el.html(this.template({
+      label: __('pim_common.status'),
+      currentValue: this.currentFilterValue,
+      filters: StatusFilter.getFilters(),
+    }));
 
     this.delegateEvents();
 
@@ -92,14 +90,15 @@ class StatusFilter extends BaseForm {
   /**
    * Send an event to the datagrid to filter the right rows, then refresh the Dropdown label.
    */
-  private filter(event: {currentTarget: any}): void {
-    const value = $(event.currentTarget).data('value') as string;
-    const filter: Filter = {
-      value,
-      type: FilterValue.Equals,
-      field: 'status'
-    };
-    this.trigger('pim_datagrid:filter-front', filter);
+  private filter(): void {
+      const value = this.currentFilterValue;
+      const filter: Filter = {
+          value,
+          type: FilterValue.Equals,
+          field: 'status',
+      };
+
+      this.trigger('pim_datagrid:filter-front', filter);
 
       this.$el.find('.filter-criteria-hint').html(
           (StatusFilter.getFilters().find((filterLabel: FilterLabel) => {
