@@ -8,8 +8,8 @@ class SpCertificate extends BaseTextarea {
   readonly template = _.template(template);
 
   public configure() {
-    this.listenTo(this.getRoot(), this.postUpdateEventName, (data: any) => {
-      const expirationDate = data.meta.service_provider_certificate_expiration_date;
+    this.listenTo(this.getRoot(), this.postUpdateEventName, () => {
+      const expirationDate = this.getFormData().meta.service_provider_certificate_expiration_date;
 
       if (null === expirationDate || undefined === expirationDate) {
         return;

@@ -152,9 +152,8 @@ class EnterpriseAssetContext extends PimContext
         $code->setValue($value);
 
         if (!empty($wait)) {
-            $iconContainer = $code->getParent()->find('css', '.icons-container');
-            $this->getMainContext()->spin(function () use ($iconContainer) {
-                return (bool) $iconContainer->find('css', 'i.validation-tooltip');
+            $this->getMainContext()->spin(function () use ($dialog) {
+                return (bool) $dialog->find('css', 'i.validation-tooltip');
             }, 'Cannot find validation tooltip');
         }
     }

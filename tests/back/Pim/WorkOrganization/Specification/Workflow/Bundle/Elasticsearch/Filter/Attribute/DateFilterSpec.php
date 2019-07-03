@@ -264,6 +264,7 @@ class DateFilterSpec extends ObjectBehavior
                 ]
             ]
         )->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter(

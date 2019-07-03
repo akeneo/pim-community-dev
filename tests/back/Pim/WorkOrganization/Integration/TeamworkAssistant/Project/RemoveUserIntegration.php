@@ -58,4 +58,30 @@ class RemoveUserIntegration extends TeamworkAssistantTestCase
         Assert::assertNull($this->get('pim_user.repository.user')->findOneByIdentifier('julia'));
         Assert::assertNull($this->get('pimee_teamwork_assistant.repository.project_status')->findProjectStatus($project, $julia));
     }
+
+    function testThatAUserWithOnlyTheGroupAllNotLinkedToAProjectCanBeRemoved()
+    {
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['high_tech'],
+            ],
+        ]);
+
+        $julia = $this->get('pim_user.repository.user')->findOneByIdentifier('julia');
+        foreach ($julia->getGroups() as $group) {
+            if ($group->getName() !== 'All') {
+                $julia->removeGroup($group);
+            }
+        }
+
+        $this->get('pim_user.saver.user')->save($julia);
+        $this->get('pim_user.remover.user')->remove($julia);
+
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        Assert::assertNull($this->get('pim_user.repository.user')->findOneByIdentifier('julia'));
+        Assert::assertNull($this->get('pimee_teamwork_assistant.repository.project_status')->findProjectStatus($project, $julia));
+    }
 }

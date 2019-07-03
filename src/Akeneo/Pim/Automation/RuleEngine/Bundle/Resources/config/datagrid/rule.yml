@@ -3,6 +3,8 @@ datagrid:
         options:
             manageFilters: false
             entityHint: rule
+            requireJSModules:
+                - oro/datagrid/pagination-input
         source:
             acl_resource: pimee_catalog_rule_rule_view_permissions
             repository_method: createDatagridQueryBuilder

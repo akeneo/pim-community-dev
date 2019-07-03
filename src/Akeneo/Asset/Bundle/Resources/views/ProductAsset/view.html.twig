@@ -77,7 +77,10 @@
                                     </label>
                                 </div>
                                 <div class="AknFieldContainer-inputContainer field-input">
-                                    <input type="text" readonly="readonly" read_only="1" class=" AknTextField" value="{{ asset.endOfUseAt|date("m / d / Y") }}">
+                                    <input type="text"
+                                           readonly="readonly" read_only="1"
+                                           class=" AknTextField"
+                                           value="{{ asset.endOfUseAt is empty ? "" : asset.endOfUseAt|date("m / d / Y") }}"/>
                                     <div class="AknFieldContainer-iconsContainer icons-container">
 
                                     </div>

@@ -43,6 +43,8 @@ class StatusFilter extends BaseForm {
 
   public readonly template = _.template(template);
 
+  private currentFilterValue = '';
+
   /**
    * {@inheritdoc}
    */
@@ -55,7 +57,7 @@ class StatusFilter extends BaseForm {
    */
   public events(): EventsHash {
     return {
-      'click .option': this.filter.bind(this)
+      'click .option': this.onChangeStatus.bind(this)
     };
   }
 
@@ -66,18 +68,29 @@ class StatusFilter extends BaseForm {
     this.$el.html(
       this.template({
         label: __('pim_common.status'),
-        currentValue: '',
+        currentValue: this.currentFilterValue,
         filters: StatusFilter.getFilters()
       })
     );
+
+    this.delegateEvents();
+
+    this.filter();
 
     return this;
   }
 
   /**
-   * Send an event to the datagrid to filter the right rows, then refresh the Dropdown label.
-   *
+   * Listen status value change and apply filter on data-grid
    * @param {{currentTarget: any}} event
+   */
+  private onChangeStatus(event: { currentTarget: any }): void {
+    this.currentFilterValue = $(event.currentTarget).data('value') as string;
+    this.filter();
+  }
+
+  /**
+   * Send an event to the datagrid to filter the right rows, then refresh the Dropdown label.
    */
   private filter(event: {currentTarget: any}): void {
     const value = $(event.currentTarget).data('value') as string;
@@ -88,11 +101,11 @@ class StatusFilter extends BaseForm {
     };
     this.trigger('pim_datagrid:filter-front', filter);
 
-    this.$el.find('.filter-criteria-hint').html(
-      (StatusFilter.getFilters().find((filterLabel: FilterLabel) => {
-        return filterLabel.value === value;
-      }) as FilterLabel).label
-    );
+      this.$el.find('.filter-criteria-hint').html(
+          (StatusFilter.getFilters().find((filterLabel: FilterLabel) => {
+              return filterLabel.value === value;
+          }) as FilterLabel).label
+      );
   }
 }
 
