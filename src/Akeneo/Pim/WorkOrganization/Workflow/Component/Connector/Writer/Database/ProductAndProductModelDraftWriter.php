@@ -108,9 +108,8 @@ class ProductAndProductModelDraftWriter implements ItemWriterInterface, StepExec
         $stepExecutions = $this->stepExecution->getJobExecution()->getStepExecutions();
         /** @var StepExecution $firstStepExecution */
         $firstStepExecution = $stepExecutions->get(0);
-        return $firstStepExecution->getSummaryInfo('read');
 
-        return $firstStepExecution->getReadCount();
+        return $firstStepExecution->getSummaryInfo('read');
     }
 
     private function getJobLabel(): string
