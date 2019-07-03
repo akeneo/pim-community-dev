@@ -35,17 +35,15 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
     public function let(
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
-        AttributesMappingNormalizer $attributesMappingNormalizer,
         LoggerInterface $logger
     ): void
     {
-        $this->beConstructedWith($selectExactMatchAttributeCodeQuery, $saveAttributesMappingByFamilyHandler, $attributesMappingNormalizer, $logger);
+        $this->beConstructedWith($selectExactMatchAttributeCodeQuery, $saveAttributesMappingByFamilyHandler, $logger);
     }
 
     public function it_applies_matched_pim_attributes(
         SelectExactMatchAttributeCodeQueryInterface$selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
-        AttributesMappingNormalizer $attributesMappingNormalizer,
         SaveAttributesMappingByFamilyCommand $command
     ) {
         $familyCode = new FamilyCode('family_code');
@@ -56,7 +54,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
                 'franklinAttribute' => [
                     'label' => 'Color',
                     'type' => 'text',
-                    'summary' => [],
                 ],
                 'attribute' => 'color',
                 'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
@@ -65,7 +62,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
                 'franklinAttribute' => [
                     'label' => 'Weight',
                     'type' => 'text',
-                    'summary' => [],
                 ],
                 'attribute' => null,
                 'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
@@ -74,7 +70,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
                 'franklinAttribute' => [
                     'label' => 'Size',
                     'type' => 'text',
-                    'summary' => [],
                 ],
                 'attribute' => 'pim_size',
                 'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
@@ -98,10 +93,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         $selectExactMatchAttributeCodeQuery
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
-
-        $attributesMappingNormalizer
-            ->normalize($expectedAttributeMappingCollection)
-            ->willReturn($normalizedAttributeMapping);
 
         $command->beConstructedWith([$familyCode, $normalizedAttributeMapping]);
 
@@ -115,7 +106,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
     public function it_applies_matched_pim_attributes_only_for_pending_status(
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
-        AttributesMappingNormalizer $attributesMappingNormalizer,
         SaveAttributesMappingByFamilyCommand $command
     ) {
         $familyCode = new FamilyCode('router');
@@ -126,7 +116,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
                 'franklinAttribute' => [
                     'label' => 'Weight',
                     'type' => 'text',
-                    'summary' => [],
                 ],
                 'attribute' => null,
                 'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
@@ -135,7 +124,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
                 'franklinAttribute' => [
                     'label' => 'Color',
                     'type' => 'text',
-                    'summary' => [],
                 ],
                 'attribute' => 'color',
                 'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
@@ -144,7 +132,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
                 'franklinAttribute' => [
                     'label' => 'Size',
                     'type' => 'text',
-                    'summary' => [],
                 ],
                 'attribute' => 'pim_size',
                 'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
@@ -168,10 +155,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         $selectExactMatchAttributeCodeQuery
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
-
-        $attributesMappingNormalizer
-            ->normalize($expectedAttributeMappingCollection)
-            ->willReturn($normalizedAttributeMapping);
 
         $command->beConstructedWith([$familyCode, $normalizedAttributeMapping]);
 
@@ -209,7 +192,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
     public function it_applies_matched_pim_attributes_and_logs_error_when_saving_throws_data_provider_exception(
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
-        AttributesMappingNormalizer $attributesMappingNormalizer,
         LoggerInterface $logger
     ) {
         $familyCode = new FamilyCode('family_code');
@@ -233,10 +215,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         $selectExactMatchAttributeCodeQuery
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
-
-        $attributesMappingNormalizer
-            ->normalize($expectedAttributeMappingCollection)
-            ->shouldBeCalled();
 
         $saveAttributesMappingByFamilyHandler
             ->handle(Argument::any())
@@ -250,7 +228,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
     public function it_applies_matched_pim_attributes_and_logs_error_when_saving_throws_attribute_mapping_exception(
         SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
-        AttributesMappingNormalizer $attributesMappingNormalizer,
         LoggerInterface $logger
     ) {
         $familyCode = new FamilyCode('family_code');
@@ -274,10 +251,6 @@ class ApplyAttributeExactMatchesSpec extends ObjectBehavior
         $selectExactMatchAttributeCodeQuery
             ->execute($familyCode, $pendingAttributesFranklinLabels)
             ->willReturn($matchedPimAttributeCodes);
-
-        $attributesMappingNormalizer
-            ->normalize($expectedAttributeMappingCollection)
-            ->shouldBeCalled();
 
         $saveAttributesMappingByFamilyHandler
             ->handle(Argument::any())

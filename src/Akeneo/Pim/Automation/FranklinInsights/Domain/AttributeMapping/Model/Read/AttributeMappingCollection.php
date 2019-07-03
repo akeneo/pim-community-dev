@@ -30,21 +30,9 @@ class AttributeMappingCollection implements \IteratorAggregate
 
     public function addAttribute(AttributeMapping $attribute): self
     {
-        $this->attributes[] = $attribute;
+        $this->attributes[$attribute->getTargetAttributeCode()] = $attribute;
 
-        usort($this->attributes, function (AttributeMapping $a, AttributeMapping $b) {
-            $inactive = $a->isInactive() <=> $b->isInactive();
-            if ($inactive !== 0) {
-                return $inactive;
-            }
-
-            $isMapped = $a->isMapped() <=> $b->isMapped();
-            if ($isMapped !== 0) {
-                return $isMapped;
-            }
-
-            return $a->getTargetAttributeLabel() <=> $b->getTargetAttributeLabel();
-        });
+        $this->sortByStatus();
 
         return $this;
     }
@@ -68,7 +56,7 @@ class AttributeMappingCollection implements \IteratorAggregate
 
         return array_map(function (AttributeMapping $attributeMapping) {
             return $attributeMapping->getTargetAttributeLabel();
-        }, $attributes);
+        }, array_values($attributes));
     }
 
     public function isEmpty(): bool
@@ -79,5 +67,56 @@ class AttributeMappingCollection implements \IteratorAggregate
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator($this->attributes);
+    }
+
+    public function applyExactMatchOnAttribute(string $targetAttributeCode, ?string $pimAttributeCode)
+    {
+        $attributeMapping = $this->attributes[$targetAttributeCode];
+
+        $newAttributeMapping = new AttributeMapping(
+            $attributeMapping->getTargetAttributeCode(),
+            $attributeMapping->getTargetAttributeLabel(),
+            $attributeMapping->getTargetAttributeType(),
+            $pimAttributeCode,
+            $pimAttributeCode === null ? AttributeMappingStatus::ATTRIBUTE_PENDING : AttributeMappingStatus::ATTRIBUTE_ACTIVE,
+            $attributeMapping->getSummary()
+        );
+
+        $this->attributes[$targetAttributeCode] = $newAttributeMapping;
+
+        $this->sortByStatus();
+    }
+
+    public function formatForFranklin()
+    {
+        $mapping = [];
+        foreach ($this as $attributeMapping) {
+            $mapping[$attributeMapping->getTargetAttributeCode()] = [
+                'franklinAttribute' => [
+                    'type' => $attributeMapping->getTargetAttributeType(),
+                ],
+                'attribute' => $attributeMapping->getPimAttributeCode(),
+                'status' => $attributeMapping->getStatus(),
+            ];
+        }
+
+        return $mapping;
+    }
+
+    private function sortByStatus(): void
+    {
+        uasort($this->attributes, function (AttributeMapping $a, AttributeMapping $b) {
+            $inactive = $a->isInactive() <=> $b->isInactive();
+            if ($inactive !== 0) {
+                return $inactive;
+            }
+
+            $isMapped = $a->isMapped() <=> $b->isMapped();
+            if ($isMapped !== 0) {
+                return $isMapped;
+            }
+
+            return $a->getTargetAttributeLabel() <=> $b->getTargetAttributeLabel();
+        });
     }
 }

@@ -25,14 +25,14 @@ class GetAttributesMappingWithSuggestionsHandler
     private $getAttributesMappingByFamilyHandler;
 
     /** @var ApplyAttributeExactMatches */
-    private $applyAttributeExactMatchesDataProcessor;
+    private $applyAttributeExactMatches;
 
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
-        ApplyAttributeExactMatches $applyAttributeExactMatchesDataProcessor
+        ApplyAttributeExactMatches $applyAttributeExactMatches
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
-        $this->applyAttributeExactMatchesDataProcessor = $applyAttributeExactMatchesDataProcessor;
+        $this->applyAttributeExactMatches = $applyAttributeExactMatches;
     }
 
     public function handle(GetAttributesMappingWithSuggestionsQuery $query): AttributeMappingCollection
@@ -42,6 +42,6 @@ class GetAttributesMappingWithSuggestionsHandler
             new GetAttributesMappingByFamilyQuery($familyCode)
         );
 
-        return $this->applyAttributeExactMatchesDataProcessor->process($attributeMappingCollection, $familyCode);
+        return $this->applyAttributeExactMatches->process($attributeMappingCollection, $familyCode);
     }
 }

@@ -97,4 +97,63 @@ class AttributeMappingCollectionSpec extends ObjectBehavior
 
         Assert::eq(array_values($this->getWrappedObject()->getPendingAttributesFranklinLabels()), ['Color', 'Weight']);
     }
+
+    public function it_applies_exact_match(): void
+    {
+        $attrDescription = new AttributeMapping('description', 'Description', 'text', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE);
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+
+        $this
+            ->addAttribute($attrDescription)
+            ->addAttribute($attrWeight)
+            ->addAttribute($attrSize);
+
+        $this->applyExactMatchOnAttribute('weight', 'pim_weight');
+
+        $franklinAttrCodes = [];
+        foreach ($this->getIterator()->getWrappedObject() as $attrMapping) {
+            $franklinAttrCodes[] = $attrMapping;
+        }
+
+        $expectedAttrWeight = new AttributeMapping('weight', 'Weight', 'metric', 'pim_weight', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        Assert::eq($franklinAttrCodes, [$attrSize, $expectedAttrWeight, $attrDescription]);
+    }
+
+    public function it_formats_for_franklin()
+    {
+        // Pay attention, the attribute collection is automatically sorted when an attribute is added. The rule is pending first, then active and inactive.
+        $expectedMapping = [
+            'color' => [
+                'franklinAttribute' => [
+                    'type' => 'select',
+                ],
+                'attribute' => null,
+                'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
+            ],
+            'weight' => [
+                'franklinAttribute' => [
+                    'type' => 'metric',
+                ],
+                'attribute' => null,
+                'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
+            ],
+            'size' => [
+                'franklinAttribute' => [
+                    'type' => 'select',
+                ],
+                'attribute' => 'pim_size',
+                'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
+            ],
+        ];
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        $attrColor = new AttributeMapping('color', 'Color', 'select', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $this
+            ->addAttribute($attrWeight)
+            ->addAttribute($attrSize)
+            ->addAttribute($attrColor)
+        ;
+        $this->formatForFranklin()->shouldReturn($expectedMapping);
+    }
 }

@@ -14,35 +14,28 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\Dat
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodeQueryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use Psr\Log\LoggerInterface;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProcessorInterface
+class ApplyAttributeExactMatches
 {
     private $selectExactMatchAttributeCodeQuery;
 
     private $saveAttributesMappingByFamilyHandler;
 
-    private $attributesMappingNormalizer;
-
     private $logger;
 
-    public function __construct(SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery, SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler, AttributesMappingNormalizer $attributesMappingNormalizer, LoggerInterface $logger)
+    public function __construct(SelectExactMatchAttributeCodeQueryInterface $selectExactMatchAttributeCodeQuery, SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler, LoggerInterface $logger)
     {
         $this->selectExactMatchAttributeCodeQuery = $selectExactMatchAttributeCodeQuery;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
-        $this->attributesMappingNormalizer = $attributesMappingNormalizer;
         $this->logger = $logger;
     }
 
@@ -50,13 +43,13 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
     {
         $matchedPimAttributeCodes = $this->findPimAttributeCodeMatches($familyCode, $attributeMappingCollection);
 
-        $processedAttributeMappingCollection = $this->buildAttributeMappingCollectionWithMatchedAttributeCodes($matchedPimAttributeCodes, $attributeMappingCollection);
+        $this->applyExactMatches($matchedPimAttributeCodes, $attributeMappingCollection);
 
         if ($this->exactMatchesHaveBeenApplied($attributeMappingCollection, $matchedPimAttributeCodes)) {
-            $this->saveAttributeMapping($familyCode, $processedAttributeMappingCollection);
+            $this->saveAttributeMapping($familyCode, $attributeMappingCollection);
         }
 
-        return $processedAttributeMappingCollection;
+        return $attributeMappingCollection;
     }
 
     private function findPimAttributeCodeMatches(FamilyCode $familyCode, AttributeMappingCollection $familyAttributesMapping): array
@@ -76,37 +69,15 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
         });
     }
 
-    private function buildAttributeMappingCollectionWithMatchedAttributeCodes(array $matchedPimAttributeCodes, AttributeMappingCollection $attributeMappingCollection): AttributeMappingCollection
+    private function applyExactMatches(array $matchedPimAttributeCodes, AttributeMappingCollection $attributeMappingCollection): void
     {
-        $newMapping = new AttributeMappingCollection();
-
-        foreach ($attributeMappingCollection as $attributeMapping) {
-            $pimAttributeCode = $attributeMapping->getPimAttributeCode();
-            $status = $attributeMapping->getStatus();
-
-            if (
-                $attributeMapping->getStatus() === AttributeMappingStatus::ATTRIBUTE_PENDING &&
-                array_key_exists($attributeMapping->getTargetAttributeLabel(), $matchedPimAttributeCodes)
-            ) {
-                $pimAttributeCode = $matchedPimAttributeCodes[$attributeMapping->getTargetAttributeLabel()];
-
-                if (null !== $pimAttributeCode) {
-                    $status = AttributeMappingStatus::ATTRIBUTE_ACTIVE;
+        foreach ($matchedPimAttributeCodes as $franklinLabel => $matchedPimAttributeCode) {
+            foreach ($attributeMappingCollection as $attributeMapping) {
+                if ($attributeMapping->getTargetAttributeLabel() === $franklinLabel) {
+                    $attributeMappingCollection->applyExactMatchOnAttribute($attributeMapping->getTargetAttributeCode(), $matchedPimAttributeCode);
                 }
             }
-
-            $newAttributeMapping = new AttributeMapping(
-                $attributeMapping->getTargetAttributeCode(),
-                $attributeMapping->getTargetAttributeLabel(),
-                $attributeMapping->getTargetAttributeType(),
-                $pimAttributeCode,
-                $status,
-                $attributeMapping->getSummary()
-            );
-            $newMapping->addAttribute($newAttributeMapping);
         }
-
-        return $newMapping;
     }
 
     private function saveAttributeMapping(FamilyCode $familyCode, AttributeMappingCollection $attributeMappingCollection): void
@@ -114,9 +85,9 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
         try {
             $this->saveAttributesMappingByFamilyHandler->handle(new SaveAttributesMappingByFamilyCommand(
                 $familyCode,
-                $this->attributesMappingNormalizer->normalize($attributeMappingCollection)
+                $attributeMappingCollection->formatForFranklin()
             ));
-        } catch (AttributeMappingException | DataProviderException $e) {
+        } catch (\Exception $e) {
             $this->logger->error(
                 sprintf('The attribute mapping can not be saved for family %s', (string) $familyCode),
                 ['message' => $e->getMessage()]
@@ -128,7 +99,7 @@ class ApplyAttributeExactMatches implements AttributeMappingCollectionDataProces
     {
         foreach ($attributeMappingCollection as $attributeMapping) {
             if (
-                $attributeMapping->getStatus() === AttributeMappingStatus::ATTRIBUTE_PENDING &&
+                $attributeMapping->getStatus() === AttributeMappingStatus::ATTRIBUTE_ACTIVE &&
                 array_key_exists($attributeMapping->getTargetAttributeLabel(), $matchedPimAttributeCodes) &&
                 null !== $matchedPimAttributeCodes[$attributeMapping->getTargetAttributeLabel()]
             ) {
