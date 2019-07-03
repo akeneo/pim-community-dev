@@ -94,6 +94,7 @@ services:
         arguments:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.image'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
 
