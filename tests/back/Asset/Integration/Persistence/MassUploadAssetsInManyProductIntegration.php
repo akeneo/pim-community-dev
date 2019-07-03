@@ -38,12 +38,13 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
         $importer = $this->get('pimee_product_asset.upload_importer');
         $queueLauncher = new JobLauncher(static::$kernel);
         $jobPublisher = $this->get('akeneo_batch_queue.launcher.queue_job_launcher');
-        $jobInstance = $this->get('akeneo_batch.job.job_instance_repository')
-            ->findOneByIdentifier('apply_assets_mass_upload_into_asset_collection');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
         $fs = new Filesystem();
 
         $this->initializeCatalog();
+
+        $jobInstance = $this->get('akeneo_batch.job.job_instance_repository')
+            ->findOneByIdentifier('apply_assets_mass_upload_into_asset_collection');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
 
         // I edit a product uploading a new "mugs" asset in the attribute. The job is published.
         $originMugFilePath = sprintf($originDir, 'mugs.jpg');
@@ -157,6 +158,7 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
      */
     private function initializeCatalog()
     {
+        $this->createAdminUser();
         $this->createChannelConfiguration();
         $this->createAttribute('my_asset');
         $this->createFamily([
