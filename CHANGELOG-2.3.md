@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7888: Fix required boolean field when creating variant product
+
 # 2.3.52 (2019-07-02)
 
 ## Bug fixes:
