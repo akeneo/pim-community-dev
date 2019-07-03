@@ -33,10 +33,9 @@ extensions:
         targetZone: content
         position: 10
         config:
-            template: pim/template/common/description-header
+            template: akeneo/franklin-insights/template/franklin-connection/description-header
             templateParams:
                 title: akeneo_franklin_insights.connection.module.title.sub_title
-                illustration: Helpcenter-settings.svg
                 description:
                     - akeneo_franklin_insights.connection.module.title.description.first_step
                     - akeneo_franklin_insights.connection.module.title.description.second_step
