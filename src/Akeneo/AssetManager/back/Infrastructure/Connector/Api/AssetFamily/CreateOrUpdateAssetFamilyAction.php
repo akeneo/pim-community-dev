@@ -103,7 +103,8 @@ class CreateOrUpdateAssetFamilyAction
         if (true === $shouldBeCreated) {
             $createAssetFamilyCommand = new CreateAssetFamilyCommand(
                 $normalizedAssetFamily['code'],
-                $normalizedAssetFamily['labels'] ?? []
+                $normalizedAssetFamily['labels'] ?? [],
+                $normalizedAssetFamily['rule_templates']
             );
 
             $violations = $this->validator->validate($createAssetFamilyCommand);
@@ -115,7 +116,8 @@ class CreateOrUpdateAssetFamilyAction
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
             $normalizedAssetFamily['code'],
             $normalizedAssetFamily['labels'] ?? [],
-            null
+            null,
+            $normalizedAssetFamily['rule_templates']
         );
 
         if (array_key_exists('image', $normalizedAssetFamily)) {

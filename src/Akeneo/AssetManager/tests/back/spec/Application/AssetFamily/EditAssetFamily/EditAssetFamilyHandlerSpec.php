@@ -6,6 +6,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyC
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
@@ -39,6 +40,24 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $editAssetFamilyCommand->identifier = 'designer';
         $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
         $editAssetFamilyCommand->image = null;
+        $editAssetFamilyCommand->ruleTemplates = [
+            [
+                'conditions' => [
+                    [
+                        'field' => 'sku',
+                        'operator' => 'equals',
+                        'value' => '{{product_sku}}'
+                    ]
+                ],
+                'actions'=> [
+                    [
+                        'type' => 'set',
+                        'field' => '{{attribute}}',
+                        'value' => '{{code}}'
+                    ]
+                ]
+            ]
+        ];
 
         $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn($assetFamily);
@@ -52,6 +71,9 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateImage(Argument::that(function ($image) {
                 return $image instanceof Image && $image->isEmpty();
             }))
+            ->shouldBeCalled();
+
+        $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
             ->shouldBeCalled();
 
         $repository->update($assetFamily)->shouldBeCalled();
@@ -71,6 +93,24 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $editAssetFamilyCommand->identifier = 'designer';
         $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
         $editAssetFamilyCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
+        $editAssetFamilyCommand->ruleTemplates = [
+            [
+                'conditions' => [
+                    [
+                        'field' => 'sku',
+                        'operator' => 'equals',
+                        'value' => '{{product_sku}}'
+                    ]
+                ],
+                'actions'=> [
+                    [
+                        'type' => 'set',
+                        'field' => '{{attribute}}',
+                        'value' => '{{code}}'
+                    ]
+                ]
+            ]
+        ];
 
         $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn($assetFamily);
@@ -84,6 +124,9 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateImage(Argument::that(function ($image) {
                 return $image instanceof Image && $image->getKey() === '/path/image.jpg';
             }))
+            ->shouldBeCalled();
+
+        $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
             ->shouldBeCalled();
 
         $fileExists->exists('/path/image.jpg')->willReturn(false);
@@ -112,6 +155,24 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $editAssetFamilyCommand->identifier = 'designer';
         $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
         $editAssetFamilyCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
+        $editAssetFamilyCommand->ruleTemplates = [
+            [
+                'conditions' => [
+                    [
+                        'field' => 'sku',
+                        'operator' => 'equals',
+                        'value' => '{{product_sku}}'
+                    ]
+                ],
+                'actions'=> [
+                    [
+                        'type' => 'set',
+                        'field' => '{{attribute}}',
+                        'value' => '{{code}}'
+                    ]
+                ]
+            ]
+        ];
 
         $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn($assetFamily);
@@ -125,6 +186,9 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateImage(Argument::that(function ($image) {
                 return $image instanceof Image && $image->getKey() === '/path/image.jpg';
             }))
+            ->shouldBeCalled();
+
+        $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
             ->shouldBeCalled();
 
         $fileExists->exists('/path/image.jpg')->willReturn(true);

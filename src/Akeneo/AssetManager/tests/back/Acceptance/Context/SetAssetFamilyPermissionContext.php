@@ -70,7 +70,7 @@ final class SetAssetFamilyPermissionContext implements Context
      */
     public function aAssetFamilyWithoutPermissions()
     {
-        $createCommand = new CreateAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, []);
+        $createCommand = new CreateAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {

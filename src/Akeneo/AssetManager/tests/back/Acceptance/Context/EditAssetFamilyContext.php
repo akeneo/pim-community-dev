@@ -89,7 +89,8 @@ final class EditAssetFamilyContext implements Context
             [
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur'
-            ]
+            ],
+            []
         );
 
         $violations = $this->validator->validate($createCommand);
@@ -109,7 +110,8 @@ final class EditAssetFamilyContext implements Context
         $command = new EditAssetFamilyCommand(
             $identifier,
             json_decode($updates['labels'], true),
-            null
+            null,
+            []
         );
         ($this->editAssetFamilyHandler)($command);
     }
@@ -183,7 +185,7 @@ final class EditAssetFamilyContext implements Context
 
         $label = json_decode($label);
 
-        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label]);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -198,7 +200,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function anImageOnAnAssetFamilyWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
-        $createCommand = new CreateAssetFamilyCommand($identifier, []);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -236,7 +238,8 @@ final class EditAssetFamilyContext implements Context
             [
                 'filePath' => $filePath,
                 'originalFilename' => $filename
-            ]
+            ],
+            []
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -251,7 +254,8 @@ final class EditAssetFamilyContext implements Context
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
             $identifier,
             [$localCode => $label],
-            null
+            null,
+            []
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -261,7 +265,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function theUserUpdatesTheAssetFamilyWithAnEmptyImage(string $identifier)
     {
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null, []);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 

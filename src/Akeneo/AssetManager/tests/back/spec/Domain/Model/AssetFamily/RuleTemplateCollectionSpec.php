@@ -16,7 +16,7 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $content = [
+        $ruleTemplate = [
             'conditions' => [
                 [
                     'field' => 'sku',
@@ -32,7 +32,6 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $ruleTemplate = RuleTemplate::createFromNormalized($content);
         $this->beConstructedThrough('fromArray', [[$ruleTemplate]]);
     }
 

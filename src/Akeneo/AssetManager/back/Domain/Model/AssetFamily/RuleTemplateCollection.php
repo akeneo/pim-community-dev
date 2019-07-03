@@ -32,8 +32,15 @@ class RuleTemplateCollection
         $this->ruleTemplates = $ruleTemplates;
     }
 
-    public static function fromArray(array $ruleTemplates): self
+    public static function fromArray(array $normalizedRuleTemplates): self
     {
+        Assert::allIsArray($normalizedRuleTemplates);
+
+        $ruleTemplates = [];
+        foreach ($normalizedRuleTemplates as $ruleTemplate) {
+            $ruleTemplates[] = RuleTemplate::createFromNormalized($ruleTemplate);
+        }
+
         return new self($ruleTemplates);
     }
 

@@ -1927,6 +1927,7 @@ final class EditAssetContext implements Context
     {
         $createCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
+            [],
             []
         );
 

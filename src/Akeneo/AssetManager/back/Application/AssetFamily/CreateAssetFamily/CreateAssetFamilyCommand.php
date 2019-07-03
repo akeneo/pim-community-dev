@@ -24,9 +24,13 @@ class CreateAssetFamilyCommand
     /** @var array */
     public $labels;
 
-    public function __construct(string $code, array $labels)
+    /** @var array */
+    public $ruleTemplates;
+
+    public function __construct(string $code, array $labels, array $ruleTemplates)
     {
         $this->code = $code;
         $this->labels = $labels;
+        $this->ruleTemplates = $ruleTemplates;
     }
 }

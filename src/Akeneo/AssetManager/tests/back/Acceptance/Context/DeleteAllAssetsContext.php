@@ -157,6 +157,7 @@ final class DeleteAllAssetsContext implements Context
     {
         $createCommand = new CreateAssetFamilyCommand(
             $identifier,
+            [],
             []
         );
 

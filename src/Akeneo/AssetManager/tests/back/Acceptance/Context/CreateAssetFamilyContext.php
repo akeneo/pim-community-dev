@@ -74,7 +74,8 @@ final class CreateAssetFamilyContext implements Context
         $updates = current($updateTable->getHash());
         $command = new CreateAssetFamilyCommand(
             $code,
-            json_decode($updates['labels'], true)
+            json_decode($updates['labels'], true),
+            []
         );
 
         $this->violationsContext->addViolations($this->validator->validate($command));
@@ -142,7 +143,8 @@ final class CreateAssetFamilyContext implements Context
         for ($i = 0; $i < $number; $i++) {
             $command = new CreateAssetFamilyCommand(
                 uniqid(),
-                ['en_US' => uniqid('label_')]
+                ['en_US' => uniqid('label_')],
+                []
             );
 
             $violations = $this->validator->validate($command);
