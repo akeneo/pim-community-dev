@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -106,6 +107,7 @@ CREATE TABLE `akeneo_asset_manager_asset_family` (
     `image` VARCHAR(255) NULL,
     `attribute_as_label` VARCHAR(255) NULL,
     `attribute_as_image` VARCHAR(255) NULL,
+    `rule_templates` JSON NOT NULL,
     PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -191,10 +193,28 @@ SQL;
 
     private function loadPackshots(): void
     {
+        $ruleTemplate = [
+            'conditions' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'equals',
+                    'value'    => '{{product_sku}}'
+                ]
+            ],
+            'actions'    => [
+                [
+                    'type'  => 'add',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
+
         $packshot = AssetFamily::create(
             AssetFamilyIdentifier::fromString('packshot'),
             ['en_US' => 'Packshots'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
         );
 
         $this->assetFamilyRepository->create($packshot);
@@ -269,7 +289,6 @@ SQL;
             Suffix::fromString('/small'),
             MediaType::fromString(MediaType::IMAGE)
         );
-        $order++;
 
         $this->attributeRepository->create($description);
         $this->attributeRepository->create($datePublished);
@@ -283,7 +302,8 @@ SQL;
         $notice = AssetFamily::create(
             AssetFamilyIdentifier::fromString('notice'),
             ['en_US' => 'Notices'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($notice);
@@ -343,7 +363,6 @@ SQL;
             Suffix::fromString('/original'),
             MediaType::fromString(MediaType::OTHER)
         );
-        $order++;
 
         $this->attributeRepository->create($description);
         $this->attributeRepository->create($targetCountries);
@@ -353,10 +372,43 @@ SQL;
 
     private function loadVideoPresentation(): void
     {
+        $ruleTemplateToAdd = [
+            'conditions' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'equals',
+                    'value'    => '{{product_sku}}'
+                ]
+            ],
+            'actions'    => [
+                [
+                    'type'  => 'add',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
+        $ruleTemplateToSet = [
+            'conditions' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'equals',
+                    'value'    => '{{product_sku}}'
+                ]
+            ],
+            'actions'    => [
+                [
+                    'type'  => 'set',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
         $videoPresentation = AssetFamily::create(
             AssetFamilyIdentifier::fromString('video_presentation'),
             ['en_US' => 'Video Presentation'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::createFromNormalized([$ruleTemplateToAdd, $ruleTemplateToSet])
         );
 
         $this->assetFamilyRepository->create($videoPresentation);
