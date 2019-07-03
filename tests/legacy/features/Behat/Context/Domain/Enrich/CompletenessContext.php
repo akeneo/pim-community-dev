@@ -171,9 +171,7 @@ class CompletenessContext extends PimContext
                     sort($expected['missing_required_attributes']);
                 }
 
-                if ($completenessData[$index] !== $expected ||
-                    $completenessData[$index]['missing_values'] !== $expected['missing_values']
-                ) {
+                if ($completenessData[$index] !== $expected) {
                     throw new SpinException(sprintf(
                         'Expected completeness %s does not match %s',
                         var_export($expected, true),
