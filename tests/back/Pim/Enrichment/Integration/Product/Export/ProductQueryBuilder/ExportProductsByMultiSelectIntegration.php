@@ -11,7 +11,13 @@ class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
      */
     protected function loadFixtures() : void
     {
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_multi_select']
+        ]);
+
         $this->createProduct('product_option_A', [
+            'family' => 'a_family',
             'values'     => [
                 'a_multi_select' => [
                     ['data' => ['optionA'], 'locale' => null, 'scope' => null]
@@ -20,6 +26,7 @@ class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_option_B', [
+            'family' => 'a_family',
             'values'     => [
                 'a_multi_select' => [
                     ['data' => ['optionB'], 'locale' => null, 'scope' => null]
@@ -28,6 +35,7 @@ class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_option_A_B', [
+            'family' => 'a_family',
             'values'     => [
                 'a_multi_select' => [
                     ['data' => ['optionA', 'optionB'], 'locale' => null, 'scope' => null]
@@ -36,6 +44,7 @@ class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_without_option', [
+            'family' => 'a_family',
             'values'     => [
                 'a_multi_select' => [
                     ['data' => [], 'locale' => null, 'scope' => null]
@@ -43,7 +52,7 @@ class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
             ]
         ]);
 
-        $this->createProduct('product_without_option_attribute');
+        $this->createProduct('product_without_option_attribute', ['family' => 'a_family']);
 
     }
 
@@ -51,8 +60,8 @@ class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_multi_select
-product_option_A;;1;;;optionA
-product_option_A_B;;1;;;optionA,optionB
+product_option_A;;1;a_family;;optionA
+product_option_A_B;;1;a_family;;optionA,optionB
 
 CSV;
 
@@ -79,9 +88,9 @@ CSV;
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_multi_select
-product_option_A;;1;;;optionA
-product_option_B;;1;;;optionB
-product_option_A_B;;1;;;optionA,optionB
+product_option_A;;1;a_family;;optionA
+product_option_B;;1;a_family;;optionB
+product_option_A_B;;1;a_family;;optionA,optionB
 
 CSV;
 
@@ -107,9 +116,9 @@ CSV;
     public function testProductExportByFilteringWithEmpty()
     {
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups
-product_without_option;;1;;
-product_without_option_attribute;;1;;
+sku;categories;enabled;family;groups;a_multi_select
+product_without_option;;1;a_family;;
+product_without_option_attribute;;1;a_family;;
 
 CSV;
 

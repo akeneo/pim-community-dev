@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
@@ -53,11 +54,13 @@ class ProductPdfRendererSpec extends ObjectBehavior
     function it_renders_a_product_without_images(
         $templating,
         ProductInterface $blender,
+        ValueCollectionInterface $valueCollection,
         AttributeGroupInterface $design,
         AttributeInterface $color,
         $attributeRepository
     ) {
-        $blender->getUsedAttributeCodes()->willReturn(['color']);
+        $blender->getValues()->willReturn($valueCollection);
+        $valueCollection->getAttributeCodes()->willReturn(['color']);
 
         $color->getGroup()->willReturn($design);
         $design->getLabel()->willReturn('Design');
@@ -90,6 +93,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     function it_renders_a_product_with_an_image(
         $templating,
         ProductInterface $blender,
+        ValueCollectionInterface $valueCollection,
         AttributeGroupInterface $media,
         AttributeInterface $mainImage,
         ValueInterface $value,
@@ -100,7 +104,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $mainImage->isLocalizable()->willReturn(true);
         $mainImage->isScopable()->willReturn(true);
 
-        $blender->getUsedAttributeCodes()->willReturn(['main_image']);
+        $blender->getValues()->willReturn($valueCollection);
+        $valueCollection->getAttributeCodes()->willReturn(['main_image']);
         $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($value);
 
         $value->getData()->willReturn($fileInfo);

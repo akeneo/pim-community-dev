@@ -31,7 +31,13 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'default_metric_unit' => 'METER',
         ]);
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_localizable_metric']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_metric' => [
                     ['data' => ['amount' => 20, 'unit' => 'METER'], 'locale' => 'en_US', 'scope' => null],
@@ -41,6 +47,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_metric' => [
                     ['data' => ['amount' => 10, 'unit' => 'METER'], 'locale' => 'en_US', 'scope' => null],
@@ -49,7 +56,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorInferior()

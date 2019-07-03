@@ -35,6 +35,26 @@
     margin: 200px auto 0;
     text-align: center;
     line-height: 40px;
+
+    &--loadingMessages {
+      margin: 0;
+      color: @AknDarkBlue;
+      font-size: @AknTitleFontSize;
+      font-weight: 400;
+      font-style: italic;
+
+      &:before {
+        content: url("/bundles/pimui/images/quote-left.svg");
+        position: relative;
+        top: -10px;
+      }
+
+      &:after {
+        content: url("/bundles/pimui/images/quote-right.svg");
+        position: relative;
+        bottom: -@AknTitleFontSize + -10px;
+      }
+    }
   }
 
   &-flashContainer {

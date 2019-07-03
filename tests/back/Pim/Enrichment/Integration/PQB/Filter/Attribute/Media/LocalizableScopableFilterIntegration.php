@@ -20,7 +20,13 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_localizable_scopable_image']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_scopable_image' => [
                     ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => 'ecommerce'],
@@ -32,6 +38,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_scopable_image' => [
                     ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'en_US', 'scope' => 'ecommerce'],
@@ -41,7 +48,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorStartWith()

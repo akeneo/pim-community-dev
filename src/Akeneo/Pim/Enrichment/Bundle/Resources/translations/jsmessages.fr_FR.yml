@@ -307,6 +307,7 @@ pim_enrich.mass_edit.product:
       label: Retirer des catégories
       label_count: "{1}Retirer <span class=\"AknFullPage-title--highlight\">1 produit</span> de catégories|]1, Inf[Retirer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> de categories"
       description: Les produits seront retirés des catégories suivantes.
+      no_update: Aucune catégorie n'est sélectionnée.
     add_to_existing_product_model:
       label: Ajouter à un modèle de produit existant
       label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|]1, Inf[Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"

@@ -57,6 +57,13 @@ define([
                                     location.reload();
                                 }
                             });
+                            form.on('pim_enrich:form:entity:pre_save', () => {
+                                const data = form.getFormData();
+                                data.current_password = null;
+                                data.new_password = null;
+                                data.new_password_repeat = null;
+                                form.setData(data);
+                            });
 
                             form.setData(user);
                             form.trigger('pim_enrich:form:entity:post_fetch', user);

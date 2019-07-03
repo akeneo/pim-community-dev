@@ -114,6 +114,7 @@ extensions:
         module: pim/product-model-edit-form/save
         parent: pim-product-model-edit-form
         targetZone: buttons
+        aclResourceId: pim_enrich_product_model_edit_attributes
         position: 0
 
     pim-product-model-edit-form-state:

@@ -22,6 +22,7 @@ use League\Flysystem\FilesystemInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -404,14 +405,22 @@ class JobInstanceController
         }
 
         $file = $request->files->get('file');
+        if (null === $file && $this->isFileUpload($request)) {
+            return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error'], 400);
+        }
+
         if (null !== $file) {
+            if (UPLOAD_ERR_OK !== $file->getError()) {
+                return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error'], 400);
+            }
+
             $violations = $this->validator->validate($file);
 
             if (count($violations) > 0) {
                 $errors = [];
                 foreach ($violations as $violation) {
                     $errors[$violation->getPropertyPath()] = [
-                        'message'       => $violation->getMessage(),
+                        'message' => $violation->getMessage(),
                         'invalid_value' => $violation->getInvalidValue()
                     ];
                 }
@@ -650,5 +659,17 @@ class JobInstanceController
         );
 
         return new JsonResponse($this->normalizeJobInstance($jobInstance));
+    }
+
+    /**
+     * This is the only way we found to test that a file too big was uploaded.
+     * If the file size exceeds the server limit, a warning is thrown on the apache container logs
+     * and the request does not contain any information that a file was uploaded on the FPM side.
+     * This happens only when the upload exceeds 'post_max_size' and we can detect it by having a positive
+     * Content-Length header corresponding to the file length that was sent.
+     */
+    private function isFileUpload(Request $request): bool
+    {
+        return $request->server->get('CONTENT_LENGTH') > 0;
     }
 }

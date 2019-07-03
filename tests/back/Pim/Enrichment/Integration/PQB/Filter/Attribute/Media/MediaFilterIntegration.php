@@ -21,7 +21,13 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'an_image']
+        ]);
+
         $this->createProduct('akeneo', [
+            'family' => 'a_family',
             'values' => [
                 'an_image' => [
                     ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => null, 'scope' => null]
@@ -30,6 +36,7 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('ziggy', [
+            'family' => 'a_family',
             'values' => [
                 'an_image' => [
                     ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => null, 'scope' => null]
@@ -37,7 +44,7 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorStartWith()

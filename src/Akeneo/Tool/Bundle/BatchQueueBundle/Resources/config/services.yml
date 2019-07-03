@@ -56,3 +56,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '%kernel.environment%'
+
+    akeneo_batch_queue.query.delete_job_execution_message_orphans:
+        class: Akeneo\Bundle\BatchQueueBundle\Query\SqlDeleteJobExecutionMessageOrphansQuery
+        arguments:
+            - '@database_connection'

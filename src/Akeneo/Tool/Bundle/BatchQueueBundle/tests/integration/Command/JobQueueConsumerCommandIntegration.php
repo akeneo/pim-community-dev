@@ -12,7 +12,6 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Doctrine\DBAL\Driver\Connection;
@@ -94,9 +93,41 @@ class JobQueueConsumerCommandIntegration extends TestCase
         $this->assertNotEmpty($row['consumer']);
     }
 
+    public function testLaunchFilteredJobExecution()
+    {
+        $jobExecution = $this->createJobExecutionInQueue('csv_product_export');
+
+        $output = $this->jobLauncher->launchConsumerOnce(['-j' => ['csv_product_export']]);
+        $standardOutput = $output->fetch();
+        $this->assertContains(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
+
+        $row = $this->getJobExecutionDatabaseRow($jobExecution);
+
+        $this->assertEquals(BatchStatus::COMPLETED, $row['status']);
+        $this->assertEquals(ExitStatus::COMPLETED, $row['exit_code']);
+        $this->assertNotNull($row['health_check_time']);
+
+        $jobExecution = $this->get('pim_enrich.repository.job_execution')->findBy(['id' => $jobExecution->getId()]);
+        $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution[0]);
+
+        $this->assertEquals(BatchStatus::COMPLETED, $jobExecution->getStatus()->getValue());
+        $this->assertEquals(ExitStatus::COMPLETED, $jobExecution->getExitStatus()->getExitCode());
+
+        $stmt = $this->getConnection()->prepare('SELECT consumer from akeneo_batch_job_execution_queue');
+        $stmt->execute();
+        $row = $stmt->fetch();
+
+        $this->assertNotEmpty($row['consumer']);
+    }
+
     public function testStatusOfACrashedJobExecution()
     {
         $jobExecution = $this->createJobExecutionInQueue('infinite_loop_job');
+
+        $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
+        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+
+        $this->getQueue()->publish($jobExecutionMessage);
 
         $daemonProcess = $this->jobLauncher->launchConsumerOnceInBackground();
 
@@ -197,6 +228,16 @@ class JobQueueConsumerCommandIntegration extends TestCase
         $jobExecution = $this->get('akeneo_batch.job_repository')->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user);
         $this->get('akeneo_batch.job_repository')->updateJobExecution($jobExecution);
+
+        return $jobExecution;
+    }
+
+    private function createJobExecutionInQueue(string $jobInstanceCode): JobExecution
+    {
+        $jobExecution = $this->createJobExecution($jobInstanceCode, 'mary');
+        $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
+        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $this->getQueue()->publish($jobExecutionMessage);
 
         return $jobExecution;
     }

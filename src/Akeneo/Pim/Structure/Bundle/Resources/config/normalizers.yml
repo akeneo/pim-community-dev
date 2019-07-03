@@ -75,6 +75,8 @@ services:
 
     pim_catalog.normalizer.standard.attribute_option:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 

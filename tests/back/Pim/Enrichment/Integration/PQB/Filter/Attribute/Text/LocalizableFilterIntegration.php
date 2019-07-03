@@ -28,7 +28,13 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'scopable'            => false,
         ]);
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_localizable_text']
+        ]);
+
         $this->createProduct('cat', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_text' => [
                     ['data' => 'black cat', 'locale' => 'en_US', 'scope' => null],
@@ -38,6 +44,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('cattle', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_text' => [
                     ['data' => 'cattle', 'locale' => 'en_US', 'scope' => null],
@@ -47,6 +54,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('dog', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_text' => [
                     ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => null],
@@ -55,7 +63,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorStartsWith()
