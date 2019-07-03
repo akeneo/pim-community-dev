@@ -146,12 +146,12 @@ jobs:
           - run:
                 name: Non critical PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh ${TESTSUITE}_integration | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh ${TESTSUITE}_integration --exclude-group critical | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - run:
                 name: Critical PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh all_integration | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh all_integration --group critical | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
