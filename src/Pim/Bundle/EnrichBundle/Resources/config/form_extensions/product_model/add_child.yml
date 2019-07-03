@@ -34,6 +34,7 @@ extensions:
         module: pim/form/common/fields/values/boolean
         config:
             required: true
+            defaultValue: false
 
     pim-product-model-add-child-field-simple-select-reference-data:
         module: pim/form/common/fields/values/simple-select-async
