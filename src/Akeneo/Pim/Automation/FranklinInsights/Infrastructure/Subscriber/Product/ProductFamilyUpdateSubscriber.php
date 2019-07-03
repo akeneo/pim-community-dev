@@ -51,6 +51,9 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
 
+    /** @var bool */
+    private $isFranklinInsightsActivated;
+
     public function __construct(
         SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery,
         UnsubscribeProductHandler $unsubscribeProductHandler,
@@ -166,8 +169,12 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
      */
     private function isFranklinInsightsActivated(): bool
     {
-        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
+        if (null === $this->isFranklinInsightsActivated) {
+            $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
 
-        return $connectionStatus->isActive();
+            $this->isFranklinInsightsActivated = $connectionStatus->isActive();
+        }
+
+        return $this->isFranklinInsightsActivated;
     }
 }

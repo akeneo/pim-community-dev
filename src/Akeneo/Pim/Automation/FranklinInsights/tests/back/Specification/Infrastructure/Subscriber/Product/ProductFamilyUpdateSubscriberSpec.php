@@ -233,4 +233,27 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $this->onPreSave(new GenericEvent($product->getWrappedObject()));
         $this->onPostSave(new GenericEvent($product->getWrappedObject()));
     }
+
+    public function it_does_not_check_if_franklin_insights_is_activated_on_bulk_save(
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        $updateSubscriptionFamilyHandler,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        FamilyInterface $family,
+        $connectionStatusHandler
+    ): void {
+        $product1->getId()->willReturn(42);
+        $product1->getFamily()->willReturn(null);
+
+        $product2->getId()->willReturn(44);
+        $product2->getFamily()->willReturn(null);
+
+        $this->onPreSave(new GenericEvent($product1->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($product1->getWrappedObject()));
+        $this->onPreSave(new GenericEvent($product2->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($product2->getWrappedObject()));
+
+        $connectionStatusHandler->handle(Argument::type(GetConnectionStatusQuery::class))->shouldBeCalledTimes(1);
+    }
 }
