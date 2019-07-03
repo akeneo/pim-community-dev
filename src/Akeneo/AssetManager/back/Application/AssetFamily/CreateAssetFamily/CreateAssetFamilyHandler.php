@@ -39,7 +39,7 @@ class CreateAssetFamilyHandler
             AssetFamilyIdentifier::fromString($createAssetFamilyCommand->code),
             $createAssetFamilyCommand->labels,
             Image::createEmpty(),
-            RuleTemplateCollection::fromArray($createAssetFamilyCommand->ruleTemplates)
+            RuleTemplateCollection::createFromNormalized($createAssetFamilyCommand->ruleTemplates)
         );
 
         $this->assetFamilyRepository->create($assetFamily);

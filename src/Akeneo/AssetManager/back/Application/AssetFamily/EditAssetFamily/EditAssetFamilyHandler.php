@@ -52,7 +52,7 @@ class EditAssetFamilyHandler
     {
         $identifier = AssetFamilyIdentifier::fromString($editAssetFamilyCommand->identifier);
         $labelCollection = LabelCollection::fromArray($editAssetFamilyCommand->labels);
-        $ruleTemplateCollection = RuleTemplateCollection::fromArray($editAssetFamilyCommand->ruleTemplates);
+        $ruleTemplateCollection = RuleTemplateCollection::createFromNormalized($editAssetFamilyCommand->ruleTemplates);
 
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($identifier);
         $assetFamily->updateLabels($labelCollection);

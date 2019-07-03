@@ -172,7 +172,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             $this->getBrandImage(),
             AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
             AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
-            RuleTemplateCollection::fromArray([$ruleTemplate])
+            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
         );
 
         Assert::assertEquals($brand, $expectedBrand);
@@ -265,7 +265,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             $this->getBrandImage(),
             AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
             AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
-            RuleTemplateCollection::fromArray([$ruleTemplate])
+            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
         );
 
         Assert::assertEquals($brand, $expectedBrand);
