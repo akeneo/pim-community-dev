@@ -145,22 +145,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
-        $ruleTemplate = [
-            'conditions' => [
-                [
-                    'field' => 'sku',
-                    'operator' => 'equals',
-                    'value' => '{{product_sku}}'
-                ]
-            ],
-            'actions'=> [
-                [
-                    'type' => 'add',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
-                ]
-            ]
-        ];
+        $ruleTemplate = $this->getExpectedRuleTemplate();
 
         $brand = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('brand'));
         $expectedBrand = AssetFamily::createWithAttributes(
@@ -238,22 +223,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
-        $ruleTemplate = [
-            'conditions' => [
-                [
-                    'field' => 'sku',
-                    'operator' => 'equals',
-                    'value' => '{{product_sku}}'
-                ]
-            ],
-            'actions'=> [
-                [
-                    'type' => 'set',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
-                ]
-            ]
-        ];
+        $ruleTemplate = $this->getExpectedRuleTemplate();
 
         $brand = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('brand'));
         $expectedBrand = AssetFamily::createWithAttributes(
@@ -348,5 +318,28 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $image = Image::fromFileInfo($imageFileInfo);
 
         return $image;
+    }
+
+    /**
+     * @return array
+     */
+    private function getExpectedRuleTemplate(): array
+    {
+        return [
+            'conditions' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'equals',
+                    'value'    => '{{product_sku}}'
+                ]
+            ],
+            'actions'    => [
+                [
+                    'type'  => 'add',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
     }
 }

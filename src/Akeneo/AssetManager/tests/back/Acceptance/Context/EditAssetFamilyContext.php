@@ -323,58 +323,48 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates the asset family \'([^\']*)\' to set a rule template$/
+     * @When /^the user updates the asset family \'([^\']*)\' to set a collection of rule templates$/
      */
-    public function theUserUpdatesTheAssetFamilyToSetARuleTemplate(string $code)
+    public function theUserUpdatesTheAssetFamilyToSetACollectionOfRuleTemplates(string $code)
     {
-        $ruleTemplate = [
-            'conditions' => [
-                [
-                    'field' => 'sku',
-                    'operator' => 'equals',
-                    'value' => '{{product_sku}}'
-                ]
-            ],
-            'actions'=> [
-                [
-                    'type' => 'set',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
-                ]
-            ]
-        ];
+        $ruleTemplate = $this->getExpectedRuleTemplate();
         $editAssetFamilyCommand = new EditAssetFamilyCommand($code, [], null, [$ruleTemplate]);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
     /**
-     * @Then /^the asset family \'([^\']*)\' should have the rule template$/
+     * @Then /^the asset family \'([^\']*)\' should have the collection of rule templates$/
      */
-    public function theAssetFamilyShouldHaveTheRuleTemplate(string $code)
+    public function theAssetFamilyShouldHaveTheCollectionOfRuleTemplates(string $code)
     {
         $this->constraintViolationsContext->assertThereIsNoViolations();
 
-        $expectedRuleTemplate = [
-            'conditions' => [
-                [
-                    'field' => 'sku',
-                    'operator' => 'equals',
-                    'value' => '{{product_sku}}'
-                ]
-            ],
-            'actions'=> [
-                [
-                    'type' => 'set',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
-                ]
-            ]
-        ];
+        $expectedRuleTemplate = $this->getExpectedRuleTemplate();
         $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
 
         $assetFamily = $this->assetFamilyRepository
             ->getByIdentifier(AssetFamilyIdentifier::fromString($code));
 
         Assert::assertEquals($expectedRuleTemplateCollection, $assetFamily->getRuleTemplateCollection());
+    }
+
+    private function getExpectedRuleTemplate(): array
+    {
+        return [
+            'conditions' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'equals',
+                    'value'    => '{{product_sku}}'
+                ]
+            ],
+            'actions'    => [
+                [
+                    'type'  => 'set',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
     }
 }

@@ -161,9 +161,9 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user creates an asset family '([^"]*)' with rule templates$/
+     * @When /^the user creates an asset family '([^"]*)' with a collection of rule templates$/
      */
-    public function theUserCreatesAnAssetFamilyWithRuleTemplates(string $code): void
+    public function theUserCreatesAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
         $ruleTemplate = [
             'conditions' => [
@@ -198,9 +198,9 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^there is an asset family '([^"]*)' with rule templates$/
+     * @Then /^there is an asset family '([^"]*)' with a collection of rule templates$/
      */
-    public function thereIsAnAssetFamilyWithRuleTemplates(string $code): void
+    public function thereIsAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
         $expectedIdentifier = AssetFamilyIdentifier::fromString($code);
         $actualAssetFamily = $this->assetFamilyRepository->getByIdentifier($expectedIdentifier);

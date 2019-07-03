@@ -22,7 +22,7 @@
           ],
           "actions": [
             {
-              "type": "set",
+              "type": "add",
               "field": "{{attribute}}",
               "value": "{{code}}"
             }
