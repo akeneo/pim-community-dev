@@ -35,6 +35,9 @@ class ProductAndProductModelDraftWriter implements ItemWriterInterface, StepExec
     /** @var NotifierInterface */
     private $notifier;
 
+    /** @var StepExecution */
+    private $stepExecution;
+
     public function __construct(
         ProductDraftWriter $productDraftWriter,
         ProductDraftWriter $productModelDraftWriter,
@@ -77,6 +80,7 @@ class ProductAndProductModelDraftWriter implements ItemWriterInterface, StepExec
 
     public function setStepExecution(StepExecution $stepExecution)
     {
+        $this->stepExecution = $stepExecution;
         $this->productDraftWriter->setStepExecution($stepExecution);
         $this->productModelDraftWriter->setStepExecution($stepExecution);
     }
@@ -87,9 +91,30 @@ class ProductAndProductModelDraftWriter implements ItemWriterInterface, StepExec
         $notification
             ->setType('success')
             ->setMessage('pimee_workflow.product_draft.notification.mass_edit_sent_for_approval')
-            ->setMessageParams(['%countProducts%' => $countProductAndProductModelDraftsWritten])
+            ->setMessageParams(
+                [
+                    '%jobLabel%'             => $this->getJobLabel(),
+                    '%sentForApprovalCount%' => $countProductAndProductModelDraftsWritten,
+                    '%readProductsCount%'    => $this->getProductsCount(),
+                ]
+            )
             ->setContext(['actionType' => 'pimee_workflow_product_draft_notification_sent']);
 
         $this->notifier->notify($notification, [$author]);
+    }
+
+    private function getProductsCount(): int
+    {
+        $stepExecutions = $this->stepExecution->getJobExecution()->getStepExecutions();
+        /** @var StepExecution $firstStepExecution */
+        $firstStepExecution = $stepExecutions->get(0);
+        return $firstStepExecution->getSummaryInfo('read');
+
+        return $firstStepExecution->getReadCount();
+    }
+
+    private function getJobLabel(): string
+    {
+        return $this->stepExecution->getJobExecution()->getJobInstance()->getLabel();
     }
 }
