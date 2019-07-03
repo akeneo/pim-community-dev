@@ -124,6 +124,15 @@ jobs:
           - attach_workspace:
                 at: ~/
           - run:
+                name: Get suite name to run
+                command: |
+                    TESTSUITE=$(echo $CIRCLE_BRANCH | sed -e 's/^.*-\([^-]*\)$/\1/g')
+                    if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon)$ ]] ; then
+                      TESTSUITE="all"
+                    fi
+                    echo "Suite to run: "$TESTSUITE
+                    echo "export TESTSUITE=$TESTSUITE" >> $BASH_ENV
+          - run:
                 name: Change owner on project dir in order to archive the project into the workspace
                 command: sudo chown -R 1000:1000 ../project
           - run:
@@ -135,9 +144,14 @@ jobs:
                     sleep 25 # wait mysql to be up
                     docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
-                name: PHPunit Integration
+                name: Non critical PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh ${TESTSUITE}_integration | circleci tests split)
+                    .circleci/run_phpunit.sh $TESTFILES
+          - run:
+                name: Critical PHPunit Integration
+                command: |
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh all_integration | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
@@ -186,13 +200,13 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-            name: Get Behat Suite name to run
+            name: Get suite name to run
             command: |
                 TESTSUITE=$(echo $CIRCLE_BRANCH | sed -e 's/^.*-\([^-]*\)$/\1/g')
                 if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon)$ ]] ; then
                   TESTSUITE="all"
                 fi
-                echo "Behat Suite to run: "$TESTSUITE
+                echo "Suite to run: "$TESTSUITE
                 echo "export TESTSUITE=$TESTSUITE" >> $BASH_ENV
       - run:
             name: Change owner on project dir in order to archive the project into the workspace
