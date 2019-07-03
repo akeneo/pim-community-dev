@@ -70,7 +70,7 @@ services:
             - '@pim_enrich.normalizer.image'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
-            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_enrich.normalizer.product_completeness_collection'
             - '@pim_catalog.completeness.calculator'
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - '@pim_catalog.product_models.image_as_label'
@@ -141,9 +141,10 @@ services:
     pim_enrich.normalizer.product_completeness_collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer'
         arguments:
-            - '@pim_enrich.normalizer.completeness'
+            - '@pim_enrich.normalizer.product_completeness'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
 
     pim_enrich.normalizer.collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer'
@@ -177,7 +178,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.filter.chained'
-            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_enrich.normalizer.product_completeness_collection'
             - '@pim_user.context.user'
             - '@pim_catalog.completeness.calculator'
             - '@pim_catalog.values_filler.product'

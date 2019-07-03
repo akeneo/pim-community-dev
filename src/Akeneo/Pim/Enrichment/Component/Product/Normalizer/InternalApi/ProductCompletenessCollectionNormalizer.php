@@ -27,14 +27,19 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $localeRepository;
+
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -139,7 +144,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * Returns how many completenesses have a ratio of 100 for a provided list of completeness.
      *
-     * @param CompletenessInterface[] $completenesses
+     * @param ProductCompleteness[] $completenesses
      *
      * @return int
      */
@@ -147,7 +152,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     {
         $complete = 0;
         foreach ($completenesses as $completeness) {
-            if (100 <= $completeness->getRatio()) {
+            if (100 <= $completeness->ratio()) {
                 $complete++;
             }
         }
@@ -166,7 +171,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     {
         $complete = 0;
         foreach ($completenesses as $completeness) {
-            $complete += $completeness->getRatio();
+            $complete += $completeness->ratio();
         }
 
         return (int) round($complete / count($completenesses));
@@ -197,7 +202,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
             $normalizedCompleteness = [];
             $normalizedCompleteness['completeness'] = $this->normalizer->normalize($completeness, $format, $context);
             $normalizedCompleteness['missing'] = [];
-            $normalizedCompleteness['label'] = $completeness->getLocale()->getName();
+            $normalizedCompleteness['label'] = $this->localeRepository->findOneByIdentifier($completeness->localeCode())->getName();
 
             foreach ($completeness->missingAttributeCodes() as $attributeCode) {
                 $normalizedCompleteness['missing'][] = [
