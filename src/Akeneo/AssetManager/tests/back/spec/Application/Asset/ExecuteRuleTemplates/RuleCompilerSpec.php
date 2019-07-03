@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates;
 
+use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\CompiledRule;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
@@ -12,16 +13,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class RuleCompilerSpec extends ObjectBehavior
 {
-    public function let(DenormalizerInterface $ruleDenormalizer)
-    {
-        $this->beConstructedWith($ruleDenormalizer, Rule::class);
-    }
-
     public function it_compiles_a_rule_template_with_an_accessible_asset(
-        DenormalizerInterface $ruleDenormalizer,
         RuleTemplate $ruleTemplate,
-        PropertyAccessibleAsset $propertyAccessibleAsset,
-        Rule $rule
+        PropertyAccessibleAsset $propertyAccessibleAsset
     ) {
         $conditions = [
             [
@@ -76,21 +70,15 @@ class RuleCompilerSpec extends ObjectBehavior
             ]
         ];
 
-        $ruleDenormalizer->denormalize([
-            'code' => '',
-            'priority' => '',
-            'conditions' => $expectedConditions,
-            'actions' => $expectedActions
-        ], Rule::class)->willReturn($rule);
+        $actualRule = $this->compile($ruleTemplate, $propertyAccessibleAsset);
 
-        $this->compile($ruleTemplate, $propertyAccessibleAsset);
+        $actualRule->getConditions()->shouldBe($expectedConditions);
+        $actualRule->getActions()->shouldBe($expectedActions);
     }
 
     public function it_replaces_only_fields_and_values_in_the_template(
-        DenormalizerInterface $ruleDenormalizer,
         RuleTemplate $ruleTemplate,
-        PropertyAccessibleAsset $propertyAccessibleAsset,
-        Rule $rule
+        PropertyAccessibleAsset $propertyAccessibleAsset
     ) {
         $conditions = [
             [
@@ -157,21 +145,14 @@ class RuleCompilerSpec extends ObjectBehavior
             ],
         ];
 
-        $ruleDenormalizer->denormalize([
-            'code' => '',
-            'priority' => '',
-            'conditions' => $expectedConditions,
-            'actions' => $expectedActions
-        ], Rule::class)->willReturn($rule);
-
-        $this->compile($ruleTemplate, $propertyAccessibleAsset);
+        $actualCompiledRule = $this->compile($ruleTemplate, $propertyAccessibleAsset);
+        $actualCompiledRule->getConditions()->shouldBeEqualTo($expectedConditions);
+        $actualCompiledRule->getActions()->shouldBeEqualTo($expectedActions);
     }
 
     public function it_does_not_replace_if_accessible_asset_does_not_have_the_value(
-        DenormalizerInterface $ruleDenormalizer,
         RuleTemplate $ruleTemplate,
-        PropertyAccessibleAsset $propertyAccessibleAsset,
-        Rule $rule
+        PropertyAccessibleAsset $propertyAccessibleAsset
     ) {
         $conditions = [
             [
@@ -225,13 +206,8 @@ class RuleCompilerSpec extends ObjectBehavior
             ]
         ];
 
-        $ruleDenormalizer->denormalize([
-            'code' => '',
-            'priority' => '',
-            'conditions' => $expectedConditions,
-            'actions' => $expectedActions
-        ], Rule::class)->willReturn($rule);
-
-        $this->compile($ruleTemplate, $propertyAccessibleAsset);
+        $actualCompiledRule = $this->compile($ruleTemplate, $propertyAccessibleAsset);
+        $actualCompiledRule->getConditions()->shouldBe($expectedConditions);
+        $actualCompiledRule->getActions()->shouldBe($expectedActions);
     }
 }

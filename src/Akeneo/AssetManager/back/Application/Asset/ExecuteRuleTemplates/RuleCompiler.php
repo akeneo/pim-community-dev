@@ -33,14 +33,6 @@ class RuleCompiler
     /** @var array We only allow those keys to be replaced by asset values in actions */
     private const ACTIONS_KEYS_TO_REPLACE = ['field', 'value', 'items'];
 
-    /** @var DenormalizerInterface */
-    private $ruleDenormalizer;
-
-    public function __construct(DenormalizerInterface $ruleDenormalizer)
-    {
-        $this->ruleDenormalizer = $ruleDenormalizer;
-    }
-
     /**
      * Takes an $propertyAccessibleAsset to fill in the given $ruleTemplate. This results in a ready-to-use RuleInterface
      * for the RuleEngine of the PIM.
@@ -65,31 +57,30 @@ class RuleCompiler
      *
      * @throws \Exception
      */
-    public function compile(RuleTemplate $ruleTemplate, PropertyAccessibleAsset $propertyAccessibleAsset): RuleInterface
+    public function compile(RuleTemplate $ruleTemplate, PropertyAccessibleAsset $propertyAccessibleAsset): CompiledRule
     {
-        $compiledContent = $this->compileTemplateWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
 
-        $ruleData = [
-            'code' => '',
-            'priority' => '',
-            'conditions' => $compiledContent['conditions'],
-            'actions' => $compiledContent['actions']
-        ];
+        $compiledConditions = $this->compileConditionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
+        $compiledActions = $this->compileActionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
 
-        return $this->ruleDenormalizer->denormalize($ruleData, Rule::class);
+        return new CompiledRule($compiledConditions, $compiledActions);
+
+//        $compiledContent = $this->compileTemplateWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
+//
+//        $ruleData = [
+//            'code' => '',
+//            'priority' => '',
+//            'conditions' => $compiledContent['conditions'],
+//            'actions' => $compiledContent['actions']
+//        ];
+//
+//        return $this->ruleDenormalizer->denormalize($ruleData, Rule::class);
     }
 
     private function compileTemplateWithPropertyAccessibleAsset(
         RuleTemplate $ruleTemplate,
         PropertyAccessibleAsset $propertyAccessibleAsset
     ): array {
-        $compiledConditions = $this->compileConditionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
-        $compiledActions = $this->compileActionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
-
-        return [
-            'conditions' => $compiledConditions,
-            'actions' => $compiledActions,
-        ];
     }
 
     private function compileConditionsWithPropertyAccessibleAsset(
