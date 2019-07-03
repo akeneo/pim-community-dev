@@ -6,9 +6,8 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,14 +27,20 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     /** @var IncompleteValueCollectionFactory */
     private $incompleteValueCollectionFactory;
 
+    /** @var string */
+    private $completenessClass;
+
     /**
      * @param RequiredValueCollectionFactory   $requiredValueCollectionFactory
      * @param IncompleteValueCollectionFactory $incompleteValueCollectionFactory
+     * @param string                           $completenessClass
      */
     public function __construct(
         RequiredValueCollectionFactory $requiredValueCollectionFactory,
-        IncompleteValueCollectionFactory $incompleteValueCollectionFactory
+        IncompleteValueCollectionFactory $incompleteValueCollectionFactory,
+        $completenessClass
     ) {
+        $this->completenessClass = $completenessClass;
         $this->requiredValueCollectionFactory = $requiredValueCollectionFactory;
         $this->incompleteValueCollectionFactory = $incompleteValueCollectionFactory;
     }
@@ -43,7 +48,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function calculate(ProductInterface $product): array
+    public function calculate(ProductInterface $product)
     {
         $family = $product->getFamily();
         if (null === $family) {
@@ -65,9 +70,11 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
                 );
 
                 $completenesses[] = $this->createCompleteness(
+                    $product,
                     $channel,
                     $locale,
                     $incompleteValues->attributes(),
+                    $incompleteValues->count(),
                     $requiredValues->count()
                 );
             }
@@ -77,26 +84,30 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     }
 
     /**
+     * @param ProductInterface $product
      * @param ChannelInterface $channel
      * @param LocaleInterface  $locale
      * @param Collection       $missingAttributes
+     * @param int              $missingCount
      * @param int              $requiredCount
      *
-     * @return ProductCompleteness
+     * @return CompletenessInterface
      */
     private function createCompleteness(
+        ProductInterface $product,
         ChannelInterface $channel,
         LocaleInterface $locale,
         Collection $missingAttributes,
+        $missingCount,
         $requiredCount
-    ): ProductCompleteness {
-        return new ProductCompleteness(
-            $channel->getCode(),
-            $locale->getCode(),
-            $requiredCount,
-            array_map(function (AttributeInterface $attribute) {
-                return $attribute->getCode();
-            }, $missingAttributes->toArray())
+    ) {
+        return new $this->completenessClass(
+            $product,
+            $channel,
+            $locale,
+            $missingAttributes,
+            $missingCount,
+            $requiredCount
         );
     }
 

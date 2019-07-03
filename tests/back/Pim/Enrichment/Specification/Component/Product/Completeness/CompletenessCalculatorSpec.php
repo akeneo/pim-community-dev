@@ -2,8 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
@@ -14,6 +12,8 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueColl
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -27,7 +27,8 @@ class CompletenessCalculatorSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $requiredValueCollectionFactory,
-            $incompleteValueCollectionFactory
+            $incompleteValueCollectionFactory,
+            Completeness::class
         );
     }
 
@@ -61,7 +62,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         IncompleteValueCollection $incompleteValues,
         ValueInterface $requiredValue,
         Collection $incompleteAttributes,
-        AttributeInterface $incompleteAttribute
+        CompletenessInterface $expectedCompleteness
     ) {
         $locale->getCode()->willReturn('fr_FR');
         $channel->getCode()->willReturn('ecommerce');
@@ -86,15 +87,19 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         $incompleteValues->attributes()->willReturn($incompleteAttributes);
         $incompleteValues->count()->willReturn(1);
         $requiredValues->count()->willReturn(1);
-        $incompleteAttributes->toArray()->willReturn([$incompleteAttribute]);
-        $incompleteAttribute->getCode()->willReturn('incomplete_attribute');
+
+        $expectedCompleteness->getChannel()->willReturn($channel);
+        $expectedCompleteness->getLocale()->willReturn($locale);
+        $expectedCompleteness->getMissingCount()->willReturn(1);
+        $expectedCompleteness->getProduct()->willReturn($product);
+        $expectedCompleteness->getRatio()->willReturn(0);
+        $expectedCompleteness->getRequiredCount()->willReturn(1);
+        $expectedCompleteness->getMissingAttributes()->willReturn($incompleteAttributes);
 
         $completenesses = $this->calculate($product);
-        $completenesses[0]->channelCode()->shouldEqual('ecommerce');
-        $completenesses[0]->localeCode()->shouldEqual('fr_FR');
-        $completenesses[0]->requiredCount()->shouldEqual(1);
-        $completenesses[0]->missingAttributeCodes()->shouldEqual(['incomplete_attribute']);
-        $completenesses[0]->ratio()->shouldEqual(0);
+        $completenesses->shouldBeAnArrayOfCompletenesses();
+        $completenesses->shouldContainCompletenesses(1);
+        $completenesses->shouldContainCompleteness($expectedCompleteness);
     }
 
     public function getMatchers(): array

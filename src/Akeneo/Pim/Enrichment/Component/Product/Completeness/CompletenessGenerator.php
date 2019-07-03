@@ -2,14 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -31,35 +26,16 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /** @var CompletenessCalculatorInterface */
     protected $completenessCalculator;
 
-    /** @var GetProductCompletenesses */
-    private $getProductCompletenesses;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $channelRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $localeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
-
     /**
-     * TODO Remove the 3 last params (just temporary)
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param CompletenessCalculatorInterface     $completenessCalculator
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        CompletenessCalculatorInterface $completenessCalculator,
-        GetProductCompletenesses $getProductCompletenesses,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        CompletenessCalculatorInterface $completenessCalculator
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->completenessCalculator = $completenessCalculator;
-        $this->getProductCompletenesses = $getProductCompletenesses;
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
-        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -78,28 +54,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function calculateProductCompletenesses(ProductInterface $product)
     {
-        // TODO Remove getCompleteness
         $completenessCollection = $product->getCompletenesses();
 
-        // TODO This block is to transform the "new" completeness to the "old way"
-        $newCompletenessesV3 = $this->completenessCalculator->calculate($product);
-        $newCompletenessesV2 = array_map(function ($newCompletenessTmp) use ($product) {
-            $missingAttributeCodes = new ArrayCollection();
-            foreach ($newCompletenessTmp->missingAttributeCodes() as $attributeCode) {
-                $missingAttributeCodes->add($this->attributeRepository->findOneByIdentifier($attributeCode));
-            }
+        $newCompletenesses = $this->completenessCalculator->calculate($product);
 
-            return new Completeness(
-                $product,
-                $this->channelRepository->findOneByIdentifier($newCompletenessTmp->channelCode()),
-                $this->localeRepository->findOneByIdentifier($newCompletenessTmp->localeCode()),
-                $missingAttributeCodes,
-                count($newCompletenessTmp->missingAttributeCodes()),
-                $newCompletenessTmp->requiredCount()
-            );
-        }, $newCompletenessesV3);
-
-        $this->updateExistingCompletenesses($completenessCollection, $newCompletenessesV2);
+        $this->updateExistingCompletenesses($completenessCollection, $newCompletenesses);
 
         $completenessLocaleAndChannelCodes = [];
         foreach ($completenessCollection as $updatedCompleteness) {
@@ -108,8 +67,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         }
 
         $newLocalesChannels = [];
-        foreach ($newCompletenessesV2 as $newCompleteness) {
-            $newLocalesChannels[] = $newCompleteness->getLocale()->getId().'/'.$newCompleteness->getChannel()->getId();
+        foreach ($newCompletenesses as $newCompleteness) {
+            $newLocalesChannels[] =
+                $newCompleteness->getLocale()->getId().'/'.$newCompleteness->getChannel()->getId();
         }
 
         $localeAndChannelCodesOfCompletenessesToAdd = array_diff(
@@ -118,7 +78,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         );
         $this->addNewCompletenesses(
             $completenessCollection,
-            $newCompletenessesV2,
+            $newCompletenesses,
             $localeAndChannelCodesOfCompletenessesToAdd
         );
 
