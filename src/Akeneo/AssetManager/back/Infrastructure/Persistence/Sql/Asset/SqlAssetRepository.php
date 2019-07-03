@@ -160,11 +160,7 @@ SQL;
 
         $this->eventDispatcher->dispatch(
             AssetUpdatedEvent::class,
-            new AssetUpdatedEvent(
-                $asset->getIdentifier(),
-                $asset->getCode(),
-                $asset->getAssetFamilyIdentifier()
-            )
+            new AssetUpdatedEvent($asset->getIdentifier(), $asset->getCode(), $asset->getAssetFamilyIdentifier())
         );
     }
 

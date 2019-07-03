@@ -1,12 +1,12 @@
 services:
     akeneo_assetmanager.infrastructure.rule.rule_compiler:
-        class: Akeneo\AssetManager\Infrastructure\Rule\RuleCompiler
+        class: Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleCompiler
         arguments:
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '%akeneo_rule_engine.model.rule.class%'
 
     akeneo_assetmanager.infrastructure.rule.rule_executor:
-        class: Akeneo\AssetManager\Infrastructure\Rule\RuleExecutor
+        class: Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleExecutor
         arguments:
             - '@akeneo_assetmanager.infrastructure.rule.rule_compiler'
             - '@pimee_catalog_rule.runner.product'

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Rule;
+namespace Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Common\Fake\EventDispatcherMock;
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
@@ -69,7 +70,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_a_asset_with_no_values_and_returns_it()
+    public function it_creates_an_asset_with_no_values_and_returns_it()
     {
         $assetCode = AssetCode::fromString('starck');
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
@@ -83,7 +84,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository->create($asset);
 
-        $this->eventDispatcherMock->assertEventDispatched(AssetUpdatedEvent::class);
+        $this->eventDispatcherMock->assertEventDispatched(AssetCreatedEvent::class);
         $assetFound = $this->repository->getByIdentifier($identifier);
         $this->assertSame($asset->normalize(), $assetFound->normalize());
     }
