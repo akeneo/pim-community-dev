@@ -40,8 +40,7 @@ class ProductAndProductModelDraftWriter implements ItemWriterInterface, StepExec
         ProductDraftWriter $productModelDraftWriter,
         SimpleFactoryInterface $notificationFactory,
         NotifierInterface $notifier
-    )
-    {
+    ) {
         $this->productDraftWriter = $productDraftWriter;
         $this->productModelDraftWriter = $productModelDraftWriter;
         $this->notifier = $notifier;
