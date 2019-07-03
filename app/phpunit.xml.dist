@@ -20,15 +20,77 @@
     </php>
 
     <testsuites>
-        <testsuite name="PIM_Integration_Test">
+        <testsuite name="all_integration">
             <directory suffix="Integration.php">../src</directory>
             <directory suffix="Integration.php">../tests</directory>
         </testsuite>
 
-        <testsuite name="End_to_End">
-            <directory suffix="EndToEnd.php">../tests/back</directory>
+        <testsuite name="all_end_to_end">
             <directory suffix="EndToEnd.php">../src</directory>
+            <directory suffix="EndToEnd.php">../tests/back</directory>
         </testsuite>
 
+        <testsuite name="chipmunk_integration">
+            <directory suffix="Integration.php">../src/Akeneo/Pim/</directory>
+            <directory suffix="Integration.php">../tests/back/Pim/</directory>
+
+            <!--common tests-->
+            <directory suffix="Integration.php">../src/Akeneo/Platform/</directory>
+            <directory suffix="Integration.php">../tests/back/Platform/</directory>
+            <directory suffix="Integration.php">../src/Akeneo/Tool/</directory>
+            <directory suffix="Integration.php">../src/Oro/</directory>
+        </testsuite>
+
+        <testsuite name="chipmunk_end_to_end">
+            <directory suffix="EndToEnd.php">../src/Akeneo/Pim/</directory>
+            <directory suffix="EndToEnd.php">../tests/back/Pim/</directory>
+
+            <!--common tests-->
+            <directory suffix="EndToEnd.php">../src/Akeneo/Platform/</directory>
+            <directory suffix="EndToEnd.php">../tests/back/Platform/</directory>
+            <directory suffix="EndToEnd.php">../src/Akeneo/Tool/</directory>
+        </testsuite>
+
+        <testsuite name="raccoon_integration">
+            <directory suffix="Integration.php">../src/Akeneo/UserManagement/</directory>
+            <directory suffix="Integration.php">../tests/back/UserManagement/</directory>
+            <directory suffix="Integration.php">../src/Akeneo/Channel/</directory>
+            <directory suffix="Integration.php">../tests/back/Channel/</directory>
+
+            <!--common tests-->
+            <directory suffix="Integration.php">../src/Akeneo/Platform/</directory>
+            <directory suffix="Integration.php">../tests/back/Platform/</directory>
+            <directory suffix="Integration.php">../src/Akeneo/Tool/</directory>
+            <directory suffix="Integration.php">../src/Oro/</directory>
+        </testsuite>
+
+        <testsuite name="raccoon_end_to_end">
+            <directory suffix="EndToEnd.php">../src/Akeneo/UserManagement/</directory>
+            <directory suffix="EndToEnd.php">../src/Akeneo/Channel/</directory>
+            <directory suffix="EndToEnd.php">../src/Akeneo/Platform/</directory>
+            <directory suffix="EndToEnd.php">../tests/back/UserManagement/</directory>
+            <directory suffix="EndToEnd.php">../tests/back/Channel/</directory>
+            <directory suffix="EndToEnd.php">../tests/back/Platform/</directory>
+            <directory suffix="EndToEnd.php">../src/Akeneo/Tool/</directory>
+        </testsuite>
+
+        <testsuite name="weasel_integration">
+            <!--no specific tests for weasels-->
+
+            <!--common tests-->
+            <directory suffix="Integration.php">../src/Akeneo/Platform/</directory>
+            <directory suffix="Integration.php">../tests/back/Platform/</directory>
+            <directory suffix="Integration.php">../src/Akeneo/Tool/</directory>
+            <directory suffix="Integration.php">../src/Oro/</directory>
+        </testsuite>
+
+        <testsuite name="weasel_end_to_end">
+            <!--no specific tests for weasels-->
+
+            <!--common tests-->
+            <directory suffix="EndToEnd.php">../src/Akeneo/Platform/</directory>
+            <directory suffix="EndToEnd.php">../tests/back/Platform/</directory>
+            <directory suffix="EndToEnd.php">../src/Akeneo/Tool/</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
