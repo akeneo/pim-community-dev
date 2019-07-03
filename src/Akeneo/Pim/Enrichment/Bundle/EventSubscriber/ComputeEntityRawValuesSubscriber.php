@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -71,9 +71,9 @@ class ComputeEntityRawValuesSubscriber implements EventSubscriberInterface
      *
      * @param EntityWithValuesInterface $entity
      *
-     * @return ValueCollectionInterface
+     * @return WriteValueCollection
      */
-    private function getValues(EntityWithValuesInterface $entity): ValueCollectionInterface
+    private function getValues(EntityWithValuesInterface $entity): WriteValueCollection
     {
         if ($entity instanceof ProductModelInterface) {
             return $entity->getValuesForVariation();

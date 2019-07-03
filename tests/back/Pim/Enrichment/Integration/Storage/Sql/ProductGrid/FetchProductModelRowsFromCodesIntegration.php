@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\Configuration;
@@ -29,7 +29,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
 
         $fixturesLoader = new ProductGridFixturesLoader(
             static::$kernel->getContainer(),
-            $this->getFixturePath('akeneo.jpg')
+            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
         );
         [$rootProductModel, $subProductModel] = $fixturesLoader->createProductAndProductModels()['product_models'];
 
@@ -52,7 +52,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 $rootProductModel->getId(),
                 ['total' => 1, 'complete' => 0],
                 null,
-                new ValueCollection([
+                new WriteValueCollection([
                     MediaValue::value('an_image', $akeneoImage)
                 ])
             ),
@@ -66,7 +66,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 $subProductModel->getId(),
                 ['total' => 1, 'complete' => 0],
                 'root_product_model',
-                new ValueCollection([
+                new WriteValueCollection([
                     MediaValue::value('an_image', $akeneoImage),
                     ScalarValue::value('a_text', 'a_text')
                 ])
@@ -82,7 +82,10 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
 
-        $fixturesLoader = new ProductGridFixturesLoader(static::$kernel->getContainer(), $this->getFixturePath('akeneo.jpg'));
+        $fixturesLoader = new ProductGridFixturesLoader(
+            static::$kernel->getContainer(),
+            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
+        );
         $rootProductModelWithLabelInProduct = $fixturesLoader->createProductModelsWithLabelInProduct();
         $rootProductModelWithLabelInSubProductModel = $fixturesLoader->createProductModelsWithLabelInSubProductModel();
         $subProductModelWithLabelInParent = $fixturesLoader->createProductModelsWithLabelInParentProductModel();
@@ -106,7 +109,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 $rootProductModelWithLabelInProduct->getId(),
                 ['total' => 1, 'complete' => 1],
                 null,
-                new ValueCollection([])
+                new WriteValueCollection([])
             ),
             Row::fromProductModel(
                 'root_product_model_with_image_in_sub_product_model',
@@ -118,7 +121,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 $rootProductModelWithLabelInSubProductModel->getId(),
                 ['total' => 0, 'complete' => 0],
                 null,
-                new ValueCollection([])
+                new WriteValueCollection([])
             ),
             Row::fromProductModel(
                 'sub_product_model',
@@ -130,7 +133,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 $subProductModelWithLabelInParent->getId(),
                 ['total' => 0, 'complete' => 0],
                 'root_product_model_with_sub_product_model',
-                new ValueCollection()
+                new WriteValueCollection()
             ),
         ];
 

@@ -18,6 +18,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
+        'Webmozart\Assert\Assert',
         // TODO the feature use the datagrid
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
@@ -114,6 +115,8 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Webmozart\Assert\Assert',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi',
 
         // TIP-915: PIM/Enrichment should not be linked to AttributeOption
         // TIP-916: Do not check if entities exist in PQB filters or sorters

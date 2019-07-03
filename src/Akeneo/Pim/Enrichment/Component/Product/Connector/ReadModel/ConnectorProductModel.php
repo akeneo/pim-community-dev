@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
@@ -31,6 +31,9 @@ final class ConnectorProductModel
     private $parentCode;
 
     /** @var string */
+    private $familyCode;
+
+    /** @var string */
     private $familyVariantCode;
 
     /** @var array */
@@ -42,7 +45,7 @@ final class ConnectorProductModel
     /** @var array */
     private $categoryCodes;
 
-    /** @var ValueCollectionInterface */
+    /** @var ReadValueCollection */
     private $values;
 
     public function __construct(
@@ -51,17 +54,19 @@ final class ConnectorProductModel
         \DateTimeInterface $createdDate,
         \DateTimeInterface $updatedDate,
         ?string $parentCode,
+        string $familyCode,
         string $familyVariantCode,
         array $metadata,
         array $associations,
         array $categoryCodes,
-        ValueCollectionInterface $values
+        ReadValueCollection $values
     ) {
         $this->id = $id;
         $this->code = $code;
         $this->createdDate = $createdDate;
         $this->updatedDate = $updatedDate;
         $this->parentCode = $parentCode;
+        $this->familyCode = $familyCode;
         $this->familyVariantCode = $familyVariantCode;
         $this->metadata = $metadata;
         $this->associations = $associations;
@@ -94,6 +99,11 @@ final class ConnectorProductModel
         return $this->parentCode;
     }
 
+    public function familyCode(): string
+    {
+        return $this->familyCode;
+    }
+
     public function familyVariantCode(): string
     {
         return $this->familyVariantCode;
@@ -114,7 +124,7 @@ final class ConnectorProductModel
         return $this->categoryCodes;
     }
 
-    public function values(): ValueCollectionInterface
+    public function values(): ReadValueCollection
     {
         return $this->values;
     }
@@ -152,6 +162,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             $this->metadata,
             $this->associations,
@@ -179,6 +190,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             $this->metadata,
             $this->associations,
@@ -207,6 +219,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             $this->metadata,
             $filteredAssociations,
@@ -221,9 +234,11 @@ final class ConnectorProductModel
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
             $filteredAssociations[$associationType]['products'] = $association['products'];
-            $filteredAssociations[$associationType]['product_models'] = array_intersect(
-                $association['product_models'],
-                $productModelCodesToFilter
+            $filteredAssociations[$associationType]['product_models'] = array_values(
+                array_intersect(
+                    $association['product_models'],
+                    $productModelCodesToFilter
+                )
             );
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
         }
@@ -234,6 +249,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             $this->metadata,
             $filteredAssociations,
@@ -250,6 +266,7 @@ final class ConnectorProductModel
             $this->createdDate,
             $this->updatedDate,
             $this->parentCode,
+            $this->familyCode,
             $this->familyVariantCode,
             array_merge($this->metadata, [$key => $value]),
             $this->associations,

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context;
 
 use AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery;
-use AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 

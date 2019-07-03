@@ -94,10 +94,6 @@ define(
                         }
                     });
 
-                    this.getExtension('attribute-group-selector').setCurrent(
-                        _.first(attributes).group
-                    );
-
                     this.setData(formData);
 
                     this.getRoot().trigger('pim_enrich:form:add-attribute:after');

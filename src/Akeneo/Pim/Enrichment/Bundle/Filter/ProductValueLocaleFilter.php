@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Filter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 
 /**
  * Filter the product values according to locale codes provided in options.
@@ -57,6 +57,6 @@ class ProductValueLocaleFilter implements CollectionFilterInterface, ObjectFilte
      */
     public function supportsCollection($collection, $type, array $options = [])
     {
-        return $collection instanceof ValueCollectionInterface;
+        return $collection instanceof WriteValueCollection;
     }
 }

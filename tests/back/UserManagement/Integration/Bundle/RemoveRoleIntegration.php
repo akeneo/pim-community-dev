@@ -7,6 +7,12 @@ use Akeneo\UserManagement\Component\Exception\ForbiddenToRemoveRoleException;
 
 class RemoveRoleIntegration extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminUser();
+    }
+
     public function testUnableToRemoveARoleIfUsersWillNoLongerHaveRole()
     {
         $this->expectException(ForbiddenToRemoveRoleException::class);

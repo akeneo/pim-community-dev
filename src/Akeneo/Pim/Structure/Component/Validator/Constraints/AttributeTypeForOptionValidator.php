@@ -17,9 +17,21 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AttributeTypeForOptionValidator extends ConstraintValidator
 {
+    /** @var string[] */
+    protected $supportedAttributeTypes;
+
     /**
-     * @param object     $attributeOption
-     * @param Constraint $constraint
+     * AttributeTypeForOptionValidator constructor.
+     * @param array $supportedAttributeTypes
+     */
+    public function __construct(array $supportedAttributeTypes)
+    {
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+    }
+
+    /**
+     * @param object                            $attributeOption
+     * @param AttributeTypeForOption|Constraint $constraint
      */
     public function validate($attributeOption, Constraint $constraint)
     {
@@ -27,10 +39,11 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, AttributeTypeForOption::class);
         }
 
+        $authorizedTypes = $this->supportedAttributeTypes;
+
         /** @var AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();
-            $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
             if (null !== $attribute && !in_array($attribute->getType(), $authorizedTypes)) {
                 $this->addInvalidAttributeViolation($constraint, $attributeOption, $authorizedTypes);
             }

@@ -6,7 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -34,7 +34,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
 
         $fixturesLoader = new ProductGridFixturesLoader(
             static::$kernel->getContainer(),
-            $this->getFixturePath('akeneo.jpg')
+            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
         );
 
         $fixtures = $fixturesLoader->createProductAndProductModels();
@@ -81,7 +81,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 null,
                 $product2->getId(),
                 null,
-                new ValueCollection([
+                new WriteValueCollection([
                     ScalarValue::value('sku', 'baz'),
                     MediaValue::localizableValue('a_localizable_image', $akeneoImage, 'en_US'),
                     MediaValue::scopableValue('a_scopable_image', $akeneoImage, 'ecommerce'),
@@ -97,7 +97,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 $rootProductModel->getId(),
                 ['total' => 1, 'complete' => 0],
                 null,
-                new ValueCollection([])
+                new WriteValueCollection([])
             ),
         ];
 

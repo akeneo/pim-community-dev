@@ -2,7 +2,10 @@
 
 define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, BaseFetcher, Routing) {
   return BaseFetcher.extend({
-    entityActivatedListPromise: null,
+
+    activatedLocalesListPromise: null,
+    nonFilteredActivatedLocalesListPromise: null,
+
     /**
      * @param {Object} options
      */
@@ -16,14 +19,23 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
      * @return {Promise}
      */
     fetchActivated: function(searchOptions) {
-      if (!this.entityActivatedListPromise) {
+
+      searchOptions = _.extend({}, searchOptions);
+      const nonFiltered = _.has(searchOptions, 'filter_locales') && false === searchOptions.filter_locales;
+
+      let promise = this.activatedLocalesListPromise;
+      if (true === nonFiltered) {
+        promise = this.nonFilteredActivatedLocalesListPromise;
+      }
+
+      if (!promise) {
         if (!_.has(this.options.urls, 'list')) {
           return $.Deferred()
             .reject()
             .promise();
         }
 
-        this.entityActivatedListPromise = $.getJSON(
+        promise = $.getJSON(
           Routing.generate(this.options.urls.list),
           Object.assign(
             {},
@@ -35,16 +47,23 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
         )
           .then(_.identity)
           .promise();
+
+        if (true === nonFiltered) {
+          this.nonFilteredActivatedLocalesListPromise = promise;
+        } else {
+          this.activatedLocalesListPromise = promise;
+        }
       }
 
-      return this.entityActivatedListPromise;
+      return promise;
     },
 
     /**
      * {inheritdoc}
      */
     clear: function() {
-      this.entityActivatedListPromise = null;
+      this.activatedLocalesListPromise = null;
+      this.nonFilteredActivatedLocalesListPromise = null;
 
       BaseFetcher.prototype.clear.apply(this, arguments);
     },

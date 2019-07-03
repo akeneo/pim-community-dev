@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductModelNormalizer;
@@ -25,7 +26,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(ProductModelNormalizer::class);
     }
 
-    function it_supports_a_product(ProductModelInterface $productModel)
+    function it_supports_a_product_model(ProductModelInterface $productModel)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'external_api')->shouldReturn(false);
@@ -56,7 +57,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                         'data'   => 'a/b/c/artyui_file.txt'
                     ]
                 ]
-            ]
+            ],
         ];
 
         $productModelApiFormat = [
@@ -81,10 +82,15 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                         ],
                     ]
                 ]
-            ]
+            ],
+            'family' => 'family_code',
         ];
 
         $stdNormalizer->normalize($productModel, 'standard', [])->willReturn($productModelStandard);
+
+        $family = new Family();
+        $family->setCode('family_code');
+        $productModel->getFamily()->willReturn($family);
 
         $attributeRepository->getMediaAttributeCodes()->willReturn(['file']);
         $router->generate('pim_api_media_file_download', ['code' => 'a/b/c/artyui_file.txt'], Argument::any())
@@ -103,6 +109,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'values'       => [],
             'associations' => []
         ];
+
+        $family = new Family();
+        $family->setCode('family_code');
+        $productModel->getFamily()->willReturn($family);
 
         $stdNormalizer->normalize($productModel, 'standard', [])->willReturn($productStandard);
 

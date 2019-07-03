@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Exter
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
@@ -20,7 +20,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
     function let(ProductValueNormalizer $productValuesNormalizer, RouterInterface $router)
     {
         $this->beConstructedWith(new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()), new DateTimeNormalizer());
-        $productValuesNormalizer->normalize(Argument::type(ValueCollection::class), 'standard')->willReturn([]);
+        $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
     }
 
     function it_is_a_normalizer_of_a_list_of_connector_products()
@@ -53,7 +53,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ]
             ],
             [],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $connector2 = new ConnectorProduct(
@@ -68,7 +68,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             null,
             [],
             ['a_metadata' => 'viande'],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $this->normalizeConnectorProductList(new ConnectorProductList(1, [$connector1, $connector2]))->shouldBeLike([

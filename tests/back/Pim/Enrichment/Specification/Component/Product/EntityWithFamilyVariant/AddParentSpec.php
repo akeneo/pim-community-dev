@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeen
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
@@ -35,8 +35,8 @@ class AddParentSpec extends ObjectBehavior
         ProductInterface $product,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
-        ValueCollectionInterface $values,
-        ValueCollectionInterface $filteredValues,
+        WriteValueCollection $values,
+        WriteValueCollection $filteredValues,
         VariantAttributeSetInterface $attributeSet
     ) {
         $product->getId()->willReturn(40);

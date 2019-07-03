@@ -96,7 +96,7 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
             return;
         }
 
-        $indexRefresh = $options['index_refresh'] ?? Refresh::waitFor();
+        $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
         $normalizedObjects = [];
         foreach ($objects as $object) {

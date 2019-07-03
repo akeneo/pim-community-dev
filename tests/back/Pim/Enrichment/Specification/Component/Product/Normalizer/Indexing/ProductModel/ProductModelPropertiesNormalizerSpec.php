@@ -7,7 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterData;
@@ -61,7 +61,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $completenessGridFilter,
         $completenessGridFilterData,
         ProductModelInterface $productModel,
-        ValueCollectionInterface $productValueCollection,
+        WriteValueCollection $productValueCollection,
         FamilyInterface $family,
         AttributeInterface $sku,
         FamilyVariantInterface $familyVariant,
@@ -165,7 +165,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $completenessGridFilter,
         $completenessGridFilterData,
         ProductModelInterface $productModel,
-        ValueCollectionInterface $productValueCollection,
+        WriteValueCollection $productValueCollection,
         FamilyInterface $family,
         AttributeInterface $sku,
         FamilyVariantInterface $familyVariant
@@ -269,7 +269,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $completenessGridFilterData,
         ProductModelInterface $productModel,
         ProductModelInterface $parent,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         FamilyInterface $family,
         AttributeInterface $sku,
         FamilyVariantInterface $familyVariant

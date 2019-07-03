@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -21,14 +20,9 @@ class OptionsValueFactory extends AbstractValueFactory
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attrOptionRepository;
 
-    public function __construct(
-        IdentifiableObjectRepositoryInterface $attrOptionRepository,
-        string $productValueClass,
-        string $supportedAttributeType
-    ) {
+    public function __construct(string $productValueClass, string $supportedAttributeType)
+    {
         parent::__construct($productValueClass, $supportedAttributeType);
-
-        $this->attrOptionRepository = $attrOptionRepository;
     }
 
     /**
@@ -61,32 +55,6 @@ class OptionsValueFactory extends AbstractValueFactory
 
         sort($data);
 
-        $notFoundOptionCodes = [];
-        $foundOptionCodes = [];
-
-        foreach ($data as $optionCode) {
-            $identifier = $attribute->getCode() . '.' . $optionCode;
-            $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
-
-            if (null === $option) {
-                $notFoundOptionCodes[] = $optionCode;
-            } else {
-                $foundOptionCodes[] = $option->getCode();
-            }
-        }
-
-        if (!empty($notFoundOptionCodes)) {
-            throw InvalidOptionsException::validEntityListCodesExpected(
-                $attribute->getCode(),
-                'codes',
-                'The options do not exist',
-                static::class,
-                $notFoundOptionCodes
-            );
-        }
-
-        sort($foundOptionCodes);
-
-        return $foundOptionCodes;
+        return $data;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Normalizer\Flat;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 /**

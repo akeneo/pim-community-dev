@@ -89,6 +89,7 @@ class PurgeCompletenessCommand extends ContainerAwareCommand
         string $rootDir
     ): void {
         $progressBar->start();
+        $productIds = [];
 
         $productToCleanCount = 0;
         foreach ($products as $product) {
@@ -119,6 +120,7 @@ class PurgeCompletenessCommand extends ContainerAwareCommand
     private function launchPurgeTask(array $productIds, string $env, string $rootDir)
     {
         $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:completeness:purge-products', sprintf('--env=%s', $env), implode(',', $productIds)]);
+        $process->setTimeout(null);
         $process->run();
     }
 }

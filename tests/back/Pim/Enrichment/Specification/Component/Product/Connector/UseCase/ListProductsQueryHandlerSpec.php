@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -74,7 +74,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'parent_product_model_code',
             [],
             [],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $connectorProduct2 = new ConnectorProduct(
@@ -89,7 +89,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'parent_product_model_code',
             [],
             [],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $getConnectorProducts
@@ -136,7 +136,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'parent_product_model_code',
             [],
             [],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $connectorProduct2 = new ConnectorProduct(
@@ -151,7 +151,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'parent_product_model_code',
             [],
             [],
-            new ValueCollection()
+            new ReadValueCollection()
         );
 
         $getConnectorProducts

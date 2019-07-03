@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Test\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -127,6 +130,18 @@ abstract class TestCase extends KernelTestCase
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
     }
 
+    protected function getFileInfoKey(string $path): string
+    {
+        if (!is_file($path)) {
+            throw new \Exception(sprintf('The path "%s" does not exist.', $path));
+        }
+
+        $fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
+        $fileInfo = $fileStorer->store(new \SplFileInfo($path), FileStorage::CATALOG_STORAGE_ALIAS);
+
+        return $fileInfo->getKey();
+    }
+
     /**
      * @param array $data
      *
@@ -140,5 +155,38 @@ abstract class TestCase extends KernelTestCase
         $this->get('pim_catalog.saver.category')->save($category);
 
         return $category;
+    }
+
+    protected function createAdminUser(): UserInterface
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername('admin');
+        $user->setPlainPassword('admin');
+        $user->setEmail('admin@example.com');
+        $user->setSalt('E1F53135E559C253');
+        $user->setFirstName('John');
+        $user->setLastName('Doe');
+
+        $this->get('pim_user.manager')->updatePassword($user);
+
+        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        if (null !== $adminRole) {
+            $user->addRole($adminRole);
+        }
+
+        $userRole = $this->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
+        if (null !== $userRole) {
+            $user->removeRole($userRole);
+        }
+
+        $group = $this->get('pim_user.repository.group')->findOneByIdentifier('IT support');
+        if (null !== $group) {
+            $user->addGroup($group);
+        }
+
+        $this->get('validator')->validate($user);
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
     }
 }

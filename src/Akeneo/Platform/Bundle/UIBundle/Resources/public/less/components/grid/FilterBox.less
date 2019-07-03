@@ -5,7 +5,7 @@
   background-color: white;
 
   &-addFilterButton {
-    background: url("../../../images/icon-plus.svg") no-repeat right center;
+    background: url("/bundles/pimui/images/icon-plus.svg") no-repeat right center;
     background-size: 19px;
     width: ~"calc(100% + 10px)" !important; // Width is set by multiselect
     padding: 0 !important; // Padding is set by multiselect
@@ -47,13 +47,29 @@
     top: -10px;
   }
 
+
+  &-title {
+    order: -1;
+    flex-grow: 10;
+    display: flex;
+    min-width: 300px;
+    background: white;
+    color: @AknSlateGrey;
+    font-size: @AknFontSizeBig;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
+  }
+
   &-search {
     height: @searchHeight;
     line-height: @searchHeight;
     color: @AknDefaultFontColor;
     font-size: @AknDefaultFontSize;
     border: none;
-    background: url("../../../images/icon-search.svg") no-repeat 0 center;
+    background: url("/bundles/pimui/images/icon-search.svg") no-repeat 0 center;
     padding-left: 30px;
     flex-grow: 1;
     margin-top: 20px;
@@ -184,7 +200,7 @@
     display: inline-block;
     width: 12px;
     height: @searchHeight;
-    background: url("../../../images/jstree/icon-down.svg") no-repeat 0 center;
+    background: url("/bundles/pimui/images/jstree/icon-down.svg") no-repeat 0 center;
     background-size: 12px;
     margin-left: 3px;
   }
@@ -234,7 +250,7 @@
     order: -1;
     width: auto !important; // The width is updated by JS method.
     background-color: white;
-    background: url("../../../images/icon-filters.svg") no-repeat left 50%;
+    background: url("/bundles/pimui/images/icon-filters.svg") no-repeat left 50%;
     flex-grow: 1;
     padding-left: 35px !important; // The padding is updated by JS method.
     margin-left: 10px;
@@ -244,6 +260,12 @@
   &-itemsCounter {
     padding-right: 8px;
     border-right: 1px solid #ccd1d8;
-    color: #9452BA
+    color: #9452BA;
+
+    &--inline {
+      padding-right: 10px;
+      position: relative;
+      top: 2px;
+    }
   }
 }

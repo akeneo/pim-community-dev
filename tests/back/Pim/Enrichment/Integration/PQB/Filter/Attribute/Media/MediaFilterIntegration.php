@@ -24,7 +24,7 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->createProduct('akeneo', [
             'values' => [
                 'an_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => null, 'scope' => null]
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => null, 'scope' => null]
                 ]
             ]
         ]);
@@ -32,7 +32,7 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->createProduct('ziggy', [
             'values' => [
                 'an_image' => [
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => null, 'scope' => null]
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => null, 'scope' => null]
                 ]
             ]
         ]);

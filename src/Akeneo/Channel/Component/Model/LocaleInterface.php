@@ -2,7 +2,6 @@
 
 namespace Akeneo\Channel\Component\Model;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 

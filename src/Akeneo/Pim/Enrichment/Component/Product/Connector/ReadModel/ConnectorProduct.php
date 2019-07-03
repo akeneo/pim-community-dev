@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
@@ -52,7 +48,7 @@ final class ConnectorProduct
     /** @var array medata are for the status of the product in enterprise edition */
     private $metadata;
 
-    /** @var ValueCollectionInterface */
+    /** @var ReadValueCollection */
     private $values;
 
     public function __construct(
@@ -67,7 +63,7 @@ final class ConnectorProduct
         ?string $parentProductModelCode,
         array $associations,
         array $metadata,
-        ValueCollectionInterface $values
+        ReadValueCollection $values
     ) {
         $this->id = $id;
         $this->identifier = $identifier;
@@ -138,7 +134,7 @@ final class ConnectorProduct
         return $this->metadata;
     }
 
-    public function values(): ValueCollectionInterface
+    public function values(): ReadValueCollection
     {
         return $this->values;
     }
@@ -204,7 +200,7 @@ final class ConnectorProduct
             $associatedProducts[] = $associations['products'];
         }
 
-        return array_unique(array_merge(...$associatedProducts));
+        return !empty($associatedProducts) ? array_unique(array_merge(...$associatedProducts)) : [];
     }
 
     public function associatedProductModelCodes(): array
@@ -214,7 +210,7 @@ final class ConnectorProduct
             $associatedProductModels[] = $associations['product_models'];
         }
 
-        return array_unique(array_merge(...$associatedProductModels));
+        return !empty($associatedProductModels) ? array_unique(array_merge(...$associatedProductModels)) : [];
     }
 
     public function filterAssociatedProductModelsByProductModelCodes(array $productModelCodesToFilter): ConnectorProduct
@@ -222,10 +218,10 @@ final class ConnectorProduct
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
             $filteredAssociations[$associationType]['products'] = $association['products'];
-            $filteredAssociations[$associationType]['product_models'] = array_intersect(
+            $filteredAssociations[$associationType]['product_models'] = array_values(array_intersect(
                 $association['product_models'],
                 $productModelCodesToFilter
-            );
+            ));
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
         }
 
@@ -249,10 +245,10 @@ final class ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
-            $filteredAssociations[$associationType]['products'] = array_intersect(
+            $filteredAssociations[$associationType]['products'] = array_values(array_intersect(
                 $association['products'],
                 $productIdentifiersToFilter
-            );
+            ));
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
         }
@@ -275,7 +271,7 @@ final class ConnectorProduct
 
     public function filterByCategoryCodes(array $categoryCodesToFilter): ConnectorProduct
     {
-        $categoryCodes =  array_intersect($this->categoryCodes, $categoryCodesToFilter);
+        $categoryCodes =  array_values(array_intersect($this->categoryCodes, $categoryCodesToFilter));
 
         return new self(
             $this->id,

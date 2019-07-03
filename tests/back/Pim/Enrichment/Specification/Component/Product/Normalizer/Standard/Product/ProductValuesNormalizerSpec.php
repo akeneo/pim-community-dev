@@ -6,12 +6,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductV
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
 {
@@ -34,9 +31,9 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     {
         $realValue = ScalarValue::value('attribute', null);
 
-        $valuesCollection = new ValueCollection([$realValue]);
+        $valuesCollection = new WriteValueCollection([$realValue]);
         $valuesArray = [$realValue];
-        $emptyValuesCollection = new ValueCollection();
+        $emptyValuesCollection = new WriteValueCollection();
         $randomCollection = new ArrayCollection([new \stdClass()]);
         $randomArray = [new \stdClass()];
 
@@ -54,7 +51,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ValueInterface $textValue,
         ValueInterface $priceValue,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         \ArrayIterator $valuesIterator
     ) {
         $values->getIterator()->willReturn($valuesIterator);

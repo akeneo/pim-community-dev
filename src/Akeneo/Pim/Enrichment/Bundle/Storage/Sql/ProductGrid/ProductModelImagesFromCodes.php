@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -33,10 +33,10 @@ final class ProductModelImagesFromCodes
     /** @var Connection */
     private $connection;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
-    public function __construct(Connection $connection, ValueCollectionFactoryInterface $valueCollectionFactory)
+    public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
     {
         $this->connection = $connection;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -183,15 +183,27 @@ SQL;
             ['codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
+        $productModels = [];
+        $productModelsInfo = [];
+
         foreach ($rows as $row) {
             $rawValues = json_decode($row['raw_values'], true);
             $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
-            $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($filteredRawValues);
+            $productModels[$row['code']] = $filteredRawValues;
+            $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];
+        }
 
-            $images[$row['code']]['image'] = $valueCollection->getByCodes(
-                $row['attribute_code'],
-                $row['is_scopable'] ? $channelCode : null,
-                $row['is_localizable'] ? $localeCode : null
+        $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($productModels);
+
+        foreach ($valueCollections as $productModelCode => $valueCollection) {
+            $productModelInfo = $productModelsInfo[$productModelCode];
+
+            $images[$productModelCode]['image'] = $valueCollection->getByCodes(
+                $productModelInfo['attribute_code'],
+                $productModelInfo['is_scopable'],
+                $productModelInfo['is_localizable']
             );
         }
 
@@ -244,6 +256,8 @@ SQL;
             LIMIT 1
 SQL;
 
+        $productModels = [];
+        $productModelsInfo = [];
         foreach ($codes as $code) {
             $row = $this->connection->executeQuery(
                 $sql,
@@ -255,12 +269,22 @@ SQL;
 
             $rawValues = json_decode($row['raw_values'], true);
             $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
-            $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($filteredRawValues);
 
-            $images[$row['code']]['image'] = $valueCollection->getByCodes(
-                $row['attribute_code'],
-                $row['is_scopable'] ? $channelCode : null,
-                $row['is_localizable'] ? $localeCode : null
+            $productModels[$row['code']] = $filteredRawValues;
+            $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];
+        }
+
+        $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($productModels);
+
+        foreach ($valueCollections as $productModelCode => $valueCollection) {
+            $productModelInfo = $productModelsInfo[$productModelCode];
+
+            $images[$productModelCode]['image'] = $valueCollection->getByCodes(
+                $productModelInfo['attribute_code'],
+                $productModelInfo['is_scopable'],
+                $productModelInfo['is_localizable']
             );
         }
 
@@ -314,6 +338,9 @@ SQL;
             LIMIT 1
 SQL;
 
+        $productModels = [];
+        $productModelsInfo = [];
+
         foreach ($codes as $code) {
             $row = $this->connection->executeQuery(
                 $sql,
@@ -326,12 +353,21 @@ SQL;
 
             $rawValues = json_decode($row['raw_values'], true);
             $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
-            $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($filteredRawValues);
+            $productModels[$row['code']] = $filteredRawValues;
+            $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];
+        }
 
-            $images[$row['code']]['image'] = $valueCollection->getByCodes(
-                $row['attribute_code'],
-                $row['is_scopable'] ? $channelCode : null,
-                $row['is_localizable'] ? $localeCode : null
+        $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($productModels);
+
+        foreach ($valueCollections as $productModelCode => $valueCollection) {
+            $productModelInfo = $productModelsInfo[$productModelCode];
+
+            $images[$productModelCode]['image'] = $valueCollection->getByCodes(
+                $productModelInfo['attribute_code'],
+                $productModelInfo['is_scopable'],
+                $productModelInfo['is_localizable']
             );
         }
 

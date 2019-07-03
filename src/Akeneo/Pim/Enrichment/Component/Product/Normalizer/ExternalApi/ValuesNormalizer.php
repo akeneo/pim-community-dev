@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Tool\Component\Api\Hal\Link;
@@ -29,7 +29,7 @@ final class ValuesNormalizer
         $this->router = $router;
     }
 
-    public function normalize(ValueCollectionInterface $values): array
+    public function normalize(ReadValueCollection $values): array
     {
         $normalizedValues = [];
         foreach ($values as $value) {

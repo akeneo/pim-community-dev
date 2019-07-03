@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -42,7 +42,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $normalizer,
         ProductInterface $product,
         FamilyInterface $family,
-        ValueCollection $values,
+        WriteValueCollection $values,
         \ArrayIterator $iterator
     ) {
         $values->getIterator()->willReturn($iterator);
@@ -101,7 +101,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ProductModel $productModel,
         FamilyInterface $family,
-        ValueCollection $values,
+        WriteValueCollection $values,
         \ArrayIterator $iterator
     ) {
         $values->getIterator()->willReturn($iterator);

@@ -8,6 +8,7 @@ use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
@@ -22,6 +23,36 @@ class CreateUserCommand extends ContainerAwareCommand
 {
     public const COMMAND_NAME = 'pim:user:create';
 
+    /** @var string */
+    private $password;
+
+    /** @var string */
+    private $username;
+
+    /** @var string */
+    private $firstName;
+
+    /** @var string */
+    private $lastName;
+
+    /** @var string */
+    private $email;
+
+    /** @var string */
+    private $userDefaultLocaleCode;
+
+    /** @var string */
+    private $catalogDefaultLocaleCode;
+
+    /** @var string */
+    private $catalogDefaultScopeCode;
+
+    /** @var string */
+    private $defaultTreeCode;
+
+    /** @var bool */
+    private $isAdmin = false;
+
     /**
      * {@inheritdoc}
      */
@@ -29,7 +60,23 @@ class CreateUserCommand extends ContainerAwareCommand
     {
         $this
             ->setName(static::COMMAND_NAME)
-            ->setDescription('Creates a PIM user.');
+            ->setDescription(<<<DESC
+Creates a PIM user. This command can be launched interactively or non interactively (with the "-n" option). 
+When launched non interactively you have to provide arguments to the command. For instance:
+
+    pim:user:create kbeck secretp@ssw0rd kbeck@example.com Kent Beck en_US --admin -n
+
+When launched interactively, command arguments will be ignored.'
+DESC
+            )
+            ->addArgument('username')
+            ->addArgument('password')
+            ->addArgument('email')
+            ->addArgument('firstName')
+            ->addArgument('lastName')
+            ->addArgument('locale', null, 'A locale in the form "en_US"')
+            ->addOption('admin', null, InputOption::VALUE_NONE, 'Is this user an administrator of the PIM?')
+        ;
     }
 
     /**
@@ -37,32 +84,23 @@ class CreateUserCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $output->writeln("Please enter the user's information below.");
-
-        $username = $this->askForUsername($input, $output);
-        $password = $this->askForPassword($input, $output);
-        $this->confirmPassword($input, $output, $password);
-        $firstName = $this->askForFirstName($input, $output);
-        $lastName = $this->askForLastName($input, $output);
-        $email = $this->askForEmail($input, $output);
-        $userDefaultLocaleCode = $this->askForUserDefaultLocaleCode($input, $output);
-        $catalogDefaultLocaleCode = $this->askForCatalogDefaultLocaleCode($input, $output);
-        $catalogDefaultScopeCode = $this->askForCatalogDefaultScopeCode($input, $output);
-        $defaultTreeCode = $this->askForDefaultTreeCode($input, $output);
+        if (!$input->isInteractive()) {
+            $this->gatherArgumentsForNonInteractiveMode($input);
+        }
 
         $user = $this->getContainer()->get('pim_user.factory.user')->create();
         $this->getContainer()->get('pim_user.updater.user')->update(
             $user,
             [
-                'username' => $username,
-                'password' => $password,
-                'first_name' => $firstName,
-                'last_name' => $lastName,
-                'email' => $email,
-                'user_default_locale' => $userDefaultLocaleCode,
-                'catalog_default_locale' => $catalogDefaultLocaleCode,
-                'catalog_default_scope' => $catalogDefaultScopeCode,
-                'default_category_tree' => $defaultTreeCode,
+                'username' => $this->username,
+                'password' => $this->password,
+                'first_name' => $this->firstName,
+                'last_name' => $this->lastName,
+                'email' => $this->email,
+                'user_default_locale' => $this->userDefaultLocaleCode,
+                'catalog_default_locale' => $this->catalogDefaultLocaleCode,
+                'catalog_default_scope' => $this->catalogDefaultScopeCode,
+                'default_category_tree' => $this->defaultTreeCode,
             ]
         );
 
@@ -79,9 +117,30 @@ class CreateUserCommand extends ContainerAwareCommand
         $this->addDefaultGroupTo($user);
         $this->addDefaultRoleTo($user);
 
+        if ($this->isAdmin) {
+            $this->addAdminRoleTo($user);
+            $this->addEveryGroupTo($user);
+        }
+
         $this->getContainer()->get('pim_user.saver.user')->save($user);
 
-        $output->writeln(sprintf("<info>User %s has been created.</info>", $username));
+        $output->writeln(sprintf("<info>User %s has been created.</info>", $this->username));
+    }
+
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln("Please enter the user's information below.");
+
+        $this->username = $this->askForUsername($input, $output);
+        $this->password = $this->askForPassword($input, $output);
+        $this->confirmPassword($input, $output, $this->password);
+        $this->firstName = $this->askForFirstName($input, $output);
+        $this->lastName = $this->askForLastName($input, $output);
+        $this->email = $this->askForEmail($input, $output);
+        $this->userDefaultLocaleCode = $this->askForUserDefaultLocaleCode($input, $output);
+        $this->catalogDefaultLocaleCode = $this->askForCatalogDefaultLocaleCode($input, $output);
+        $this->catalogDefaultScopeCode = $this->askForCatalogDefaultScopeCode($input, $output);
+        $this->defaultTreeCode = $this->askForDefaultTreeCode($input, $output);
     }
 
     private function askForUsername(InputInterface $input, OutputInterface $output): string
@@ -260,5 +319,68 @@ class CreateUserCommand extends ContainerAwareCommand
         }
 
         $user->addRole($role);
+    }
+
+    /**
+     * Adds the role "ROLE_ADMINISTRATOR" if it exists to the new user.
+     */
+    private function addAdminRoleTo(UserInterface $user): void
+    {
+        $role = $this->getContainer()->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+
+        if (null !== $role) {
+            $user->addRole($role);
+        }
+    }
+
+    private function addEveryGroupTo(UserInterface $user): void
+    {
+        $groups = $this->getContainer()->get('pim_user.repository.group')->findAll();
+
+        foreach ($groups as $group) {
+            $user->addGroup($group);
+        }
+    }
+
+    private function gatherArgumentsForNonInteractiveMode(InputInterface $input): void
+    {
+        if (null === $input->getArgument('username')) {
+            throw new \InvalidArgumentException("The username is mandatory.");
+        }
+        if (null === $input->getArgument('password')) {
+            throw new \InvalidArgumentException("The password is mandatory.");
+        }
+        if (null === $input->getArgument('email')) {
+            throw new \InvalidArgumentException("The email is mandatory.");
+        }
+        if (null === $input->getArgument('firstName')) {
+            throw new \InvalidArgumentException("The first name is mandatory.");
+        }
+        if (null === $input->getArgument('lastName')) {
+            throw new \InvalidArgumentException("The last name is mandatory.");
+        }
+        if (null === $input->getArgument('locale')) {
+            throw new \InvalidArgumentException("The locale is mandatory.");
+        }
+
+        $this->username = $input->getArgument('username');
+        $this->password = $input->getArgument('password');
+        $this->email = $input->getArgument('email');
+        $this->firstName = $input->getArgument('firstName');
+        $this->lastName = $input->getArgument('lastName');
+        $this->userDefaultLocaleCode = $input->getArgument('locale');
+
+        $activatedLocaleCodes = $this->getContainer()->get('pim_catalog.repository.locale')->getActivatedLocaleCodes();
+        if (empty($activatedLocaleCodes)) {
+            throw new \InvalidArgumentException("There is no activated locale. The catalog default locale of the user must be an activated locale.");
+        }
+
+        if (in_array($input->getArgument('locale'), $activatedLocaleCodes)) {
+            $this->catalogDefaultLocaleCode = $input->getArgument('locale');
+        } else {
+            $this->catalogDefaultLocaleCode = $activatedLocaleCodes[0];
+        }
+
+        $this->isAdmin = $input->getOption('admin');
     }
 }

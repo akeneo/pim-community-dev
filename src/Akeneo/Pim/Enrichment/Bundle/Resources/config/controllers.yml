@@ -56,6 +56,7 @@ services:
             - '@pim_enrich.connector.use_cases.handler.list_products'
             - '@pim_api.normalizer.connector_products'
             - '@security.token_storage'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
@@ -78,6 +79,7 @@ services:
             - '@pim_enrich.connector.use_cases.validator.list_product_models'
             - '@pim_enrich.connector.use_cases.handler.list_product_models'
             - '@pim_api.normalizer.connector_product_models'
+            - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@security.token_storage'
             - '%pim_api.configuration%'
 
@@ -226,6 +228,7 @@ services:
             - '@validator'
             - '@akeneo_file_storage.file_storage.path_generator'
             - '%tmp_storage_dir%'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pim_enrich.controller.rest.versioning:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\VersioningController'

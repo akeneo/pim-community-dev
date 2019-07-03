@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
@@ -37,7 +37,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $mediaFetcher,
         $filesystemProvider,
         FileInfoInterface $fileInfo,
-        ValueCollectionInterface $valuesCollection,
+        WriteValueCollection $valuesCollection,
         \ArrayIterator $valuesIterator,
         MediaValueInterface $value,
         FilesystemInterface $filesystem
@@ -74,7 +74,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $fileExporterPath,
         FileInfoInterface $fileInfo,
         FileInfoInterface $fileInfo2,
-        ValueCollectionInterface $valuesCollection,
+        WriteValueCollection $valuesCollection,
         \ArrayIterator $valuesIterator,
         MediaValueInterface $value,
         MediaValueInterface $value2,

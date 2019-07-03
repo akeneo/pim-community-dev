@@ -26,6 +26,14 @@ oneup_flysystem:
             awss3v3:
                 client: acme.s3_client
                 bucket: catalog
+        jobs_storage_adapter:
+            awss3v3:
+                client: acme.s3_client
+                bucket: jobs
+        archivist_adapter:
+            awss3v3:
+                client: acme.s3_client
+                bucket: archive
 
 OBJECT_STORAGE_CONF
 

@@ -60,6 +60,7 @@ class AbstractProductModelTestCase extends AbstractProductTestCase
         }
     },
     "code":"$item",
+    "family": "familyA",
     "family_variant":"familyVariantA1",
     "parent":null,
     "categories":[

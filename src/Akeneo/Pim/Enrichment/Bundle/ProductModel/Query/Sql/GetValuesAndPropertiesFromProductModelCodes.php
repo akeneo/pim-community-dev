@@ -39,6 +39,7 @@ final class GetValuesAndPropertiesFromProductModelCodes
 SELECT
        product_model.id as id,
        product_model.code as 'code',
+       family.code as 'family',
        family_variant.code as 'family_variant',
        parent_product_model.code as 'parent',
        JSON_MERGE(
@@ -49,6 +50,7 @@ SELECT
        product_model.updated as 'updated'
 FROM pim_catalog_product_model as product_model
 INNER JOIN pim_catalog_family_variant family_variant ON product_model.family_variant_id = family_variant.id
+INNER JOIN pim_catalog_family family ON family_variant.family_id = family.id 
 LEFT JOIN pim_catalog_product_model parent_product_model ON parent_product_model.id = product_model.parent_id
 WHERE product_model.code IN (:productModelCodes)
 SQL;
@@ -65,6 +67,7 @@ SQL;
             $results[$row['code']] = [
                 'id' => Type::getType(Type::INTEGER)->convertToPHPValue($row['id'], $platform),
                 'code' => Type::getType(Type::STRING)->convertToPHPValue($row['code'], $platform),
+                'family' => Type::getType(Type::STRING)->convertToPHPValue($row['family'], $platform),
                 'family_variant' => Type::getType(Type::STRING)->convertToPHPValue($row['family_variant'], $platform),
                 'parent' => Type::getType(Type::STRING)->convertToPHPValue($row['parent'], $platform),
                 'raw_values' => json_decode($row['raw_values'], true),

@@ -13,10 +13,12 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use League\Flysystem\FilesystemInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -96,8 +98,8 @@ class JobInstanceController
     /** @var CollectionFilterInterface */
     protected $inputFilter;
 
-    /** @var string */
-    protected $uploadTmpDir;
+    /** @var FilesystemInterface */
+    protected $filesystem;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
@@ -139,7 +141,7 @@ class JobInstanceController
         JobInstanceFactory $jobInstanceFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        string $uploadTmpDir
+        FilesystemInterface $filesystem
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -159,7 +161,7 @@ class JobInstanceController
         $this->jobInstanceFactory    = $jobInstanceFactory;
         $this->eventDispatcher       = $eventDispatcher;
         $this->inputFilter           = $inputFilter;
-        $this->uploadTmpDir          = $uploadTmpDir;
+        $this->filesystem            = $filesystem;
     }
 
     /**
@@ -417,9 +419,20 @@ class JobInstanceController
                 return new JsonResponse($errors, 400);
             }
 
-            $file = $file->move($this->uploadTmpDir, $file->getClientOriginalName());
+            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR. $file->getClientOriginalName(), true);
+
+            if ($this->filesystem->has($jobFileLocation->path())) {
+                $this->filesystem->delete($jobFileLocation->path());
+            }
+
+            $fileContent = fopen($file->getPathname(), 'r');
+            $this->filesystem->writeStream($jobFileLocation->path(), $fileContent);
+            if (is_resource($fileContent)) {
+                fclose($fileContent);
+            }
+
             $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = $file->getRealPath();
+            $rawParameters['filePath'] = $jobFileLocation->url();
             $jobInstance->setRawParameters($rawParameters);
         }
 

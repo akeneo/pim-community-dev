@@ -9,10 +9,8 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -44,9 +42,9 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $attribute->setBackendType('text');
         $realValue = ScalarValue::value($attribute, null);
 
-        $valuesCollection = new ValueCollection([$realValue]);
+        $valuesCollection = new WriteValueCollection([$realValue]);
         $valuesArray = [$realValue];
-        $emptyValuesCollection = new ValueCollection();
+        $emptyValuesCollection = new WriteValueCollection();
         $randomCollection = new ArrayCollection([new \stdClass()]);
         $randomArray = [new \stdClass()];
 
@@ -66,7 +64,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $userContext,
         ValueInterface $textValue,
         ValueInterface $priceValue,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         \ArrayIterator $valuesIterator,
         PresenterInterface $pricePresenter
     ) {

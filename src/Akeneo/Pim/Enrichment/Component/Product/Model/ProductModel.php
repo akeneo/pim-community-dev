@@ -28,7 +28,7 @@ class ProductModel implements ProductModelInterface
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
      *
-     * @var ValueCollectionInterface
+     * @var WriteValueCollection
      */
     protected $values;
 
@@ -73,7 +73,7 @@ class ProductModel implements ProductModelInterface
      */
     public function __construct()
     {
-        $this->values = new ValueCollection();
+        $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->productModels = new ArrayCollection();
@@ -125,9 +125,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): ValueCollectionInterface
+    public function getValues(): WriteValueCollection
     {
-        $values = ValueCollection::fromCollection($this->values);
+        $values = WriteValueCollection::fromCollection($this->values);
 
         return $this->getAllValues($this, $values);
     }
@@ -135,7 +135,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getValuesForVariation(): ValueCollectionInterface
+    public function getValuesForVariation(): WriteValueCollection
     {
         return $this->values;
     }
@@ -143,7 +143,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ValueCollectionInterface $values): ProductModelInterface
+    public function setValues(WriteValueCollection $values)
     {
         $this->values = $values;
 
@@ -643,13 +643,13 @@ class ProductModel implements ProductModelInterface
 
     /**
      * @param EntityWithFamilyVariantInterface $entity
-     * @param ValueCollectionInterface         $valueCollection
+     * @param WriteValueCollection  $valueCollection
      *
-     * @return ValueCollectionInterface
+     * @return WriteValueCollection
      */
     private function getAllValues(
         EntityWithFamilyVariantInterface $entity,
-        ValueCollectionInterface $valueCollection
+        WriteValueCollection $valueCollection
     ) {
         $parent = $entity->getParent();
 

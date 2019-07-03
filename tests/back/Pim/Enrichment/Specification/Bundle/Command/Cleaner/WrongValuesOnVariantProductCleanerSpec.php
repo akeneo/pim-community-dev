@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 
 class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
 {
@@ -17,8 +17,8 @@ class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
         FamilyInterface $boots,
         AttributeInterface $booleanAttribute,
         FamilyVariantInterface $familyVariant,
-        ValueCollectionInterface $valuesForVariation,
-        ValueCollectionInterface $values
+        WriteValueCollection $valuesForVariation,
+        WriteValueCollection $values
     ) {
         $variantProductImpacted->isVariant()->willReturn(true);
         $variantProductImpacted->getFamily()->willReturn($boots);
@@ -45,7 +45,7 @@ class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
         ProductInterface $variantProductNotImpacted,
         FamilyInterface $boots,
         AttributeInterface $textAttribute,
-        ValueCollectionInterface $valuesForVariation,
+        WriteValueCollection $valuesForVariation,
         FamilyVariantInterface $familyVariant
     ) {
         $variantProductNotImpacted->isVariant()->willReturn(true);
@@ -69,7 +69,7 @@ class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
         ProductInterface $variantProductNotImpacted,
         FamilyInterface $boots,
         AttributeInterface $booleanAttribute,
-        ValueCollectionInterface $valuesForVariation,
+        WriteValueCollection $valuesForVariation,
         FamilyVariantInterface $familyVariant
     ) {
         $variantProductNotImpacted->isVariant()->willReturn(true);
@@ -94,7 +94,7 @@ class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
         FamilyInterface $boots,
         AttributeInterface $booleanAttribute,
         FamilyVariantInterface $familyVariant,
-        ValueCollectionInterface $valuesForVariation
+        WriteValueCollection $valuesForVariation
     ) {
         $variantProductNotImpacted->isVariant()->willReturn(true);
         $variantProductNotImpacted->getFamily()->willReturn($boots);

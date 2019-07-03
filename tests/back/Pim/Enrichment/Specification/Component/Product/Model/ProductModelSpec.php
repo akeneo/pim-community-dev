@@ -13,7 +13,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ProductModelSpec extends ObjectBehavior
@@ -45,7 +45,7 @@ class ProductModelSpec extends ObjectBehavior
     }
 
     function it_adds_a_value(
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
@@ -64,7 +64,7 @@ class ProductModelSpec extends ObjectBehavior
     }
 
     function it_removes_a_value(
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
@@ -91,7 +91,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $nameValue
     ) {
         $familyVariant->getFamily()->willReturn($family);
@@ -119,7 +119,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $mobileNameValue,
         ValueInterface $ecommerceNameValue
     ) {
@@ -147,7 +147,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_gets_the_code_as_label_if_there_is_no_attribute_as_label(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn(null);
@@ -163,7 +163,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
@@ -184,7 +184,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $nameValue
     ) {
         $familyVariant->getFamily()->willReturn($family);
@@ -212,7 +212,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $mobileNameValue,
         ValueInterface $ecommerceNameValue
     ) {
@@ -236,7 +236,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $nameValue
     ) {
         $familyVariant->getFamily()->willReturn($family);
@@ -264,7 +264,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsImage,
-        ValueCollectionInterface $values,
+        WriteValueCollection $values,
         ValueInterface $pictureValue
     ) {
         $familyVariant->getFamily()->willReturn($family);
@@ -287,7 +287,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_gets_no_image_if_there_is_no_attribute_as_image(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsImage()->willReturn(null);
@@ -302,7 +302,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsImage,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
@@ -316,16 +316,16 @@ class ProductModelSpec extends ObjectBehavior
         $this->getImage()->shouldReturn(null);
     }
 
-    function it_has_the_values_of_the_variation(ValueCollectionInterface $valueCollection)
+    function it_has_the_values_of_the_variation(WriteValueCollection $valueCollection)
     {
         $this->setValues($valueCollection);
         $this->getValuesForVariation()->shouldReturn($valueCollection);
     }
 
     function it_has_values(
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         ProductModelInterface $productModel,
-        ValueCollectionInterface $parentValuesCollection,
+        WriteValueCollection $parentValuesCollection,
         \Iterator $iterator,
         ValueInterface $value,
         AttributeInterface $valueAttribute,
@@ -368,7 +368,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        ValueCollectionInterface $values
+        WriteValueCollection $values
     ) {
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);

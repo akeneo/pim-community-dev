@@ -97,7 +97,9 @@ SQL;
 
             $filteredAssociations = [];
             foreach ($associations as $associationType => $productAssociations) {
-                $filteredAssociations[$associationType]['product_models'] = array_filter($productAssociations);
+                $association = array_values(array_filter($productAssociations));
+                sort($association);
+                $filteredAssociations[$associationType]['product_models'] = $association;
             }
 
             $results[$row['product_identifier']] = $filteredAssociations;

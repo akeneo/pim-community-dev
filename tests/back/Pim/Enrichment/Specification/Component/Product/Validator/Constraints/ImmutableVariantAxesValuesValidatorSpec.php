@@ -2,16 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues;
@@ -27,7 +26,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 {
     function let(
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        ValueCollectionFactoryInterface $valueCollectionFactory,
+        WriteValueCollectionFactory $valueCollectionFactory,
         ExecutionContextInterface $context
     ) {
         $this->beConstructedWith($attributesProvider, $valueCollectionFactory);
@@ -98,7 +97,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         AttributeInterface $sizeAttribute,
         AttributeInterface $colorAttribute,
         UnitOfWork $uow,
-        ValueCollectionInterface $originalValues,
+        WriteValueCollection $originalValues,
         ValueInterface $originalSizeValue,
         ValueInterface $originalColorValue,
         ValueInterface $newSizeValue,

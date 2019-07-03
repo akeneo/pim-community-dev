@@ -8,7 +8,6 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Grid;
 use Context\Spin\SpinCapableTrait;
-use Context\Spin\TimeoutException;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;

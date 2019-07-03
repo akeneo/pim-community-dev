@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Query\FindKeyByHashAndNameQueryInterface;
@@ -53,6 +54,10 @@ class FileStorer implements FileStorerInterface
      */
     public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false): FileInfoInterface
     {
+        if (!is_file($localFile->getPathname())) {
+            throw new InvalidFile(sprintf('The file "%s" does not exist.', $localFile->getPathname()));
+        }
+
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
         $existingFileKey = $this->findKeyByHashAndNameQuery->fetchKey($file->getHash(), $file->getOriginalFilename());
 

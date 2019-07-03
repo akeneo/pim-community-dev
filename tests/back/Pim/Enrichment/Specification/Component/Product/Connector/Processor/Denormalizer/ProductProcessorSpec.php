@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
@@ -35,7 +36,8 @@ class ProductProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ObjectDetacherInterface $productDetacher,
         FilterInterface $productFilter,
-        AttributeFilterInterface $productAttributeFilter
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer
     ) {
         $this->beConstructedWith(
             $productRepository,
@@ -45,7 +47,8 @@ class ProductProcessorSpec extends ObjectBehavior
             $productValidator,
             $productDetacher,
             $productFilter,
-            $productAttributeFilter
+            $productAttributeFilter,
+            $mediaStorer
         );
         $this->setStepExecution($stepExecution);
     }
@@ -65,6 +68,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productAttributeFilter,
         $productToImport,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -144,6 +148,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -168,6 +174,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -248,6 +255,9 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
 
         unset($filteredData['family'], $filteredData['name'][1]);
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $preFilteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -272,6 +282,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -351,6 +362,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, [])->shouldNotBeCalled();
 
         $productUpdater
@@ -411,6 +424,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -490,6 +504,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
@@ -518,6 +534,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -597,6 +614,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
@@ -629,6 +648,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -706,6 +726,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $filteredData)->willReturn([]);
 
         $productUpdater
@@ -728,6 +750,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -809,6 +832,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'enabled' => false,
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -833,6 +858,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -874,6 +900,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'values' => [],
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -898,6 +926,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         ProductInterface $productInDB,
         ConstraintViolationListInterface $violationList,
@@ -966,6 +995,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'enabled' => true,
             'values' => [],
         ];
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 

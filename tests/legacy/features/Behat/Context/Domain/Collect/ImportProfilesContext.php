@@ -5,13 +5,10 @@ namespace Pim\Behat\Context\Domain\Collect;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Type;
-use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Writer\WriterFactory;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\ImportExportContext;
-use Pim\Behat\Context\PimContext;
 
 class ImportProfilesContext extends ImportExportContext
 {
@@ -148,10 +145,10 @@ class ImportProfilesContext extends ImportExportContext
         $jobExecution = $jobInstance->getJobExecutions()->first();
         $fileType = $jobInstance->getRawParameters()['invalid_items_file_format'];
 
-        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
-        $filePath = sprintf(
+        $archivePath = $this->getMainContext()->getSubcontext('job')->getJobInstanceArchivePath($code);
+        $archivePath = sprintf(
             '%simport/%s/%s/invalid_%s/invalid_items.%s',
-            $filePath,
+            $archivePath,
             $jobInstance->getJobName(),
             $jobExecution->getId(),
             $fileType,
@@ -167,8 +164,8 @@ class ImportProfilesContext extends ImportExportContext
         }
 
         $expectedLines = $this->getExpectedLines($behatData, $config);
-        $actualLines = $this->getActualLines($filePath, $fileType, $config);
+        $actualLines = $this->getActualLinesFromArchive($archivePath, $fileType, $config);
 
-        $this->compareFile($expectedLines, $actualLines, $filePath);
+        $this->compareFile($expectedLines, $actualLines, $archivePath);
     }
 }

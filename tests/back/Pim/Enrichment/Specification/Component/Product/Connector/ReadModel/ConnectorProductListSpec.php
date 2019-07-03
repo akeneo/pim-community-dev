@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ReadMo
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -30,7 +30,7 @@ class ConnectorProductListSpec extends ObjectBehavior
                 'parent_product_model_code',
                 [],
                 [],
-                new ValueCollection()
+                new ReadValueCollection()
             )
         ]);
     }

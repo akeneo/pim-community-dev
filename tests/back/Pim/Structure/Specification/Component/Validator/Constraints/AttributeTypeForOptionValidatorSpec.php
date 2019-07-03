@@ -15,6 +15,7 @@ class AttributeTypeForOptionValidatorSpec extends ObjectBehavior
 {
     function let(ExecutionContextInterface $context)
     {
+        $this->beConstructedWith([AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT]);
         $this->initialize($context);
     }
 

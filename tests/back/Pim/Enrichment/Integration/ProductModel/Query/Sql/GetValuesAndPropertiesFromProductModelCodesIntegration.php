@@ -79,6 +79,7 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
         $expected = [
             'root_product_model_1' => [
                 'code' => 'root_product_model_1',
+                'family' => 'FamilyWithVariant',
                 'family_variant' => 'familyVariantWithTwoLevels',
                 'parent' => null,
                 'raw_values' => [
@@ -89,6 +90,7 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
             ],
             'sub_product_model_1_1' => [
                 'code' => 'sub_product_model_1_1',
+                'family' => 'FamilyWithVariant',
                 'family_variant' => 'familyVariantWithTwoLevels',
                 'parent' => 'root_product_model_1',
                 'raw_values' => [
@@ -100,6 +102,7 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
             ],
             'root_product_model_2' => [
                 'code' => 'root_product_model_2',
+                'family' => 'FamilyWithVariant',
                 'family_variant' => 'familyVariantWithTwoLevels',
                 'parent' => null,
                 'raw_values' => [
@@ -110,6 +113,7 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
             ],
             'sub_product_model_2_1' => [
                 'code' => 'sub_product_model_2_1',
+                'family' => 'FamilyWithVariant',
                 'family_variant' => 'familyVariantWithTwoLevels',
                 'parent' => 'root_product_model_2',
                 'raw_values' => [

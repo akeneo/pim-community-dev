@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\DBAL\Connection;
@@ -19,7 +19,7 @@ final class FetchProductModelRowsFromCodes
     /** @var Connection */
     private $connection;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     /** @var ProductModelImagesFromCodes */
@@ -27,7 +27,7 @@ final class FetchProductModelRowsFromCodes
 
     public function __construct(
         Connection $connection,
-        ValueCollectionFactoryInterface $valueCollectionFactory,
+        WriteValueCollectionFactory $valueCollectionFactory,
         ProductModelImagesFromCodes $productModelImagesFromCodes
     ) {
         $this->connection = $connection;
@@ -266,6 +266,8 @@ SQL;
         )->fetchAll();
 
         $result = [];
+        $productModels = [];
+
         foreach ($rows as $row) {
             $values = json_decode($row['raw_values'], true);
             // filter attributes directly on raw_values for performance reason
@@ -277,10 +279,13 @@ SQL;
             );
 
             $filteredValues = array_intersect_key($values, array_flip($attributeCodesToKeep));
+            $productModels[$row['code']] = $filteredValues;
+        }
 
-            $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($filteredValues);
+        $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($productModels);
 
-            $result[$row['code']]['value_collection'] = $valueCollection->filter(
+        foreach ($valueCollections as $productModelCode => $valueCollection) {
+            $result[$productModelCode]['value_collection'] = $valueCollection->filter(
                 function (ValueInterface $value) use ($channelCode, $localeCode) {
                     return ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
                         && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null);

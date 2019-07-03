@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Assertion;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
@@ -20,9 +20,9 @@ final class ValuesCollection
 
     /**
      * @param string[]                 $expectedEntityCodes
-     * @param ValueCollectionInterface $valuesCollection
+     * @param WriteValueCollection $valuesCollection
      */
-    public function __construct(array $expectedEntityCodes, ValueCollectionInterface $valuesCollection)
+    public function __construct(array $expectedEntityCodes, WriteValueCollection $valuesCollection)
     {
         $this->expectedEntityCodes = $expectedEntityCodes;
         $this->actualValueCollection = $valuesCollection;

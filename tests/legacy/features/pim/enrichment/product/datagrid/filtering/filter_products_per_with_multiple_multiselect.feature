@@ -26,7 +26,7 @@ Feature: Filter products with multiples multiselect filters
       | MUG-5  | furniture |           | green |
       | POST-1 | furniture | suze      |       |
       | POST-2 | furniture | suze      |       |
-      | POST-3 | furniture | redhat    |       |
+      | POST-3 | furniture | redHat    |       |
     And I am logged in as "Mary"
     And I am on the products grid
 

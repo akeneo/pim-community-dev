@@ -6,10 +6,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -53,16 +56,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var AttributeFilterInterface */
     private $productAttributeFilter;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param FindProductToImport                   $findProductToImport
-     * @param AddParent                             $addParent
-     * @param ObjectUpdaterInterface                $updater
-     * @param ValidatorInterface                    $validator
-     * @param ObjectDetacherInterface               $detacher
-     * @param FilterInterface                       $productFilter
-     * @param AttributeFilterInterface              $productAttributeFilter
-     */
+    /** @var MediaStorer */
+    private $mediaStorer;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         FindProductToImport $findProductToImport,
@@ -71,7 +67,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         FilterInterface $productFilter,
-        AttributeFilterInterface $productAttributeFilter
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer
     ) {
         parent::__construct($repository);
 
@@ -82,6 +79,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->detacher = $detacher;
         $this->productFilter = $productFilter;
         $this->productAttributeFilter = $productAttributeFilter;
+        $this->repository = $repository;
+        $this->mediaStorer = $mediaStorer;
     }
 
     /**
@@ -111,7 +110,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
 
             $product = $this->findProductToImport->fromFlatData($identifier, $familyCode);
         } catch (AccessDeniedException $e) {
-            $this->skipItemWithMessage($item, $e->getMessage(), $e);
+            throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
         }
 
         if (false === $itemHasStatus && null !== $product->getId()) {
@@ -135,6 +134,16 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             try {
                 $product = $this->addParent->to($product, $parentProductModelCode);
             } catch (\InvalidArgumentException $e) {
+                $this->detachProduct($product);
+                $this->skipItemWithMessage($item, $e->getMessage(), $e);
+            }
+        }
+
+        if (isset($filteredItem['values'])) {
+            try {
+                $filteredItem['values'] = $this->mediaStorer->store($filteredItem['values']);
+            } catch (InvalidPropertyException $e) {
+                $this->detachProduct($product);
                 $this->skipItemWithMessage($item, $e->getMessage(), $e);
             }
         }
@@ -256,5 +265,16 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     protected function detachProduct(ProductInterface $product)
     {
         $this->detacher->detach($product);
+    }
+
+    private function skipItemAndReturnException(array $item, $message, \Exception $previousException = null): InvalidItemException
+    {
+        if ($this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+        $itemPosition = null !== $this->stepExecution ? $this->stepExecution->getSummaryInfo('item_position') : 0;
+        $invalidItem = new FileInvalidItem($item, $itemPosition);
+        
+        return new InvalidItemException($message, $invalidItem, [], 0, $previousException);
     }
 }

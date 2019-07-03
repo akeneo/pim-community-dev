@@ -2,103 +2,98 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use PHPUnit\Framework\Assert;
+use Symfony\Bundle\FrameworkBundle\Client;
+
 class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
 {
     /**
-     * @group ce
-     */
-    public function testSearchAfterPaginationListProductModelsWithoutParameter()
-    {
-        $standardizedProducts = $this->getStandardizedProductModels();
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', 'api/rest/v1/product-models?pagination_type=search_after');
-        $expected = <<<JSON
-{
-    "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=10"},
-        "first" : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=10"}
-    },
-    "_embedded" : {
-        "items" : [
-            {$standardizedProducts['sweat']},
-            {$standardizedProducts['shoes']},
-            {$standardizedProducts['tshirt']},
-            {$standardizedProducts['trousers']},
-            {$standardizedProducts['hat']},
-            {$standardizedProducts['handbag']}
-        ]
-    }
-}
-JSON;
-
-        $this->assertListResponse($client->getResponse(), $expected);
-    }
-
-    /**
-     * @group ce
      * @group critical
      */
-    public function testSearchAfterPaginationListProductModelsWithNextLink()
+    public function test_navigation_links()
     {
-        $standardizedProducts = $this->getStandardizedProductModels();
         $client = $this->createAuthenticatedClient();
 
-        $id = [
-            'sweat'    => rawurlencode($this->getEncryptedId('sweat')),
-            'shoes'    => rawurlencode($this->getEncryptedId('shoes')),
-            'trousers' => rawurlencode($this->getEncryptedId('trousers'))
-        ];
+        $client->request('GET', 'api/rest/v1/product-models?pagination_type=search_after&limit=3');
+        $responseBody = json_decode($client->getResponse()->getContent(), true);
+        $this->assertLink($responseBody, 'first', null);
+        $this->assertLink($responseBody, 'self', null);
+        $this->assertLink($responseBody, 'next', 'tshirt');
+        $this->assertItems($responseBody, ['sweat', 'shoes', 'tshirt']);
 
-        $client->request('GET', sprintf('api/rest/v1/product-models?pagination_type=search_after&limit=3&search_after=%s', $id['sweat']));
-        $expected = <<<JSON
-{
-    "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=3&search_after={$id['sweat']}"},
-        "first" : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=3&search_after={$id['trousers']}"}
-    },
-    "_embedded"    : {
-        "items" : [
-            {$standardizedProducts['shoes']},
-            {$standardizedProducts['tshirt']},
-            {$standardizedProducts['trousers']}
-        ]
+        $this->followLink($client, 'next');
+        $responseBody = json_decode($client->getResponse()->getContent(), true);
+        $this->assertLink($responseBody, 'first', null);
+        $this->assertLink($responseBody, 'self', 'tshirt');
+        $this->assertLink($responseBody, 'next', 'handbag');
+        $this->assertItems($responseBody, ['trousers', 'hat', 'handbag']);
+
+        $this->followLink($client, 'next');
+        $responseBody = json_decode($client->getResponse()->getContent(), true);
+        $this->assertLink($responseBody, 'first', null);
+        $this->assertLink($responseBody, 'self', 'handbag');
+        $this->assertLinkDoesNotExist($responseBody, 'next');
+        $this->assertItems($responseBody, []);
+
+        $this->followLink($client, 'first');
+        $responseBody = json_decode($client->getResponse()->getContent(), true);
+        $this->assertLink($responseBody, 'first', null);
+        $this->assertLink($responseBody, 'self', null);
+        $this->assertLink($responseBody, 'next', 'tshirt');
+        $this->assertItems($responseBody, ['sweat', 'shoes', 'tshirt']);
     }
-}
-JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
-    }
-
-    /**
-     * @group ce
-     */
-    public function testSearchAfterPaginationLastPageOfTheListOfProductModels()
+    private function followLink(Client $client, string $type): void
     {
-        $standardizedProducts = $this->getStandardizedProductModels();
-        $client = $this->createAuthenticatedClient();
+        $link = $this->getLink(json_decode($client->getResponse()->getContent(), true), $type);
+        Assert::assertNotNull($link);
 
-        $tshirtEncryptedId = rawurlencode($this->getEncryptedId('tshirt'));
-
-        $client->request('GET', sprintf('api/rest/v1/product-models?pagination_type=search_after&limit=4&search_after=%s' , $tshirtEncryptedId));
-        $expected = <<<JSON
-{
-    "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=4&search_after={$tshirtEncryptedId}"},
-        "first" : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=4"}
-    },
-    "_embedded"    : {
-        "items" : [
-            {$standardizedProducts['trousers']},
-            {$standardizedProducts['hat']},
-            {$standardizedProducts['handbag']}
-        ]
+        $client->request('GET', urldecode($link));
     }
-}
-JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+    private function assertLink(array $responseBody, string $type, ?string $searchAfter): void
+    {
+        $link = $this->getLink($responseBody, $type);
+        Assert::assertNotNull($link);
+
+        $output = [];
+        parse_str($link, $output);
+
+        Assert::assertArrayHasKey('pagination_type', $output);
+        Assert::assertSame('search_after', $output['pagination_type']);
+
+        if (null === $searchAfter) {
+            Assert::assertArrayNotHasKey('search_after', $output);
+        } else {
+            Assert::assertArrayHasKey('search_after', $output);
+            Assert::assertSame($this->getEncryptedId($searchAfter), $output['search_after']);
+        }
+    }
+
+    private function assertLinkDoesNotExist(array $responseBody, string $type): void
+    {
+        Assert::assertNull($this->getLink($responseBody, $type));
+    }
+
+    private function assertItems(array $responseBody, array $productModelCodes): void
+    {
+        Assert::assertTrue(isset($responseBody['_embedded']['items']));
+        $items = $responseBody['_embedded']['items'];
+        Assert::assertSame(count($productModelCodes), count($items));
+        Assert::assertSame($productModelCodes, array_map(function (array $item) {
+            return $item['code'];
+        }, $items));
+    }
+
+    private function getLink(array $responseBody, string $type): ?string
+    {
+        Assert::assertArrayHasKey('_links', $responseBody);
+
+        if (!isset($responseBody['_links'][$type])) {
+            return null;
+        }
+
+        return urldecode($responseBody['_links'][$type]['href']);
     }
 
     /**
@@ -109,10 +104,14 @@ JSON;
     private function getEncryptedId($productModelIdentifier)
     {
         $encrypter = $this->getFromTestContainer('pim_api.security.primary_key_encrypter');
-        $repository = $this->getFromTestContainer('pim_catalog.repository.product_model');
 
-        $productModel = $repository->findOneByIdentifier($productModelIdentifier);
+        $productModelId = $this->get('database_connection')->fetchColumn(
+            'SELECT id from pim_catalog_product_model where code = :code',
+            [
+                'code' => $productModelIdentifier,
+            ]
+        );
 
-        return $encrypter->encrypt($productModel->getId());
+        return $encrypter->encrypt($productModelId);
     }
 }

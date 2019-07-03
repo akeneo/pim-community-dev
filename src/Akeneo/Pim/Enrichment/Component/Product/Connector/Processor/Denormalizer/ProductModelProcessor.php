@@ -2,13 +2,17 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -56,16 +60,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /** @var string */
     private $importType;
 
-    /**
-     * @param SimpleFactoryInterface                $productModelFactory
-     * @param ObjectUpdaterInterface                $productModelUpdater
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param ValidatorInterface                    $validator
-     * @param FilterInterface                       $productModelFilter
-     * @param ObjectDetacherInterface               $objectDetacher
-     * @param AttributeFilterInterface              $productModelAttributeFilter
-     * @param string                                $importType
-     */
+    /** @var MediaStorer */
+    private $mediaStorer;
+
     public function __construct(
         SimpleFactoryInterface $productModelFactory,
         ObjectUpdaterInterface $productModelUpdater,
@@ -74,6 +71,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
         AttributeFilterInterface $productModelAttributeFilter,
+        MediaStorer $mediaStorer,
         string $importType
     ) {
         parent::__construct($productModelRepository);
@@ -86,6 +84,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $this->objectDetacher = $objectDetacher;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->importType = $importType;
+        $this->mediaStorer = $mediaStorer;
     }
 
     /**
@@ -124,6 +123,15 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
                 $this->stepExecution->incrementSummaryInfo('product_model_skipped_no_diff');
 
                 return null;
+            }
+        }
+
+        if (isset($standardProductModel['values'])) {
+            try {
+                $standardProductModel['values'] = $this->mediaStorer->store($standardProductModel['values']);
+            } catch (InvalidPropertyException $e) {
+                $this->objectDetacher->detach($productModel);
+                $this->skipItemWithMessage($standardProductModel, $e->getMessage(), $e);
             }
         }
 

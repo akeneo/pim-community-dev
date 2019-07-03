@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
@@ -22,8 +22,6 @@ class ValuesNormalizerSpec extends ObjectBehavior
         $router
             ->generate('pim_api_media_file_download', ['code' => 'a/b/c/file.txt'], Argument::any())
             ->willReturn('http://localhost/api/rest/v1/media-files/a/b/c/file.txt/download');
-
-
     }
 
     function it_is_a_normalizer_of_values_for_the_connector()
@@ -33,7 +31,6 @@ class ValuesNormalizerSpec extends ObjectBehavior
 
     function it_normalize_values_with_hal_links(ProductValueNormalizer $productValueNormalizer)
     {
-
         $fileInfo = new FileInfo();
         $fileInfo->setKey('a/b/c/file.txt');
 
@@ -65,8 +62,7 @@ class ValuesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-
-        $valueCollection = new ValueCollection([$scalarValue, $localizableScalarValue, $mediaValue]);
+        $valueCollection = new ReadValueCollection([$scalarValue, $localizableScalarValue, $mediaValue]);
         $this->normalize($valueCollection)->shouldReturn(
             [
                 'color' => [[

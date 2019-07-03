@@ -15,7 +15,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -250,8 +250,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         ChannelInterface $channel,
         AttributeInterface $attribute,
         ExecutionContext $executionContext,
-        ValueCollectionInterface $valueCollection,
-        ValueCollectionInterface $filteredValues
+        WriteValueCollection $valueCollection,
+        WriteValueCollection $filteredValues
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('admin');
@@ -315,7 +315,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         ChannelInterface $channel,
         AttributeInterface $attribute,
         ExecutionContext $executionContext,
-        ValueCollectionInterface $valueCollection
+        WriteValueCollection $valueCollection
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('admin');

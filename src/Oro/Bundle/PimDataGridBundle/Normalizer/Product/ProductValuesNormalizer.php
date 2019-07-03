@@ -3,7 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Normalizer\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -64,6 +64,6 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
      */
     public function supportsNormalization($data, $format = null)
     {
-        return 'datagrid' === $format && $data instanceof ValueCollectionInterface;
+        return 'datagrid' === $format && $data instanceof WriteValueCollection;
     }
 }

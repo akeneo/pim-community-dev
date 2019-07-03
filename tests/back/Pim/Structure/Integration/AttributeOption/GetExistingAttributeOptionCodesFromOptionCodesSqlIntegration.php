@@ -31,6 +31,7 @@ final class GetExistingAttributeOptionCodesFromOptionCodesSqlIntegration extends
                 'option_D',
                 'option_F',
                 'option_G',
+                'option_A',
             ]
         ]);
     }
@@ -38,15 +39,15 @@ final class GetExistingAttributeOptionCodesFromOptionCodesSqlIntegration extends
     public function test_it_works_with_empty_codes()
     {
         $expected = [];
-        $actual = $this->getQuery()->fromOptionCodes([]);
+        $actual = $this->getQuery()->fromOptionCodesByAttributeCode([]);
 
         \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function test_it_returns_only_what_is_existing()
     {
-        $expected = ['option_A', 'option_B'];
-        $actual = $this->getQuery()->fromOptionCodes(['option_A', 'option_B', 'option_X', 'option_Z']);
+        $expected = ['attribute_1' => ['option_A', 'option_B'], 'attribute_2' => ['option_D']];
+        $actual = $this->getQuery()->fromOptionCodesByAttributeCode(['attribute_1' => ['option_A', 'option_B', 'option_X'], 'attribute_2' => ['option_Z', 'option_D']]);
 
         \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expected, $actual);
     }

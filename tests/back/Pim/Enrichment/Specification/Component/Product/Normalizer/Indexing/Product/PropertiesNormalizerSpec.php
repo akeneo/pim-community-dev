@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\PropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -38,7 +38,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_properties_with_empty_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
@@ -91,7 +91,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_with_completenesses(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         Collection $completenesses,
         AttributeInterface $sku
     ) {
@@ -151,7 +151,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         FamilyInterface $family,
         Collection $completenesses,
         AttributeInterface $sku
@@ -336,7 +336,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $subProductModel,
         ProductModelInterface $rootProductModel,
         FamilyInterface $family,
-        ValueCollectionInterface $valueCollection,
+        WriteValueCollection $valueCollection,
         Collection $completenesses,
         AttributeInterface $sku
     ) {

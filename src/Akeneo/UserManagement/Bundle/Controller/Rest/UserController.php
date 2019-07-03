@@ -2,12 +2,13 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -69,23 +70,13 @@ class UserController
     /** @var Session */
     private $session;
 
-    /** @var ObjectManager */
-    private $objectManager;
+    /** @var NumberFactory */
+    private $numberFactory;
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param NormalizerInterface $normalizer
-     * @param ObjectRepository $repository
-     * @param ObjectUpdaterInterface $updater
-     * @param ValidatorInterface $validator
-     * @param SaverInterface $saver
-     * @param NormalizerInterface $constraintViolationNormalizer
-     * @param SimpleFactoryInterface $factory
-     * @param UserPasswordEncoderInterface $encoder
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Session $session
-     * @param ObjectManager $objectManager
-     */
+    /** @var RemoverInterface */
+    private $remover;
+
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
@@ -98,7 +89,8 @@ class UserController
         UserPasswordEncoderInterface $encoder,
         EventDispatcherInterface $eventDispatcher,
         Session $session,
-        ObjectManager $objectManager
+        RemoverInterface $remover,
+        NumberFactory $numberFactory
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -111,7 +103,8 @@ class UserController
         $this->encoder = $encoder;
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
-        $this->objectManager = $objectManager;
+        $this->remover = $remover;
+        $this->numberFactory = $numberFactory;
     }
 
     /**
@@ -126,7 +119,11 @@ class UserController
             throw new NotFoundHttpException('No logged in user found');
         }
 
-        return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+        $user = $this->normalizer->normalize($user, 'internal_api');
+        $decimalSeparator = $this->additionalProperties($user);
+        $result = array_merge($decimalSeparator, $user);
+
+        return new JsonResponse($result);
     }
 
     /**
@@ -271,8 +268,7 @@ class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        $this->objectManager->remove($user);
-        $this->objectManager->flush();
+        $this->remover->remove($user);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
@@ -383,5 +379,14 @@ class UserController
             '' !== $data['current_password'] &&
             '' !== $data['new_password'] &&
             '' !== $data['new_password_repeat'];
+    }
+
+    private function additionalProperties($user): array
+    {
+        $decimalSeparator['ui_locale_decimal_separator'] = $this->numberFactory
+            ->create(['locale' => $user['user_default_locale']])
+            ->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
+
+        return $decimalSeparator;
     }
 }

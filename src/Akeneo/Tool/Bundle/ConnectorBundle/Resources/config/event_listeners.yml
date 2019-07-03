@@ -14,3 +14,10 @@ services:
               - '@pim_connector.doctrine.cache_clearer'
           tags:
               - { name: kernel.event_subscriber }
+
+    pim_connector.fetch_remote_file_before_import:
+        class: 'Akeneo\Tool\Bundle\ConnectorBundle\EventListener\FetchRemoteFileBeforeImport'
+        arguments:
+            - '@oneup_flysystem.jobs_storage_filesystem'
+        tags:
+            - { name: kernel.event_subscriber }

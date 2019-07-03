@@ -46,3 +46,4 @@ Akeneo\Pim\Enrichment\Component\Comment\Model\Comment:
             joinColumn:
                 name: author_id
                 referencedColumnName: id
+                onDelete: SET NULL

@@ -26,7 +26,8 @@ class UserBuilder {
       },
       meta: {
           id: 1
-      }
+      },
+      ui_locale_decimal_separator: '.'
     }
   }
 

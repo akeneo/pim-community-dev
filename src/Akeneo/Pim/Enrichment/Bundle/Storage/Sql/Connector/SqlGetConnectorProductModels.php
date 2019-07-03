@@ -12,7 +12,8 @@ use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociat
 use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
@@ -38,7 +39,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
     /** @var GetGroupAssociationsByProductModelCodes */
     private $getGroupAssociationsByProductModelCodes;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var ValueCollectionFactory */
     private $valueCollectionFactory;
 
     public function __construct(
@@ -47,7 +48,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         GetProductAssociationsByProductModelCodes $getProductAssociationsByProductModelCodes,
         GetProductModelsAssociationsByProductModelCodes $getProductModelAssociationsByProductModelCodes,
         GetGroupAssociationsByProductModelCodes $getGroupAssociationsByProductModelCodes,
-        ValueCollectionFactoryInterface $valueCollectionFactory
+        ValueCollectionFactory $valueCollectionFactory
     ) {
         $this->getValuesAndPropertiesFromProductModelCodes = $getValuesAndPropertiesFromProductModelCodes;
         $this->getCategoryCodesByProductModelCodes = $getCategoryCodesByProductModelCodes;
@@ -75,18 +76,49 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             iterator_to_array($result)
         );
 
+        $connectorProductModels = $this->fromProductModelCodes(
+            $productModelCodes,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
+        );
+
+        return new ConnectorProductModelList($result->count(), $connectorProductModels);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductModelCode(string $productModelCode, int $userId): ConnectorProductModel
+    {
+        $connectorProductModels = $this->fromProductModelCodes([$productModelCode], null, null, null);
+
+        if (empty($connectorProductModels)) {
+            throw new ObjectNotFoundException(sprintf('Product model "%s" was not found', $productModelCode));
+        }
+
+        return $connectorProductModels[0];
+    }
+
+    private function fromProductModelCodes(
+        array $productModelCodes,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): array {
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductModelCodes->fromProductModelCodes($productModelCodes),
             $this->fetchAssociationsIndexedByProductModelCode($productModelCodes),
             $this->fetchCategoryCodesIndexedByProductModelCode($productModelCodes)
         );
-        $productModels = [];
+
+        $rawValuesIndexedByProductModelCode = [];
         foreach ($productModelCodes as $productModelCode) {
             if (!isset($rows[$productModelCode]['code'])) {
                 continue;
             }
-            $row = $rows[$productModelCode];
-            $rawValues = $row['raw_values'];
+
+            $rawValues = $rows[$productModelCode]['raw_values'];
             if (null !== $attributesToFilterOn) {
                 $rawValues = $this->filterOnAttributeCodes($rawValues, $attributesToFilterOn);
             }
@@ -96,21 +128,38 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             if (null !== $localesToFilterOn) {
                 $rawValues = $this->filterOnLocaleCodes($rawValues, $localesToFilterOn);
             }
+
+            $rawValuesIndexedByProductModelCode[$productModelCode] = $rawValues;
+        }
+
+        $filteredValuesIndexedByProductModelCode = $this->valueCollectionFactory->createMultipleFromStorageFormat(
+            $rawValuesIndexedByProductModelCode
+        );
+
+        $productModels = [];
+        foreach ($productModelCodes as $productModelCode) {
+            if (!isset($rows[$productModelCode]['code'])) {
+                continue;
+            }
+
+            $row = $rows[$productModelCode];
+
             $productModels[] = new ConnectorProductModel(
                 $row['id'],
                 $row['code'],
                 $row['created'],
                 $row['updated'],
                 $row['parent'],
+                $row['family'],
                 $row['family_variant'],
                 [],
-                $row['associations'],
+                $row['associations'] ?? [],
                 $row['category_codes'],
-                $this->valueCollectionFactory->createFromStorageFormat($rawValues)
+                $filteredValuesIndexedByProductModelCode[$productModelCode]
             );
         }
 
-        return new ConnectorProductModelList($result->count(), $productModels);
+        return $productModels;
     }
 
     private function fetchCategoryCodesIndexedByProductModelCode(array $productModelCodes): array
@@ -134,6 +183,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         );
         $associationsIndexedByCode = [];
         foreach ($associations as $productModelCode => $association) {
+            ksort($association);
             $associationsIndexedByCode[$productModelCode]['associations'] = $association;
         }
 

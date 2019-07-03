@@ -2,10 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
@@ -17,7 +15,7 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
-        ValueCollection $valueCollection
+        WriteValueCollection $valueCollection
     ) {
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
@@ -44,7 +42,7 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_empty_value_collection() {
-        $this->normalize(new ValueCollection(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,[])->shouldReturn([]);
+        $this->normalize(new WriteValueCollection(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,[])->shouldReturn([]);
     }
 
     function it_normalizes_product_value_collection(

@@ -81,7 +81,9 @@ SQL;
             $associations = json_decode($row['associations'], true);
             $filteredAssociations = [];
             foreach ($associations as $associationType => $productAssociations) {
-                $filteredAssociations[$associationType]['products'] = array_filter($productAssociations);
+                $association = array_values(array_filter($productAssociations));
+                sort($association);
+                $filteredAssociations[$associationType]['products'] = $association;
             }
             $results[$row['product_model_code']] = $filteredAssociations;
         }
