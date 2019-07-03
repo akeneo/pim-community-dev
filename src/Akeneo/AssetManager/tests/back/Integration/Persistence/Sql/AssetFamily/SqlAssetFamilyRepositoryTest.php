@@ -59,12 +59,13 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_asset_family_and_returns_it()
     {
+        $ruleTemplate = $this->getRuleTemplate();
         $identifier = AssetFamilyIdentifier::fromString('identifier');
         $assetFamily = AssetFamily::create(
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
         );
 
         $this->repository->create($assetFamily);
@@ -266,6 +267,26 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $this->assertEquals($assetFamilyExpected->getLabel($localeCode),
                 $assetFamilyFound->getLabel($localeCode));
         }
+    }
+
+    private function getRuleTemplate(): array
+    {
+        return [
+            'conditions' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'equals',
+                    'value'    => '{{product_sku}}'
+                ]
+            ],
+            'actions'    => [
+                [
+                    'type'  => 'add',
+                    'field' => '{{attribute}}',
+                    'value' => '{{code}}'
+                ]
+            ]
+        ];
     }
 
     private function resetDB()
