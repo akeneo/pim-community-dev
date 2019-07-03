@@ -16,7 +16,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $localeRepository;
 
-    public function __construct(IdentifiableObjectRepositoryInterface $localeRepository = null)
+    public function __construct(IdentifiableObjectRepositoryInterface $localeRepository)
     {
         $this->localeRepository = $localeRepository;
     }
@@ -58,12 +58,9 @@ class AttributeOptionNormalizer implements NormalizerInterface
 
         foreach ($attributeOption->getOptionValues() as $translation) {
             if (empty($locales) || in_array($translation->getLocale(), $locales)) {
-                // TODO merge: remove null in master
-                if (null !== $this->localeRepository) {
-                    $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
-                    if (null === $locale || !$locale->isActivated()) {
-                        continue;
-                    }
+                $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
+                if (null === $locale || !$locale->isActivated()) {
+                    continue;
                 }
 
                 $labels[$translation->getLocale()] = $translation->getValue();
