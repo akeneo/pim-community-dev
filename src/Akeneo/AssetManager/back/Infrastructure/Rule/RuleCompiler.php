@@ -31,7 +31,7 @@ class RuleCompiler
     private const CONDITIONS_KEYS_TO_REPLACE = ['field', 'value'];
 
     /** @var array We only allow those keys to be replaced by asset values in actions */
-    private const ACTIONS_KEYS_TO_REPLACE = ['field', 'value'];
+    private const ACTIONS_KEYS_TO_REPLACE = ['field', 'value', 'items'];
 
     /** @var DenormalizerInterface */
     private $ruleDenormalizer;
@@ -125,7 +125,13 @@ class RuleCompiler
                     continue;
                 }
 
-                $action[$key] = $this->replacePatterns($value, $propertyAccessibleAsset);
+                if (is_array($action[$key])) {
+                    foreach ($action[$key] as $i => $valueToReplace) {
+                        $action[$key][$i] = $this->replacePatterns($valueToReplace, $propertyAccessibleAsset);
+                    }
+                } else {
+                    $action[$key] = $this->replacePatterns($value, $propertyAccessibleAsset);
+                }
             }
 
             $compiledActions[] = $action;

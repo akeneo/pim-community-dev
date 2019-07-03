@@ -51,7 +51,7 @@ class RuleExecutor {
   public function execute(RuleTemplate $ruleTemplate, PropertyAccessibleAsset $asset) {
     $rule = $this->ruleCompiler->compile($ruleTemplate, $asset);
 
-    $this->runRuleAsync($rule);
+    $this->runRuleSync($rule);
   }
 
   public function runRuleSync(RuleInterface $rule) {

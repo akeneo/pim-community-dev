@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;

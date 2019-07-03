@@ -50,13 +50,13 @@ class LinkAssetSubscriber implements EventSubscriberInterface
                 [
                     'field' => 'sku',
                     'operator' => Operators::EQUALS,
-                    'value' => '13689212'
+                    'value' => '1111111304'
                 ]
             ],
             'actions' => [[
-                'type' => 'set',
-                'field' => 'front_view_asset',
-                'value' => '{{code}}'
+                'type' => 'add',
+                'field' => 'new_asset_multiple_link',
+                'items' => ['{{code}}']
             ]]
         ]);
 
