@@ -36,6 +36,24 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
             [
                 'en_US' => 'Intel',
                 'fr_FR' => 'Intel',
+            ],
+            [
+                [
+                    'conditions' => [
+                        [
+                            'field' => 'sku',
+                            'operator' => 'equals',
+                            'value' => '{{product_sku}}'
+                        ]
+                    ],
+                    'actions'=> [
+                        [
+                            'type' => 'add',
+                            'field' => '{{attribute}}',
+                            'value' => '{{code}}'
+                        ]
+                    ]
+                ]
             ]
         );
 

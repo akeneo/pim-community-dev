@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
@@ -60,7 +61,8 @@ class EditActionTest extends ControllerIntegrationTestCase
             'image'      => [
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
-            ]
+            ],
+            'ruleTemplates' => []
         ];
 
         $this->webClientHelper->callRoute(
@@ -177,7 +179,8 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur',
             ],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $assetFamilyRepository->create($entityItem);
 

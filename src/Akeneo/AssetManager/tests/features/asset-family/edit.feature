@@ -31,6 +31,12 @@ Feature: Edit an asset family
     Then the asset family 'designer' should have an empty image
 
   @acceptance-back
+  Scenario: Updating an asset family to set a collection of rule templates
+    Given an empty rule template collection on the asset family 'packshot'
+    When the user updates the asset family 'packshot' to set a collection of rule templates
+    Then the asset family 'packshot' should have the collection of rule templates
+
+  @acceptance-back
   Scenario Outline: Updating with an invalid image
     Given a valid asset family
     When the user updates the image of the asset family 'designer' with path '<wrong_path>' and filename '<wrong_filename>'

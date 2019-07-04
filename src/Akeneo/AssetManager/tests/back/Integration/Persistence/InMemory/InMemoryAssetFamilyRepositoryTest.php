@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
@@ -42,7 +43,7 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
     public function it_creates_an_asset_family_and_returns_it()
     {
         $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
-        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty());
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty(), RuleTemplateCollection::empty());
 
         $this->assetFamilyRepository->create($assetFamily);
 
@@ -56,7 +57,7 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
     public function it_throws_when_creating_an_asset_family_with_the_same_identifier()
     {
         $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
-        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty());
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty(), RuleTemplateCollection::empty());
         $this->assetFamilyRepository->create($assetFamily);
 
         $this->expectException(\RuntimeException::class);
@@ -69,7 +70,7 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
     public function it_updates_an_asset_family_and_returns_it()
     {
         $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
-        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty());
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty(), RuleTemplateCollection::empty());
         $this->assetFamilyRepository->create($assetFamily);
         $assetFamily->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Styliste']));
 
@@ -84,8 +85,8 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
      */
     public function it_returns_all_asset_families()
     {
-        $designer = AssetFamily::create(AssetFamilyIdentifier::fromString('designer'), [], Image::createEmpty());
-        $brand = AssetFamily::create(AssetFamilyIdentifier::fromString('brand'), [], Image::createEmpty());
+        $designer = AssetFamily::create(AssetFamilyIdentifier::fromString('designer'), [], Image::createEmpty(), RuleTemplateCollection::empty());
+        $brand = AssetFamily::create(AssetFamilyIdentifier::fromString('brand'), [], Image::createEmpty(), RuleTemplateCollection::empty());
         $this->assetFamilyRepository->create($designer);
         $this->assetFamilyRepository->create($brand);
 
@@ -101,7 +102,7 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
     {
         $anotherIdentifier = AssetFamilyIdentifier::fromString('another_identifier');
         $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
-        $this->assetFamilyRepository->create(AssetFamily::create($identifier, [], Image::createEmpty()));
+        $this->assetFamilyRepository->create(AssetFamily::create($identifier, [], Image::createEmpty(), RuleTemplateCollection::empty()));
         Assert::assertTrue($this->assetFamilyRepository->hasAssetFamily($identifier));
         Assert::assertFalse($this->assetFamilyRepository->hasAssetFamily($anotherIdentifier));
     }
@@ -112,7 +113,7 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
     public function it_throws_when_udpating_a_non_existing_asset_family()
     {
         $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
-        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty());
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty(), RuleTemplateCollection::empty());
         $this->assetFamilyRepository->create($assetFamily);
         $assetFamily->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Styliste']));
 
@@ -142,7 +143,8 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
         $assetFamily = AssetFamily::create(
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $this->assetFamilyRepository->create($assetFamily);
 
@@ -170,9 +172,9 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
     {
         $this->assertEquals(0, $this->assetFamilyRepository->count());
 
-        $refOne = AssetFamily::create(AssetFamilyIdentifier::fromString('one'), ['en_US' => 'one'], Image::createEmpty());
-        $refTwo = AssetFamily::create(AssetFamilyIdentifier::fromString('two'), ['en_US' => 'two'], Image::createEmpty());
-        $refThree = AssetFamily::create(AssetFamilyIdentifier::fromString('three'), ['en_US' => 'three'], Image::createEmpty());
+        $refOne = AssetFamily::create(AssetFamilyIdentifier::fromString('one'), ['en_US' => 'one'], Image::createEmpty(), RuleTemplateCollection::empty());
+        $refTwo = AssetFamily::create(AssetFamilyIdentifier::fromString('two'), ['en_US' => 'two'], Image::createEmpty(), RuleTemplateCollection::empty());
+        $refThree = AssetFamily::create(AssetFamilyIdentifier::fromString('three'), ['en_US' => 'three'], Image::createEmpty(), RuleTemplateCollection::empty());
         $this->assetFamilyRepository->create($refOne);
         $this->assetFamilyRepository->create($refTwo);
         $this->assetFamilyRepository->create($refThree);

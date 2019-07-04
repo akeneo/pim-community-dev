@@ -15,6 +15,8 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -31,6 +33,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 
@@ -57,7 +60,12 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     public function it_creates_an_asset_family_and_returns_it()
     {
         $identifier = AssetFamilyIdentifier::fromString('identifier');
-        $assetFamily = AssetFamily::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $assetFamily = AssetFamily::create(
+            $identifier,
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
 
         $this->repository->create($assetFamily);
 
@@ -73,12 +81,14 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
         $designer = AssetFamily::create(
             AssetFamilyIdentifier::fromString('designer'),
             ['en_US' => 'Designer'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $brand = AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
             ['en_US' => 'Brand'],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $this->repository->create($designer);
         $this->repository->create($brand);
@@ -94,7 +104,12 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     public function it_throws_when_creating_an_asset_family_with_the_same_identifier()
     {
         $identifier = AssetFamilyIdentifier::fromString('identifier');
-        $assetFamily = AssetFamily::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $assetFamily = AssetFamily::create(
+            $identifier,
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
         $this->repository->create($assetFamily);
 
         $this->expectException(DBALException::class);
@@ -107,7 +122,12 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     public function it_updates_an_asset_family_and_returns_it()
     {
         $identifier = AssetFamilyIdentifier::fromString('identifier');
-        $assetFamily = AssetFamily::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $assetFamily = AssetFamily::create(
+            $identifier,
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
         $this->repository->create($assetFamily);
         $assetFamily->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
 
@@ -137,7 +157,12 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     public function it_deletes_an_asset_family_given_an_identifier()
     {
         $identifier = AssetFamilyIdentifier::fromString('identifier');
-        $assetFamily = AssetFamily::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $assetFamily = AssetFamily::create(
+            $identifier,
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
         $this->repository->create($assetFamily);
 
         $this->repository->deleteByIdentifier($identifier);
@@ -152,7 +177,12 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     public function it_deletes_an_asset_family_given_an_identifier_even_if_it_has_attributes()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $assetFamily = AssetFamily::create($assetFamilyIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $assetFamily = AssetFamily::create(
+            $assetFamilyIdentifier,
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
         $this->repository->create($assetFamily);
 
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
@@ -186,9 +216,19 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
         $this->assertEquals(0, $this->repository->count());
 
         $designerIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $designer = AssetFamily::create($designerIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $designer = AssetFamily::create(
+            $designerIdentifier,
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
         $brandIdentifier = AssetFamilyIdentifier::fromString('brand');
-        $brand = AssetFamily::create($brandIdentifier, ['en_US' => 'Brand', 'fr_FR' => 'Marque'], Image::createEmpty());
+        $brand = AssetFamily::create(
+            $brandIdentifier,
+            ['en_US' => 'Brand', 'fr_FR' => 'Marque'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
 
         $this->repository->create($designer);
         $this->repository->create($brand);

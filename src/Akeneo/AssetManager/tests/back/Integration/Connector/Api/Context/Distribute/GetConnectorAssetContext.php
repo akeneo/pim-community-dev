@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -147,7 +148,8 @@ class GetConnectorAssetContext implements Context
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $this->assetFamilyRepository->create($assetFamily);
 
@@ -199,7 +201,8 @@ class GetConnectorAssetContext implements Context
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($assetFamily);
@@ -243,7 +246,8 @@ class GetConnectorAssetContext implements Context
             $assetFamily = AssetFamily::create(
                 AssetFamilyIdentifier::fromString(sprintf('asset_family_%s', $i)),
                 [],
-                Image::createEmpty()
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
             );
 
             $this->assetFamilyRepository->create($assetFamily);

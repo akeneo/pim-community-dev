@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -100,7 +101,8 @@ class CreateOrUpdateAttributeContext implements Context
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString(strtolower($assetFamilyIdentifier)),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
 
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
@@ -215,7 +217,8 @@ class CreateOrUpdateAttributeContext implements Context
         $country = AssetFamily::create(
             AssetFamilyIdentifier::fromString('country'),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
         );
         $this->assetFamilyRepository->create($country);
     }

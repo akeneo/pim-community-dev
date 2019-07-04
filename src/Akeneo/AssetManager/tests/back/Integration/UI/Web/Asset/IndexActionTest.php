@@ -28,6 +28,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -219,7 +220,8 @@ class IndexActionTest extends ControllerIntegrationTestCase
             AssetFamily::create(
                $assetFamilyIdentifier,
                [],
-               Image::createEmpty()
+               Image::createEmpty(),
+               RuleTemplateCollection::empty()
             )
         );
 
@@ -229,7 +231,8 @@ class IndexActionTest extends ControllerIntegrationTestCase
             AssetFamily::create(
                $cityAssetFamilyIdentifier,
                [],
-               Image::createEmpty()
+               Image::createEmpty(),
+               RuleTemplateCollection::empty()
             )
         );
         /** @var AssetFamily $assetFamily */
