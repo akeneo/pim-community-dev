@@ -11,9 +11,7 @@ pimee_catalog_rule:
     launched: Розпочато виконання правил. Ви будете повідомлені по завершенні процесу.
   attribute:
     list:
-      code.label: Код
       condition.label: Умова
-      action.label: Дія
       no_rule_yet.label: На даний момент правила відсутні
   rule:
     condition:
@@ -81,24 +79,16 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Імпорт продуктів з CSV з правилами
     execute_rules.label: Виконання правил
-    validation.label: Перевірка файлу
-    import.label: Експорт продуктів
-    import_associations.label: Імпорт асоціацій
   csv_product_model_import_with_rules:
     label: Імпорт моделей продуктів з CSV з правилами
     execute_rules.label: Виконання правил
-    validation.label: Перевірка файлу
     import_root_product_model.label: Імпорт кореневої моделі продукту
     import_sub_product_model.label: Імпорт підлеглої моделі
   xlsx_product_import_with_rules:
     label: Імпорт продуктів з XLSX з правилами
     execute_rules.label: Виконання правил
-    validation.label: Перевірка файлу
-    import.label: Експорт продуктів
-    import_associations.label: Імпорт асоціацій
   xlsx_product_model_import_with_rules:
     label: Імпорт моделей продуктів з XLSX з правилами
     execute_rules.label: Виконання правил
-    validation.label: Перевірка файлу
     import_root_product_model.label: Імпорт кореневої моделі продукту
     import_sub_product_model.label: Імпорт підлеглої моделі

@@ -37,8 +37,6 @@ pimee_enrich:
         permission:
           title: Права доступу
           added: Група {{ group }} буде доступна для робочого профілю {{ permission }}
-          execute.label: Дозволено виконувати профіль процесу
-          edit.label: Дозволено редагувати профіль процесу
           removed: Група {{ group }} не буде доступна для робочого профілю {{ permission }}
     channel:
       tab:
@@ -74,7 +72,6 @@ pimee_enrich:
         product_reverted: Товар успішно відновлений
       meta:
         published: Опублікована версія
-        owner_groups: Власник групи
         draft_status: Статус чернетки
         draft:
           in_progress: В процесі
@@ -105,7 +102,6 @@ pimee_enrich:
         update_successful: Робочу копію продукту було оновлено
       copy:
         source:
-          working_copy: Робоча копія
           draft: Моя чернетка
           draft_of: "Чернетки користувача {{ author }}"
     product_draft:
@@ -126,7 +122,6 @@ pimee_enrich:
         reject_selected_proposal: Відхилити вибрані пропозиції
         remove_proposal: Видалити пропозицію
         send_for_approval: Відправити для затвердження
-        cancel: Відмінити
         confirm: Відправити
         title: Коментувати вашу пропозицію (необов'язково - 255 символів макс.)
         characters: знаків.
@@ -136,8 +131,7 @@ pimee_enrich:
   asset_transformation:
     not_found: Перетворення не знайдені
     title:
-      transformation: Трансформація
-      options: Параметри
+      options: Опції
     colorspace:
       title: Колірний простір
       options:
@@ -164,9 +158,7 @@ pimee_enrich:
         width: 'Ширина %value%px'
         height: 'Висота %value%px'
   mass_edit:
-    next: Наступний
     previous: Назад
-    cancel: Відмінити
     confirm: Підтвердження
     product:
       operation:
@@ -204,7 +196,6 @@ pimee_enrich:
           label: Класифікувати медіафайли за категоріями
           description: Медіафайли будуть переміщені в наступні категорії, існуюче розташування буде втрачено.
           label_count: "{1}Класифікувати <span class=\"AknFullPage-title--highlight\">1 медіафайл</span> за категоріями|] 1, Inf [Класифікувати <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} медіафайлів </span> за категоріями"
-          field: Категорії
 pim_menu:
   tab:
     asset: Медіафайли
@@ -220,7 +211,6 @@ page_title:
   pimee_workflow_published_product_view: Опублікований продукт {{ product.label }} | Перегляд
   pimee_product_asset_index: Медіафайли
   pimee_product_asset_edit: Медіафайл {{ asset.label }} | Редагувати
-  pimee_asset_categorytree_index: Категорії
   pimee_asset_categorytree_edit: Категорія {{ category.label }} | Редагувати
   pimee_catalog_rule_rule_index: Правила
 batch_jobs:

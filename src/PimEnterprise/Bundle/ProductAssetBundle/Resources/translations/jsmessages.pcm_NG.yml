@@ -1,0 +1,136 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Make you manage assets
+        manage_asset:
+          title: Make you manage assets dem
+          cancel: Cancel am
+          confirm: Confirm am
+        title: Make you mange assets
+        description: Choose de assets you wan attach to your product
+        yes: true
+        no: false
+    asset:
+      not_empty: E nid code. E no fit dey empty.
+      alpha_numeric_plus_underscore: Na only alphanumeric or underscore de code go be.
+      unique: Na must say code go dey unique. We go generate new one give you.
+  enrich_asset:
+    grid:
+      edit: Make u edit de properties dem of de asset
+  enrich_variation:
+    popin:
+      delete:
+        message: You sure say you wan delete dis item?
+      reset:
+        title: Make you reset variations
+        message: You sure say you wan reset everri variations ?
+  mass_upload:
+    menu: Upload assets dem
+    btn:
+      remove_all_files: Make you remove everri files
+      delete: Delete am
+      import: Import am
+      upload: Make you upload assets
+    success:
+      new: New asset go dey created
+      imported: Files imported for asset de process
+      canceled: Upload don cancel finish
+      deleted: Uploaded file don delete finish
+    error:
+      list: E no fit read files wey dey uploaded already
+      upload: Error bin happen wen e dey try upload d file
+      delete: E no fit delete file from server
+      import: Error bin happen wen e dey try import
+      filename: File name for asset dey invalid
+      code: Code format for asset no dey valid
+      locale: Asset dey exist but e no dey localizable
+      invalid_locale: Locale dey disabled or e dey invalid
+      exists: File wey get de same name dey imported already
+      conflicts: File names don conflict
+    grid:
+      medias: medias
+      filename: de name for file
+      filetype: de type of file
+      status: deference
+      progress: forward
+      actions: active
+    action:
+      cancel: Cancel am
+      remove: Remove am
+    status:
+      added: E don add
+      queued: Fall in
+      uploading: E dey upload
+      error: Error
+      success: E don succeed
+    drag_and_drop: Drag assets drop here or you click hia
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: You sure say you wan delete assets wey dey selected?
+        success: Selected assets don delete finish.
+        error: Error bin happen wen e dey try delete selected assets, abeg try am again.
+        empty_selection: E no get asset wey dey selected
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Large upload
+page_title:
+  pimee_product_asset_mass_upload: Make you upload assets
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Assets wey dey upload plenty
+    perform.label: Large upload
+  yml_asset_channel_configuration_import:
+    label: Asset channel configuration import for inside Yaml
+    import_asset.label: Channel configuration import for asset inside Yaml
+  yml_asset_channel_configuration_export:
+    label: Channel configuration export for asset inside Yaml
+    export.label: Channel configuration export for asset inside Yaml
+  csv_asset_import:
+    label: Asset wey dem import for CSV
+    import_tags.label: Tag wey dem import for CSV
+    import_asset.label: Asset wey dem import fir CSV
+  csv_asset_export:
+    label: Asset wey dem export for CSV
+    export.label: Asset wey dem export for CSV
+  csv_asset_variation_export:
+    label: Asset variations wey dem export for CSV
+    export.label: Asset variations wey dem export for CSV
+  csv_tag_import:
+    label: Tag wey dem import for CSV
+    import.label: Tag wey dem import for CSV
+  csv_asset_category_import:
+    label: Asset category wey dem import for CSV
+    import_asset_category.label: Asset category wey dem import for CSV
+  csv_asset_configuration_import:
+    label: Asset channel configuration wey dem import for CSV
+    import_asset.label: Asset channel configuration wey dem import for CSV
+  csv_asset_category_export:
+    label: Asset category wey dem export for CSV
+    export.label: Asset category wey dem export for CSV
+  xlsx_tag_import:
+    label: Tag wey dem import for XLSX
+    import.label: Tag wey dem import for XLSX
+  xlsx_asset_import:
+    label: Asset wey dem import for XLSX
+    import_tags.label: Tag wey dem import for XLSX
+    import_asset.label: Asset wey dem import for XLSX
+  xlsx_asset_category_import:
+    label: Asset category wey dem import for XLSX
+    import_asset_category.label: Asset category wey dem import for XLSX
+  xlsx_asset_export:
+    label: Asset wey dem export for XLSX
+    export.label: Asset wey dem export for XLSX
+  xlsx_asset_category_export:
+    label: Asset category wey dem export for XLSX
+    export.label: Asset category wey dem export for XLSX
+  xlsx_asset_variation_export:
+    label: Asset variation wey dem export for XLSX
+    export.label: Asset variation wey dem export for XLSX
+  classify_assets:
+    perform.label: Carry asset go categories
+  add_tags_to_assets:
+    perform.label: Put tags for assets dem

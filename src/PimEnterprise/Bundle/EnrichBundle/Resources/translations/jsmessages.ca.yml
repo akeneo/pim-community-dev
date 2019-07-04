@@ -43,7 +43,7 @@ pimee_enrich:
     channel:
       tab:
         asset-transformation:
-          title: Transformacions de recursos
+          title: Transformacions de recurs
     attribute_group:
       tab:
         permission:

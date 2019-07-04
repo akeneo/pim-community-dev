@@ -2,7 +2,7 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Eliminare
+        delete: Elimina
         execute: Esegui
       title: Regole
       column:
@@ -16,7 +16,7 @@ pimee_catalog_rule:
       mass_edit_action:
         impacted_product_count: Calcola i prodotti interessati
         execute: Esegui
-        delete: Eliminare
+        delete: Elimina
   actions:
     type:
       "copy": Quindi %from_field% viene copiato in %to_field%
@@ -48,7 +48,7 @@ pimee_catalog_rule:
       "!=": non è uguale
       ">": piú grande di
       ">=": è uguale o maggiore di
-      "<": dopo il
+      "<": prima del
       "<=": è uguale o inferiore a
   acl_group:
     rule: Regole
@@ -64,7 +64,7 @@ pimee_catalog_rule:
     grid:
       is_smart.label: Smart
     acl:
-      rule.view_permissions: Vedi Regole
+      rule.view_permissions: Vedi regole
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: Il valore di questo attributo può venire dalla(e) regola(e) <strong>%rule%</strong>. Ciò significa che se le condizioni della regola sono valide, le tue modifiche saranno sovrascritte.
@@ -77,7 +77,7 @@ pimee_catalog_rule:
     product_rule_definition_reader.title: Lettore di importazione per le regole di prodotto
     rule_definition_processor.title: Processore di importazione per le regole di prodotto
     product_rule_definition_writer.title: Scrittore di importazione per le regole di prodotto
-    rules_execution.title: Esecuzione regole
+    rules_execution.title: Esecuzione di regole
   notification:
     rule:
       executed: Esecuzione della(e) regola(e) terminata

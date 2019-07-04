@@ -1,5 +1,5 @@
 pimee_catalog_rule:
-  overview: "] -Inf, 1] {{ count }} regla|] 1, Inf [{{ count }} reglas"
+  overview: "] -Inf, 1] {{ count }} rule|] 1, Inf [{{ count }} reglas"
   execution_button: Ejecutar reglas
   selected: 'reglas seleccionadas'
   popin:
@@ -22,7 +22,7 @@ pimee_catalog_rule:
       then.label: entonces
       set_value.label: es modificado dentro
       copy_value.label: es copiado en
-      set.label: es modificado dentro
+      set.label: es modificado en
       copy.label: es copiado en
       add.label: es agregado en
       remove.label: es eliminada de
@@ -81,24 +81,24 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Importar productos en CSV con reglas
     execute_rules.label: Ejecución de las reglas
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import.label: Importar productos
     import_associations.label: Importar asociaciones
   csv_product_model_import_with_rules:
     label: Importación del modelo del producto en CSV con las reglas
     execute_rules.label: Ejecución de las reglas
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import_root_product_model.label: Importación del modelo del producto base
     import_sub_product_model.label: Importación del modelo del sub producto
   xlsx_product_import_with_rules:
     label: Importar productos en XLSX con reglas
     execute_rules.label: Ejecución de las reglas
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import.label: Importar productos
     import_associations.label: Importar asociaciones
   xlsx_product_model_import_with_rules:
     label: Importación del modelo del producto en XLSX con reglas
     execute_rules.label: Ejecución de las reglas
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import_root_product_model.label: Importación del modelo del producto base
     import_sub_product_model.label: Importación del modelo del sub producto

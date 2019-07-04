@@ -1,0 +1,11 @@
+pimee_enrich.acl.locale.edit_permissions: Gerenciar permissões de local
+pimee_enrich.acl.category.edit_permissions: Gerenciar permissões de categoria
+pimee_enrich.acl.attribute_group.edit_permissions: Gerenciar permissões de grupo de atributos
+pimee_importexport.acl.export_profile.edit_permissions: Gerenciar permissões de perfil de exportação
+pimee_importexport.acl.import_profile.edit_permissions: Gerenciar permissões de perfil de importação
+pimee_enrich.groups.label: Grupos de proprietários
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Número de acessos de localidades personalizados
+    nb_custom_category_accesses: Número de acessos de categoria personalizada
+    nb_custom_attribute_group_accesses: Número de acessos de grupo de atributos personalizados

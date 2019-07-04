@@ -7,11 +7,11 @@ pimee_product_asset:
         manage_asset:
           title: Gérer les ressources
           cancel: Annuler
-          confirm: Confirmer
+          confirm: Confirmation
         title: Gérer les ressources
         description: Choisissez les ressources que vous souhaitez attacher à votre produit
         preview_title: Aperçu de la collection de ressources
-        download: Téléchargement
+        download: Télécharger
         remove: Supprimer
         yes: true
         no: false
@@ -22,7 +22,7 @@ pimee_product_asset:
       unique: Le code doit être unique. Nous en avons généré un pour vous.
   enrich_asset:
     grid:
-      edit: Editer les propriétés de la ressource
+      edit: Modifier les propriétés de la ressource
   enrich_variation:
     popin:
       delete:
@@ -88,7 +88,7 @@ page_title:
   pimee_product_asset_mass_upload: Télécharger les ressources
 batch_jobs:
   apply_assets_mass_upload:
-    label: Téléchargement massif de ressources
+    label: Téléchargement en masse de ressources
     perform.label: Téléchargement massif
   apply_assets_mass_upload_into_asset_collection:
     label: Envoi en masse de ressources et ajout au produit

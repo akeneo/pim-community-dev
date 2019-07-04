@@ -83,7 +83,7 @@ pimee_workflow:
 pimee_workflow_product_draft_notification_new_proposal: Nova proposta
 pimee_workflow_import_notification_new_proposals: Noves propostes d'importació
 btn.publish: Publicar
-btn.unpublish: Despublicar
+btn.unpublish: Desfer la publicació
 pimee_workflow_product_draft_notification_partial_approve: Proposta aprovada parcialment
 pimee_workflow_product_draft_notification_partial_reject: Proposta rebutjada parcialment
 pimee_workflow_product_draft_notification_partial_remove: Proposta suprimida parcialment

@@ -6,3 +6,8 @@ pimee_dashboard:
       product: Producto
       review: Revisar 	
       empty: Ninguna propuesta a revisar
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        compute_completeness_of_products_linked_to_assets: Ingrese la totalidad de los productos enlazados a los activos

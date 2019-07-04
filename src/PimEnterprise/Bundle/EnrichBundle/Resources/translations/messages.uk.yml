@@ -37,7 +37,6 @@ pim_enrich:
   mass_edit_action:
     product:
       not_editable: Ви не маєте прав на зміну продуктів «%identifiers%».
-      page_title: Продукти
       page_subtitle: Масове редагування (1 продукт)|Масове редагування (%count% продуктів)
       title: Виберіть операцію
       subtitle: Виберіть операцію, яку ви хочете виконати для вибраного продукту|Виберіть операцію, яку ви хочете виконати для вибраних %count% продуктів
@@ -48,7 +47,6 @@ pim_enrich:
         third: Налаштування
         fourth: Підтвердження
     publish:
-      label: Опублікувати
       description: Опублікувати вибрані продукти, при цьому поточні опубліковані дані будуть перезаписані поточною робочою копією.
       success_flash: Вибрані продукти були успішно опубліковані.
       launched_flash: Процес публікації товару(ов) триває.
@@ -58,7 +56,6 @@ pim_enrich:
         info: '%nbProducts% вибраних продуктів буде опубліковано.'
       not_editable: Ви не маєте прав на зміну продуктів «%identifiers%».
     unpublish:
-      label: Видалити публікацію
       description: Зняти вибрані продукти з публікації, поточні опубліковані дані будуть видалені.
       success_flash: Вибрані продукти були успішно зняті з публікації.
       launched_flash: Процес зняття товару(ов) з публікації триває.
@@ -102,7 +99,6 @@ pimee_enrich:
   asset_transformation:
     not_found: Перетворення не знайдені
     title:
-      transformation: Трансформація
       options: Опції
     colorspace:
       title: Колірний простір
@@ -123,7 +119,7 @@ pimee_enrich:
       options:
         width: 'Ширина %value%px'
         height: 'Висота %value%px'
-        ratio: '<div class="notranslate"> 0%</div> співвідношення'
+        ratio: '%value%% співвідношення'
     thumbnail:
       title: Мініатюра зображення
       options:

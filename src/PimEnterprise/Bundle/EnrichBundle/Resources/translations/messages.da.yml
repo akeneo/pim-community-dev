@@ -48,7 +48,7 @@ pim_enrich:
         third: Konfigurér
         fourth: Bekræft
     publish:
-      label: Publicér
+      label: Udgiv
       description: Udgiv de udvalgte produkter, de nuværende offentliggjorte data vil blive slettet af de aktuelle data.
       success_flash: Udvalgte produkter har været publiceret.
       launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
@@ -103,7 +103,7 @@ pimee_enrich:
     not_found: Ingen transformation fundet
     title:
       transformation: Transformation
-      options: Muligheder
+      options: Valgmuligheder
     colorspace:
       title: Farverum
       options:
@@ -151,4 +151,4 @@ pim_enrich_attribute_form:
   isReadOnly: Skrivebeskyttet
 batch_jobs:
   edit_common_attributes:
-    execute_rules.label: Kør regler
+    execute_rules.label: Udfør regler

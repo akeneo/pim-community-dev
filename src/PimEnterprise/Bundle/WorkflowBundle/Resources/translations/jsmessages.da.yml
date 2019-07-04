@@ -32,7 +32,7 @@ pimee_workflow:
       modal:
         title: Delvis godkend ændringer
         label: Tilføj en kommentar (valgfrit)
-        error: Der opstod en fejl, forslag er ikke blevet delvis godkendt
+        error: Der opstod en fejl, forslag er ikke blevet delvist godkendt
         success: Ændringerne er blevet godkendt
     partial_reject:
       modal:

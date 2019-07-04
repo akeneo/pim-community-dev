@@ -1,0 +1,62 @@
+teamwork_assistant:
+  common:
+    required: Obrigatório
+    warning: Não se preocupe, o cálculo do projeto pode demorar um pouco, então seu projeto pode não estar visível imediatamente.
+  grid:
+    view_selector:
+      create: Criar projeto
+      edit: Editar projeto
+      remove: Excluir projeto
+      create_from_view: Criar um projeto a partir desta visualização
+      loading: Carregando...
+      start_new_project: Iniciar um novo projeto
+      confirmation:
+        remove: Tem certeza que deseja excluir este projeto?
+        delete: Confirmar exclusão
+      popin_title: Criar
+      projects: Projetos
+  project:
+    label: Nome
+    locale: Localidade
+    channel: Canal
+    label_maxlength: Este valor é muito longo. Ele deve ter {{ max }} caracteres ou menos.
+    description: Descrição
+    due_date: Data Limite
+    due_date_past: Você não pode selecionar uma data do passado.
+    leaving_scope: Você está deixando o escopo do projeto.
+  edit_project_modal:
+    saved: O projeto foi salvo.
+    title: Editar projeto
+    confirm: Salvar
+    cancel: Cancelar
+  create_project_modal:
+    saved: O projeto foi salvo, você será notificado quando o cálculo for feito.
+    title: Criar projeto
+    confirm: Salvar
+    cancel: Cancelar
+  widget:
+    no_project: Você não tem um projeto atualmente
+    no_project_create: criar um novo projeto
+    description: Descrição
+    due_date: Data Limite
+    todo: TAREFAS
+    in_progress: EM ANDAMENTO
+    done: CONCLUÍDO
+    all_contributors: Todos os contribuidores
+    display_products: Exibir produtos
+    placeholder:
+      contributor_selector: Pesquisar contribuidor
+      project_selector: Pesquisar projeto
+    completeness:
+      to_start: PRODUTOS A INICIAR
+      in_progress: PRODUTOS EM ANDAMENTO
+      done: PRODUTOS CONCLUÍDOS
+pim_datagrid:
+  view_selector:
+    project: Projetos
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Assistente de trabalho em equipe
+        project_calculation: Assistente de trabalho em equipe

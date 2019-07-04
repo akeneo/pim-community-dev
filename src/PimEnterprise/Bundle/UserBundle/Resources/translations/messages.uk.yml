@@ -9,7 +9,3 @@ user:
   default_published_product_grid_view:
     label: Опубліковане табличне представлення за замовчуванням
 Default asset tree: Дерево ресурсів за замовчуванням
-pimee_user:
-  user:
-    tab:
-      notifications.title: Сповіщення

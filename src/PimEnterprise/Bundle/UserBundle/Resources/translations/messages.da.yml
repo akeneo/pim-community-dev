@@ -9,7 +9,3 @@ user:
   default_published_product_grid_view:
     label: Standard offentliggjorte produkter grid view
 Default asset tree: Standard aktiver træ
-pimee_user:
-  user:
-    tab:
-      notifications.title: Notifikationer

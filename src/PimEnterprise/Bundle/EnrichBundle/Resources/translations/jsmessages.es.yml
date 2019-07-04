@@ -35,7 +35,7 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Permisos
+          title: Permisiones
           added: El grupo {{ group }} será autorizado a {{ permission }} el perfil de trabajo
           execute.label: Autorizado a ejecutar el perfil de trabajo
           edit.label: Autorizado a editar el perfil de trabajo
@@ -47,14 +47,14 @@ pimee_enrich:
     attribute_group:
       tab:
         permission:
-          title: Permisos
+          title: Permisiones
           view.label: Autorizado a ver los atributos
           edit.label: Autorizado a editar los atributos
           removed: El grupo {{ group }} no será autorizado a {{ permission }} grupo de atributos
           added: El grupo {{ group }} será autorizado a {{ permission }} grupo de atributos
   entity:
     product:
-      index_title: "] -Inf, 1] {{ count }} resultado|] 1, Inf [{{ count }} resultado"
+      index_title: "] -Inf, 1] {{ count }} resultado|] 1, Inf [{{ count }} resultados"
       navigation: Productos publicados
       history:
         published: Publicado
@@ -74,7 +74,7 @@ pimee_enrich:
         product_reverted: Producto restaurado con éxito
       meta:
         published: Versión publicada
-        owner_groups: Grupos de propietario
+        owner_groups: Grupos de propietarios
         draft_status: Estado borrador
         draft:
           in_progress: En progreso
@@ -105,7 +105,7 @@ pimee_enrich:
         update_successful: La copia de trabajo del producto ha sido actualizada
       copy:
         source:
-          working_copy: Copia de trabajo
+          working_copy: Versión de trabajo
           draft: Mi borrador
           draft_of: "Borrador de {{ author }}"
     product_draft:
@@ -145,7 +145,7 @@ pimee_enrich:
     resize:
       title: Redimensionar
       options:
-        width: 'Px ancho %value%'
+        width: 'Ancho px %value%'
         height: 'Alto px %value%'
     resolution:
       title: Resolución
@@ -155,19 +155,19 @@ pimee_enrich:
     scale:
       title: Escala
       options:
-        width: 'Px ancho %value%'
+        width: 'Ancho px %value%'
         height: 'Alto px %value%'
         ratio: 'Ratio %value%%'
     thumbnail:
       title: Miniatura
       options:
-        width: 'Px ancho %value%'
+        width: 'Ancho px %value%'
         height: 'Alto px %value%'
   mass_edit:
     next: Siguiente
     previous: Atrás
     cancel: Cancelar
-    confirm: Confirmar
+    confirm: Confirmación
     product:
       operation:
         publish:
@@ -190,9 +190,9 @@ pimee_enrich:
           title: Acciones en masa de recursos
           label_count: "] 0, Inf [Seleccione su acción"
         configure:
-          label: Configurar
+          label: Configuración
         confirm:
-          label: Confirmar
+          label: Confirmación
       operation:
         add_tag:
           label: Añadir etiquetas a los recursos
@@ -204,7 +204,7 @@ pimee_enrich:
           label: Clasificar los activos en categorías
           description: Los recursos serán posicionados en las siguientes categorías, las posiciones actuales serán perdidas.
           label_count: "{1}Clasifica <span class=\"AknFullPage-title--highlight\">1 recurso</span> a categorías|] 1, Inf [Clasifica <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos </span> a categorías"
-          field: Categorías
+          field: Ctegorías
 pim_menu:
   tab:
     asset: Recursos
@@ -220,7 +220,7 @@ page_title:
   pimee_workflow_published_product_view: Producto publicado {{ product.label }} | Ver
   pimee_product_asset_index: Recursos
   pimee_product_asset_edit: Recurso {{ asset.label }} | Editar
-  pimee_asset_categorytree_index: Categorías
+  pimee_asset_categorytree_index: Ctegorías
   pimee_asset_categorytree_edit: Categoría {{ category.label }} | Editar
   pimee_catalog_rule_rule_index: Reglas
 batch_jobs:
@@ -251,15 +251,15 @@ batch_jobs:
   csv_published_product_grid_context_quick_export:
     export.label: Exportación rápida de la tabla de productos publicados en CSV
     perform:
-      label: Exportación rápida de la tabla de productos publicados en CSV
+      label: Exportación rápida de la cuadrícula de productos publicados en Csv
   xlsx_published_product_quick_export:
     export.label: Exportación rápida en XLSX de los productos publicados
     perform:
-      label: Exportación rápida en XLSX de los productos publicados
+      label: Exportación rápida en XSLX de los productos publicados
   xlsx_published_product_grid_context_quick_export:
-    export.label: Exportación rápida de la cuadrícula de productos publicados en XLSX
+    export.label: Exportación rápida de la cuadrícula de productos publicados en Xlsx
     perform:
-      label: Exportación rápida de la cuadrícula de productos publicados en XLSX
+      label: Exportación rápida de la grilla de productos publicados en XLSX
   add_attribute_value:
     execute_rules.label: Ejecución de las reglas
   publish_product:

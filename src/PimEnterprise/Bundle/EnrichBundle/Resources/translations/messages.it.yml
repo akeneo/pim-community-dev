@@ -32,19 +32,19 @@ btn:
   save working copy and finish: Salva la copia di lavoro e termina
   save draft and finish: Salva la bozza e termina
   send for approval: Invia per approvazione
-  sent for approval: Inviato per approvazione
+  sent for approval: Inviata per approvazione
 pim_enrich:
   mass_edit_action:
     product:
       not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
-      page_title: Articoli
-      page_subtitle: Modifica di massa (1 prodotto) | Modifica di massa (%count% prodotti)
-      title: Scegli l'operazione
-      subtitle: Scegliere l'operazione che si desidera eseguire sull'articolo selezionato|Scegliere l'operazione che si desidera eseguire sui %count% articoli selezionati
-      confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
+      page_title: Prodotti
+      page_subtitle: Modifica di massa (1 articolo) | Modifica di massa (%count% prodotti)
+      title: Scegli operazione
+      subtitle: Scegliere l'operazione che si desidera eseguire sul prodotto selezionato|Scegliere l'operazione che si desidera eseguire sui %count% prodotti selezionati
+      confirm: Stai per aggiornare un prodotto con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% prodotti con le seguenti informazioni, si prega di confermare.
       steps:
-        first: Scegli gli articoli
-        second: Scegli l'operazione
+        first: Scegli i prodotti
+        second: Scegli operazione
         third: Configura
         fourth: Conferma
     publish:
@@ -58,7 +58,7 @@ pim_enrich:
         info: I %nbProducts% prodotti selezionati saranno pubblicati.
       not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
     unpublish:
-      label: Ritira
+      label: Annulla la pubblicazione
       description: 'Annulla la pubblicazione dei prodotti selezionati: i dati pubblicati correnti verranno cancellati.'
       success_flash: I prodotti selezionati sono stati ritirati con successo.
       launched_flash: Il job di annullamento della pubblicazione del(i) prodotto(i) è attualmente in esecuzione.

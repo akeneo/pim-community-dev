@@ -44,7 +44,7 @@ pimee_product_asset:
       filesize: Mida de l'arxiu
       filetype: Tipus d'arxiu
       actions: Accions
-      download: Descarregar
+      download: Baixar
       tag: Etiquetes
       no_reference: Encara no s'ha carregat cap arxiu de referència.
       no_variation: Encara no s'ha generat cap arxiu de variació.
@@ -117,15 +117,15 @@ pimee_product_asset:
   asset:
     title: Recurs
   mass_upload:
-    menu: Carregar recursos
+    menu: Penjar recursos
     new: Es crearà un nou recurs
     add_files: afegir arxius
     start: Iniciar càrrega
     cancel: Cancel·lar càrrega
-    import: Importar
+    import: Importació
     executed: Càrrega en massa executada
     error:
-      upload: S'ha produït un error durant la càrrega
+      upload: S'ha produït un error en la càrrega
       code: Format de codi invàlid pel recurs
       localizable: Ja existeix un recurs però no se li pot aplicar cap configuració regional
       invalid_locale: La configuració regional està desactivada o no és vàlida

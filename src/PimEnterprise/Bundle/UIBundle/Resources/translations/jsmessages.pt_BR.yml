@@ -1,0 +1,9 @@
+jstree:
+  asset:
+    all: Todas as mídias
+    unclassified: Mídias não classificadas
+asset_grid:
+  selected: mídias selecionadas
+  label: Mídias de produto
+create_asset:
+  title: Criar uma mídia

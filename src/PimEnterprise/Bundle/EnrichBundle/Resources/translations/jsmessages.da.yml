@@ -16,16 +16,7 @@ permission-changes:
 pim_enrich:
   entity:
     attribute_label:
-      pim_assets_collection: Aktiver samling
-    attribute:
-      type:
-        pim_assets_collection: Aktiver samling
-  form:
-    attribute:
-      tab:
-        properties:
-          label:
-            is_read_only: Skrivebeskyttet
+      pim_assets_collection: Aktive samling
 pim:
   grid:
     mass_action:
@@ -35,10 +26,7 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Rettigheder
           added: Gruppe {{ group }} vil være tilladelse til at {{ permission }} jobprofil
-          execute.label: Tilladt at udføre jobprofil
-          edit.label: Tilladt at redigere jobprofil
           removed: Gruppe {{ group }} vil  have tilladelse til at {{ permission }} jobprofil
     channel:
       tab:
@@ -47,15 +35,11 @@ pimee_enrich:
     attribute_group:
       tab:
         permission:
-          title: Rettigheder
-          view.label: Rettighed til at se attributter
           edit.label: Rettighed til at redigere attributter
           removed: Gruppe {{ group }} vil ikke blive tilladt at {{ permission }} attributgruppe
           added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
   entity:
     product:
-      index_title: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
-      navigation: Offentliggjorte produkter
       history:
         published: Publiceret
         revert: Gendan
@@ -74,7 +58,6 @@ pimee_enrich:
         product_reverted: Produkt blev gendannet
       meta:
         published: Publiceret version
-        owner_groups: Ejer grupper
         draft_status: Kladdestatus
         draft:
           in_progress: Igangværende
@@ -105,7 +88,6 @@ pimee_enrich:
         update_successful: Produktets arbejdskopi er blevet opdateret
       copy:
         source:
-          working_copy: Arbejds kopi
           draft: Mit udkast
           draft_of: "{{ author }}'s udkast til"
     product_draft:
@@ -125,8 +107,6 @@ pimee_enrich:
         reject_proposal: Afvis forslag
         reject_selected_proposal: Afvis valgte forslag(ene)
         remove_proposal: Fjern forslag
-        send_for_approval: Send til godkendelse
-        cancel: Annuller
         confirm: Afsend
         title: Kommentere dine forslag (valgfri - maks. 255 tegn)
         characters: tegn.
@@ -136,7 +116,6 @@ pimee_enrich:
   asset_transformation:
     not_found: Ingen transformation fundet
     title:
-      transformation: Transformation
       options: Muligheder
     colorspace:
       title: Farverum
@@ -148,7 +127,6 @@ pimee_enrich:
         width: '%value%px bredde'
         height: '%value%px højde'
     resolution:
-      title: Opløsning
       options:
         resolution: '%value%'
         resolution-unit: '%value%'
@@ -164,10 +142,6 @@ pimee_enrich:
         width: '%value%px bredde'
         height: '%value%px højde'
   mass_edit:
-    next: Næste
-    previous: Tilbage
-    cancel: Annuller
-    confirm: Bekræft
     product:
       operation:
         publish:
@@ -184,87 +158,47 @@ pimee_enrich:
       title: Aktiver bulk handling
       confirm: "{1} Du er ved at opdatere et aktiv med følgende oplysninger, bekræft venligst. .|] 1, Inf [Du er ved at opdatere {{ itemsCount }} aktiver med følgende oplysninger, bekræft venligst."
       step:
-        select:
-          label: Vælg Aktiver
         choose:
           title: Aktiver bulk handlinger
-          label_count: "] 0, Inf [Vælg din handling"
-        configure:
-          label: Konfigurér
-        confirm:
-          label: Bekræft
       operation:
         add_tag:
-          label: Tilføje tags til aktiver
           description: Tags vil blive tilføjet til aktiverne.
           label_count: "{1}Tilføj mærkater til <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> |] 1, Inf [Tilføj mærkater til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span>"
-          field: Etiketter
           empty_selection: Vælg venligst mærkat
         add_to_category:
           label: Klassificere produkter i kategorier
           description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
           label_count: "{1}Klassificer <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> på kategorier |] 1, Inf [klassificere <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span> på kategorier"
-          field: Kategorier
 pim_menu:
-  tab:
-    asset: Aktiver
   item:
-    asset_category: Aktiver kategorier
     proposal: Forslag
-    published_product: Offentliggjorte produkter
-    rule: Regler
+    published_product: Publicerede produkter
     upload_asset: Indlæs aktiver
 page_title:
   pimee_workflow_proposal_index: Forslag
-  pimee_workflow_published_product_index: Offentliggjorte produkter
   pimee_workflow_published_product_view: Offentliggjorte produkter {{ product.label }} | Vis
-  pimee_product_asset_index: Aktiver
   pimee_product_asset_edit: Aktiv {{ asset.label }} | Rediger
-  pimee_asset_categorytree_index: Kategorier
   pimee_asset_categorytree_edit: Kategori {{ category.label }} | Rediger
-  pimee_catalog_rule_rule_index: Regler
 batch_jobs:
   yml_asset_channel_configuration_import:
     import:
       label: Aktiv kanal konfiguration import
   add_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
-    perform.label: Tilføj produktværdi
-    execute_rules.label: Regler udførelse
   update_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
-    perform.label: Opdatere produktets værdi
-    execute_rules.label: Regler udførelse
   remove_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
-    perform.label: Fjern produktværdi
-    execute_rules.label: Regler udførelse
   edit_common_attributes_with_permission_and_rules:
     label: Rediger fælles attributter med tilladelse kontrol & regel anvendelse
-    perform.label: Rediger attributter
-    execute_rules.label: Regler udførelse
     cleaner.label: Ryd midlertidige filer
   csv_published_product_quick_export:
     export.label: CSV offentliggjort produkter hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter hurtig eksport
   csv_published_product_grid_context_quick_export:
     export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
   xlsx_published_product_quick_export:
     export.label: CSV offentliggjort produkter hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter hurtig eksport
   xlsx_published_product_grid_context_quick_export:
     export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-  add_attribute_value:
-    execute_rules.label: Regler udførelse
   publish_product:
     perform.label: Udgiv produkter
-catalog_volume:
-  axis:
-    count_assets: Aktiver
-    count_asset_categories: Aktiver kategorier

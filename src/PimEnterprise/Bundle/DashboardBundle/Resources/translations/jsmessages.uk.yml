@@ -1,8 +1,5 @@
 pimee_dashboard:
   widget:
     product_drafts:
-      date: Дата
-      author: Автор
-      product: Продукт
       review: Переглянути
       empty: Немає пропозицій для розгляду

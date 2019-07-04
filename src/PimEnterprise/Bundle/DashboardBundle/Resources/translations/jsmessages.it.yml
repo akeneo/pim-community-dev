@@ -3,7 +3,7 @@ pimee_dashboard:
     product_drafts:
       date: Data
       author: Autore
-      product: Prodotto
+      product: Articolo
       review: Da rivedere
       empty: Nessuna proposta da revisionare
 pim_dashboard:

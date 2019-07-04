@@ -6,16 +6,12 @@ pimee_product_asset:
         upload: Upload
         manage_asset:
           title: Administrer aktiver
-          cancel: Annuller
-          confirm: Bekræft
         title: Administrer aktiver
         description: Vælge de aktiver, du vil vedhæfte til dit produkt
-        download: Hent
         remove: Fjern
         yes: true
         no: false
     asset:
-      not_empty: Koden er påkrævet. Det kan ikke være tom.
       alpha_numeric_plus_underscore: Koden skal kun være alfanumeriske eller understreg.
       unique: Koden skal være entydig. Vi har skabt en ny for dig.
   enrich_asset:
@@ -24,7 +20,6 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Bekræft sletning
         message: Er du sikker at du ønsker at slette dette element ?
       reset:
         title: Nulstil variationerne
@@ -33,8 +28,6 @@ pimee_product_asset:
     menu: Indlæs aktiver
     btn:
       remove_all_files: Fjerne alle filer
-      delete: Slet
-      import: Import
       upload: Indlæs aktiver
     success:
       new: Der oprettes et nyt aktiv
@@ -60,7 +53,6 @@ pimee_product_asset:
       progress: fremskridt
       actions: aktioner
     action:
-      cancel: Annuller
       remove: Fjern
     status:
       added: Tilføjet
@@ -85,64 +77,33 @@ page_title:
   pimee_product_asset_mass_upload: Indlæs aktiver
 batch_jobs:
   apply_assets_mass_upload:
-    label: Aktiver masse indlæs
     perform.label: Masse upload
   yml_asset_channel_configuration_import:
     label: Aktiv kanal konfiguration import i Yaml
-    validation.label: Filvalidering
-    import_asset.label: Aktiv kanal konfiguration import i Yaml
   yml_asset_channel_configuration_export:
     label: Aktiv kanal konfiguration import i Yaml
-    export.label: Aktiv kanal konfiguration import i Yaml
   csv_asset_import:
     label: Aktiv import i CSV-
-    validation.label: Filvalidering
     import_tags.label: Tag import i CSV-
-    import_asset.label: Aktiv import i CSV-
   csv_asset_export:
     label: Aktiver eksport i CSV-
-    export.label: Aktiver eksport i CSV-
   csv_asset_variation_export:
     label: Aktiv variationer eksportere i CSV
-    export.label: Aktiv variationer eksportere i CSV
-  csv_tag_import:
-    label: Tag import i CSV-
-    validation.label: Filvalidering
-    import.label: Tag import i CSV-
   csv_asset_category_import:
     label: Aktiver kategori import i CSV-
-    validation.label: Filvalidering
-    import_asset_category.label: Aktiver kategori import i CSV-
   csv_asset_configuration_import:
     label: Aktiv kanal konfiguration import i Yaml
-    validation.label: Filvalidering
-    import_asset.label: Aktiv kanal konfiguration import i Yaml
   csv_asset_category_export:
     label: Aktiver kategori import i CSV-
-    export.label: Aktiver kategori import i CSV-
   xlsx_tag_import:
     label: Tag import i XLSX
-    validation.label: Filvalidering
-    import.label: Tag import i XLSX
   xlsx_asset_import:
     label: Aktiv import i XLSX
-    validation.label: Filvalidering
-    import_tags.label: Tag import i XLSX
-    import_asset.label: Aktiv import i XLSX
   xlsx_asset_category_import:
     label: Aktiver kategori import i XLSX
-    validation.label: Filvalidering
-    import_asset_category.label: Aktiver kategori import i XLSX
   xlsx_asset_export:
     label: Aktiv import i XLSX
-    export.label: Aktiv import i XLSX
   xlsx_asset_category_export:
     label: Aktiver kategori import i XLSX
-    export.label: Aktiver kategori import i XLSX
   xlsx_asset_variation_export:
     label: Aktiver kategori eksport i XLSX
-    export.label: Aktiver kategori eksport i XLSX
-  classify_assets:
-    perform.label: Flytte aktiver til kategorier
-  add_tags_to_assets:
-    perform.label: Tilføje tags til aktiver

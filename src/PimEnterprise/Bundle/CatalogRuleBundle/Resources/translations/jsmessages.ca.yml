@@ -81,24 +81,24 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Importació de productes amb regles a CSV
     execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar productes
     import_associations.label: Importar associacions
   csv_product_model_import_with_rules:
     label: Importació de productes amb regles a CSV
     execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import_root_product_model.label: Importar el model de producte base
     import_sub_product_model.label: Importar el model de subproducte
   xlsx_product_import_with_rules:
     label: Importació de productes amb regles a XLSX
     execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar productes
     import_associations.label: Importar associacions
   xlsx_product_model_import_with_rules:
     label: Importació de productes amb regles a XLSX
     execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import_root_product_model.label: Importar el model de producte base
     import_sub_product_model.label: Importar el model de subproducte

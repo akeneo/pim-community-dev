@@ -14,7 +14,7 @@ pimee_workflow:
   entity:
     published_product:
       btn:
-        original_product: Editer la copie de travail
+        original_product: Modifier la copie de travail
     proposal:
       modal.title: Laisser un commentaire (facultatif - 255 caractères max.)
   proposal:

@@ -1,9 +1,9 @@
-pimee_enrich.acl.locale.edit_permissions: Керування правами доступу локалі
-pimee_enrich.acl.category.edit_permissions: Керування правами доступу категорії
-pimee_enrich.acl.attribute_group.edit_permissions: Керування правами доступу групи атрибутів
-pimee_importexport.acl.export_profile.edit_permissions: Керування правами доступу профілю експорту
-pimee_importexport.acl.import_profile.edit_permissions: Керування правами доступу профілю імпорту
-pimee_enrich.groups.label: Групи власників
+pimee_enrich.acl.locale.edit_permissions: Керувати локальними дозволами
+pimee_enrich.acl.category.edit_permissions: Керувати правами категорій
+pimee_enrich.acl.attribute_group.edit_permissions: Керування правами доступу для груп атрибутів
+pimee_importexport.acl.export_profile.edit_permissions: Керувати дозволами профілю експорту
+pimee_importexport.acl.import_profile.edit_permissions: Керувати дозволами профілю імпорту
+pimee_enrich.groups.label: Власник групи
 pim_analytics:
   info_type:
     nb_custom_locale_accesses: Кількість користувацьких доступів до локалі

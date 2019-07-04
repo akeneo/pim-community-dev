@@ -21,17 +21,14 @@ pimee_product_asset:
   enrich_asset:
     button:
       upload: Upload
-      delete: Slet
       download: Hent
       generate_from_reference: Generere via reference
-      reset_variations: Nulstil variationerne
     confirmation.remove: Er du sikker at du ønsker at fjerne aktivet "%asset%"?
     confirmation.subTitle: Aktiver
     grid:
       edit: Redigere egenskaberne for aktiverne
     view:
       title: Produkt aktiver
-      code: Kode
       description: Beskrivelse
       end_of_use: Kan ikke benyttes efter
       reference: Reference
@@ -79,33 +76,22 @@ pimee_product_asset:
         error: Variation filen blev ikke slettet. Der opstod en fejl.
   popin.create:
     title: Opret et nyt aktiv
-    is_localized: Oversættelige
+    is_localized: Kan oversættes
   menu: Aktiver
   page_tab:
     title:
       view: Produkt aktivet %asset.code% | Se
       edit: Produkt aktivet %asset.code% | Rediger
-      index: Produkt aktiver
-  code:
-    label: Kode
   thumbnail:
     label: Miniature
-  status:
-    label: Status
-  description:
-    label: Beskrivelse
   endOfUse:
     label: Kan ikke benyttes
-  createdAt:
-    label: Oprettet den
   updatedAt:
     label: Sidst opdateret på
   tags:
     label: Etiketter
   tabs:
-    properties.title: Egenskaber
     variations.title: Variationer
-    categories.title: Kategorier
   validation:
     code:
       not_empty: Koden er påkrævet. Det kan ikke være tom.
@@ -121,15 +107,12 @@ pimee_product_asset:
     add_files: tilføj filer
     start: Begynd indlæsning
     cancel: Annuller indlæsning
-    import: Import
     executed: Masse indlæsning udført
     error:
       upload: Der opstod en fejl under upload
       code: Ugyldig kodeformat for aktiv
-      localizable: Et aktiv eksisterer, men kan ikke lokaliseres
       invalid_locale: Landestandarden er deaktiveret eller ugyldig
   category:
-    menu: Aktiver kategorier
     permissions:
       view.label: Lov til at se aktiver
       view.help: Gør det muligt for at se aktiverne i denne kategori
@@ -140,13 +123,10 @@ pimee_product_asset:
       apply_on_children.help: Kopier tilladelses ændringer på alle underliggende elementer, eksisterende tilladelser bibeholdes
   mass_edit_action:
     asset:
-      page_title: Aktiver
       page_subtitle: Masse redigere (1 aktiv) | Masse redigere (%count% aktiver)
       confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
       steps:
         first: Vælg Aktiver
-        second: Konfigurér
-        third: Bekræft
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
@@ -166,7 +146,6 @@ pim:
       mass_classify_assets: Klassificere
       add_tags_to_assets: Tilføj Tags
       delete_assets: Slet fil
-btn.create.asset: Opret et aktiv
 btn.drag_or_upload: Træk og slip en fil eller klik her
 job_execution.summary:
   variations_not_generated: Variationer ikke genereret
@@ -181,4 +160,4 @@ mass_upload: Masse indlæs aktiver
 pim_analytics:
   info_type:
     nb_assets: Antallet af aktiver
-pim_assets_collection: Aktiver samling
+pim_assets_collection: Aktive samling

@@ -18,7 +18,7 @@ teamwork_assistant:
   project:
     label: Nombre
     locale: Local
-    channel: Canal
+    channel: canal
     label_maxlength: Este valor es demasiado largo. Debe tener {{ max }} caracteres o menos.
     description: Descripción
     due_date: Vencimiento

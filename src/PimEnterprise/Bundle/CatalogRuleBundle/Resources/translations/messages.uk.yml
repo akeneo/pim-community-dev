@@ -2,13 +2,10 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Видалити
         execute: Виконати
       title: Правила
       column:
-        code: Код
         conditions: Умова
-        actions: Дія
         impacted_product_count:
           label: Пов'язані продукти
           count: '{0,1}%count% пов''язаний продукт|] 1, Inf [%count% пов''язаних продуктів'
@@ -16,7 +13,6 @@ pimee_catalog_rule:
       mass_edit_action:
         impacted_product_count: Розрахувати кількість пов'язаних продуктів
         execute: Виконати
-        delete: Видалити
   actions:
     type:
       "copy": Тоді %from_field% копіюється в %to_field%
@@ -30,10 +26,6 @@ pimee_catalog_rule:
   condition:
     label: Якщо %field% %operator% %value%
     operators:
-      "STARTS WITH": починається з
-      "ENDS WITH": закінчується на
-      "CONTAINS": містить
-      "DOES NOT CONTAIN": не містить
       "EMPTY": порожньо
       "NOT EMPTY": не є порожнім
       "IN": у списку
@@ -42,13 +34,10 @@ pimee_catalog_rule:
       "NOT IN CHILDREN": не серед нащадків
       "UNCLASSIFIED": некласифікований
       "IN OR UNCLASSIFIED": некласифікований або у списку
-      "BETWEEN": між
-      "NOT BETWEEN": не між
       "=": дорівнює
       "!=": не дорівнює
       ">": більше ніж
       ">=": дорівнює або більше ніж
-      "<": менше ніж
       "<=": дорівнює або менше ніж
   acl_group:
     rule: Правила
@@ -61,8 +50,6 @@ pimee_catalog_rule:
   attribute:
     tab:
       rule.title: Правила
-    grid:
-      is_smart.label: Розумний
     acl:
       rule.view_permissions: Перегляд правил
   product:

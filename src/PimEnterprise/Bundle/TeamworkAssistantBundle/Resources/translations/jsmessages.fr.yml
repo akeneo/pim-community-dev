@@ -35,7 +35,7 @@ teamwork_assistant:
     confirm: Enregistrer
     cancel: Annuler
   widget:
-    no_project: Vous n'avez aucun projet courant
+    no_project: Vous n'avez aucun projet en cours
     no_project_create: Créer un nouveau projet
     description: Description
     due_date: Date d’échéance

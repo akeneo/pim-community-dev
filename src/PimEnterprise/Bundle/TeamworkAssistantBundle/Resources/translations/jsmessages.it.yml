@@ -13,7 +13,7 @@ teamwork_assistant:
       confirmation:
         remove: Sei sicuro di voler eliminare questo progetto?
         delete: Conferma cancellazione
-      popin_title: Crea
+      popin_title: Creare
       projects: Progetti
   project:
     label: Nome

@@ -22,17 +22,15 @@ pimee_product_asset:
   enrich_asset:
     button:
       upload: Завантажити
-      delete: Видалити
       download: Завантажити
       generate_from_reference: Створити з посилання
       reset_variations: Скинути варіації
     confirmation.remove: Ви дійсно бажаєте видалити медіафайл «%asset%»?
     confirmation.subTitle: Медіафайли
     grid:
-      edit: Редагувати властивості медіафайла
+      edit: Редагування властивостей медіафайла
     view:
       title: Медіафайл продукту
-      code: Код
       description: Опис
       end_of_use: Кінець використання
       reference: Посилання
@@ -80,33 +78,24 @@ pimee_product_asset:
         error: Варіація не видалена. Сталася помилка.
   popin.create:
     title: Створити новий медіафайл
-    is_localized: Локалізуємий
   menu: Медіафайли
   page_tab:
     title:
       view: Медіафайл %asset.code% | Перегляд
       edit: Медіафайл %asset.code% | Редагувати
       index: Медіафайли продукту
-  code:
-    label: Код
   thumbnail:
     label: Мініатюра зображення
-  status:
-    label: Статус
   description:
     label: Опис
   endOfUse:
     label: Кінець використання
-  createdAt:
-    label: Створено в
   updatedAt:
     label: Останнє оновлення о
   tags:
     label: Теґи
   tabs:
-    properties.title: Властивості
     variations.title: Варіації
-    categories.title: Категорії
   validation:
     code:
       not_empty: Код має бути. Він не може бути порожнім.

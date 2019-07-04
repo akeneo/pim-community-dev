@@ -7,12 +7,12 @@ pimee_product_asset:
         manage_asset:
           title: Gestionar recursos
           cancel: Cancelar
-          confirm: Confirmar
+          confirm: Confirmación
         title: Gestionar recursos
         description: Elija los recursos que desea adjuntar a su producto
         preview_title: Vista previa de la colección de recursos
         download: Descargar
-        remove: Quitar
+        remove: Eliminar
         yes: true
         no: false
         assetRemoveConfirmationLabel: '¿Está seguro de remover este recurso?'
@@ -35,8 +35,8 @@ pimee_product_asset:
     menu: Cargar recursos
     btn:
       remove_all_files: Eliminar todos los archivos
-      delete: Eliminar
-      import: Importar
+      delete: Borrar
+      import: Importación
       upload: Cargar recursos
     success:
       new: Un nuevo recurso ha sido creado
@@ -64,7 +64,7 @@ pimee_product_asset:
       actions: acciones
     action:
       cancel: Cancelar
-      remove: Quitar
+      remove: Eliminar
     status:
       added: Agregar
       queued: En espera
@@ -95,14 +95,14 @@ batch_jobs:
     perform.label: Subir en masa recursos y añadir al producto
   yml_asset_channel_configuration_import:
     label: Importar configuraciones de recursos por canal en Yaml
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import_asset.label: Importar configuraciones de recursos por canal en Yaml
   yml_asset_channel_configuration_export:
     label: Exportar configuraciones de recursos por canal en YAML
     export.label: Exportar configuraciones de recursos por canal en YAML
   csv_asset_import:
     label: Importar recursos en CSV
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import_tags.label: Importar etiquetas en CSV
     import_asset.label: Importar recursos en CSV
   csv_asset_export:
@@ -110,34 +110,34 @@ batch_jobs:
     export.label: Exportar recursos en CSV
   csv_asset_variation_export:
     label: Exportar variantes de recursos en CSV
-    export.label: Exportar variantes de recursos en CSV
+    export.label: Exportar variaciones de recursos en CSV
   csv_tag_import:
     label: Importar etiquetas en CSV
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import.label: Importar etiquetas en CSV
   csv_asset_category_import:
     label: Importar categoría de recursos en CSV
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import_asset_category.label: Importar categoría de recursos en CSV
   csv_asset_configuration_import:
     label: Importar configuración de recursos por canal en CSV
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import_asset.label: Importar configuración de recursos por canal en CSV
   csv_asset_category_export:
     label: Exportar categorías de recursos en CSV
     export.label: Exportar categorías de recursos en CSV
   xlsx_tag_import:
     label: Importar etiquetas en XLSX
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import.label: Importar etiquetas en XLSX
   xlsx_asset_import:
     label: Importar recursos en XLSX
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import_tags.label: Importar etiquetas en XLSX
     import_asset.label: Importar recursos en XLSX
   xlsx_asset_category_import:
     label: Importar categoría de recursos en XLSX
-    validation.label: Validación de archivo
+    validation.label: Validación de fichero
     import_asset_category.label: Importar categoría de recursos en XLSX
   xlsx_asset_export:
     label: Exportar recursos en XLSX

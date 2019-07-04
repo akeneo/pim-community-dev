@@ -1,0 +1,90 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Coomot am
+        execute: Carry out
+      title: Law
+      column:
+        code: Code
+        conditions: Shape
+        actions: Effort
+        impacted_product_count:
+          label: Products wey dey affected
+          count: '{0,1}%count% product wey dey affected|]1,Inf[%count% products wey dey affected'
+      mass_edit_action:
+        impacted_product_count: Determine de products wey dey affected
+        execute: Carri out
+        delete: Commot
+  actions:
+    type:
+      "copy": Dat time %from_field% dey copied into %to_field%
+      "copy_value": Dat time %from_field% dey copied into %to_field%
+      "set": Dat time %value% dey set into %field%
+      "set_value": Dat time %value% dey set into %field%
+      "add": Dat time %value% dey added to %field%
+      "remove": Before %value% don dey removed from %field%
+    options:
+      include_children: even pikins dem
+  condition:
+    label: To say %field% %operator% %value%
+    operators:
+      "STARTS WITH": begin am wit
+      "ENDS WITH": end am wit
+      "CONTAINS": contains
+      "DOES NOT CONTAIN": e no contain
+      "EMPTY": e dey empty
+      "NOT EMPTY": e no dey empty
+      "IN": e dey
+      "NOT IN": e no dey
+      "IN CHILDREN": inside pikins
+      "NOT IN CHILDREN": e no dey inside pikins
+      "UNCLASSIFIED": e no get class
+      "IN OR UNCLASSIFIED": e no get class or e dey inside
+      "BETWEEN": between
+      "NOT BETWEEN": e no dey between
+      "=": e dey de same
+      "!=": e no dey de same
+      ">": e big pass
+      ">=": na de same or e dey big pass
+      "<": e small pass
+      "<=": e dey equal or e small pass
+  acl_group:
+    rule: Rules
+  acl:
+    rule:
+      view_permissions: Make you view law
+      delete_permissions: Make you commot rules
+      impacted_product_count_permissions: Count products wey dey affected inside rules
+      execute_permissions: Cari out rules
+  attribute:
+    tab:
+      rule.title: Law
+    grid:
+      is_smart.label: E sharp
+    acl:
+      rule.view_permissions: See rules dem
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: De value wey dis attribute get fit com from de rule(s) dem <strong>%rule%</strong>. E mean sai if de condition dey valid for de rules, ur modification go override.
+      loading.title: E dey load...
+    history: Rule wey dey applied "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Rule(s) don affect am:'
+  steps:
+    product_rule_definition_reader.title: Product rule wey dem import reader
+    rule_definition_processor.title: Product rule wey dem import processor
+    product_rule_definition_writer.title: Product rule wey dey import writer
+    rules_execution.title: To carri out rules dem
+  notification:
+    rule:
+      executed: De cari out rules don finish
+    mass_edit_rule:
+      success: To calculate products wey dey affected for rules don finish
+      error: Error don occur wen e dey calculate de affected products for inside rules
+btn:
+  Execute rules: Cari out rules dem
+rule: Settings for rules dem
+mass_edit_rule: Settings for rules dem
+job_execution.summary.rule_calculated: Numba of rules dem

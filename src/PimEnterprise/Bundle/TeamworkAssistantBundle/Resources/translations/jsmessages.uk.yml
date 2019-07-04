@@ -1,6 +1,5 @@
 teamwork_assistant:
   common:
-    required: Обов’язково
     warning: Не хвилюйтеся, процес обчислення за проектом може зайняти деякий час, тому ваш проект може з'явитися не одразу.
   grid:
     view_selector:
@@ -13,12 +12,8 @@ teamwork_assistant:
       confirmation:
         remove: Ви дійсно бажаєте видалити цей проект?
         delete: Підтвердити видалення
-      popin_title: Створити
       projects: Проекти
   project:
-    label: Ім’я
-    locale: Локаль
-    channel: Канал
     label_maxlength: Надто довге значення. Ліміт складає максимум {{ max }} символів.
     description: Опис
     due_date: Дата виконання
@@ -27,13 +22,9 @@ teamwork_assistant:
   edit_project_modal:
     saved: Проект збережений.
     title: Редагувати проект
-    confirm: Зберегти
-    cancel: Відмінити
   create_project_modal:
     saved: Проект був збережений, ви будете повідомлені, коли обчислення буде завершене.
     title: Створити проект
-    confirm: Зберегти
-    cancel: Відмінити
   widget:
     no_project: У вас немає поточного проекту
     no_project_create: створити новий проект

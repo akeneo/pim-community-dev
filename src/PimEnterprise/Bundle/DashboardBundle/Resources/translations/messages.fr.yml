@@ -5,7 +5,7 @@ pimee_dashboard:
       date: Date
       author: Auteur
       product: Produit
-      review: Relire
+      review: Examiner
       empty: Il n'y a aucun brouillon de produit à relire
   version:
     community_edition: CE

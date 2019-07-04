@@ -82,7 +82,7 @@ pimee_workflow:
         fourth: Bekræft
 pimee_workflow_product_draft_notification_new_proposal: Ny forslag
 pimee_workflow_import_notification_new_proposals: Nye forslag fra import
-btn.publish: Publicér
+btn.publish: Udgiv
 btn.unpublish: Afpublisér
 pimee_workflow_product_draft_notification_partial_approve: Forslag delvist godkendt
 pimee_workflow_product_draft_notification_partial_reject: Forslag delvist afvist
@@ -104,11 +104,11 @@ flash:
       success: Forslaget er blevet fjernet.
 pim_menu:
   item:
-    published_product: Offentliggjorte produkter
+    published_product: Publicerede produkter
     proposal: Forslag
 pim_title:
   published_product:
-    index: Offentliggjorte produkter
+    index: Publicerede produkter
     view: Offentliggjort produkt %product.label% | Se
   product:
     dispatch: "Produkt %product.label%"
@@ -136,7 +136,7 @@ job_execution.summary:
   proposal_updated: opdaterede forslag
   proposal_created: oprettede forslag
   proposal_skipped: oversprunget forslag (ingen forskelle)
-published products: Offentliggjorte produkter
+published products: Publicerede produkter
 pim_analytics:
   info_type:
     nb_published_products: Antallet af offentliggjorte produkt

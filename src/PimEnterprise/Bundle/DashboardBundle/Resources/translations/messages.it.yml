@@ -4,7 +4,7 @@ pimee_dashboard:
       title: Proposte da rivedere
       date: Data
       author: Autore
-      product: Prodotto
+      product: Articolo
       review: Da rivedere
       empty: Nessuna bozza da revisionare
   version:

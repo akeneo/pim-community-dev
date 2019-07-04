@@ -2,10 +2,10 @@ pim_api:
   acl:
     asset_category:
       edit: Crea e aggiorna categorie degli asset
-      list: Elenca le categorie degli asset
+      list: Elenca le categorie degli assets
     asset:
       edit: Modifica gli asset, e carica i loro riferimenti e file di variante
       list: Elenca gli asset, ed elenca e scarica i loro riferimenti e file di variante
   acl_group:
-    asset_category: Categorie degli asset
-    asset: Asset
+    asset_category: Categorie degli assets
+    asset: Assets

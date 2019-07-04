@@ -11,7 +11,7 @@ pimee_product_asset:
       list: Liste les catégories de ressources dans le sélecteur d'éléments
     category:
       create: Créer une catégorie de ressources
-      edit: Editer une catégorie de ressources
+      edit: Modifier une catégorie de ressources
       list: Liste des catégories de ressources
       remove: Supprimer une catégorie de ressources
       manage: Gérer les autorisations de category de ressources
@@ -25,11 +25,11 @@ pimee_product_asset:
       delete: Supprimer
       download: Téléchargement
       generate_from_reference: Générer depuis la référence
-      reset_variations: Réinitialisation les variations
+      reset_variations: Réinitialiser les variations
     confirmation.remove: Êtes-vous sûr de que vouloir supprimer la ressource "%asset%" ?
     confirmation.subTitle: Ressources
     grid:
-      edit: Editer les propriétés de la ressource
+      edit: Modifier les propriétés de la ressource
     view:
       title: Ressources du produit
       code: Code
@@ -44,7 +44,7 @@ pimee_product_asset:
       filesize: Taille du fichier
       filetype: Type de fichier
       actions: Actions
-      download: Téléchargement
+      download: Télécharger
       tag: Mots clés
       no_reference: Aucun fichier de référence n'a encore été téléchargé.
       no_variation: Aucun fichier de variation n'a été généré pour le moment.
@@ -99,7 +99,7 @@ pimee_product_asset:
   endOfUse:
     label: Fin de l'utilisation
   createdAt:
-    label: Crée le
+    label: Créé le
   updatedAt:
     label: Dernière mise à jour à
   tags:
@@ -135,8 +135,8 @@ pimee_product_asset:
     permissions:
       view.label: Permettre de voir les ressources
       view.help: Permet de voir les ressources classées dans cette catégorie
-      edit.label: Permettre d'éditer les ressources
-      edit.help: Permet d'éditer les ressources classées dans cette catégorie (implique la permission de voir)
+      edit.label: Permettre de modifier les ressources
+      edit.help: Permet de modifier les ressources classées dans cette catégorie (implique la permission de voir)
       no_access_to_products: Vous n'avez accès à aucune ressource dans aucune arborescence, contactez votre administrateur pour résoudre le problème
       apply_on_children.label: Appliquer les changements aux sous-catégories
       apply_on_children.help: Appliquer les changements de permissions à toutes les sous-catégories, les permissions existantes sur les sous-catégories sont conservées
@@ -147,9 +147,9 @@ pimee_product_asset:
       confirm: Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour %count% ressources avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir les ressources
-        second: Configurer
-        third: Confirmer
-  not_editable: Vous n'avez pas la permission d'éditer la ressource "%code%".
+        second: Configurez l'opération à effectuer
+        third: Confirmation
+  not_editable: Vous n'avez pas la permission de modifier la ressource "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
@@ -170,7 +170,7 @@ pim:
       add_tags_to_assets: Ajouter des mots-clés
       delete_assets: Supprimer les ressources
 btn.create.asset: Créer une ressource
-btn.drag_or_upload: Glisser-déposer un fichier ou cliquer ici
+btn.drag_or_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
 job_execution.summary:
   variations_not_generated: Variations non générées
   pimee_product_asset.mass_upload.new: Ressource créée depuis le fichier

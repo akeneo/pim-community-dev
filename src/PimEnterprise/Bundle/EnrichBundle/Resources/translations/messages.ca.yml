@@ -58,7 +58,7 @@ pim_enrich:
         info: Els productes %nbProducts% seleccionats seran publicats.
       not_editable: No teniu permissos per editar els productes "%identifiers%".
     unpublish:
-      label: Despublicar
+      label: Desfer la publicació
       description: Anul·lar la publicació dels productes seleccionats. S'esborraran les dades publicades actualment.
       success_flash: Els productes seleccionats s'han despublicat amb èxit.
       launched_flash: El treball de despublicació del(s) producte(s) està en marxa.

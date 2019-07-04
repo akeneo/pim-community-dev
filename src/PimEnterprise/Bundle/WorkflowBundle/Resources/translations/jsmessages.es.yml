@@ -31,13 +31,13 @@ pimee_workflow:
     partial_approve:
       modal:
         title: Aprobar los cambios parciales
-        label: Hacer un comentario (opcional)
-        error: Ha ocurrido un error, la propuesta no sido aprobada parcialmente
+        label: Dejar un comentario (opcional)
+        error: Ha ocurrido un error, la propuesta no ha sido aprobada parcialmente
         success: Los cambios han sido aprobados con éxito
     partial_reject:
       modal:
         title: Cambios rechazados parcialmente
-        label: Hacer un comentario (opcional)
+        label: Dejar un comentario (opcional)
         error: Ha ocurrido un error, la propuesta no ha sido rechazada parcialmente
         success: Los cambios han sido rechazados con éxito
 batch_jobs:
@@ -48,14 +48,14 @@ batch_jobs:
     label: Importación de propuesta de producto en CSV
     import.label: Importación de propuesta de producto
   approve_product_draft:
-    label: Aprobar la propuesta
-    perform.label: Aprobar la propuesta
+    label: Aprobar la proposición
+    perform.label: Aprobar la proposición
   refuse_product_draft:
     label: Rechazar propuesta
-    perform.label: Rechazar propuesta
+    perform.label: Rechazar propuestas
   xlsx_published_product_export:
     label: Exportar productos publicados en XLSX
-    export.label: Exportación de productos publicados
+    export.label: Exportar productos publicados
   xlsx_product_proposal_import:
     label: Importar propuestas de productos en XLSX
     import.label: Importar propuestas de productos en XLSX

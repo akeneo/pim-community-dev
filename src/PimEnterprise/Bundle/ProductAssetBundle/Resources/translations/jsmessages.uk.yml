@@ -2,17 +2,13 @@ pimee_product_asset:
   form:
     product:
       asset:
-        manage: Управління медіафайлами
         upload: Вивантажити
         manage_asset:
           title: Управління медіафайлами
-          cancel: Відмінити
           confirm: Підтвердження
-        title: Управляти ресурсами
         description: Оберіть медіафайли, які ви бажаєте прикріпити до вашого продукту
         preview_title: Попередній перегляд колекції медіафайлів
         download: Завантажити
-        remove: Видалити
         yes: true
         no: false
         assetRemoveConfirmationLabel: Ви впевнені, що хочете видалити цей медіафайл?
@@ -35,7 +31,6 @@ pimee_product_asset:
     menu: Вивантажити медіафайли
     btn:
       remove_all_files: Видалити всі файли
-      delete: Видалити
       import: Імпорт
       upload: Вивантажити медіафайли
     success:
@@ -62,9 +57,6 @@ pimee_product_asset:
       status: статус
       progress: прогрес
       actions: дії
-    action:
-      cancel: Відмінити
-      remove: Видалити
     status:
       added: Додано
       queued: Поставлено в чергу
@@ -95,14 +87,12 @@ batch_jobs:
     perform.label: Масове вивантаження медіафайлів і додавання до продуктів
   yml_asset_channel_configuration_import:
     label: Імпорт конфігурації каналів медіафайлів з Yaml
-    validation.label: Перевірка файлу
     import_asset.label: Імпорт конфігурації каналів медіафайлів з Yaml
   yml_asset_channel_configuration_export:
     label: Експорт конфігурації каналів медіафайлів в Yaml
     export.label: Експорт конфігурації каналів медіафайлів в Yaml
   csv_asset_import:
     label: Імпорт медіафайлів з CSV
-    validation.label: Перевірка файлу
     import_tags.label: Імпорт теґів з CSV
     import_asset.label: Імпорт медіафайлів з CSV
   csv_asset_export:
@@ -113,31 +103,25 @@ batch_jobs:
     export.label: Експорт варіацій медіафайлів в CSV
   csv_tag_import:
     label: Імпорт теґів з CSV
-    validation.label: Перевірка файлу
     import.label: Імпорт теґів з CSV
   csv_asset_category_import:
     label: Імпорт категорій медіафайлів з CSV
-    validation.label: Перевірка файлу
     import_asset_category.label: Імпорт категорій медіафайлів з CSV
   csv_asset_configuration_import:
     label: Імпорт конфігурації каналів медіафайлів з CSV
-    validation.label: Перевірка файлу
     import_asset.label: Імпорт конфігурації каналів медіафайлів з CSV
   csv_asset_category_export:
     label: Експорт категорій медіафайлів в CSV
     export.label: Експорт категорій медіафайлів в CSV
   xlsx_tag_import:
     label: Імпорт теґів з XLSX
-    validation.label: Перевірка файлу
     import.label: Імпорт теґів з XLSX
   xlsx_asset_import:
     label: Імпорт медіафайлів з XLSX
-    validation.label: Перевірка файлу
     import_tags.label: Імпорт теґів з XLSX
     import_asset.label: Імпорт медіафайлів з XLSX
   xlsx_asset_category_import:
     label: Імпорт категорій медіафайлів з XLSX
-    validation.label: Перевірка файлу
     import_asset_category.label: Імпорт категорій медіафайлів з XLSX
   xlsx_asset_export:
     label: Експорт медіафайлів в XLSX

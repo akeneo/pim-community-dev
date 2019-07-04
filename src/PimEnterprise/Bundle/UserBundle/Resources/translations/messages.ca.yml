@@ -1,4 +1,6 @@
 user:
+  email:
+    notifications: Rebre una notificació quan els actius caduquin
   proposals:
     notifications:
       to_review: Quan hi hagi una nova proposta per revisar

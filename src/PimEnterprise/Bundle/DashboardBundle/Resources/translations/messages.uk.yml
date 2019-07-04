@@ -2,9 +2,6 @@ pimee_dashboard:
   widget:
     product_drafts:
       title: Пропозиції для розгляду
-      date: Дата
-      author: Автор
-      product: Продукт
       review: Переглянути
       empty: Немає чорновиків продуктів для розгляду
   version:

@@ -1,0 +1,142 @@
+pim_title.locale:
+  edit: "Locales %locale.code% | Edit am"
+Permissions: Permit
+pane.accordion.permissions: Permit
+attribute group.permissions:
+  view.label: To view attributes dey allowed
+  view.help: Allow make e view de products for dis attribute group
+  edit.label: To edit attributes dey allowed
+  edit.help: Allow make e edit de products wey dey dis attribute group
+  no_access_to_attributes: You no get access to check any atttributes for dis product. Abeg contact your administrator.
+category.permissions:
+  view.label: To view products dey allowed
+  view.help: E dey allowed to view de products for dis category
+  edit.label: To edit products dey allowed
+  edit.help: To edit products dey allowed for dis category (implies the view permission)
+  own.label: To own products dey allowed
+  own.help: E dey Allowed to review, publish, unpublish, classify, associate products for dis category (implies permission to fit edit)
+  no_access_to_products: You no get access to products inside any tree, abeg contact your administrator
+  apply_on_children.label: Apply changes on pikins
+  apply_on_children.help: Make you copy de permissions changes for everri pinkin, permission wey don exist for pinkins go dey safe
+locale.permissions:
+  view.label: To view product information dey allowed
+  view.help: To view de product information dey allowed for dis locale
+  edit.label: To edit product information dey allowed
+  edit.help: To edit de product information for dis locale dey allowed (implies the view permission)
+  no_access_to_products: U no get access to product data wey don dey any activate locale, abeg make u holla ur administrator
+btn:
+  save working copy: Save copy wey dey dey use work
+  save draft: Save draft
+  save working copy and next: Make you save working copy then next am
+  save draft and next: Make you save draft den next am
+  save working copy and finish: Save de working copy and finish am
+  save draft and finish: Save de draft den finish am
+  send for approval: Make you send am for approval
+  sent for approval: E don dey sent for approval
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: You no get permission to edit de products "%identifiers%".
+      page_title: Products dem
+      page_subtitle: Plenti Edit (1 product)|plenti Edit (%count% products dem)
+      title: Make u pick operation
+      subtitle: Make u choose aw u wan to dey operate de products dem wey u select | make u pick aw u wan make d products dem %count% wey u select go dey operate
+      confirm: U go soon update product wey waka wit dis information, abeg confam.|U go soon update %count% products wey waka wit dis information, abeg confam.
+      steps:
+        first: Select product dem
+        second: Make u pick operation
+        third: Set am
+        fourth: Confam
+    publish:
+      description: Make you select de selected products, de current data wey dey published go dey erased for de current working copy.
+      success_flash: Products wey dey selected don dey published.
+      launched_flash: De job publishing product(s) dey run now.
+      message:
+        error: You be you get de product, you no fit publish am.
+        warning: You be you own everri products wey dey selected. You no fit publish de products"%notGranted%".
+        info: The %nbProducts% selected products go dey published.
+      not_editable: You no get de permission to edit de products "%identifiers%".
+    unpublish:
+      description: Make you unpublish de products wey dey selected, de published data wey dey already go erase.
+      success_flash: Products wey dey selected don dey unpublished.
+      launched_flash: De job unpublishing product(s) dey run now.
+      message:
+        error: No be u get dis product, u no fit unpublish am.
+        warning: No be u get evrri products dem wey u select so. U no fit unpublish de products "%notGranted%".
+        info: De %nbProducts% products wey u select go dey unpublished.
+      not_editable: You no get permission to edit de products "%identifiers%".
+    classify:
+      message:
+        error: You be you own de product, you no fit classify am.
+        warning: No be u get evrri products dem wey u select so. U no fit put de products dem for different class dem "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: You be you own de product, you no fit edit am.
+flash.product.updated: Product working copy don dey updated
+flash.product_draft.updated: Draft don dey saved
+flash.locale.updated: De locale and permissions don dey updated
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Permissions dem
+  product:
+    tab:
+      proposal.title: Proposals dem
+  category:
+    tab:
+      permission.title: Permissions dem
+  locale:
+    tab:
+      permission.title: Permissions dem
+  channel:
+    tab:
+      asset_transformation.title: Transformations for asset
+  acl.product_ownership.title: Ownership
+  attributes:
+    empty: e no get any
+  groups:
+    label: groups dem for owner
+    empty: e no get any
+  asset_transformation:
+    not_found: E neva find any transformation
+    title:
+      transformation: Transformation
+    colorspace:
+      title: Colorspace
+      options:
+        colorspace: '%worth% colorspace'
+    resize:
+      title: Resize
+      options:
+        width: '%worth%px width'
+        height: '%worth%px height'
+    resolution:
+      title: Resolution
+      options:
+        resolution: '%worth%'
+        resolution-unit: '%worth%'
+    scale:
+      title: Scale
+      options:
+        width: '%worth%px width'
+        height: '%worth%px height'
+        ratio: '%worth%% ratio'
+    thumbnail:
+      title: Thumbnail
+      options:
+        width: '%worth%px width'
+        height: '%worth%px height'
+add_product_value_with_permission_and_rules:
+  steps.perform: Make you add product value
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Make you add product value wit permission
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Make you update product value wit permission
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Make you commot product value wit permission
+edit_common_attributes_with_permission: Make you edit attributes wit permission
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Make you edit attributes wit permission
+job_execution.summary:
+  mass_published: Product don dey published
+  mass_unpublished: Product neva dey published
+  proposal: Proposal don dey created
+  proposal_deleted: e don delete
+pim_enrich_attribute_form:
+  isReadOnly: U fit only read am

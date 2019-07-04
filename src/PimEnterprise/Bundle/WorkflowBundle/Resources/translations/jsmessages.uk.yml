@@ -47,12 +47,8 @@ batch_jobs:
   csv_product_proposal_import:
     label: Імпорт пропозицій з CSV
     import.label: Імпорт пропозицій
-  approve_product_draft:
-    label: Затвердити пропозицію
-    perform.label: Затвердити пропозицію
   refuse_product_draft:
     label: Відмовитися від пропозиції
-    perform.label: Відмовитися від пропозиції
   xlsx_published_product_export:
     label: Експорт опублікованих товарів в XLSX
     export.label: Експорт опублікованих товарів

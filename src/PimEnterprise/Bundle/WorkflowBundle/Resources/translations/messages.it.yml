@@ -72,12 +72,12 @@ pimee_workflow:
     published:
       page_title: Prodotti pubblicati
       page_subtitle: Modifica di massa (1 prodotto pubblicato) | Modifica di massa (%count% prodotti pubblicati)
-      title: Scegli l'operazione
+      title: Scegli operazione
       subtitle: Scegli l'operazione che si desidera eseguire sul prodooto pubblicato selezionato|Scegli l'operazione che si desidera eseguire sui %count% prodotti pubblicati selezionati
       confirm: Stai per aggiornare un prodotto pubblicato con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% prodotti pubblicati con le seguenti informazioni, si prega di confermare.
       steps:
         first: Scegli i prodotti pubblicati
-        second: Scegli l'operazione
+        second: Scegli operazione
         third: Configura
         fourth: Conferma
 pimee_workflow_product_draft_notification_new_proposal: Nuova proposta
@@ -120,7 +120,7 @@ confirmation:
   product:
     publish: Sei sicuro di voler pubblicare questo prodotto?
     unpublish: Sei sicuro di voler ritirare questo prodotto?
-Attributes.title: Attributi
+Attributes.title: Atributi
 Completeness.title: Completamento
 publish_product.steps.publish_product_tasklet.title: Pubblica prodotto
 unpublish_product.steps.unpublish_product_tasklet.title: Annullare la pubblicazione del prodotto

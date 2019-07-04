@@ -26,8 +26,6 @@ teamwork_assistant:
   datagrid:
     project_completeness: Прогрес виконання проекту
     contributor_todo: Потрібно зробити
-    contributor_in_progress: В процесі
-    contributor_done: Зроблено
     owner_todo: Потрібно зробити (огляд проекту)
     owner_in_progress: Виконується (огляд проекту)
     owner_done: Готово (огляд проекту)

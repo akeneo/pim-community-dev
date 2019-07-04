@@ -9,7 +9,7 @@ teamwork_assistant:
       remove: Eliminar projecte
       create_from_view: Crear un projecte des d'aquesta vista
       loading: Carregant...
-      start_new_project: Crear un nou projecte
+      start_new_project: Iniciar un nou projecte
       confirmation:
         remove: Estàs segur que vols eliminar aquest projecte?
         delete: Confirmar l'eliminació
@@ -19,7 +19,7 @@ teamwork_assistant:
     label: Nom
     locale: Configuració Regional
     channel: Canal
-    label_maxlength: Aquest valor és massa llarg. Hauria de tenir {{ max }} caràcters o menys.
+    label_maxlength: Aquest valor és massa llarga. Ha de tenir {{ max }} caràcters o menys.
     description: Descripció
     due_date: Data límit
     due_date_past: No podeu seleccionar una data en el passat.
@@ -28,12 +28,12 @@ teamwork_assistant:
     saved: El projecte s'ha guardat.
     title: Editar projecte
     confirm: Desar
-    cancel: Cancelar
+    cancel: Cancel·lar
   create_project_modal:
     saved: El projecte s'ha guardat, se li notificarà quan hagi finalitzat el càlcul.
     title: Crear projecte
     confirm: Desar
-    cancel: Cancelar
+    cancel: Cancel·lar
   widget:
     no_project: No té cap projecte
     no_project_create: crear un nou projecte
@@ -48,7 +48,7 @@ teamwork_assistant:
       contributor_selector: Buscar col·laborador
       project_selector: Buscar projecte
     completeness:
-      to_start: Productes a començar
+      to_start: PRODUCTES A COMENÇAR
       in_progress: Productes en progrés
       done: Productes acabats
 pim_datagrid:

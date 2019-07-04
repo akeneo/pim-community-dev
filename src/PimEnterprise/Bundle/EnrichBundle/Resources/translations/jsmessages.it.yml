@@ -233,11 +233,11 @@ batch_jobs:
     execute_rules.label: Esecuzione regole
   update_product_value_with_permission_and_rules:
     label: Aggiorna il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
-    perform.label: Modifica un valore di prodotto
+    perform.label: Aggiorna il valore di prodotto
     execute_rules.label: Esecuzione regole
   remove_product_value_with_permission_and_rules:
     label: Rimuovi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
-    perform.label: Rimuovi un valore di prodotto
+    perform.label: Rimuovi il valore di prodotto
     execute_rules.label: Esecuzione regole
   edit_common_attributes_with_permission_and_rules:
     label: Modifica gli attributi con controllo dei permessi e con l'applicazione delle regole

@@ -5,7 +5,7 @@ pimee_dashboard:
       date: Fecha
       author: Autor
       product: Producto
-      review: Revisar 	
+      review: Revisión
       empty: No hay borradores de producto para revisar
   version:
     community_edition: CE

@@ -1,0 +1,143 @@
+pimee_workflow:
+  product_draft:
+    author: Persin wey get am
+    created: When he go happen
+    changes: Change dem
+    locale: Locale context
+    product:
+      label: Label for the product
+    attribute:
+      label: Attributes dem
+    status:
+      label: Which one e be
+      working_copy: Copy for work
+      in_progress: E de work
+      ready: E de wait make them approve am
+      can_be_partially_reviewed: U fit review am partially
+      can_not_be_approved: Dem no fit review am
+      can_not_be_deleted: E no fit delete
+    status_message:
+      can_be_partially_reviewed: You only fit review this proposal partially because some changes dey apply on values you no fit edit. Abeg contact your administrator to fit change your rights.
+      can_not_be_approved: You no fit delete dis proposal because all de changes apply for values you no fit edit. Abeg contact your administrator to change your rights.
+      can_not_be_deleted: You no fit delete dis proposal because all de changes apply for values you no fit edit. Abeg contact your administrator to change your rights.
+      in_progress: Dis proposal currently dey under progress and e dey submitted yet.
+    action:
+      approve: Approve evri thing
+      refuse: Reject evri ting
+      remove: Comot am
+      partial_approve: Make you approve changes for de attribute %attribute% of the product %product%
+      partial_reject: Make you reject changes for attribute %attribute% of the product %product%
+    notification:
+      partial_approve: '%owner% don accepte de value(s) for %attributes% for the product %product%'
+      partial_approve_number: "%owner% don accepte values for %attributes_count% attributes for the product %product%\n \nContext | Edit Context"
+      partial_reject: '%owner% don rejecte value(s) for %attributes% for the product %product%'
+      partial_reject_number: '%owner% don rejecte values for %attributes_count% attributes for the product %product%'
+      partial_remove: '%owner% don delete value(s) for %attributes% for the product %product%'
+      partial_remove_number: '%owner% don delete values for %attributes_count% attributes for the product %product%'
+      approve: '%owner% don accepte your proposal for the product %product%'
+      refuse: "%owner% don rejecte your proposal for the product %product%\n \nContext | Edit Context"
+      remove: '%owner% don delete your proposal for the product %product%'
+    mass_review_action:
+      approve: Approve everri's wey dey selected
+      refuse: Reject everri's wey dey selected
+      error:
+        draft_not_ready: Dis proposal neva dey ready make dem approve am
+        not_product_owner: No be you get de project wey relate to dis proposal
+        cannot_edit_attributes: You no fit edit de attributes modified by dis proposal
+        invalid_draft: Dis proposal no fit dey applied because of de following error. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% don send proposal to review for the product %product.label%'
+    individual_import: '%author.firstname% %author.lastname% don send proposals to review from job import'
+    generic_import: You get proposals to review from job import
+    original_value: na d real one be this
+    new_value: Tam tam
+    no_diff: The value "%value%" na de same between the proposal and the working copy.
+    draft_in_progress: A draft dey for progress by %author% for this product.
+  published_product:
+    index: Products wey dey published
+    title: Product wey dey published
+  acl.published_product:
+    index: Make you manage published products
+  product:
+    permission:
+      label: Permissions dem
+      own: Review / publish
+      edit: Edit am
+      view: View am
+  steps:
+    product_draft_processor.title: Proposal processor
+    approve.title: Make you approve proposal
+    refuse.title: Make you refuse proposal
+  mass_edit_action:
+    published:
+      page_title: Products wey dey published
+      page_subtitle: Plenti Edit (1 product)|plenti Edit (%count% products dem)
+      title: Make you choose operation
+      subtitle: Choose de operation wey you dey wish to perform for de selected published product|Choose the operation wey you wish to perform on the selected %count% published products
+      confirm: You dey try update a published product wey get de following information, abeg confirm.|You dey try about update %count% published products with the following information, abeg confirm.
+      steps:
+        first: Make you choose published products
+        second: Make you choose operation
+        third: Arrange am
+        fourth: Confam
+pimee_workflow_product_draft_notification_new_proposal: Tam tam proposal
+pimee_workflow_import_notification_new_proposals: New proposal for inside import
+btn.publish: Send am comot
+btn.unpublish: E dey unpublish
+pimee_workflow_product_draft_notification_partial_approve: Proposal dey partially approved
+pimee_workflow_product_draft_notification_partial_reject: Proposal dey partially rejected
+pimee_workflow_product_draft_notification_partial_remove: Proposal dey partially deleted
+pimee_workflow_product_draft_notification_approve: Dey don approve proposal
+pimee_workflow_product_draft_notification_refuse: Dey don reject proposal
+pimee_workflow_product_draft_notification_remove: Dey don delete proposal
+flash:
+  product:
+    published: De product don dey published.
+    unpublished: De don unpublish de product.
+  product_draft:
+    approve:
+      success: De don apply de product finish.
+      error: De proposal no fit dey applied because of error wey dem show so. %error%
+    refuse:
+      success: De don reject de proposal.
+    remove:
+      success: De don remove de proposal.
+pim_menu:
+  item:
+    published_product: Products wey dey published
+    proposal: Proposals
+pim_title:
+  published_product:
+    index: Products wey dey publish
+    view: Published product %product.label% | View
+  product:
+    dispatch: "Product %product.label%"
+    show: "Product %product.label% | Show am"
+  proposal:
+    index: Proposals
+btn.editworkingcopy: Make you edit working copy
+confirmation:
+  product:
+    publish: You sure say you wan publish dis product?
+    unpublish: You sure say you wan unpublish dis product?
+Attributes.title: Attributes
+Completeness.title: Completeness
+publish_product.steps.publish_product_tasklet.title: Make you publish product
+unpublish_product.steps.unpublish_product_tasklet.title: Product wey dey unpublish
+approve_product_draft.steps.approve.title: Proposal wey dey approve
+approve_product_draft.steps.refuse.title: Proposal wey dey rejected
+job_execution.summary:
+  approved: de don approve am
+  refused: de don reject am
+  mass_published: Product don dey published
+  mass_unpublished: Product neva dey published
+  proposal: Proposal don dey created
+  proposal_deleted: de don delete proposal
+  proposal_updated: proposal dey updated
+  proposal_created: proposal dey created
+  proposal_skipped: pass d proposal (difference no dey)
+published products: Products wey dey published
+pim_analytics:
+  info_type:
+    nb_published_products: Number of products wey dey published
+    nb_product_drafts: Number of product drafts

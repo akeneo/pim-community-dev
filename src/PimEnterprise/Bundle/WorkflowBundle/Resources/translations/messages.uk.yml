@@ -1,6 +1,5 @@
 pimee_workflow:
   product_draft:
-    author: Автор
     created: Дата пропозиції
     changes: Зміни
     locale: Контексті локалі
@@ -9,7 +8,6 @@ pimee_workflow:
     attribute:
       label: Атрибут
     status:
-      label: Статус
       working_copy: Робоча копія
       in_progress: В процесі
       ready: Очікує на підтвердження
@@ -24,7 +22,6 @@ pimee_workflow:
     action:
       approve: Затвердження всіх
       refuse: Відхилити всі
-      remove: Видалити
       partial_approve: Затвердити зміни атрибуту %attribute% продукту %product%
       partial_reject: Відхилити зміни атрибуту %attribute% продукту %product%
     notification:
@@ -38,8 +35,6 @@ pimee_workflow:
       refuse: '%owner% відхилив Вашу пропозицію щодо продукту %product%'
       remove: '%owner% видалив Вашу пропозицію щодо продукту %product%'
     mass_review_action:
-      approve: Підтвердити все вибране
-      refuse: Відхилити все вибране
       error:
         draft_not_ready: Ця пропозиція ще не готова для затвердження
         not_product_owner: Ви не є власником продукту, пов'язаного з цією пропозицією
@@ -62,8 +57,6 @@ pimee_workflow:
     permission:
       label: Права доступу
       own: Огляд / опублікувати
-      edit: Редагувати
-      view: Вид
   steps:
     product_draft_processor.title: Обробник пропозицій
     approve.title: Затвердити пропозицію
@@ -120,11 +113,9 @@ confirmation:
   product:
     publish: Ви впевнені, що бажаєте опублікувати цей продукт?
     unpublish: Ви дійсно бажаєте скасувати публікацію цього продукту?
-Attributes.title: Атрибути
 Completeness.title: Ступінь заповненості
 publish_product.steps.publish_product_tasklet.title: Опублікувати продукт
 unpublish_product.steps.unpublish_product_tasklet.title: Скасування публікації продукту
-approve_product_draft.steps.approve.title: Затвердити пропозицію
 approve_product_draft.steps.refuse.title: Відхилити пропозицію
 job_execution.summary:
   approved: Затверджено

@@ -35,10 +35,10 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Permissions
+          title: Autorisations
           added: Le groupe {{ group }} sera autorisé à {{ permission }} le profil
           execute.label: Autorisé à exécuter les profils
-          edit.label: Autorisé à éditer les profils
+          edit.label: Autorisé à modifier les profils
           removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le profil
     channel:
       tab:
@@ -47,7 +47,7 @@ pimee_enrich:
     attribute_group:
       tab:
         permission:
-          title: Permissions
+          title: Autorisations 
           view.label: Autorisé à voir les attributs
           edit.label: Autorisé à modifier les attributs
           removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le groupe d'attributs
@@ -125,7 +125,7 @@ pimee_enrich:
         reject_proposal: Rejeter la proposition
         reject_selected_proposal: Rejeter le(s) proposition(s) sélectionnée(s)
         remove_proposal: Supprimer la proposition
-        send_for_approval: Soumettre pour validation
+        send_for_approval: Envoyer pour approbation
         cancel: Annuler
         confirm: Envoyer
         title: Commenter votre proposition (facultatif - 255 caractères max.)
@@ -167,7 +167,7 @@ pimee_enrich:
     next: Suivant
     previous: Retour
     cancel: Annuler
-    confirm: Confirmer
+    confirm: Confirmation
     product:
       operation:
         publish:
@@ -190,9 +190,9 @@ pimee_enrich:
           title: Actions de masse sur les ressources
           label_count: "] 0, Inf [Sélectionnez votre action"
         configure:
-          label: Configurer
+          label: Configurez l'opération à effectuer
         confirm:
-          label: Confirmer
+          label: Confirmation
       operation:
         add_tag:
           label: Ajouter des mots clés aux ressources
@@ -259,7 +259,7 @@ batch_jobs:
   xlsx_published_product_grid_context_quick_export:
     export.label: Export rapide XLSX des produits publiés dans le contexte de grille
     perform:
-      label: Export rapide XLSX des produits publiés dans le contexte de grille
+      label: Export rapide CSV des produits publiés dans le contexte de grille
   add_attribute_value:
     execute_rules.label: Exécution des règles
   publish_product:
