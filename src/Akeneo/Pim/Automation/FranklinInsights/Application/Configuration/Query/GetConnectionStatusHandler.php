@@ -89,4 +89,9 @@ class GetConnectionStatusHandler
 
         return $this->connectionStatus;
     }
+
+    public function clearCache(): void
+    {
+        $this->connectionStatus = null;
+    }
 }
