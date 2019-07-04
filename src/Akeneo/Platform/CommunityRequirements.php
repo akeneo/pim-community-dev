@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform;
 
 use \PDO;
+use RuntimeException;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Yaml\Yaml;
 
@@ -40,6 +41,12 @@ class CommunityRequirements
         'exif',
         'imagick'
     ];
+
+    /** @var string[] */
+    private $directoriesToCheck;
+
+    /** @var string */
+    private $baseDir;
 
     public function __construct(string $baseDir, array $directoriesToCheck = [])
     {
