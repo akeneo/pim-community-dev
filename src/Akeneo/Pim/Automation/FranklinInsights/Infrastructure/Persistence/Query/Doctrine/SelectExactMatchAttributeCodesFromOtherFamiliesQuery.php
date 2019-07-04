@@ -12,15 +12,15 @@
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine;
 
-
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class SelectExactMatchAttributeCodesFromOtherFamiliesQuery
+class SelectExactMatchAttributeCodesFromOtherFamiliesQuery implements SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface
 {
     private $connection;
 
@@ -72,7 +72,7 @@ SQL;
 
     private function getMatchedAttributeCode($franklinAttributeLabel, array $pimAttributes): ?string
     {
-        $matchedAttributes = array_filter($pimAttributes, function($attribute) use($franklinAttributeLabel) {
+        $matchedAttributes = array_filter($pimAttributes, function ($attribute) use ($franklinAttributeLabel) {
             return (
                 strcasecmp($franklinAttributeLabel, $attribute['code']) === 0 ||
                 strcasecmp($franklinAttributeLabel, $attribute['label']) === 0
@@ -83,5 +83,4 @@ SQL;
 
         return $matchedAttribute['code'] ?? null;
     }
-
 }

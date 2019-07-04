@@ -25,9 +25,9 @@ import IAttributesMappingForFamily from '../../model/attributes-mapping-for-fami
 import BaseView = require('pimui/js/view/base');
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute from '../common/simple-select-attribute';
+import AddAttributeToFamilyButton from './add-attribute-to-family-button';
 import AttributeTypeMismatchWarning from './attribute-type-mismatch-warning';
 import CreateAttributeButton from './create-attribute-button';
-import AddAttributeToFamilyButton from './add-attribute-to-family-button';
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -339,10 +339,7 @@ class AttributeMapping extends BaseView {
     return createAttributeButton;
   }
 
-  private appendAddAttributeToFamilyButton(
-    attributeCode: string,
-    familyCode: string
-  ) {
+  private appendAddAttributeToFamilyButton(attributeCode: string, familyCode: string) {
     const addAttributeToFamilyButton = new AddAttributeToFamilyButton(familyCode, attributeCode);
 
     const $host = this.$el.find(`.add-attribute-to-family-button[data-franklin-attribute-code="${attributeCode}"]`);

@@ -22,7 +22,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
  */
 class GetAttributesMappingWithSuggestionsHandler
 {
-
     private $getAttributesMappingByFamilyHandler;
 
     private $applyAttributeExactMatches;

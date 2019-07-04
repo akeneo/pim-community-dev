@@ -14,18 +14,14 @@ import AddAttributeToFamily from '../../saver/add-attribute-to-family';
 const __ = require('oro/translator');
 const SecurityContext = require('pim/security-context');
 
-class AddAttributeToFamilyButton extends View<Model>
-{
+class AddAttributeToFamilyButton extends View<Model> {
   private template = _.template(`
     <button class="AknButton  AknButton--ghost">
       <%= __('akeneo_franklin_insights.entity.attributes_mapping.fields.add_attribute_to_family.btn') %>
     </button>
   `);
 
-  constructor(
-    private familyCode: string,
-    private attributeCode: string
-  ) {
+  constructor(private familyCode: string, private attributeCode: string) {
     super();
   }
 
@@ -55,7 +51,7 @@ class AddAttributeToFamilyButton extends View<Model>
   }
 
   private isGranted() {
-    return (SecurityContext.isGranted('pim_enrich_family_edit_attributes'));
+    return SecurityContext.isGranted('pim_enrich_family_edit_attributes');
   }
 }
 

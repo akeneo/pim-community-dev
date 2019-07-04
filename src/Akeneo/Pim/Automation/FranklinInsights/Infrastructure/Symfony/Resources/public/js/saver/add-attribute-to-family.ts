@@ -26,7 +26,6 @@ interface AddAttributeToFamilyResponse {
 }
 
 export default class AddAttributeToFamily {
-
   public static async add(request: AddAttributeToFamilyRequest): Promise<AddAttributeToFamilyResponse> {
     try {
       const response = await new Promise<AddAttributeToFamilyResponse>((resolve, reject) => {
@@ -56,11 +55,17 @@ export default class AddAttributeToFamily {
     const familyLabel = I18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
     Messenger.notify(
       'success',
-      __('akeneo_franklin_insights.entity.attributes_mapping.flash.add_attribute_to_family_success', {family: familyLabel, attribute: attributeCode})
+      __('akeneo_franklin_insights.entity.attributes_mapping.flash.add_attribute_to_family_success', {
+        family: familyLabel,
+        attribute: attributeCode
+      })
     );
   }
 
   private static notifyError(): void {
-    Messenger.notify('error', __('akeneo_franklin_insights.entity.attributes_mapping.flash.add_attribute_to_family_error'));
+    Messenger.notify(
+      'error',
+      __('akeneo_franklin_insights.entity.attributes_mapping.flash.add_attribute_to_family_error')
+    );
   }
 }

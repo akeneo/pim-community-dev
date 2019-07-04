@@ -12,7 +12,6 @@
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
-
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 

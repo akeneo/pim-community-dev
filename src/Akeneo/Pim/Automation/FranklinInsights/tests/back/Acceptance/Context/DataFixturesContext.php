@@ -367,12 +367,10 @@ class DataFixturesContext implements Context
     {
         $family = $this->familyRepository->findOneByIdentifier($familyCode);
 
-        if ($family->hasAttributeCode($attributeCode))
-        {
+        if ($family->hasAttributeCode($attributeCode)) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             $family->removeAttribute($attribute);
             $this->familyRepository->save($family);
-
         }
     }
 

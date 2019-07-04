@@ -148,5 +148,4 @@ class AttributeMapping
             null === $this->getExactMatchAttributeFromOtherFamily()
         );
     }
-
 }

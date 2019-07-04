@@ -16,8 +16,8 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectExactMatchAttributeCodesFromOtherFamiliesQuery;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -26,14 +26,14 @@ use PhpSpec\ObjectBehavior;
 class SuggestExactMatchAttributesFromOtherFamiliesSpec extends ObjectBehavior
 {
     public function let(
-        SelectExactMatchAttributeCodesFromOtherFamiliesQuery $selectExactMatchAttributeCodesFromOtherFamiliesQuery
+        SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface $selectExactMatchAttributeCodesFromOtherFamiliesQuery
     ): void
     {
         $this->beConstructedWith($selectExactMatchAttributeCodesFromOtherFamiliesQuery);
     }
 
     public function it_suggests_attributes_from_other_family(
-        SelectExactMatchAttributeCodesFromOtherFamiliesQuery $selectExactMatchAttributeCodesFromOtherFamiliesQuery
+        SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface $selectExactMatchAttributeCodesFromOtherFamiliesQuery
     ): void
     {
         $familyCode = new FamilyCode('family_code');

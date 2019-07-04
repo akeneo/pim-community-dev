@@ -12,13 +12,12 @@
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor;
 
-
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectExactMatchAttributeCodesFromOtherFamiliesQuery;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
@@ -27,7 +26,7 @@ class SuggestExactMatchAttributesFromOtherFamilies
 {
     private $selectExactMatchAttributeCodesFromOtherFamiliesQuery;
 
-    public function __construct(SelectExactMatchAttributeCodesFromOtherFamiliesQuery $selectExactMatchAttributeCodesFromOtherFamiliesQuery)
+    public function __construct(SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface $selectExactMatchAttributeCodesFromOtherFamiliesQuery)
     {
         $this->selectExactMatchAttributeCodesFromOtherFamiliesQuery = $selectExactMatchAttributeCodesFromOtherFamiliesQuery;
     }
