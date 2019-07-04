@@ -123,6 +123,7 @@ config:
         akeneo/franklin-insights/template/common/tabs: akeneofranklininsights/templates/common/tabs.html
         akeneo/franklin-insights/template/common/simple-select-attribute: akeneofranklininsights/templates/common/simple-select-attribute.html
         akeneo/franklin-insights/template/franklin-connection/edit: akeneofranklininsights/templates/franklin-connection/edit.html
+        akeneo/franklin-insights/template/franklin-connection/description-header: akeneofranklininsights/templates/franklin-connection/description-header.html
         akeneo/franklin-insights/template/mass-edit/franklin-insights-operation: akeneofranklininsights/templates/mass-edit/franklin-insights-operation.html
         akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher: akeneofranklininsights/templates/product-edit-form/subscription-status-switcher.html
         akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher-read-only: akeneofranklininsights/templates/product-edit-form/subscription-status-switcher-read-only.html
