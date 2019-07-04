@@ -52,6 +52,7 @@ define(
             templateProductModel: _.template(templateProductModel),
             templateAddChild: _.template(templateAddChild),
             dropdowns: [],
+            formModal: null,
             queryTimer: null,
             events: {
                 'click [data-action="navigateToLevel"]': 'navigateToLevel'
@@ -73,6 +74,11 @@ define(
                 this.dropdowns.forEach(dropdown => {
                     dropdown.close();
                 });
+
+                if (this.formModal) {
+                    this.formModal.close();
+                    this.formModal.$el.remove();
+                }
 
                 BaseForm.prototype.shutdown.apply(this, arguments);
             },
@@ -264,6 +270,8 @@ define(
                         );
 
                         formModal.open();
+
+                        this.formModal = formModal;
                     });
             },
 
