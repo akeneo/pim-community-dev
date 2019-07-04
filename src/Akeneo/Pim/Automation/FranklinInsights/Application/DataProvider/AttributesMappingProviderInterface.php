@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
@@ -26,11 +26,11 @@ interface AttributesMappingProviderInterface
     /**
      * @param FamilyCode $familyCode
      *
+     * @return AttributeMappingCollection
      * @throws DataProviderException
      *
-     * @return AttributesMappingResponse
      */
-    public function getAttributesMapping(FamilyCode $familyCode): AttributesMappingResponse;
+    public function getAttributesMapping(FamilyCode $familyCode): AttributeMappingCollection;
 
     /**
      * @param FamilyCode        $familyCode

@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
@@ -79,7 +79,7 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
         $familyCodesByAttributeQuery->execute('pim_color')->willReturn(['router']);
         $familyCode = new FamilyCode('router');
 
-        $attributesMapping = new AttributesMappingResponse();
+        $attributesMapping = new AttributeMappingCollection();
         $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null));
 
         $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
@@ -141,7 +141,7 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
         $familyCodesByAttributeQuery->execute('pim_color')->willReturn(['router']);
 
         $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
-            ->willReturn(new AttributesMappingResponse());
+            ->willReturn(new AttributeMappingCollection());
 
         $getAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
         $saveAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
@@ -156,7 +156,7 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
         $familyCodesByAttributeQuery->execute('pim_color')->willReturn(['router']);
         $familyCode = new FamilyCode('router');
 
-        $attributesMapping = new AttributesMappingResponse();
+        $attributesMapping = new AttributeMappingCollection();
         $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE, null));
 
         $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))

@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\In
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 
@@ -31,7 +31,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_attributes_mapping(): void
     {
-        $attributesMapping = new AttributesMappingResponse();
+        $attributesMapping = new AttributeMappingCollection();
         $attributesMapping->addAttribute(new AttributeMapping(
             'product_weight',
             'Product Weight',
@@ -58,7 +58,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_null_summary_as_empty_array(): void
     {
-        $attributesMapping = new AttributesMappingResponse();
+        $attributesMapping = new AttributeMappingCollection();
         $attributesMapping->addAttribute(
             new AttributeMapping(
                 'product_weight',

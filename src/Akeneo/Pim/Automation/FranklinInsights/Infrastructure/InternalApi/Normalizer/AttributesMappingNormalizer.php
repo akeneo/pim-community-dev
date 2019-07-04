@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -21,14 +21,14 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 class AttributesMappingNormalizer
 {
     /**
-     * @param AttributesMappingResponse $attributesMappingResponse
+     * @param AttributeMappingCollection $attributeMappingCollection
      *
      * @return array
      */
-    public function normalize(AttributesMappingResponse $attributesMappingResponse): array
+    public function normalize(AttributeMappingCollection $attributeMappingCollection): array
     {
         $normalizedAttributes = [];
-        foreach ($attributesMappingResponse as $attribute) {
+        foreach ($attributeMappingCollection as $attribute) {
             $normalizedAttributes[$attribute->getTargetAttributeCode()] = [
                 'franklinAttribute' => [
                     'label' => $attribute->getTargetAttributeLabel(),

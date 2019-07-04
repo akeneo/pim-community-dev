@@ -29,6 +29,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\AttributeTypes',
 
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Psr\Log\LoggerInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Application'),
 
