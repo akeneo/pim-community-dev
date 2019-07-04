@@ -1,7 +1,12 @@
+pim_menu:
+  item:
+    franklin: Franklin Insights
 akeneo_franklin_insights:
   entity:
     data_provider:
       ask_franklin_down: "¡Vaya, algo ha fallado! Inténtalo de nuevo más tarde."
+      authentication_error: "Lo sentimos, no se pudo autenticar en Franklin Insights, tu token no es válido. Por favor, introduce un token válido o contacta con nosotros para ayuda."
+      bad_request_error: "Lo sentimos, ha ocurrido un problema al comunicarse con Franklin Insights. Por favor, póngase en contacto con su administrador."
     identifier_mapping:
       plural_label: Identificadores
       flash:
@@ -23,6 +28,7 @@ akeneo_franklin_insights:
           inactive: Inactivo
       constraint:
         attribute_type: "No se puede definir el tipo de este atributo como un identificador"
+        localizable_not_allowed: "Los atributos localizables no están permitidos como identificador"
     attributes_mapping:
       fields:
         franklin_attribute: 'Atributo de Franklin'
@@ -40,10 +46,27 @@ akeneo_franklin_insights:
           error: "Es necesario crear una familia en su catálogo para acceder a esta página."
           family_status:
             pending: 'Nuevos atributos de Franklin para revisar'
-    product_subscription:
+          types_mismatch_warning: 'Advertencia: los tipos de atributos no coinciden.'
       constraint:
+        attribute_not_in_family_not_allowed: 'El atributo PIM debe estar en la familia seleccionada.'
+        only_unknown_mapped_attributes: 'No se puede encontrar ningún atributo en el mapeo de atributos'
+    product_subscription:
+      flash:
+        create:
+          success: 'Producto suscrito con éxito a Franklin'
+          fail: 'Imposible suscribir el producto a Franklin'
+        delete:
+          fail: 'Imposible cancelar la suscripción del producto de Franklin'
+      constraint:
+        family_required: 'Lo sentimos, se requiere una familia de productos para suscribir el producto a Franklin Insights.'
+        no_identifiers_mapping: 'Por favor, mapea los identificadores de su producto en Ajustes > Franklin Insights antes de suscribir productos.'
+        insufficient_credits: "Lo sentimos, no se pudo suscribir el producto a Franklin Insights. No tienes suficiente crédito."
         invalid_mapped_values: 'Lo sentimos, no pudo suscribirse el producto a Franklin Insights. Por favor, suscriba el producto con una combinación de identificadores válida.'
+        data_provider_error: 'Franklin devolvió un error al intentar suscribir el producto'
         not_subscribed: 'El producto no se ha suscrito'
+        already_subscribed_product: 'El producto ya está suscrito.'
+        variant_product: 'Lo sentimos, los productos variantes no pueden ser suscritos a Franklin Insights.'
+        inactive_connection: 'Lo sentimos, no se pudo suscribir el producto a Franklin Insights. Por favor, configure su conexión a Franklin Insights.'
       module:
         product_edit_form:
           family_required: 'Familia de producto requerida.'
@@ -64,6 +87,7 @@ akeneo_franklin_insights:
   connection:
     page_title: 'Conexión Franklin Insights'
     flash:
+      success: Código de activación de Franklin Insights guardado con éxito.
       invalid: Código de activación no válido, lo siento. Por favor, pruebe con uno válido.
       error: Lo sentimos, se ha producido un error.
     module:
@@ -71,6 +95,7 @@ akeneo_franklin_insights:
         sub_title: '¡Bienvenido a <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
         description:
           first_step: 'El primer paso en la conexión del asistente es configurar el token de la API.'
+          second_step: 'El siguiente paso en el proceso de conexión es coincidir con los identificadores de producto de tu catálogo <a href="#" class="AknDescriptionHeader-link link"></a> con los identificadores del asistente.'
       activation:
         label: 'Conector de Franklin'
         activation_code: 'Código de activación'
@@ -82,8 +107,15 @@ akeneo_franklin_insights:
     module:
       title:
         sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
+        description:
+          first_step: 'Para ayudarle a enriquecer su catálogo, Franklin necesitará conocer sus identificadores de catálogo.'
       inactive_connection:
         title: 'Lo sentimos, no hay nada que mostrar aquí todavía'
+        sub_title: 'Por favor, active su cuenta en el Sistema > Conexión Franklin y vuelva de nuevo.'
+      no_active_english_locale:
+        sub_title: 'Mantente atento, los locales están llegando.'
+      save:
+        title: 'Warning!'
   mass_edit:
     product:
       operation:
@@ -95,5 +127,25 @@ akeneo_franklin_insights:
           constraint:
             franklin_activation: "Por favor <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activar</a> Franklin Insights antes de suscribirse a los productos."
 batch_jobs:
+  default_steps:
+    fetch_products: Obtener los datos de producto
+    create_proposals: Crear propuestas
   franklin_insights_subscribe_products:
     subscribe_products.label: Suscribirse a productos
+  franklin_insights_unsubscribe_products:
+    unsubscribe_products.label: Cancelar la suscripción de productos
+  franklin_insights_fetch_products:
+    label: Obtener datos de productos de Franklin Insights
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights_fetch_products: Franklin Insights
+pim_enrich.entity.attribute:
+  module:
+    save:
+      title: 'Warning!'
+      warning: '{1}Eliminar un atributo puede afectar a 1 suscripción Franklin. ¿Está seguro?|]1,+Inf[Eliminar un atributo puede afectar a {{ count }} suscripciones Franklin. ¿Está seguro?'
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights

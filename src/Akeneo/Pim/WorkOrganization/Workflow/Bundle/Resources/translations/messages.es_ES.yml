@@ -10,9 +10,9 @@ pimee_workflow:
       label: Atributo
     status:
       label: Estado
-      working_copy: Copia de trabajo
+      working_copy: Versión de trabajo
       in_progress: En progreso
-      ready: Esperando aprobacion
+      ready: Aguardando aprobación
       can_be_partially_reviewed: Puede ser revisado parcialmente
       can_not_be_approved: No puede ser revisado
       can_not_be_deleted: No puede ser borrado
@@ -24,7 +24,7 @@ pimee_workflow:
     action:
       approve: Aprobar todos
       refuse: Rechazar todos
-      remove: Quitar
+      remove: Eliminar
       partial_approve: Aprobar cambios en atributo %attribute% de el producto %product%
       partial_reject: Rechazar cambios en atributo %attribute% del producto %product%
     notification:
@@ -62,32 +62,29 @@ pimee_workflow:
     permission:
       own: Revisar / publicar
       edit: Editar
-      view: Vista
+      view: Visualizar
   steps:
     product_draft_processor.title: Procesador de propuesta
-    approve.title: Aprobar la propuesta
+    approve.title: Aprobar la proposición
     refuse.title: Rechazar la proposición
   mass_edit_action:
     published:
       page_title: Productos publicados
       page_subtitle: Edición en masa (1 producto publicado)|Edición en masa (%count% productos publicados)
-      title: Elegir operación
-      subtitle: Seleccione la operación que desea ejecutar en los productos publicados que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
+      title: Seleccione una operación
+      subtitle: Seleccione la operación que desea ejecutar en el producto publicado que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
       confirm: Está a punto de actualizar un producto publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos publicados con la siguiente información, por favor confirme.
       steps:
         first: Seleccione los productos publicados
-        second: Elegir operación
-        third: Configurar
-        fourth: Confirmar
+        second: Seleccione una operación
+        third: Configuración
+        fourth: Confirmación
 btn:
   publish: Publicar
-  unpublish: Despublicar
+  unpublish: Remover publicación
   save working copy: Guardar copia de trabajo
-  save draft: Guardar borrador
   save working copy and next: Guardar copia de trabajo y avanzar
-  save draft and next: Guardar borrador y avanzar
   save working copy and finish: Guardar copia de trabajo y finalizar
-  save draft and finish: Guardar borrador y finalizar
   send for approval: Enviar a aprobar
   sent for approval: Enviado a aprobar
   editworkingcopy: Editar copia de trabajo
@@ -99,7 +96,7 @@ flash:
   product_draft:
     updated: El borrador ha sido guardado con éxito
     approve:
-      success: La propuesta ha sido aplicada exitosamente.
+      success: La propuesta ha sido aplicada con éxito.
       error: La propuesta no puede ser aplicada debido al siguiente error. %error%
     refuse:
       success: La propuesta ha sido rechazada.
@@ -117,13 +114,13 @@ Attributes.title: Atributos
 Completeness.title: Completitud
 publish_product.steps.publish_product_tasklet.title: Publicar producto
 unpublish_product.steps.unpublish_product_tasklet.title: Remover publicación de producto
-approve_product_draft.steps.approve.title: Aprobar la propuesta
+approve_product_draft.steps.approve.title: Aprobar la proposición
 approve_product_draft.steps.refuse.title: Rechazar propuesta
 job_execution.summary:
   approved: aprobado
   refused: rechazada
-  mass_published: Producto publicado
-  mass_unpublished: Producto no publicado
+  mass_published: Productos publicados
+  mass_unpublished: Productos no publicados
   proposal: Propuesta creada
   proposal_deleted: propuesta eliminada
   proposal_updated: propuesta actualizada
@@ -141,7 +138,7 @@ pimee_dashboard:
       date: Fecha
       author: Autor
       product: Producto
-      review: Revisar 	
+      review: Revisión
       empty: No hay borradores de producto para revisar
 pim_enrich:
   mass_edit_action:
@@ -153,7 +150,7 @@ pim_enrich:
       message:
         info: Los productos %nbProducts% seleccionados serán publicados.
     unpublish:
-      label: Despublicar
+      label: Remover publicación
       description: Quitar publicación de los productos seleccionados, la información publicada será eliminada.
       success_flash: Se ha quitado la publicación de los productos seleccionados.
       launched_flash: El trabajo de quitar la publicación de productos está actualmente en ejecución.

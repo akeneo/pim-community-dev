@@ -21,7 +21,7 @@ authentication:
         service_provider:
           title: Service Provider (SP)
           info:
-            description: Définissez ci-dessous les informations sur votre Service Provider. Ce sont des valeur générées automatiquement. Vous pouvez les éditer si besoin. Ces information doivent être fournies par votre administrateur SSO afin de configurer l'IdP.
+            description: Définissez ci-dessous les informations sur votre Service Provider. Ce sont des valeur générées automatiquement. Vous pouvez les modifier si besoin. Ces information doivent être fournies par votre administrateur SSO afin de configurer l'IdP.
       field:
         activation:
           label: SSO activé

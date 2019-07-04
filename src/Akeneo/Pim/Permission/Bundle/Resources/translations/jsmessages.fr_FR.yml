@@ -30,7 +30,7 @@ pimee_enrich.entity.job_instance:
     permissions:
       added: Le groupe {{ group }} sera autorisé à {{ permission }} le profil
       execute: Autorisé à exécuter les profils
-      edit: Autorisé à éditer les profils
+      edit: Autorisé à modifier les profils
       removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le profil
 batch_jobs:
   add_product_value_with_permission_and_rules:

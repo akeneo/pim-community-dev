@@ -32,7 +32,7 @@ pim_reference_entity:
       records: Enregistrements
       attribute: Attributs
       properties: Propriétés
-      permission: Permissions
+      permission: Autorisations
     properties:
       title: Propriétés de l'entité
       identifier: Code

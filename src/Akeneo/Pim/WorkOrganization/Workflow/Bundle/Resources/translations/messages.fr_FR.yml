@@ -62,7 +62,7 @@ pimee_workflow:
     permission:
       own: Examiner / publier
       edit: Modifier
-      view: Voir
+      view: Afficher
   steps:
     product_draft_processor.title: Processeur de proposition
     approve.title: Approuver la proposition
@@ -71,29 +71,26 @@ pimee_workflow:
     published:
       page_title: Produits publiés
       page_subtitle: Edition en masse (1 produit publié)|Edition en masse (%count% produits publiés)
-      title: Choisir une opération
+      title: Choisissez une opération
       subtitle: Choisissez l'action que vous souhaitez réaliser sur le produit publié sélectionné|Choisissez l'action que vous souhaitez réaliser sur les %count% produits publiés sélectionnés
       confirm: Vous êtes sur le point de mettre à jour un produit publié avec les informations suivantes, veuillez confirmer s'il vous plaît|Vous êtes sur le point de mettre à jour les %count% produits publiés sélectionnés, veuillez confirmer s'il vous plait.
       steps:
         first: Choisissez les produits publiés
-        second: Choisir une opération
-        third: Configurer
-        fourth: Confirmer
+        second: Choisissez une opération
+        third: Configurez l'opération à effectuer
+        fourth: Confirmation
 btn:
   publish: Publier
   unpublish: Dépublier
   save working copy: Enregistrer la version de travail
-  save draft: Enregistrer le brouillon
   save working copy and next: Enregistrer la copie de travail et poursuivre
-  save draft and next: Enregistrer le brouillon et continuer
   save working copy and finish: Enregistrer la copie de travail et terminer
-  save draft and finish: Enregistrer le brouillon et terminer
-  send for approval: Soumettre pour validation
-  sent for approval: Soumis à la validation
-  editworkingcopy: Editer la copie de travail
+  send for approval: Envoyer pour approbation
+  sent for approval: Envoyé pour validation
+  editworkingcopy: Modifier la copie de travail
 flash:
   product:
-    updated: La copie de travail a bien été mise à jour
+    updated: La version de travail a bien été mise à jour
     published: Le produit a été publié avec succès.
     unpublished: Le produit a été depublié avec succès.
   product_draft:
@@ -141,7 +138,7 @@ pimee_dashboard:
       date: Date
       author: Auteur
       product: Produit
-      review: Relire
+      review: Examiner
       empty: Il n'y a aucun brouillon de produit à relire
 pim_enrich:
   mass_edit_action:

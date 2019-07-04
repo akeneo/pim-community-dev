@@ -8,10 +8,10 @@ pim_reference_entity:
       wide:
         remove: Eliminar la imatge
         download: Descarregar imatge
-        upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+        upload: Arrossegar i deixar per carrgar o feu clic aquí
       small:
         remove: Eliminar
-        download: Descarregar
+        download: Baixar
         upload: Arrossegar i deixar anar per carregar
   reference_entity:
     validation:
@@ -128,11 +128,12 @@ pim_reference_entity:
         counter: '{{ matchesCount }} resultat|{{ matchesCount }} resultats'
         completeness:
           label: Complet
-          all: Tots
+          all: Tot
           'yes': 'Sí'
           'no': 'No'
         option:
-          all: Tots
+          all: Tot
+          no_value: Selecciona una opció per filtrar
           operator:
             in: A la llista
       column:
@@ -281,3 +282,5 @@ permission:
 pim_catalog_volume:
   axis:
     count_reference_entity: Entitats de referència
+    average_max_records_per_reference_entity: Registres per entitat de referencia
+    average_max_attributes_per_reference_entity: Atributs per entitat de referencia

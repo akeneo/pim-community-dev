@@ -32,8 +32,8 @@ pimee_workflow:
       partial_approve_number: '%owner% ha acceptat els valors pels atributs %attributes_count% pel producte %product%'
       partial_reject: '%owner% ha rebutjat el/s valor/s per a %attributes% pel producte %product%'
       partial_reject_number: '%owner% ha rebutjat els valors pels atributs %attributes_count% pel producte %product%'
-      partial_remove: '%owner% ha eliminat el/s valor/s per a %attributes% pel producte %product%'
-      partial_remove_number: '%owner% ha suprimit els valors pels atributs %attributes_count% pel producte %product%'
+      partial_remove: '%owner% ha eliminat el/s valor/s per a %attributes% del producte %product%'
+      partial_remove_number: '%owner% ha suprimit els valors pels atributs %attributes_count% del producte %product%'
       approve: '%owner% ha acceptat la seva proposta pel producte %product%'
       refuse: '%owner% ha rebutjat la proposta pel producte %product%'
       remove: '%owner% ha rebutjat la proposta pel producte %product%'
@@ -72,7 +72,7 @@ pimee_workflow:
       page_title: Productes publicats
       page_subtitle: Edició en massa (1 producte publicat) | Edició en massa (%count% productes publicats)
       title: Trieu l'operació
-      subtitle: Trieu la operació que voleu realitzar sobre el producte seleccionat i publicat | Trieu la operació que voleu realitzar en els %count% productes seleccionats i publicats
+      subtitle: Trieu la operació que voleu realitzar sobre el producte seleccionat i publicat | Trieu la operació que voleu realitzar sobre els %count% productes seleccionats i publicats
       confirm: Esteu a punt d'actualitzar un producte publicat amb la informació següent, confirmeu. | Esteu a punt d'actualitzar %count% productes publicats amb la informació següent, confirmeu.
       steps:
         first: Triar productes publicats
@@ -81,13 +81,10 @@ pimee_workflow:
         fourth: Confirmar
 btn:
   publish: Publicar
-  unpublish: Despublicar
+  unpublish: Desfer la publicació
   save working copy: Desa una còpia de treball
-  save draft: Desar l'esborrany
   save working copy and next: Desar una còpia de treball i continuar
-  save draft and next: Desar esborrany i continuar
   save working copy and finish: Desar una còpia de treball i finalitzar
-  save draft and finish: Desar l'esborrany i finalitzar
   send for approval: Enviar per a la seva aprovació
   sent for approval: Enviat per a la seva aprovació
   editworkingcopy: Editar la còpia de treball
@@ -153,7 +150,7 @@ pim_enrich:
       message:
         info: Els productes %nbProducts% seleccionats seran publicats.
     unpublish:
-      label: Despublicar
+      label: Desfer la publicació
       description: Anul·lar la publicació dels productes seleccionats. S'esborraran les dades publicades actualment.
       success_flash: Els productes seleccionats s'han despublicat amb èxit.
       launched_flash: El treball de despublicació del(s) producte(s) està en marxa.

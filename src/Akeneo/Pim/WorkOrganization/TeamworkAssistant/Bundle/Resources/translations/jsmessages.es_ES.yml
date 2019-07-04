@@ -64,3 +64,4 @@ pim_notification:
   types:
     project_created: Un nuevo proyecto para usted
     project_finished: Proyecto finalizado
+    project_calculation: Cálculo del proyecto
