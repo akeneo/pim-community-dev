@@ -97,6 +97,22 @@ class Importer implements ImporterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getImportedFilesFromNames(UploadContext $uploadContext, array $fileNames)
+    {
+        $importDir = $uploadContext->getTemporaryImportDirectory();
+        $importedFiles = [];
+        if (is_dir($importDir)) {
+            $importedFiles = array_map(function ($fileName) use ($importDir) {
+                return new \SplFileInfo($importDir . DIRECTORY_SEPARATOR . $fileName);
+            }, $fileNames);
+        }
+
+        return $importedFiles;
+    }
+
+    /**
      * Check for valid filename :
      * - code must be unique if not localized
      * - if twos file exist with the same code, one localized, one not, then the two are invalid

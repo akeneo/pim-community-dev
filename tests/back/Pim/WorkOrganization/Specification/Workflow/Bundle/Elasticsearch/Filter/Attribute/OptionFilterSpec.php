@@ -88,6 +88,7 @@ class OptionFilterSpec extends ObjectBehavior
                 ]
             ]
         )->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($color, Operators::IS_EMPTY, ['black']);

@@ -65,7 +65,7 @@ class Index extends Grid
         $dialog = $this->getDialog();
 
         return $this->spin(function () use ($dialog) {
-            return $dialog->find('css', '.has-switch');
+            return $dialog->find('css', '.switch');
         }, 'Localizable switch not found.');
     }
 
@@ -75,6 +75,7 @@ class Index extends Grid
     public function changeLocalizableSwitch($state)
     {
         $switch = $this->getLocalizableSwitch();
+
         $animationBlock = $switch->find('css', '.switch-animate');
         if (!$animationBlock->hasClass(sprintf('switch-%s', $state))) {
             $animationBlock->find('css', 'label.switch-small')->click();
@@ -102,7 +103,7 @@ class Index extends Grid
         $dialog = $this->getDialog();
 
         return $this->spin(function () use ($dialog) {
-            return $dialog->find('css', '.reference-field .asset-uploader');
+            return $dialog->find('css', '.asset-uploader');
         }, 'Cannot find the reference upload zone');
     }
 
