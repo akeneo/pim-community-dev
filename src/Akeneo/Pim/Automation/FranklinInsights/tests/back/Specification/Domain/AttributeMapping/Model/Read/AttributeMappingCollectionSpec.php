@@ -154,6 +154,6 @@ class AttributeMappingCollectionSpec extends ObjectBehavior
             ->addAttribute($attrSize)
             ->addAttribute($attrColor)
         ;
-        $this->formatForFranklin()->shouldReturn($expectedMapping);
+        $this->normalize()->shouldReturn($expectedMapping);
     }
 }

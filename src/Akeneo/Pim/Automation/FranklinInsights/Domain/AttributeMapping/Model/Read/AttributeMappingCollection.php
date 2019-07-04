@@ -87,7 +87,7 @@ class AttributeMappingCollection implements \IteratorAggregate
         $this->sortByStatus();
     }
 
-    public function formatForFranklin()
+    public function normalize()
     {
         $mapping = [];
         foreach ($this as $attributeMapping) {

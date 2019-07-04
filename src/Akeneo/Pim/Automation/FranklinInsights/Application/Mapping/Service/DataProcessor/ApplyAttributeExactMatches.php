@@ -85,7 +85,7 @@ class ApplyAttributeExactMatches
         try {
             $this->saveAttributesMappingByFamilyHandler->handle(new SaveAttributesMappingByFamilyCommand(
                 $familyCode,
-                $attributeMappingCollection->formatForFranklin()
+                $attributeMappingCollection->normalize()
             ));
         } catch (\Exception $e) {
             $this->logger->error(
