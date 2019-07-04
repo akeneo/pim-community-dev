@@ -362,4 +362,21 @@
     padding-right: 0;
     text-align: center;
   }
+
+  &--ghost {
+    padding:0 15px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-size: @AknDefaultFontSize;
+    border:1px solid @AknMediumGrey;
+    color: @AknSlateGrey;
+
+    &:hover {
+      border:1px solid @AknGrey;
+    }
+    &:active {
+      border:1px solid @AknSlateGrey;
+      background: @AknMediumGrey;
+    }
+  }
 }
