@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -33,7 +32,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 
@@ -265,7 +263,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
         $this->assertSame($labelCodesExpected, $labelCodesFound);
         foreach ($assetFamilyExpected->getLabelCodes() as $localeCode) {
             $this->assertEquals($assetFamilyExpected->getLabel($localeCode),
-                $assetFamilyFound->getLabel($localeCode));
+                                $assetFamilyFound->getLabel($localeCode));
         }
     }
 

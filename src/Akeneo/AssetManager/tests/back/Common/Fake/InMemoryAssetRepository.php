@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Fake;
 
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -20,6 +22,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -29,6 +32,15 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
 {
     /** @var Asset[] */
     protected $assets = [];
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     public function create(Asset $asset): void
     {
@@ -42,6 +54,15 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
             $this->assets[$asset->getIdentifier()->__toString()] = $asset;
 
             return;
+        } finally {
+            $this->eventDispatcher->dispatch(
+                AssetCreatedEvent::class,
+                new AssetCreatedEvent(
+                    $asset->getIdentifier(),
+                    $asset->getCode(),
+                    $asset->getAssetFamilyIdentifier()
+                )
+            );
         }
 
         throw new \RuntimeException('Asset already exists');
@@ -54,6 +75,11 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
         }
 
         $this->assets[$asset->getIdentifier()->__toString()] = $asset;
+
+        $this->eventDispatcher->dispatch(
+            AssetUpdatedEvent::class,
+            new AssetUpdatedEvent($asset->getIdentifier(), $asset->getCode(), $asset->getAssetFamilyIdentifier())
+        );
     }
 
     public function getByIdentifier(AssetIdentifier $identifier): Asset

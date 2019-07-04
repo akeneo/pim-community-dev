@@ -12,6 +12,8 @@ services:
 
     akeneo_assetmanager.infrastructure.persistence.repository.asset:
         class: Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository
+        arguments:
+            - '@event_dispatcher'
 
     akeneo_assetmanager.infrastructure.persistence.repository.attribute:
         class: Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository
@@ -137,6 +139,10 @@ services:
 
     akeneo_assetmanager.infrastructure.persistence.query.find_property_accessible_asset:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindPropertyAccessibleAsset
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.property_accessible_asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
 
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetIdentifiersForQuery
@@ -234,6 +240,10 @@ services:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindImageAttributeCodes
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+    # Rule runner
+    akeneo_assetmanager.infrastructure.rule_template.rule_engine_synchronised_runner:
+        class: Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy
 
     # Third party services
     oro_security.security_facade:

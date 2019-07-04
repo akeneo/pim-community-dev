@@ -87,7 +87,7 @@ SQL;
         return AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
     }
 
-    private function hydrateAsset($result): PropertyAccessibleAsset
+    private function hydrateAsset(array $result): PropertyAccessibleAsset
     {
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifier($result);
         $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);

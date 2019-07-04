@@ -59,7 +59,6 @@ class RuleCompiler
      */
     public function compile(RuleTemplate $ruleTemplate, PropertyAccessibleAsset $propertyAccessibleAsset): CompiledRule
     {
-
         $compiledConditions = $this->compileConditionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
         $compiledActions = $this->compileActionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
 
@@ -75,12 +74,6 @@ class RuleCompiler
 //        ];
 //
 //        return $this->ruleDenormalizer->denormalize($ruleData, Rule::class);
-    }
-
-    private function compileTemplateWithPropertyAccessibleAsset(
-        RuleTemplate $ruleTemplate,
-        PropertyAccessibleAsset $propertyAccessibleAsset
-    ): array {
     }
 
     private function compileConditionsWithPropertyAccessibleAsset(

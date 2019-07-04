@@ -8,3 +8,6 @@ services:
         class: Akeneo\AssetManager\Common\Fake\EventSubscriberStub
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo_assetmanager.infrastructure.rule_template.rule_engine_synchronised_runner:
+        class: Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy

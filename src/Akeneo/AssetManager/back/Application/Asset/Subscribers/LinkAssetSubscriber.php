@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
-use Akeneo\AssetManager\Domain\Query\Asset\FindPropertyAccessibleAssetInterface;
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleExecutor;
+use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleTemplateExecutor;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -15,10 +14,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LinkAssetSubscriber implements EventSubscriberInterface
 {
-    /** @var RuleExecutor */
+    /** @var RuleTemplateExecutor */
     private $ruleExecutor;
 
-    public function __construct(RuleExecutor $ruleExecutor)
+    public function __construct(RuleTemplateExecutor $ruleExecutor)
     {
         $this->ruleExecutor = $ruleExecutor;
     }

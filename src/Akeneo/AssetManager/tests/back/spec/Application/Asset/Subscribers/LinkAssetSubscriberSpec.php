@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleExecutor;
+use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleTemplateExecutor;
 use Akeneo\AssetManager\Application\Asset\Subscribers\LinkAssetSubscriber;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -19,7 +19,7 @@ use Prophecy\Argument;
  */
 class LinkAssetSubscriberSpec extends ObjectBehavior
 {
-    function let(RuleExecutor $ruleTemplateExecutor)
+    function let(RuleTemplateExecutor $ruleTemplateExecutor)
     {
         $this->beConstructedWith($ruleTemplateExecutor);
     }
@@ -38,7 +38,7 @@ class LinkAssetSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_triggers_the_rule_template_executor(RuleExecutor $ruleTemplateExecutor)
+    function it_triggers_the_rule_template_executor(RuleTemplateExecutor $ruleTemplateExecutor)
     {
         $expectedAssetCode = 'starck';
         $expectedAssetFamilyIdentifier = 'designer';

@@ -14,8 +14,7 @@ services:
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.link_asset:
         class: Akeneo\AssetManager\Application\Asset\Subscribers\LinkAssetSubscriber
         arguments:
-            - '@akeneo_assetmanager.infrastructure.rule.rule_executor'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_property_accessible_asset'
+            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_executor'
         tags:
             - { name: kernel.event_subscriber }
 
