@@ -40,7 +40,6 @@
         "ext-fileinfo": "*",
         "ext-gd": ">=2.0",
         "ext-imagick": "*",
-        "ext-icu": ">=4.2",
         "ext-intl": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*",
