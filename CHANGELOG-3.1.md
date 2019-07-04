@@ -1,5 +1,11 @@
 # 3.1.x
 
+# 3.1.10 (2019-07-04)
+
+## Bug fixes
+
+- PIM-8447: Fix deformed images in dropdowns and grids
+
 # 3.1.9 (2019-07-02)
 
 ## Bug fixes
