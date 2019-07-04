@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Behat\Hook\Scope\BeforeStepScope;
 use Context\EnterpriseAssertionContext;
 use Context\EnterpriseCatalogConfigurationContext;
 use Context\EnterpriseFeatureContext;
@@ -42,5 +45,23 @@ class FeatureContext extends EnterpriseFeatureContext
         $this->contexts['hook'] = $env->getContext(HookContext::class);
         $this->contexts['assertions'] = $env->getContext(EnterpriseAssertionContext::class);
         $this->contexts['webUser'] = $env->getContext(EnterpriseWebUser::class);
+    }
+
+    /**
+     * @param BeforeStepScope $scope
+     * @AfterStep
+     */
+    public function clearConnectionStatusCache(AfterStepScope $scope): void
+    {
+        if ($scope->getStep()->getKeywordType() === 'Given') {
+            $this->getConnectionStatusHandler()->clearCache();
+        }
+    }
+
+    private function getConnectionStatusHandler(): GetConnectionStatusHandler
+    {
+        return $this
+            ->getContainer()
+            ->get('akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler');
     }
 }

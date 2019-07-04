@@ -99,6 +99,21 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         $this->handle(new GetConnectionStatusQuery(true))->shouldBeLike($expectedConnectionStatus);
     }
 
+    public function it_caches_connection_status_to_avoid_multiple_calls(
+        ConfigurationRepositoryInterface $configurationRepository,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+    ) {
+        $configurationRepository->find()->shouldBeCalledTimes(1);
+        $identifiersMappingRepository->find()->shouldBeCalledTimes(1);
+        $productSubscriptionRepository->count()->shouldBeCalledTimes(1);
+
+        $expectedConnectionStatus = new ConnectionStatus(true, false, true, 0);
+
+        $this->handle(new GetConnectionStatusQuery(false))->shouldBeLike($expectedConnectionStatus);
+        $this->handle(new GetConnectionStatusQuery(false))->shouldBeLike($expectedConnectionStatus);
+    }
+
     /**
      * {@inheritdoc}
      */

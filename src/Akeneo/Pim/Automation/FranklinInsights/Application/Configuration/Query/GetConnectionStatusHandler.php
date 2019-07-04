@@ -39,6 +39,9 @@ class GetConnectionStatusHandler
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
+    /** @var ConnectionStatus */
+    private $connectionStatus;
+
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param AuthenticationProviderInterface $authenticationProvider
@@ -64,22 +67,31 @@ class GetConnectionStatusHandler
      */
     public function handle(GetConnectionStatusQuery $query): ConnectionStatus
     {
-        $identifiersMapping = $this->identifiersMappingRepository->find();
-        $configuration = $this->configurationRepository->find();
-        $productSubscriptionCount = $this->productSubscriptionRepository->count();
+        if (null === $this->connectionStatus) {
+            $identifiersMapping = $this->identifiersMappingRepository->find();
+            $configuration = $this->configurationRepository->find();
+            $productSubscriptionCount = $this->productSubscriptionRepository->count();
 
-        $isActive = $configuration->getToken() instanceof Token;
+            $isActive = $configuration->getToken() instanceof Token;
 
-        $isValid = false;
-        if ($query->checkTokenValidity() && true === $isActive) {
-            $isValid = $this->authenticationProvider->authenticate($configuration->getToken());
+            $isValid = false;
+            if ($query->checkTokenValidity() && true === $isActive) {
+                $isValid = $this->authenticationProvider->authenticate($configuration->getToken());
+            }
+
+            $this->connectionStatus = new ConnectionStatus(
+                $isActive,
+                $isValid,
+                $identifiersMapping->isValid(),
+                $productSubscriptionCount
+            );
         }
 
-        return new ConnectionStatus(
-            $isActive,
-            $isValid,
-            $identifiersMapping->isValid(),
-            $productSubscriptionCount
-        );
+        return $this->connectionStatus;
+    }
+
+    public function clearCache(): void
+    {
+        $this->connectionStatus = null;
     }
 }
