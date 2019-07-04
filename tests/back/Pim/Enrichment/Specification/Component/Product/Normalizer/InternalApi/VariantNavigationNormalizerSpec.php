@@ -4,19 +4,18 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Inter
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\EntityWithFamilyVariantNormalizer;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VariantNavigationNormalizerSpec extends ObjectBehavior
 {
     function let(
         LocaleRepositoryInterface $localeRepository,
-        EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
+        NormalizerInterface $entityWithFamilyVariantNormalizer
     ) {
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
 
@@ -28,14 +27,8 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         Collection $attributeSets,
         \ArrayIterator $attributeSetsIterator,
-        Collection $axesSetsOne,
-        \ArrayIterator $axesSetsOneIterator,
-        Collection $axesSetsTwo,
-        \ArrayIterator $axesSetsTwoIterator,
         VariantAttributeSetInterface $attributeSetOne,
         VariantAttributeSetInterface $attributeSetTwo,
-        AttributeInterface $metricAttribute,
-        AttributeInterface $sizeAttribute,
         ProductModelInterface $rootProductModel
     ) {
         // Attribute sets of the family variant
@@ -86,14 +79,8 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         Collection $attributeSets,
         \ArrayIterator $attributeSetsIterator,
-        Collection $axesSetsOne,
-        \ArrayIterator $axesSetsOneIterator,
-        Collection $axesSetsTwo,
-        \ArrayIterator $axesSetsTwoIterator,
         VariantAttributeSetInterface $attributeSetOne,
         VariantAttributeSetInterface $attributeSetTwo,
-        AttributeInterface $metricAttribute,
-        AttributeInterface $sizeAttribute,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $productModel
     ) {
@@ -149,14 +136,8 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         Collection $attributeSets,
         \ArrayIterator $attributeSetsIterator,
-        Collection $axesSetsOne,
-        \ArrayIterator $axesSetsOneIterator,
-        Collection $axesSetsTwo,
-        \ArrayIterator $axesSetsTwoIterator,
         VariantAttributeSetInterface $attributeSetOne,
         VariantAttributeSetInterface $attributeSetTwo,
-        AttributeInterface $metricAttribute,
-        AttributeInterface $sizeAttribute,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $productModel,
         ProductInterface $variantProduct

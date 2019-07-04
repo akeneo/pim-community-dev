@@ -12,7 +12,6 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Doctrine\DBAL\Driver\Connection;
@@ -98,6 +97,11 @@ class JobQueueConsumerCommandIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecutionInQueue('infinite_loop_job');
 
+        $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
+        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+
+        $this->getQueue()->publish($jobExecutionMessage);
+
         $daemonProcess = $this->jobLauncher->launchConsumerOnceInBackground();
 
         $jobExecutionProcessPid = $this->getJobExecutionProcessPid($daemonProcess);
@@ -155,16 +159,6 @@ class JobQueueConsumerCommandIntegration extends TestCase
         $this->assertEquals(ExitStatus::FAILED, $jobExecution->getExitStatus()->getExitCode());
     }
 
-    private function createJobExecutionInQueue(string $jobInstanceCode): JobExecution
-    {
-        $jobExecution = $this->createJobExecution($jobInstanceCode, 'mary');
-        $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
-        $this->getQueue()->publish($jobExecutionMessage);
-
-        return $jobExecution;
-    }
-
     /**
      * @param string $jobInstanceCode
      * @param string $user
@@ -197,6 +191,16 @@ class JobQueueConsumerCommandIntegration extends TestCase
         $jobExecution = $this->get('akeneo_batch.job_repository')->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user);
         $this->get('akeneo_batch.job_repository')->updateJobExecution($jobExecution);
+
+        return $jobExecution;
+    }
+
+    private function createJobExecutionInQueue(string $jobInstanceCode): JobExecution
+    {
+        $jobExecution = $this->createJobExecution($jobInstanceCode, 'mary');
+        $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
+        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $this->getQueue()->publish($jobExecutionMessage);
 
         return $jobExecution;
     }

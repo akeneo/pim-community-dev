@@ -84,9 +84,7 @@ class UserManager implements UserProviderInterface
     {
         if (0 !== strlen($password = $user->getPlainPassword())) {
             $encoder = $this->getEncoder($user);
-
             $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-            $user->eraseCredentials();
         }
     }
 

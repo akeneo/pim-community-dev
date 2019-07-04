@@ -241,6 +241,20 @@ define(
 
                 e.preventDefault();
             },
+
+            _enableInput: function() {
+                NumberFilter.prototype._enableInput.apply(this, arguments);
+                this.$('.AknFilterChoice-inputContainer').show();
+                this.$('.AknFilterChoice-unit').show();
+                this._updateCriteriaSelectorPosition();
+            },
+
+            _disableInput: function() {
+                NumberFilter.prototype._disableInput.apply(this, arguments);
+                this.$('.AknFilterChoice-inputContainer').hide();
+                this.$('.AknFilterChoice-unit').hide();
+                this._updateCriteriaSelectorPosition();
+            }
         });
     }
 );

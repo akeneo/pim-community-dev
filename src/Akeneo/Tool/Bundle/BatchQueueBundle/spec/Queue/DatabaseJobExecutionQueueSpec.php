@@ -10,9 +10,8 @@ use Prophecy\Argument;
 
 class DatabaseJobExecutionQueueSpec extends ObjectBehavior
 {
-    function let(
-        JobExecutionMessageRepository $jobExecutionMessageRepository
-    ) {
+    function let(JobExecutionMessageRepository $jobExecutionMessageRepository)
+    {
         $this->beConstructedWith($jobExecutionMessageRepository);
     }
 

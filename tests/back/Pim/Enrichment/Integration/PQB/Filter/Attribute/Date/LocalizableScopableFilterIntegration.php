@@ -28,7 +28,13 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
             'scopable'            => true
         ]);
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_localizable_scopable_date']
+        ]);
+
         $this->createProduct('product_one', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_scopable_date' => [
                     ['data' => '2016-04-23', 'locale' => 'en_US', 'scope' => 'ecommerce'],
@@ -40,6 +46,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_two', [
+            'family' => 'a_family',
             'values' => [
                 'a_localizable_scopable_date' => [
                     ['data' => '2016-09-23', 'locale' => 'en_US', 'scope' => 'ecommerce'],
@@ -49,7 +56,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorInferior()

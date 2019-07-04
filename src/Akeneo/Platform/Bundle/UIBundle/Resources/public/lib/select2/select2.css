@@ -76,6 +76,7 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
 
 .select2-container.select2-allowclear .select2-choice .select2-chosen {
     margin-right: 42px;
+    width: calc(100% - 60px);
 }
 
 .select2-container .select2-choice > .select2-chosen {

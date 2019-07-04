@@ -25,31 +25,41 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_text_area']
+        ]);
+
         $this->createProduct('cat', [
+            'family' => 'a_family',
             'values' => [
                 'a_text_area' => [['data' => 'cat', 'locale' => null, 'scope' => null]]
             ]
         ]);
 
         $this->createProduct('cattle', [
+            'family' => 'a_family',
             'values' => [
                 'a_text_area' => [['data' => 'cattle', 'locale' => null, 'scope' => null]]
             ]
         ]);
 
         $this->createProduct('dog', [
+            'family' => 'a_family',
             'values' => [
                 'a_text_area' => [['data' => 'dog', 'locale' => null, 'scope' => null]]
             ]
         ]);
 
         $this->createProduct('best_dog', [
+            'family' => 'a_family',
             'values' => [
                 'a_text_area' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]]
             ]
         ]);
 
         $this->createProduct('best_cat', [
+            'family' => 'a_family',
             'values' => [
                 'a_text_area' => [
                     [
@@ -62,6 +72,7 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('best_rabbit', [
+            'family' => 'a_family',
             'values' => [
                 'a_text_area' => [
                     [
@@ -73,7 +84,7 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty_product', []);
+        $this->createProduct('empty_product', ['family' => 'a_family']);
     }
 
     public function testOperatorStartsWith()

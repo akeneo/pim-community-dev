@@ -72,3 +72,15 @@
 .note-popover .popover .popover-content, .note-toolbar {
   padding: 0;
 }
+
+.note-link-dialog.modal.in {
+  @padding: 20px;
+  @modalWidth: @AknMaxFormWidth + 2 * @padding;
+  @modalHeight: 340px;
+  width: @modalWidth;
+  height: @modalHeight;
+  transform: translate(-@modalWidth/2, -@modalHeight/2);
+  left: 50%;
+  top: 50%;
+  padding: @padding;
+}

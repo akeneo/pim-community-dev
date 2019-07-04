@@ -20,8 +20,6 @@ Akeneo\UserManagement\Component\Model\User:
         plainPassword:
             - NotBlank:
                 groups:     [Registration]
-            - Length:
-                min:        2
         enabled:
             - NotNull:      ~
         roles:

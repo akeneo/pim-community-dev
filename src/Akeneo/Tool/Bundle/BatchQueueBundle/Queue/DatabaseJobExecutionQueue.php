@@ -24,12 +24,8 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
     /** @var JobExecutionMessageRepository */
     private $jobExecutionMessageRepository;
 
-    /**
-     * @param JobExecutionMessageRepository $jobExecutionMessageRepository
-     */
-    public function __construct(
-        JobExecutionMessageRepository $jobExecutionMessageRepository
-    ) {
+    public function __construct(JobExecutionMessageRepository $jobExecutionMessageRepository)
+    {
         $this->jobExecutionMessageRepository = $jobExecutionMessageRepository;
     }
 

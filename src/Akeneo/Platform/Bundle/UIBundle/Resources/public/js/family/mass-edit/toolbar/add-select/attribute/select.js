@@ -21,16 +21,28 @@ define(
         FamilyAddAttributeSelect
     ) {
         return FamilyAddAttributeSelect.extend({
+            fetchAttributeGroups(attributes) {
+                const groupCodes = _.unique(_.pluck(attributes, 'group'));
+
+                return FetcherRegistry.getFetcher('attribute-group')
+                    .fetchByIdentifiers(groupCodes).then((attributeGroups) => {
+                        return this.populateGroupProperties(attributes, attributeGroups);
+                    });
+            },
+
             /**
              * {@inheritdoc}
              */
             fetchItems: function (searchParameters) {
                 return this.getItemsToExclude()
-                    .then(function (identifiersToExclude) {
+                    .then((identifiersToExclude) => {
                         searchParameters.options.excluded_identifiers = identifiersToExclude;
 
-                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
-                    }.bind(this));
+                        return FetcherRegistry.getFetcher(this.mainFetcher)
+                            .search(searchParameters).then(attributes => {
+                                return this.fetchAttributeGroups(attributes)
+                            });
+                    });
             },
 
             /**

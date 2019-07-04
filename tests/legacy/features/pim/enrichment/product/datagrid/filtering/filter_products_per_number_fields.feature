@@ -25,7 +25,7 @@ Feature: Filter products by number field
     And I should see products postit, book and mug
     And I should be able to use the following filters:
       | filter | operator     | value | result |
-      | count  | is empty     |       | book   |
+      | count  | is empty     |       |        |
       | count  | is not empty |       | postit |
       | count  | >            | 200   |        |
       | count  | <            | 200   |        |
@@ -36,7 +36,7 @@ Feature: Filter products by number field
       | count  | =            | 200   | postit |
       | count  | =            | 0     |        |
       | count  | >            | 0     | postit |
-      | rate   | is empty     |       | mug    |
+      | rate   | is empty     |       |        |
       | rate   | is not empty |       | book   |
       | rate   | >            | 9.5   |        |
       | rate   | <=           | 9.5   | book   |

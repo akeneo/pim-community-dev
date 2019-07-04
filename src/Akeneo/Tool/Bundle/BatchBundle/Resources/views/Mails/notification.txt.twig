@@ -8,5 +8,13 @@ Results:
   - {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
 {% endfor %}
 
+{% if akeneo_pim_url is not empty %}
+You can view full summary page at :
+{{ akeneo_pim_url }}/#{{ path('pim_enrich_job_tracker_show', {'id': jobExecution.id}) }}
+{% else %}
+You should set the AKENEO_PIM_URL environment variable to have a link to the Process Tracker
+{% endif %}
+
+
 --
 Akeneo Batch
