@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection;
 
+use Countable;
+
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class PublishedProductCompletenessCollection implements \IteratorAggregate
+class PublishedProductCompletenessCollection implements \IteratorAggregate, Countable
 {
     /** @var int */
     private $publishedProductId;
@@ -46,5 +48,10 @@ class PublishedProductCompletenessCollection implements \IteratorAggregate
     {
         $key = sprintf('%s-%s', $completeness->channelCode(), $completeness->localeCode());
         $this->completenesses[$key] = $completeness;
+    }
+
+    public function count()
+    {
+        return count($this->completenesses);
     }
 }

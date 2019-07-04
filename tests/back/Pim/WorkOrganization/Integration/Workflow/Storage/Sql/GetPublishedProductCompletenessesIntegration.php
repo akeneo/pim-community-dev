@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Storage\Sql;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -49,7 +50,9 @@ class GetPublishedProductCompletenessesIntegration extends TestCase
         );
 
         $completenesses = $this->getCompletenesses($this->getPublishedProductId('productA'));
-        Assert::assertContainsOnlyInstancesOf(PublishedProductCompleteness::class, $completenesses);
+        foreach ($completenesses as $completeness) {
+            Assert::assertInstanceOf(PublishedProductCompleteness::class, $completeness);
+        }
         // ecommerce + en_US
         // tablet + (en_US, de_DE, fr_FR)
         // ecommerce_china + (en_US, zh_CN)
@@ -92,7 +95,7 @@ class GetPublishedProductCompletenessesIntegration extends TestCase
             ]
         );
 
-        Assert::assertSame([], $this->getCompletenesses($this->getPublishedProductId('product_without_family')));
+        Assert::assertSame([], $this->getCompletenesses($this->getPublishedProductId('product_without_family'))->getIterator()->getArrayCopy());
     }
 
     protected function getConfiguration()
@@ -119,14 +122,14 @@ class GetPublishedProductCompletenessesIntegration extends TestCase
         return $publishedProductId ? (int)$publishedProductId : null;
     }
 
-    private function getCompletenesses(int $publishedProductId): array
+    private function getCompletenesses(int $publishedProductId): PublishedProductCompletenessCollection
     {
         return $this->get('pimee_workflow.query.get_published_product_completeneses')
                     ->fromPublishedProductId($publishedProductId);
     }
 
     private function assertCompletenessContains(
-        array $completenesses,
+        PublishedProductCompletenessCollection $completenesses,
         string $channelCode,
         string $localeCode,
         int $requiredCount,

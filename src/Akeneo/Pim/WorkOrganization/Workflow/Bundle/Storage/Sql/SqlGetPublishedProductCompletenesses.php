@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use Doctrine\DBAL\Connection;
 
@@ -30,7 +31,7 @@ final class SqlGetPublishedProductCompletenesses implements GetPublishedProductC
         $this->connection = $connection;
     }
 
-    public function fromPublishedProductId(int $publishedProductId): array
+    public function fromPublishedProductId(int $publishedProductId): PublishedProductCompletenessCollection
     {
         $sql = <<<SQL
 SELECT 
@@ -48,7 +49,7 @@ GROUP BY completeness.required_count, channel.code, locale.code
 SQL;
         $rows = $this->connection->executeQuery($sql, ['publishedProductId' => $publishedProductId])->fetchAll();
 
-        return array_map(
+        return new PublishedProductCompletenessCollection($publishedProductId, array_map(
             function (array $row) use ($publishedProductId): PublishedProductCompleteness {
                 return new PublishedProductCompleteness(
                     $row['channel_code'],
@@ -58,6 +59,6 @@ SQL;
                 );
             },
             $rows
-        );
+        ));
     }
 }

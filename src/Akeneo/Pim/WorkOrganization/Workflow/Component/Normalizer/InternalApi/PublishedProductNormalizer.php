@@ -11,28 +11,133 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
+use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer as StandardPublishedProductNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Published product normalizer
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class PublishedProductNormalizer implements NormalizerInterface
+class PublishedProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var string[] */
-    protected $supportedFormat = ['internal_api'];
+    /** @var StandardPublishedProductNormalizer */
+    private $standardPublishedProductNormalizer;
+
+    /** @var MissingAssociationAdder */
+    private $missingAssociationAdder;
+
+    /** @var EntityWithFamilyValuesFillerInterface */
+    private $productValuesFiller;
+
+    /** @var AttributeConverterInterface */
+    private $localizedConverter;
+
+    /** @var ConverterInterface */
+    private $productValueConverter;
 
     /** @var NormalizerInterface */
-    protected $normalizer;
+    private $versionNormalizer;
 
-    /**
-     * @param NormalizerInterface $normalizer
-     */
-    public function __construct(NormalizerInterface $normalizer)
-    {
-        $this->normalizer = $normalizer;
+    /** @var VersionManager */
+    private $versionManager;
+
+    /** @var UserContext */
+    private $userContext;
+
+    /** @var FormProviderInterface */
+    private $formProvider;
+
+    /** @var StructureVersionProviderInterface */
+    private $structureVersionProvider;
+
+    /** @var GetPublishedProductCompletenesses */
+    private $getPublishedProductCompletenesses;
+
+    /** @var CompletenessCalculatorInterface */
+    private $completenessCalculator;
+
+    /** @var NormalizerInterface */
+    private $incompleteValuesNormalizer;
+
+    /** @var FileNormalizer */
+    private $imageNormalizer;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    /** @var ProductNormalizer */
+    private $internalApiProductNormalizer;
+
+    /** @var NormalizerInterface */
+    private $pimNormalizer;
+
+    /** @var AuthorizationCheckerInterface */
+    private $authorizationChecker;
+
+    /** @var CategoryAccessRepository */
+    private $categoryAccessRepo;
+
+    public function __construct(
+        StandardPublishedProductNormalizer $standardPublishedProductNormalizer,
+        MissingAssociationAdder $missingAssociationAdder,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $productValueConverter,
+        NormalizerInterface $versionNormalizer,
+        VersionManager $versionManager,
+        UserContext $userContext,
+        FormProviderInterface $formProvider,
+        StructureVersionProviderInterface $structureVersionProvider,
+        GetPublishedProductCompletenesses $getPublishedProductCompletenesses,
+        CompletenessCalculatorInterface $completenessCalculator,
+        NormalizerInterface $incompleteValuesNormalizer,
+        ImageNormalizer $imageNormalizer,
+        LocaleRepositoryInterface $localeRepository,
+        ProductNormalizer $internalApiProductNormalizer,
+        AuthorizationCheckerInterface $authorizationChecker,
+        CategoryAccessRepository $categoryAccessRepo
+    ) {
+        $this->standardPublishedProductNormalizer = $standardPublishedProductNormalizer;
+        $this->missingAssociationAdder = $missingAssociationAdder;
+        $this->productValuesFiller = $productValuesFiller;
+        $this->localizedConverter = $localizedConverter;
+        $this->productValueConverter = $productValueConverter;
+        $this->versionNormalizer = $versionNormalizer;
+        $this->versionManager = $versionManager;
+        $this->userContext = $userContext;
+        $this->formProvider = $formProvider;
+        $this->structureVersionProvider = $structureVersionProvider;
+        $this->getPublishedProductCompletenesses = $getPublishedProductCompletenesses;
+        $this->completenessCalculator = $completenessCalculator;
+        $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
+        $this->imageNormalizer = $imageNormalizer;
+        $this->localeRepository = $localeRepository;
+        $this->internalApiProductNormalizer = $internalApiProductNormalizer;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->categoryAccessRepo = $categoryAccessRepo;
     }
 
     /**
@@ -40,15 +145,105 @@ class PublishedProductNormalizer implements NormalizerInterface
      */
     public function normalize($publishedProduct, $format = null, array $context = [])
     {
-        $normalizedProduct = $this->normalizer->normalize($publishedProduct, 'standard', $context);
-        $normalizedProduct['meta'] = array_merge(
-            $normalizedProduct['meta'],
-            [
-                'original_product_id' => $publishedProduct->getOriginalProduct()->getId()
-            ]
+        $this->missingAssociationAdder->addMissingAssociations($publishedProduct);
+        $this->productValuesFiller->fillMissingValues($publishedProduct);
+
+        $normalizedProduct = $this->standardPublishedProductNormalizer->normalize($publishedProduct, 'standard', $context);
+
+        $normalizedProduct['values'] = $this->productValueConverter->convert(
+            $this->localizedConverter->convertToLocalizedFormats($normalizedProduct['values'], $context)
         );
 
+        $userTimezone = $this->userContext->getUserTimezone();
+
+        $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($publishedProduct, Attributes::OWN_PRODUCTS);
+
+        $normalizedProduct['parent_associations'] = [];
+
+        $normalizedProduct['meta'] = [
+            'form' => $this->formProvider->getForm($publishedProduct),
+            'id' => $publishedProduct->getId(),
+            'created' => $this->normalizeVersion($this->versionManager->getOldestLogEntry($publishedProduct), $userTimezone),
+            'updated' => $this->normalizeVersion($this->versionManager->getNewestLogEntry($publishedProduct), $userTimezone),
+            'model_type' => 'product',
+            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
+            'completenesses' => $this->getNormalizedCompletenesses($publishedProduct),
+            'required_missing_attributes' => $this->incompleteValuesNormalizer->normalize($publishedProduct),
+            'image' => $this->imageNormalizer->normalize($publishedProduct->getImage()),
+            'ascendant_category_ids' => [],
+            'variant_navigation' => [],
+            'attributes_for_this_level' => [],
+            'attributes_axes' => [],
+            'parent_attributes' => [],
+            'family_variant' => null,
+            'level' => null,
+            'label' => $this->getLabels($publishedProduct, $context['channel'] ?? null),
+            'associations' => $this->getAssociationMeta($publishedProduct),
+            'published' => null,
+            'owner_groups' => $this->pimNormalizer->normalize($ownerGroups, 'internal_api', $context),
+            'is_owner' => $this->authorizationChecker->isGranted(Attributes::OWN, $publishedProduct),
+            'working_copy' => $this->internalApiProductNormalizer->normalize($publishedProduct->getOriginalProduct(), 'standard', $context),
+            'draft_status' => null,
+            'original_product_id' => $publishedProduct->getOriginalProduct()->getId(),
+        ];
+
         return $normalizedProduct;
+    }
+
+
+    private function getLabels(PublishedProductInterface $publishedProduct, ?string $scopeCode): array
+    {
+        $labels = [];
+
+        foreach ($this->localeRepository->getActivatedLocaleCodes() as $localeCode) {
+            $labels[$localeCode] = $publishedProduct->getLabel($localeCode, $scopeCode);
+        }
+
+        return $labels;
+    }
+
+    private function getAssociationMeta(PublishedProductInterface $publishedProduct): array
+    {
+        $associations = [];
+
+        foreach ($publishedProduct->getAssociations() as $association) {
+            $associations[$association->getAssociationType()->getCode()]['groupIds'] = $association->getGroups()->map(
+                function ($group) {
+                    return $group->getId();
+                }
+            )->toArray();
+        }
+
+        return $associations;
+    }
+
+    private function normalizeVersion(?VersionInterface $version, string $userTimezone): ?array
+    {
+        if (null === $version) {
+            return null;
+        }
+
+        return $this->versionNormalizer->normalize($version, 'internal_api', ['timezone' => $userTimezone]);
+    }
+
+    private function getNormalizedCompletenesses(PublishedProductInterface $publishedProduct): array
+    {
+        $completenessCollection = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
+        if (count($completenessCollection) === 0) {
+            $newCompletenesses = $this->completenessCalculator->calculate($publishedProduct);
+            foreach ($newCompletenesses as $completeness) {
+                $completenessCollection[] = $completeness;
+            }
+        }
+
+        $data = [];
+
+        /** @var PublishedProductCompleteness $publishedProductCompleteness */
+        foreach ($completenessCollection as $publishedProductCompleteness) {
+            $data[$publishedProductCompleteness->channelCode()][$publishedProductCompleteness->localeCode()] = $publishedProductCompleteness->ratio();
+        }
+
+        return $data;
     }
 
     /**
@@ -56,6 +251,14 @@ class PublishedProductNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof PublishedProductInterface && in_array($format, $this->supportedFormat);
+        return $data instanceof PublishedProductInterface && 'internal_api' === $format;
+    }
+
+    /**
+     * Sets the owning Serializer object.
+     */
+    public function setSerializer(SerializerInterface $serializer)
+    {
+        $this->pimNormalizer = $serializer;
     }
 }

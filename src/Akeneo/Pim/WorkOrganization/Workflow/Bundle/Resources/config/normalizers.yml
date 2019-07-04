@@ -44,7 +44,24 @@ services:
     pimee_enrich.normalizer.published_product:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductNormalizer'
         arguments:
-            - '@pimee_enrich.normalizer.product'
+            - '@pimee_workflow.normalizer.published_product'
+            - '@pim_catalog.association.missing_association_adder'
+            - '@pim_catalog.values_filler.product'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_enrich.converter.standard_to_enrich.product_value'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_versioning.manager.version'
+            - '@pim_user.context.user'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_structure_version.provider.structure_version.product'
+            - '@pimee_workflow.query.get_published_product_completeneses'
+            - '@pim_catalog.completeness.calculator'
+            - '@pim_enrich.normalizer.incomplete_values'
+            - '@pim_enrich.normalizer.image'
+            - '@pim_catalog.repository.locale'
+            - '@pim_enrich.normalizer.product'
+            - '@security.authorization_checker'
+            - '@pimee_security.repository.category_access'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 130 }
 

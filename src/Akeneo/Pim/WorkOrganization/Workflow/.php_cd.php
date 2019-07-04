@@ -149,6 +149,7 @@ $rules = [
 
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
+        'Countable',
         'Doctrine\Common',
         'Symfony\Component',
         'Akeneo\Tool\Component',
@@ -230,6 +231,20 @@ $rules = [
         // Notification
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
+        // Normalization of published product
+        'Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer',
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface',
+        'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer',
+        'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
+        'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
+        'Akeneo\UserManagement\Bundle\Context\UserContext',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Component'),
 ];
 

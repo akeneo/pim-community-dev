@@ -13,17 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Query;
 
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 interface GetPublishedProductCompletenesses
 {
-    /**
-     * @param int $publishedProductId
-     *
-     * @return PublishedProductCompleteness[]
-     */
-    public function fromPublishedProductId(int $publishedProductId): array;
+    public function fromPublishedProductId(int $publishedProductId): PublishedProductCompletenessCollection;
 }
