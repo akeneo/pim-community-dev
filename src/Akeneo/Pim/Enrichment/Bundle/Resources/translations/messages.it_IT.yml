@@ -12,20 +12,20 @@ pim_enrich:
   mass_edit_action:
     limit_exceeded: Si prega di scegliere meno di %limit% elementi da modificare
     product:
-      page_title: Articoli
-      page_subtitle: Modifica di massa (1 prodotto) | Modifica di massa (%count% prodotti)
-      title: Scegli l'operazione
-      subtitle: Scegliere l'operazione che si desidera eseguire sull'articolo selezionato|Scegliere l'operazione che si desidera eseguire sui %count% articoli selezionati
-      confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
+      page_title: Prodotti
+      page_subtitle: Modifica di massa (1 articolo) | Modifica di massa (%count% prodotti)
+      title: Scegli operazione
+      subtitle: Scegliere l'operazione che si desidera eseguire sul prodotto selezionato|Scegliere l'operazione che si desidera eseguire sui %count% prodotti selezionati
+      confirm: Stai per aggiornare un prodotto con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% prodotti con le seguenti informazioni, si prega di confermare.
       steps:
-        first: Scegli gli articoli
-        second: Scegli l'operazione
+        first: Scegli i prodotti
+        second: Scegli operazione
         third: Configura
         fourth: Conferma
     change-status:
       label: Modificare lo stato
-      description: Gli articoli selezionati saranno attivati o disattivati.
-      success_flash: Lo stato dell'articolo/degli articoli è stato modificato
+      description: I prodotti selezionati saranno attivati o disattivati.
+      success_flash: Lo stato del prodotto/dei prodotti è stato modificato
       launched_flash: L'azione di massa "modifica stato" è stata lanciata. Sarai avvisato quando finisce.
     edit-common-attributes:
       label: Modificare gli attributi
@@ -38,17 +38,17 @@ pim_enrich:
         invalid_attribute: L'attributo con codice "attribute_code" non è comune ai prodotti selezionati, attributo saltato.
         no_valid_attribute: Nessuno degli attributi selezionati può essere applicato a questo prodotto.
     classify-add:
-      label: Aggiungi alle categorie
+      label: Aggiungi a categorie
       description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
       success_flash: L'articolo/gli articoli è stato classificato nelle categorie selezionate
       launched_flash: L'azione di massa "aggiungi alle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-move:
       label: Sposta tra categorie
-      description: I prodotti saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso.
+      description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
       success_flash: Il prodotto/i prodotti è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-remove:
-      label: Rimuovi dalle categorie
+      label: Rimuovi da categorie
       description: I prodotti verranno rimossi dalle seguenti categorie.
       success_flash: Il prodotto/i prodotti è stato rimosso/sono stati rimossi dalle categorie selezionate
       launched_flash: L'azione di massa "rimuovi dalle categorie" è stata lanciata. Sarai avvisato quando finisce.
@@ -64,7 +64,7 @@ pim_enrich:
       launched_flash: L'azione di massa "aggiungi ai gruppi" è stata lanciata. Sarai avvisato quando finisce.
       no_group: Al momento non c'è nessun gruppo. Si prega di iniziare con la creazione di un gruppo.
     set-attribute-requirements:
-      label: Imposta i requisiti degli attributi
+      label: Impostare i requisiti degli attributi
       description: I seguenti attributi richiesti verranno applicati alle famiglie selezionate
       success_flash: Gli attributi richiesti sono stati applicati alle famiglie selezionate
       launched_flash: L'azione di massa "imposta i requisiti di attributo" è stata lanciata. Sarai avvisato quando finisce.

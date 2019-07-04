@@ -140,10 +140,16 @@ pim_enrich:
       module:
         delete:
           confirm: Tem certeza de que deseja excluir este perfil de importação?
+      flash:
+        delete:
+          success: Perfil de importação removido com sucesso
     export_profile:
       module:
         delete:
           confirm: Tem certeza de que deseja excluir este perfil de exportação?
+      flash:
+        delete:
+          success: Perfil de exportação removido com sucesso
 pim_title:
   pim_importexport_export_profile_index: Gerenciamento dos perfis de exportação
   pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar

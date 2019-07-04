@@ -25,7 +25,7 @@ pim_user:
       new_password: Nuova password
       new_password_again: Nuova password (di nuovo)
       default_grid_view:
-        none: Nessun
+        none: Nessuno
       default_product_grid_view:
         label: Visualizzazione predefinita griglia prodotti
       ui_locale: Impostazioni locali dell'interfaccia utente
@@ -91,7 +91,7 @@ pim_datagrid:
   columns:
     user:
       createdAt: "Creato il"
-      updatedAt: "Caricato il"
+      updatedAt: "Aggiornato il"
     roles:
       label: "Etichetta"
     groups:
@@ -128,8 +128,8 @@ oro_security:
       delete: Rimuovi gruppo utenti
 (default): Autorizzazione predefinita su entità
 VIEW: Visualizzazione
-CREATE: Crea
+CREATE: Creare
 EDIT: Modifica
-DELETE: Eliminare
+DELETE: Elimina
 ASSIGN: Assegna
 SHARE: Condividi

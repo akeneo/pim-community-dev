@@ -117,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} comenta el producte'
       header_reply: '{{ user }} contesta al comentari'
       delete_confirm: Està segur que vol suprimir aquest comentari?
+      removed_author: Usuari suprimit
 pim_enrich.entity.product_model:
   label: model de producte
   uppercase_label: Model de producte
@@ -241,7 +242,7 @@ pim_enrich.export.product:
       help: Utilitzi els identificadors de producte per exportar separat per comes, espais o salts de línia
     string:
       operators:
-        ALL: Tots
+        ALL: Tot
     select:
       operators:
         IN: A la llista
@@ -307,6 +308,7 @@ pim_enrich.mass_edit.product:
       label: Eliminar de les categories
       label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producte</span> de categories|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> de categories"
       description: Els productes s'eliminaran de les següents categories.
+      no_update: No hi ha cap categoria seleccionada de la que suprimir els productes.
     add_to_existing_product_model:
       label: Afegir a un model de producte existent
       label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a un model de producte existent|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a model de producte existent"
@@ -408,7 +410,7 @@ batch_jobs:
     perform.label: Eliminar de la categoria
   set_attribute_requirements:
     label: Establir els requeriments d'atributs
-    perform.label: Establir els requeriments d'atributs
+    perform.label: Establir els requeriments d'atribut
   xlsx_product_grid_context_quick_export:
     quick_export.label: Exportació ràpida de marc de quadrícula de producte en XSLX
     quick_export_product_model.label: Exportació ràpida de marc de quadrícula del model de producte en XSLX

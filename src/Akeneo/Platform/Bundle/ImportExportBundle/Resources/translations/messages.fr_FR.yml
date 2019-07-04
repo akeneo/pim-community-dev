@@ -117,11 +117,11 @@ pane.accordion:
 popin.create:
   export_profile.title: Créer un nouveau profil d'export
   import_profile.title: Créer un nouveau profil d'import
-'Display item': Afficher l'élément
-'Hide item': Masquer l'élément
+'Display item': Voir plus
+'Hide item': Voir moins
 'Collecting data about job execution...': Collecte de données de l'exécution...
 'You must select a file to upload': Vous devez sélectionner un fichier à télécharger
-Download log: Télécharger l'historique
+Download log: Télécharger les logs
 Show profile: Afficher le profil
 execution details: détails d'exécution
 job_execution.summary:
@@ -134,7 +134,7 @@ job_execution.summary:
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
-    title: 'Encodage du fichier :'
+    title: 'Encodage de fichier :'
     skipped: ignoré(s), extension dans la liste blanche
 Step: Étape
 Status: État
