@@ -21,3 +21,5 @@ services:
         arguments:
             - '@pim_base_connector.writer.database.product_draft'
             - '@pim_base_connector.writer.database.product_model_draft'
+            - '@pim_notification.factory.notification'
+            - '@pim_notification.notifier'

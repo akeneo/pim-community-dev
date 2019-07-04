@@ -227,6 +227,9 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper',
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager',
 
+        // Notification
+        'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
+
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Component'),
 ];
 

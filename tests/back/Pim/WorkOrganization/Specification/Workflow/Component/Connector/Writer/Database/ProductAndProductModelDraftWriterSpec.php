@@ -17,56 +17,84 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Writer\Database\Pro
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Writer\Database\ProductDraftWriter;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
+use Akeneo\Platform\Bundle\ImportExportBundle\Factory\NotificationFactory;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 
 class ProductAndProductModelDraftWriterSpec extends ObjectBehavior
 {
     public function let(
         ProductDraftWriter $productDraftWriter,
-        ProductDraftWriter $productModelDraftWriter
+        ProductDraftWriter $productModelDraftWriter,
+        SimpleFactoryInterface $notificationFactory,
+        NotifierInterface $notifier,
+        JobExecution $jobExecution,
+        StepExecution $currentStepExecution,
+        StepExecution $firstStepExecution
     ) {
-        $this->beConstructedWith($productDraftWriter, $productModelDraftWriter);
+        $this->beConstructedWith(
+            $productDraftWriter,
+            $productModelDraftWriter,
+            $notificationFactory,
+            $notifier
+        );
+
+        $jobInstance = new JobInstance();
+        $jobInstance->setLabel('Edit common attributes');
+
+        $jobExecution = new JobExecution();
+        $jobExecution->setJobInstance($jobInstance);
+
+        $firstStepExecution = new StepExecution('perform', $jobExecution);
+        $firstStepExecution->incrementSummaryInfo('read', 5);
+
+        $currentStepExecution = new StepExecution('send_for_approval', $jobExecution);
+
+        $this->setStepExecution($currentStepExecution);
     }
 
-    public function it_is_the_product_and_product_model_drafts_database_writer()
+    public function it_is_initializable()
     {
-        $this->shouldImplement(ItemWriterInterface::class);
-        $this->shouldImplement(StepExecutionAwareInterface::class);
         $this->shouldHaveType(ProductAndProductModelDraftWriter::class);
     }
 
-    public function it_writes_product_drafts(ProductDraftWriter $productDraftWriter)
+    public function it_is_an_item_writer()
     {
-        $productDraftA = new ProductDraft();
-        $productDraftB = new ProductDraft();
-
-        $productDraftWriter->write([$productDraftA, $productDraftB])->shouldBeCalled();
-
-        $this->write([$productDraftA, $productDraftB]);
+        $this->shouldImplement(ItemWriterInterface::class);
     }
 
-    public function it_writes_product_model_drafts(ProductDraftWriter $productModelDraftWriter)
+    public function it_is_a_step_execution_aware()
     {
-        $productModelDraftA = new ProductModelDraft();
-        $productModelDraftB = new ProductModelDraft();
-
-        $productModelDraftWriter->write([$productModelDraftA, $productModelDraftB])->shouldBeCalled();
-
-        $this->write([$productModelDraftA, $productModelDraftB]);
+        $this->shouldImplement(StepExecutionAwareInterface::class);
     }
 
     public function it_writes_product_an_product_model_drafts(
         ProductDraftWriter $productDraftWriter,
-        ProductDraftWriter $productModelDraftWriter
+        ProductDraftWriter $productModelDraftWriter,
+        SimpleFactoryInterface $notificationFactory,
+        NotifierInterface $notifier
     ) {
         $productDraftA = new ProductDraft();
+        $productDraftA->setAuthor('Mary');
         $productDraftB = new ProductDraft();
+        $productDraftB->setAuthor('Mary');
         $productModelDraft = new ProductModelDraft();
+        $productModelDraft->setAuthor('Mary');
 
         $productDraftWriter->write([$productDraftA, $productDraftB])->shouldBeCalled();
         $productModelDraftWriter->write([$productModelDraft])->shouldBeCalled();
+
+        $notification = new Notification();
+        $notificationFactory->create()->willReturn($notification);
+        $notifier->notify($notification, ['Mary']);
 
         $this->write([$productDraftA, $productModelDraft, $productDraftB]);
     }
