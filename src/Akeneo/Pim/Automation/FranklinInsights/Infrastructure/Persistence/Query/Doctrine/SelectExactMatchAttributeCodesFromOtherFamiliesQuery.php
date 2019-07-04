@@ -62,7 +62,6 @@ SQL;
         );
 
         $searchResults = $statement->fetchAll();
-
         $matchedAttributes = array_fill_keys($franklinAttributeLabels, null);
         foreach ($matchedAttributes as $franklinAttributeLabel => $matchedAttribute) {
             $matchedAttributes[$franklinAttributeLabel] = $this->getMatchedAttributeCode($franklinAttributeLabel, $searchResults);
@@ -80,7 +79,9 @@ SQL;
             );
         });
 
-        return $matchedAttributes[0]['code'] ?? null;
+        $matchedAttribute = current($matchedAttributes);
+
+        return $matchedAttribute['code'] ?? null;
     }
 
 }
