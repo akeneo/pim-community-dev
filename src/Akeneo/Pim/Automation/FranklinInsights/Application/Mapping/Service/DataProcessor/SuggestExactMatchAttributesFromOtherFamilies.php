@@ -23,7 +23,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doct
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class SuggestExactMatchAttributesFromOtherFamilies implements AttributeMappingCollectionDataProcessorInterface
+class SuggestExactMatchAttributesFromOtherFamilies
 {
     private $selectExactMatchAttributeCodesFromOtherFamiliesQuery;
 
