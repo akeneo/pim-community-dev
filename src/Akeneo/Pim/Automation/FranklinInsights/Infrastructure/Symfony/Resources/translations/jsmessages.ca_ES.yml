@@ -79,6 +79,7 @@ akeneo_franklin_insights:
         already_subscribed_product: 'El producte ja està subscrit.'
         variant_product: 'Ho sentim. Els productes variants no poden ser subscrits a Franklin Insights.'
         inactive_connection: 'Ho sentim. No s''ha pogut subscriure el producte a Franklin Insights. Configureu la connexió a les Franklin Insights, si us plau.'
+        product_subscription_with_same_identifier_already_exist: 'Ja s''ha subscrit un altre producte amb un identificador idèntic.'
       module:
         product_edit_form:
           family_required: 'Família de productes requerit.'
@@ -128,6 +129,7 @@ akeneo_franklin_insights:
         sub_title: 'Si us plau, activa el compte en el Sistema > Connexió Franklin i torna de nou.'
       no_active_english_locale:
         title: 'Les estadístiques de Franklin només estan disponibles per locals en anglès.'
+        sub_title: 'Estigues atent, els locals ja arriben.'
       save:
         title: 'Atenció!'
   mass_edit:

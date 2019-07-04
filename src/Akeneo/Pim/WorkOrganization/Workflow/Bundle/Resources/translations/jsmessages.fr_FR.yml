@@ -14,13 +14,13 @@ pim_datagrid:
 pimee_datagrid:
   cells:
     expand:
-      expand_text: Développer
+      expand_text: Déveloper
       collapse_text: Réduire
 pimee_workflow:
   entity:
     published_product:
       btn:
-        original_product: Editer la copie de travail
+        original_product: Modifier la copie de travail
     proposal:
       modal.title: Laisser un commentaire (facultatif - 255 caractères max.)
   proposal:
@@ -51,7 +51,7 @@ batch_jobs:
     label: Export CSV des produits publiés
     export.label: Export des produits publiés
   csv_product_proposal_import:
-    label: Import des propositions de produit en CSV
+    label: Import des propositions en CSV
     import.label: Import des propositions de produit
   approve_product_draft:
     label: Approuver la proposition
@@ -75,8 +75,8 @@ batch_jobs:
     export.label: Export rapide XLSX des produits publiés
     perform.label: Export rapide XLSX des produits publiés
   xlsx_published_product_grid_context_quick_export:
-    export.label: Export rapide XLSX des produits publiés dans le contexte de grille
-    perform.label: Export rapide XLSX des produits publiés dans le contexte de grille
+    export.label: Export rapide CSV des produits publiés dans le contexte de grille
+    perform.label: Export rapide CSV des produits publiés dans le contexte de grille
   publish_product:
     perform.label: Publier les produits
 pim_notification:
@@ -95,7 +95,7 @@ pimee_dashboard:
       date: Date
       author: Auteur
       product: Produit
-      review: Relire
+      review: Examiner
       empty: Il n'y a aucune proposition à examiner
 pimee_enrich.entity.product:
   module:
@@ -127,8 +127,8 @@ pimee_enrich.entity.product:
       draft: Mon brouillon
       draft_of: "Brouillon de {{ author }}"
     approval:
-      send: Soumettre pour validation
-      sent: Soumis à la validation
+      send: Envoyer pour approbation
+      sent: Envoyé pour validation
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -163,8 +163,6 @@ pimee_enrich.entity.product_draft:
       success: Le brouillon a été envoyé pour validation
       fail: Vous ne pouvez pas envoyer ce brouillon pour validation
   module:
-    create:
-      label: Enregistrer le brouillon
     proposal:
       accept: Accepter la proposition
       accept_selected: Accepter le(s) proposition(s) sélectionnée(s)

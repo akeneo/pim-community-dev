@@ -17,20 +17,20 @@ pim_analytics:
     nb_custom_attribute_group_accesses: Nombre de groupes d'attributs avec un accès personnalisé
 job_profile.permissions:
   execute.label: Autorisé à exécuter les profils
-  edit.label: Autorisé à éditer les profils
+  edit.label: Autorisé à modifier les profils
 pim_title.locale:
   edit: "Locale %locale.code% | Édition"
 attribute group.permissions:
   view.label: Autorisé à voir les attributs
-  view.help: Autoriser à voir les attributs dans ce groupe d'attributs
+  view.help: Autoriser à modifier les attributs dans ce groupe d'attributs
   edit.label: Autorisé à modifier les attributs
-  edit.help: Autoriser à éditer les attributs dans ce groupe d'attributs
+  edit.help: Autoriser à modifier les attributs dans ce groupe d'attributs
   no_access_to_attributes: Vous n'avez accès à aucun des attributs de ce produit. Contactez votre administrateur pour résoudre le problème.
 category.permissions:
   view.label: Autorisé à voir les produits
   view.help: Permet de voir les produits dans cette catégorie
   edit.label: Autorisé à modifier les produits
-  edit.help: Permet d'éditer les produits dans cette catégorie (sous-entend les droits de lecture)
+  edit.help: Permet de modifier les produits dans cette catégorie (sous-entend les droits de lecture)
   own.label: Autorisé à gérer les produits
   own.help: Permet de passer en revue, publier, dépublier, catégoriser, associer les produits de cette catégorie (sous entend l'autorisation de modification)
   no_access_to_products: Vous n'avez accès à aucun produit dans aucune arborescence, contactez votre administrateur pour résoudre le problème
@@ -39,35 +39,35 @@ category.permissions:
 locale.permissions:
   view.label: Autorisé à voir les informations
   view.help: Permet de voir les informations dans cette locale
-  edit.label: Autorisé à éditer les informations
-  edit.help: Permet d'éditer les informations dans cette locale (sous entend les droits de lecture)
+  edit.label: Autorisé à modifier les informations
+  edit.help: Permet de modifier les informations dans cette locale (sous entend les droits de lecture)
   no_access_to_products: Vous n'avez accès à aucune information produit dans aucune locale, contactez votre administrateur pour résoudre le problème
 flash.locale.updated: Les locales et les permissions ont bien étés mises à jour
 pim_enrich:
   mass_edit_action:
     product:
-      not_editable: Vous n'avez pas le droit de modifier les produits "%identifiers%".
+      not_editable: Vous n'avez pas la permission de modifier les produits "%identifiers%".
       page_title: Produits
       page_subtitle: Édition en masse (1 produit)|Édition en masse (%count% produits)
-      title: Choisir une opération
+      title: Choisissez une opération
       subtitle: Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés
       confirm: Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir des produits
-        second: Choisir une opération
-        third: Configurer
-        fourth: Confirmer
+        second: Choisissez une opération
+        third: Configurez l'opération à effectuer
+        fourth: Confirmation
     publish:
       message:
         error: Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le publier.
         warning: Vous n'êtes pas propriétaire de tous les produits sélectionnés. Vous ne pouvez pas publier les produits "%notGranted%".
-      not_editable: Vous n'avez pas le droit de modifier les produits "%identifiers%".
+      not_editable: Vous n'avez pas la permission de modifier les produits "%identifiers%".
     unpublish:
       message:
         error: Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le dépublier.
         warning: Vous n'êtes pas le propriétaire de tous les produits sélectionnés. Vous ne pouvez pas dépublier les produits "%notGranted%".
         info: Les %nbProducts% produits sélectionnés vont être dépubliés.
-      not_editable: Vous n'avez pas le droit de modifier les produits "%identifiers%".
+      not_editable: Vous n'avez pas la permission de modifier les produits "%identifiers%".
     classify:
       message:
         error: Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le classifier.
@@ -78,14 +78,14 @@ pim_enrich:
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: Permissions
+      permission.title: Autorisations
   acl.product_ownership.title: Propriété
   attributes:
     empty: aucun
   category:
     tab:
       permission:
-        title: Permissions
+        title: Autorisations
   groups:
     label: Groupes propriétaires
     empty: aucun

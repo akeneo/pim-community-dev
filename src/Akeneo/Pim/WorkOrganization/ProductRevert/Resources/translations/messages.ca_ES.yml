@@ -1,3 +1,3 @@
-flash.version.revert.product: Restaurar amb èxit el producte a la versió anterior
+flash.version.revert.product: Recuperar amb èxit el producte a la versió anterior
 flash.error.revert.product: Aquesta versió no es pot recuperar. S'han produït errors durant la validació.
 pimee_versioning.acl.product_version.revert: Recuperar un producte

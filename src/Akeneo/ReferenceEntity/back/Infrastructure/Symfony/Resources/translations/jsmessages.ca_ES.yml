@@ -8,10 +8,10 @@ pim_reference_entity:
       wide:
         remove: Eliminar la imatge
         download: Descarregar imatge
-        upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+        upload: Arrossegar i deixar per carrgar o feu clic aquí
       small:
         remove: Eliminar
-        download: Descarregar
+        download: Baixar
         upload: Arrossegar i deixar anar per carregar
   reference_entity:
     validation:
@@ -142,6 +142,8 @@ pim_reference_entity:
         description: Només heu desplaçat els primers 500 resultats de registres {{ total }}. Per veure més, proveu amb criteris de cerca més específics.
       completeness:
         title_no_required: Cap atribut requerit
+        title_non_complete: 0 dels atributs {{ required }} complets
+        title_ongoing: '{{ complete }} de {{ required }} atributs complets'
         title_complete: Tots els atributs complets {{ required }}
     tab:
       enrich: Enriquir
@@ -203,6 +205,7 @@ pim_reference_entity:
         code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
+        record_type: Entitats de referència relacionades (obligatori)
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
         is_required: Necessaris per a la integritat
@@ -267,7 +270,12 @@ pim_enrich:
         section:
           type_specific: Escriu els paràmetres específics
         reference_entity:
+          identifier: Entitats de referència relacionades (obligatori)
           default_label: Si us plau, selecciona una entitat de referència
+permission:
+  mass_action: Aplicar {{ rightLevel }} regles en tots els grups
 pim_catalog_volume:
   axis:
     count_reference_entity: Entitats de referència
+    average_max_records_per_reference_entity: Registres per entitat de referencia
+    average_max_attributes_per_reference_entity: Atributs per entitat de referencia

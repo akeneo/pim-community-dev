@@ -67,7 +67,7 @@ akeneo_franklin_insights:
         localizable_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM localisable'
         scopable_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM décliné par canal'
         locale_specific_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM spécifique à une locale'
-        duplicated_pim_attribute: 'Un attribut PIM ne peut pas être utilisé plusieurs fois dans le mapping des attributs'
+        duplicated_pim_attribute: "Le mapping ne peut pas être sauvé car vous avez mappé plusieurs attributs Franklin au même attribut PIM"
         attribute_not_in_family_not_allowed: 'L''attribut PIM doit être dans la famille sélectionnée.'
         only_unknown_mapped_attributes: 'Aucun attribut dans le mapping n''a pu être trouvé'
     product_subscription:
@@ -88,6 +88,7 @@ akeneo_franklin_insights:
         already_subscribed_product: 'Le produit est déjà abonné.'
         variant_product: 'Désolé, les produits variants ne peuvent pas être abonnés à Franklin Insights.'
         inactive_connection: 'Désolé, impossible d''abonner un produit à Franklin Insights. Veuillez configurer votre connexion à Franklin Insights.'
+        product_subscription_with_same_identifier_already_exist: 'Un autre produit avec au moins un identifiant identique a déjà été souscrit.'
       module:
         product_edit_form:
           family_required: 'Famille de produit requise.'
