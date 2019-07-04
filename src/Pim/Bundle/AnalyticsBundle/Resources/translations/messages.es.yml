@@ -1,5 +1,5 @@
 pim_analytics:
-  new_patch_available: Nuevo parche disponible
+  new_patch_available: Nuevo parche dispoinble
   system_config:
     group:
       notification.title: Notificaciones
@@ -27,7 +27,10 @@ pim_analytics:
     nb_localizable_attributes: Número de atributos localizables
     nb_scopable_localizable_attributes: Número de atributos localizables y scopable
     nb_useable_as_grid_filter_attributes: Número de atributos utilizables como filtro de la grilla
+    avg_percentage_scopable_attributes_per_family: Porcentaje promedio de atributos alcanzables por familia(%)
     avg_percentage_localizable_attributes_per_family: Porcentaje promedio de atributos localizables por familia (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Porcentaje promedio de atributos localizables y alcanzables por familia (%)
+    avg_number_attributes_per_family: Promedio del número de atributos por familia
     nb_locales: Número de locales
     nb_families: Número de familias
     nb_users: Número de usuarios

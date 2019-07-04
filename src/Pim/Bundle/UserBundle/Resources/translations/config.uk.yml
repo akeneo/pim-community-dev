@@ -1,6 +1,4 @@
-entity.user.name: Користувач
 entity.user.description: Профіль користувача
 entity.role.name: Роль
 entity.role.description: роль користувача
-entity.group.name: Група
 entity.group.description: Група ролі

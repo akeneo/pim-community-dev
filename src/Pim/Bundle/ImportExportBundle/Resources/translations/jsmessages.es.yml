@@ -9,7 +9,7 @@ pim_connector:
         modal:
           title: Selección de categorías
           cancel: Cancelar
-          confirm: Confirmar
+          confirm: Confirmación
         label: "{0} Todos los productos|{1} Una categoría seleccionada|]1,Inf[{{ count }} categorías seleccionadas"
         edit: Editar
         title: Seleccionar Categorías
