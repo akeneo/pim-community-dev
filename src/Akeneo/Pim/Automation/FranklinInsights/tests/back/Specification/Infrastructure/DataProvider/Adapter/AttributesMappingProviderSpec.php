@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping as DomainAttributesMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
@@ -28,10 +29,12 @@ use Prophecy\Argument;
 class AttributesMappingProviderSpec extends ObjectBehavior
 {
     public function let(
-        AttributesMappingWebService $api,
-        ConfigurationRepositoryInterface $configurationRepo
+        ConfigurationRepositoryInterface $configurationRepo,
+        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
+        AttributesMappingWebService $api
     ): void {
-        $this->beConstructedWith($api, $configurationRepo);
+        $this->beConstructedWith($configurationRepo, $invalidTokenExceptionFactory, $api);
+
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);

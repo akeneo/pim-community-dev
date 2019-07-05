@@ -11,6 +11,8 @@ akeneo_franklin_insights:
     mapping_identifier:
         success: The mapping has been successfully saved
         error: An error occurred while saving the mapping
+    notification:
+        invalid_token: 'Your Franklin Insights activation code is not valid. Please update the code or contact us for assistance.'
     entity:
         product_subscription:
             constraint:

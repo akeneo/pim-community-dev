@@ -31,10 +31,6 @@ final class SqlFindAllExistentRecordsForReferenceEntityIdentifiers
 
     public function forReferenceEntityIdentifiersAndRecordCodes(array $referenceEntityIdentifiersToCodes): array
     {
-        if (empty($referenceEntityIdentifiersToCodes)) {
-            return [];
-        }
-
         /**
          * We have to build the query by hand because Doctrine does not support tuple for IN (:myParameter) things
          * https://www.doctrine-project.org/projects/doctrine-dbal/en/2.9/reference/data-retrieval-and-manipulation.html#list-of-parameters-conversion
@@ -49,6 +45,10 @@ final class SqlFindAllExistentRecordsForReferenceEntityIdentifiers
                 $queryParams[] = $recordCode;
                 $queryStringParams[] = "(?, ?)";
             }
+        }
+
+        if (empty($queryParams) || empty($queryStringParams)) {
+            return [];
         }
 
         $query = <<<SQL

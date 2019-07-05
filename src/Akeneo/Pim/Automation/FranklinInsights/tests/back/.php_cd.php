@@ -246,6 +246,7 @@ $rules = [
             // TODO relationship between bounded context
             'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
             'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification'),
 ];

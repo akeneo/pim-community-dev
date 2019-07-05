@@ -42,3 +42,6 @@ services:
             - '@pim_catalog.factory.attribute_option'
             - '@pim_catalog.updater.attribute_option'
             - '@validator'
+
+    akeneo.pim.automation.franklin_insights.notifier.notify_about_invalid_token:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\UserNotification\FakeNotifyUserAboutInvalidToken'

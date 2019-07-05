@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOpt
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
@@ -41,14 +42,16 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
     /**
      * @param OptionsMappingWebService $api
      * @param ConfigurationRepositoryInterface $configurationRepository
+     * @param InvalidTokenExceptionFactory $invalidTokenExceptionFactory
      * @param AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
      */
     public function __construct(
-        OptionsMappingWebService $api,
         ConfigurationRepositoryInterface $configurationRepository,
+        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
+        OptionsMappingWebService $api,
         AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
     ) {
-        parent::__construct($configurationRepository);
+        parent::__construct($configurationRepository, $invalidTokenExceptionFactory);
 
         $this->api = $api;
         $this->attributeOptionsMappingNormalizer = $attributeOptionsMappingNormalizer;
@@ -70,7 +73,7 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw DataProviderException::authenticationError($e);
+            throw $this->invalidTokenExceptionFactory->create($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }
@@ -102,7 +105,7 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw DataProviderException::authenticationError($e);
+            throw $this->invalidTokenExceptionFactory->create($e);
         }
     }
 }
