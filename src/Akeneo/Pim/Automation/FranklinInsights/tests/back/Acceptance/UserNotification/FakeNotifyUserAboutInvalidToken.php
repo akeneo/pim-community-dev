@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Notifier\InvalidTokenNo
  */
 class FakeNotifyUserAboutInvalidToken implements InvalidTokenNotifierInterface
 {
-    public function notify()
+    public function notify(): void
     {
     }
 }
