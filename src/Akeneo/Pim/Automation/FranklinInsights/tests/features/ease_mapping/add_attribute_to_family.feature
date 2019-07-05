@@ -4,7 +4,6 @@ Feature: Add an existing attribute to the family
     As a system administrator
     I want to quickly add an existing attribute to a family to facilitate its mapping
 
-    @end-to-end @javascript
     Scenario: Successfully add existing attribute to a family
         Given Franklin is configured with a valid token
         And the product "B00EYZY6AC" of the family "router"
