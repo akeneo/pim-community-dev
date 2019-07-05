@@ -33,6 +33,11 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_code_from_other_family_query:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query\InMemorySelectExactMatchAttributeCodesFromOtherFamiliesQuery'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\InMemorySelectActiveLocaleCodesManagedByFranklinQuery'
         arguments:
