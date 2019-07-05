@@ -43,7 +43,7 @@ class NotifyUserAboutInvalidToken implements InvalidTokenNotifierInterface
     {
         $notification = $this->notificationFactory->create();
         $notification
-            ->setType('success')
+            ->setType('error')
             ->setMessage('akeneo_franklin_insights.notification.invalid_token')
             ->setContext(['actionType' => 'franklin_insights']);
 
