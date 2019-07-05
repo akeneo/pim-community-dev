@@ -144,8 +144,6 @@
 
 
 
-
-
 ## BC breaks
 
 - Service `pim_catalog.saver.channel` class has been changed to `Akeneo\Channel\Bundle\Storage\Orm\ChannelSaver`.
