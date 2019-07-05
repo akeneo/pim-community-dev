@@ -32,7 +32,6 @@ cache:
 before_install:
     - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
     - nvm install 10.15.0
-    - sudo apt-get install -y php-apcu
     - node tests/travis/check-changes.js $BRANCH src/Akeneo/ReferenceEntity/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
     - node tests/travis/check-changes.js $BRANCH src/Akeneo/AssetManager/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
     - php src/Akeneo/AssetManager/tests/check-fake-implementations.php
