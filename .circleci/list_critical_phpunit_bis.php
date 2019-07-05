@@ -11,15 +11,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-class FindPhpUnitsCommand extends Command
+class ListPhpUnitClassesCommand extends Command
 {
-    protected static $defaultName = 'find';
+    protected static $defaultName = 'list';
 
     protected function configure()
     {
         $this->addArgument('suite', InputArgument::REQUIRED);
-        $this->addOption('exclude-criticals', null, InputOption::VALUE_NONE);
-        $this->addOption('only-criticals', null, InputOption::VALUE_NONE);
+        $this->addOption('exclude-criticals', null, InputOption::VALUE_NONE, 'Exclude the classes containing at least one critical test.');
+        $this->addOption('only-criticals', null, InputOption::VALUE_NONE, 'Keep the classes containing at least one critical test.');
+        $this->setDescription('List the test classes impacted by a PHPUnit suite.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -81,5 +82,5 @@ class FindPhpUnitsCommand extends Command
 }
 
 $application = new Application();
-$application->add(new FindPhpUnitsCommand());
+$application->add(new ListPhpUnitClassesCommand());
 $application->run();
