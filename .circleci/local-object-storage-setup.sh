@@ -12,7 +12,7 @@ services:
         factory_method: factory
         arguments:
             -
-                endpoint: 'http://object-storage:9000/asset/'
+                endpoint: 'http://object-storage:9000/'
                 version: 'latest'
                 region: 'us-west-1'
                 use_path_style_endpoint: true
