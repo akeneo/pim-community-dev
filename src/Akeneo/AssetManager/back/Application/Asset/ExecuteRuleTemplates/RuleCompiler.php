@@ -15,9 +15,6 @@ namespace Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * Compile a RuleTemplate given an PropertyAccessibleAsset to create a RuleInterface

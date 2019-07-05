@@ -36,7 +36,7 @@ class InMemoryFindIdentifiersByAssetFamilyAndCodesTest extends TestCase
 
     public function setUp(): void
     {
-        $this->assetRepository = new InMemoryAssetRepository();
+        $this->assetRepository = new InMemoryAssetRepository(new EventDispatcher());
         $this->assetFamilyRepository = new InMemoryAssetFamilyRepository(new EventDispatcher());
         $this->query = new InMemoryFindIdentifiersByAssetFamilyAndCodes(
             $this->assetRepository

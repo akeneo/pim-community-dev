@@ -32,6 +32,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryAssetRepositoryTest extends TestCase
 {
@@ -40,7 +41,7 @@ class InMemoryAssetRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->assetRepository = new InMemoryAssetRepository();
+        $this->assetRepository = new InMemoryAssetRepository(new EventDispatcher());
     }
 
     /**

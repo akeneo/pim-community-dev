@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindPropertyAccessibleAssetInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;

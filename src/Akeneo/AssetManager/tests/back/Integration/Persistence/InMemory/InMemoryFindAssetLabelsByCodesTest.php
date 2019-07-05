@@ -40,7 +40,7 @@ class InMemoryFindAssetLabelsByCodesTest extends TestCase
     {
         parent::setUp();
 
-        $this->assetRepository = new InMemoryAssetRepository();
+        $this->assetRepository = new InMemoryAssetRepository(new EventDispatcher());
         $this->assetFamilyRepository = new InMemoryAssetFamilyRepository(new EventDispatcher());
 
         $this->findAssetLabelsByCodesQuery = new InMemoryFindAssetLabelsByCodes(

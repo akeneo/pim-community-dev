@@ -11,7 +11,8 @@ $rules = [
     $builder->only([
         'Akeneo\Tool\Component',
         'Webmozart\Assert\Assert',
-        'Symfony\Component\EventDispatcher\Event'
+        'Symfony\Component\EventDispatcher\Event',
+        'Traversable'
     ])->in('Akeneo\AssetManager\Domain'),
     $builder->only([
         'Akeneo\AssetManager\Domain',
@@ -27,6 +28,7 @@ $rules = [
         'Akeneo\AssetManager\Common',
         'Akeneo\Tool\Component',
         'Akeneo\Tool\Bundle\RuleEngineBundle\Model',
+        'Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface',
         'Akeneo\Tool\Bundle\ElasticsearchBundle',
         'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
