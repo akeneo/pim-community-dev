@@ -31,6 +31,16 @@ Feature: Filter products per price
     And I should be able to use the following filters:
       | filter | operator     | value    | result          |
       | price  | >=           | 20 EUR   | book            |
+
+  Scenario: Successfully filter products by price
+    Given I am on the products grid
+    Then I should see the filter sku
+    And I should not see the filter price
+    And the grid should contain 4 elements
+    And I should see products postit, book and mug
+    And I should be able to use the following filters:
+      | filter | operator     | value    | result          |
+      | price  | >=           | 20 EUR   | book            |
       | price  | >            | 22.5 EUR |                 |
       | price  | >=           | 22.5 EUR | book            |
       | price  | >            | 12.5 EUR | book            |

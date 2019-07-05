@@ -30,7 +30,16 @@ Feature: Filter products with multiples prices filters
     And I show the filter "transport"
     And I show the filter "margin"
 
+
   @critical
+  Scenario: Successfully filter products with the sames attributes
+    Given I filter by "transport" with operator "=" and value "15 EUR"
+    And I should be able to use the following filters:
+      | filter | operator | value    | result                 |
+      | margin | >        | 7 EUR    |                        |
+    And I hide the filter "transport"
+    And I hide the filter "margin"
+
   Scenario: Successfully filter products with the sames attributes
     Given I filter by "transport" with operator "=" and value "15 EUR"
     And I should be able to use the following filters:

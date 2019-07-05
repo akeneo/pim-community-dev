@@ -30,6 +30,15 @@ Feature: Filter products per metric
     And I should be able to use the following filters:
       | filter | operator     | value         | result          |
       | weight | >=           | 200 Gram      | book            |
+
+  Scenario: Successfully filter products by metric
+    Given I am on the products grid
+    Then I should not see the filter weight
+    And the grid should contain 4 elements
+    And I should see products postit and book
+    And I should be able to use the following filters:
+      | filter | operator     | value         | result          |
+      | weight | >=           | 200 Gram      | book            |
       | weight | >            | 120 Gram      | book            |
       | weight | =            | 120 Gram      | postit          |
       | weight | <            | 200 Gram      | postit          |

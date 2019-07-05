@@ -36,6 +36,14 @@ Feature: Filter products with multiples text fields filters
     And I should be able to use the following filters:
       | filter | operator         | value | result                 |
       | name   | is empty         |       | POST-1 and POST-2      |
+    And I hide the filter "description"
+    And I hide the filter "name"
+
+  Scenario: Successfully filter products with the sames attributes
+    Given I filter by "description" with operator "contains" and value "Red"
+    And I should be able to use the following filters:
+      | filter | operator         | value | result                 |
+      | name   | is empty         |       | POST-1 and POST-2      |
       | name   | is not empty     |       | MUG-2, MUG-3 and MUG-4 |
       | name   | contains         | in    | MUG-2, MUG-3 and MUG-4 |
       | name   | starts with      | in    | MUG-2 and MUG-3        |
