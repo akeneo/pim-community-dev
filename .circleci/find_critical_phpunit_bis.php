@@ -24,25 +24,11 @@ class FindPhpUnitsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $suiteName = $input->getArgument('suite');
-
         $configuration = Configuration::getInstance(__DIR__ . '/../app/phpunit.xml.dist');
         $testSuiteConfiguration = $configuration->getTestSuiteConfiguration();
 
-        $matchingSuites = array_filter(
-            $testSuiteConfiguration->tests(),
-            function ($suite) use ($suiteName) {
-                return $suiteName === $suite->getName();
-            }
-        );
+        $suite = $this->findSuite($testSuiteConfiguration, $input->getArgument('suite'));
 
-        if (empty($matchingSuites)) {
-            throw new \Exception(sprintf('The suite "%s" does not exist!', $suiteName));
-        }
-
-        $suite = array_pop($matchingSuites);
-
-        $testClasses = [];
         if (true === $input->getOption('only-criticals')) {
             $testClasses = $this->classesInsideGroup($suite, 'critical');
         } elseif (true === $input->getOption('exclude-criticals')) {
@@ -75,6 +61,22 @@ class FindPhpUnitsCommand extends Command
             },
             $group
         );
+    }
+
+    private function findSuite(TestSuite $testSuiteConfiguration, $suiteName): TestSuite
+    {
+        $matchingSuites = array_filter(
+            $testSuiteConfiguration->tests(),
+            function ($suite) use ($suiteName) {
+                return $suiteName === $suite->getName();
+            }
+        );
+
+        if (empty($matchingSuites)) {
+            throw new \Exception(sprintf('The suite "%s" does not exist!', $suiteName));
+        }
+
+        return array_pop($matchingSuites);
     }
 }
 
