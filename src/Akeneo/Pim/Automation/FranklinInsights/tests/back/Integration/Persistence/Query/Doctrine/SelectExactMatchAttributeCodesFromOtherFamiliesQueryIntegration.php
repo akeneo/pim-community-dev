@@ -34,7 +34,7 @@ class SelectExactMatchAttributeCodesFromOtherFamiliesQueryIntegration extends Te
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.doctrine.select_exact_match_attribute_code_from_other_family_query');
+        $this->query = $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_code_from_other_family_query');
     }
 
     protected function getConfiguration(): Configuration
