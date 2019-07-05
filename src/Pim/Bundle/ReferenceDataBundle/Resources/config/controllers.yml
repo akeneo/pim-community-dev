@@ -2,6 +2,11 @@ parameters:
     pim_reference_data.controller.configuration_rest.class: Pim\Bundle\ReferenceDataBundle\Controller\ConfigurationRestController
 
 services:
+    # Ideally all controllers should be properly tagged. But that can't be done without introducing BC's.
+    # This needs a second pass in a major release to fix it properly.
+    _defaults:
+        public: true
+
     pim_reference_data.controller.configuration_rest:
         class: '%pim_reference_data.controller.configuration_rest.class%'
         arguments:

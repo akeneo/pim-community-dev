@@ -4,6 +4,7 @@ parameters:
 services:
     pim_user.context.user:
         class: '%pim_user.context.user.class%'
+        public: true
         arguments:
             - '@security.token_storage'
             - '@pim_catalog.repository.locale'

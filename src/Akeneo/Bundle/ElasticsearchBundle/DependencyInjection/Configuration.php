@@ -26,7 +26,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('hosts')
                     ->prototype('scalar')->defaultValue(['localhost:9200'])->end()
-                    ->isRequired()->cannotBeEmpty()
+                    ->isRequired()->requiresAtLeastOneElement()
                     ->beforeNormalization()
                         ->ifString()
                         ->then(function ($value) {

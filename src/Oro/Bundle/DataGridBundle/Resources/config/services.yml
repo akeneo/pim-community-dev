@@ -22,6 +22,7 @@ services:
 
     oro_datagrid.datagrid.builder:
         class: '%oro_datagrid.datagrid.builder.class%'
+        public: true # TODO : Change so that it is injected in the Datagrid/Manager. This service should not need to be public.
         arguments:
             - '%oro_datagrid.datagrid.base.class%'
             - '%oro_datagrid.extension.acceptor.class%'
@@ -30,6 +31,7 @@ services:
 
     oro_datagrid.datagrid.request_params:
         class: '%oro_datagrid.datagrid.request_params.class%'
+        public: true # TODO : Change so that it is injected in the Datagrid/Manager
         arguments:
             - '@request_stack'
 
@@ -48,6 +50,7 @@ services:
 
     oro_datagrid.configuration.provider.chain:
         class: '%oro_datagrid.configuration.provider.chain.class%'
+        public: true # TODO : Change so that it is injected in the Datagrid/Manager
 
     oro_datagrid.datagrid.metadata_parser:
         class: '%oro_datagrid.datagrid.metadata_parser.class%'

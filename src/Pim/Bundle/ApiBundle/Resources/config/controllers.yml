@@ -17,6 +17,11 @@ parameters:
     pim_api.controller.association_type.class: Pim\Bundle\ApiBundle\Controller\AssociationTypeController
 
 services:
+    # Ideally all controllers should be properly tagged. But that can't be done without introducing BC's.
+    # This needs a second pass in a major release to fix it properly.
+    _defaults:
+        public: true
+
     pim_api.controller.category:
         class: '%pim_api.controller.category.class%'
         arguments:

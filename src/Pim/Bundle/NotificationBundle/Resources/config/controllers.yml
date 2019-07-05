@@ -2,6 +2,11 @@ parameters:
     pim_notification.controller.notification.class: Pim\Bundle\NotificationBundle\Controller\NotificationController
 
 services:
+    # Ideally all controllers should be properly tagged. But that can't be done without introducing BC's.
+    # This needs a second pass in a major release to fix it properly.
+    _defaults:
+        public: true
+
     pim_notification.controller.notification:
         class: '%pim_notification.controller.notification.class%'
         arguments:

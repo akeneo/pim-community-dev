@@ -10,7 +10,7 @@ parameters:
 
 services:
     pim_enrich.event_listener.close_session:
-        class: %pim_enrich.event_listener.close_session.class%
+        class: '%pim_enrich.event_listener.close_session.class%'
         tags:
             - { name: kernel.event_subscriber }
 

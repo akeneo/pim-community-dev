@@ -4,6 +4,11 @@ parameters:
     pim_user.controller.user_group_rest.class: Pim\Bundle\UserBundle\Controller\UserGroupRestController
 
 services:
+    # Ideally all controllers should be properly tagged. But that can't be done without introducing BC's.
+    # This needs a second pass in a major release to fix it properly.
+    _defaults:
+        public: true
+
     pim_user.controller.user_rest:
         class: '%pim_user.controller.user_rest.class%'
         arguments:
