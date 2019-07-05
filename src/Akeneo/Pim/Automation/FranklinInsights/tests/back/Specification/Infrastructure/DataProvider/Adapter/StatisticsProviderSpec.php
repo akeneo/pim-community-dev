@@ -76,14 +76,18 @@ class StatisticsProviderSpec extends ObjectBehavior
             ->during('getCreditsUsageStatistics');
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid($api): void
+    public function it_throws_a_data_provider_exception_when_token_is_invalid($invalidTokenExceptionFactory, $api): void
     {
         $thrownException = new InvalidTokenException();
         $api->getCreditsUsageStatistics()->willThrow($thrownException);
 
+        $dataProviderException = DataProviderException::authenticationError($thrownException);
+
+        $invalidTokenExceptionFactory->create($thrownException)->willReturn($dataProviderException);
+
         $api->setToken('valid-token')->shouldBeCalled();
         $this
-            ->shouldThrow(DataProviderException::authenticationError($thrownException))
+            ->shouldThrow($dataProviderException)
             ->during('getCreditsUsageStatistics');
     }
 
