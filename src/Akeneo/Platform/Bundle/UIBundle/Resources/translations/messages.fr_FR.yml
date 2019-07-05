@@ -48,6 +48,7 @@ pim_ui.system_config:
 other_actions: Autres actions
 pim_common:
   cancel: Annuler
+  save: Enregistrer
   delete: Supprimer
   update: Mettre à jour
   view: Afficher
