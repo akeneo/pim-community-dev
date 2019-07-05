@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Import\ProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 
 /**
  * +--------------+-----------------------------------+
@@ -117,6 +118,8 @@ CSV;
      */
     private function assertProductModelIndex(array $filters, array $codes): void
     {
+        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+
         $pmqb = $this->get('pim_catalog.query.product_model_query_builder_factory')->create(
             [
                 'filters' => $filters,

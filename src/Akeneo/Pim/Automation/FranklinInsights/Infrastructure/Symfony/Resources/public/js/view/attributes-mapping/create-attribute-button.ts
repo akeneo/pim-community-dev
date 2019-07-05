@@ -16,7 +16,7 @@ const SecurityContext = require('pim/security-context');
 
 class CreateAttributeButton extends View<Model> {
   private template = _.template(`
-    <button class="AknButton AknButton--apply">
+    <button class="AknButton AknButton--ghost">
       <%= __('akeneo_franklin_insights.entity.attributes_mapping.fields.create_attribute.btn') %>
     </button>
   `);

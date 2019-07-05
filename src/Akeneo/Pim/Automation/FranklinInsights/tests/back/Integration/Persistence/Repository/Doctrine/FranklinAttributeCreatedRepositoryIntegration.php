@@ -48,6 +48,24 @@ SQL;
         Assert::assertNotNull($retrievedEvents[0]['created']);
     }
 
+    public function test_it_counts_attribute_created(): void
+    {
+        $this->insertCreatedAttribute('color');
+        $this->insertCreatedAttribute('secondary_color');
+        $this->insertCreatedAttribute('material');
+
+        Assert::assertEquals(3, $this->getRepository()->count());
+    }
+
+    private function insertCreatedAttribute(string $attributeCode)
+    {
+        $event = new FranklinAttributeCreated(
+            new AttributeCode($attributeCode),
+            new AttributeType('pim_catalog_text')
+        );
+        $this->getRepository()->save($event);
+    }
+
     private function getRepository(): FranklinAttributeCreatedRepository
     {
         return $this->get('akeneo.pim.automation.franklin_insights.repository.franklin_attribute_created');

@@ -25,10 +25,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -41,7 +37,6 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\DecimalsAllowed;
 
 class FixturesLoader
 {
@@ -473,50 +468,6 @@ class FixturesLoader
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false)
-            );
-        }
-
-        // WEBSITE
-        if (in_array('website', $this->loadedAttributes)) {
-            $attributes['website'] = UrlAttribute::create(
-                $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
-                    AttributeCode::fromString('website')
-                ),
-                $referenceEntityIdentifier,
-                AttributeCode::fromString('website'),
-                LabelCollection::fromArray([
-                    'en_US' => 'Nickname',
-                ]),
-                $this->getOrderForAttribute('website'),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                Prefix::fromString('https://akeneodemo.getbynder.com/m/1e567bef001b08fa/'),
-                Suffix::empty(),
-                MediaType::fromString(MediaType::IMAGE)
-            );
-        }
-
-        // VIDEO
-        if (in_array('video', $this->loadedAttributes)) {
-            $attributes['video'] = UrlAttribute::create(
-                $this->attributeRepository->nextIdentifier(
-                    $referenceEntityIdentifier,
-                    AttributeCode::fromString('video')
-                ),
-                $referenceEntityIdentifier,
-                AttributeCode::fromString('video'),
-                LabelCollection::fromArray([
-                   'en_US' => 'Video',
-                ]),
-                $this->getOrderForAttribute('video'),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                Prefix::fromString('https://my-stream.com'),
-                Suffix::empty(),
-                MediaType::fromString(MediaType::OTHER)
             );
         }
 

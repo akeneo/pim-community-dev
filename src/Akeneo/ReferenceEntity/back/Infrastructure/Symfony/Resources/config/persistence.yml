@@ -289,13 +289,6 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_hydrator }
 
-    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.url_attribute_hydrator:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\UrlAttributeHydrator
-        arguments:
-            - '@database_connection'
-        tags:
-            - { name: akeneo_referenceentity.attribute_hydrator }
-
     # Record value hydrators
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.data_hydrator_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry
@@ -359,11 +352,6 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.text_data:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\TextDataHydrator
-        tags:
-            - { name: akeneo_referenceentity.data_hydrator }
-
-    akeneo_referenceentity.infrastructure.persistence.record.hydrator.url_data:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\UrlDataHydrator
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 

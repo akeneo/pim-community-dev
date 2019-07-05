@@ -129,6 +129,6 @@ config:
 
         oro/datafilter/reference-entity-collection-filter: akeneoreferenceentity/infrastructure/product-grid/filter/attribute/reference-entity-collection
 
-        pim/form/common/fields/values/reference-entity: akeneoreferenceentity/infrastructure/product/axis/reference-entity.js
+        pim/form/common/fields/values/reference-entity: akeneoreferenceentity/infrastructure/product/axis/reference-entity
 
         pimee/filter/attribute/reference-entity-collection: pimenterpriseui/js/filter/attribute/reference-entity-collection

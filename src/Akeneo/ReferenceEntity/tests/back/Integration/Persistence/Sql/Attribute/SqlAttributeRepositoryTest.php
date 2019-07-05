@@ -39,10 +39,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -274,34 +270,6 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 
         $actualNumber = $this->attributeRepository->getByIdentifier($identifier);
         $this->assertAttribute($expectedNumber, $actualNumber);
-    }
-
-    /**
-     * @test
-     */
-    public function it_creates_an_attribute_of_type_url_and_returns_it()
-    {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($referenceEntityIdentifier, AttributeCode::fromString('number'));
-        $expectedUrl = UrlAttribute::create(
-            $identifier,
-            $referenceEntityIdentifier,
-            AttributeCode::fromString('preview'),
-            LabelCollection::fromArray(['en_US' => 'Preview', 'fr_FR' => 'Aperçu']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString('http://google.com/'),
-            Suffix::empty(),
-            MediaType::fromString('image')
-        );
-
-        $this->attributeRepository->create($expectedUrl);
-
-        $actualUrl = $this->attributeRepository->getByIdentifier($identifier);
-        $this->assertAttribute($expectedUrl, $actualUrl);
     }
 
     /**

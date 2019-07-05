@@ -32,10 +32,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\MediaType;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Prefix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\Url\Suffix;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\UrlAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
@@ -276,43 +272,6 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
-        );
-
-        Assert::assertEquals($expectedAttribute, $attribute);
-    }
-
-    /**
-     * @Given /^the url attribute Preview that is only part of the structure of the Designer reference entity in the ERP but not in the PIM$/
-     */
-    public function theUrlAttributePreviewThatIsOnlyPartOfTheStructureOfTheDesignerReferenceEntityInTheERPButNotInThePIM()
-    {
-        $this->requestContract = 'successful_preview_reference_entity_attribute_creation.json';
-    }
-
-    /**
-     * @Then /^the Preview attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP$/
-     */
-    public function thePreviewAttributeIsAddedToTheStructureOfTheDesignerReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_preview_reference_entity_attribute_creation.json'
-        );
-
-        $attributeIdentifier = AttributeIdentifier::create('designer', 'preview', md5('designer_preview'));
-        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = UrlAttribute::create(
-            $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('preview'),
-            LabelCollection::fromArray(['en_US' => 'Preview']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
-            MediaType::fromString('image')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -567,70 +526,6 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
-        );
-
-        Assert::assertEquals($expectedAttribute, $attribute);
-    }
-
-    /**
-     * @Given /^the url attribute Preview that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties$/
-     */
-    public function theUrlAttributePreviewThatIsBothPartOfTheStructureOfTheDesignerReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
-    {
-        $attribute = UrlAttribute::create(
-            AttributeIdentifier::create('designer', 'preview', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('preview'),
-            LabelCollection::fromArray(['en_US' => 'Preview']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
-            MediaType::fromString('image')
-        );
-        $this->attributeRepository->create($attribute);
-
-        $connectorAttribute = new ConnectorAttribute(
-            $attribute->getCode(),
-            LabelCollection::fromArray(['en_US' => 'Preview']),
-            'url',
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeIsRequired::fromBoolean(true),
-            ['media_type' => 'image']
-        );
-        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
-
-
-        $this->requestContract = 'successful_preview_reference_entity_attribute_update.json';
-    }
-
-    /**
-     * @Then /^the properties of the Preview attribute are updated in the PIM with the properties coming from the ERP$/
-     */
-    public function thePropertiesOfThePreviewAttributeAreUpdatedInThePIMWithThePropertiesComingFromTheERP()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_preview_reference_entity_attribute_update.json'
-        );
-
-        $attributeIdentifier = AttributeIdentifier::create('designer', 'preview', 'fingerprint');
-        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = UrlAttribute::create(
-            $attributeIdentifier,
-            ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('preview'),
-            LabelCollection::fromArray(['en_US' => 'Preview', 'fr_FR' => 'Aperçu']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
-            MediaType::fromString('image')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);

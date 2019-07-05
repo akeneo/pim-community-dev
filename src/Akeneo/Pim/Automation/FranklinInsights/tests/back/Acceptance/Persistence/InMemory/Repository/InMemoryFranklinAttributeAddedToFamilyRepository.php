@@ -27,4 +27,9 @@ class InMemoryFranklinAttributeAddedToFamilyRepository implements FranklinAttrib
     {
         $this->events[] = $franklinAttributeAddedToFamily;
     }
+
+    public function count(): int
+    {
+        return count($this->events);
+    }
 }

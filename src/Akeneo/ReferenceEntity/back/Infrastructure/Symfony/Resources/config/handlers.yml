@@ -50,12 +50,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
     # Attribute options
-    akeneo_referenceentity.application.attribute.append_attribute_option_handler:
-        class: Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
-        arguments:
-            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-
     akeneo_referenceentity.application.attribute.edit_attribute_option_handler:
         class: Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler
         arguments:

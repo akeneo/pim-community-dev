@@ -44,4 +44,16 @@ SQL;
 
         $this->dbalConnection->executeUpdate($sqlQuery, $bindParams);
     }
+
+    public function count(): int
+    {
+        $sql = <<<'SQL'
+            SELECT COUNT(attribute_added_to_family.attribute_code)
+            FROM pimee_franklin_insights_attribute_added_to_family as attribute_added_to_family
+SQL;
+
+        $stmt = $this->dbalConnection->executeQuery($sql);
+
+        return (int)$stmt->fetchColumn();
+    }
 }

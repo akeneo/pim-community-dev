@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Elastics
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\Assert;
 
@@ -39,7 +40,7 @@ class FranklinSubscriptionFilterIntegration extends TestCase
         $this->insertSubscription($product1->getId(), true);
         $this->insertSubscription($product2->getId(), true);
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll([$product1, $product2]);
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll([$product1, $product2], ['index_refresh' => Refresh::waitFor()]);
     }
 
     public function test_products_are_filterable_by_franklin_subscription(): void

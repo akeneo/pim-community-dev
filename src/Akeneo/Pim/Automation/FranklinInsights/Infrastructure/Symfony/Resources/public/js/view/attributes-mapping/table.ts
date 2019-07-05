@@ -507,6 +507,11 @@ class AttributeMapping extends BaseView {
     this.setData(familyMapping);
 
     this.render();
+
+    Messenger.notify(
+      'success',
+        __('akeneo_franklin_insights.entity.attributes_mapping.flash.do_not_map_attribute_success')
+    );
   }
 }
 

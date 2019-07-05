@@ -66,8 +66,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                 'main_image',           // image
                 'main_material',        // option
                 'materials',            // option collection
-                'year',                 // number
-                'website'               // url
+                'year'                  // number
             ])
             ->load();
     }
@@ -150,13 +149,6 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => '1949',
                     ],
                 ],
-                'website' => [
-                    [
-                        'locale' => null,
-                        'channel' => null,
-                        'data' => 'id-screenshot-website650'
-                    ]
-                ]
             ],
         ];
 
@@ -235,20 +227,13 @@ class RecordValidatorTest extends SqlIntegrationTestCase
                         'data'    => 1949,
                     ],
                 ],
-                'website' => [
-                    [
-                        'locale' => null,
-                        'channel' => null,
-                        'data' => 250
-                    ]
-                ]
             ],
         ];
 
         $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
-        $this->assertCount(8, $errors);
+        $this->assertCount(7, $errors);
         $this->assertContains(
             [
                 'property' => 'values.country[0].data',
@@ -294,13 +279,6 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $this->assertContains(
             [
                 'property' => 'values.year[0].data',
-                'message'  => 'Integer value found, but a string or a null is required'
-            ],
-            $errors
-        );
-        $this->assertContains(
-            [
-                'property' => 'values.website[0].data',
                 'message'  => 'Integer value found, but a string or a null is required'
             ],
             $errors

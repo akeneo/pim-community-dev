@@ -37,4 +37,4 @@ extensions:
             templateParams:
                 hint: akeneo_franklin_insights.settings.module.inactive_connection.title
                 subHint: akeneo_franklin_insights.settings.module.inactive_connection.sub_title
-                imageClass: AknGridContainer-noDataImage
+                imageClass: AknGridContainer-noDataImage--franklin

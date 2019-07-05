@@ -63,21 +63,6 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
 
-    akeneo_referenceentity.application.edit_attribute.attribute_updater.prefix:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\Url\PrefixUpdater
-        tags:
-            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
-
-    akeneo_referenceentity.application.edit_attribute.attribute_updater.suffix:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\Url\SuffixUpdater
-        tags:
-            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
-
-    akeneo_referenceentity.application.edit_attribute.attribute_updater.media_type:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\Url\MediaTypeUpdater
-        tags:
-            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
-
     # Records
     akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistry
@@ -119,10 +104,5 @@ services:
 
     akeneo_referenceentity.application.edit_record.record_value_updater.number_updater:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\NumberUpdater
-        tags:
-            - { name: akeneo_referenceentity.record_value_updater }
-
-    akeneo_referenceentity.application.edit_record.record_value_updater.url_updater:
-        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\UrlUpdater
         tags:
             - { name: akeneo_referenceentity.record_value_updater }

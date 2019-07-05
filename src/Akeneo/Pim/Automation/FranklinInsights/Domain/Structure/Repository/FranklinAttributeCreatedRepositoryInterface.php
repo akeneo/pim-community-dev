@@ -21,4 +21,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttrib
 interface FranklinAttributeCreatedRepositoryInterface
 {
     public function save(FranklinAttributeCreated $franklinAttributeCreated): void;
+
+    public function count(): int;
 }
