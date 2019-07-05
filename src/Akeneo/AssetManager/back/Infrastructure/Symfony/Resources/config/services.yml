@@ -6,6 +6,11 @@ services:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_assetmanager.client.asset'
             - '@pim_catalog.command_launcher'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value'
+            - '@akeneo_assetmanager.common.helper.fixtures_loader'
 
     akeneo_assetmanager.command.installer.assets_installer:
         class: Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\AssetsInstaller
@@ -69,3 +74,11 @@ services:
                 - '@pim_catalog.command_launcher'
             tags:
                 - { name: kernel.event_subscriber }
+
+    akeneo_assetmanager.common.helper.fixtures_loader:
+        class: Akeneo\AssetManager\Common\Helper\FixturesLoader
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value'

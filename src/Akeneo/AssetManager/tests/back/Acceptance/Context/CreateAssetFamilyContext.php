@@ -165,22 +165,7 @@ final class CreateAssetFamilyContext implements Context
      */
     public function theUserCreatesAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
-        $ruleTemplate = [
-            'conditions' => [
-                [
-                    'field' => 'sku',
-                    'operator' => 'equals',
-                    'value' => '{{product_sku}}'
-                ]
-            ],
-            'actions'=> [
-                [
-                    'type' => 'add',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
-                ]
-            ]
-        ];
+        $ruleTemplate = $this->getExpectedRuleTemplate();
 
         $command = new CreateAssetFamilyCommand(
             $code,
@@ -204,24 +189,32 @@ final class CreateAssetFamilyContext implements Context
     {
         $expectedIdentifier = AssetFamilyIdentifier::fromString($code);
         $actualAssetFamily = $this->assetFamilyRepository->getByIdentifier($expectedIdentifier);
-        $expectedRuleTemplate = [
+        $expectedRuleTemplate = $this->getExpectedRuleTemplate();
+        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
+
+        Assert::assertEquals($expectedRuleTemplateCollection, $actualAssetFamily->getRuleTemplateCollection());
+    }
+
+    /**
+     * @return array
+     */
+    private function getExpectedRuleTemplate(): array
+    {
+        return [
             'conditions' => [
                 [
-                    'field' => 'sku',
+                    'field'    => 'sku',
                     'operator' => 'equals',
-                    'value' => '{{product_sku}}'
+                    'value'    => '{{product_sku}}'
                 ]
             ],
-            'actions'=> [
+            'actions'    => [
                 [
-                    'type' => 'add',
+                    'type'  => 'add',
                     'field' => '{{attribute}}',
                     'value' => '{{code}}'
                 ]
             ]
         ];
-        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
-
-        Assert::assertEquals($expectedRuleTemplateCollection, $actualAssetFamily->getRuleTemplateCollection());
     }
 }

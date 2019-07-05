@@ -261,13 +261,8 @@ SQL;
 
     private function hydrateRuleTemplates(string $normalizedRuleTemplates): RuleTemplateCollection
     {
-        $ruleTemplates = [];
         $normalizedRuleTemplates = json_decode($normalizedRuleTemplates, true);
 
-        foreach ($normalizedRuleTemplates as $ruleTemplate) {
-            $ruleTemplates[] = RuleTemplate::createFromNormalized($ruleTemplate);
-        }
-
-        return RuleTemplateCollection::createFromNormalized($ruleTemplates);
+        return RuleTemplateCollection::createFromNormalized($normalizedRuleTemplates);
     }
 }
