@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\StatisticsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
@@ -28,14 +29,15 @@ use PhpSpec\ObjectBehavior;
 class StatisticsProviderSpec extends ObjectBehavior
 {
     public function let(
-        StatisticsWebService $api,
-        ConfigurationRepositoryInterface $configurationRepo
+        ConfigurationRepositoryInterface $configurationRepo,
+        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
+        StatisticsWebService $api
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
 
-        $this->beConstructedWith($api, $configurationRepo);
+        $this->beConstructedWith($configurationRepo, $invalidTokenExceptionFactory, $api);
     }
 
     public function it_is_a_statistics_provider(): void

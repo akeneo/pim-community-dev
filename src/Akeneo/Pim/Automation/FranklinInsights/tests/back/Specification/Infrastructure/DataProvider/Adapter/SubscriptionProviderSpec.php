@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
@@ -46,8 +47,9 @@ use Prophecy\Argument;
 class SubscriptionProviderSpec extends ObjectBehavior
 {
     public function let(
-        SubscriptionWebService $subscriptionApi,
         ConfigurationRepositoryInterface $configurationRepo,
+        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
+        SubscriptionWebService $subscriptionApi,
         FamilyRepositoryInterface $familyRepository
     ): void {
         $configuration = new Configuration();
@@ -56,7 +58,12 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $subscriptionApi->setToken('valid-token')->shouldBeCalled();
 
-        $this->beConstructedWith($subscriptionApi, $configurationRepo, $familyRepository);
+        $this->beConstructedWith(
+            $configurationRepo,
+            $invalidTokenExceptionFactory,
+            $subscriptionApi,
+            $familyRepository
+        );
     }
 
     public function it_throws_an_exception_if_product_has_no_mapped_value_on_subscription(): void
