@@ -13,7 +13,7 @@ pim_user:
       date_of_birth: Data de nascimento
       avatar: Avatar
       timezone: Fuso horário
-      roles: Funções
+      roles: Papeis
       groups: Grupos
       password: Senha
       password_again: Redigite a senha
@@ -51,10 +51,10 @@ pim_user:
         title: Dados adicionais
       interfaces:
         title: Interfaces
-      group_and_role.title: Grupos e Funções
+      group_and_role.title: Grupos e Regras
       password.title: Senha
-      business_unit.title: Unidades de Negócios
-      email_synchronization.title: Configurações de sincronização de E-Mail
+      business_unit.title: Unidades de Negócio
+      email_synchronization.title: Configuração da Sincronização de emails
     removed_user: Usuário removido
     login:
       username_or_email: Usuário ou Email
@@ -108,7 +108,7 @@ flash:
 oro_security:
   acl_group:
     user: Usuários
-    role: Funções
+    role: Papeis
     group: Grupo de usuários
   acl:
     user:
@@ -127,9 +127,9 @@ oro_security:
       edit: Editar Grupos de Usuários
       delete: Remover um grupo de usuário
 (default): Permissão padrão nas entidades
-VIEW: Visão
+VIEW: Visualizar
 CREATE: Criar
 EDIT: Editar
-DELETE: Excluir
+DELETE: Deletar
 ASSIGN: Atribuir
 SHARE: Compartilhar

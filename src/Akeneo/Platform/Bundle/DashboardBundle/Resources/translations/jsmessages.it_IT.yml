@@ -1,6 +1,6 @@
 pim_dashboard:
   widget:
     completeness:
-      load_more: 'Carica ancora...'
+      load_more: 'Carica di più...'
 pim_title:
   pim_dashboard_index: Dashboard

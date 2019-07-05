@@ -9,6 +9,7 @@ pim_enrich.entity.family:
       cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
       cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
       cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
+      fields_not_ready: "Familien kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
     create:
       success: Familien blev oprettet
     delete:
@@ -18,6 +19,8 @@ pim_enrich.entity.family:
     attribute_as_label: Attributten anvendes som etiket
     attribute_as_image: Attributten anvendes som det primære billede
     empty_attribute_as_image: Ikke valgte
+  page_title:
+    index: "] -Inf, 1] {{ count }} familie |] 1, Inf [{{ count }} familier"
   module:
     attributes:
       not_required_label: Ikke påkrævet
@@ -27,28 +30,44 @@ pim_enrich.entity.family:
     delete:
       confirm: Er du sikker på at du vil slette denne familie?
 pim_enrich.entity.family_variant:
+  label: Familie varianter
   short_plural_label: Varianter
   short_label: Variant
   flash:
+    update:
+      success: Familie variant opdateret. Produkter med varianter vil blive opdateret med ændringerne.
+      fail: Familie varianten kunne ikke opdateres.
     create:
       success: Familie variant blev oprettet
   module:
     edit:
+      common_attributes: Fælles attributter
+      no_common_attributes: Der er ingen fælles attributter
       variant_axis_label: Variant akse
       variant_attributes: Variant attributter
       level_1: Variant attributter niveau 1
       level_2: Variant attributter niveau to
+      description: Træk & slip attributter til det valgte variant niveau for at få disse attributter håndteret på den variant niveau.
+      attribute_remove: Fjern en attribut
+      attribute_group_remove: Fjern en attributgruppe
+      confirm_attribute_removal_title: Bekræfte Fjern attributter
+      confirm_attribute_removal_message: Ved at fjerne disse attributter vil du lægge dem tilbage i de fælles attributter på denne familie variant og fjerne værdier fra variant varerne
     create:
       label: Tilføje variant
       title: Opret en ny familie variant
       description: I en familie variant, kan du definere en struktur for produkter med varianter. Vælge antallet af administrerede variant niveauer, de attributter, der bruges som variant akser for hvert niveau, og derefter definere hvordan attributterne er fordelt.
       variant_levels: Variant niveauer
+      axis_level: "Variant akse niveau {{ level }}"
+    update_translations:
+      title: Opdater oversættelse
+    delete:
+      confirm: Er du sikker på at du vil slette denne familie variant?
 pim_enrich.entity.attribute_option:
-  short_uppercase_label: Muligheder
+  short_uppercase_label: Valgmuligheder
   flash:
     create:
       success: Attribut tilvalg oprettet
-      fail: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
+      fail: Der opstod en fejl under oprettelsen af attribut egenskaben
     update:
       fail: Kan ikke gemme attribut indstilling
     delete:
@@ -56,6 +75,7 @@ pim_enrich.entity.attribute_option:
   module:
     edit:
       cancel_title: Annullere ændringer
+      cancel_description: Advarsel, du vil miste ikke gemte data. Er du sikker på du vil annullere ændringen af denne nye indstilling?
 pim_enrich.entity.association_type:
   label: sammenhængstype
   flash:
@@ -68,6 +88,8 @@ pim_enrich.entity.association_type:
     delete:
       success: Sammenhængstypen blev slettet
       fail: Kan ikke slette denne association type
+  page_title:
+    index: "] -Inf, 1] {{ count }} association type |] 1, Inf [{{ count }} association typer"
   module:
     create:
       button: opret sammenhængstype
@@ -85,6 +107,8 @@ pim_enrich.entity.group_type:
     delete:
       success: Gruppetypen fjernet
       fail: Kan ikke slette denne gruppetype
+  page_title:
+    index: "] -Inf, 1] {{ count }} gruppetype |] 1, Inf [{{ count }} gruppe typer{{ count }}"
   module:
     create:
       button: opret gruppetype
@@ -101,6 +125,8 @@ pim_enrich.entity.attribute:
     delete:
       success: Attributten blev slettet
       fail: Kan ikke slette denne attribut
+  page_title:
+    index: "] -Inf, 1] {{ count }} attribut |] 1, Inf [{{ count }} attributter"
   property:
     allowed_extensions: Tilladte filendelser
     auto_option_sorting: Sorter automatisk indstillinger efter alfabetisk rækkefølge
@@ -132,7 +158,7 @@ pim_enrich.entity.attribute:
     scopable: Værdi pr. kanal
     type:
       choose: Vælg attributtype
-      pim_catalog_identifier: Id
+      pim_catalog_identifier: Identifikator
       pim_catalog_text: Tekst
       pim_catalog_textarea: Tekstområde
       pim_catalog_number: Tal
@@ -144,8 +170,8 @@ pim_enrich.entity.attribute:
       pim_catalog_boolean: "Ja / Nej"
       pim_catalog_date: Dato
       pim_catalog_metric: Metrisk
-      pim_reference_data_simpleselect: Referencedata simpel Vælg
-      pim_reference_data_multiselect: Reference data multi Vælg
+      pim_reference_data_simpleselect: Referencedata simpel valg
+      pim_reference_data_multiselect: Reference data multi valg
     unique: Unik værdi
     useable_as_grid_filter: Brugbare i gitter
     validation_regexp: Regulære udtryk
@@ -167,6 +193,7 @@ pim_enrich.entity.attribute:
       validation: Valideringsparametre
     delete:
       confirm: Er du sikker på du vil slette attributten?
+      confirm_from_family: Er du sikker på du vil slette denne attribut fra produktet?
       confirm_from_group: Vil du fjerne attributten {{ attribute }} fra denne attributgruppe?
       confirm_from_product: Er du sikker på du vil slette denne attribut fra produktet?
 pim_enrich.entity.attribute_group:
@@ -177,21 +204,26 @@ pim_enrich.entity.attribute_group:
     update:
       success: Attributgruppe opdateret
       fail: Attributgruppe kunne ikke opdateres
+      fields_not_ready: "Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
     delete:
       success: Attributgruppe fjernet
+      fail: Kan ikke slette denne attribut
   module:
     add_attribute_group:
       label: Tilføj efter gruppe
+      no_attribute_groups_available: Ingen attribut gruppe tilgængelig
       attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
     delete:
       confirm: Er du sikker på du vil slette denne attributgruppe?
 pim_enrich.mass_edit.family:
   title: Familier massehandling
+  confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
   step:
     select:
       label: Vælg familier
     choose:
       title: Familier massehandling
+      label_count: "] 0, Inf [Vælg din handling"
     configure:
       label: Konfigurér
     confirm:
@@ -202,3 +234,4 @@ pim_enrich.mass_edit.family:
     set_requirements:
       label: Indstil attribut krav
       description: Følgende attribut krav vil blive anvendt til de valgte familier
+      label_count: "Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">1 familie</span>|] 1, Inf [Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"

@@ -35,7 +35,7 @@ pim_enrich.entity.product:
     create:
       subtitle: Criar produto
       title: Selecionar uma ação
-      choose_family: Escolha uma família
+      choose_family: Escolher uma família
       choose_family_variant: Escolha uma variante de família
     variant_navigation:
       common: Comuns
@@ -47,12 +47,12 @@ pim_enrich.entity.product:
     copy:
       label: Comparar / Traduzir
       select: Selecionar
-      all_visible: Todos Visiveis
+      all_visible: Todos visiveis
       copy: Cópia
     history:
       version: Versão
       author: Autor
-      logged_at: Registrado em
+      logged_at: Logado em
       from: De
       modified: Modificado
       old_value: Valor antigo
@@ -72,7 +72,7 @@ pim_enrich.entity.product:
       add_attribute_option: Adicionar Opção de Atributo
       add_option: Adicionar Opção
     completeness:
-      title: Completude
+      title: Plenitude
       complete: Completo
       no_family: Família não definida. Por favor, defina uma família para calcular a plenitude desse produto.
       no_completeness: Você alterou a família do produto. Por favor, salve primeiramente para calcular a plenitude para nova família.
@@ -99,11 +99,11 @@ pim_enrich.entity.product:
       missing_required: Todos os atributos obrigatórios faltando
       at_this_level: Todos os atributos específicos de nível
     change_family:
-      title: Mudar a família do produto
-      merge_attributes: Os atributos atuais serão mesclados com os da nova família.
+      title: Alterar a família do produto
+      merge_attributes: Atributos atuais serão mesclados com os da nova família.
       keep_attributes: Nenhum atributo será removido.
-      change_family_to: Mudar a família para
-      empty_selection: Escolha uma família
+      change_family_to: Alterar família para
+      empty_selection: Escolher uma família
     basket:
       title: Lixeira
       empty_basket: Lixeira está vazio
@@ -116,7 +116,8 @@ pim_enrich.entity.product:
       empty: Sem comentários
       header_comment: '{{ user }} comentou o produto'
       header_reply: '{{ user }} respondeu ao comentário'
-      delete_confirm: Tem certeza que deseja remover esse comentário?
+      delete_confirm: Tem certeza que deseja deletar este comentário?
+      removed_author: Usuário removido
 pim_enrich.entity.product_model:
   label: modelo do produto
   uppercase_label: Modelo do produto
@@ -169,7 +170,7 @@ pim_enrich.entity.group:
     index: "]-Inf, 1]{{ count }} grupo|]1, Inf[{{ count }} grupos"
   module:
     create:
-      button: Criar grupo
+      button: Criar Grupo
     delete:
       confirm: Tem certeza de que deseja excluir este produto?
 pim_enrich.entity.category:
@@ -222,7 +223,7 @@ pim_enrich.export.product:
         enabled: Habilitado
         disabled: Desabilitado
     completeness:
-      title: Completude
+      title: Plenitude
       help: Selecione os produtos para exportação por sua completude.
       operators:
         ALL: Nenhuma condição da integralidade
@@ -256,7 +257,7 @@ pim_enrich.mass_edit.product:
   confirm: "Você está prestes a atualizar um produto com as seguintes informações, por favor confirme. |Você está prestes a atualizar os %count% produtos com as seguintes informações, por favor confirme."
   step:
     select:
-      label: Escolha os produtos
+      label: Escolha produtos
     choose:
       title: Ação em massa de produtos
       label_count: "]0, Inf[Selecione sua ação"
@@ -326,7 +327,7 @@ pim_datagrid:
     bulk_actions:
       label: Ações em Massa
     quick_export:
-      label: Exportação rápida
+      label: Exportação Rápida
   mass_action:
     delete:
       confirm_content: Você tem certeza que deseja remover os produtos selecionados?
