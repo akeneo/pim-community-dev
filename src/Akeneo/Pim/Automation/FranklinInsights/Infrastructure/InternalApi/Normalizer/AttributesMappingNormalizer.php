@@ -21,15 +21,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
  */
 class AttributesMappingNormalizer
 {
-    /**
-     * @param AttributeMappingCollection $attributeMappingCollection
-     *
-     * @return array
-     */
     public function normalize(AttributeMappingCollection $attributeMappingCollection): array
     {
         $normalizedAttributes = [];
-        /** @var AttributeMapping $attribute */
+
         foreach ($attributeMappingCollection as $attribute) {
             $normalizedAttributes[$attribute->getTargetAttributeCode()] = [
                 'franklinAttribute' => [
