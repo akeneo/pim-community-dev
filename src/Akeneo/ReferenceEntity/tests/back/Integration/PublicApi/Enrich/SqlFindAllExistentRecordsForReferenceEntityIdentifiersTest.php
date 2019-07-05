@@ -28,7 +28,7 @@ use PHPUnit\Framework\Assert;
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-final class SqlFindAllExistentRecordForReferenceEntityIdentifiersTest extends SqlIntegrationTestCase
+final class SqlFindAllExistentRecordsForReferenceEntityIdentifiersTest extends SqlIntegrationTestCase
 {
     /** @var SqlFindAllExistentRecordsForReferenceEntityIdentifiers */
     private $findAllExistentRecordForReferenceEntityIdentifiers;
@@ -50,6 +50,18 @@ final class SqlFindAllExistentRecordForReferenceEntityIdentifiersTest extends Sq
     {
         $expected = [];
         $actual = $this->findAllExistentRecordForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes([]);
+
+        Assert::assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function test_it_returns_nothing_no_asset_codes_for_asset_family(): void
+    {
+        $expected = [];
+        $actual = $this->findAllExistentRecordForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes(
+            [
+                'asset_family_code' => []
+            ]
+        );
 
         Assert::assertEqualsCanonicalizing($expected, $actual);
     }
