@@ -325,7 +325,7 @@ Feature: Lists all attributes related to an asset family
     And the user edits the attribute property "MinValue" with value "-10.12"
     And the user edits the attribute property "MaxValue" with value "50"
 
-  @acceptance-front
+  # @acceptance-front
   Scenario: User can't edit the text attribute
     Given a valid asset family
     And the user has the following rights:
