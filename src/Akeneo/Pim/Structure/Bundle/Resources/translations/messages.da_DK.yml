@@ -24,7 +24,7 @@ pim_enrich:
         fourth: Bekræft
 pim_enrich_attribute_form:
   code: Kode
-  type: Egenskabstype
+  type: Attribute Type
   reference_data_name: Referencenavn data
   scopable: Værdi pr. kanal
   localizable: Værdi pr. landestandard

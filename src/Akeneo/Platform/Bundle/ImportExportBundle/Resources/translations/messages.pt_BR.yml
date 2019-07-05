@@ -33,7 +33,7 @@ pim_import_export:
   job_profile:
     tab:
       property.title: Propriedades gerais
-      history.title: Histórico
+      history.title: História
       job_content.title: Conteúdo
 pim_title.export_profile.index: Gerenciamento dos perfis de exportação
 pim_title.export_profile.edit: Exportar perfil %job.label% | Editar
@@ -84,12 +84,12 @@ pim_importexport:
       dl_log: Baixar o log do relatório de importação
       dl_files: Baixar os arquivos importados
   acl_group:
-    export: Perfis de exportação
-    import: Perfis de importação
+    export: Exportar perfis
+    import: Importar perfis
 btn:
   create:
-    export profile: criar perfil de exportação
-    import profile: criar perfil de importação
+    export profile: criar um perfil de exportação
+    import profile: criar um perfil de importação
 Upload and import now: Enviar e Importar Agora
 import now: Importar Agora
 export now: Exportar Agora
@@ -109,9 +109,9 @@ flash:
     updated: A importação foi atualizada com sucesso
     running: A importação está em execução
 General properties: Propriedades gerais
-History: Histórico
+History: História
 pane.accordion:
-  properties: Propriedades
+  properties: Propriedade
   global_settings: Configurações globais
   filters: Filtros
 popin.create:
@@ -126,7 +126,7 @@ Show profile: Exibir Perfil
 execution details: detalhes da execução
 job_execution.summary:
   read: ler
-  write: escrever
+  write: escrito
   skip: pulado
   create: criado
   update: atualizado
