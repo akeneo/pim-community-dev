@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
@@ -28,12 +29,15 @@ abstract class AbstractProvider
     /** @var Token */
     private $token;
 
+    protected $invalidTokenExceptionFactory;
+
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
-    public function __construct(ConfigurationRepositoryInterface $configurationRepository)
+    public function __construct(ConfigurationRepositoryInterface $configurationRepository, InvalidTokenExceptionFactory $invalidTokenExceptionFactory)
     {
         $this->configurationRepository = $configurationRepository;
+        $this->invalidTokenExceptionFactory = $invalidTokenExceptionFactory;
     }
 
     /**
