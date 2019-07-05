@@ -13,3 +13,5 @@ parameters:
     asset_family_connector_asset_families_limit_per_page: 200
     # Maximum number of assets to process in a single API request
     asset_family_connector_maximum_assets_to_process_per_request: 100
+    # Maximum rule templates per asset families
+    asset_manager_rule_template_by_asset_family_limit: 5

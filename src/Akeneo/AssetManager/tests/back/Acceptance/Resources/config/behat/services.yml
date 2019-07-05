@@ -16,7 +16,7 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
+            - '%asset_manager_rule_template_by_asset_family_limit%'
 
 
     akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context:
@@ -38,6 +38,7 @@ services:
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '%asset_manager_rule_template_by_asset_family_limit%'
 
 
     akeneo_assetmanager.tests.back.acceptance.context.create_asset_context:
