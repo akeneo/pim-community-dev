@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8441: Fix badge positioning on PM dropdowns
+- PIM-8354: Fix missing metric attributes on channel page
 
 # 3.0.29 (2019-07-04)
 

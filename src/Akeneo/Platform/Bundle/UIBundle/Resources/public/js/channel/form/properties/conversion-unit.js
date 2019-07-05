@@ -52,7 +52,10 @@ define([
                 }
 
                 $.when(
-                    FetcherRegistry.getFetcher('attribute').search({'types': 'pim_catalog_metric'}),
+                    FetcherRegistry.getFetcher('attribute').search({
+                        'types': 'pim_catalog_metric',
+                        'options': {'limit': 1000}
+                    }),
                     FetcherRegistry.getFetcher('measure').fetchAll()
                 ).then(function (attributes, measures) {
 
