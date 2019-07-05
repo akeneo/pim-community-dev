@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.30 (2019-07-05)
+
 ## Bug fixes
 
 - PIM-8441: Fix badge positioning on PM dropdowns
