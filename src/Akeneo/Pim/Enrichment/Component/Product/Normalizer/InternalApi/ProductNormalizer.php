@@ -13,10 +13,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
@@ -283,12 +287,25 @@ class ProductNormalizer implements NormalizerInterface
     protected function getNormalizedCompletenesses(ProductInterface $product)
     {
         $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
-        if (count($completenessCollection) === 0) {
-            $newCompletenesses = $this->completenessCalculator->calculate($product);
-            foreach ($newCompletenesses as $completeness) {
-                $completenessCollection[] = $completeness;
-            }
+        if ($completenessCollection->empty()) {
+            $completenessCollection = new ProductCompletenessCollection(
+                $product->getId(),
+                array_map(
+                    function (CompletenessInterface $completeness) {
+                        return new ProductCompleteness(
+                            $completeness->getChannel()->getCode(),
+                            $completeness->getLocale()->getCode(),
+                            $completeness->getRequiredCount(),
+                            array_map(function (AttributeInterface $attribute) {
+                                return $attribute->getCode();
+                            }, $completeness->getMissingAttributes()->toArray())
+                        );
+                    },
+                    $this->completenessCalculator->calculate($product)
+                )
+            );
         }
+
         return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
     }
 

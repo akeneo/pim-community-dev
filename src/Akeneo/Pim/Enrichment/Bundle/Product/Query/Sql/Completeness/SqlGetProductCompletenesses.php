@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Doctrine\DBAL\Connection;
 
@@ -23,7 +24,7 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
         $this->connection = $connection;
     }
 
-    public function fromProductId(int $productId): array
+    public function fromProductId(int $productId): ProductCompletenessCollection
     {
         $sql = <<<SQL
 SELECT 
@@ -41,7 +42,7 @@ GROUP BY completeness.required_count, channel.code, locale.code
 SQL;
         $rows = $this->connection->executeQuery($sql, ['productId' => $productId])->fetchAll();
 
-        return array_map(
+        return new ProductCompletenessCollection($productId, array_map(
             function (array $row): ProductCompleteness {
                 return new ProductCompleteness(
                     $row['channel_code'],
@@ -51,6 +52,6 @@ SQL;
                 );
             },
             $rows
-        );
+        ));
     }
 }

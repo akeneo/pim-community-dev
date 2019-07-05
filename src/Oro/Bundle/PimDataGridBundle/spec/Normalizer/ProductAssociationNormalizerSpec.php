@@ -3,6 +3,7 @@
 namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer;
@@ -90,9 +91,9 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(42)->willReturn([
+        $getProductCompletenesses->fromProductId(42)->willReturn(new ProductCompletenessCollection(42, [
             new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
-        ]);
+        ]));
 
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
@@ -160,9 +161,9 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(42)->willReturn([
+        $getProductCompletenesses->fromProductId(42)->willReturn(new ProductCompletenessCollection(42, [
             new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
-        ]);
+        ]));
 
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([

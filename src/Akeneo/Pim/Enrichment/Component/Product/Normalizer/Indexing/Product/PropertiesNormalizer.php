@@ -74,13 +74,8 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
 
-        // TODO Use CollectionProductCompleteness and create a normalizer for it
-        $completenesses = new ArrayCollection();
-        foreach ($this->getProductCompletenesses->fromProductId($product->getId()) as $completeness) {
-            $completenesses->add($completeness);
-        }
-
-        $data[self::FIELD_COMPLETENESS] = (count($completenesses) > 0)
+        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        $data[self::FIELD_COMPLETENESS] = !($completenesses->empty())
             ? $this->serializer->normalize(
                 $completenesses,
                 ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,

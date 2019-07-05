@@ -41,4 +41,9 @@ class ProductCompletenessCollection implements IteratorAggregate
         $key = sprintf('%s-%s', $completeness->channelCode(), $completeness->localeCode());
         $this->completenesses[$key] = $completeness;
     }
+
+    public function empty(): bool
+    {
+        return count($this->completenesses) === 0;
+    }
 }

@@ -48,7 +48,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function calculate(ProductInterface $product)
+    public function calculate(ProductInterface $product): array
     {
         $family = $product->getFamily();
         if (null === $family) {
