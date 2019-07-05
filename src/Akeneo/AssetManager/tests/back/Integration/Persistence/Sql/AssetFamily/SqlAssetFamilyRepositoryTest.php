@@ -273,7 +273,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             'conditions' => [
                 [
                     'field'    => 'sku',
-                    'operator' => 'equals',
+                    'operator' => '=',
                     'value'    => '{{product_sku}}'
                 ]
             ],

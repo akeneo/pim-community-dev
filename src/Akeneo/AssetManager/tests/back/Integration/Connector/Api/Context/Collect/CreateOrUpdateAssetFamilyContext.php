@@ -329,7 +329,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             'conditions' => [
                 [
                     'field'    => 'sku',
-                    'operator' => 'equals',
+                    'operator' => '=',
                     'value'    => '{{product_sku}}'
                 ]
             ],

@@ -206,7 +206,7 @@ SQL;
             'conditions' => [
                 [
                     'field'    => 'sku',
-                    'operator' => 'equals',
+                    'operator' => '=',
                     'value'    => '{{product_sku}}'
                 ]
             ],
@@ -588,7 +588,7 @@ SQL;
             'conditions' => [
                 [
                     'field'    => 'sku',
-                    'operator' => 'equals',
+                    'operator' => '=',
                     'value'    => '{{product_sku}}'
                 ]
             ],
@@ -604,7 +604,7 @@ SQL;
             'conditions' => [
                 [
                     'field'    => 'sku',
-                    'operator' => 'equals',
+                    'operator' => '=',
                     'value'    => '{{product_sku}}'
                 ]
             ],

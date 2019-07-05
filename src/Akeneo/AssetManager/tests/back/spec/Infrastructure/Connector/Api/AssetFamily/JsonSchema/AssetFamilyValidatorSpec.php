@@ -36,7 +36,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
                     'conditions' => [
                         [
                             'field' => 'sku',
-                            'operator' => 'equals',
+                            'operator' => '=',
                             'value' => '{{product_sku}}'
                         ]
                     ],
@@ -174,7 +174,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
                     'conditions' => [
                         [
                             'field' => 'sku',
-                            'operator' => 'equals',
+                            'operator' => '=',
                             'value' => '{{product_sku}}'
                         ]
                     ]
@@ -197,7 +197,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
                     'conditions' => [
                         [
                             'field' => 'sku',
-                            'operator' => 'equals',
+                            'operator' => '=',
                             'value' => null
                         ]
                     ],
@@ -226,7 +226,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
                     'conditions' => [
                         [
                             'field' => 'sku',
-                            'operator' => 'equals',
+                            'operator' => '=',
                             'value' => '{{product_code}}',
                             'unknown_property' => 'michel'
                         ]

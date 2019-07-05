@@ -45,7 +45,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
                 'conditions' => [
                     [
                         'field' => 'sku',
-                        'operator' => 'equals',
+                        'operator' => '=',
                         'value' => '{{product_sku}}'
                     ]
                 ],
@@ -98,7 +98,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
                 'conditions' => [
                     [
                         'field' => 'sku',
-                        'operator' => 'equals',
+                        'operator' => '=',
                         'value' => '{{product_sku}}'
                     ]
                 ],
@@ -160,7 +160,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
                 'conditions' => [
                     [
                         'field' => 'sku',
-                        'operator' => 'equals',
+                        'operator' => '=',
                         'value' => '{{product_sku}}'
                     ]
                 ],

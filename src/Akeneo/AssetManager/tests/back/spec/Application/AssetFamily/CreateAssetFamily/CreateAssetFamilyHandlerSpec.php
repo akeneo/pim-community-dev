@@ -42,7 +42,7 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
                     'conditions' => [
                         [
                             'field' => 'sku',
-                            'operator' => 'equals',
+                            'operator' => '=',
                             'value' => '{{product_sku}}'
                         ]
                     ],
