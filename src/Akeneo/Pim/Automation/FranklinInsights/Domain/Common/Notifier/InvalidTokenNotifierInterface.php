@@ -18,5 +18,5 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Notifier;
  */
 interface InvalidTokenNotifierInterface
 {
-    public function notify();
+    public function notify(): void;
 }
