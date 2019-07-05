@@ -4,7 +4,7 @@ Product: Produto
 Attribute list: Lista de atributos
 Attribute Group list: Lista de grupo de atributos
 Users: Usuários
-Roles: Funções
+Roles: Papeis
 Groups: Grupos
 Configuration: Configuração
 Currency list: Lista de moedas
@@ -18,7 +18,7 @@ Channel list: Lista de canais
 Select file: Selecionar arquivo
 Change file: Alterar arquivo
 Remove file: Remover arquivo
-Delete: Excluir
+Delete: Deletar
 Save: Salvar
 Cancel: Cancelar
 Get help: Obter ajuda
@@ -39,5 +39,11 @@ Most Viewed: Mais vistos
 "No": "Não"
 required: (Obrigatório)
 pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Permitir mensagens de carregamento
+    loading_message_enabled.tooltip: Exibir mensagens amigáveis enquanto esperar o carregamento da página
+    loading_messages.label: Mensagens de carregamento disponíveis
+    loading_messages.tooltip: Todas as mensagens de carregamento disponíveis devem ser separadas por quebra de linha
   group:
     loading_message.title: Carregando mensagens
+other_actions: Outras ações

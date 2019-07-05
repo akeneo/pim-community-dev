@@ -23,7 +23,7 @@ pim_dashboard:
       job_type:
         import: Importa
         export: Esporta
-        mass_edit: Modifica di massa
+        mass_edit: Azione di massa modificata
         quick_export: Esportazione rapida
         compute_product_models_descendants: Calcola modelli di prodotto discendenti
         mass_delete: Eliminazione in massa prodotti

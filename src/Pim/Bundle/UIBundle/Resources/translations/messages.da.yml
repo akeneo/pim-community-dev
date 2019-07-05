@@ -41,6 +41,7 @@ required: (Påkrævet)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Aktivere indlæsning af meddelelser
+    loading_message_enabled.tooltip: Vis brugervenlige beskeder mens siden indlæses
     loading_messages.label: Tilgængelige indlæsnings meddelelser
     loading_messages.tooltip: Alle tilgængelige indlæsnings meddelelser adskilt med linjeskift
   group:

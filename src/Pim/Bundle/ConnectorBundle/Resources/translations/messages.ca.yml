@@ -41,6 +41,7 @@ job_execution.summary:
     skipped: omès, extensió a la llista blanca
   product_skipped_no_diff: producte omès (no hi ha diferències)
   product_skipped_no_associations: producte omès (cap associació detectada)
+  product_model_skipped_no_associations: model de producte omès (cap associació detectada)
   product_model_skipped_no_diff: models de producte omès (no hi ha diferències)
   item_position: llegir les línies
   skipped_in_root_product_model: ometre el model de producte amb el pare
@@ -86,23 +87,23 @@ batch_jobs:
     import_product_model_descendants.label: Calcular descendents del model de producte
   csv_category_import:
     label: Importar categories en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar categories
   csv_attribute_import:
     label: Importar atributs en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar atributs
   csv_attribute_option_import:
     label: Importar opcions d'atribut en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar opcions d'atribut
   csv_association_type_import:
     label: Importar tipus d'associació en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar tipus d'associació
   csv_family_import:
     label: Importar famílies en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar família
   csv_family_variant_import:
     label: Importar variant de família a CSV
@@ -110,7 +111,7 @@ batch_jobs:
     import.label: Importar variant de família
   csv_group_import:
     label: Importar grups en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar grups
   csv_channel_export:
     label: Canal d'exportació en CSV
@@ -129,43 +130,43 @@ batch_jobs:
     export.label: Exportació de tipus de grup
   csv_channel_import:
     label: Importació de canal en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de canal
   csv_locale_import:
     label: Importació de configuració regional en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de configuració regional
   csv_attribute_group_import:
     label: Impoftació de grup d'atributs en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de grup d'atributs
   csv_currency_import:
     label: Importació de moneda en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de moneda
   csv_group_type_import:
     label: Importació de tipus de grup en CSV
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de tipus de grup
   xlsx_category_import:
     label: Importació de categoria en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar categories
   xlsx_association_type_import:
     label: Importar tipus d'associació en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar tipus d'associació
   xlsx_attribute_import:
     label: Atribut importació en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar atributs
   xlsx_attribute_option_import:
     label: Importació d'opcions d'atribut en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar opcions d'atribut
   xlsx_family_import:
     label: Importació de família en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar família
   xlsx_family_variant_import:
     label: Importar variant de família a XLSX
@@ -173,13 +174,13 @@ batch_jobs:
     import.label: Importar variant de família
   xlsx_product_export:
     label: Exportació de producte en XLSX
-    export.label: Exportar productes
+    export.label: Exportar producte
   xlsx_product_model_export:
     label: Exportar model de producte a XLSX
     export.label: Exportar model de producte
   xlsx_product_import:
     label: Importació de producte en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importar productes
     import_associations.label: Importar associacions
   xlsx_product_model_import:
@@ -194,8 +195,8 @@ batch_jobs:
     export.label: Exportar grups
   xlsx_group_import:
     label: Importació de grup en XLSX
-    validation.label: Validar arxius
-    import.label: Importar grups
+    validation.label: Validació d'arxiu
+    import.label: Importar grup
   xlsx_family_export:
     label: Exportació de família en XLSX
     export.label: Exportar família
@@ -216,7 +217,7 @@ batch_jobs:
     export.label: Exportació de tipus d'associació en CSV
   xlsx_channel_export:
     label: Exportació de canal en XLSX
-    export.label: Canal d'exportació
+    export.label: Exportació de canal
   xlsx_locale_export:
     label: Exportació de configuració regional en XLSX
     export.label: Exportació de configuració regional
@@ -231,21 +232,21 @@ batch_jobs:
     export.label: Exportació de tipus de grup
   xlsx_channel_import:
     label: Importació de canal de XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de canal
   xlsx_locale_import:
     label: Importació de configuració regional en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de configuració regional
   xlsx_attribute_group_import:
     label: Impoftació de grup d'atributs en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de grup d'atributs
   xlsx_currency_import:
     label: Importació de moneda en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de moneda
   xlsx_group_type_import:
     label: Importació de tipus de grup en XLSX
-    validation.label: Validar arxius
+    validation.label: Validació d'arxiu
     import.label: Importació de tipus de grup
