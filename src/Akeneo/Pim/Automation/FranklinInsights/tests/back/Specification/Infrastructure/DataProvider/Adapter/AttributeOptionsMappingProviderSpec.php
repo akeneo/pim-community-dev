@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
@@ -31,15 +32,21 @@ use Prophecy\Argument;
 class AttributeOptionsMappingProviderSpec extends ObjectBehavior
 {
     public function let(
-        OptionsMappingWebService $api,
         ConfigurationRepositoryInterface $configurationRepo,
+        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
+        OptionsMappingWebService $api,
         AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
 
-        $this->beConstructedWith($api, $configurationRepo, $attributeOptionsMappingNormalizer);
+        $this->beConstructedWith(
+            $configurationRepo,
+            $invalidTokenExceptionFactory,
+            $api,
+            $attributeOptionsMappingNormalizer
+        );
     }
 
     public function it_is_an_attribute_options_mapping_provider(): void

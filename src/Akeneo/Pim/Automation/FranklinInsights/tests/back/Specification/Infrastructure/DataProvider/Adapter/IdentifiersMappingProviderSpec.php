@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
@@ -29,11 +30,12 @@ use Prophecy\Argument;
 class IdentifiersMappingProviderSpec extends ObjectBehavior
 {
     public function let(
-        IdentifiersMappingWebService $api,
         ConfigurationRepositoryInterface $configurationRepo,
+        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
+        IdentifiersMappingWebService $api,
         IdentifiersMappingNormalizer $normalizer
     ): void {
-        $this->beConstructedWith($api, $configurationRepo, $normalizer);
+        $this->beConstructedWith($configurationRepo, $invalidTokenExceptionFactory, $api, $normalizer);
 
         $normalizer->normalize(Argument::any())->willReturn([]);
         $configuration = new Configuration();
