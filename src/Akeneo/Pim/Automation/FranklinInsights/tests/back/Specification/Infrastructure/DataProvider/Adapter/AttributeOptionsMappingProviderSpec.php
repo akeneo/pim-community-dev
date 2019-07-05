@@ -42,8 +42,8 @@ class AttributeOptionsMappingProviderSpec extends ObjectBehavior
         $configurationRepo->find()->willReturn($configuration);
 
         $this->beConstructedWith(
-            $invalidTokenExceptionFactory,
             $configurationRepo,
+            $invalidTokenExceptionFactory,
             $api,
             $attributeOptionsMappingNormalizer
         );
