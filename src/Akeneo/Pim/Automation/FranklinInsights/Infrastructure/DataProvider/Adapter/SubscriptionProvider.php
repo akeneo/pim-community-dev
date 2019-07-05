@@ -240,7 +240,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            $this->throwInvalidTokenException($e);
+            throw $this->invalidTokenExceptionFactory->create($e);
         } catch (InsufficientCreditsException $e) {
             throw ProductSubscriptionException::insufficientCredits();
         } catch (BadRequestException $e) {
