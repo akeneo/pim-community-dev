@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer;
 
+use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
@@ -36,7 +37,6 @@ use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -72,6 +72,9 @@ class FixturesInstaller
     /** @var ValueHydratorInterface */
     private $valueHydrator;
 
+    /** @var FixturesLoader */
+    private $fixturesLoader;
+
     public function __construct(
         Connection $sqlConnection,
         FileStorerInterface $storer,
@@ -80,7 +83,8 @@ class FixturesInstaller
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         AssetRepositoryInterface $assetRepository,
-        ValueHydratorInterface $valueHydrator
+        ValueHydratorInterface $valueHydrator,
+        FixturesLoader $fixturesLoader
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->storer = $storer;
@@ -90,6 +94,7 @@ class FixturesInstaller
         $this->attributeRepository = $attributeRepository;
         $this->assetRepository = $assetRepository;
         $this->valueHydrator = $valueHydrator;
+        $this->fixturesLoader = $fixturesLoader;
     }
 
     public function createSchema(): void
@@ -188,6 +193,10 @@ SQL;
         $this->loadNotices();
         $this->loadVideoPresentation();
 
+        $this->loadPackshotAssets();
+        $this->loadNoticeAssets();
+        $this->loadVideoPresentationAssets();
+
         $this->indexAssets();
     }
 
@@ -204,7 +213,7 @@ SQL;
             'actions'    => [
                 [
                     'type'  => 'add',
-                    'field' => '{{attribute}}',
+                    'field' => '{{linked_attribute}}',
                     'value' => '{{code}}'
                 ]
             ]
@@ -289,12 +298,127 @@ SQL;
             Suffix::fromString('/small'),
             MediaType::fromString(MediaType::IMAGE)
         );
+        $order++;
+
+        $linkedAttribute = TextAttribute::createText(
+            AttributeIdentifier::create('packshot', 'linked_attribute', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('packshot'),
+            AttributeCode::fromString('linked_attribute'),
+            LabelCollection::fromArray(['en_US' => 'Linked Attribute']),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::noLimit(),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $order++;
+
+        $productSku = TextAttribute::createText(
+            AttributeIdentifier::create('packshot', 'product_sku', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('packshot'),
+            AttributeCode::fromString('product_sku'),
+            LabelCollection::fromArray(['en_US' => 'Product SKU']),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::noLimit(),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/^(\w-?)*/')
+        );
 
         $this->attributeRepository->create($description);
         $this->attributeRepository->create($datePublished);
         $this->attributeRepository->create($shootedBy);
         $this->attributeRepository->create($original);
         $this->attributeRepository->create($small);
+        $this->attributeRepository->create($linkedAttribute);
+        $this->attributeRepository->create($productSku);
+    }
+
+    private function loadPackshotAssets()
+    {
+        $this->fixturesLoader
+            ->asset('packshot', 'Philips22PDL4906H_pack')
+            ->withValues([
+                'description' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Used technical ref only.']
+                ],
+                'date_published' => [
+                    ['channel' => null, 'locale' => null, 'data' => '18/02/2018']
+                ],
+                'shooted_by' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'jean_jacques_photo']
+                ],
+//                'original' => [
+//                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+//                ],
+//                'small' => [
+//                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+//                ],
+                'linked_attribute' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'packshot']
+                ],
+                'product_sku' => [
+                    ['channel' => null, 'locale' => null, 'data' => '10638601']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset('packshot', 'iphone8_pack')
+            ->withValues([
+                'description' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'You should probably buy it.'],
+                    ['channel' => null, 'locale' => 'fr_FR', 'data' => 'Vous devriez probablement l\'acheter.']
+                ],
+                'date_published' => [
+                    ['channel' => null, 'locale' => null, 'data' => '18/05/2017']
+                ],
+                'shooted_by' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'michel_pellicule']
+                ],
+//                'original' => [
+//                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
+//                ],
+//                'small' => [
+//                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
+//                ],
+                'linked_attribute' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'packshot']
+                ],
+                'product_sku' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'apple_iphone_8']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset('packshot', 'iphone7_pack')
+            ->withValues([
+                'description' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'You should probably buy it.'],
+                    ['channel' => null, 'locale' => 'fr_FR', 'data' => 'Vous devriez probablement l\'acheter.']
+                ],
+                'date_published' => [
+                    ['channel' => null, 'locale' => null, 'data' => '18/05/2017']
+                ],
+                'shooted_by' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'robert_photeau']
+                ],
+//                'original' => [
+//                    ['channel' => null, 'locale' => null, 'data' => 'iphone7']
+//                ],
+                'linked_attribute' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'packshot']
+                ],
+                'product_sku' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'apple_iphone_7']
+                ],
+            ])
+            ->load();
     }
 
     private function loadNotices(): void
@@ -363,11 +487,94 @@ SQL;
             Suffix::fromString('/original'),
             MediaType::fromString(MediaType::OTHER)
         );
+        $order++;
+
+        $linkedAttribute = TextAttribute::createText(
+            AttributeIdentifier::create('notice', 'linked_attribute', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('notice'),
+            AttributeCode::fromString('linked_attribute'),
+            LabelCollection::fromArray(['en_US' => 'Linked Attribute']),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::noLimit(),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $order++;
+
+        $productSku = TextAttribute::createText(
+            AttributeIdentifier::create('notice', 'product_sku', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('notice'),
+            AttributeCode::fromString('product_sku'),
+            LabelCollection::fromArray(['en_US' => 'Product SKU']),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::noLimit(),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/^(\w-?)*/')
+        );
 
         $this->attributeRepository->create($description);
         $this->attributeRepository->create($targetCountries);
         $this->attributeRepository->create($datePublished);
         $this->attributeRepository->create($original);
+        $this->attributeRepository->create($linkedAttribute);
+        $this->attributeRepository->create($productSku);
+    }
+
+    private function loadNoticeAssets(): void
+    {
+        $this->fixturesLoader
+            ->asset('notice', 'Philips22PDL4906H_notice')
+            ->withValues([
+                'description' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Used technical ref only.']
+                ],
+                'target_countries' => [
+                    ['channel' => null, 'locale' => null, 'data' => ['united_kingdom', 'united_states', 'ireland']]
+                ],
+                'date_published' => [
+                    ['channel' => null, 'locale' => null, 'data' => '02/05/2018']
+                ],
+//                'original' => [
+//                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+//                ],
+                'linked_attribute' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'notice']
+                ],
+                'product_sku' => [
+                    ['channel' => null, 'locale' => null, 'data' => '10638601']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset('notice', 'av36')
+            ->withValues([
+                'description' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'French technical notice of the Avision AV36.']
+                ],
+                'target_countries' => [
+                    ['channel' => null, 'locale' => null, 'data' => ['france']]
+                ],
+                'date_published' => [
+                    ['channel' => null, 'locale' => null, 'data' => '22/02/1990']
+                ],
+//                'original' => [
+//                    ['channel' => null, 'locale' => null, 'data' => 'av36']
+//                ],
+                'linked_attribute' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'notice']
+                ],
+                'product_sku' => [
+                    ['channel' => null, 'locale' => null, 'data' => '12249740']
+                ],
+            ])
+            ->load();
     }
 
     private function loadVideoPresentation(): void
@@ -383,7 +590,7 @@ SQL;
             'actions'    => [
                 [
                     'type'  => 'add',
-                    'field' => '{{attribute}}',
+                    'field' => '{{linked_attribute}}',
                     'value' => '{{code}}'
                 ]
             ]
@@ -399,7 +606,7 @@ SQL;
             'actions'    => [
                 [
                     'type'  => 'set',
-                    'field' => '{{attribute}}',
+                    'field' => '{{linked_attribute}}',
                     'value' => '{{code}}'
                 ]
             ]
@@ -443,8 +650,60 @@ SQL;
         );
         $order++;
 
+        $linkedAttribute = TextAttribute::createText(
+            AttributeIdentifier::create('video_presentation', 'linked_attribute', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('video_presentation'),
+            AttributeCode::fromString('linked_attribute'),
+            LabelCollection::fromArray(['en_US' => 'Linked Attribute']),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::noLimit(),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $order++;
+
+        $productSku = TextAttribute::createText(
+            AttributeIdentifier::create('video_presentation', 'product_sku', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('video_presentation'),
+            AttributeCode::fromString('product_sku'),
+            LabelCollection::fromArray(['en_US' => 'Product SKU']),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::noLimit(),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/^(\w-?)*/')
+        );
+
         $this->attributeRepository->create($videoTranscription);
         $this->attributeRepository->create($original);
+        $this->attributeRepository->create($linkedAttribute);
+        $this->attributeRepository->create($productSku);
+    }
+
+    private function loadVideoPresentationAssets(): void
+    {
+        $this->fixturesLoader
+            ->asset('video_presentation', 'Philips22PDL4906H_video')
+            ->withValues([
+                'video_transcription' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'Philips, a new generation.']
+                ],
+//                'original' => [
+//                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+//                ],
+                'linked_attribute' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'video']
+                ],
+                'product_sku' => [
+                    ['channel' => null, 'locale' => null, 'data' => '10638601']
+                ],
+            ])
+            ->load();
     }
 
     private function uploadImage($code): FileInfoInterface
