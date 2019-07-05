@@ -163,13 +163,16 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $this->shouldThrow(DataProviderException::serverIsDown($thrownException))->during('fetch', [$datetime]);
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_fetch($subscriptionApi): void
+    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_fetch($invalidTokenExceptionFactory, $subscriptionApi): void
     {
         $datetime = new \DateTime('2012-01-01');
         $thrownException = new InvalidTokenException();
         $subscriptionApi->fetchProducts(null, $datetime)->willThrow($thrownException);
 
-        $this->shouldThrow(DataProviderException::authenticationError())->during('fetch', [$datetime]);
+        $invalidTokenException = DataProviderException::authenticationError();
+        $invalidTokenExceptionFactory->create($thrownException)->willReturn($invalidTokenException);
+
+        $this->shouldThrow($invalidTokenException)->during('fetch', [$datetime]);
     }
 
     public function it_unsubscribes_a_subscription($subscriptionApi): void
@@ -189,13 +192,18 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_unsubscription($subscriptionApi): void
-    {
+    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_unsubscription(
+        $invalidTokenExceptionFactory,
+        $subscriptionApi
+    ): void {
         $thrownException = new InvalidTokenException();
         $subscriptionApi->unsubscribeProduct('fake-subscription-id')->willThrow($thrownException);
 
+        $invalidTokenException = DataProviderException::authenticationError();
+        $invalidTokenExceptionFactory->create($thrownException)->willReturn($invalidTokenException);
+
         $this
-            ->shouldThrow(DataProviderException::authenticationError($thrownException))
+            ->shouldThrow($invalidTokenException)
             ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
@@ -244,16 +252,21 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update($subscriptionApi): void
-    {
+    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update(
+        $invalidTokenExceptionFactory,
+        $subscriptionApi
+    ): void {
         $subscriptionId = '123456';
         $family = new Family(new FamilyCode('new_family_code'), []);
 
         $thrownException = new InvalidTokenException();
         $subscriptionApi->updateFamilyInfos($subscriptionId, Argument::any())->willThrow($thrownException);
 
+        $invalidTokenException = DataProviderException::authenticationError();
+        $invalidTokenExceptionFactory->create($thrownException)->willReturn($invalidTokenException);
+
         $this
-            ->shouldThrow(DataProviderException::authenticationError($thrownException))
+            ->shouldThrow($invalidTokenException)
             ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
