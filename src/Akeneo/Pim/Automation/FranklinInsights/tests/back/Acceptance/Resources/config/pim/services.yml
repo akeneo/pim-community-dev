@@ -34,3 +34,6 @@ services:
         arguments:
             - '@pim_catalog.factory.attribute_group'
             - '@pim_catalog.repository.attribute_group'
+
+    akeneo.pim.automation.franklin_insights.notifier.notify_about_invalid_token:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\UserNotification\FakeNotifyUserAboutInvalidToken'
