@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8441: Fix badge positioning on PM dropdowns
+
 # 3.0.29 (2019-07-04)
 
 # 3.0.28 (2019-07-02)
@@ -8,7 +12,7 @@
 
 - PIM-7894: Fix metric and price filters design
 - PIM-8447: Fix deformed images in dropdowns and grids
-- PIM-8477: Fix rich text area link dialog	
+- PIM-8477: Fix rich text area link dialog
 - PIM-8463: On import profiles, displays an explicit error message when file upload fails, for example when the file is too big
 
 # 3.0.27 (2019-06-27)
