@@ -84,9 +84,8 @@ final class AttributesMappingContext implements Context
 
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
-    /**
-     * @var AddAttributeToFamilyHandler
-     */
+
+    /** @var AddAttributeToFamilyHandler */
     private $addAttributeToFamilyHandler;
 
     public function __construct(

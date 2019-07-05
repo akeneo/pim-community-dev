@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -40,37 +42,6 @@ class SelectExactMatchAttributeCodesFromOtherFamiliesQueryIntegration extends Te
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
-    }
-
-    private function createAttribute(string $attributeCode, array $labels): PimAttribute
-    {
-        $attribute = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')
-            ->build([
-                'code' => $attributeCode,
-                'type' => AttributeTypes::TEXT,
-                'group' => AttributeGroup::DEFAULT_GROUP_CODE,
-                'labels' => $labels,
-            ]);
-
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
-
-        return $attribute;
-    }
-
-    private function createFamily(string $familyCode, array $attributeCodes): PimFamily
-    {
-        $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
-            ->build([
-                'code' => $familyCode,
-                'attributes' => array_merge(['sku'], $attributeCodes),
-            ]);
-
-        $this->getFromTestContainer('validator')->validate($family);
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
-
-        return $family;
     }
 
     public function test_it_returns_pim_attribute_code_exact_match_on_code(): void
@@ -193,4 +164,54 @@ class SelectExactMatchAttributeCodesFromOtherFamiliesQueryIntegration extends Te
         $this->assertSame($expectedPimAttributeCodeMatches, $matchedAttributeCodes);
     }
 
+    public function test_it_returns_pim_attribute_code_which_is_not_attached_to_a_family(): void
+    {
+        $this->createAttribute('weight', ['en_US' => 'Attribute weight']);
+        $this->createAttribute('size', ['en_US' => 'Attribute size']);
+        $this->createFamily('family_a', ['weight']);
+        $this->createFamily('family_b', ['weight']);
+
+        $familyCode = new FamilyCode('family_a');
+        $pendingAttributesFranklinLabels = ['Color', 'Weight', 'Size'];
+        $expectedPimAttributeCodeMatches = [
+            'Color' => null,
+            'Weight' => 'weight',
+            'Size' => 'size',
+        ];
+
+        $matchedAttributeCodes = $this->query->execute($familyCode, $pendingAttributesFranklinLabels);
+
+        $this->assertSame($expectedPimAttributeCodeMatches, $matchedAttributeCodes);
+    }
+
+    private function createAttribute(string $attributeCode, array $labels): PimAttribute
+    {
+        $attribute = $this
+            ->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')
+            ->build([
+                'code' => $attributeCode,
+                'type' => AttributeTypes::TEXT,
+                'group' => AttributeGroup::DEFAULT_GROUP_CODE,
+                'labels' => $labels,
+            ]);
+
+        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+
+        return $attribute;
+    }
+
+    private function createFamily(string $familyCode, array $attributeCodes): PimFamily
+    {
+        $family = $this
+            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->build([
+                'code' => $familyCode,
+                'attributes' => array_merge(['sku'], $attributeCodes),
+            ]);
+
+        $this->getFromTestContainer('validator')->validate($family);
+        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+
+        return $family;
+    }
 }

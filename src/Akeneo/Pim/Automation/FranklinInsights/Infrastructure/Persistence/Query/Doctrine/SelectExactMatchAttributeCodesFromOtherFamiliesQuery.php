@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -16,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\A
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
@@ -36,11 +39,10 @@ class SelectExactMatchAttributeCodesFromOtherFamiliesQuery implements SelectExac
         $query = <<<SQL
 SELECT DISTINCT a.code, at.label
 FROM pim_catalog_attribute a
-INNER JOIN pim_catalog_family_attribute fa ON(a.id = fa.attribute_id)
-INNER JOIN pim_catalog_family f ON(fa.family_id = f.id)
 LEFT JOIN pim_catalog_attribute_translation at ON(at.foreign_key = a.id AND at.locale LIKE "en_%")
-WHERE f.code != :family_code
-AND a.is_scopable = 0
+LEFT JOIN pim_catalog_family_attribute fa ON(a.id = fa.attribute_id)
+LEFT JOIN pim_catalog_family f ON(fa.family_id = f.id AND f.code != :family_code)
+WHERE a.is_scopable = 0
 AND a.is_localizable = 0
 AND a.attribute_type IN(:allowed_attribute_types)
 AND NOT EXISTS (SELECT 1 from pim_catalog_attribute_locale WHERE attribute_id = a.id) # Checks if this attribute code is not defined as "locale specific attribute"

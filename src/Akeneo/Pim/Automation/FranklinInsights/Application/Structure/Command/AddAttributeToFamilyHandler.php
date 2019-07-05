@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -33,7 +35,7 @@ class AddAttributeToFamilyHandler
         $this->franklinAttributeAddedToFamilyRepository = $franklinAttributeAddedToFamilyRepository;
     }
 
-    public function handle(AddAttributeToFamilyCommand $command)
+    public function handle(AddAttributeToFamilyCommand $command): void
     {
         $this->updateFamily->addAttributeToFamily($command->getPimAttributeCode(), $command->getPimFamilyCode());
 
