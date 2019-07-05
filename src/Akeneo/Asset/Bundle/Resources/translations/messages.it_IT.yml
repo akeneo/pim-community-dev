@@ -22,7 +22,7 @@ pimee_product_asset:
   enrich_asset:
     button:
       upload: Carica file
-      delete: Eliminare
+      delete: Elimina
       download: Scarica
       generate_from_reference: Genera da riferimento
       reset_variations: Reimposta varianti
@@ -117,18 +117,18 @@ pimee_product_asset:
   asset:
     title: Asset
   mass_upload:
-    menu: Caricamento di asset
+    menu: Carica asset
     new: Verrà creato un nuovo asset
     add_files: aggiungi file
     start: Inizia il caricamento
     cancel: Annulla il caricamento
-    import: Importa
+    import: '&Import'
     executed: Caricamento di massa eseguito
     error:
       upload: Si è verificato un errore durante il caricamento
       code: Formato codice non valido per l'asset
-      localizable: Un asset esiste ma non è localizzabile
-      invalid_locale: Le impostazioni internazionali sono disabilitate o non valide
+      localizable: Un asset esiste ma non è traducibile
+      invalid_locale: L'impostazione internazionale è disabilitata o non valida
   category:
     menu: Categorie degli asset
     permissions:
@@ -152,8 +152,8 @@ pimee_product_asset:
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
-      label: Spostare gli asset nelle categorie
-      description: Gli asset saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso
+      label: Sposta gli asset nelle categorie
+      description: Gli asset saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso
       success_flash: L'asset/gli asset è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     add-tags-to-assets:
@@ -183,6 +183,7 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Caricamento di massa asset
+      compute_completeness_of_products_linked_to_assets: Calcolo della completezza dei prodotti legati alle risorse
 pim_analytics:
   info_type:
     nb_assets: Numero di asset
@@ -192,18 +193,18 @@ akeneo_reference_entity_collection: Collegamenti multipli entità di riferimento
 pim_api:
   acl:
     asset_category:
-      edit: Crea e aggiorna categorie degli asset
-      list: Elenca le categorie degli asset
+      edit: Crea e aggiorna le categorie degli assets
+      list: Elenca le categorie degli assets
     asset:
-      edit: Modifica gli asset, e carica i loro riferimenti e file di variante
-      list: Elenca gli asset, ed elenca e scarica i loro riferimenti e file di variante
+      edit: Modifica gli assets e carica i loro file di riferimento e di variazione
+      list: Elenca gli assets e riporta e scarica i loro file di riferimento e di variazione
   acl_group:
-    asset_category: Categorie degli asset
-    asset: Asset
+    asset_category: Categorie degli assets
+    asset: Assets
 pimee_enrich:
   channel:
     tab:
-      asset_transformation.title: Trasformazioni di asset
+      asset_transformation.title: Trasformazioni asset
   asset_transformation:
     not_found: Nessuna trasformazione trovata
     title:
@@ -212,12 +213,12 @@ pimee_enrich:
     colorspace:
       title: Spazio colori
       options:
-        colorspace: '%value% spazio colore'
+        colorspace: 'spazio colore %value%'
     resize:
       title: Ridimensiona
       options:
         width: '%value%px di larghezza'
-        height: '% value%px di altezza'
+        height: '%value%px di altezza'
     resolution:
       title: Risoluzione
       options:
@@ -227,10 +228,10 @@ pimee_enrich:
       title: Scala
       options:
         width: '%value%px di larghezza'
-        height: '% value%px di altezza'
+        height: '%value%px di altezza'
         ratio: '%value% % di rapporto'
     thumbnail:
       title: Thumbnail
       options:
         width: '%value%px di larghezza'
-        height: '% value%px di altezza'
+        height: '%value%px di altezza'

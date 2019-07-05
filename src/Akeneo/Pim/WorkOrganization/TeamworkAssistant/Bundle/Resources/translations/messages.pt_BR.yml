@@ -1,0 +1,41 @@
+teamwork_assistant:
+  project:
+    required: Este valor não pode estar em branco.
+    label_maxlength: Este valor é muito longo. Ele deve ter {{ max }} caracteres ou menos.
+    project_identifier: O projeto {{ project }} não existe.
+    project_locale: A localidade do projeto {{ locale }} deve estar habilitada.
+    project_due_date: Você não pode selecionar uma data do passado.
+  notification:
+    project_calculation:
+      error: O cálculo do projeto <strong>%project_label%</strong> falhou
+      warning: O cálculo do projeto <strong>%project_label%</strong> foi concluído com alguns avisos
+      success: O projeto <strong>%project_label%</strong> está pronto e os contribuidores foram notificados. Vamos começar!
+      start: Iniciar
+    message: Você tem novos produtos para enriquecer no projeto "%project_label%". A data limite é "%due_date%".
+    project_finished:
+      contributor: Parabéns! Você está com 100% do produto concluído no projeto %project_label%.
+      owner: 'O projeto %project_label% com data limite de %due_date% foi concluído.'
+      show: Exibir
+    due_date:
+      contributor: Você está com %percent%% do produto concluído no projeto %project_label%. Não se esqueça de preencher os últimos produtos até %due_date%.
+      owner: 'O projeto %project_label% com data limite de %due_date% não está 100% finalizado.'
+      start: Iniciar
+  datagrid:
+    project_completeness: Progresso do projeto
+    contributor_todo: Tarefas
+    contributor_in_progress: Em Progresso
+    contributor_done: Cocluído
+    owner_todo: Tarefas (visão geral do projeto)
+    owner_in_progress: Em andamento (visão geral do projeto)
+    owner_done: Concluído (visão geral do projeto)
+job_execution:
+  summary:
+    processed_products: Produtos processados
+pim_analytics:
+  info_type:
+    nb_projects: Número de projetos
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Cálculo do projeto
+      refresh_project_completeness_calculation: Atualizar cálculo de completude do projeto

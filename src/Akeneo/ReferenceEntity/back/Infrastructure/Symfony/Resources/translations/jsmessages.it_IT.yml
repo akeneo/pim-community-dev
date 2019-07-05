@@ -8,7 +8,7 @@ pim_reference_entity:
       wide:
         remove: Rimuovi l'immagine
         download: Scarica l'immagine
-        upload: Drag and drop per caricare un file o fai click qui
+        upload: Trascina e rilascia qui un file per caricarlo o fai click qui
       small:
         remove: Rimuovere
         download: Scarica
@@ -22,7 +22,7 @@ pim_reference_entity:
     button:
       save: Salva
       save_permission: Salva
-      create: Crea
+      create: Creare
     permission:
       title: Permessi entità
     title: Entità
@@ -30,7 +30,7 @@ pim_reference_entity:
     img: Immagine principale dell'entità di riferimento denominata "{{ label }}"
     tab:
       records: Record
-      attribute: Attributi
+      attribute: Atributi
       properties: Proprietà
       permission: Autorizzazioni
     properties:
@@ -60,7 +60,7 @@ pim_reference_entity:
           description_part_five: Per ulteriori dettagli, ti invitiamo a leggere questo articolo.
     create:
       header:
-        title: Crea
+        title: Creare
       subtitle: Entità di riferimento
       title: Crea una nuova entità
       input:
@@ -108,9 +108,11 @@ pim_reference_entity:
     button:
       save: Salva
       create: Aggiungi nuovo
-      delete: Eliminare
+      delete: Elimina
       delete_all: Elimina tutti i record
       back: Torna all'elenco
+    product:
+      title: Prodotti
     enrich:
       title: Attributi del record
       code: Codice
@@ -118,7 +120,7 @@ pim_reference_entity:
     title: Record
     create:
       header:
-        title: Crea
+        title: Creare
       subtitle: Entità di riferimento
       title: Aggiungi nuovo {{ entityLabel }}
       input:
@@ -136,13 +138,13 @@ pim_reference_entity:
       filter:
         completeness:
           label: Completo
-          all: Tutti
+          all: Tutto
           'yes': 'Sì'
           'no': 'No'
         option:
-          all: Tutti
+          all: Tutto
           operator:
-            in: Nell'elenco
+            in: In elenco
       column:
         code: Codice
         image: Immagine
@@ -159,6 +161,7 @@ pim_reference_entity:
         title_complete: Tutti {{ required }} attributi completati
     tab:
       enrich: Catalogo
+      product: Prodotti
     notification:
       save:
         success: Record aggiornato correttamente.
@@ -197,7 +200,7 @@ pim_reference_entity:
       add: Aggiungi un attributo
     create:
       header:
-        title: Crea
+        title: Creare
       subtitle: Entità di riferimento
       title: Aggiungi nuovo attributo di registrazione
       description: I parametri seguenti, ad eccezione dell'etichetta, non possono essere aggiornati dopo la creazione dell'attributo
@@ -241,7 +244,7 @@ pim_reference_entity:
               placeholder: Scrivi le tue nuove etichette opzioni qui
         options:
           validation_rule:
-            none: Nessun
+            none: Nessuno
             email: E-mail
             regular_expression: Espressione regolare
             url: URL
@@ -272,7 +275,7 @@ pim_reference_entity:
       subtitle: Conferma cancellazione
       button:
         cancel: Annulla
-        confirm: Eliminare
+        confirm: Elimina
 pim_enrich:
   confirmation:
     discard_changes: 'Perderai tutte le modifiche all''entità "{{ entity }}" se abbandoni la pagina.'

@@ -1,0 +1,9 @@
+pim_reference_entity:
+  reference_entity:
+    validation:
+      code:
+        pattern: 'This field may only contain letters, numbers and underscores.'
+  record:
+    validation:
+      code:
+        pattern: 'This field may only contain letters, numbers and underscores.'

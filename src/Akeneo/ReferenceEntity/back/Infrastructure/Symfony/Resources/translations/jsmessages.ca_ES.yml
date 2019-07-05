@@ -8,11 +8,13 @@ pim_reference_entity:
       wide:
         remove: Eliminar la imatge
         download: Descarregar imatge
-        upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+        upload: Arrossegar i deixar per carrgar o feu clic aquí
       small:
         remove: Eliminar
-        download: Descarregar
+        download: Baixar
         upload: Arrossegar i deixar anar per carregar
+  grid:
+    counter: '{{ count }} resultat|{{ count }} resultats'
   reference_entity:
     validation:
       code:
@@ -102,6 +104,16 @@ pim_reference_entity:
       delete: Suprimir
       delete_all: Suprimeix tots els registres
       back: Torna a la llista
+    product:
+      attribute: Atribut de producte
+      counter: '{{ totalCount }} resultat|{{ totalCount }} resultats'
+      dropdown:
+        attribute: Atribut de producte
+      title: Productes
+      no_attribute:
+        link: Crear un nou atribut de producte
+      not_enough_items:
+        button: Veure tots els productes
     enrich:
       title: Registre atributs
       code: Codi
@@ -125,14 +137,14 @@ pim_reference_entity:
     grid:
       search: Cerca a l'etiqueta, el codi i el text dels atributs
       filter:
-        counter: '{{ matchesCount }} resultat|{{ matchesCount }} resultats'
         completeness:
           label: Complet
-          all: Tots
+          all: Tot
           'yes': 'Sí'
           'no': 'No'
         option:
-          all: Tots
+          all: Tot
+          no_value: Selecciona una opció per filtrar
           operator:
             in: A la llista
       column:
@@ -151,6 +163,7 @@ pim_reference_entity:
         title_complete: Tots els atributs complets {{ required }}
     tab:
       enrich: Enriquir
+      product: Productes
     notification:
       save:
         success: Registre actualitzat correctament.
@@ -181,6 +194,7 @@ pim_reference_entity:
       record_collection: Enllaç múltiple d'entitat de referència
       option: Única opció
       option_collection: Múltiples opcions
+      number: Nombre
     is_required: necessaris per a la integritat
     no_data:
       title: No hi ha atributs personalitzats per {{ entityLabel }}
@@ -220,6 +234,8 @@ pim_reference_entity:
         allowed_extensions: Extensions permeses
         validation_rule: Regla de validació
         regular_expression: Expressió regular
+        min_value: Valor mínim
+        max_value: Valor màxim
         manage_options:
           confirmation:
             discard_changes: Perdreu els canvis realitzats en la llista d'opcions si sortiu de la pàgina
@@ -234,6 +250,7 @@ pim_reference_entity:
             email: Correu electrònic
             regular_expression: Expressió regular
             url: URL
+        decimals_allowed: Valors decimals admesos
     delete:
       message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
       title: Atribut
@@ -281,3 +298,5 @@ permission:
 pim_catalog_volume:
   axis:
     count_reference_entity: Entitats de referència
+    average_max_records_per_reference_entity: Registres per entitat de referencia
+    average_max_attributes_per_reference_entity: Atributs per entitat de referencia

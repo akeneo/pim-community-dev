@@ -31,7 +31,6 @@ akeneo_franklin_insights:
         franklin_insights:
           label: Franklin attribute status
           pending: Pending
-        values_summary: "Values summary: {{ label }}"
       module:
         subscribe:
           subscribe: 'Subscribe family to Franklin'
@@ -95,8 +94,6 @@ akeneo_franklin_insights:
   settings:
     page_title: 'Franklin Insights Settings'
     module:
-      title:
-        sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
       inactive_connection:
         title: 'Sorry, nothing to show here yet'
         sub_title: 'Please activate your account on System > Franklin connection and come back.'
@@ -122,12 +119,8 @@ batch_jobs:
     subscribe_products.label: Subscribe products
   franklin_insights_unsubscribe_products:
     label: Franklin Insights bulk unsubscription
-    validate_configuration.label: Validate Franklin Insights configuration
     unsubscribe_products.label: Unsubscribe products
   franklin_insights_fetch_products:
     label: Fetch product data from Franklin Insights
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        franklin_insights_fetch_products: Franklin Insights
+pim_title:
+  akeneo_franklin_insights_connection_edit: Franklin Insights Connection

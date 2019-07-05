@@ -51,7 +51,7 @@ batch_jobs:
     label: Exportació en CSV del producte publicat
     export.label: Exportació del producte publicat
   csv_product_proposal_import:
-    label: Importació en CSV del producte proposat
+    label: Importació en CSV de la proposta de producte
     import.label: Importació de la proposta de producte
   approve_product_draft:
     label: Aprovar la proposta
@@ -130,6 +130,8 @@ pimee_enrich.entity.product:
     approval:
       send: Enviar per a la seva aprovació
       sent: Enviat per a la seva aprovació
+      send_and_next: Enviar i seguir
+      send_and_finish: Enviar i finalitzar
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -147,7 +149,7 @@ pimee_enrich.entity.published_product:
       label: Publicar
       publish_this_version: Publicar aquesta versió
     unpublish:
-      label: Despublicar
+      label: Desfer la publicació
 pimee_enrich.entity.product_draft:
   flash:
     approve:
@@ -163,9 +165,8 @@ pimee_enrich.entity.product_draft:
     create:
       success: Projecte de producte enviat per la seva aprovació
       fail: No podeu enviar aquest projecte per a la seva aprovació
+      skip: L'esborrany del producte no s'ha enviat per la seva aprovació, ja que no s'ha editat cap valor
   module:
-    create:
-      label: Desar l'esborrany
     proposal:
       accept: Acceptar la proposta
       accept_selected: Acceptar la proposta seleccionada|Acceptar les propostes seleccionades
@@ -186,7 +187,7 @@ pimee_enrich.mass_edit.product:
       description: Els productes es publicaran
       warning: Els productes {{ itemsCount }} seleccionats seran publicats.
     unpublish:
-      label: Despublicar
+      label: Desfer la publicació
       label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: Els productes no es publicaran
       warning: Els productes {{ itemsCount }} seleccionats no seran publicats.

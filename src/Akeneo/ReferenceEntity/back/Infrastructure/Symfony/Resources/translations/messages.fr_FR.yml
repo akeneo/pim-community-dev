@@ -12,6 +12,7 @@ akeneo_referenceentity:
       edit: Modifier les enregistrements
       delete: Supprimer un enregistrement
       delete_all: Supprimer tous les enregistrement de l'entité
+      list_product: Liste des produits liés à l'enregistrement
     attribute:
       create: Ajouter un attribut à une entité référentielle
       edit: Modifier un attribut d'une entité référentielle

@@ -13,6 +13,8 @@ pim_reference_entity:
         remove: Supprimer
         download: Téléchargement
         upload: Glisser et déposer pour télécharger
+  grid:
+    counter: '{{ count }} résultat |{{ count }} résultats'
   reference_entity:
     validation:
       code:
@@ -32,7 +34,7 @@ pim_reference_entity:
       records: Enregistrements
       attribute: Attributs
       properties: Propriétés
-      permission: Permissions
+      permission: Autorisations
     properties:
       title: Propriétés de l'entité
       identifier: Code
@@ -111,6 +113,23 @@ pim_reference_entity:
       delete: Supprimer
       delete_all: Supprimer tous les enregistrements
       back: Retour à la liste
+    product:
+      attribute: Attribut produit
+      counter: '{{ totalCount }} résultat|{{ totalCount }} résultats'
+      dropdown:
+        attribute: Attribut produit
+      title: Produits
+      no_attribute:
+        title: Il n'y a pas d'attribut produit lié à l'entité de référence "{{ entityLabel }}"
+        subtitle: "Pour commencer à lier les produits à cette entité de référence, vous pouvez en créer un nouveau : "
+        link: Créer un nouvel attribut de produit
+      not_enough_items:
+        subtitle:
+          usable_in_grid: Pour découvrir tous les produits liés, cliquez ci-dessous !
+        button: Voir tous les produits
+      no_product:
+        title: Aucun produit n'est lié pour l'attribut produit "{{ entityLabel }}"
+        subtitle: "Commencez à lier les produits à cet attribut pour les voir ici"
     enrich:
       title: Attributs d’enregistrement
       code: Code
@@ -134,7 +153,6 @@ pim_reference_entity:
     grid:
       search: Rechercher sur le libellé, le code et les attributs texte
       filter:
-        counter: '{{ matchesCount }} résultat|{{ matchesCount }} résultats'
         completeness:
           label: Complet
           all: Tous
@@ -161,6 +179,7 @@ pim_reference_entity:
         title_complete: Tous les {{ required }} attributs complets
     tab:
       enrich: Enrichir
+      product: Produits
     notification:
       save:
         success: Enregistrement mis à jour avec succès.
@@ -191,6 +210,7 @@ pim_reference_entity:
       record_collection: Lien multiple vers une entité référentielle
       option: Option simple
       option_collection: Options multiples
+      number: Nombre
     is_required: requis pour la complétude
     no_data:
       title: Il n'y a aucun attribut personnalisé pour {{ entityLabel }}
@@ -233,6 +253,8 @@ pim_reference_entity:
         allowed_extensions: Extensions autorisées
         validation_rule: Règle de validation
         regular_expression: Expression régulière
+        min_value: Valeur min
+        max_value: Valeur max
         manage_options:
           confirmation:
             discard_changes: Vous perdrez les modifications effectuées sur la liste d'options si vous quittez la page
@@ -247,6 +269,7 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Expression régulière
             url: URL
+        decimals_allowed: Valeurs décimales autorisées
     delete:
       message: Êtes-vous sûr de vouloir supprimer l’attribut «{{ attributeLabel }} » ?
       title: Attribut

@@ -44,17 +44,21 @@ akeneo_franklin_insights:
           pending: En attente
           active: Actif
           inactive: Inactif
-        values_summary: "Exemples de valeurs : {{ label }}"
       module:
         subscribe:
           subscribe: 'Abonner la famille à Franklin'
           subscribed: 'Famille abonnée à Franlin'
         index:
+          family_selector:
+            title: 'Sélectionnez une famille à mapper'
           error: "Vous devez créer une famille dans votre catalogue pour accéder à cette page."
           family_status:
             pending: 'Nouveaux attributs de Franklin à réviser'
             full: 'Tous les attributs Franklin sont mappés'
           types_mismatch_warning: 'Avertissement: les types d''attributs ne correspondent pas.'
+          family_progress:
+            title: 'Nombre d’attributs mappés'
+            mapped_attribute_count: '{{ count }} attributs mappés'
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
         missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
@@ -63,7 +67,7 @@ akeneo_franklin_insights:
         localizable_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM localisable'
         scopable_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM décliné par canal'
         locale_specific_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM spécifique à une locale'
-        duplicated_pim_attribute: 'Un attribut PIM ne peut pas être utilisé plusieurs fois dans le mapping des attributs'
+        duplicated_pim_attribute: "Le mapping ne peut pas être sauvé car vous avez mappé plusieurs attributs Franklin au même attribut PIM"
         attribute_not_in_family_not_allowed: 'L''attribut PIM doit être dans la famille sélectionnée.'
         only_unknown_mapped_attributes: 'Aucun attribut dans le mapping n''a pu être trouvé'
     product_subscription:
@@ -84,12 +88,14 @@ akeneo_franklin_insights:
         already_subscribed_product: 'Le produit est déjà abonné.'
         variant_product: 'Désolé, les produits variants ne peuvent pas être abonnés à Franklin Insights.'
         inactive_connection: 'Désolé, impossible d''abonner un produit à Franklin Insights. Veuillez configurer votre connexion à Franklin Insights.'
+        product_subscription_with_same_identifier_already_exist: 'Un autre produit avec au moins un identifiant identique a déjà été souscrit.'
       module:
         product_edit_form:
           family_required: 'Famille de produit requise.'
           no_identifier_filled: 'Identifiants du produit requis.'
           invalid_mapping: "Mappings d'identifiants requis."
     attribute_options_mapping:
+      label: 'Mapping des options d''attribut'
       constraint:
         no_attribute_options_mapped: 'Les options d''attributs Franklin ne peuvent pas être mappés avec un mapping vide'
       fields:
@@ -179,6 +185,11 @@ pim_enrich.entity.attribute:
     save:
       title: 'Attention !'
       warning: '{1}Supprimer un attribut peut impacter 1 abonnement Franklin. Êtes vous sûr(e) ?|]1,+Inf[Supprimer un attribut peut impacter {{ count }} abonnements Franklin. Êtes vous sûr(e) ?'
+pim_title:
+  akeneo_franklin_insights_connection_edit: Connexion à Franklin Insights
+  akeneo_franklin_insights_mapping_index: Mapping de Franklin Insights
+  akeneo_franklin_insights_identifiers_mapping_edit: Édition du mapping des identifiants de Franklin Insights
+  akeneo_franklin_insights_attributes_mapping_edit: Édition du mapping des attributs de Franklin Insights
 pim_notification:
   types:
     franklin_insights: Franklin Insights

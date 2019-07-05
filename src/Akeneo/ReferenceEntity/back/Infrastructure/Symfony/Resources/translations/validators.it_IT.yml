@@ -1,0 +1,18 @@
+pim_reference_entity:
+  reference_entity:
+    validation:
+      code:
+        pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+      reference_entity_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Almeno un gruppo utente dovrebbe avere permesso di modifica su questa entità'
+  record:
+    validation:
+      code:
+        pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+  attribute:
+    validation:
+      options:
+        code:
+          pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+      code:
+        pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'

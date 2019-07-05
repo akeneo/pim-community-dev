@@ -76,11 +76,11 @@ batch_jobs:
   default_steps:
     execute_rules: Execució de les regles
   yml_rule_import:
-    label: Importació de regla en YAML
-    import.label: Importació de la regla
+    label: Importar regla en YAML
+    import.label: Importar regla
   yml_rule_export:
-    label: Exportació de la regla en YAML
-    export.label: Exportació de la regla
+    label: Exportar regla en YAML
+    export.label: Exportar regla
   rule_impacted_product_count:
     label: Productes afectats per les regles
     perform.label: Comptar productes afectats

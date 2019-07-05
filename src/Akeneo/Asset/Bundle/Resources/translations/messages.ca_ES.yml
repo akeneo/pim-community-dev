@@ -23,7 +23,7 @@ pimee_product_asset:
     button:
       upload: Carregar
       delete: Suprimir
-      download: Descarregar
+      download: Baixar
       generate_from_reference: Generar des de la referència
       reset_variations: Reiniciar variacions
     confirmation.remove: Està segur d'elimianr el recurs "%asset%" ?
@@ -44,7 +44,7 @@ pimee_product_asset:
       filesize: Mida de l'arxiu
       filetype: Tipus d'arxiu
       actions: Accions
-      download: Descarregar
+      download: Baixar
       tag: Etiquetes
       no_reference: Encara no s'ha carregat cap arxiu de referència.
       no_variation: Encara no s'ha generat cap arxiu de variació.
@@ -117,15 +117,15 @@ pimee_product_asset:
   asset:
     title: Recurs
   mass_upload:
-    menu: Carregar recursos
+    menu: Penjar recursos
     new: Es crearà un nou recurs
     add_files: afegir arxius
     start: Iniciar càrrega
     cancel: Cancel·lar càrrega
-    import: Importar
+    import: Importació
     executed: Càrrega en massa executada
     error:
-      upload: S'ha produït un error durant la càrrega
+      upload: S'ha produït un error en la càrrega
       code: Format de codi invàlid pel recurs
       localizable: Ja existeix un recurs però no se li pot aplicar cap configuració regional
       invalid_locale: La configuració regional està desactivada o no és vàlida
@@ -178,11 +178,12 @@ job_execution.summary:
   skipped_assets: Recursos omesos
 assets_mass_upload.steps:
   asset_mass_upload.title: Carregar recursos en massa
-import_asset.steps.channel_configuration_processor.title: Configuracions del procés de canal
+import_asset.steps.channel_configuration_processor.title: Configuracions de procés de canal
 pim_datagrid:
   cells:
     type:
-      mass_upload: Recursos de càrrega en massa
+      mass_upload: Càrrega de recursos en massa
+      compute_completeness_of_products_linked_to_assets: Calcular la integritat dels productes vinculats actius
 pim_analytics:
   info_type:
     nb_assets: Número de recursos
@@ -203,7 +204,7 @@ pim_api:
 pimee_enrich:
   channel:
     tab:
-      asset_transformation.title: Transformacions de recursos
+      asset_transformation.title: Transformacions de recurs
   asset_transformation:
     not_found: No s'ha trobat cap transformació
     title:

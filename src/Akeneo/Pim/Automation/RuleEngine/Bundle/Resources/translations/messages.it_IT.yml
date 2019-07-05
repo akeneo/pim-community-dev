@@ -2,7 +2,7 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Eliminare
+        delete: Elimina
         execute: Esegui
       title: Regole
       column:
@@ -16,15 +16,15 @@ pimee_catalog_rule:
       mass_edit_action:
         impacted_product_count: Calcola i prodotti interessati
         execute: Esegui
-        delete: Eliminare
+        delete: Elimina
   actions:
     type:
       "copy": Quindi %from_field% viene copiato in %to_field%
       "copy_value": Quindi %from_field% viene copiato in %to_field%
       "set": Quindi %field% è impostato a %value%
       "set_value": Quindi %field% è impostato a %value%
-      "add": '%value% viene aggiunto a %field%'
-      "remove": '%value% viene aggiunto a %field%'
+      "add": Quindi %value% viene aggiunto a %field%
+      "remove": Quindi %value% viene rimosso da %field%
     options:
       include_children: aggiungi figli
   condition:
@@ -46,15 +46,15 @@ pimee_catalog_rule:
       "NOT BETWEEN": non tra
       "=": è uguale a
       "!=": non è uguale
-      ">": piú grande di
+      ">": più grande di
       ">=": è uguale o maggiore di
-      "<": dopo il
+      "<": prima del
       "<=": è uguale o inferiore a
   acl_group:
     rule: Regole
   acl:
     rule:
-      view_permissions: Vedi Regole
+      view_permissions: Visualizza regole
       delete_permissions: Elimina regole
       impacted_product_count_permissions: Calcola i prodotti interessati per le regole
       execute_permissions: Esegui le regole
@@ -64,7 +64,7 @@ pimee_catalog_rule:
     grid:
       is_smart.label: Smart
     acl:
-      rule.view_permissions: Vedi Regole
+      rule.view_permissions: Visualizza regole
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: Il valore di questo attributo può venire dalla(e) regola(e) <strong>%rule%</strong>. Ciò significa che se le condizioni della regola sono valide, le tue modifiche saranno sovrascritte.
@@ -72,7 +72,7 @@ pimee_catalog_rule:
     history: Applicata la regola "%rule%"
   product_value:
     tooltip:
-      affected_by.title: 'Influenzato da regola(e):'
+      affected_by.title: 'Influenzato dalla(e) regola(e):'
   steps:
     product_rule_definition_reader.title: Lettore di importazione per le regole di prodotto
     rule_definition_processor.title: Processore di importazione per le regole di prodotto

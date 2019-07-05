@@ -20,9 +20,9 @@ pimee_catalog_rule:
       if.label: si
     action:
       then.label: entonces
-      set_value.label: es modificado dentro
+      set_value.label: es modificado en
       copy_value.label: es copiado en
-      set.label: es modificado dentro
+      set.label: es modificado en
       copy.label: es copiado en
       add.label: es agregado en
       remove.label: es eliminada de
@@ -97,6 +97,7 @@ batch_jobs:
 pim_notification:
   types:
     rule: Configuración de reglas
+    mass_edit_rule: Regla de edición masiva
 pim_menu:
   item:
     rule: Reglas

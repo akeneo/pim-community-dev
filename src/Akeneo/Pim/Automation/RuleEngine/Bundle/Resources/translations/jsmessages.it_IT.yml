@@ -5,7 +5,7 @@ pimee_catalog_rule:
   popin:
     execute_rules:
       confirm_title: Conferma esecuzione
-      confirm_content: Sei sicuro di voler eseguire tutte le regole? (questo potrebbe richiedere molto tempo)
+      confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
   notification:
     fail: L'azione potrebbe non essere eseguita
     launched: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
@@ -88,15 +88,16 @@ batch_jobs:
     label: Importazione prodotti in formato CSV con regole
     import.label: Importazione prodotti
   csv_product_model_import_with_rules:
-    label: Importazione modelli di prodotto in formato CSV con regole
+    label: Importazione del modello di prodotto in CSV con regole
   xlsx_product_import_with_rules:
     label: Importazione prodotti in formato XLSX con regole
     import.label: Importazione prodotti
   xlsx_product_model_import_with_rules:
-    label: Importazione modelli di prodotto in formato XLSX con regole
+    label: Importazione del modello di prodotto in XLSX con regole
 pim_notification:
   types:
     rule: Impostazioni delle Regole
+    mass_edit_rule: Regola di modifica di massa
 pim_menu:
   item:
     rule: Regole

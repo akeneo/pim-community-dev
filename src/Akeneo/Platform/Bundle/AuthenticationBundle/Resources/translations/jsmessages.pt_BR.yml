@@ -1,0 +1,44 @@
+pim_menu.item.sso: Single Sign-On baseado em SAML
+pim_title:
+  authentication_sso_configuration_edit: Configuração do Single Sign-On baseado em SAML
+authentication:
+  sso:
+    configuration:
+      download_logs_button: Baixar logs
+      info:
+        update_successful: A configuração foi salva
+        update_failed: A configuração não pôde ser salva
+        fields_not_ready: "A configuração não pode ser salva agora. Os seguintes campos não estão prontos: {{ fields }}"
+      section:
+        activation:
+          title: Ativação do SSO
+          info:
+            description: Se você habilitar a autenticação SSO sua sessão atual ficará inválida. Você será desconectado e redirecionado para o seu Provedor de Identidade após salvar a configuração.
+        identity_provider:
+          title: Provedor de identidade
+          info:
+            description: Você pode definir aqui todos os parâmetros necessários para se comunicar com seu PdI. Essas informações devem ser fornecidas pelo seu PdI. Por favor, contate o administrador do SSO para obtê-las.
+        service_provider:
+          title: Provedor de Serviço (PS)
+          info:
+            description: Você pode encontrar abaixo as informações sobre o Provedor de Serviço. Estes são valores gerados automaticamente. Você pode editá-los se precisar. Essas informações terão de ser fornecidas ao seu administrador de SSO para configurar o PdI.
+      field:
+        activation:
+          label: SSO ativado
+        entity_id:
+          label: ID da Entidade
+        sign_on_url:
+          label: URL de login
+        logout_url:
+          label: URL de logout
+        certificate:
+          label: Certificado
+          expiration_warning: Este certificado expira em {{date}}.
+        private_key:
+          label: Chave privada
+        metadata_url:
+          label: URL de metadados
+          tooltip_label: Copiar URL
+        acs_url:
+          label: URL do ACS
+          tooltip_label: Copiar URL

@@ -1,0 +1,18 @@
+pim_reference_entity:
+  reference_entity:
+    validation:
+      code:
+        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+      reference_entity_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad'
+  record:
+    validation:
+      code:
+        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+  attribute:
+    validation:
+      options:
+        code:
+          pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+      code:
+        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'

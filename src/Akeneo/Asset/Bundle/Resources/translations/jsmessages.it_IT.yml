@@ -31,11 +31,11 @@ pimee_product_asset:
         title: Reimposta varianti
         message: Sei sicuro di voler resettare tutte le varianti?
   mass_upload:
-    menu: Caricamento di asset
+    menu: Carica asset
     btn:
       remove_all_files: Rimuovi tutti i file
-      import: Importa
-      upload: Caricamento di asset
+      import: '&Import'
+      upload: Carica asset
     success:
       new: Verrà creato un nuovo asset
       imported: File importati per l'elaborazione di asset
@@ -45,21 +45,22 @@ pimee_product_asset:
     error:
       list: Non è possibile leggere file già caricati
       upload: Si è verificato un errore durante il caricamento
-      delete: Impossibile eliminare i file dal server
+      delete: Impossibile eliminare il file dal server
       import: Si è verificato un errore durante l'importazione
       filename: Nome file non valido per l'asset
       code: Formato codice non valido per l'asset
-      locale: Un asset esiste ma non è localizzabile
-      invalid_locale: Le impostazioni internazionali sono disabilitate o non valide
+      locale: Un asset esiste ma non è traducibile
+      invalid_locale: L'impostazione internazionale è disabilitata o non valida
       exists: Un file con lo stesso nome è già importato
       conflicts: Conflitto di nomi di file
     status:
       added: Aggiunto
       queued: Accodato
-      uploading: In upload
+      uploading: Caricamento
       error: Errore
       success: Successo
-    drag_and_drop: Trascina e rilascia qui i tuoi asset per caricarli o fai click qui
+    drag_and_drop: Drag and drop per caricare i tuoi asset o fai click qui
+    tabsection_title: Risorse caricate
   datagrid:
     mass_action:
       delete:
@@ -73,13 +74,13 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Raccolta asset
-pim_dashboard:
+pim_import_export:
   widget:
     last_operations:
       job_type:
-        mass_upload: Caricamento di massa
+        compute_completeness_of_products_linked_to_assets: Calcolo della completezza dei prodotti legati alle risorse
 pim_title:
-  pimee_product_asset_mass_upload: Caricamento di asset
+  pimee_product_asset_mass_upload: Carica asset
   pimee_product_asset_index: Asset
   pimee_product_asset_edit: Asset {{ asset.label }} | Modifica
   pimee_asset_categorytree_index: Categorie
@@ -96,8 +97,8 @@ batch_jobs:
     label: Importazione in Yaml della configurazione del canale asset
     import_asset.label: Importazione in Yaml della configurazione del canale asset
   yml_asset_channel_configuration_export:
-    label: Esportazione in Yaml della configurazione del canale asset
-    export.label: Esportazione in Yaml della configurazione del canale asset
+    label: Configurazione dell'esportazione in Yaml degli asset
+    export.label: Configurazione dell'esportazione in Yaml degli asset
   csv_asset_import:
     label: Importazione asset in CSV
     import_tags.label: Importazione tag in CSV
@@ -140,9 +141,11 @@ batch_jobs:
     label: Esportazione variazione asset in XLSX
     export.label: Esportazione variazione asset in XLSX
   classify_assets:
-    perform.label: Spostare gli asset nelle categorie
+    perform.label: Sposta gli asset nelle categorie
   add_tags_to_assets:
     perform.label: Aggiungi tag agli asset
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: Calcolo della completezza dei prodotti legati alle risorse
 jstree:
   asset:
     all: Tutti gli asset
@@ -160,19 +163,19 @@ pim_datagrid:
 pimee_enrich.entity.channel:
   module:
     asset_transformation:
-      title: Trasformazioni di asset
+      title: Trasformazioni asset
       not_found: Nessuna trasformazione trovata
       transformation: Trasformazione
       options: Opzioni
       colorspace:
         title: Spazio colori
         options:
-          colorspace: '%value% spazio colore'
+          colorspace: 'spazio colore %value%'
       resize:
         title: Ridimensiona
         options:
           width: '%value%px di larghezza'
-          height: '% value%px di altezza'
+          height: '%value%px di altezza'
       resolution:
         title: Risoluzione
         options:
@@ -182,13 +185,13 @@ pimee_enrich.entity.channel:
         title: Scala
         options:
           width: '%value%px di larghezza'
-          height: '% value%px di altezza'
+          height: '%value%px di altezza'
           ratio: '%value% % di rapporto'
       thumbnail:
         title: Thumbnail
         options:
           width: '%value%px di larghezza'
-          height: '% value%px di altezza'
+          height: '%value%px di altezza'
 pimee_enrich.mass_edit.asset:
   title: Azione in massa per gli asset
   confirm: "{1}Stai per aggiornare un asset con le informazioni seguenti, conferma.|]1, Inf[Stai per aggiornare {{ itemsCount }} asset con le informazioni seguenti, conferma."

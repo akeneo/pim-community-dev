@@ -39,7 +39,7 @@ pimee_workflow:
         title: Approva le modifiche parzialmente
         label: Lascia un commento (facoltativo)
         error: Si è verificato un errore, la proposta non è stata approvata parzialmente
-        success: Le modifiche sono state salvate con successo
+        success: Le modifiche sono state approvate con successo
     partial_reject:
       modal:
         title: Respingi le modifiche parzialmente
@@ -94,7 +94,7 @@ pimee_dashboard:
     product_drafts:
       date: Data
       author: Autore
-      product: Prodotto
+      product: Articolo
       review: Da rivedere
       empty: Nessuna proposta da revisionare
     header.view_all: Mostra tutti
@@ -129,7 +129,7 @@ pimee_enrich.entity.product:
       draft_of: "Bozza di {{ author }}"
     approval:
       send: Invia per approvazione
-      sent: Inviato per approvazione
+      sent: Inviata per approvazione
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -147,7 +147,7 @@ pimee_enrich.entity.published_product:
       label: Pubblica
       publish_this_version: Pubblica questa versione
     unpublish:
-      label: Ritira
+      label: Annulla la pubblicazione
 pimee_enrich.entity.product_draft:
   flash:
     approve:
@@ -164,8 +164,6 @@ pimee_enrich.entity.product_draft:
       success: Bozza di prodotto inviata per approvazione
       fail: Non è possibile inviare questa bozza per l'approvazione
   module:
-    create:
-      label: Salva bozza
     proposal:
       accept: Accetta la proposta
       accept_selected: Accetta la(e) proposta(e) selezionata(e)
@@ -186,7 +184,7 @@ pimee_enrich.mass_edit.product:
       description: I prodotti saranno pubblicati
       warning: I {{ itemsCount }} prodotti selezionati saranno pubblicati.
     unpublish:
-      label: Ritira
+      label: Annulla la pubblicazione
       label_count: "{1}Annulla pubblicazione di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|]1, Inf[Annulla pubblicazione di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
       description: I prodotti saranno ritirati
       warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.

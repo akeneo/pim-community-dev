@@ -21,6 +21,9 @@ akeneo_franklin_insights:
         already_subscribed_product: 'Il prodotto è già iscritto.'
         variant_product: 'I prodotti varianti non possono essere iscritti a Franklin Insights.'
         inactive_connection: 'Impossibile iscrivere il prodotto a Franklin Insights. Configura la tua connessione a Franklin Insights.'
+    attributes_mapping:
+      notification:
+        new_attributes_to_map: 'Hai nuovi attributi da mappare per la famiglia "%familyLabel%"'
 job_execution.summary:
   configuration_validation: Configurazione Franklin Insights
   subscribed: iscritto

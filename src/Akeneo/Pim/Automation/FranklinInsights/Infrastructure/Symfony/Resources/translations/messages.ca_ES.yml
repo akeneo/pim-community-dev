@@ -21,6 +21,7 @@ akeneo_franklin_insights:
         already_subscribed_product: 'El producte ja està subscrit.'
         variant_product: 'Els productes variants no poden ser subscrits al Franklin Insights.'
         inactive_connection: 'No s''ha pogut subscriure el producte a les Franklin Insights. Configureu la connexió a les Franklin Insights, su us plau.'
+        product_subscription_with_same_identifier_already_exist: 'Ja s''ha subscrit un altre producte amb un identificador idèntic.'
     attributes_mapping:
       notification:
         new_attributes_to_map: 'Teniu nous atributs per assignar per a la família "%familyLabel%"'

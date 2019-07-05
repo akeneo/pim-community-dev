@@ -6,7 +6,6 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "Qualcosa è andato storto. Riprova più tardi."
       authentication_error: "Impossibile autenticare Franklin Insights, il tuo token non è valido. Inserisci un token valido o contattaci per avere aiuto."
-      bad_request_error: "C'è stato un problema comunicando con Franklin Insights. Contatta il tuo amministratore."
     identifier_mapping:
       plural_label: Identificatori
       flash:
@@ -44,7 +43,6 @@ akeneo_franklin_insights:
           pending: In attesa
           active: Attivo
           inactive: Inattivo
-        values_summary: "Riepilogo dei valori: {{ label }}"
       module:
         subscribe:
           subscribe: 'Iscrivi famiglia a Franklin'
@@ -53,6 +51,7 @@ akeneo_franklin_insights:
           error: "E' necessario creare una famiglia nel tuo catalogo per accedere a questa pagina."
           family_status:
             pending: 'Nuovi attributi Franklin da recensire'
+            full: 'Tutti gli attributi Franklin mappati'
           types_mismatch_warning: 'Attenzione: tipi di attributi non corrispondenti.'
       constraint:
         missing_target_key: 'Chiave di destinazione mancante per la mappatura'
@@ -62,7 +61,6 @@ akeneo_franklin_insights:
         localizable_not_allowed: 'Gli attributi Frankin non possono essere mappati ad un attributo PIM localizzabile'
         scopable_not_allowed: 'Gli attributi Franklin non possono essere mappati ad un attributo PIM customizzabile per canale'
         locale_specific_not_allowed: 'Gli attributi Franklin non possono essere mappati ad un attributo PIM specifico per localizzazione'
-        duplicated_pim_attribute: 'Un attributo pim non può essere usato due o più volte nella mappatura degli attributi'
         attribute_not_in_family_not_allowed: 'L''attributo del PIM deve essere nella famiglia selezionata.'
         only_unknown_mapped_attributes: 'Non sono stati trovati attributi nella mappatura degli attributi'
     product_subscription:
@@ -89,6 +87,8 @@ akeneo_franklin_insights:
           no_identifier_filled: 'Identificatori di prodotto richiesti.'
           invalid_mapping: "Mappatura degli identificatori richiesta."
     attribute_options_mapping:
+      constraint:
+        no_attribute_options_mapped: 'Le opzioni di attributo Franklin non possono essere mappate con una mappatura vuota'
       fields:
         franklin_attribute_option: Opzione dell'attributo Franklin
         catalog_attribute_option: Opzione di attributo del catalogo
@@ -128,6 +128,7 @@ akeneo_franklin_insights:
         sub_title: 'Conosci Franklin, il tuo <span class="AknDescriptionHeader-title--highlight">assistente AI Informazioni Prodotto</span>!'
         description:
           first_step: 'Per aiutarti ad arricchire il tuo catalogo, Franklin avrà bisogno di sapere quali sono i tuoi identificatori di catalogo.'
+          second_step: 'Durante la mappatura dei tuoi identificatori, si prega di tenere presente che il Brand e l'' MPN vanno insieme. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Leggi di più</a>'
       inactive_connection:
         title: 'Niente da visualizzare ancora'
         sub_title: 'Per favore attiva il tuo account su Sistema > Connessione Franklin e torna indietro.'
@@ -173,3 +174,9 @@ pim_enrich.entity.attribute:
   module:
     save:
       title: 'Attenzione!'
+      warning: '{1}Cancellare un attributo può avere un impatto sull''abbonamento a 1 Franklin. Sei sicuro?|]1,+Inf[Cancellare un attributo può avere impatto su {{ count }} Iscrizioni di Franklin. Sei sicuro?'
+pim_title:
+  akeneo_franklin_insights_connection_edit: Connsessione Franklin Insights
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights

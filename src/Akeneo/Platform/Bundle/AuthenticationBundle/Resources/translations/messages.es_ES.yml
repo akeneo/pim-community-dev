@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Gestionar el registro único (SSO)
+  sso:
+    unknown_user_error: No tiene permiso para acceder a esta aplicación. Por favor, contacta con tu administrador.

@@ -1,3 +1,5 @@
+user:
+  asset_delay_reminder: Asset delay reminder (in days)
 pimee_product_asset:
   form:
     product:
@@ -71,11 +73,6 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Assets collection
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        mass_upload: Mass upload
 pim_title:
   pimee_product_asset_mass_upload: Upload assets
   pimee_product_asset_index: Assets
