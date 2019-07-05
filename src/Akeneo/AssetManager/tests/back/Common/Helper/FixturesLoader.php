@@ -59,13 +59,13 @@ class FixturesLoader
     private $valueHydrator;
 
     /** @var string */
-    private $loadedRefEntity;
+    private $loadedAssetFamily;
 
     /** @var string[] */
     private $loadedAttributes = [];
 
     /** @var string */
-    private $loadedAssetRefEntity;
+    private $loadedAssetFamilyOfAsset;
 
     /** @var string */
     private $loadedAssetCode;
@@ -87,7 +87,7 @@ class FixturesLoader
 
     public function assetFamily(string $identifier): self
     {
-        $this->loadedRefEntity = $identifier;
+        $this->loadedAssetFamily = $identifier;
         $this->loadedAttributes = [];
 
         return $this;
@@ -95,7 +95,7 @@ class FixturesLoader
 
     public function asset(string $assetFamilyIdentifier, string $assetCode): self
     {
-        $this->loadedAssetRefEntity = $assetFamilyIdentifier;
+        $this->loadedAssetFamilyOfAsset = $assetFamilyIdentifier;
         $this->loadedAssetCode = $assetCode;
         $this->loadedValues = [];
 
@@ -111,7 +111,7 @@ class FixturesLoader
 
     public function withAttributes(array $attributeCodes): self
     {
-        if (null === $this->loadedRefEntity) {
+        if (null === $this->loadedAssetFamily) {
             throw new \LogicException('You need to call "assetFamily()" first before calling "withAttributes()"');
         }
 
@@ -122,7 +122,7 @@ class FixturesLoader
 
     public function load(): array
     {
-        if (null !== $this->loadedRefEntity) {
+        if (null !== $this->loadedAssetFamily) {
             $assetFamily = $this->loadAssetFamily();
             $attributes = $this->loadAttributes($assetFamily->getIdentifier());
         }
@@ -132,9 +132,9 @@ class FixturesLoader
             $this->loadValues($asset->getIdentifier());
         }
 
-        $this->loadedRefEntity = null;
+        $this->loadedAssetFamily = null;
         $this->loadedAttributes = [];
-        $this->loadedAssetRefEntity = null;
+        $this->loadedAssetFamilyOfAsset = null;
         $this->loadedAssetCode = null;
 
         return [
@@ -175,7 +175,7 @@ class FixturesLoader
             RuleTemplateCollection::empty()
         );
 
-        switch ($this->loadedRefEntity) {
+        switch ($this->loadedAssetFamily) {
             case 'designer':
                 $this->assetFamilyRepository->create($designer);
 
@@ -189,12 +189,15 @@ class FixturesLoader
 
                 return $country;
             default:
-                throw new \LogicException(
-                    sprintf(
-                        'Fixtures Loader has no fixtures for asset family with identifier %s',
-                        $this->loadedRefEntity
-                    )
+                $assetFamily = AssetFamily::create(
+                    AssetFamilyIdentifier::fromString($this->loadedAssetFamily),
+                    [],
+                    Image::createEmpty(),
+                    RuleTemplateCollection::empty()
                 );
+                $this->assetFamilyRepository->create($assetFamily);
+
+                return $assetFamily;
         }
     }
 
@@ -534,13 +537,13 @@ class FixturesLoader
     private function loadAsset(): Asset
     {
         $assetIdentifier = $this->assetRepository->nextIdentifier(
-            AssetFamilyIdentifier::fromString($this->loadedAssetRefEntity),
+            AssetFamilyIdentifier::fromString($this->loadedAssetFamilyOfAsset),
             AssetCode::fromString($this->loadedAssetCode)
         );
 
         $asset = Asset::create(
             $assetIdentifier,
-            AssetFamilyIdentifier::fromString($this->loadedAssetRefEntity),
+            AssetFamilyIdentifier::fromString($this->loadedAssetFamilyOfAsset),
             AssetCode::fromString($this->loadedAssetCode),
             ValueCollection::fromValues([])
         );
@@ -554,7 +557,7 @@ class FixturesLoader
     {
         $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
         $attributes = $this->attributeRepository->findByAssetFamily(
-            AssetFamilyIdentifier::fromString($this->loadedAssetRefEntity)
+            AssetFamilyIdentifier::fromString($this->loadedAssetFamilyOfAsset)
         );
 
         foreach ($this->loadedValues as $attributeCode => $values) {

@@ -48,8 +48,11 @@ class RuleTemplateExecutor
 
     public function execute(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): void
     {
-        $asset = $this->findPropertyAccessibleAsset->find($assetFamilyIdentifier, $assetCode);
         $ruleTemplateCollection = $this->ruleTemplateCollection($assetFamilyIdentifier);
+        if ($ruleTemplateCollection->isEmpty()) {
+            return;
+        }
+        $asset = $this->findPropertyAccessibleAsset->find($assetFamilyIdentifier, $assetCode);
         foreach ($ruleTemplateCollection as $ruleTemplate) {
             $this->run($ruleTemplate, $asset);
         }

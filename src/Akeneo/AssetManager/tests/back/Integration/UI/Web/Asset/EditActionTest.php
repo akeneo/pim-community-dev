@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -26,7 +27,9 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -46,8 +49,10 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -71,16 +76,21 @@ class EditActionTest extends ControllerIntegrationTestCase
     /** @var InMemoryFindFileDataByFileKey */
     private $findFileData;
 
+    /** @var FixturesLoader */
+    private $fixturesLoader;
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->loadFixtures();
+        $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
         $this->findFileData = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key');
+
+        $this->loadFixtures();
     }
 
     /**
@@ -252,11 +262,13 @@ class EditActionTest extends ControllerIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $repository = $this->getAssetRepository();
+        $this->fixturesLoader->assetFamily('designer')->load();
+        $this->fixturesLoader->assetFamily('brand')->load();
+        $this->fixturesLoader->assetFamily('city')->load();
 
+        $repository = $this->getAssetRepository();
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $assetCode = AssetCode::fromString('starck');
-
         $imageInfo = new FileInfo();
         $imageInfo
             ->setOriginalFilename('philou.png')
@@ -295,7 +307,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -313,7 +325,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['fr_FR' => 'Description']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
@@ -330,7 +342,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('website'),
             LabelCollection::fromArray(['fr_FR' => 'Website']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -347,7 +359,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
-            AttributeOrder::fromInteger(3),
+            AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -371,7 +383,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('linked_brand'),
             LabelCollection::fromArray(['fr_FR' => 'Marque liée', 'en_US' => 'Linked brand']),
-            AttributeOrder::fromInteger(4),
+            AttributeOrder::fromInteger(7),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
@@ -386,7 +398,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('age'),
             LabelCollection::fromArray(['en_US' => 'Linked brand']),
-            AttributeOrder::fromInteger(6),
+            AttributeOrder::fromInteger(8),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -426,7 +438,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('linked_cities'),
             LabelCollection::fromArray(['fr_FR' => 'Ville', 'en_US' => 'Cities']),
-            AttributeOrder::fromInteger(5),
+            AttributeOrder::fromInteger(9),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
