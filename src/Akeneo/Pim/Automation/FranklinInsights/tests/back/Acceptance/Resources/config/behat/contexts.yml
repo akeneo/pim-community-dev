@@ -46,6 +46,7 @@ services:
             - '@pim_catalog.repository.attribute_option'
             - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
             - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+            - '@akeneo.pim.automation.franklin_insights.builder.attribute_option'
         tags:
             - { name: 'fob.context_service' }
 

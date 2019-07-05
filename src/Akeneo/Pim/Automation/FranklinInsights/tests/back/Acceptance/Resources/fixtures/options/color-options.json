@@ -4,7 +4,8 @@
     "attribute": "color",
     "sort_order": 1,
     "labels": {
-      "en_US": "Color 1"
+      "en_US": "Color 1",
+      "fr_FR": "couleur 1"
     }
   },
   "color2": {

@@ -91,6 +91,9 @@ class DataFixturesContext implements Context
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
+    /** @var EntityBuilder */
+    private $optionBuilder;
+
     public function __construct(
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
@@ -107,7 +110,8 @@ class DataFixturesContext implements Context
         InMemoryCategoryRepository $categoryRepository,
         InMemoryAttributeOptionRepository $attributeOptionRepository,
         InMemoryIdentifiersMappingRepository $identifiersMappingRepository,
-        FakeClient $fakeClient
+        FakeClient $fakeClient,
+        EntityBuilder $optionBuilder
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -125,6 +129,7 @@ class DataFixturesContext implements Context
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->fakeClient = $fakeClient;
         $this->productUpdater = $productUpdater;
+        $this->optionBuilder = $optionBuilder;
     }
 
     /**
@@ -371,10 +376,24 @@ class DataFixturesContext implements Context
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeBuilder->build($normalizedAttributes[$attributeCode]);
             $this->attributeRepository->save($attribute);
+
+            if ('pim_catalog_simpleselect' === $attribute->getType() ||
+                'pim_catalog_multiselect' === $attribute->getType()) {
+                $this->loadAttributeOptions($attributeCode);
+            }
             $attributes[] = $attribute;
         }
 
         return $attributes;
+    }
+
+    private function loadAttributeOptions(string $attributeCode): void
+    {
+        $flatOptions = $this->loadJsonFileAsArray(sprintf('options/%s-options.json', $attributeCode));
+        foreach ($flatOptions as $flatOption) {
+            $option = $this->optionBuilder->build($flatOption, false);
+            $this->attributeOptionRepository->save($option);
+        }
     }
 
     /**

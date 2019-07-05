@@ -36,7 +36,22 @@ final class InMemoryAttributeOptionRepository implements AttributeOptionReposito
 
     public function findOneByIdentifier(AttributeCode $attributeCode, string $attributeOptionCode): ?AttributeOption
     {
-        throw new NotImplementedException('findOneByIdentifier');
+        $attributeOption = $this->inMemoryAttributeOptionRepository
+            ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
+        if (null === $attributeOption) {
+            return null;
+        }
+
+        $translations = [];
+        foreach ($attributeOption->getOptionValues() as $optionValue) {
+            $translations[$optionValue->getLocale()] = $optionValue->getValue();
+        }
+
+        return new AttributeOption(
+            $attributeOption->getCode(),
+            new AttributeCode($attributeOption->getAttribute()->getCode()),
+            $translations
+        );
     }
 
     public function findByCodes(array $codes): array
