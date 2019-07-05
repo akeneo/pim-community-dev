@@ -65,11 +65,13 @@ class StatusFilter extends BaseForm {
    * {@inheritdoc}
    */
   public render(): BaseForm {
-    this.$el.html(this.template({
-      label: __('pim_common.status'),
-      currentValue: this.currentFilterValue,
-      filters: StatusFilter.getFilters(),
-    }));
+    this.$el.html(
+      this.template({
+        label: __('pim_common.status'),
+        currentValue: this.currentFilterValue,
+        filters: StatusFilter.getFilters()
+      })
+    );
 
     this.delegateEvents();
 
@@ -82,7 +84,7 @@ class StatusFilter extends BaseForm {
    * Listen status value change and apply filter on data-grid
    * @param {{currentTarget: any}} event
    */
-  private onChangeStatus(event: { currentTarget: any }): void {
+  private onChangeStatus(event: {currentTarget: any}): void {
     this.currentFilterValue = $(event.currentTarget).data('value') as string;
     this.filter();
   }
@@ -91,20 +93,20 @@ class StatusFilter extends BaseForm {
    * Send an event to the datagrid to filter the right rows, then refresh the Dropdown label.
    */
   private filter(): void {
-      const value = this.currentFilterValue;
-      const filter: Filter = {
-          value,
-          type: FilterValue.Equals,
-          field: 'status',
-      };
+    const value = this.currentFilterValue;
+    const filter: Filter = {
+      value,
+      type: FilterValue.Equals,
+      field: 'status'
+    };
 
-      this.trigger('pim_datagrid:filter-front', filter);
+    this.trigger('pim_datagrid:filter-front', filter);
 
-      this.$el.find('.filter-criteria-hint').html(
-          (StatusFilter.getFilters().find((filterLabel: FilterLabel) => {
-              return filterLabel.value === value;
-          }) as FilterLabel).label
-      );
+    this.$el.find('.filter-criteria-hint').html(
+      (StatusFilter.getFilters().find((filterLabel: FilterLabel) => {
+        return filterLabel.value === value;
+      }) as FilterLabel).label
+    );
   }
 }
 
