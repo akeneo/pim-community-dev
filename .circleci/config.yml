@@ -146,12 +146,12 @@ jobs:
           - run:
                 name: Non critical PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh ${TESTSUITE}_integration --exclude-group critical | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/list_critical_phpunit_bis.php ${TESTSUITE}_integration --exclude-criticals | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - run:
                 name: Critical PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh all_integration --group critical | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/list_critical_phpunit_bis.sh all_integration --only-criticals | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
@@ -182,12 +182,12 @@ jobs:
           - run:
                 name: Non critical PHPunit End to End
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh ${TESTSUITE}_end_to_end --exclude-group critical | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/list_critical_phpunit_bis.sh ${TESTSUITE}_end_to_end --exclude-criticals | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - run:
                 name: Critical PHPunit End to End
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh all_end_to_end --group critical | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/list_critical_phpunit_bis.sh all_end_to_end --only-criticals | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
