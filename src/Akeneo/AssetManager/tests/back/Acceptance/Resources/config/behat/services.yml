@@ -197,7 +197,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.application.asset.create_asset_handler'
-            - '@akeneo_assetmanager.infrastructure.rule_template.rule_engine_synchronised_runner'
+            - '@akeneo_assetmanager.infrastructure.rule_template.rule_engine_runner'
             - '@validator'
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
         tags:

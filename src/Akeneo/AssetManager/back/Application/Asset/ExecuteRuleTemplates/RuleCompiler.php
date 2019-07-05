@@ -63,17 +63,6 @@ class RuleCompiler
         $compiledActions = $this->compileActionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
 
         return new CompiledRule($compiledConditions, $compiledActions);
-
-//        $compiledContent = $this->compileTemplateWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
-//
-//        $ruleData = [
-//            'code' => '',
-//            'priority' => '',
-//            'conditions' => $compiledContent['conditions'],
-//            'actions' => $compiledContent['actions']
-//        ];
-//
-//        return $this->ruleDenormalizer->denormalize($ruleData, Rule::class);
     }
 
     private function compileConditionsWithPropertyAccessibleAsset(
@@ -109,10 +98,8 @@ class RuleCompiler
                     continue;
                 }
 
-                if (is_array($action[$key])) {
-                    foreach ($action[$key] as $i => $valueToReplace) {
-                        $action[$key][$i] = $this->replacePatterns($valueToReplace, $propertyAccessibleAsset);
-                    }
+                if ($this->fieldHasMultipleValues($action, $key)) {
+                    $action[$key] = $this->replaceMultiplePatterns($propertyAccessibleAsset, $action[$key]);
                 } else {
                     $action[$key] = $this->replacePatterns($value, $propertyAccessibleAsset);
                 }
@@ -142,5 +129,18 @@ class RuleCompiler
         }
 
         return $ruleValue;
+    }
+
+    private function fieldHasMultipleValues($action, string $key): bool
+    {
+        return is_array($action[$key]);
+    }
+
+    private function replaceMultiplePatterns(PropertyAccessibleAsset $propertyAccessibleAsset, array $valuesToReplace): array
+    {
+        foreach ($valuesToReplace as $i => $valueToReplace) {
+            $valuesToReplace[$i] = $this->replacePatterns($valueToReplace, $propertyAccessibleAsset);
+        }
+        return $valuesToReplace;
     }
 }

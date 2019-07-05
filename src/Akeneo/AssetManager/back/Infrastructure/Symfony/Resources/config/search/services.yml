@@ -11,13 +11,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.link_asset:
-        class: Akeneo\AssetManager\Application\Asset\Subscribers\LinkAssetSubscriber
-        arguments:
-            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_executor'
-        tags:
-            - { name: kernel.event_subscriber }
-
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.remove_asset_from_index:
         class: Akeneo\AssetManager\Application\Asset\Subscribers\RemoveAssetFromIndexSubscriber
         arguments:

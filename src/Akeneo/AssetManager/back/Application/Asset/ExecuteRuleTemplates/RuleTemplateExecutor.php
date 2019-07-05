@@ -19,14 +19,13 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\FindPropertyAccessibleAssetInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 
 class RuleTemplateExecutor
 {
     /** @var RuleCompiler */
     private $ruleCompiler;
 
-    /** @var RunnerInterface */
+    /** @var CompiledRuleRunnerInterface */
     private $compiledRuleRunner;
 
     /** @var FindPropertyAccessibleAssetInterface */
@@ -66,7 +65,7 @@ class RuleTemplateExecutor
 
     private function run($ruleTemplate, ?PropertyAccessibleAsset $asset): void
     {
-        $rule = $this->ruleCompiler->compile($ruleTemplate, $asset);
-        $this->compiledRuleRunner->run($rule);
+        $compiledRule = $this->ruleCompiler->compile($ruleTemplate, $asset);
+        $this->compiledRuleRunner->run($compiledRule);
     }
 }

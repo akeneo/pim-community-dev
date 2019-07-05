@@ -14,27 +14,27 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class RuleEngineSynchronizedRunner implements CompiledRuleRunnerInterface
+class RuleEngineRunner implements CompiledRuleRunnerInterface
 {
     /** @var DenormalizerInterface */
     private $ruleDenormalizer;
 
     /** @var RunnerInterface */
-    private $ruleEngineRunner;
+    private $ruleRunner;
 
     public function __construct(
         DenormalizerInterface $ruleDenormalizer,
-        RunnerInterface $ruleEngineRunner
+        RunnerInterface $ruleRunner
     ) {
         $this->ruleDenormalizer = $ruleDenormalizer;
-        $this->ruleEngineRunner = $ruleEngineRunner;
+        $this->ruleRunner = $ruleRunner;
     }
 
     public function run(CompiledRule $compiledRule): void
     {
         $normalizedRule = $this->adaptCompiledRuleToRuleEngine($compiledRule);
         $rule = $this->ruleDenormalizer->denormalize($normalizedRule, Rule::class);
-        $this->ruleEngineRunner->run($rule);
+        $this->ruleRunner->run($rule);
     }
 
     private function adaptCompiledRuleToRuleEngine(CompiledRule $compiledRule): array
