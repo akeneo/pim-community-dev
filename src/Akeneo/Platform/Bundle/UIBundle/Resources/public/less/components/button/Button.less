@@ -379,4 +379,17 @@
       background: @AknMediumGrey;
     }
   }
+
+  &--withSuffix {
+    margin-left: 20px;
+
+    &::before {
+      content : "";
+      position: absolute;
+      top: 4px;
+      height: 22px;
+      border-left: 1px solid white;
+      transform: translateX(-10px);
+    }
+  }
 }
