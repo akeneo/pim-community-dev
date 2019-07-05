@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
 use Akeneo\AssetManager\Application\Asset\Subscribers\IndexByAssetFamilyInBackgroundInterface;
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -34,10 +35,13 @@ class IndexAssetSubscriberSpec extends ObjectBehavior
 
     function it_subscribes_to_events()
     {
-        $this::getSubscribedEvents()->shouldReturn([
-            AssetUpdatedEvent::class    => 'whenAssetUpdated',
-            AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
-        ]);
+        $this::getSubscribedEvents()->shouldReturn(
+            [
+                AssetUpdatedEvent::class     => 'whenAssetUpdated',
+                AssetCreatedEvent::class     => 'whenAssetCreated',
+                AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
+            ]
+        );
     }
 
     function it_triggers_the_reindexation_of_an_updated_asset(AssetIndexerInterface $assetIndexer)
@@ -45,11 +49,13 @@ class IndexAssetSubscriberSpec extends ObjectBehavior
         $assetIdentifier = AssetIdentifier::fromString('starck');
         $assetIndexer->index($assetIdentifier)->shouldBeCalled();
 
-        $this->whenAssetUpdated(new AssetUpdatedEvent(
-            $assetIdentifier,
-            AssetCode::fromString('starck'),
-            AssetFamilyIdentifier::fromString('designer')
-        ));
+        $this->whenAssetUpdated(
+            new AssetUpdatedEvent(
+                $assetIdentifier,
+                AssetCode::fromString('starck'),
+                AssetFamilyIdentifier::fromString('designer')
+            )
+        );
     }
 
     function it_runs_a_reindexing_command_when_an_attribute_is_removed(

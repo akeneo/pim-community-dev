@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
@@ -119,8 +120,8 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            AssetUpdatedEvent::class,
-            new AssetUpdatedEvent(
+            AssetCreatedEvent::class,
+            new AssetCreatedEvent(
                 $asset->getIdentifier(),
                 $asset->getCode(),
                 $asset->getAssetFamilyIdentifier()
@@ -159,11 +160,7 @@ SQL;
 
         $this->eventDispatcher->dispatch(
             AssetUpdatedEvent::class,
-            new AssetUpdatedEvent(
-                $asset->getIdentifier(),
-                $asset->getCode(),
-                $asset->getAssetFamilyIdentifier()
-            )
+            new AssetUpdatedEvent($asset->getIdentifier(), $asset->getCode(), $asset->getAssetFamilyIdentifier())
         );
     }
 

@@ -6,6 +6,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Box\Spout\Reader\IteratorInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -49,17 +50,17 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
 
     function it_can_be_created_with_no_rule_templates()
     {
-        $noPrefix = $this::empty();
+        $noPrefix = self::empty();
         $noPrefix->normalize()->shouldReturn([]);
     }
 
     function it_says_if_it_holds_no_rule_templates()
     {
         $this->isEmpty()->shouldReturn(false);
-        $this::empty()->isEmpty()->shouldReturn(true);
+        self::empty()->isEmpty()->shouldReturn(true);
     }
 
-    public function it_can_normalize_itself()
+    function it_can_normalize_itself()
     {
         $normalizedRuleTemplate = [
             'conditions' => [
@@ -78,5 +79,12 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
             ]
         ];
         $this->normalize()->shouldReturn([$normalizedRuleTemplate]);
+    }
+
+    function it_can_be_iterable()
+    {
+        $this->getIterator()
+             ->count()
+             ->shouldBe(1);
     }
 }

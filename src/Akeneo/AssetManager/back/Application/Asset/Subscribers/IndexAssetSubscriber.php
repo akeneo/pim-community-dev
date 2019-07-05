@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
@@ -35,7 +36,8 @@ class IndexAssetSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AssetUpdatedEvent::class    => 'whenAssetUpdated',
+            AssetUpdatedEvent::class     => 'whenAssetUpdated',
+            AssetCreatedEvent::class     => 'whenAssetCreated',
             AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
         ];
     }
@@ -43,6 +45,11 @@ class IndexAssetSubscriber implements EventSubscriberInterface
     public function whenAssetUpdated(AssetUpdatedEvent $assetUpdatedEvent): void
     {
         $this->assetIndexer->index($assetUpdatedEvent->getAssetIdentifier());
+    }
+
+    public function whenAssetCreated(AssetCreatedEvent $assetCreatedEvent): void
+    {
+        $this->assetIndexer->index($assetCreatedEvent->getAssetIdentifier());
     }
 
     public function whenAttributeIsDeleted(AttributeDeletedEvent $attributeDeletedEvent): void

@@ -1,0 +1,4 @@
+services:
+    akeneo_assetmanager.infrastructure.rule_template.rule_engine_runner:
+      class: Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy
+

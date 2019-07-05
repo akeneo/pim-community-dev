@@ -78,6 +78,7 @@ SQL;
             WHERE code = :code
         ) as is_existing
 SQL;
+
         $statement = $this->sqlConnection->executeQuery($query, [
             'code' => (string) $code
         ]);

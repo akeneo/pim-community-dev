@@ -11,13 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Rule;
+namespace Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * Compile a RuleTemplate given an PropertyAccessibleAsset to create a RuleInterface
@@ -31,15 +28,7 @@ class RuleCompiler
     private const CONDITIONS_KEYS_TO_REPLACE = ['field', 'value'];
 
     /** @var array We only allow those keys to be replaced by asset values in actions */
-    private const ACTIONS_KEYS_TO_REPLACE = ['field', 'value'];
-
-    /** @var DenormalizerInterface */
-    private $ruleDenormalizer;
-
-    public function __construct(DenormalizerInterface $ruleDenormalizer)
-    {
-        $this->ruleDenormalizer = $ruleDenormalizer;
-    }
+    private const ACTIONS_KEYS_TO_REPLACE = ['field', 'value', 'items'];
 
     /**
      * Takes an $propertyAccessibleAsset to fill in the given $ruleTemplate. This results in a ready-to-use RuleInterface
@@ -65,31 +54,12 @@ class RuleCompiler
      *
      * @throws \Exception
      */
-    public function compile(RuleTemplate $ruleTemplate, PropertyAccessibleAsset $propertyAccessibleAsset): RuleInterface
+    public function compile(RuleTemplate $ruleTemplate, PropertyAccessibleAsset $propertyAccessibleAsset): CompiledRule
     {
-        $compiledContent = $this->compileTemplateWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
-
-        $ruleData = [
-            'code' => '',
-            'priority' => '',
-            'conditions' => $compiledContent['conditions'],
-            'actions' => $compiledContent['actions']
-        ];
-
-        return $this->ruleDenormalizer->denormalize($ruleData, Rule::class);
-    }
-
-    private function compileTemplateWithPropertyAccessibleAsset(
-        RuleTemplate $ruleTemplate,
-        PropertyAccessibleAsset $propertyAccessibleAsset
-    ): array {
         $compiledConditions = $this->compileConditionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
         $compiledActions = $this->compileActionsWithPropertyAccessibleAsset($ruleTemplate, $propertyAccessibleAsset);
 
-        return [
-            'conditions' => $compiledConditions,
-            'actions' => $compiledActions,
-        ];
+        return new CompiledRule($compiledConditions, $compiledActions);
     }
 
     private function compileConditionsWithPropertyAccessibleAsset(
@@ -125,7 +95,11 @@ class RuleCompiler
                     continue;
                 }
 
-                $action[$key] = $this->replacePatterns($value, $propertyAccessibleAsset);
+                if ($this->fieldHasMultipleValues($action, $key)) {
+                    $action[$key] = $this->replaceMultiplePatterns($propertyAccessibleAsset, $action[$key]);
+                } else {
+                    $action[$key] = $this->replacePatterns($value, $propertyAccessibleAsset);
+                }
             }
 
             $compiledActions[] = $action;
@@ -152,5 +126,18 @@ class RuleCompiler
         }
 
         return $ruleValue;
+    }
+
+    private function fieldHasMultipleValues($action, string $key): bool
+    {
+        return is_array($action[$key]);
+    }
+
+    private function replaceMultiplePatterns(PropertyAccessibleAsset $propertyAccessibleAsset, array $valuesToReplace): array
+    {
+        foreach ($valuesToReplace as $i => $valueToReplace) {
+            $valuesToReplace[$i] = $this->replacePatterns($valueToReplace, $propertyAccessibleAsset);
+        }
+        return $valuesToReplace;
     }
 }

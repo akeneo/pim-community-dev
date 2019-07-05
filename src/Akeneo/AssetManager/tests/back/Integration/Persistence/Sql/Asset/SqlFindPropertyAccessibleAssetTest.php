@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindPropertyAccessibleAssetInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -41,7 +42,7 @@ class SqlFindPropertyAccessibleAssetTest extends SqlIntegrationTestCase
      */
     public function it_finds_accessible_asset()
     {
-        $propertyAccessibleAsset = $this->findPropertyAccessibleAsset->find(AssetCode::fromString('nesquick_cereales'));
+        $propertyAccessibleAsset = $this->findPropertyAccessibleAsset->find(AssetFamilyIdentifier::fromString('FrontView'), AssetCode::fromString('nesquick_cereales'));
 
         $this->assertInstanceOf(PropertyAccessibleAsset::class, $propertyAccessibleAsset);
         $this->assertEquals('michel@gmail.com', $propertyAccessibleAsset->getValue('email'));
@@ -53,7 +54,7 @@ class SqlFindPropertyAccessibleAssetTest extends SqlIntegrationTestCase
      */
     public function it_could_not_find_accessible_asset()
     {
-        $propertyAccessibleAsset = $this->findPropertyAccessibleAsset->find(AssetCode::fromString('test'));
+        $propertyAccessibleAsset = $this->findPropertyAccessibleAsset->find(AssetFamilyIdentifier::fromString('FrontView'), AssetCode::fromString('test'));
 
         $this->assertNull($propertyAccessibleAsset);
     }

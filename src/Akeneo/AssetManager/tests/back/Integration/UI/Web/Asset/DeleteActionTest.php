@@ -14,13 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
 use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
@@ -35,6 +39,9 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 {
     private const DELETE_ASSET_ROUTE = 'akeneo_asset_manager_asset_delete_rest';
 
+    /** @var FixturesLoader */
+    private $fixturesLoader;
+
     /* @var Client */
     private $client;
 
@@ -45,10 +52,11 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
+        $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
+        $this->loadFixtures();
     }
 
     /**
@@ -120,15 +128,8 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $assetRepository = $this->getAssetRepository();
-
-        $assetItem = Asset::create(
-            AssetIdentifier::create('designer', 'starck', md5('fingerprint')),
-            AssetFamilyIdentifier::fromString('designer'),
-            AssetCode::fromString('starck'),
-            ValueCollection::fromValues([])
-        );
-        $assetRepository->create($assetItem);
+        $this->fixturesLoader->assetFamily('designer')->load();
+        $this->createAssets();
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_assetmanager_asset_delete', true);
@@ -143,5 +144,17 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_assetmanager_asset_delete', false);
+    }
+
+    private function createAssets(): void
+    {
+        $assetRepository = $this->getAssetRepository();
+        $assetItem = Asset::create(
+            AssetIdentifier::create('designer', 'starck', md5('fingerprint')),
+            AssetFamilyIdentifier::fromString('designer'),
+            AssetCode::fromString('starck'),
+            ValueCollection::fromValues([])
+        );
+        $assetRepository->create($assetItem);
     }
 }

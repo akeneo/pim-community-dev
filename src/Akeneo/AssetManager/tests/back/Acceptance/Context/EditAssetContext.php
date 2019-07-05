@@ -41,7 +41,9 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -65,6 +67,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
@@ -217,7 +220,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithATextAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -308,7 +311,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithAImageAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
@@ -495,6 +498,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithATextAttributeWithMaxLength(int $maxLength)
     {
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -505,7 +509,7 @@ final class EditAssetContext implements Context
                 AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(2),
+                AttributeOrder::fromInteger(3),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -522,6 +526,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithATextAttributeWithAnEmailValidationRule()
     {
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -550,6 +555,7 @@ final class EditAssetContext implements Context
     public function anAssetFamilyWithATextAttributeWithARegularExpressionValidationRuleLike(
         string $regularExpression
     ): void {
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -602,6 +608,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithATextAttributeWithAnMediaLinkValidationRule()
     {
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -675,7 +682,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithALocalizableAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -764,7 +771,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithANotLocalizableAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -930,7 +937,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithAScopableAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -998,7 +1005,7 @@ final class EditAssetContext implements Context
      */
     public function aAssetFamilyWithANotScopableAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -1067,7 +1074,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithAScopableAndLocalizableAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
@@ -1574,6 +1581,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithAnImageAttributeHavingAMaxFileSizeOf10k()
     {
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
@@ -1677,7 +1685,7 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
@@ -1748,7 +1756,7 @@ final class EditAssetContext implements Context
     public function aAssetFamilyAndAAssetWithLabel(string $label): void
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $labelValue = Value::create(
             AttributeIdentifier::create(
                 self::ASSET_FAMILY_IDENTIFIER,
@@ -1774,7 +1782,7 @@ final class EditAssetContext implements Context
      */
     public function aAssetFamilyAndAAssetWithAnImage(): void
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
 
         $imageInfo = new FileInfo();
         $imageInfo
@@ -1923,10 +1931,10 @@ final class EditAssetContext implements Context
         Assert::same($expectedCount, $assetsCount);
     }
 
-    private function createAssetFamily(): void
+    private function createAssetFamily($assetFamilyIdentifier): void
     {
         $createCommand = new CreateAssetFamilyCommand(
-            self::ASSET_FAMILY_IDENTIFIER,
+            $assetFamilyIdentifier,
             [],
             []
         );
@@ -1972,7 +1980,8 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithAAssetAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $this->createAssetFamily(self::ASSET_TYPE);
         $this->attributeRepository->create(
             AssetAttribute::create(
                 AttributeIdentifier::create(
@@ -2261,7 +2270,8 @@ final class EditAssetContext implements Context
      */
     public function anAssetFamilyWithAAssetCollectionAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $this->createAssetFamily(self::ASSET_TYPE);
         $this->attributeRepository->create(
             AssetCollectionAttribute::create(
                 AttributeIdentifier::create(
@@ -2286,7 +2296,7 @@ final class EditAssetContext implements Context
      */
     public function aAssetFamilyWithAnOptionAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
 
         $attribute = OptionAttribute::create(
             AttributeIdentifier::create(
@@ -2394,7 +2404,7 @@ final class EditAssetContext implements Context
      */
     public function aAssetFamilyWithAnOptionCollectionAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
 
         $attribute = OptionCollectionAttribute::create(
             AttributeIdentifier::create(
@@ -2565,7 +2575,7 @@ final class EditAssetContext implements Context
      */
     public function aAssetFamilyWithANumberAttribute()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             NumberAttribute::create(
                 AttributeIdentifier::create(
@@ -2659,7 +2669,7 @@ final class EditAssetContext implements Context
      */
     public function aAssetFamilyWithANumberAttributeWithNoDecimalValue()
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             NumberAttribute::create(
                 AttributeIdentifier::create(
@@ -2698,7 +2708,7 @@ final class EditAssetContext implements Context
      */
     public function aAssetFamilyWithANumberAttributeWithMinAndMax(string $minValue, string $maxValue)
     {
-        $this->createAssetFamily();
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
             NumberAttribute::create(
                 AttributeIdentifier::create(

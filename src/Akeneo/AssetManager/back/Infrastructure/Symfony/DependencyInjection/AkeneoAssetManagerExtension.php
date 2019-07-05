@@ -45,7 +45,7 @@ class AkeneoAssetManagerExtension extends Extension
         $loader->load('persistence.yml');
         $loader->load('product_value.yml');
         $loader->load('preview_generators.yml');
-        $loader->load('rule.yml');
+        $loader->load('rule_templates.yml');
         $loader->load('serializer.yml');
         $loader->load('services.yml');
         $loader->load('updaters.yml');

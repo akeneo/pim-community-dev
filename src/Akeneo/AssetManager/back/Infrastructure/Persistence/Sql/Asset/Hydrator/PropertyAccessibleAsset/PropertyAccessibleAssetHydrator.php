@@ -28,10 +28,7 @@ class PropertyAccessibleAssetHydrator
         $valueCollection = ValuesDecoder::decode($result['value_collection']);
         $valuesIndexedForTemplate = $this->indexValues($valueCollection, $attributesIndexedByIdentifier);
 
-        return new PropertyAccessibleAsset(
-            $result['code'],
-            $valuesIndexedForTemplate
-        );
+        return new PropertyAccessibleAsset($result['code'], $valuesIndexedForTemplate);
     }
 
     private function indexValues(array $values, array $attributesIndexedByIdentifier): array

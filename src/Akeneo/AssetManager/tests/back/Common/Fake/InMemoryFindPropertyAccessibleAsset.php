@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindPropertyAccessibleAssetInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\PropertyAccessibleAsset\PropertyAccessibleAssetHydrator;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
@@ -24,11 +28,35 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
  */
 class InMemoryFindPropertyAccessibleAsset implements FindPropertyAccessibleAssetInterface
 {
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
+
+    /** @var PropertyAccessibleAssetHydrator */
+    private $propertyAccessibleAssetHydrator;
+
+    /** @var FindAttributesIndexedByIdentifierInterface */
+    private $findAttributesIndexedByIdentifier;
+
+    public function __construct(
+        AssetRepositoryInterface $assetRepository,
+        PropertyAccessibleAssetHydrator $propertyAccessibleAssetHydrator,
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+    ) {
+        $this->assetRepository = $assetRepository;
+        $this->propertyAccessibleAssetHydrator = $propertyAccessibleAssetHydrator;
+        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function find(AssetCode $assetCode): ?PropertyAccessibleAsset
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?PropertyAccessibleAsset
     {
-        throw new NotImplementedException('find');
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
+        $asset = $this->assetRepository->getByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
+        $result = $asset->normalize();
+        $result['value_collection'] = json_encode($result['values']);
+
+        return $this->propertyAccessibleAssetHydrator->hydrate($result, $attributesIndexedByIdentifier);
     }
 }

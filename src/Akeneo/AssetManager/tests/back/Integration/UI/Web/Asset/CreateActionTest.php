@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
 use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
@@ -23,6 +24,9 @@ use Symfony\Component\HttpFoundation\Response;
 class CreateActionTest extends ControllerIntegrationTestCase
 {
     private const CREATE_ASSET_ROUTE = 'akeneo_asset_manager_asset_create_rest';
+
+    /** @var FixturesLoader */
+    private $fixturesLoader;
 
     /** @var Client */
     private $client;
@@ -34,16 +38,17 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
+        $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
+        $this->loadFixtures();
     }
 
     /**
      * @test
      */
-    public function it_creates_a_asset(): void
+    public function it_creates_an_asset(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -230,6 +235,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
     private function loadFixtures(): void
     {
+        $this->fixturesLoader->assetFamily('brand')->load();
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_assetmanager_asset_create', true);
 

@@ -47,7 +47,7 @@ class SqlFindPropertyAccessibleAsset implements FindPropertyAccessibleAssetInter
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
     }
 
-    public function find(AssetCode $assetCode): ?PropertyAccessibleAsset
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?PropertyAccessibleAsset
     {
         $result = $this->fetchResult($assetCode);
 
@@ -87,7 +87,7 @@ SQL;
         return AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
     }
 
-    private function hydrateAsset($result): PropertyAccessibleAsset
+    private function hydrateAsset(array $result): PropertyAccessibleAsset
     {
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifier($result);
         $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
