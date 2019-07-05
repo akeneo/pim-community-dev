@@ -38,7 +38,7 @@ pim_enrich:
         invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
         no_valid_attribute: No es pot aplicar cap dels atributs seleccions a aquest producte.
     classify-add:
-      label: Afegir a categories
+      label: Afegir a les categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
       launched_flash: L'acció en massa "afegir categories" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -76,3 +76,5 @@ category:
   overview: Categories
 tree:
   edit: Editar arbre
+  remove:
+    error_linked: Aquest arbre de categoria no es pot eliminar. Està vinculat a un canal
