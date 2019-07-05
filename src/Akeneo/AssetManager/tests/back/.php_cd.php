@@ -24,6 +24,7 @@ $rules = [
     $builder->only([
         'Akeneo\AssetManager\Application',
         'Akeneo\AssetManager\Domain',
+        'Akeneo\AssetManager\Common',
         'Akeneo\Tool\Component',
         'Akeneo\Tool\Bundle\RuleEngineBundle\Model',
         'Akeneo\Tool\Bundle\ElasticsearchBundle',

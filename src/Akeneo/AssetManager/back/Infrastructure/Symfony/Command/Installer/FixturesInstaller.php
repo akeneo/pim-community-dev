@@ -352,6 +352,7 @@ SQL;
                 'shooted_by' => [
                     ['channel' => null, 'locale' => null, 'data' => 'jean_jacques_photo']
                 ],
+                // These attributes are commented for now, to be uncommented once the front supports them
 //                'original' => [
 //                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
 //                ],
@@ -380,6 +381,7 @@ SQL;
                 'shooted_by' => [
                     ['channel' => null, 'locale' => null, 'data' => 'michel_pellicule']
                 ],
+                // These attributes are commented for now, to be uncommented once the front supports them
 //                'original' => [
 //                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
 //                ],
@@ -408,6 +410,7 @@ SQL;
                 'shooted_by' => [
                     ['channel' => null, 'locale' => null, 'data' => 'robert_photeau']
                 ],
+                // These attributes are commented for now, to be uncommented once the front supports them
 //                'original' => [
 //                    ['channel' => null, 'locale' => null, 'data' => 'iphone7']
 //                ],
@@ -540,6 +543,7 @@ SQL;
                 'date_published' => [
                     ['channel' => null, 'locale' => null, 'data' => '02/05/2018']
                 ],
+                // These attributes are commented for now, to be uncommented once the front supports them
 //                'original' => [
 //                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
 //                ],
@@ -564,6 +568,7 @@ SQL;
                 'date_published' => [
                     ['channel' => null, 'locale' => null, 'data' => '22/02/1990']
                 ],
+                // These attributes are commented for now, to be uncommented once the front supports them
 //                'original' => [
 //                    ['channel' => null, 'locale' => null, 'data' => 'av36']
 //                ],
@@ -693,6 +698,7 @@ SQL;
                 'video_transcription' => [
                     ['channel' => null, 'locale' => null, 'data' => 'Philips, a new generation.']
                 ],
+                // These attributes are commented for now, to be uncommented once the front supports them
 //                'original' => [
 //                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
 //                ],

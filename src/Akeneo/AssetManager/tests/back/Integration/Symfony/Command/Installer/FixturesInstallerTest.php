@@ -28,7 +28,7 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
 
     private const ASSET_INDEX = 'pimee_asset_family_asset';
 
-    private const TOTAL_ASSETS = 10026;
+    private const TOTAL_ASSETS = 6;
 
     public function setUp(): void
     {
@@ -98,8 +98,8 @@ SQL;
 
     private function assertFixturesPersisted(): void
     {
-        Assert::assertEquals(7, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
-        Assert::assertEquals(37, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
+        Assert::assertEquals(3, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
+        Assert::assertEquals(23, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
         Assert::assertEquals(self::TOTAL_ASSETS, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset')->rowCount());
         Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family_permissions')->rowCount());
     }
