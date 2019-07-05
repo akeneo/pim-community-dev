@@ -59,6 +59,7 @@ pim_user:
       log_in: Log på
       forgot_password: Glemt adgangskode
       request: Anmodning
+      password_reset: Nulstil adgangskode
       reset: Nulstil
       password_reset_email_sent: En e-mail er blevet sendt til % e-mail %. Den indeholder et link du skal klikke på for at nulstille din adgangskode.
       homepage: Gå til hjemmeside

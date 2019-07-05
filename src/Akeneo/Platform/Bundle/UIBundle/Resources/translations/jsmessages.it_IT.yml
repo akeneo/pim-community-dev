@@ -64,7 +64,7 @@ datetimepicker:
     February: Febbraio
     March: Marzo
     April: Aprile
-    May: Maggio
+    May: Mag
     June: Giugno
     July: Luglio
     August: Agosto
@@ -77,12 +77,12 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Apr
-    May: Maggio
+    May: Mag
     Jun: Giu
     Jul: Lug
     Aug: Ago
     Sep: Set
-    Oct: Oct
+    Oct: Ott
     Nov: Nov
     Dec: Dic
 oro_config:
@@ -116,7 +116,7 @@ pim_common:
   add: Aggiungi
   add_attributes: Aggiungi attributi
   after: Dopo
-  all: Tutti
+  all: Tutto
   and: e
   apply: Applica
   before: Prima
@@ -126,9 +126,9 @@ pim_common:
   confirm: Conferma
   confirm_deletion: Conferma cancellazione
   confirm_revocation: Conferma revoca
-  create: Crea
+  create: Creare
   created: Creato
-  delete: Eliminare
+  delete: Elimina
   done: Completato
   edit: Modifica
   entity_updated: Ci sono modifiche non salvate.
@@ -139,19 +139,19 @@ pim_common:
   label_translations: Traduzioni etichetta
   less_than: Meno di
   loading: Caricamento in corso...
-  media_upload: Drag and drop per caricare un file o fai click qui
+  media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
   more_than: Più di
   next: Successivo
   "no": "No"
-  none: Nessun
+  none: Nessuno
   not_available: N/A
   now: Ora
-  ok: Ok
+  ok: OK
   permissions: Autorizzazioni
   previous: Precedente
   properties: Proprietà
   remove: Rimuovere
-  required_label: (obbligatorio)
+  required_label: (richiesto)
   save: Salva
   search: Ricerca
   select2:
@@ -191,13 +191,13 @@ pim_enrich.entity.fallback:
     generic_error: Si è verificato un errore
     update:
       fail: Aggiornamento non riuscito
-      success: Aggiornamento completato
+      success: Aggiornato correttamente
     delete:
       fail: Non è possibile eliminare questo articolo
       success: Articolo rimosso con successo
   module:
     delete:
-      title: Elimina questo {{ itemName }}
+      title: Elimina la voce {{ itemName }}
       alternative_title: Conferma rimozione
       item: Sei sicuro di voler eliminare questo articolo?
       item_placeholder: Sei sicuro di voler eliminare questo {{ itemName }}? Non è possibile annullare questa azione.
@@ -239,10 +239,10 @@ pim_title:
   pim_enrich_categorytree_create: Strutture di categoria | Crea
   pim_enrich_categorytree_edit: Albero di categoria {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
-  pim_enrich_attribute_index: Attributi
+  pim_enrich_attribute_index: Atributi
   pim_enrich_attribute_create: Attributi | Crea
   pim_enrich_attribute_edit: Attributo {{ attribute.label }} | Modifica
-  pim_enrich_product_index: Articoli
+  pim_enrich_product_index: Prodotti
   pim_enrich_product_edit: Prodotto {{ product.label }} | Modifica
   pim_enrich_product_model_edit: Modello di prodotto {{ product.label }} | Modifica
   pim_enrich_family_index: Famiglie
@@ -286,7 +286,7 @@ pim_menu:
     family: Famiglie
     group: Gruppi
     group_type: Tipi di gruppo
-    product_model: Modelli di prodotto
+    product_model: Modelli di Prodotto
     export_history: Cronologia esportazioni
     export_profile: Profili di esportazione
     import_history: Cronologia importazioni
@@ -312,7 +312,7 @@ pim_menu:
     user_account: Il mio profilo
 pim_notification:
   types:
-    import: Importa
-    export: Esporta
+    import: '&Import'
+    export: Esportazioni
     quick_export: Esportazione rapida
     mass_edit: Modifica di massa
