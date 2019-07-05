@@ -68,7 +68,7 @@ define([
                             }
                         }
 
-                        this.getErrorDialog(message).open();
+                        this.showErrorFlashMessage(message)
                     }.bind(this),
                     success: function() {
                         var messageText = __('flash.' + this.getEntityCode() + '.removed');
@@ -103,7 +103,7 @@ define([
              *
              * @return {oro.Modal}
              */
-            getErrorDialog: function(response) {
+            showErrorFlashMessage: function(response) {
                 let message = '';
 
                 if (typeof response === 'string') {
@@ -116,12 +116,7 @@ define([
                     }
                 }
 
-                this.errorModal = new Modal({
-                    title: __('Delete Error'),
-                    content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
-                    cancelText: false
-                });
-                return this.errorModal;
+                messenger.notify('error', '' === message ? __('error.removing.' + this.getEntityHint()) : message);
             }
         });
     }
