@@ -35,7 +35,9 @@ class SuggestExactMatchAttributesFromOtherFamilies
     {
         $matchedPimAttributeCodes = $this->findPimAttributeCodeMatchesFromOtherFamily($familyCode, $attributeMappingCollection);
 
-        return $this->buildAttributeMappingCollectionWithMatchedAttributeCodes($matchedPimAttributeCodes, $attributeMappingCollection);
+        $this->applyAttributeCodes($matchedPimAttributeCodes, $attributeMappingCollection);
+
+        return $attributeMappingCollection;
     }
 
     private function findPimAttributeCodeMatchesFromOtherFamily(FamilyCode $familyCode, AttributeMappingCollection $attributeMappingCollection): array
@@ -63,32 +65,18 @@ class SuggestExactMatchAttributesFromOtherFamilies
         });
     }
 
-    private function buildAttributeMappingCollectionWithMatchedAttributeCodes(array $matchedPimAttributeCodes, AttributeMappingCollection $attributeMappingCollection): AttributeMappingCollection
+    private function applyAttributeCodes(array $matchedPimAttributeCodes, AttributeMappingCollection $attributeMappingCollection): void
     {
-        $newMapping = new AttributeMappingCollection();
-
         foreach ($attributeMappingCollection as $attributeMapping) {
-            $exactMatchAttributeFromOtherFamily = null;
-
             if (
                 $attributeMapping->getStatus() === AttributeMappingStatus::ATTRIBUTE_PENDING &&
                 array_key_exists($attributeMapping->getTargetAttributeLabel(), $matchedPimAttributeCodes)
             ) {
-                $exactMatchAttributeFromOtherFamily = $matchedPimAttributeCodes[$attributeMapping->getTargetAttributeLabel()];
+                $attributeMappingCollection->applyExactMatchAttributeSuggestionFromOtherFamily(
+                    $attributeMapping->getTargetAttributeCode(),
+                    $matchedPimAttributeCodes[$attributeMapping->getTargetAttributeLabel()]
+                );
             }
-
-            $newAttributeMapping = new AttributeMapping(
-                $attributeMapping->getTargetAttributeCode(),
-                $attributeMapping->getTargetAttributeLabel(),
-                $attributeMapping->getTargetAttributeType(),
-                $attributeMapping->getPimAttributeCode(),
-                $attributeMapping->getStatus(),
-                $attributeMapping->getSummary(),
-                $exactMatchAttributeFromOtherFamily
-            );
-            $newMapping->addAttribute($newAttributeMapping);
         }
-
-        return $newMapping;
     }
 }

@@ -87,6 +87,25 @@ class AttributeMappingCollection implements \IteratorAggregate
         $this->sortByStatus();
     }
 
+    public function applyExactMatchAttributeSuggestionFromOtherFamily(string $targetAttributeCode, ?string $pimAttributeCode)
+    {
+        $attributeMapping = $this->attributes[$targetAttributeCode];
+
+        $newAttributeMapping = new AttributeMapping(
+            $attributeMapping->getTargetAttributeCode(),
+            $attributeMapping->getTargetAttributeLabel(),
+            $attributeMapping->getTargetAttributeType(),
+            $attributeMapping->getPimAttributeCode(),
+            $attributeMapping->getStatus(),
+            $attributeMapping->getSummary(),
+            $pimAttributeCode
+        );
+
+        $this->attributes[$targetAttributeCode] = $newAttributeMapping;
+
+        $this->sortByStatus();
+    }
+
     public function normalize()
     {
         $mapping = [];

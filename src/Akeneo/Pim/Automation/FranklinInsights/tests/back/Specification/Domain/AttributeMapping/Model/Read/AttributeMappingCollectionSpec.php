@@ -156,4 +156,30 @@ class AttributeMappingCollectionSpec extends ObjectBehavior
         ;
         $this->normalize()->shouldReturn($expectedMapping);
     }
+
+    public function it_applies_exact_match_attribute_suggestion_from_other_family(): void
+    {
+        $attrDescription = new AttributeMapping('description', 'Description', 'text', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE);
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+
+        $this
+            ->addAttribute($attrDescription)
+            ->addAttribute($attrWeight)
+            ->addAttribute($attrSize);
+
+        $this->applyExactMatchAttributeSuggestionFromOtherFamily('weight', 'pim_weight');
+
+        $franklinAttrCodes = [];
+        foreach ($this->getIterator()->getWrappedObject() as $attrMapping) {
+            $franklinAttrCodes[] = $attrMapping;
+        }
+
+        $expectedAttrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING, null, 'pim_weight');
+
+        Assert::eq(
+            $franklinAttrCodes,
+            [$expectedAttrWeight, $attrSize, $attrDescription]
+        );
+    }
 }
