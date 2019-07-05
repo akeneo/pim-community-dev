@@ -153,6 +153,7 @@ pim_common:
   properties: Propriétés
   remove: Supprimer
   required_label: (obligatoire)
+  save: Enregistrer
   search: Rechercher
   select2:
     search: Rechercher...
