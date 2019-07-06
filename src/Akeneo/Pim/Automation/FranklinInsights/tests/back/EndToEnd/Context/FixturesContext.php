@@ -267,7 +267,7 @@ class FixturesContext extends PimContext
 
     private function loadAttributeOptions(array $attributeOptionCodes): void
     {
-        $normalizedOptions = $this->loadJsonFileAsArray('options/options.json');
+        $normalizedOptions = $this->loadJsonFileAsArray('options/color-options.json');
 
         $options = [];
         foreach ($attributeOptionCodes as $optionCode) {

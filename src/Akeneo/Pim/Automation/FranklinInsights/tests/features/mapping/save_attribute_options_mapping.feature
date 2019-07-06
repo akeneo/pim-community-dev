@@ -100,12 +100,11 @@ Feature: Map some attribute options with Franklin attribute options
     And the following attribute:
       | code            | type                    |
       | wrong_attribute | pim_catalog_multiselect |
-    And the predefined options color1 for the attribute "wrong_attribute"
+    And the predefined options wrong_color_option for the attribute "wrong_attribute"
     And Franklin is configured with a valid token
-    And Franklin server is down
     When the Franklin "color" options are mapped to the PIM "color" options for the family "router" as follows:
       | franklin_attribute_option_id | franklin_attribute_option_label | catalog_attribute_option_code | status   |
-      | color_1                      | red                             | color1                        | active   |
+      | color_1                      | red                             | wrong_color_option            | active   |
     Then the attribute options mapping should not be saved
     And a wrong option attribute message should be sent
 
