@@ -36,6 +36,14 @@ Feature: Filter products with multiples number fields filters
     And I should be able to use the following filters:
       | filter    | operator     | value | result                 |
       | component | is empty     |       | POST-1, POST-2         |
+    And I hide the filter "supplier"
+    And I hide the filter "component"
+
+  Scenario: Successfully filter products with the sames attributes
+    Given I filter by "supplier" with operator "=" and value "03"
+    And I should be able to use the following filters:
+      | filter    | operator     | value | result                 |
+      | component | is empty     |       | POST-1, POST-2         |
       | component | is not empty |       | MUG-2, MUG-3 and MUG-4 |
       | component | >            | 16    |                        |
       | component | <            | 16    |                        |

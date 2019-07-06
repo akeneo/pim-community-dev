@@ -35,6 +35,13 @@ Feature: Filter products with multiples metrics filters
     Then I should be able to use the following filters:
       | filter | operator     | value    | result                 |
       | weight | =            | 200 Gram | MUG-2, MUG-3 and MUG-4 |
+
+  Scenario: Successfully filter products with the sames attributes
+    Given I show the filter "packaging"
+    And I filter by "packaging" with operator ">" and value "30 Gram"
+    Then I should be able to use the following filters:
+      | filter | operator     | value    | result                 |
+      | weight | =            | 200 Gram | MUG-2, MUG-3 and MUG-4 |
       | weight | >=           | 200 Gram | MUG-2, MUG-3 and MUG-4 |
       | weight | >            | 199 Gram | MUG-2, MUG-3 and MUG-4 |
       | weight | <            | 200 Gram |                        |
