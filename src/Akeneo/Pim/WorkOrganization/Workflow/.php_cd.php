@@ -149,7 +149,6 @@ $rules = [
 
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
-        'Countable',
         'Doctrine\Common',
         'Symfony\Component',
         'Akeneo\Tool\Component',

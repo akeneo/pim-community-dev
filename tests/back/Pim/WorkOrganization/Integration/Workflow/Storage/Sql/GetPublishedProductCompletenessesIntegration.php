@@ -67,7 +67,7 @@ class GetPublishedProductCompletenessesIntegration extends TestCase
         );
     }
 
-    public function test_that_it_returns_an_empty_array_for_a_published_product_without_family()
+    public function test_that_it_returns_an_empty_collection_for_a_published_product_without_family()
     {
         $this->createPublishedProduct(
             'product_without_family',
@@ -95,7 +95,7 @@ class GetPublishedProductCompletenessesIntegration extends TestCase
             ]
         );
 
-        Assert::assertSame([], $this->getCompletenesses($this->getPublishedProductId('product_without_family'))->getIterator()->getArrayCopy());
+        Assert::assertCount(0, $this->getCompletenesses($this->getPublishedProductId('product_without_family')));
     }
 
     protected function getConfiguration()

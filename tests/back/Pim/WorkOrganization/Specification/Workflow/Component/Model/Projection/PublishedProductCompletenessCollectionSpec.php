@@ -23,6 +23,11 @@ class PublishedProductCompletenessCollectionSpec extends ObjectBehavior
         $this->shouldImplement(\IteratorAggregate::class);
     }
 
+    function it_is_countable()
+    {
+        $this->shouldImplement(\Countable::class);
+    }
+
     function it_can_only_store_published_product_completenesses()
     {
         $this->beConstructedWith(42, [new \stdClass()]);

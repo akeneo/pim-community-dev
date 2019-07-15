@@ -50,7 +50,7 @@ SQL;
         $rows = $this->connection->executeQuery($sql, ['publishedProductId' => $publishedProductId])->fetchAll();
 
         return new PublishedProductCompletenessCollection($publishedProductId, array_map(
-            function (array $row) use ($publishedProductId): PublishedProductCompleteness {
+            function (array $row): PublishedProductCompleteness {
                 return new PublishedProductCompleteness(
                     $row['channel_code'],
                     $row['locale_code'],
