@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
+namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\EnsureUserCanBeDeletedSubscriber;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserLinkedToProjectsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\EnsureUserCanBeDeletedSubscriber;
-use PimEnterprise\Component\Workflow\Query\IsUserLinkedToProjectsQueryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

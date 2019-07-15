@@ -133,7 +133,7 @@ services:
             - { name: kernel.event_subscriber, priority: 0 }
 
     pimee_teamwork_assistant.event_subscriber.ensure_user_can_be_deleted:
-        class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\EnsureUserCanBeDeletedSubscriber'
+        class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\EnsureUserCanBeDeletedSubscriber'
         arguments:
             - '@pimee_teamwork_assistant.query.sql.is_user_linked_to_project'
         tags:
@@ -213,6 +213,6 @@ services:
             - '@database_connection'
 
     pimee_teamwork_assistant.query.sql.is_user_linked_to_project:
-        class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\Query\Sql\IsUserLinkedToProjectsQuery'
+        class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query\IsUserLinkedToProjectsQuery'
         arguments:
             - '@database_connection'

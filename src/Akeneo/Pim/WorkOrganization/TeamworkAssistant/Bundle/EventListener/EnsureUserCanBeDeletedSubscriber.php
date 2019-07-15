@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
+namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserLinkedToProjectsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
-use PimEnterprise\Component\Workflow\Query\IsUserLinkedToProjectsQueryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>

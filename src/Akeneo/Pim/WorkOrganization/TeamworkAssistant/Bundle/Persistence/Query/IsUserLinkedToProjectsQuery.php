@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\Query\Sql;
+namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserLinkedToProjectsQueryInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
-use Pim\Bundle\UserBundle\Entity\User;
-use PimEnterprise\Component\Workflow\Query\IsUserLinkedToProjectsQueryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>

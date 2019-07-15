@@ -51,6 +51,8 @@ $rules = [
 
         // TIP-973: TWA should not be linked to User
         'Akeneo\UserManagement\Component\Model\UserInterface',
+        'Akeneo\UserManagement\Component\Model\User',
+        'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
 
         // TIP-937: PIM/Enrichment should not be linked to Family
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
