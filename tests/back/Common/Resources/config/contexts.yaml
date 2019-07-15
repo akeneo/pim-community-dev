@@ -1,0 +1,123 @@
+services:
+    Pim\Behat\Context\PimContext:
+        abstract:  true
+        arguments:
+            - 'Context\FeatureContext'
+        calls:
+            - [setKernel, ['@kernel']]
+
+    Context\FeatureContext:
+        arguments:
+            -
+                base_url: 'http://127.0.0.1/'
+                timeout: 50000
+                window_width: 1280
+                window_height: 1024
+        calls:
+            - [setKernel, ['@kernel']]
+    Context\FixturesContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Context\CatalogConfigurationContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Context\WebUser:
+        parent: 'Pim\Behat\Context\PimContext'
+    Context\DataGridContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Context\CommandContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Context\NavigationContext:
+        parent: 'Pim\Behat\Context\PimContext'
+        arguments:
+            - 'http://127.0.0.1/'
+    Context\TransformationContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Context\AssertionContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Context\ViewSelectorContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Context\SecurityContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\AttributeValidationContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Collect\ImportProfilesContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Enrich\AttributeTabContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Enrich\CompletenessContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Enrich\GridPaginationContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Enrich\ProductModelContext:
+        parent: 'Pim\Behat\Context\PimContext'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_versioning.repository.version'
+    Pim\Behat\Context\Domain\Enrich\ProductContext:
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.validator.product'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_versioning.repository.version'
+    Pim\Behat\Context\Domain\Enrich\VariantNavigationContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Spread\ExportBuilderContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Spread\ExportProfilesContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Spread\XlsxFileContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\System\PermissionsContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\SecondaryActionsContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\TreeContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\HookContext:
+        parent: 'Pim\Behat\Context\PimContext'
+        arguments:
+            - 1280
+            - 1024
+    Pim\Behat\Context\JobContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\ImportExportFileContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Storage\FileInfoStorage:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Storage\ProductStorage:
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+            - '@pim_catalog.repository.product'
+            - '@doctrine.orm.default_entity_manager'
+    Pim\Behat\Context\Storage\ProductModelStorage:
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product_model'
+            - '@pim_catalog.saver.product_model'
+    Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
+        parent: 'Pim\Behat\Context\PimContext'
+    Pim\Behat\Context\Storage\VariantProductStorage:
+        arguments:
+            - '@pim_catalog.repository.product'
+    Pim\Behat\Context\Storage\AttributeOptionStorage:
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+            - '@doctrine.orm.default_entity_manager'
+    Pim\Behat\Context\MassEditJobContext:
+        parent: 'Pim\Behat\Context\PimContext'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'

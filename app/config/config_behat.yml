@@ -1,6 +1,7 @@
 imports:
     - { resource: config.yml }
     - { resource: parameters_test.yml }
+    - { resource: '../../tests/back/Common/Resources/config/contexts.yaml' }
 
 framework:
     test: ~
