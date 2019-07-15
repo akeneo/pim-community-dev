@@ -17,28 +17,32 @@ const Messenger = require('oro/messenger');
 const Routing = require('routing');
 const UserContext = require('pim/user-context');
 
-interface CreateAttributeRequest {
+export interface CreateAttributeRequest {
   familyCode: string;
   franklinAttributeLabel: string;
   franklinAttributeType: string;
 }
 
-interface CreateAttributeResponse {
+export interface CreateAttributeResponse {
   code: string;
 }
 
-export default class AttributeSaver {
+export interface BulkCreateAttributeRequest {
+  familyCode: string;
+  attributes: Array<{
+    franklinAttributeLabel: string;
+    franklinAttributeType: string;
+  }>;
+}
+
+export class AttributeSaver {
   public static async create(request: CreateAttributeRequest): Promise<CreateAttributeResponse> {
     try {
-      const response = await new Promise<CreateAttributeResponse>((resolve, reject) => {
-        ajax({
-          url: Routing.generate('akeneo_franklin_insights_structure_create_attribute'),
-          method: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify(request)
-        })
-          .then(resolve)
-          .catch(reject);
+      const response = await ajax({
+        url: Routing.generate('akeneo_franklin_insights_structure_create_attribute'),
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(request)
       });
 
       this.notifySuccess(request.familyCode);
@@ -51,13 +55,38 @@ export default class AttributeSaver {
     }
   }
 
-  private static async notifySuccess(familyCode: string): Promise<void> {
+  public static async bulkCreate(request: BulkCreateAttributeRequest): Promise<void> {
+    try {
+      await ajax({
+        url: Routing.generate('akeneo_franklin_insights_structure_bulk_create_attribute', {
+          familyCode: request.familyCode
+        }),
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(request.attributes)
+      });
+
+      this.notifySuccess(request.familyCode, request.attributes.length);
+
+      return;
+    } catch (error) {
+      this.notifyError();
+
+      throw error;
+    }
+  }
+
+  private static async notifySuccess(familyCode: string, attributeCreatedCount = 1): Promise<void> {
     const family: Family = await FetcherRegistry.getFetcher('family').fetch(familyCode);
 
     const familyLabel = I18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
     Messenger.notify(
       'success',
-      __('akeneo_franklin_insights.entity.attributes_mapping.flash.create_attribute_success', {family: familyLabel})
+      __(
+        'akeneo_franklin_insights.entity.attributes_mapping.flash.create_attribute_success',
+        {family: familyLabel, count: attributeCreatedCount},
+        attributeCreatedCount
+      )
     );
   }
 
@@ -65,3 +94,5 @@ export default class AttributeSaver {
     Messenger.notify('error', __('akeneo_franklin_insights.entity.attributes_mapping.flash.create_attribute_error'));
   }
 }
+
+export default AttributeSaver;

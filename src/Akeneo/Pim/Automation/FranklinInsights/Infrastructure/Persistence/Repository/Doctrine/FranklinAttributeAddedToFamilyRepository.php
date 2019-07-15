@@ -45,6 +45,15 @@ SQL;
         $this->dbalConnection->executeUpdate($sqlQuery, $bindParams);
     }
 
+    public function saveAll(array $franklinAttributeAddedToFamilyEvents): void
+    {
+        $this->dbalConnection->beginTransaction();
+        foreach ($franklinAttributeAddedToFamilyEvents as $franklinAttributeAddedToFamily) {
+            $this->save($franklinAttributeAddedToFamily);
+        }
+        $this->dbalConnection->commit();
+    }
+
     public function count(): int
     {
         $sql = <<<'SQL'

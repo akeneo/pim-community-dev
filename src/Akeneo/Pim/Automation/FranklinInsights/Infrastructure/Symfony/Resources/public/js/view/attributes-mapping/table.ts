@@ -13,6 +13,7 @@ import * as $ from 'jquery';
 import {ajax} from 'jquery';
 import * as _ from 'underscore';
 
+import {isAbleToCreateAttribute} from '../../common/attribute-mapping-helper';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 
@@ -112,7 +113,14 @@ class AttributeMapping extends BaseView {
     return {
       'click .option-mapping': this.openAttributeOptionsMappingModal,
       'click .deactivate-franklin-attribute': (event: any) =>
-        this.deactivateFranklinAttribute(event.target.dataset.franklinAttributeCode)
+        this.deactivateFranklinAttribute(event.target.dataset.franklinAttributeCode),
+      'click input[data-franklin-attribute-code]': (event: any) => {
+        if (event.target.checked) {
+          this.selectFranklinAttribute(event.target.dataset.franklinAttributeCode);
+        } else {
+          this.deselectFranklinAttribute(event.target.dataset.franklinAttributeCode);
+        }
+      }
     };
   }
 
@@ -124,6 +132,11 @@ class AttributeMapping extends BaseView {
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:render:before', this.saveScroll);
     this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.setScroll);
+
+    this.listenTo(this.getRoot(), 'select_all_franklin_attributes', this.selectAllFranklinAttributes);
+    this.listenTo(this.getRoot(), 'deselect_all_franklin_attributes', this.deselectAllFranklinAttributes);
+
+    this.listenTo(this.getRoot(), 'refresh_family_mapping', this.refreshFamilyMapping);
 
     return BaseView.prototype.configure.apply(this, arguments);
   }
@@ -172,8 +185,12 @@ class AttributeMapping extends BaseView {
           );
 
           if (
-            attributeMapping.canCreateAttribute &&
-            (null === attributeMapping.attribute || '' === attributeMapping.attribute)
+            true ===
+            isAbleToCreateAttribute(
+              attributeMapping.attribute,
+              attributeMapping.status,
+              attributeMapping.canCreateAttribute
+            )
           ) {
             const createAttributeButton = this.appendCreateAttributeButton(
               franklinAttributeCode,
@@ -530,6 +547,46 @@ class AttributeMapping extends BaseView {
       'success',
       __('akeneo_franklin_insights.entity.attributes_mapping.flash.do_not_map_attribute_success')
     );
+  }
+
+  private selectFranklinAttribute(franklinAttributeCode: string) {
+    const row = this.$el
+      .find(`input[data-franklin-attribute-code="${franklinAttributeCode}"]`)
+      .parents('.AknGrid-bodyRow');
+    row.addClass('AknGrid-bodyRow--selected');
+
+    this.getRoot().trigger('franklin_attribute_selected', franklinAttributeCode);
+  }
+
+  private deselectFranklinAttribute(franklinAttributeCode: string) {
+    const row = this.$el
+      .find(`input[data-franklin-attribute-code="${franklinAttributeCode}"]`)
+      .parents('.AknGrid-bodyRow');
+    row.removeClass('AknGrid-bodyRow--selected');
+
+    this.getRoot().trigger('franklin_attribute_unselected', franklinAttributeCode);
+  }
+
+  private selectAllFranklinAttributes() {
+    const checkbox = this.$el.find(`input[data-franklin-attribute-code]`);
+    checkbox.prop('checked', true);
+    checkbox.parents('.AknGrid-bodyRow').addClass('AknGrid-bodyRow--selected');
+  }
+
+  private deselectAllFranklinAttributes() {
+    const checkbox = this.$el.find(`input[data-franklin-attribute-code]`);
+    checkbox.prop('checked', false);
+    checkbox.parents('.AknGrid-bodyRow').removeClass('AknGrid-bodyRow--selected');
+  }
+
+  private async refreshFamilyMapping() {
+    const familyCode = (this.getFormData() as IAttributesMappingForFamily).code;
+    const familyMapping = (await FetcherRegistry.getFetcher('attributes-mapping-by-family').fetch(familyCode, {
+      cached: false
+    })) as IAttributesMappingForFamily;
+
+    this.setData(familyMapping);
+    this.render();
   }
 }
 

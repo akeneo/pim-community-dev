@@ -71,4 +71,17 @@ class FakeCreateAttribute implements CreateAttributeInterface
 
         $this->attributeRepository->save($attribute);
     }
+
+    public function bulkCreate(array $attributesToCreate): void
+    {
+        $this->ensureFranklinAttributeGroupExists->ensureExistence();
+
+        foreach ($attributesToCreate as $attributeToCreate) {
+            $attribute = $this->attributeFactory->create();
+            $attribute->setCode((string) $attributeToCreate['attributeCode']);
+            $attribute->setType((string) $attributeToCreate['attributeType']);
+            $this->attributeUpdater->update($attribute, ['group' => FranklinAttributeGroup::CODE]);
+            $this->attributeRepository->save($attribute);
+        }
+    }
 }

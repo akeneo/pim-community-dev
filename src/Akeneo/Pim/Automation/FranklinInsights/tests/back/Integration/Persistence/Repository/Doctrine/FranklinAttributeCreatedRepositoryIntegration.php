@@ -48,6 +48,40 @@ SQL;
         Assert::assertNotNull($retrievedEvents[0]['created']);
     }
 
+    public function test_it_saves_multiple_attribute_created_events()
+    {
+        $events = [
+            0 => new FranklinAttributeCreated(
+                new AttributeCode('color'),
+                new AttributeType('pim_catalog_text')
+            ),
+            1 => new FranklinAttributeCreated(
+                new AttributeCode('width'),
+                new AttributeType('pim_catalog_number')
+            ),
+            2 => new FranklinAttributeCreated(
+                new AttributeCode('frequency'),
+                new AttributeType('pim_catalog_metric')
+            ),
+        ];
+        $this->getRepository()->saveAll($events);
+
+        $sqlQuery = <<<'SQL'
+SELECT attribute_code, attribute_type, created
+FROM pimee_franklin_insights_attribute_created
+SQL;
+
+        $stmt = $this->getDbConnection()->query($sqlQuery);
+        $retrievedEvents = $stmt->fetchAll();
+        Assert::assertCount(3, $retrievedEvents);
+
+        foreach ($retrievedEvents as $index => $event) {
+            Assert::assertEquals((string) $events[$index]->getAttributeCode(), $retrievedEvents[$index]['attribute_code']);
+            Assert::assertEquals((string) $events[$index]->getAttributeType(), $retrievedEvents[$index]['attribute_type']);
+            Assert::assertNotNull($retrievedEvents[$index]['created']);
+        }
+    }
+
     public function test_it_counts_attribute_created(): void
     {
         $this->insertCreatedAttribute('color');

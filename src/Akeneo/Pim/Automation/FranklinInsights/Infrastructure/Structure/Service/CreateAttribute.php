@@ -63,6 +63,38 @@ class CreateAttribute implements CreateAttributeInterface
     ): void {
         $this->ensureFranklinAttributeGroupExists->ensureExistence();
 
+        $attribute = $this->createAttribute($attributeCode, $attributeLabel, $attributeType);
+
+        $this->saver->save($attribute);
+    }
+
+    /**
+     * $attributesToCreate = [
+     *   [
+     *     'attributeCode' => new AttributeCode('frequency'),
+     *     'attributeLabel' => new AttributeLabel('frequency'),
+     *     'attributeType' => new AttributeType(AttributeTypes::TEXT)
+     *   ]
+     * ]
+     *
+     * @param array $attributesToCreate
+     */
+    public function bulkCreate(array $attributesToCreate): void
+    {
+        $this->ensureFranklinAttributeGroupExists->ensureExistence();
+
+        $attributes = [];
+        foreach ($attributesToCreate as $attributeToCreate) {
+            $attributes[] = $this->createAttribute(
+                $attributeToCreate['attributeCode'], $attributeToCreate['attributeLabel'], $attributeToCreate['attributeType']
+            );
+        }
+
+        $this->saver->saveAll($attributes);
+    }
+
+    private function createAttribute(AttributeCode $attributeCode, AttributeLabel $attributeLabel, AttributeType $attributeType): AttributeInterface
+    {
         $data = [
             'code' => (string) $attributeCode,
             'group' => FranklinAttributeGroup::CODE,
@@ -85,7 +117,7 @@ class CreateAttribute implements CreateAttributeInterface
             throw new \Exception($violations->get(0)->getMessage());
         }
 
-        $this->saver->save($attribute);
+        return $attribute;
     }
 
     private function prepareLabels(AttributeLabel $attributeLabel): array

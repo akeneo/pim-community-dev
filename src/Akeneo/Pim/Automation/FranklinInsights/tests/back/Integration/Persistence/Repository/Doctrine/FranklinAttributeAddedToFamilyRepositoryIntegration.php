@@ -51,6 +51,40 @@ SQL;
         Assert::assertNotNull($retrievedEvents[0]['created']);
     }
 
+    public function test_it_saves_multiple_attribute_added_to_family_events()
+    {
+        $events = [
+            0 => new FranklinAttributeAddedToFamily(
+                new AttributeCode('color'),
+                new FamilyCode('camcorders')
+            ),
+            1 => new FranklinAttributeAddedToFamily(
+                new AttributeCode('width'),
+                new FamilyCode('camcorders')
+            ),
+            2 => new FranklinAttributeAddedToFamily(
+                new AttributeCode('frequency'),
+                new FamilyCode('camcorders')
+            ),
+        ];
+        $this->getRepository()->saveAll($events);
+
+        $sqlQuery = <<<'SQL'
+SELECT attribute_code, family_code, created
+FROM pimee_franklin_insights_attribute_added_to_family
+SQL;
+
+        $stmt = $this->getDbConnection()->query($sqlQuery);
+        $retrievedEvents = $stmt->fetchAll();
+        Assert::assertCount(3, $retrievedEvents);
+
+        foreach ($retrievedEvents as $index => $event) {
+            Assert::assertEquals((string) $events[$index]->getAttributeCode(), $retrievedEvents[$index]['attribute_code']);
+            Assert::assertEquals((string) $events[$index]->getFamilyCode(), $retrievedEvents[$index]['family_code']);
+            Assert::assertNotNull($retrievedEvents[$index]['created']);
+        }
+    }
+
     public function test_it_counts_attributes_added_to_family_events(): void
     {
         $this->insertAttributeAddedToFamily('color', 'camcorders');

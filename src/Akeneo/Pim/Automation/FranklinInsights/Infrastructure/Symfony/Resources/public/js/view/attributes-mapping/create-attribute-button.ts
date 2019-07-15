@@ -12,7 +12,6 @@ import * as _ from 'underscore';
 import AttributeSaver from '../../saver/attribute-saver';
 
 const __ = require('oro/translator');
-const SecurityContext = require('pim/security-context');
 
 class CreateAttributeButton extends View<Model> {
   private template = _.template(`
@@ -36,10 +35,6 @@ class CreateAttributeButton extends View<Model> {
   }
 
   public render() {
-    if (false === this.isGranted()) {
-      return this;
-    }
-
     this.$el.html(this.template({__}));
 
     return this;
@@ -53,13 +48,6 @@ class CreateAttributeButton extends View<Model> {
     });
 
     this.trigger('attribute_created', response.code);
-  }
-
-  private isGranted() {
-    return (
-      SecurityContext.isGranted('pim_enrich_attribute_create') &&
-      SecurityContext.isGranted('pim_enrich_family_edit_attributes')
-    );
   }
 }
 

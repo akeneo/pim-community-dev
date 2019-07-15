@@ -101,6 +101,59 @@ class CreateAttributeSpec extends ObjectBehavior
         )->shouldReturn(null);
     }
 
+    public function it_creates_multiple_attributes(
+        $factory,
+        $updater,
+        $validator,
+        $saver,
+        $ensureFranklinAttributeGroupExists,
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2,
+        ConstraintViolationListInterface $violations
+    ): void {
+        $attribute1Data = [
+            'code' => 'Foo_bar',
+            'group' => FranklinAttributeGroup::CODE,
+            'labels' => [
+                'en_US' => 'Foo bar'
+            ],
+            'localizable' => false,
+            'scopable' => false
+        ];
+        $attribute2Data = [
+            'code' => 'Color',
+            'group' => FranklinAttributeGroup::CODE,
+            'labels' => [
+                'en_US' => 'Color'
+            ],
+            'localizable' => false,
+            'scopable' => false
+        ];
+
+        $ensureFranklinAttributeGroupExists->ensureExistence()->shouldBeCalled();
+
+        $factory->createAttribute('pim_catalog_text')->willReturn($attribute1, $attribute2);
+        $updater->update($attribute1, $attribute1Data)->shouldBeCalled();
+        $updater->update($attribute2, $attribute2Data)->shouldBeCalled();
+        $validator->validate($attribute1)->willReturn($violations->getWrappedObject());
+        $validator->validate($attribute2)->willReturn($violations->getWrappedObject());
+        $violations->count()->willReturn(0);
+        $saver->saveAll([$attribute1, $attribute2])->shouldBeCalled();
+
+        $this->bulkCreate([
+            [
+                'attributeCode' => AttributeCode::fromLabel('Foo bar'),
+                'attributeLabel' => new AttributeLabel('Foo bar'),
+                'attributeType' => new AttributeType('pim_catalog_text'),
+            ],
+            [
+                'attributeCode' => AttributeCode::fromLabel('Color'),
+                'attributeLabel' => new AttributeLabel('Color'),
+                'attributeType' => new AttributeType('pim_catalog_text'),
+            ]
+        ])->shouldReturn(null);
+    }
+
     public function it_creates_an_attribute_number(
         $factory,
         $updater,

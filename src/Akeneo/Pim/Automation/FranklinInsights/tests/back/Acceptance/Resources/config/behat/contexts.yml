@@ -77,6 +77,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
             - '@akeneo.pim.automation.franklin_insights.handler.get_families'
             - '@akeneo.pim.automation.franklin_insights.handler.create_attribute_in_family'
+            - '@akeneo.pim.automation.franklin_insights.handler.bulk_create_attributes_in_family'
             - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
             - '@akeneo.pim.automation.franklin_insights.handler.get_attribute_mapping_with_suggestions'
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes'

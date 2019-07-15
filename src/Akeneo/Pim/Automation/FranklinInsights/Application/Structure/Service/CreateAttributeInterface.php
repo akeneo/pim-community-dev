@@ -27,4 +27,6 @@ interface CreateAttributeInterface
         AttributeLabel $attributeLabel,
         AttributeType $attributeType
     ): void;
+
+    public function bulkCreate(array $attributesToCreate): void;
 }

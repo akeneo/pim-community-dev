@@ -65,12 +65,11 @@ class CreateAttributeInFamilyHandler
 
     public function convertFranklinAttributeTypeToPimAttributeType(FranklinAttributeType $franklinAttributeType): AttributeType
     {
+        $pimAttributeType = $franklinAttributeType->convertToPimAttributeType();
         if (FranklinAttributeType::METRIC_TYPE === (string) $franklinAttributeType) {
             return new AttributeType(AttributeTypes::TEXT);
         }
 
-        return new AttributeType(
-            array_search((string) $franklinAttributeType, AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS)
-        );
+        return $pimAttributeType;
     }
 }
