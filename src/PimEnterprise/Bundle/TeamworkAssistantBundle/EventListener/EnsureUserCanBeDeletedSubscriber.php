@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\Workflow\Query\IsUserLinkedToProjectsQueryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

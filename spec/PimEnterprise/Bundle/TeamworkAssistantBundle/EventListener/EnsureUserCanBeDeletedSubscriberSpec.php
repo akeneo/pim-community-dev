@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\EnsureUserCanBeDeletedSubscriber;
 use PimEnterprise\Component\Workflow\Query\IsUserLinkedToProjectsQueryInterface;
