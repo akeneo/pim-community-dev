@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductCompletenessCollectionNormalizer;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -27,18 +28,14 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_supports_completenesses_for_indexing_formats(
-        Collection $completenesses
+        ProductCompletenessCollection $completenesses
     ) {
-        $completenesses->isEmpty()->willReturn(false);
-        $completeness = new ProductCompleteness('channelCode', 'localeCode', 0, []);
-        $completenesses->first()->willReturn($completeness);
-
         $this->supportsNormalization($completenesses, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->shouldReturn(true);
     }
 
     function it_normalizes_completenesses(
-        Collection $completenesses,
+        ProductCompletenessCollection $completenesses,
         \ArrayIterator $completenessesIterator
     ) {
         $completeness1 = new ProductCompleteness('ecommerce', 'en_US', 0, []);

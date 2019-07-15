@@ -2,9 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -18,13 +17,14 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @var ProductCompletenessCollection $completenesses
      */
     public function normalize($completenesses, $format = null, array $context = [])
     {
         $data = [];
-
+        
         foreach ($completenesses as $completeness) {
-            /** @var ProductCompleteness $completeness */
             $channelCode = $completeness->channelCode();
             $localeCode = $completeness->localeCode();
             $data[$channelCode][$localeCode] = $completeness->ratio();
@@ -44,9 +44,6 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
                 ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX,
                 ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             ]) &&
-            $data instanceof Collection &&
-            !$data->isEmpty() &&
-            $data->first() instanceof ProductCompleteness
-        ;
+            $data instanceof ProductCompletenessCollection;
     }
 }
