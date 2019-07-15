@@ -47,6 +47,36 @@ class UpdateIndexMappingIntegration extends TestCase
         Assert::assertEquals(1, $pqb->create()->execute()->count());
     }
 
+    public function test_it_is_idempotent()
+    {
+        $indexHost = $this->getParameter('index_hosts');
+        /** @var Client $akeneoProductClient */
+        $akeneoProductClient = $this->get('akeneo_elasticsearch.client.product');
+
+        $clientBuilder = new ClientBuilder();
+        $clientBuilder->setHosts(is_string($indexHost) ? [$indexHost] : $indexHost);
+
+        $client = $clientBuilder->build();
+
+        $indices = array_map(function (array $index) : string {
+            return $index['index'];
+        }, $client->cat()->indices());
+
+        /** @var ProductQueryBuilderFactory $pqb */
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory');
+        $this->createProduct('product1');
+        Assert::assertEquals(1, $pqb->create()->execute()->count());
+        Assert::assertContains($this->getParameter('product_index_name'), $indices);
+
+
+        $updateIndexMapping = new UpdateIndexMapping();
+        // from index to alias
+        $updateIndexMapping->updateIndexMapping($client, $akeneoProductClient->getIndexName(), $akeneoProductClient->getConfigurationLoader());
+        sleep(1);
+        // from alias to alias
+        $updateIndexMapping->updateIndexMapping($client, $akeneoProductClient->getIndexName(), $akeneoProductClient->getConfigurationLoader());
+    }
+
     /**
      * @param string $identifier
      * @param array  $data
