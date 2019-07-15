@@ -8,12 +8,24 @@
 
 - The `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface` interface has been renamed into `Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollectionInterface`
 - Rename `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorFilter` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorIdFilter`
+- Rename `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels`
 - DAPI-137: Fix the PQB to not aggregate results when there is a filter on id
-- Remove class `Akeneo\Pim\Permission\Bundle\EventSubscriber\AddDefaultPermissionsSubscriber` and its associated service definition
+- The following classes and their service definitions have been remove:
+  - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\RemoveUserSubscriber`
+  - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels`
+  - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel`
+  - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetMetadataForProductModel`
+  - `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory`
+  - `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface`
+  - `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection`
+  - `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`
+  - `Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface`
+  - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata`
+  - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface`
 
 ## Enhancements
 
-- The search on option.codes in ES is now case insensitive
+- The product and product model search on option.codes in ES is now case insensitive
 
 
 
