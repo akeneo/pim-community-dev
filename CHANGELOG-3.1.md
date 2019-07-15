@@ -1,6 +1,14 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8539: Sort record by code when searching by codes
+
 # 3.1.12 (2019-07-15)
+
+## Bug fixes
+
+- PIM-8536: Fix records filters freezing because of select2
 
 # 3.1.11 (2019-07-05)
 
