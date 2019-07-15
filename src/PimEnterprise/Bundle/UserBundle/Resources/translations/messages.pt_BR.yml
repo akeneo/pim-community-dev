@@ -1,0 +1,15 @@
+user:
+  proposals:
+    notifications:
+      to_review: Quando houver novas propostas para revisar
+      state: Quando a proposta é aceita ou rejeitada
+      yes: true
+      no: false
+  asset_delay_reminder: Lembrete de atraso de ativo (em dias)
+  default_published_product_grid_view:
+    label: Exibição padrão da grade de produtos publicada
+Default asset tree: Árvore de ativos padrão
+pimee_user:
+  user:
+    tab:
+      notifications.title: Notificações

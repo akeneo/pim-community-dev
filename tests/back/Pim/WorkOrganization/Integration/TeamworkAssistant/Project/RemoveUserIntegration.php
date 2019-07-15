@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
 
+use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
 use PHPUnit\Framework\Assert;
 
 class RemoveUserIntegration extends TeamworkAssistantTestCase
 {
-    /**
-     * @expectedException \Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException
-     */
     function testThatAUserLinkedToAProjectCannotBeRemoved()
     {
+        $this->expectException(UserCannotBeDeletedException::class);
+
         $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'ecommerce', [
             [
                 'field'    => 'categories',

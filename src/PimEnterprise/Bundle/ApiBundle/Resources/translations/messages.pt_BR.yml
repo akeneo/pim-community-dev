@@ -1,0 +1,11 @@
+pim_api:
+  acl:
+    asset_category:
+      edit: Criar e atualizar categorias de mídia
+      list: Listar categorias de mídias
+    asset:
+      edit: Editar mídias e enviar seus arquivos de referência e variação
+      list: Lista mídias, e listar e baixar seus arquivos de referência e variação
+  acl_group:
+    asset_category: Categorias de mídias
+    asset: Mídias

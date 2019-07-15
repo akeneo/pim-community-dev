@@ -1,0 +1,3 @@
+flash.version.revert.product: O produto foi restaurado com sucesso para a versão anterior
+flash.error.revert.product: Esta versão não pode ser restaurada. Alguns erros ocorreram durante a validação.
+pimee_versioning.acl.product_version.revert: Restaurar um produto

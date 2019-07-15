@@ -1,0 +1,60 @@
+teamwork_assistant:
+  common:
+    required: De nid am
+    warning: No worri, project calculation go take some time, so your oroject fit no dey visible right now.
+  grid:
+    view_selector:
+      create: Make you create project
+      edit: Make you edit project
+      remove: Make you edit project
+      create_from_view: Make you create project from dis view
+      loading: E dey load...
+      start_new_project: Start new project
+      confirmation:
+        remove: You sure say you wan delete dis project?
+      popin_title: Create
+      projects: Projects
+  project:
+    locale: Locale
+    channel: Channel
+    label_maxlength: Dis value dey too long, e suppose get {{ max }} characters or less.
+    description: Description
+    due_date: Due Date
+    due_date_past: You no fit select date wey pass.
+    leaving_scope: You dey leave project scope.
+  edit_project_modal:
+    saved: De project dey saved.
+    title: Edit project
+    confirm: Save
+    cancel: Cancel
+  create_project_modal:
+    saved: De project dey saved, you go get notification wen de cslculation dey ready.
+    title: Create project
+    confirm: Save
+    cancel: Cancel
+  widget:
+    no_project: You no get current project
+    no_project_create: make you create new project
+    description: Description
+    due_date: Due date
+    todo: TODO
+    in_progress: E dey progress
+    done: DONE
+    all_contributors: Everri cpntributors
+    display_products: Display products
+    placeholder:
+      contributor_selector: Search contributor
+      project_selector: Search project
+    completeness:
+      to_start: PRODUCTS TO START
+      in_progress: PRODUCTS DEY FOR PROGRESS
+      done: PRODUCTS DONE
+pim_datagrid:
+  view_selector:
+    project: Projects
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Teamwork Assistant
+        project_calculation: Teamwork Assistant

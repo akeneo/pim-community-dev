@@ -1,0 +1,61 @@
+View the product: Make you view de product
+Unpublish the product: Make you unpublish de product
+Approve: Approve am
+Refuse: Reject am
+Approve selected: Make you approve selected
+Refuse selected: Make you reject seleted
+oro:
+  datagrid:
+    noentities:
+      proposal: Proposal no dey to review.
+    noresults:
+      proposal: Proposal no dey to review, Try change your search pattern.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Make you edit working copy
+    proposal:
+      modal.title: Leave a Leave a comment (No be by force - 255 characters max.)
+  proposal:
+    overview: "] -Inf, 1] {{ count }} proposal|] 1, Inf [{{ count }} proposals"
+    selected: proposals don dey selected
+    mass_action_group:
+      review:
+        label: Bulk Action
+    partial_accept:
+      modal.title: Make you approve partial information
+      modal.label: Make you drop comment (no be by force)
+      modal.error: Error don happen, de proposal don dey approved partially
+      modal.success: De proposal don dey partially validated successfully
+    partial_approve:
+      modal:
+        title: Make you approve changes partially
+        label: Make you drop comment (no be by force)
+        error: Error don happen, de proposal no dey partially approved
+        success: De don approve de changes
+    partial_reject:
+      modal:
+        title: Make you reject changes partially
+        label: Make you drop comment (no be by force)
+        error: Error don happen, de proposal dey rejected partially
+        success: De don reject de changes
+batch_jobs:
+  csv_published_product_export:
+    label: Published product export for inside CSV
+    export.label: Published product export
+  csv_product_proposal_import:
+    label: Product proposal import for inside CSV
+    import.label: Product proposal import
+  approve_product_draft:
+    label: Make you approve proposal
+    perform.label: Make you approve proposal
+  refuse_product_draft:
+    label: Make you refuse proposal
+    perform.label: Make you refuse proposals
+  xlsx_published_product_export:
+    label: Published product export for inside XLSX
+    export.label: Published product export
+  xlsx_product_proposal_import:
+    label: Product proposal import for inside XLSX
+    import.label: Product proposal import for inside XLSX

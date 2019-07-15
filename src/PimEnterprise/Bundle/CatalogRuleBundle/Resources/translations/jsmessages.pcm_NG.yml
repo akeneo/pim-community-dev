@@ -1,0 +1,95 @@
+pimee_catalog_rule:
+  overview: "] -Inf, 1] {{ count }} rule|] 1, Inf [{{ count }} rules dem"
+  execution_button: Cari out rules dem
+  selected: 'e don select rules dem'
+  popin:
+    execute_rules:
+      confirm_title: Confam say u don do am
+      confirm_content: U sure sai u wan cari out evri rules dem? (de thing fit take longtym)
+  notification:
+    fail: De action been no fit perform
+    launched: De rules execution don dey launched. U go get notification wen e don finish.
+  attribute:
+    list:
+      code.label: Code
+      condition.label: Condition
+      action.label: Action
+      no_rule_yet.label: Rule no dey for now
+  rule:
+    condition:
+      if.label: if
+    action:
+      then.label: dat time
+      set_value.label: e dey set insyd
+      copy_value.label: e dey copied insyd
+      set.label: e dey set insyd
+      copy.label: e dey copied insyd
+      add.label: e dey added insyd
+      remove.label: e don comot from
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Confam say u don do am
+          confirm_content: You sure say you wan cari out de rule?
+          confirm_ok: Ok
+      mass_edit_action:
+        confirm_title: Confam sai u don calculate am
+        confirm_content: U sure say u wan calculate de affected products wey dey de rules dem?
+        confirm_ok: Ok
+      mass_action:
+        execute:
+          confirm_ok: Ok
+          confirm_title: Confam say u don do am
+          confirm_content: U sure sai u go wan execute de rules wey selected?
+          success: Dey don launch bulk action to execute de rules wey dem bin select. U go receive notification wen e don finish
+          error: Error been occur de tym wey dem dey execute de rules.
+          empty_selection: No rules don dey selected.
+        delete:
+          confirm_ok: Ok
+          confirm_content: U sure sai u wan comot rules wey dey selected?
+          success: U don succeed comot de rules.
+          error: Error bin occur wen e dey try comot rules.
+          empty_selection: E neva select any rules dem.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Rules
+confirmation:
+  remove:
+    rule: U sure sai u wan comot dis rule? E no dey possible to undo dis action
+flash:
+  rule:
+    removed: E don comot de rule finally
+    impacted_product_count: De bulk action wey for calculate de products dem wey dey affected for de rules don dey launched. U go get notification wen e don set.
+    executed: E don launch de rule execution. U go get notification wen e don set.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Settings for rules
+batch_jobs:
+  yml_rule_import:
+    label: Bring rule to YAML
+    import.label: Bring rule
+    execute_rules.label: Cari out rule
+  yml_rule_export:
+    label: Comot rule from YAML
+    export.label: Comot rule
+  rule_impacted_product_count:
+    label: Products wey rules dem don affect
+    perform.label: Count products dem wey dey impacted
+    execute_rules.label: To carri out rules dem
+  csv_product_import_with_rules:
+    label: To bring Product insyd CSV with rules dem
+    execute_rules.label: To carri on de rules dem
+  csv_product_model_import_with_rules:
+    label: To bring product model insyd CSV with rules dem
+    execute_rules.label: To carri on de rules dem
+    import_root_product_model.label: To cari root product model com
+    import_sub_product_model.label: To cari sub product model com
+  xlsx_product_import_with_rules:
+    label: To bring Product insyd XLSX with rules dem
+    execute_rules.label: To carri on de rules dem
+  xlsx_product_model_import_with_rules:
+    label: To bring Product insyd XLSX with rules dem
+    execute_rules.label: To carri on de rules dem
+    import_root_product_model.label: To cari root product model com
+    import_sub_product_model.label: To cari sub product model com

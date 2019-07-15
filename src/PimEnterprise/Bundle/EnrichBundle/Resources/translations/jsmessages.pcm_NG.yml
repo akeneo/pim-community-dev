@@ -1,0 +1,259 @@
+View the product: Make you view de product
+pimee_enrich.product_history.action.revert: Return to dis version
+permission-changes:
+  category:
+    grant: De group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> for dis category
+    revoke: De group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> for dis category
+  locale:
+    grant: De group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> for dis locale
+    revoke: De group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> for dis locale
+  attribute group:
+    grant: De group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> for dis attribute group
+    revoke: De group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> for dis attribute group
+  job profile:
+    grant: De group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong>
+    revoke: De group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong>
+pim_enrich:
+  entity:
+    attribute_label:
+      pim_assets_collection: To collect assets dem
+    attribute:
+      type:
+        pim_assets_collection: To collect assets dem
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: You fit only read am
+pim:
+  grid:
+    mass_action:
+      asset_edit: Large edit assets
+pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Permissions
+          added: The group {{ group }} will be allowed to {{ permission }} job profile
+          execute.label: Make you allow am execute job profile
+          edit.label: Make you allow am edit job profile
+          removed: De group {{ group }} no go dey allowed to {{ permission }} job profile
+    channel:
+      tab:
+        asset-transformation:
+          title: To transform asset
+    attribute_group:
+      tab:
+        permission:
+          title: Permissions dem
+          view.label: Allow make e view attributes
+          edit.label: Allow make e edit attributes
+          removed: The group {{ group }} no go dey allowed to {{ permission }} attribute group
+          added: The group {{ group }} go dey allowed to {{ permission }} attribute group
+  entity:
+    product:
+      index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results dem"
+      navigation: Products wey don dey published
+      history:
+        published: E dey publish
+        revert: Bring am back
+      smart_attribute:
+        come_from: "Na by rule you fit take update dis attribute:"
+      btn:
+        publish: Publish
+        publish_this_version: Make you publish dis version
+        unpublish: E no dey publish
+        save_draft: Make you save draft
+      flash:
+        product_unpublished: Product don unpublish finish
+        product_published: Product don publish finish
+        product_not_published: Dis product bin fail to publish
+        product_not_unpublished: Dis product bin don restore finish
+        product_reverted: Product don restore finish
+      meta:
+        published: Version wey don dey published
+        owner_groups: Groups for de owner
+        draft_status: Status for draft
+        draft:
+          in_progress: E dey progress
+          sent_for_approval: R dey wait approval
+          working_copy: Copy dem dey use work
+      tab:
+        proposals:
+          title: Proposals
+          messages:
+            approve:
+              success: De profile dey applied successfully.
+              error: "De proposal no fit dey applied because of de error wey show so"
+            reject:
+              success: De proposal don dey rejected.
+            remove:
+              success: De don commot de proposal.
+      confirmation:
+        revert:
+          title: Brink back confirmation
+          content: You sure say you want bring back de product to dis version?
+        publish:
+          title: Make you publish dis product
+          content: You sure say you wan publish dis product?
+        unpublish:
+          title: Make you unpublish dis product
+          content: You sure say you wan unpublish dis product?
+      info:
+        update_successful: Product working copy don dey update finish
+      copy:
+        source:
+          working_copy: Copy for working
+          draft: My draft
+          draft_of: "{{ author }}'s him draft"
+    product_draft:
+      info:
+        update_successful: Product draft don dey saved
+        update_failed: Product draft no bin fit update
+        value_modified: Dis value dey modified by de draft wey dey current
+      flash:
+        sent_for_approval: Product file wey dey send for approval
+        draft_not_sendable: You no fit send dis draft make dem approval am
+      btn:
+        send_for_approval: Send am for approval
+        sent_for_approval: E don dey send for approval
+      modal:
+        accept_proposal: Make you accept proposal
+        accept_selected_proposal: Make you accept proposal wey dey selected
+        reject_proposal: Make you reject proposal
+        reject_selected_proposal: Make you reject proposal wey dey selected
+        remove_proposal: Make you remove proposal
+        send_for_approval: Send am for approval
+        cancel: Cancel
+        confirm: Send am
+        title: Make you talk your proposal (optional - 255 characters max.)
+        characters: burn.
+      confirmation:
+        discard_changes: Changes wey neva save go miss. You sure say you wan send your draft go make dem approve am without changes wey dey unsaved?
+        discard_changes_title: You sure say you wan send am go draft?
+  asset_transformation:
+    not_found: E neva find any transformation
+    title:
+      transformation: Transformation
+    colorspace:
+      title: Colorspace
+      options:
+        colorspace: '%worth% colorspace'
+    resize:
+      title: Resize
+      options:
+        width: '%worth%px width'
+        height: '%worth%px height'
+    resolution:
+      title: Resolution
+      options:
+        resolution: '%worth%'
+        resolution-unit: '%worth%'
+    scale:
+      title: Scale
+      options:
+        width: '%worth%px width'
+        height: '%worth%px height'
+        ratio: '%worth%% ratio'
+    thumbnail:
+      title: Thumbnail
+      options:
+        width: '%worth%px width'
+        height: '%worth%px height'
+  mass_edit:
+    next: Next
+    previous: Back am
+    cancel: Cancel
+    confirm: Confam
+    product:
+      operation:
+        publish:
+          label: Publish
+          label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: De product go dey published
+          warning: The {{ itemsCount }} products wey dey selected go dey published.
+        unpublish:
+          label: E dey unpublish
+          label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: De product go dey unpublished
+          warning: The {{ itemsCount }} selected products go dey unpublished.
+    asset:
+      title: Large action for assets
+      confirm: "{1}As e be so you don dey update an asset with wey get de information so, abeg confirm.|] 1, Inf [As e be so you don dey update {{ itemsCount }} assets wey get de following information, abeg confirm."
+      step:
+        select:
+          label: Make you choose assets
+        choose:
+          title: Assets large actions
+          label_count: "] 0, Inf [Make u select your action"
+        configure:
+          label: Set am
+        confirm:
+          label: Confirm
+      operation:
+        add_tag:
+          label: Make you add tags to assets
+          description: Tags go dey added to assets.
+          label_count: "{1}Make you add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|] 1, Inf [Make you add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
+          field: Tags
+          empty_selection: Abeg choose tags
+        add_to_category:
+          label: Arrange assets for categories
+          description: De assets go dey positioned for de categories wey dey so, De placement wey don already exist go miss.
+          label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|] 1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
+          field: Categories
+pim_menu:
+  tab:
+    asset: Assets dem
+  item:
+    asset_category: Categories for asset
+    proposal: Proposals
+    published_product: Products wey dey published
+    rule: Law
+    upload_asset: Make you upload assets
+page_title:
+  pimee_workflow_proposal_index: Proposals
+  pimee_workflow_published_product_index: Products wey dey published
+  pimee_workflow_published_product_view: Products wey dey published {{ product.label }} | View am
+  pimee_product_asset_index: Assets
+  pimee_product_asset_edit: Asset {{ asset.label }} | Edit am
+  pimee_asset_categorytree_index: Categories
+  pimee_asset_categorytree_edit: Category {{ category.label }} | Edit am
+  pimee_catalog_rule_rule_index: Law
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Import for asset channel configuration
+  add_product_value_with_permission_and_rules:
+    label: Make you add product value with permission check and rules application
+    perform.label: Make you add product value
+    execute_rules.label: To carri out de laws
+  update_product_value_with_permission_and_rules:
+    label: Make you update product value wit permission check and rules application
+    execute_rules.label: To carri out laws
+  remove_product_value_with_permission_and_rules:
+    label: Commot product value wit permission check and rules application
+    execute_rules.label: To carri out de rules
+  edit_common_attributes_with_permission_and_rules:
+    label: Make you edit attributes wey get permission check and rules application
+    perform.label: Make u edit de attributes dem
+    execute_rules.label: To carri on de rules
+    cleaner.label: Make you clean temporary files
+  csv_published_product_quick_export:
+    export.label: Sharp sharp published products export for Csv
+    perform:
+      label: Sharp sharp published products export for Csv
+  csv_published_product_grid_context_quick_export:
+    export.label: Sharp sharp published products grid context export for Csv
+    perform:
+      label: Sharp sharp published products grid context export for Csv
+  xlsx_published_product_quick_export:
+    export.label: Sharp sharp published products export for Xlsx
+    perform:
+      label: Sharp sharp published products export for Xlsx
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Sharp sharp published products grid context export for Csv
+    perform:
+      label: Sharp sharp published products grid context export for Csv

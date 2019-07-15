@@ -1,0 +1,6 @@
+user:
+  proposals:
+    notifications:
+      to_review: Wen we go review new proposal
+      yes: true
+      no: false
