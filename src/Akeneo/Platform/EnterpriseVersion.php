@@ -19,7 +19,7 @@ namespace Akeneo\Platform;
 class EnterpriseVersion
 {
     /** @staticvar string */
-    const VERSION = '3.1.11';
+    const VERSION = '3.1.12';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Lettuce';
