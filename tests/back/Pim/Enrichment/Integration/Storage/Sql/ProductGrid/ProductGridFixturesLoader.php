@@ -323,8 +323,6 @@ final class ProductGridFixturesLoader
 
     private function refreshEsIndex(): void
     {
-        $this->container->get('akeneo_elasticsearch.client.product')->refreshIndex();
         $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->container->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
     }
 }

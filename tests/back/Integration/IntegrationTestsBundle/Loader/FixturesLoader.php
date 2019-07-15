@@ -391,9 +391,6 @@ class FixturesLoader implements FixturesLoaderInterface
 
     private function refreshES(): void
     {
-        $this->container->get('akeneo_elasticsearch.client.product')->refreshIndex();
         $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->container->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
-
     }
 }
