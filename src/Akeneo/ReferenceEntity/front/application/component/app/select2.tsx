@@ -49,6 +49,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
     }
 
     if (undefined !== $el.select2) {
+      $('#select2-drop-mask, #select2-drop').remove();
       $el.val(value).select2(this.props.configuration);
     }
   }
