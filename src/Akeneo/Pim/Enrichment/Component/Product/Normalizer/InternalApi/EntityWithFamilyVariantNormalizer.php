@@ -227,7 +227,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
         if ($entity instanceof ProductInterface && $entity->isVariant()) {
             $completenessCollection = $this->getProductCompletenesses->fromProductId($entity->getId());
-            if ($completenessCollection->empty()) {
+            if ($completenessCollection->isEmpty()) {
                 $completenessCollection = new ProductCompletenessCollection(
                     $entity->getId(),
                     array_map(

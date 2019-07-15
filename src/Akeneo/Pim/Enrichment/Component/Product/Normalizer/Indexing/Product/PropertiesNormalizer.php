@@ -75,7 +75,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         }
 
         $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
-        $data[self::FIELD_COMPLETENESS] = !($completenesses->empty())
+        $data[self::FIELD_COMPLETENESS] = !($completenesses->isEmpty())
             ? $this->serializer->normalize(
                 $completenesses,
                 ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,

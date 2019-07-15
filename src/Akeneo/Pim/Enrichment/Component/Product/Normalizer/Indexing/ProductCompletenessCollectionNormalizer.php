@@ -23,7 +23,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     public function normalize($completenesses, $format = null, array $context = [])
     {
         $data = [];
-        
+
         foreach ($completenesses as $completeness) {
             $channelCode = $completeness->channelCode();
             $localeCode = $completeness->localeCode();

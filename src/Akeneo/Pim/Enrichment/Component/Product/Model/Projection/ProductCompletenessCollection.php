@@ -35,15 +35,15 @@ class ProductCompletenessCollection implements IteratorAggregate
     {
         return new \ArrayIterator($this->completenesses);
     }
+    
+    public function isEmpty(): bool
+    {
+        return count($this->completenesses) === 0;
+    }
 
     private function add(ProductCompleteness $completeness): void
     {
         $key = sprintf('%s-%s', $completeness->channelCode(), $completeness->localeCode());
         $this->completenesses[$key] = $completeness;
-    }
-
-    public function empty(): bool
-    {
-        return count($this->completenesses) === 0;
     }
 }

@@ -287,7 +287,7 @@ class ProductNormalizer implements NormalizerInterface
     protected function getNormalizedCompletenesses(ProductInterface $product)
     {
         $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
-        if ($completenessCollection->empty()) {
+        if ($completenessCollection->isEmpty()) {
             $completenessCollection = new ProductCompletenessCollection(
                 $product->getId(),
                 array_map(
