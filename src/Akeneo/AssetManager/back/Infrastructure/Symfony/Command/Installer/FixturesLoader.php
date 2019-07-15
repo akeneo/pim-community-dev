@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\AssetManager\Common\Helper;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer;
 
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;

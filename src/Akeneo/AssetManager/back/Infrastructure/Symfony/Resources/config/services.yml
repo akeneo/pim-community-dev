@@ -76,7 +76,7 @@ services:
                 - { name: kernel.event_subscriber }
 
     akeneo_assetmanager.common.helper.fixtures_loader:
-        class: Akeneo\AssetManager\Common\Helper\FixturesLoader
+        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'

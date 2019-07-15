@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
 use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\AssetManager\Common\Helper\FixturesLoader;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkImageGenerator;
-use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
+use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Client;

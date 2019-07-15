@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
 use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\AssetManager\Common\Helper\FixturesLoader;
+use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration;
 
-use Akeneo\AssetManager\Common\Helper\FixturesLoader;
+use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
