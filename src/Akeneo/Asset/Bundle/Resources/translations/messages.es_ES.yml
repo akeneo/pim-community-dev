@@ -6,6 +6,7 @@ pimee_product_asset:
       remove: Quitar un recurso
       categories_view: Consultar las categorías de un recurso
       mass_upload: Carga masiva de recursos
+      remove_from_collection: Eliminar un recurso de producto de una colección de recursos
     category_asset_picker:
       list: Lista de categorías de recursos dentro de un selector de elementos
     category:
@@ -21,14 +22,14 @@ pimee_product_asset:
   enrich_asset:
     button:
       upload: Cargar
-      delete: Eliminar
+      delete: Borrar
       download: Descargar
       generate_from_reference: Generar desde la referencia
-      reset_variations: Reinicializar variaciones
+      reset_variations: Reajuste de variaciones
     confirmation.remove: '¿Está seguro que desea remover el recurso "%asset%"?'
     confirmation.subTitle: Recursos
     grid:
-      edit: Editar prodpiedades del recurso
+      edit: Editar las propiedades de el recurso
     view:
       title: Recursos del producto
       code: Código
@@ -69,7 +70,8 @@ pimee_product_asset:
         image_height_error: Imposible de generar la variación %channel% debido a que la imagen cargada tiene un alto menor que el solicitado por la transformación.
         not_applicable: Imposible generar la variación %channel%.
         non_registered: Ninguna %transformation% transformación registrada por el mime type %mimeType%. Imposible de generar la variación %channel%.
-        error: Imposible generar la variación %channel%.
+        missing_asset_transformation_for_channel: Imposible generar la variación de %channel%, establezca una transformación de activos para este canal.
+        error: Imposible de generar la variación %channel%.
         success: Los ficheros de variaciones han sido creados con éxito.
       update:
         success: El fichero de variación ha sido actualizado.
@@ -105,7 +107,7 @@ pimee_product_asset:
   tabs:
     properties.title: Propiedades
     variations.title: Variaciones
-    categories.title: Categorías
+    categories.title: Ctegorías
   validation:
     code:
       not_empty: Código requerido. No puede estar vacío.
@@ -121,12 +123,12 @@ pimee_product_asset:
     add_files: agregar ficheros
     start: Comenzar carga
     cancel: Cancelar carga
-    import: Importar
+    import: Importación
     executed: Carga en masa iniciada
     error:
       upload: Un error ha ocurrido al intentar cargar
       code: Formato de código no válido para los recursos
-      localizable: Un recurso existe pero no se puede traducir
+      localizable: Existe un recurso pero no es localizable
       invalid_locale: El local está inhabilitado o es inválido
   category:
     menu: Categorías de recursos
@@ -145,8 +147,9 @@ pimee_product_asset:
       confirm: Está a punto de actualizar un recurso con la siguiente información, por favor confirme.|Estás a punto de actualizar %count% recursos con la siguiente información, por favor confirme.
       steps:
         first: Elegir recurso
-        second: Configurar
-        third: Confirmar
+        second: Configuración
+        third: Confirmación
+  not_editable: Usted no tiene permisos de edición del recurso "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
