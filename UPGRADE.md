@@ -1,20 +1,18 @@
 # UPGRADE FROM 3.1 TO 3.2
 
+Use this documentation to migrate projects based on the Community Edition.
+
 ## Disclaimer
 
-> Please check that you're using Akeneo PIM v3.1.
-
-> We're assuming that you created your project from the standard distribution.
-
-> This documentation helps to migrate projects based on the Community Edition.
-
-> Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
-
-> Please perform a backup of your indices before proceeding to the migration. You can use Elastisearch API [_snapshot](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/modules-snapshots.html).
-
-> Please perform a backup of your codebase if you don't use a VCS (Version Control System).
+> When starting your upgrade, make sure:
+>  - you created your project from the standard distribution.
+>  - you performed a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
+>  - you performed a backup of your indices before proceeding to the migration. You can use Elastisearch API [_snapshot](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/modules-snapshots.html).
+>  - you performed a backup of your codebase if you don't use a VCS (Version Control System).
 
 ## Requirements
+
+Make sure that you're using Akeneo PIM v3.1. You can check this information at the bottom of the dashboard.
 
 Please, see the complete [list of requirements](https://docs.akeneo.com/3.2/install_pim/manual/system_requirements/system_requirements.html) for PIM v3.2.
 
@@ -28,25 +26,34 @@ Please provide a server with the following requirements before proceeding to the
 
     If you use `supervisor`, then stop your daemon as following:
 
-        ```bash
-        supervisorctl status
-        # the command returns the following daemons
-        # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 4162, uptime 0:05:44
+    ```bash
+    supervisorctl status
+    # the command returns the following daemons
+    # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 4162, uptime 0:05:44
 
-        supervisorctl stop pim-queue-daemon:pim-queue-daemon_00
+    supervisorctl stop pim-queue-daemon:pim-queue-daemon_00
 
-        supervisorctl status
-        # the daemon has been stopped
-        # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
-        ```
+    supervisorctl status
+    # the daemon has been stopped
+    # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
+
+    ```
 
     Otherwise, kill your daemon:
 
-        ```bash
-        pkill -f job-queue-consumer-daemon
-        ```
+
+    ```bash
+    pkill -f job-queue-consumer-daemon
+    ```
 
     To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-community-standard/compare/3.1...3.2).
+
+    The `$PIM_DIR` variable will contain the path to your current PIM installation:
+
+
+    ```bash
+    export PIM_DIR=/path/to/your/current/pim/installation
+    ```
 
 2. Download the latest standard edition from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
@@ -58,99 +65,53 @@ Please provide a server with the following requirements before proceeding to the
 
 3. Update the configuration files:
 
-    An easy way to update them is to copy/paste configuration files from the latest standard edition. Normally you shouldn't have made a single change to them in your project. If it's the case, don't forget to update them with your changes.
+    We will copy the configuration file from the new standard edition version.
+    You shouldn't have made a single change to them in your project, but if you did, don't forget to reapply your own changes to the files.
 
-    First, we'll consider you have a `$PIM_DIR` variable:
+
+    Then apply the changes, from the standard edition directory:
 
     ```bash
-    export PIM_DIR=/path/to/your/current/pim/installation
+    cp docker-compose.yml $PIM/docker-composer.yml
     ```
 
-    Then apply the changes:
-    
-    TODO: ADD ALL THE CHANGES HERE
+    The only change is the addition of a new container `object-storage`, based on `minio` (see https://min.io/),
+    and compatible with the Amazon S3 protocol. This container allows testing object storage configuration for assets and media.
+
 
 4. Update your **app/config/config.yml**
 
-    An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
-
-    ```bash
-    cp app/config/config.yml $PIM_DIR/app/config/
-    # then add your own changes
-    ```
-
-    Or you can update the file with the following changes:
-    
-    TODO: ADD ALL THE CHANGES HERE
+    The **app/config/config.yml** file didn't change between 3.1 and 3.2.
 
 5. Update your **app/config/config_dev.yml** and **app/config/config_prod.yml**
 
-    An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
-
-    ```bash
-    cp app/config/config_dev.yml $PIM_DIR/app/config/
-    cp app/config/config_prod.yml $PIM_DIR/app/config/
-    # then add your own changes
-    ```
-
-    Or you can update the files with the following changes:
-
-    TODO: ADD ALL THE CHANGES HERE
+    The **app/config/config.yml_dev.yml** and **app/config/config_prod.yml** files didn't change between 3.1 and 3.2.
 
 6. Update your **app/config/config_behat.yml** and **app/config/config_test.yml**:
 
-    An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
-
-    ```bash
-    cp app/config/config_behat.yml $PIM_DIR/app/config/
-    cp app/config/config_test.yml $PIM_DIR/app/config/
-    # then add your own changes
-    ```
-
-    Or you can update the files with the following changes:
-    
-    TODO: ADD ALL THE CHANGES HERE
+    The **app/config/config.yml_behat.yml** and **app/config/config_test.yml** files didn't change between 3.1 and 3.2.
 
 7. Update your **app/AppKernel.php**:
 
-    An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
-
-    ```bash
-    cp app/AppKernel.php $PIM_DIR/app/
-    # then add your own bundles
-    ```
-    Or you can follow the detailed list of changes:
-
-    TODO: ADD ALL THE CHANGES HERE
+    The **app/AppKernel.php** file didn't change between 3.1 and 3.2.
 
 8. Deactivate your custom code
 
 Before updating the dependencies and migrating your data, please deactivate all your custom bundles and configuration. This will considerably ease the migration of your data. You can disable your custom code by commenting out your custom bundles in your `AppKernel.php` file.
 
-9. Update your dependencies:
+9. Update your PHP dependencies
 
-    The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
+   From the downloaded archive:
 
     ```bash
     cp composer.json $PIM_DIR/
     # then add your own dependencies
     ```
 
-    If you don't, make sure you have updated Akeneo PIM dependencies and also that you have the following `post-update-cmd` task:
-
-    ```json
-    "post-update-cmd": [
-        "@symfony-scripts",
-        "Akeneo\\Platform\\Bundle\\InstallerBundle\\ComposerScripts::copyUpgradesFiles"
-    ]
-    ```
-
-    The easiest way to update your `package.json` is to copy/paste from the latest standard edition and add your custom dependencies.
-
-    ```bash
-    cp package.json $PIM_DIR/
-    # then add your own dependencies
-    ```
+    The following PHP dependencies have changed:
+     - `symfony/symfony` upgraded to 3.4.28
+     - `twig/twig` upgraded to 1.42.2
+     - `league/flysystem-aws-s3-v3` 1.0 added
 
     Now we are ready to update the backend dependencies:
 
@@ -163,53 +124,101 @@ Before updating the dependencies and migrating your data, please deactivate all 
     If you have custom code in your project, this step may raise errors in the "post-script" command.
     In this case, go to the chapter "Migrate your custom code" before running the database migration.
 
-    And we also have to update the frontend dependencies:
+10. Update your JS dependencies
+
+   From the downloaded archive:
 
     ```bash
-    yarn install
+    cp package.json $PIM_DIR/
+    # then add your own dependencies
     ```
 
-10. Migrate your Elasticsearch indices:
+    The following PHP dependencies have changed:
+      - `cucumber-html-reporter` upgraded to 5.0.0
+      - `eslint` upgraded to 6.0.1
+      - `jquery` upgraded to 3.4.0
+      - `lodash` upgraded to 4.17.14
+
+11. Migrate your MySQL database
+
+Please, make sure the folder upgrades/schema/ does not contain former migration files (from PIM 2.2 to 2.3 for instance), otherwise the migration command will surely not work properly.
+
+    ```bash
+    rm -rf var/cache
+    bin/console doctrine:migration:migrate --env=prod
+    ```
+
+12. Migrate your Elasticsearch indices
 
     In case you updated the settings of Elasticsearch (like normalizers, filters and analyzers), please make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.1/app/config/pim_parameters.yml#L58-L68).
 
     Same in case you have a big catalog and increased the [index.mapping.total_fields.limit](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/mapping.html#mapping-limit-settings). Make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-community-standard/blob/3.1/app/config/pim_parameters.yml#L55-L57).
-    
-    You need to run the following command because:
-        - ES does not take in account case insensitivity of option codes when searching. As we modified the way products values are loaded from Mysql, ES search has to be case insensitive when searching on option codes.
+
+    As of PIM v3.2, we now take advantage of [Elasticsearch's aliases](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/indices-aliases.html). Thus, all indices have to be reindexed.
+
+    Also, as Elasticsearch does not take into account case insensitivity of option codes when searching and as we modified the way products values are loaded from MySQL, Elasticsearch search has to be case insensitive when searching on option codes. Thus, all mappings have to updated.
+
+    To take into account those two changes:
 
     ```bash
-    php bin/console akeneo:elasticsearch:update-mapping --all
+    php bin/console akeneo:elasticsearch:update-mapping -e prod --all
     ```
 
 ## Migrate your custom code
 
 1. Apply the sed commands
 
-Several classes and services have been moved or renamed. The following commands help to migrate references to them:
+   Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
-```bash
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorIdFilter/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ValueCollectionInterface/WriteValueCollectionInterface/g'
-```
+    ```bash
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorFilter#Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorIdFilter#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactory#Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\WriteValueCollectionFactory#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ValueCollection#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\WriteValueCollection#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#ValueCollectionIn\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
+    please apply `sed 's/ValueCollectionInterface/WriteValueCollection/g` (it also rename the ValueCollection)
+    ```
 
 2. Adapt your custom codes to handle this breaking changes we introduced:
 
  - Service `pim_catalog.saver.channel` class has been changed to `Akeneo\Channel\Bundle\Storage\Orm\ChannelSaver`.
- - Interface `Akeneo\Channel\Component\Model\ChannelInterface` has a new methods `popEvents(): array`
+ - Interface `Akeneo\Channel\Component\Model\ChannelInterface` has a new methods `popEvents(): array
+ - The following classes have been removed:
+
+   - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\RemoveUserSubscriber`
+    This subscriber has been replaced by a proper Doctrine mapping that set the user at `null` in the `Comment` entity
+    for which the user is the author when the user is removed.
+    If you override this service, you can use the same events (`StorageEvents::PRE_REMOVE` and `StorageEvents::POST_REMOVE`)
+    on `Akeneo\UserManagement\Component\Model\UserInterface`to fire your own subscriber.
+
+   - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel`
+
+
+   - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetMetadataForProductModel`
+   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata`
+   - `Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface`
+   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface`
+    These class and interface have been removed from the refactoring of the `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels`.
+    You can check the new class `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels` to see how it has been replaced.
+
+
+   - `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface`
+   - `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`
+    These interfaces have been removed. You can now directly extends `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory` and `Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection`
+
 
 3. Reactivate your custom code
 
-You are now ready to re enable your custom bundles in the `AppKernel.php` file.
+You are now ready to reactivate your custom bundles in the `AppKernel.php` file.
 
 4. Then re-generate the PIM assets:
 
-    ```bash
+```bash
     bin/console cache:clear --env=prod
     bin/console pim:installer:assets --clean --env=prod
     yarn run less
     yarn run webpack
-    ```
+```
 
 5. Restart the queue consumer
 
@@ -217,7 +226,7 @@ Now you are ready to restart the queue consumer daemon.
 
 If you use `supervisor`, then restart your daemon as following:
 
-    ```bash
+```bash
     supervisorctl status
     # the command returns the following daemons
     # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
@@ -227,4 +236,4 @@ If you use `supervisor`, then restart your daemon as following:
     supervisorctl status
     # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 3500, uptime 0:00:04
     # the daemon has been restarted
-    ```
+```
