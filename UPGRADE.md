@@ -36,6 +36,7 @@ Please provide a server with the following requirements before proceeding to the
     supervisorctl status
     # the daemon has been stopped
     # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
+
 ```
 
     Otherwise, kill your daemon:
