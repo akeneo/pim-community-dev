@@ -118,7 +118,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
     If you have custom code in your project, this step may raise errors in the "post-script" command.
     In this case, go to the chapter "Migrate your custom code" before running the database migration.
 
-10. Update your JS depdencies
+10. Update your JS dependencies
 
    From the downloaded archive:
 
@@ -148,8 +148,11 @@ Please, make sure the folder upgrades/schema/ does not contain former migration 
 
     Same in case you have a big catalog and increased the [index.mapping.total_fields.limit](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/mapping.html#mapping-limit-settings). Make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-community-standard/blob/3.1/app/config/pim_parameters.yml#L55-L57).
 
-    You need to run the following command because:
-        - ES does not take in account case insensitivity of option codes when searching. As we modified the way products values are loaded from Mysql, ES search has to be case insensitive when searching on option codes.
+    As of PIM v3.2, we now take advantage of [Elasticsearch's aliases](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/indices-aliases.html). Thus, all indices have to be reindexed.
+
+    Also, as Elasticsearch does not take into account case insensitivity of option codes when searching and as we modified the way products values are loaded from MySQL, Elasticsearch search has to be case insensitive when searching on option codes. Thus, all mappings have to updated.
+
+    To take into account those two changes:
 
 ```bash
     php bin/console akeneo:elasticsearch:update-mapping -e prod --all
