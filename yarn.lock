@@ -2413,17 +2413,17 @@ cucumber-expressions@^5.0.7:
   dependencies:
     becke-ch--regex--s0-0-v1--base--pl--lib "^1.2.0"
 
-cucumber-html-reporter@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/cucumber-html-reporter/-/cucumber-html-reporter-4.0.1.tgz#d32b985c240bfa34babc15accd1cee874ec87110"
-  integrity sha512-W8rN+YKJOQMxzXzyWnn8a+N4OIGmAr2gm08zjFeKXRM37Dw6/P4PNpnig9ZAbeyXgKE2+oCTrc/RTiNtbe58CQ==
+cucumber-html-reporter@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/cucumber-html-reporter/-/cucumber-html-reporter-5.0.0.tgz#261e336bf6b6eb55d682dbdfc61d0df6cadab02f"
+  integrity sha512-rZokbzSjeVONJVmode4eZbZF8NWJksvtebG15ZSdw1JnVx/pn4WqMRiwDz+XRmS2x1O/POSqVv5f/e+UJ1z8kQ==
   dependencies:
     find "^0.2.7"
     fs-extra "^3.0.1"
     js-base64 "^2.3.2"
     jsonfile "^3.0.0"
-    lodash "^4.17.2"
-    open "0.0.5"
+    lodash "^4.17.11"
+    opn "5.3.0"
 
 cucumber-junit@^1.7.1:
   version "1.7.1"
@@ -4879,7 +4879,7 @@ lodash@4.17.11:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
-lodash@4.17.14, lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5:
+lodash@4.17.14, lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5:
   version "4.17.14"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
   integrity sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==
@@ -5499,10 +5499,12 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-open@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/open/-/open-0.0.5.tgz#42c3e18ec95466b6bf0dc42f3a2945c3f0cad8fc"
-  integrity sha1-QsPhjslUZra/DcQvOilFw/DK2Pw=
+opn@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/opn/-/opn-5.3.0.tgz#64871565c863875f052cfdf53d3e3cb5adb53b1c"
+  integrity sha512-bYJHo/LOmoTd+pfiYhfZDnf9zekVJrY+cnS2a5F2x+w5ppvTqObojTP7WiFG+kVZs9Inw+qQ/lw7TroWwhdd2g==
+  dependencies:
+    is-wsl "^1.1.0"
 
 optimist@^0.6.1:
   version "0.6.1"
