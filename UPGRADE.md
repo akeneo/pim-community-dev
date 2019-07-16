@@ -1,12 +1,14 @@
 # UPGRADE FROM 3.1 TO 3.2
 
+This documentation helps to migrate projects based on the Community Edition.
+
 ## Disclaimer
 
-> We're assuming that you created your project from the standard distribution.
-> This documentation helps to migrate projects based on the Community Edition.
-> Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
-> Please perform a backup of your indices before proceeding to the migration. You can use Elastisearch API [_snapshot](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/modules-snapshots.html).
-> Please perform a backup of your codebase if you don't use a VCS (Version Control System).
+> When starting your upgrade, make sure:
+>  - you created your project from the standard distribution.
+>  - you performed a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
+>  - you performed a backup of your indices before proceeding to the migration. You can use Elastisearch API [_snapshot](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/modules-snapshots.html).
+>  - you performed a backup of your codebase if you don't use a VCS (Version Control System).
 
 ## Requirements
 
@@ -38,6 +40,7 @@ Please provide a server with the following requirements before proceeding to the
 
     Otherwise, kill your daemon:
 
+
 ```bash
         pkill -f job-queue-consumer-daemon
 ```
@@ -45,6 +48,7 @@ Please provide a server with the following requirements before proceeding to the
     To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-community-standard/compare/3.1...3.2).
 
     The `$PIM_DIR` variable will contain the path to your current PIM installation:
+
 
 ```bash
     export PIM_DIR=/path/to/your/current/pim/installation
