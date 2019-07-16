@@ -15,7 +15,7 @@ class CommunityVersion
     const VERSION = '3.2.0';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Slick Hare';
+    const VERSION_CODENAME = 'Rabbit Transit';
 
     /** @staticvar string */
     const EDITION = 'CE';
