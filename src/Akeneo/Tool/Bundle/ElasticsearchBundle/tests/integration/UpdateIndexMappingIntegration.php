@@ -72,7 +72,6 @@ class UpdateIndexMappingIntegration extends TestCase
         $updateIndexMapping = new UpdateIndexMapping();
         // from index to alias
         $updateIndexMapping->updateIndexMapping($client, $akeneoProductClient->getIndexName(), $akeneoProductClient->getConfigurationLoader());
-        sleep(1);
         // from alias to alias
         $updateIndexMapping->updateIndexMapping($client, $akeneoProductClient->getIndexName(), $akeneoProductClient->getConfigurationLoader());
     }
