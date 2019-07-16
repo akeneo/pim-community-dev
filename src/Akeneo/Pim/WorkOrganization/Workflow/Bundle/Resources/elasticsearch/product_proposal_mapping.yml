@@ -112,6 +112,7 @@ mappings:
                     path_match: 'values.*-option.*'
                     mapping:
                         type: 'keyword'
+                        normalizer: 'attribute_option_normalizer'
             -
                 options_scopable_localizable_structure:
                     path_match: 'values.*-options.*'
@@ -123,6 +124,7 @@ mappings:
                     path_match: 'values.*-options.*'
                     mapping:
                         type: 'keyword'
+                        normalizer: 'attribute_option_normalizer'
             -
                 reference_data_option_scopable_localizable_structure:
                     path_match: 'values.*-reference_data_option.*'
@@ -134,6 +136,7 @@ mappings:
                     path_match: 'values.*-reference_data_option.*'
                     mapping:
                         type: 'keyword'
+                        normalizer: 'attribute_option_normalizer'
             -
                 reference_data_options_scopable_localizable_structure:
                     path_match: 'values.*-reference_data_options.*'
@@ -145,6 +148,7 @@ mappings:
                     path_match: 'values.*-reference_data_options.*'
                     mapping:
                         type: 'keyword'
+                        normalizer: 'attribute_option_normalizer'
             -
                 prices_data_options_scopable_localizable_structure:
                     path_match: 'values.*-prices.*'
