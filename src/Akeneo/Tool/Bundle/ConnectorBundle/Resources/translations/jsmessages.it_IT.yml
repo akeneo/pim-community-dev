@@ -1,6 +1,6 @@
 batch_jobs:
   default_steps:
-    validation: Validazione del file
+    validation: Validazione file
     import_associations: Importazione associazioni
     import_root_product_model: Importazione modello di prodotto radice
     import_sub_product_model: Importazione sotto-modelli di prodotto
@@ -81,7 +81,7 @@ batch_jobs:
     label: Importazione dei tipi di associazione in XLSX
     import.label: Importazione tipi associazione
   xlsx_attribute_import:
-    label: Importazione attributi in CSV
+    label: Importazione attributi in XLSX
     import.label: Importazione attributi
   xlsx_attribute_option_import:
     label: Importazione delle opzioni degli attributi in XLSX
@@ -115,7 +115,7 @@ batch_jobs:
     export.label: Esportazione famiglie
   xlsx_family_variant_export:
     label: Esportazione famiglia variante in XLSX
-    export.label: Esportazione famiglie varianti
+    export.label: Esportazione famiglia variante
   xlsx_category_export:
     label: Esportazione categorie in XLSX
     export.label: Esportazione categorie
