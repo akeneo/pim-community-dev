@@ -25,15 +25,15 @@ class UpdateIndexMappingIntegration extends TestCase
 
         $client = $clientBuilder->build();
 
-        $indices = array_map(function (array $index) : string {
-            return $index['index'];
-        }, $client->cat()->indices());
+        $aliases = array_map(function (array $index) : string {
+            return $index['alias'];
+        }, $client->cat()->aliases());
 
         /** @var ProductQueryBuilderFactory $pqb */
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory');
         $this->createProduct('product1');
         Assert::assertEquals(1, $pqb->create()->execute()->count());
-        Assert::assertContains($this->getParameter('product_index_name'), $indices);
+        Assert::assertContains($this->getParameter('product_index_name'), $aliases);
 
         $updateIndexMapping = new UpdateIndexMapping();
         $updateIndexMapping->updateIndexMapping($client, $akeneoProductClient->getIndexName(), $akeneoProductClient->getConfigurationLoader());
@@ -58,21 +58,20 @@ class UpdateIndexMappingIntegration extends TestCase
 
         $client = $clientBuilder->build();
 
-        $indices = array_map(function (array $index) : string {
-            return $index['index'];
-        }, $client->cat()->indices());
+        $aliases = array_map(function (array $index) : string {
+            return $index['alias'];
+        }, $client->cat()->aliases());
 
         /** @var ProductQueryBuilderFactory $pqb */
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory');
         $this->createProduct('product1');
         Assert::assertEquals(1, $pqb->create()->execute()->count());
-        Assert::assertContains($this->getParameter('product_index_name'), $indices);
+        Assert::assertContains($this->getParameter('product_index_name'), $aliases);
 
 
         $updateIndexMapping = new UpdateIndexMapping();
-        // from index to alias
+        // from alias to alias
         $updateIndexMapping->updateIndexMapping($client, $akeneoProductClient->getIndexName(), $akeneoProductClient->getConfigurationLoader());
-        sleep(1);
         // from alias to alias
         $updateIndexMapping->updateIndexMapping($client, $akeneoProductClient->getIndexName(), $akeneoProductClient->getConfigurationLoader());
     }

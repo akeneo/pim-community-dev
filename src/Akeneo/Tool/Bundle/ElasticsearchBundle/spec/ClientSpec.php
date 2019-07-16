@@ -220,32 +220,20 @@ class ClientSpec extends ObjectBehavior
         $this->deleteIndex();
     }
 
-    public function it_creates_an_index(
-        $client,
-        $indexConfigurationLoader,
-        IndexConfiguration $indexConfiguration,
-        IndicesNamespace $indices
-    ) {
-        $indexConfigurationLoader->load()->willReturn($indexConfiguration);
-        $indexConfiguration->buildAggregated()->willReturn(['index configuration']);
-
-        $client->indices()->willReturn($indices);
-        $indices->create(
-            [
-                'index' => 'an_index_name',
-                'body' => ['index configuration'],
-            ]
-        )->shouldBeCalled();
-
-        $this->createIndex();
-    }
-
     function it_checks_if_an_index_exists($client, IndicesNamespace $indices)
     {
         $client->indices()->willReturn($indices);
-        $indices->exists(['index' => 'an_index_name'])->shouldBeCalled();
+        $indices->exists(['index' => 'an_index_name'])->willReturn(true);
 
-        $this->hasIndex();
+        $this->hasIndex()->shouldReturn(true);
+    }
+
+    function it_checks_if_an_alias_exists($client, IndicesNamespace $indices)
+    {
+        $client->indices()->willReturn($indices);
+        $indices->existsAlias(['name' => 'an_index_name'])->willReturn(true);
+
+        $this->hasIndexForAlias()->shouldReturn(true);
     }
 
     function it_refreshes_an_index($client, IndicesNamespace $indices)

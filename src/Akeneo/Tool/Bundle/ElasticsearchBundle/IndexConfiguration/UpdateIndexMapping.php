@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
 use Akeneo\Platform\CommunityVersion;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use Ramsey\Uuid\Uuid;
 
 /**
  * This class is meant to update an index mapping or can be used for an upgrade
@@ -27,7 +28,7 @@ final class UpdateIndexMapping
     public function updateIndexMapping(Client $client, string $indexNameOrAlias, Loader $indexConfiguration): void
     {
         // We don't care about the index name anymore as we use alias
-        $newIndexName = $indexNameOrAlias . '_' . str_replace('.', '_', CommunityVersion::VERSION) . '_' . time();
+        $newIndexName = $indexNameOrAlias . '_' . str_replace('.', '_', CommunityVersion::VERSION) . '_' . Uuid::uuid4();
 
         $this
             ->createIndexReadyForNewConfiguration($client->indices(), $newIndexName, $indexConfiguration)
