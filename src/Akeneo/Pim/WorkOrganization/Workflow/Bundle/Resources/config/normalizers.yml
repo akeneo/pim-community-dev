@@ -54,7 +54,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_enrich.provider.form.chained'
             - '@pim_structure_version.provider.structure_version.product'
-            - '@pimee_workflow.query.get_published_product_completeneses'
+            - '@pimee_workflow.query.get_published_product_completenesses'
             - '@pim_catalog.completeness.calculator'
             - '@pim_enrich.normalizer.incomplete_values'
             - '@pim_enrich.normalizer.image'

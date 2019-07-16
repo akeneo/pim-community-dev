@@ -124,7 +124,7 @@ class GetPublishedProductCompletenessesIntegration extends TestCase
 
     private function getCompletenesses(int $publishedProductId): PublishedProductCompletenessCollection
     {
-        return $this->get('pimee_workflow.query.get_published_product_completeneses')
+        return $this->get('pimee_workflow.query.get_published_product_completenesses')
                     ->fromPublishedProductId($publishedProductId);
     }
 

@@ -133,7 +133,7 @@ class SavePublishedProductCompletenessesIntegration extends TestCase
 
     private function executeSave(PublishedProductCompletenessCollection $completenesses): void
     {
-        $this->get('pimee_workflow.query.save_published_product_completeneses')->save($completenesses);
+        $this->get('pimee_workflow.query.save_published_product_completenesses')->save($completenesses);
     }
 
     private function createPublishedProduct(string $identifier): int
