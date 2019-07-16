@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.13 (2019-07-16)
+
 ## Bug fixes
 
 - PIM-8539: Sort record by code when searching by codes
