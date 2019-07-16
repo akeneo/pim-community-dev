@@ -19,17 +19,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorI
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VersionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer as StandardPublishedProductNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductNormalizer;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer as StandardPublishedProductNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
@@ -40,7 +40,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class PublishedProductNormalizerSpec extends ObjectBehavior
 {
@@ -63,7 +62,7 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         ProductNormalizer $internalApiProductNormalizer,
         AuthorizationCheckerInterface $authorizationChecker,
-        SerializerNormalizer $serializer
+        NormalizerInterface $completenessCollectionNormalizer
     ) {
         $this->beConstructedWith(
             $standardPublishedProductNormalizer,
@@ -83,10 +82,9 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
             $localeRepository,
             $internalApiProductNormalizer,
             $authorizationChecker,
-            $categoryAccessRepository
+            $categoryAccessRepository,
+            $completenessCollectionNormalizer
         );
-
-        $this->setSerializer($serializer->getWrappedObject());
     }
 
     public function it_is_initializable()
@@ -114,7 +112,7 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         ProductNormalizer $internalApiProductNormalizer,
         AuthorizationCheckerInterface $authorizationChecker,
-        SerializerNormalizer $serializer
+        NormalizerInterface $completenessCollectionNormalizer
     ) {
         $product = new Product();
         $product->setId(62);
@@ -167,11 +165,40 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
 
         $completeness = new PublishedProductCompleteness('ecommerce', 'en_US', 1, []);
         $completenessCollection = new PublishedProductCompletenessCollection(42, [$completeness]);
+        $normalizedCompletenesses = [
+            [
+                'channel' => 'ecommerce',
+                'labels' => [
+                    'en_US' => 'Ecommerce',
+                ],
+                'locales' => [
+                    'en_US' => [
+                        'completeness' => [
+                            'required' => 1,
+                            'missing' => 0,
+                            'ratio' => 100,
+                            'locale' => 'en_US',
+                            'channel' => 'ecommerce',
+                        ],
+                        'missing' => [],
+                        'label' => 'English (United States)',
+                    ],
+                ],
+                'stats' => [
+                    'total' => 1,
+                    'complete' => 1,
+                    'average' => 100,
+                ],
+            ],
+        ];
+        $completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api')->willReturn(
+            $normalizedCompletenesses
+        );
+
         $getPublishedProductCompletenesses->fromPublishedProductId(42)->willReturn($completenessCollection);
         $incompleteValuesNormalizer->normalize($publishedProduct)->willReturn([]);
         $imageNormalizer->normalize(null)->willReturn(null);
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US']);
-        $serializer->normalize([], 'internal_api', [])->willReturn([]);
         $internalApiProductNormalizer->normalize($product, 'standard', [])->willReturn([]);
         $authorizationChecker->isGranted(Attributes::OWN, $publishedProduct)->willReturn(false);
         $this->normalize($publishedProduct, 'internal_api', [])->shouldReturn(
@@ -201,11 +228,7 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
                     'updated' => [],
                     'model_type' => 'product',
                     'structure_version' => 12456,
-                    'completenesses' => [
-                        'ecommerce' => [
-                            'en_US' => 100
-                        ]
-                    ],
+                    'completenesses' => $normalizedCompletenesses,
                     'required_missing_attributes' => [],
                     'image' => null,
                     'ascendant_category_ids' => [],
@@ -227,8 +250,4 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
             ]
         );
     }
-}
-
-abstract class SerializerNormalizer implements SerializerInterface, NormalizerInterface
-{
 }

@@ -17,13 +17,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer as StandardPublishedProductNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
@@ -33,15 +36,13 @@ use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Published product normalizer
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class PublishedProductNormalizer implements NormalizerInterface, SerializerAwareInterface
+class PublishedProductNormalizer implements NormalizerInterface
 {
     /** @var StandardPublishedProductNormalizer */
     private $standardPublishedProductNormalizer;
@@ -91,14 +92,14 @@ class PublishedProductNormalizer implements NormalizerInterface, SerializerAware
     /** @var ProductNormalizer */
     private $internalApiProductNormalizer;
 
-    /** @var NormalizerInterface */
-    private $pimNormalizer;
-
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
     /** @var CategoryAccessRepository */
     private $categoryAccessRepo;
+
+    /** @var NormalizerInterface */
+    private $completenessCollectionNormalizer;
 
     public function __construct(
         StandardPublishedProductNormalizer $standardPublishedProductNormalizer,
@@ -118,7 +119,8 @@ class PublishedProductNormalizer implements NormalizerInterface, SerializerAware
         LocaleRepositoryInterface $localeRepository,
         ProductNormalizer $internalApiProductNormalizer,
         AuthorizationCheckerInterface $authorizationChecker,
-        CategoryAccessRepository $categoryAccessRepo
+        CategoryAccessRepository $categoryAccessRepo,
+        NormalizerInterface $completenessCollectionNormalizer
     ) {
         $this->standardPublishedProductNormalizer = $standardPublishedProductNormalizer;
         $this->missingAssociationAdder = $missingAssociationAdder;
@@ -138,6 +140,7 @@ class PublishedProductNormalizer implements NormalizerInterface, SerializerAware
         $this->internalApiProductNormalizer = $internalApiProductNormalizer;
         $this->authorizationChecker = $authorizationChecker;
         $this->categoryAccessRepo = $categoryAccessRepo;
+        $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
     }
 
     /**
@@ -180,7 +183,7 @@ class PublishedProductNormalizer implements NormalizerInterface, SerializerAware
             'label' => $this->getLabels($publishedProduct, $context['channel'] ?? null),
             'associations' => $this->getAssociationMeta($publishedProduct),
             'published' => null,
-            'owner_groups' => $this->pimNormalizer->normalize($ownerGroups, 'internal_api', $context),
+            'owner_groups' => $ownerGroups,
             'is_owner' => $this->authorizationChecker->isGranted(Attributes::OWN, $publishedProduct),
             'working_copy' => $this->internalApiProductNormalizer->normalize($publishedProduct->getOriginalProduct(), 'standard', $context),
             'draft_status' => null,
@@ -190,6 +193,13 @@ class PublishedProductNormalizer implements NormalizerInterface, SerializerAware
         return $normalizedProduct;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof PublishedProductInterface && 'internal_api' === $format;
+    }
 
     private function getLabels(PublishedProductInterface $publishedProduct, ?string $scopeCode): array
     {
@@ -231,34 +241,21 @@ class PublishedProductNormalizer implements NormalizerInterface, SerializerAware
         $completenessCollection = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
         if (count($completenessCollection) === 0) {
             $newCompletenesses = $this->completenessCalculator->calculate($publishedProduct);
-            foreach ($newCompletenesses as $completeness) {
-                $completenessCollection[] = $completeness;
-            }
+            $completenessCollection = new PublishedProductCompletenessCollection(
+                $publishedProduct->getId(),
+                array_map(function (CompletenessInterface $completeness) {
+                    return new PublishedProductCompleteness(
+                        $completeness->getChannel()->getCode(),
+                        $completeness->getLocale()->getCode(),
+                        $completeness->getRequiredCount(),
+                        $completeness->getMissingAttributes()->map(function (AttributeInterface $attribute) {
+                            return $attribute->getCode();
+                        })->toArray()
+                    );
+                }, $newCompletenesses)
+            );
         }
 
-        $data = [];
-
-        /** @var PublishedProductCompleteness $publishedProductCompleteness */
-        foreach ($completenessCollection as $publishedProductCompleteness) {
-            $data[$publishedProductCompleteness->channelCode()][$publishedProductCompleteness->localeCode()] = $publishedProductCompleteness->ratio();
-        }
-
-        return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsNormalization($data, $format = null)
-    {
-        return $data instanceof PublishedProductInterface && 'internal_api' === $format;
-    }
-
-    /**
-     * Sets the owning Serializer object.
-     */
-    public function setSerializer(SerializerInterface $serializer)
-    {
-        $this->pimNormalizer = $serializer;
+        return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
     }
 }

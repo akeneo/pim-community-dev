@@ -62,8 +62,22 @@ services:
             - '@pim_enrich.normalizer.product'
             - '@security.authorization_checker'
             - '@pimee_security.repository.category_access'
+            - '@pimee_workflow.normalizer.internal_api.published_product_completeness_collection'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 130 }
+    
+    pimee_workflow.normalizer.internal_api.published_product_completeness_collection:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductCompletenessCollectionNormalizer'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee_workflow.normalizer.internal_api.published_product_completeness'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+    
+    pimee_workflow.normalizer.internal_api.published_product_completeness:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductCompletenessNormalizer'
 
     pimee_workflow.normalizer.standard.published_product:
         class: '%pim_catalog.normalizer.standard.product.class%'
@@ -102,7 +116,7 @@ services:
             - '@pim_catalog.repository.product'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
-
+    
     pimee_enrich.normalizer.product_model:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductModelNormalizer'
         arguments:
