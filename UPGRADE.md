@@ -1,6 +1,6 @@
 # UPGRADE FROM 3.1 TO 3.2
 
-This documentation helps to migrate projects based on the Community Edition.
+Use this documentation to migrate projects based on the Community Edition.
 
 ## Disclaimer
 
@@ -42,26 +42,26 @@ Please provide a server with the following requirements before proceeding to the
     Otherwise, kill your daemon:
 
 
-```bash
+    ```bash
     pkill -f job-queue-consumer-daemon
-```
+    ```
 
     To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-community-standard/compare/3.1...3.2).
 
     The `$PIM_DIR` variable will contain the path to your current PIM installation:
 
 
-```bash
+    ```bash
     export PIM_DIR=/path/to/your/current/pim/installation
-```
+    ```
 
 2. Download the latest standard edition from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
-```bash
+    ```bash
     wget http://download.akeneo.com/pim-community-standard-v3.2-latest.tar.gz
     tar -zxf pim-community-standard-v3.2-latest.tar.gz
     cd pim-community-standard/
-```
+    ```
 
 3. Update the configuration files:
 
@@ -70,9 +70,10 @@ Please provide a server with the following requirements before proceeding to the
 
 
     Then apply the changes, from the standard edition directory:
-```bash
+
+    ```bash
     cp docker-compose.yml $PIM/docker-composer.yml
-```
+    ```
 
     The only change is the addition of a new container `object-storage`, based on `minio` (see https://min.io/),
     and compatible with the Amazon S3 protocol. This container allows testing object storage configuration for assets and media.
@@ -102,10 +103,10 @@ Before updating the dependencies and migrating your data, please deactivate all 
 
    From the downloaded archive:
 
-```bash
+    ```bash
     cp composer.json $PIM_DIR/
     # then add your own dependencies
-```
+    ```
 
     The following PHP dependencies have changed:
      - `symfony/symfony` upgraded to 3.4.28
@@ -114,10 +115,10 @@ Before updating the dependencies and migrating your data, please deactivate all 
 
     Now we are ready to update the backend dependencies:
 
-```bash
+    ```bash
     cd $PIM_DIR
     php -d memory_limit=3G composer update
-```
+    ```
 
      **This step will copy the upgrades folder from `pim-community-dev/` to your Pim project root in order to migrate.**
     If you have custom code in your project, this step may raise errors in the "post-script" command.
@@ -159,24 +160,24 @@ Please, make sure the folder upgrades/schema/ does not contain former migration 
 
     To take into account those two changes:
 
-```bash
+    ```bash
     php bin/console akeneo:elasticsearch:update-mapping -e prod --all
-```
+    ```
 
 ## Migrate your custom code
 
 1. Apply the sed commands
 
-Several classes and services have been moved or renamed. The following commands help to migrate references to them:
+   Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
-```bash
+    ```bash
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorFilter#Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorIdFilter#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactory#Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\WriteValueCollectionFactory#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ValueCollection#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\WriteValueCollection#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#ValueCollectionIn\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
     please apply `sed 's/ValueCollectionInterface/WriteValueCollection/g` (it also rename the ValueCollection)
-```
+    ```
 
 2. Adapt your custom codes to handle this breaking changes we introduced:
 
@@ -212,12 +213,12 @@ You are now ready to reactivate your custom bundles in the `AppKernel.php` file.
 
 4. Then re-generate the PIM assets:
 
-    ```bash
+```bash
     bin/console cache:clear --env=prod
     bin/console pim:installer:assets --clean --env=prod
     yarn run less
     yarn run webpack
-    ```
+```
 
 5. Restart the queue consumer
 
@@ -225,7 +226,7 @@ Now you are ready to restart the queue consumer daemon.
 
 If you use `supervisor`, then restart your daemon as following:
 
-    ```bash
+```bash
     supervisorctl status
     # the command returns the following daemons
     # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
@@ -235,4 +236,4 @@ If you use `supervisor`, then restart your daemon as following:
     supervisorctl status
     # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 3500, uptime 0:00:04
     # the daemon has been restarted
-    ```
+```
