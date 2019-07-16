@@ -1,19 +1,30 @@
 # 3.0.x
 
+# 3.0.31 (2019-07-16)
+
+# 3.0.30 (2019-07-05)
+
+## Bug fixes
+
+- PIM-8441: Fix badge positioning on PM dropdowns
+- PIM-8354: Fix missing metric attributes on channel page
+
+# 3.0.29 (2019-07-04)
+
 # 3.0.28 (2019-07-02)
 
 ## Bug fixes
 
 - PIM-7894: Fix metric and price filters design
 - PIM-8447: Fix deformed images in dropdowns and grids
+- PIM-8477: Fix rich text area link dialog
+- PIM-8463: On import profiles, displays an explicit error message when file upload fails, for example when the file is too big
 
 # 3.0.27 (2019-06-27)
 
 ## Bug fixes
 
 - PIM-8413: Fix modal of category selection in product and product model exports
-- PIM-8477: Fix rich text area link dialog
-- PIM-8463: On import profiles, displays an explicit error message when file upload fails, for example when the file is too big
 
 # 3.0.26 (2019-06-21)
 

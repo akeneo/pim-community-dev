@@ -67,7 +67,7 @@ pim_enrich.entity.attribute_option:
       success: Opzione di attributo creata correttamente
       fail: Si è verificato un errore durante il tentativo di creare l'opzione di attributo
     update:
-      fail: Non è possibile salvare l'opzione dell'attributo
+      fail: Impossibile salvare l'opzione dell'attributo
     delete:
       fail: Errore durante la cancellazione dell'opzione attributo
   module:
@@ -114,14 +114,14 @@ pim_enrich.entity.group_type:
       confirm: Sei sicuro di voler eliminare questo tipo di gruppo?
 pim_enrich.entity.attribute:
   label: attributo
-  plural_label: Attributi
+  plural_label: Atributi
   flash:
     update:
       success: Attributo aggiornato con successo.
       fail: L'attributo non può essere aggiornato.
       fields_not_ready: "L'attributo non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
     delete:
-      success: Attributo eliminato con successo
+      success: Attributo rimosso con successo
       fail: Non è possibile eliminare questo attributo
   page_title:
     index: "]-Inf, 1]{{ count }} attributo|]1, Inf[{{ count }} attributi"
@@ -152,7 +152,7 @@ pim_enrich.entity.attribute:
     number_min: Numero minimo
     reference_data_name:
       label: Tipo riferimento dati
-      choose: Sceglii il tipo di dati di riferimento
+      choose: Scegli il tipo di dati di riferimento
     scopable: Valore per canale
     type:
       choose: Scegliere il tipo di attributo

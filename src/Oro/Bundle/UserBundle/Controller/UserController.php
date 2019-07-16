@@ -3,6 +3,7 @@
 namespace Oro\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Event\UserEvent;
@@ -136,7 +137,11 @@ class UserController extends Controller
                 throw $this->createNotFoundException(sprintf('User with id %d could not be found.', $id));
             }
 
-            $this->get('pim_user.remover.user')->remove($user);
+            try {
+                $this->get('pim_user.remover.user')->remove($user);
+            } catch (UserCannotBeDeletedException $e) {
+                return new JsonResponse(['message' => $this->get('translator')->trans($e->getMessage())], 400);
+            }
 
             return new JsonResponse('', 204);
         } else {
