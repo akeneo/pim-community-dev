@@ -132,12 +132,6 @@ services:
         arguments:
             - '@pim_internal_api_serializer'
 
-    # @deprecated
-    pim_enrich.normalizer.completeness_collection:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessCollectionNormalizer'
-        arguments:
-            - '@pim_enrich.normalizer.completeness'
-
     pim_enrich.normalizer.product_completeness_collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer'
         arguments:
