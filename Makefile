@@ -71,15 +71,17 @@ reset-conf:
 ## PIM installation
 ##
 
+## Dependencies installation
 composer.lock: composer.json
 	$(PHP_RUN) /usr/local/bin/composer update
 
 vendor: composer.lock
 	$(PHP_RUN) /usr/local/bin/composer install
 
-node_modules: package.json
+node_modules: package.json yarn.lock
 	$(YARN_EXEC) install
 
+## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
 web/css/pim.css: $(LESS_FILES)
 	$(YARN_EXEC) run less
 
@@ -92,9 +94,8 @@ web/bundles: $(ASSET_FILES)
 web/js/translation:
 	$(PHP_EXEC) bin/console oro:translation:dump 'en_US, ca_ES, da_DK, de_DE, es_ES, fi_FI, fr_FR, hr_HR, it_IT, ja_JP, nl_NL, pl_PL, pt_BR, pt_PT, ru_RU, sv_SE, tl_PH, zh_CN, sv_SE, en_NZ'
 
-## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
 .PHONY: install-asset
-install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-paths.js  web/js/translation
+install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-paths.js web/js/translation
 	for locale in $(LOCALE_TO_REFRESH) ; do \
 		$(PHP_EXEC) bin/console oro:translation:dump $$locale ; \
 	done
@@ -104,36 +105,47 @@ install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-pa
 
 ## Initialize the PIM database depending on an environment
 .PHONY: install-database-test
-install-database-test: docker-compose.override.yml app/config/parameters_test.yml vendor
+install-database-test: app/config/parameters_test.yml vendor
 	$(PHP_EXEC) bin/console --env=behat pim:installer:db
 
 .PHONY: install-database-prod
-install-database-prod: docker-compose.override.yml app/config/parameters.yml vendor
+install-database-prod: app/config/parameters.yml vendor
 	$(PHP_EXEC) bin/console --env=prod pim:installer:db
 
 ## Initialize the PIM frontend depending on an environment
-.PHONY: build-front-dev install-asset
-build-front-dev: docker-compose.override.yml node_modules
+.PHONY: build-front-dev
+build-front-dev: node_modules install-asset
 	$(YARN_EXEC) run webpack-dev
 
-.PHONY: build-front-test install-asset
-build-front-test: docker-compose.override.yml node_modules
+.PHONY: build-front-test
+build-front-test: node_modules install-asset
 	$(YARN_EXEC) run webpack-test
 
-## Initialize the PIM: install database (behat/prod) and run webpack
+## Initialize the PIM
+.PHONY: install-pim-prod
+install-pim-prod: clean app/config/parameters.yml app/config/parameters_test.yml build-front-dev install-database-prod
+
+.PHONY: install-pim-test
+install-pim-test: clean app/config/parameters.yml app/config/parameters_test.yml build-front-test install-database-test
+
 .PHONY: install-pim
-install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor node_modules clean install-asset build-front-dev build-front-test install-database-test install-database-prod
+install-pim: install-pim-test install-pim-prod
 
 ##
 ## Docker
 ##
 
-## Start docker containers
-.PHONY: up
-up: .env docker-compose.override.yml app/config/parameters.yml app/config/parameters_test.yml
-	$(DOCKER_COMPOSE) up -d --remove-orphan
+.PHONY: pull
+pull: .env
+	$(DOCKER_COMPOSE) pull
 
-## Stop docker containers, remove volumes and networks
+# `make up` will start all container (node, mysql, object storage, selenium, elasticsearch, fpm and http)
+# `make up C=fpm` will lonly start the fpm container
+.PHONY: up
+up: .env
+	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
+
+# `make down` wille stop docker containers, remove volumes and networks
 .PHONY: down
 down:
 	$(DOCKER_COMPOSE) down -v
@@ -142,12 +154,10 @@ down:
 ## Xdebug
 ##
 
-## Enable Xdebug
 .PHONY: xdebug-on
 xdebug-on: docker-compose.override.yml
 	PHP_XDEBUG_ENABLED=1 $(MAKE) up
 
-## Disable Xdebug
 .PHONY: xdebug-off
 xdebug-off: docker-compose.override.yml
 	PHP_XDEBUG_ENABLED=0 $(MAKE) up
@@ -155,9 +165,6 @@ xdebug-off: docker-compose.override.yml
 ##
 ## Run tests suite
 ##
-
-.PHONY: coupling ## Run the coupling-detector on Everything
-coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling
 
 .PHONY: phpspec
 phpspec: vendor
@@ -183,3 +190,36 @@ phpunit: app/config/parameters_test.yml vendor
 behat-legacy: behat.yml app/config/parameters_test.yml vendor node_modules
 	${PHP_EXEC} vendor/bin/behat -p legacy ${F}
 
+
+
+.PHONY: coupling-back
+coupling-back: structure-coupling user-management-coupling channel-coupling enrichment-coupling
+
+.PHONY: check-pullup-back
+check-pullup-back:
+	${PHP_EXEC} bin/check-pullup
+.PHONY: lint-back
+lint-back:
+	${PHP_EXEC} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+	${PHP_EXEC} vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
+.PHONY: unit-back
+unit-back:
+	${PHP_EXEC} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+.PHONY: acceptance-back
+acceptance-back:
+	${PHP_EXEC} vendor/bin/behat --strict -p acceptance -vv
+
+
+
+.PHONY: lint-front
+lint-front:
+	${YARN_EXEC} run lint
+.PHONY: unit-front
+unit-front:
+	${YARN_EXEC} run unit
+.PHONY: acceptance-front
+acceptance-front:
+	${YARN_EXEC} run acceptance ./tests/features
+.PHONY: integration-front
+integration-front:
+	${YARN_EXEC} run integration

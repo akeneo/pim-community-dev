@@ -7,20 +7,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Copy env file
-          command: cp .env.dist .env
-      - run:
-          name: Copy docker-compose.override.yml.dist
-          command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
-      - run:
             name: Pull the latest Docker images
-            command: docker-compose pull
+            command: make pull
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
-      - run:
-          name: Setup the parameters.yml files
-          command: ./bin/docker/pim-setup.sh
       - run:
           name: Set the local object storage for tests
           command: ./.circleci/local-object-storage-setup.sh
@@ -29,7 +20,7 @@ jobs:
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
-          command: docker-compose up -d
+          command: make up
       - restore_cache:
           name: Restore cache - node_modules
           keys:
@@ -41,21 +32,9 @@ jobs:
       - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
-      - run:
-          name: Install dependencies
-          command: ./bin/docker/pim-dependencies.sh
-      - run:
-          name: Pim database installation
-          command: docker-compose exec fpm bin/console --env=behat pim:install --force --clean
-      - run:
-          name: Pim yarn less installation
-          command: docker-compose run --rm node yarn run less
-      - run:
-          name: Pim yarn dev installation
-          command: docker-compose run --rm node yarn run webpack-dev
-      - run:
-          name: Pim yarn test installation
-          command: docker-compose run --rm node yarn run webpack-test
+      -   run:
+              name: Pim installation
+              command: make install-pim-test
       - run:
             name: Change owner on project dir after install
             command: sudo chmod -R 777 ../project
@@ -84,29 +63,25 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: docker-compose up -d fpm
+                command: make up C=fpm
           - run:
-                name: PhpSpec
-                command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+                name: Run unit back tests
+                command: make unit-back
           - run:
-                name: PhpCsFixer
-                command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+                name: Run back linter
+                command: make lint-back
                 when: always
           - run:
-                name: PhpCoupling Detector
-                command: DOCKER=true make coupling
+                name: Run PHP coupling detector
+                command: make coupling-back
                 when: always
           - run:
-                name: PHPStan
-                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
+                name: Check pull up issues
+                command: make check-pullup-back
                 when: always
           - run:
-                name: Check Pullup
-                command: docker-compose exec -T fpm bin/check-pullup
-                when: always
-          - run:
-                name: Acceptance back
-                command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+                name: Run back acceptance tests
+                command: make acceptance-back
                 when: always
           - store_test_results:
                 path: var/tests
@@ -128,12 +103,12 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: docker-compose up -d
+                command: make up
           - run:
                 name: Install database
                 command: |
                     sleep 25 # wait mysql to be up
-                    docker-compose exec fpm bin/console --env=behat pim:install:db
+                    make install-database-test
           - run:
                 name: PHPunit Integration
                 command: |
@@ -159,12 +134,12 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: docker-compose up -d
+                command: make up
           - run:
                 name: Install database
                 command: |
                     sleep 25 # wait mysql to be up
-                    docker-compose exec fpm bin/console --env=behat pim:install:db
+                    make install-database-test
           - run:
                 name: PHPunit End to end
                 command: |
@@ -202,12 +177,12 @@ jobs:
           command: docker-compose pull
       - run:
             name: Start containers
-            command: docker-compose up -d
+            command: make up
       - run:
             name: Install database
             command: |
                 sleep 25 # wait mysql to be up
-                docker-compose exec fpm bin/console --env=behat pim:install:db
+                make install-database-test
       - run:
             name: Non critical Behat
             command: |
@@ -247,18 +222,18 @@ jobs:
             command: sudo chown -R 1000:1000 ../project
         - run:
             name: Front linter
-            command: docker-compose run --rm node yarn run lint
+            command: make lint-front
         - run:
             name: Front unit tests
-            command: docker-compose run --rm node yarn run unit
+            command: make unit-front
             when: always
         - run:
             name: Front acceptance tests
-            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+            command: MAX_RANDOM_LATENCY_MS=100 make acceptance-front
             when: always
         - run:
             name: Front integration tests
-            command: docker-compose run --rm node yarn run integration
+            command: make integration-front
             when: always
 
 workflows:
