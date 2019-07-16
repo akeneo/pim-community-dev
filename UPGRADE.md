@@ -2,7 +2,6 @@
 
 ## Disclaimer
 
-> Please check that you're using Akeneo PIM v3.1.
 > We're assuming that you created your project from the standard distribution.
 > This documentation helps to migrate projects based on the Community Edition.
 > Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
@@ -10,6 +9,8 @@
 > Please perform a backup of your codebase if you don't use a VCS (Version Control System).
 
 ## Requirements
+
+Make sure that you're using Akeneo PIM v3.1. You can check this information at the bottom of the dashboard.
 
 Please, see the complete [list of requirements](https://docs.akeneo.com/3.2/install_pim/manual/system_requirements/system_requirements.html) for PIM v3.2.
 
@@ -151,7 +152,7 @@ Please, make sure the folder upgrades/schema/ does not contain former migration 
         - ES does not take in account case insensitivity of option codes when searching. As we modified the way products values are loaded from Mysql, ES search has to be case insensitive when searching on option codes.
 
 ```bash
-    php bin/console akeneo:elasticsearch:update-mapping --all
+    php bin/console akeneo:elasticsearch:update-mapping -e prod --all
 ```
 
 ## Migrate your custom code
@@ -162,8 +163,11 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorFilter#Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorIdFilter#g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's#ValueCollectionInterface#WriteValueCollectionInterface#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactory#Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\WriteValueCollectionFactory#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ValueCollection#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\WriteValueCollection#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#ValueCollectionIn\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
+    please apply `sed 's/ValueCollectionInterface/WriteValueCollection/g` (it also rename the ValueCollection)
 ```
 
 2. Adapt your custom codes to handle this breaking changes we introduced:
@@ -182,16 +186,17 @@ Several classes and services have been moved or renamed. The following commands 
 
 
    - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetMetadataForProductModel`
-    This class has been removed from the refactoring of the `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels`.
+   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata`
+   - `Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface`
+   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface`
+    These class and interface have been removed from the refactoring of the `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels`.
     You can check the new class `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels` to see how it has been replaced.
 
-   - `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory`
+
    - `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface`
-   - `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection`
    - `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`
-   - `Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface`
-   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata`
-   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface`
+    These interfaces have been removed. You can now directly extends `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory` and `Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection`
+
 
 3. Reactivate your custom code
 
