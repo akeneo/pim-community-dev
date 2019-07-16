@@ -15,6 +15,9 @@ use Elasticsearch\Namespaces\IndicesNamespace;
  * It means that it cannot be executed while the prod is alive
  * Still it is faster than before!
  *
+ * TODO: https://akeneo.atlassian.net/browse/TIP-1191
+ *      Accept only alias name and not index name
+ *
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -85,8 +88,22 @@ final class UpdateIndexMapping
     private function moveAliasAndRemoveOldIndex(IndicesNamespace $indicesClient, string $newIndexName, string $oldIndexNameOrAlias): UpdateIndexMapping
     {
         $aliasAlreadyExists = $indicesClient->existsAlias(['name' => $oldIndexNameOrAlias]);
-        $realAliasName = $oldIndexNameOrAlias;
-        $aliasName = $aliasAlreadyExists ? $oldIndexNameOrAlias : $oldIndexNameOrAlias . '_tmp';
+
+        if ($aliasAlreadyExists) {
+            $this->moveFromAliasToAlias($indicesClient, $newIndexName, $oldIndexNameOrAlias);
+        } else {
+            $this->moveFromIndexToAlias($indicesClient, $newIndexName, $oldIndexNameOrAlias);
+        }
+
+        $indicesClient->refresh(['index' => $newIndexName]);
+
+        return $this;
+    }
+
+    private function moveFromAliasToAlias(IndicesNamespace $indicesClient, string $newIndexName, string $aliasName): void
+    {
+        $aliases = $indicesClient->getAlias(['name' => $aliasName]);
+        $oldIndexName = array_keys($aliases)[0];
 
         $indicesClient->updateAliases([
             'body' => [
@@ -99,36 +116,29 @@ final class UpdateIndexMapping
                     ],
                     [
                         "remove_index" => [
-                            "index" => $oldIndexNameOrAlias
+                            "index" => $oldIndexName
                         ]
                     ],
                 ]
             ]
         ]);
+    }
 
-        if (!$aliasAlreadyExists) {
-            $indicesClient->updateAliases([
-                'body' => [
-                    "actions" => [
-                        [
-                            "remove" => [
-                                "index" => $newIndexName,
-                                "alias" => $aliasName,
-                            ]
-                        ],
-                        [
-                            "add" => [
-                                "index" => $newIndexName,
-                                "alias" => $realAliasName
-                            ]
-                        ],
-                    ]
+    private function moveFromIndexToAlias(IndicesNamespace $indicesClient, string $newIndexName, string $oldIndexName): void
+    {
+        $indicesClient->delete(['index' => $oldIndexName]);
+
+        $indicesClient->updateAliases([
+            'body' => [
+                "actions" => [
+                    [
+                        "add" => [
+                            "index" => $newIndexName,
+                            "alias" => $oldIndexName
+                        ]
+                    ],
                 ]
-            ]);
-        }
-
-        $indicesClient->refresh(['index' => $newIndexName]);
-
-        return $this;
+            ]
+        ]);
     }
 }
