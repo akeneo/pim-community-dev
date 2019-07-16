@@ -1,7 +1,8 @@
 {
   "name": "pim-community-dev",
+  "version": "3.2.0",
   "description": "Akeneo PIM Application",
-  "homepage": "http://www.akeneo.com",
+  "homepage": "https://www.akeneo.com/",
   "config": {
     "source": ".",
     "check": "frontend/build/check-dependencies.js",
@@ -9,9 +10,10 @@
   },
   "scripts": {
     "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
-    "webpack": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --end=prod",
+    "sync": "NODE_PATH=node_modules node $npm_package_config_check --source=$npm_package_config_source",
+    "webpack": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
     "webpack-dev": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
-    "webpack-watch": "yarn requirements && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config --watch",
+    "webpack-watch": "yarn requirements && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
@@ -22,9 +24,9 @@
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
     "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
-    "less": "node ./frontend/build/compile-less.js",
-    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{src,web/bundles}/**/*.{less,css}\" -c \"yarn less --dev\"",
-    "update-extensions": "node frontend/build/update-extensions.js"
+    "less": "node $npm_package_config_styles",
+    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,web/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
+    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js"
   },
   "repository": {
     "type": "git",
