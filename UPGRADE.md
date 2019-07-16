@@ -128,10 +128,10 @@ Before updating the dependencies and migrating your data, please deactivate all 
 
    From the downloaded archive:
 
-```bash
+    ```bash
     cp package.json $PIM_DIR/
     # then add your own dependencies
-```
+    ```
 
     The following PHP dependencies have changed:
       - `cucumber-html-reporter` upgraded to 5.0.0
@@ -143,10 +143,10 @@ Before updating the dependencies and migrating your data, please deactivate all 
 
 Please, make sure the folder upgrades/schema/ does not contain former migration files (from PIM 2.2 to 2.3 for instance), otherwise the migration command will surely not work properly.
 
-```bash
+    ```bash
     rm -rf var/cache
     bin/console doctrine:migration:migrate --env=prod
-```
+    ```
 
 12. Migrate your Elasticsearch indices
 
