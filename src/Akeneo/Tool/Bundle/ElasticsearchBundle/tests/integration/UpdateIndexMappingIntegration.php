@@ -51,7 +51,7 @@ class UpdateIndexMappingIntegration extends TestCase
     {
         $indexHost = $this->getParameter('index_hosts');
         /** @var Client $akeneoProductClient */
-        $akeneoProductClient = $this->get('akeneo_elasticsearch.client.product');
+        $akeneoProductClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
 
         $clientBuilder = new ClientBuilder();
         $clientBuilder->setHosts(is_string($indexHost) ? [$indexHost] : $indexHost);
@@ -66,7 +66,7 @@ class UpdateIndexMappingIntegration extends TestCase
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory');
         $this->createProduct('product1');
         Assert::assertEquals(1, $pqb->create()->execute()->count());
-        Assert::assertContains($this->getParameter('product_index_name'), $indices);
+        Assert::assertContains($this->getParameter('product_and_product_model_index_name'), $indices);
 
 
         $updateIndexMapping = new UpdateIndexMapping();
