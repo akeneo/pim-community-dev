@@ -22,7 +22,7 @@ class EnterpriseVersion
     const VERSION = '3.2.0';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Lettuce';
+    const VERSION_CODENAME = 'Edelweiss';
 
     /** @staticvar string */
     const EDITION = 'EE';
