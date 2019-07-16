@@ -27,22 +27,22 @@ Please provide a server with the following requirements before proceeding to the
     If you use `supervisor`, then stop your daemon as following:
 
 ```bash
-        supervisorctl status
-        # the command returns the following daemons
-        # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 4162, uptime 0:05:44
+    supervisorctl status
+    # the command returns the following daemons
+    # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 4162, uptime 0:05:44
 
-        supervisorctl stop pim-queue-daemon:pim-queue-daemon_00
+    supervisorctl stop pim-queue-daemon:pim-queue-daemon_00
 
-        supervisorctl status
-        # the daemon has been stopped
-        # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
+    supervisorctl status
+    # the daemon has been stopped
+    # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
 ```
 
     Otherwise, kill your daemon:
 
 
 ```bash
-        pkill -f job-queue-consumer-daemon
+    pkill -f job-queue-consumer-daemon
 ```
 
     To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-community-standard/compare/3.1...3.2).
