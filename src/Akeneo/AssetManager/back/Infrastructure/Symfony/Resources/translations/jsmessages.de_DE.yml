@@ -280,7 +280,6 @@ pim_enrich:
       property:
         type:
           akeneo_asset_multiple_link: Referenz-Entität Mehrfachverknüpfungen
-          akeneo_asset_single_link: Referenz-Entität Einzelverknüpfung
         section:
           type_specific: Spezifische Parameter
         asset_family:

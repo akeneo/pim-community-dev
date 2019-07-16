@@ -248,7 +248,6 @@ pim_enrich:
       property:
         type:
           akeneo_asset_multiple_link: Viitetiedot monivalinta
-          akeneo_asset_single_link: Viitetiedot yksinkertainen valinta
         section:
           type_specific: Tyyppikohtaiset parametrit
         asset_family:

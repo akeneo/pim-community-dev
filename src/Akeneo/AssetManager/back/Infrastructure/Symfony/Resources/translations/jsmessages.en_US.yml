@@ -309,7 +309,6 @@
 #      property:
 #        type:
 #          akeneo_asset_multiple_link: Asset multiple links
-#          akeneo_asset_single_link: Asset single link
 #        section:
 #          type_specific: Type specific parameters
 #        asset_family:
