@@ -26,7 +26,7 @@ Please provide a server with the following requirements before proceeding to the
 
     If you use `supervisor`, then stop your daemon as following:
 
-```bash
+    ```bash
     supervisorctl status
     # the command returns the following daemons
     # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 4162, uptime 0:05:44
@@ -37,7 +37,7 @@ Please provide a server with the following requirements before proceeding to the
     # the daemon has been stopped
     # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
 
-```
+    ```
 
     Otherwise, kill your daemon:
 
