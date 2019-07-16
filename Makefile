@@ -56,16 +56,8 @@ app/config/parameters_test.yml:
 	sed -i "s/published_product_index_name:.*akeneo_pim_published_product/published_product_index_name:          test_akeneo_pim_published_product/g" ./app/config/parameters_test.yml
 	sed -i "s/published_product_and_product_model_index_name:.*akeneo_pim_published_product_and_product_model/published_product_and_product_model_index_name: test_akeneo_pim_published_product_and_product_model/g" ./app/config/parameters_test.yml
 
-docker-compose.override.yml:
-	cp docker-compose.override.yml.dist docker-compose.override.yml
-
 .env:
 	cp .env.dist .env
-
-## Remove all configuration file generated
-.PHONY: reset-conf
-reset-conf:
-	rm .env docker-compose.override.yml app/config/parameters_test.yml app/config/parameters.yml behat.yml
 
 ##
 ## PIM installation
@@ -151,50 +143,11 @@ down:
 	$(DOCKER_COMPOSE) down -v
 
 ##
-## Xdebug
+## Back tests
 ##
-
-.PHONY: xdebug-on
-xdebug-on: docker-compose.override.yml
-	PHP_XDEBUG_ENABLED=1 $(MAKE) up
-
-.PHONY: xdebug-off
-xdebug-off: docker-compose.override.yml
-	PHP_XDEBUG_ENABLED=0 $(MAKE) up
-
-##
-## Run tests suite
-##
-
-.PHONY: phpspec
-phpspec: vendor
-	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpspec run ${F}
-
-.PHONY: phpspec-debug
-phpspec-debug: vendor
-	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
-
-.PHONY: behat-acceptance
-behat-acceptance: behat.yml app/config/parameters_test.yml vendor
-	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
-
-.PHONY: behat-acceptance-debug
-behat-acceptance-debug: behat.yml app/config/parameters_test.yml vendor
-	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
-
-.PHONY: phpunit
-phpunit: app/config/parameters_test.yml vendor
-	${PHP_EXEC} vendor/bin/phpunit -c app ${F}
-
-.PHONY: behat-legacy
-behat-legacy: behat.yml app/config/parameters_test.yml vendor node_modules
-	${PHP_EXEC} vendor/bin/behat -p legacy ${F}
-
-
 
 .PHONY: coupling-back
 coupling-back: structure-coupling user-management-coupling channel-coupling enrichment-coupling
-
 .PHONY: check-pullup-back
 check-pullup-back:
 	${PHP_EXEC} bin/check-pullup
@@ -209,7 +162,9 @@ unit-back:
 acceptance-back:
 	${PHP_EXEC} vendor/bin/behat --strict -p acceptance -vv
 
-
+##
+## Front tests
+##
 
 .PHONY: lint-front
 lint-front:
