@@ -208,7 +208,7 @@ final class CreateAssetFamilyContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
 
         $ruleTemplates = [];
-        for ($i = 1; $i <= $this->ruleTemplateByAssetFamilyLimit; $i++) {
+        for ($i = 1; $i <= $this->ruleTemplateByAssetFamilyLimit+1; $i++) {
             $ruleTemplates[] = $this->getRuleTemplate();
         }
 
