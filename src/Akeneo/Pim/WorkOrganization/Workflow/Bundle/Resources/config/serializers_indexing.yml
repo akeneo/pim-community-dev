@@ -36,3 +36,23 @@ services:
             - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pimee_workflow.normalizer.indexing_product.published_product:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\PublishedProductNormalizer'
+        arguments:
+            - '@pimee_workflow.query.get_published_product_completenesses'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 110 }
+        
+    pimee_workflow.normalizer.indexing_product_and_model.published_product:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\PublishedProductAndModelNormalizer'
+        arguments:
+            - '@pimee_workflow.query.get_published_product_completenesses'
+            - !tagged pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 110 }
+        
+    pimee_workflow.normalizer.indexing.published_product_completeness_collection:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\CompletenessCollectionNormalizer'
+        tags:
+            - { name: pim_indexing_serializer.normalizer }

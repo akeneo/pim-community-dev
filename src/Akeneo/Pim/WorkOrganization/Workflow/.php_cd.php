@@ -162,6 +162,9 @@ $rules = [
         // TIP-983: Workflow should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
 
+        // TODO: Workflow should not be linked to channel
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
 
@@ -220,6 +223,7 @@ $rules = [
 
         // TIP-1032: Workflow should not depend on PIM/Enrichment normalizers
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer',
 

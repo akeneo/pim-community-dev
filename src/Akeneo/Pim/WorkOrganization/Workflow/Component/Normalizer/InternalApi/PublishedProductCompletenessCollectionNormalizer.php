@@ -15,7 +15,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -109,7 +109,7 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     /**
      * Returns how many completenesses have a ratio of 100 for a provided list of completeness.
      *
-     * @param ProductCompleteness[] $completenesses
+     * @param PublishedProductCompleteness[] $completenesses
      *
      * @return int
      */
@@ -145,7 +145,7 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     /**
      * Returns the normalized channel completeness
      *
-     * @param ProductCompleteness[] $completenesses
+     * @param PublishedProductCompleteness[] $completenesses
      * @param string $format
      * @param string[] $localeCodes
      * @param array $context
@@ -160,15 +160,13 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     ) {
         $normalizedCompletenesses = [];
 
-        //TODO: workaround in order to handle behat empty completeness
         foreach ($completenesses as $completeness) {
             $localeCode = $completeness->localeCode();
 
             $normalizedCompleteness = [];
             $normalizedCompleteness['completeness'] = $this->standardNormalizer->normalize($completeness, $format, $context);
             $normalizedCompleteness['missing'] = [];
-            $normalizedCompleteness['label'] = $this->localeRepository->findOneByIdentifier($completeness->localeCode())
-                                                                      ->getName();
+            $normalizedCompleteness['label'] = $this->localeRepository->findOneByIdentifier($completeness->localeCode())->getName();
 
             foreach ($completeness->missingAttributeCodes() as $attributeCode) {
                 $normalizedCompleteness['missing'][] = [
