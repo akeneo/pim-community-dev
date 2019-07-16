@@ -117,7 +117,6 @@ define([
                     illustrationClass: 'delete',
                     cancelText: '',
                 });
-
                 return this.errorModal;
             }
         });
