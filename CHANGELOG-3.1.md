@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8540: Display option label in product PDF
+- PIM-8549: Fix filter caret invisible when option label is too long
 
 # 3.1.13 (2019-07-16)
 
