@@ -81,7 +81,7 @@
         "sensio/generator-bundle": "3.1.6",
         "symfony/monolog-bundle": "3.1.2",
         "symfony/swiftmailer-bundle": "3.0.3",
-        "symfony/security-acl": "3.0.0",
+        "symfony/security-acl": "*",
         "symfony/symfony": "3.4.28",
         "symfony/thanks": "^1.0",
         "symfony/polyfill-apcu": "1.4.0",
