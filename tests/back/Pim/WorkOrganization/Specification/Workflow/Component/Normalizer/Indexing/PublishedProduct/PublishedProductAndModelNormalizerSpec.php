@@ -16,14 +16,13 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\Published
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 class PublishedProductAndModelNormalizerSpec extends ObjectBehavior
 {
-    function let(GetPublishedProductCompletenesses $getPublishedProductCompletenesses, Serializer $serializer)
+    function let(GetPublishedProductCompletenesses $getPublishedProductCompletenesses, NormalizerInterface $normalizer)
     {
         $this->beConstructedWith($getPublishedProductCompletenesses, []);
-        $this->setSerializer($serializer);
+        $this->setNormalizer($normalizer);
     }
 
     function it_is_a_normalizer()
@@ -49,7 +48,7 @@ class PublishedProductAndModelNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_published_product(
         GetPublishedProductCompletenesses $getPublishedProductCompletenesses,
-        Serializer $serializer,
+        NormalizerInterface $normalizer,
         PublishedProductInterface $publishedProduct,
         FamilyInterface $family
     ) {
@@ -58,7 +57,7 @@ class PublishedProductAndModelNormalizerSpec extends ObjectBehavior
         $dateTime = new \DateTime('2019-07-16');
         $publishedProduct->getCreated()->willReturn($dateTime);
         $publishedProduct->getUpdated()->willReturn($dateTime);
-        $serializer->normalize($dateTime, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->willReturn(
+        $normalizer->normalize($dateTime, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->willReturn(
             '2019-07-16T14:25:04+00:00'
         );
 
@@ -66,7 +65,7 @@ class PublishedProductAndModelNormalizerSpec extends ObjectBehavior
         $attributeAsLabel->setCode('name');
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $family->getAttributeCodes()->willReturn(['sku', 'name', 'description', 'picture']);
-        $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->willReturn(
+        $normalizer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->willReturn(
             [
                 'code' => 'clothing',
                 'labels' => [
@@ -88,7 +87,7 @@ class PublishedProductAndModelNormalizerSpec extends ObjectBehavior
             ]
         );
         $getPublishedProductCompletenesses->fromPublishedProductId(42)->willReturn($completenessCollection);
-        $serializer->normalize(
+        $normalizer->normalize(
             $completenessCollection,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             []
@@ -109,7 +108,7 @@ class PublishedProductAndModelNormalizerSpec extends ObjectBehavior
             ]
         );
         $publishedProduct->getValues()->willReturn($values);
-        $serializer->normalize($values, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+        $normalizer->normalize($values, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
                    ->willReturn(
                        [
                            'name-text' => [

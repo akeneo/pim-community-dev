@@ -18,16 +18,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProduc
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class PublishedProductAndModelNormalizer implements NormalizerInterface, SerializerAwareInterface
+class PublishedProductAndModelNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
-    use SerializerAwareTrait;
+    use NormalizerAwareTrait;
 
     private const FIELD_ATTRIBUTES_OF_ANCESTORS = 'attributes_of_ancestors';
     private const FIELD_DOCUMENT_TYPE = 'document_type';
@@ -60,7 +60,7 @@ class PublishedProductAndModelNormalizer implements NormalizerInterface, Seriali
      */
     public function normalize($publishedProduct, $format = null, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
+        if (!$this->normalizer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
         }
 
@@ -68,15 +68,15 @@ class PublishedProductAndModelNormalizer implements NormalizerInterface, Seriali
 
         $data[self::FIELD_ID] = 'product_' . (string)$publishedProduct->getId();
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $publishedProduct->getIdentifier();
-        $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
+        $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->normalizer->normalize(
             $publishedProduct->getCreated(),
             $format
         );
-        $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->serializer->normalize(
+        $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->normalizer->normalize(
             $publishedProduct->getUpdated(),
             $format
         );
-        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->serializer->normalize(
+        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->normalizer->normalize(
             $publishedProduct->getFamily(),
             $format
         );
@@ -93,7 +93,7 @@ class PublishedProductAndModelNormalizer implements NormalizerInterface, Seriali
 
         $completenesses = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
         $data[self::FIELD_COMPLETENESS] = count($completenesses) > 0
-            ? $this->serializer->normalize(
+            ? $this->normalizer->normalize(
                 $completenesses,
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
@@ -104,7 +104,7 @@ class PublishedProductAndModelNormalizer implements NormalizerInterface, Seriali
         $data[self::FIELD_PARENT] = null;
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$publishedProduct->getValues()->isEmpty()
-            ? $this->serializer->normalize(
+            ? $this->normalizer->normalize(
                 $publishedProduct->getValues(),
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
