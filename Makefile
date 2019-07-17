@@ -75,12 +75,12 @@ node_modules: package.json yarn.lock
 
 ## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
 web/css:
-	mkdir web/css
+	$(DOCKER_COMPOSE) run -u docker --rm fpm mkdir web/css
 
 web/js:
-	mkdir web/js
+	$(DOCKER_COMPOSE) run -u docker --rm fpm mkdir web/js
 
-web/css/pim.css: web/css $(LESS_FILES)
+web/css/pim.css: web/css web/js/require-paths.js $(LESS_FILES)
 	$(YARN_EXEC) run less
 
 web/js/require-paths.js: web/js $(REQUIRE_JS_FILES)
@@ -98,7 +98,7 @@ install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-pa
 		$(PHP_EXEC) bin/console oro:translation:dump $$locale ; \
 	done
 	## Prevent translations update next time
-	touch web/js/translation
+	$(DOCKER_COMPOSE) run --rm fpm touch web/js/translation
 	$(PHP_EXEC) bin/console fos:js-routing:dump --target web/js/routes.js
 
 ## Initialize the PIM database depending on an environment
