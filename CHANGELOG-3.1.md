@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8543: Fix record count after deletion 
+
 # 3.1.13 (2019-07-16)
 
 ## Bug fixes

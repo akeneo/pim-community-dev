@@ -16,6 +16,7 @@ use Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenc
 use Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -41,17 +42,21 @@ class DeleteAllAction
     private $canEditReferenceEntityQueryHandler;
     /** @var TokenStorageInterface */
     private $tokenStorage;
+    /** @var RecordIndexerInterface */
+    private $recordIndexer;
 
     public function __construct(
         DeleteAllReferenceEntityRecordsHandler $deleteAllRecordsHandler,
         SecurityFacade $securityFacade,
         CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        RecordIndexerInterface $recordIndexer
     ) {
         $this->deleteAllRecordsHandler = $deleteAllRecordsHandler;
         $this->securityFacade = $securityFacade;
         $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
         $this->tokenStorage = $tokenStorage;
+        $this->recordIndexer = $recordIndexer;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
@@ -66,6 +71,7 @@ class DeleteAllAction
         $command = new DeleteAllReferenceEntityRecordsCommand($referenceEntityIdentifier);
 
         ($this->deleteAllRecordsHandler)($command);
+        $this->recordIndexer->refresh();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
