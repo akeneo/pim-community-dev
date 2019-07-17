@@ -326,18 +326,17 @@ class CreateOrUpdateAssetFamilyContext implements Context
     private function getExpectedRuleTemplate(): array
     {
         return [
-            'conditions' => [
+            'product_selections' => [
                 [
                     'field'    => 'sku',
                     'operator' => 'equals',
                     'value'    => '{{product_sku}}'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to'    => [
                 [
-                    'type'  => 'add',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
+                    'mode'  => 'add',
+                    'attribute' => '{{attribute}}',
                 ]
             ]
         ];

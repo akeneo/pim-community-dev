@@ -372,18 +372,17 @@ final class EditAssetFamilyContext implements Context
     private function getRuleTemplate(): array
     {
         return [
-            'conditions' => [
+            'product_selections' => [
                 [
-                    'field'    => 'sku',
-                    'operator' => '=',
-                    'value'    => '{{product_sku}}'
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '{{product_sku}}'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to'    => [
                 [
-                    'type'  => 'set',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
+                    'mode'  => 'set',
+                    'attribute' => '{{attribute}}'
                 ]
             ]
         ];

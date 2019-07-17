@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
 
 use Webmozart\Assert\Assert;
 
-
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -32,7 +31,7 @@ class ItemCollection
 
     public static function createFromNormalized(array $normalizedItems): self
     {
-        Assert::allIsArray($normalizedItems);
+        Assert::allStringNotEmpty($normalizedItems, 'All the item values should be a string not empty');
 
         $items = [];
         foreach ($normalizedItems as $item) {

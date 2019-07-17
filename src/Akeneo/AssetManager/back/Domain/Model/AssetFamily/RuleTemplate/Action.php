@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Field;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Item;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\ItemCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Items;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Type;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Value;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -29,6 +30,8 @@ use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
  */
 class Action
 {
+    const ITEM_PATTERN = '{{code}}';
+
     /** @var Field */
     private $field;
 
@@ -55,20 +58,33 @@ class Action
 
     public static function createFromNormalized(array $action): self
     {
+        Assert::keyExists($action, 'field');
+        Assert::keyExists($action, 'type');
+        Assert::keyExists($action, 'items');
+
         $field = Field::createFromNormalized($action['field']);
         $type = Type::createFromNormalized($action['type']);
         $items = ItemCollection::createFromNormalized($action['items']);
-        $channel = ChannelReference::createFromNormalized($action['channel']);
-        $locale = LocaleReference::createFromNormalized($action['locale']);
+        $channel = key_exists('channel', $action) ? ChannelReference::createFromNormalized($action['channel']) : ChannelReference::noReference();
+        $locale = key_exists('locale', $action) ? LocaleReference::createFromNormalized($action['locale']) : LocaleReference::noReference();
 
         return new self($field, $type, $items, $channel, $locale);
     }
 
+    public static function createFromProductLinkRule(array $action): self
+    {
+        $action['field'] = $action['attribute'];
+        $action['type'] = $action['mode'];
+        $action['items'] = [self::ITEM_PATTERN];
+
+        return self::createFromNormalized($action);
+    }
+
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): self
     {
-        $field = ReplacePatterns::replace($this->field->stringValue(), $propertyAccessibleAsset);
-        $items = array_map(function (Item $item) use ($propertyAccessibleAsset) {
-            return ReplacePatterns::replace($item->stringValue(), $propertyAccessibleAsset);
+        $field = ReplacePattern::replace($this->field->stringValue(), $propertyAccessibleAsset);
+        $items = array_map(function (string $item) use ($propertyAccessibleAsset) {
+            return ReplacePattern::replace($item, $propertyAccessibleAsset);
         }, $this->items->normalize());
 
         return new self(
@@ -83,11 +99,11 @@ class Action
     public function normalize(): array
     {
         return [
-            'field' => $this->field->stringValue(),
-            'type' => $this->type->stringValue(),
-            'items' => $this->items->stringValue(),
+            'field'   => $this->field->stringValue(),
+            'type'    => $this->type->stringValue(),
+            'items'   => $this->items->normalize(),
             'channel' => $this->channel->normalize(),
-            'locale' => $this->locale->normalize(),
+            'locale'  => $this->locale->normalize(),
         ];
     }
 }

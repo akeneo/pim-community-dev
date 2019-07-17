@@ -43,7 +43,7 @@ class AssetFamilyValidator
                 'image' => [
                     'type' => ['string', 'null']
                 ],
-                'product_link_rule' => [
+                'product_link_rules' => [
                     'type'  => 'array',
                     'items' => [
                         'type' => 'object',
@@ -96,7 +96,7 @@ class AssetFamilyValidator
                                 ],
                             ]
                         ],
-                        'required' => ['conditions', 'actions'],
+                        'required' => ['product_selections', 'assign_assets_to'],
                         'additionalProperties' => false,
                     ],
                 ],

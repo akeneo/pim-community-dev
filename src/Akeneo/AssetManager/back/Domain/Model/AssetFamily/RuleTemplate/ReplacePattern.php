@@ -15,25 +15,35 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 
-
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class ReplacePatterns
+class ReplacePattern
 {
-    public static function replace(string $ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset): string
+    /**
+     * @throws \InvalidArgumentException When the rule value has more than one pattern to replace and the asset value is an array
+     *
+     * @return array|string
+     */
+    public static function replace(string $ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset)
     {
         preg_match_all('#{{(.*?)}}#', $ruleValue, $matchedPatterns);
+        $matchedPatterns = $matchedPatterns[1];
 
-        foreach ($matchedPatterns[1] as $pattern) {
+        foreach ($matchedPatterns as $pattern) {
             if (!$propertyAccessibleAsset->hasValue(trim($pattern))) {
-                continue;
+                throw new \InvalidArgumentException(sprintf('The asset property "%s" does not exist', trim($pattern)));
             }
 
             $assetValue = $propertyAccessibleAsset->getValue(trim($pattern));
+
             if (is_array($assetValue)) {
-                $assetValue = implode(',', $assetValue);
+                if (1 < count($matchedPatterns)) {
+                    throw new \InvalidArgumentException(sprintf('The asset property "%s" could not be replaced as his value is an array', trim($pattern)));
+                }
+
+                return $assetValue;
             }
 
             $ruleValue = str_replace(sprintf('{{%s}}', $pattern), $assetValue, $ruleValue);

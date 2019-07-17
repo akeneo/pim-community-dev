@@ -52,7 +52,7 @@ class RuleTemplateCollection implements \IteratorAggregate
 
         $ruleTemplates = [];
         foreach ($productLinkRules as $productLinkRule) {
-            $ruleTemplates[] = RuleTemplate::createFromProductLinkRules($productLinkRule);
+            $ruleTemplates[] = RuleTemplate::createFromProductLinkRule($productLinkRule);
         }
 
         return new self($ruleTemplates);
@@ -73,7 +73,7 @@ class RuleTemplateCollection implements \IteratorAggregate
         $normalizedRuleTemplates = [];
         /** @var RuleTemplate $ruleTemplate */
         foreach ($this->ruleTemplates as $ruleTemplate) {
-            $normalizedRuleTemplates[] = $ruleTemplate->getContent();
+            $normalizedRuleTemplates[] = $ruleTemplate->normalize();
         }
 
         return $normalizedRuleTemplates;

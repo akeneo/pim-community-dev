@@ -128,8 +128,7 @@ class FixturesLoader
         }
 
         if (null !== $this->loadedAssetCode) {
-            $asset = $this->loadAsset();
-            $this->loadValues($asset->getIdentifier());
+            $this->loadAssetWithValues();
         }
 
         $this->loadedAssetFamily = null;
@@ -534,7 +533,7 @@ class FixturesLoader
         return $attributes;
     }
 
-    private function loadAsset(): Asset
+    private function loadAssetWithValues(): void
     {
         $assetIdentifier = $this->assetRepository->nextIdentifier(
             AssetFamilyIdentifier::fromString($this->loadedAssetFamilyOfAsset),
@@ -548,18 +547,9 @@ class FixturesLoader
             ValueCollection::fromValues([])
         );
 
-        $this->assetRepository->create($asset);
-
-        return $asset;
-    }
-
-    private function loadValues(AssetIdentifier $assetIdentifier): void
-    {
-        $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
         $attributes = $this->attributeRepository->findByAssetFamily(
             AssetFamilyIdentifier::fromString($this->loadedAssetFamilyOfAsset)
         );
-
         foreach ($this->loadedValues as $attributeCode => $values) {
             $attribute = current(array_filter($attributes, function (AbstractAttribute $attribute) use ($attributeCode) {
                 return (string) $attribute->getCode() === $attributeCode;
@@ -570,7 +560,7 @@ class FixturesLoader
             }
         }
 
-        $this->assetRepository->update($asset);
+        $this->assetRepository->create($asset);
     }
 
     private function getOrderForAttribute(string $code): AttributeOrder

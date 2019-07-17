@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
 
 use Webmozart\Assert\Assert;
 
-
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)

@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition\Field;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition\Operator;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition\Value;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -52,19 +53,27 @@ class Condition
 
     public static function createFromNormalized(array $condition): self
     {
+        Assert::keyExists($condition, 'field');
+        Assert::keyExists($condition, 'operator');
+        Assert::keyExists($condition, 'value');
         $field = Field::createFromNormalized($condition['field']);
         $operator = Operator::createFromNormalized($condition['operator']);
         $value = Value::createFromNormalized($condition['value']);
-        $channel = ChannelReference::createFromNormalized($condition['channel']);
-        $locale = LocaleReference::createFromNormalized($condition['locale']);
+        $channel = key_exists('channel', $condition) ? ChannelReference::createFromNormalized($condition['channel']) : ChannelReference::noReference();
+        $locale = key_exists('locale', $condition) ? LocaleReference::createFromNormalized($condition['locale']) : LocaleReference::noReference();
 
         return new self($field, $operator, $value, $channel, $locale);
     }
 
+    public static function createFromProductLinkRule(array $condition): self
+    {
+        return self::createFromNormalized($condition);
+    }
+
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): self
     {
-        $field = ReplacePatterns::replace($this->field->stringValue(), $propertyAccessibleAsset);
-        $value = ReplacePatterns::replace($this->value->stringValue(), $propertyAccessibleAsset);
+        $field = ReplacePattern::replace($this->field->stringValue(), $propertyAccessibleAsset);
+        $value = ReplacePattern::replace($this->value->stringValue(), $propertyAccessibleAsset);
 
         return new self(
             Field::createFromNormalized($field),
@@ -78,11 +87,11 @@ class Condition
     public function normalize(): array
     {
         return [
-          'field' => $this->field->stringValue(),
+          'field'    => $this->field->stringValue(),
           'operator' => $this->operator->stringValue(),
-          'value' => $this->value->stringValue(),
-          'channel' => $this->channel->normalize(),
-          'locale' => $this->locale->normalize(),
+          'value'    => $this->value->stringValue(),
+          'channel'  => $this->channel->normalize(),
+          'locale'   => $this->locale->normalize(),
         ];
     }
 }

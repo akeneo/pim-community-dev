@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Webmozart\Assert\Assert;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
+use Webmozart\Assert\Assert;
 
 /**
  * A RuleTemplate is the skeleton of a RuleInterface.
@@ -45,12 +45,46 @@ class RuleTemplate
         Assert::keyExists($content, 'actions');
 
         $conditions = array_map(function (array $condition) {
-            return Condition::createFromNormalized($condition)->normalize();
+            return Condition::createFromNormalized($condition);
         }, $content['conditions']);
 
         $actions = array_map(function (array $action) {
-            return Action::createFromNormalized($action)->normalize();
+            return Action::createFromNormalized($action);
         }, $content['actions']);
+
+        return new self($conditions, $actions);
+    }
+
+
+    /**
+     * “product_link_rule”:{
+        “product_selections”:[{
+            “field”: “sku”,
+            “operator”: “EQUALS”,
+            “value”: “product_ref”,
+            “channel”: “ecommerce”, (optional)
+            “locale”: “fr_FR” (optional)
+        }],
+        “assign_assets_to”:[{
+            “attribute”:”my_product_attribute”,
+            “channel”:”ecommerce”, (optional)
+            “locale”:”fr_FR”, (optional)
+            “mode”:”add” or “replace”
+        }]
+    }
+     */
+    public static function createFromProductLinkRule(array $content): RuleTemplate
+    {
+        Assert::keyExists($content, 'product_selections');
+        Assert::keyExists($content, 'assign_assets_to');
+
+        $conditions = array_map(function (array $condition) {
+            return Condition::createFromProductLinkRule($condition);
+        }, $content['product_selections']);
+
+        $actions = array_map(function (array $action) {
+            return Action::createFromProductLinkRule($action);
+        }, $content['assign_assets_to']);
 
         return new self($conditions, $actions);
     }
@@ -58,13 +92,31 @@ class RuleTemplate
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): CompiledRule
     {
         $compiledConditions = array_map(function (Condition $condition) use ($propertyAccessibleAsset) {
-            return $condition->compile($propertyAccessibleAsset);
+            return $condition->compile($propertyAccessibleAsset)->normalize();
         }, $this->conditions);
 
         $compiledActions = array_map(function (Action $action) use ($propertyAccessibleAsset) {
-            return $action->compile($propertyAccessibleAsset);
+            return $action->compile($propertyAccessibleAsset)->normalize();
         }, $this->actions);
 
         return new CompiledRule($compiledConditions, $compiledActions);
+    }
+
+    public function normalize(): array
+    {
+        $normalizedConditions = array_map(function (Condition $condition) {
+            /** @var Condition $condition */
+            return $condition->normalize();
+        }, $this->conditions);
+
+        $normalizedActions = array_map(function (Action $action) {
+            /** @var Action $action */
+            return $action->normalize();
+        }, $this->actions);
+
+        return [
+            'conditions' => $normalizedConditions,
+            'actions' => $normalizedActions,
+        ];
     }
 }

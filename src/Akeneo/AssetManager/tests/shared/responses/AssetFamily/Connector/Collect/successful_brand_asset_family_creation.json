@@ -12,20 +12,19 @@
         "fr_FR": "Brand french label"
       },
       "image": "2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_brand.png",
-      "rule_templates": [
+      "product_link_rules": [
         {
-          "conditions": [
+          "product_selections": [
             {
               "field": "sku",
               "operator": "equals",
               "value": "{{product_sku}}"
             }
           ],
-          "actions": [
+          "assign_assets_to": [
             {
-              "type": "add",
-              "field": "{{attribute}}",
-              "value": "{{code}}"
+              "mode": "add",
+              "attribute": "{{attribute}}"
             }
           ]
         }

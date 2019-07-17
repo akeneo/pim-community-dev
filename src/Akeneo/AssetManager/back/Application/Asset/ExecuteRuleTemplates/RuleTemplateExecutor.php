@@ -23,9 +23,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 
 class RuleTemplateExecutor
 {
-    /** @var RuleCompiler */
-    private $ruleCompiler;
-
     /** @var CompiledRuleRunnerInterface */
     private $compiledRuleRunner;
 
@@ -38,12 +35,10 @@ class RuleTemplateExecutor
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         FindPropertyAccessibleAssetInterface $findPropertyAccessibleAsset,
-        RuleCompiler $ruleCompiler,
         CompiledRuleRunnerInterface $compiledRuleRunner
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->findPropertyAccessibleAsset = $findPropertyAccessibleAsset;
-        $this->ruleCompiler = $ruleCompiler;
         $this->compiledRuleRunner = $compiledRuleRunner;
     }
 

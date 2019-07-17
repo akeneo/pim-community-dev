@@ -39,18 +39,17 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
             ],
             [
                 [
-                    'conditions' => [
+                    'product_selections' => [
                         [
-                            'field' => 'sku',
+                            'field'    => 'sku',
                             'operator' => '=',
-                            'value' => '{{product_sku}}'
+                            'value'    => '{{product_sku}}'
                         ]
                     ],
-                    'actions'=> [
+                    'assign_assets_to' => [
                         [
-                            'type' => 'add',
-                            'field' => '{{attribute}}',
-                            'value' => '{{code}}'
+                            'mode'      => 'add',
+                            'attribute' => '{{attribute}}'
                         ]
                     ]
                 ]

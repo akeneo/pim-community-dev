@@ -28,13 +28,13 @@ class EditAssetFamilyCommand
     public $image;
 
     /** @var array */
-    public $ruleTemplates;
+    public $productLinkRules;
 
-    public function __construct(string $identifier, array $labels, ?array $image, array $ruleTemplates)
+    public function __construct(string $identifier, array $labels, ?array $image, array $productLinkRules)
     {
         $this->identifier = $identifier;
         $this->labels = $labels;
         $this->image = $image;
-        $this->ruleTemplates = $ruleTemplates;
+        $this->productLinkRules = $productLinkRules;
     }
 }

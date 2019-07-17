@@ -202,18 +202,17 @@ SQL;
     private function loadPackshots(): void
     {
         $ruleTemplate = [
-            'conditions' => [
+            'product_selections' => [
                 [
-                    'field'    => 'sku',
-                    'operator' => '=',
-                    'value'    => '{{product_sku}}'
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '{{product_sku}}'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to'    => [
                 [
-                    'type'  => 'add',
-                    'field' => '{{linked_attribute}}',
-                    'value' => '{{code}}'
+                    'mode'  => 'set',
+                    'attribute' => '{{linked_attribute}}'
                 ]
             ]
         ];
@@ -584,34 +583,32 @@ SQL;
     private function loadVideoPresentation(): void
     {
         $ruleTemplateToAdd = [
-            'conditions' => [
+            'product_selections' => [
                 [
                     'field'    => 'sku',
                     'operator' => '=',
                     'value'    => '{{product_sku}}'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to' => [
                 [
-                    'type'  => 'add',
-                    'field' => '{{linked_attribute}}',
-                    'value' => '{{code}}'
+                    'mode'      => 'add',
+                    'attribute' => '{{linked_attribute}}'
                 ]
             ]
         ];
         $ruleTemplateToSet = [
-            'conditions' => [
+            'product_selections' => [
                 [
                     'field'    => 'sku',
                     'operator' => '=',
                     'value'    => '{{product_sku}}'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to' => [
                 [
-                    'type'  => 'set',
-                    'field' => '{{linked_attribute}}',
-                    'value' => '{{code}}'
+                    'mode'      => 'set',
+                    'attribute' => '{{linked_attribute}}'
                 ]
             ]
         ];

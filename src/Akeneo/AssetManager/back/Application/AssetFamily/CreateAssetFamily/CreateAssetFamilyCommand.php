@@ -25,12 +25,12 @@ class CreateAssetFamilyCommand
     public $labels;
 
     /** @var array */
-    public $ruleTemplates;
+    public $productLinkRules;
 
-    public function __construct(string $code, array $labels, array $ruleTemplates)
+    public function __construct(string $code, array $labels, array $productLinkRules)
     {
         $this->code = $code;
         $this->labels = $labels;
-        $this->ruleTemplates = $ruleTemplates;
+        $this->productLinkRules = $productLinkRules;
     }
 }
