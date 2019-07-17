@@ -361,7 +361,7 @@ final class EditAssetFamilyContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
 
         $expectedRuleTemplate = $this->getRuleTemplate();
-        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
+        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromProductLinkRules([$expectedRuleTemplate]);
 
         $assetFamily = $this->assetFamilyRepository
             ->getByIdentifier(AssetFamilyIdentifier::fromString($code));

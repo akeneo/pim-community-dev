@@ -43,12 +43,12 @@ class AssetFamilyValidator
                 'image' => [
                     'type' => ['string', 'null']
                 ],
-                'rule_templates' => [
+                'product_link_rule' => [
                     'type'  => 'array',
                     'items' => [
                         'type' => 'object',
                         'properties' => [
-                            'conditions' => [
+                            'product_selections' => [
                                 'type' => 'array',
                                 'items' => [
                                     'type' => 'object',
@@ -62,27 +62,36 @@ class AssetFamilyValidator
                                         'value' => [
                                             'type' => 'string',
                                         ],
+                                        'channel' => [
+                                            'type' => 'string',
+                                        ],
+                                        'locale' => [
+                                            'type' => 'string',
+                                        ],
                                     ],
                                     'required' => ['field', 'operator', 'value'],
                                     'additionalProperties' => false,
                                 ],
                             ],
-                            'actions' => [
+                            'assign_assets_to' => [
                                 'type' => 'array',
                                 'items' => [
                                     'type' => 'object',
                                     'properties' => [
-                                        'type' => [
+                                        'attribute' => [
                                             'type' => 'string',
                                         ],
-                                        'field' => [
+                                        'mode' => [
                                             'type' => 'string',
                                         ],
-                                        'value' => [
+                                        'channel' => [
+                                            'type' => 'string',
+                                        ],
+                                        'locale' => [
                                             'type' => 'string',
                                         ],
                                     ],
-                                    'required' => ['type', 'field', 'value'],
+                                    'required' => ['attribute', 'mode'],
                                     'additionalProperties' => false,
                                 ],
                             ]

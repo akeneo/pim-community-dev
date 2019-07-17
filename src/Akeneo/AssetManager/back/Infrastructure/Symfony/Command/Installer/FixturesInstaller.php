@@ -222,7 +222,7 @@ SQL;
             AssetFamilyIdentifier::fromString('packshot'),
             ['en_US' => 'Packshots'],
             Image::createEmpty(),
-            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
+            RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
         $this->assetFamilyRepository->create($packshot);
@@ -619,7 +619,7 @@ SQL;
             AssetFamilyIdentifier::fromString('video_presentation'),
             ['en_US' => 'Video Presentation'],
             Image::createEmpty(),
-            RuleTemplateCollection::createFromNormalized([$ruleTemplateToAdd, $ruleTemplateToSet])
+            RuleTemplateCollection::createFromProductLinkRules([$ruleTemplateToAdd, $ruleTemplateToSet])
         );
 
         $this->assetFamilyRepository->create($videoPresentation);

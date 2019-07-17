@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Webmozart\Assert\Assert;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition;
+use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 
 /**
  * A RuleTemplate is the skeleton of a RuleInterface.
@@ -24,34 +27,44 @@ use Webmozart\Assert\Assert;
  */
 class RuleTemplate
 {
-    /** @var array  */
-    private $content;
+    /** @var Condition[] */
+    private $conditions;
 
-    private function __construct(array $content)
+    /** @var Action[] */
+    private $actions;
+
+    private function __construct(array $conditions, array $actions)
+    {
+        $this->conditions = $conditions;
+        $this->actions    = $actions;
+    }
+
+    public static function createFromNormalized(array $content): RuleTemplate
     {
         Assert::keyExists($content, 'conditions');
         Assert::keyExists($content, 'actions');
 
-        $this->content = $content;
+        $conditions = array_map(function (array $condition) {
+            return Condition::createFromNormalized($condition)->normalize();
+        }, $content['conditions']);
+
+        $actions = array_map(function (array $action) {
+            return Action::createFromNormalized($action)->normalize();
+        }, $content['actions']);
+
+        return new self($conditions, $actions);
     }
 
-    public static function createFromNormalized(array $content)
+    public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): CompiledRule
     {
-        return new self($content);
-    }
+        $compiledConditions = array_map(function (Condition $condition) use ($propertyAccessibleAsset) {
+            return $condition->compile($propertyAccessibleAsset);
+        }, $this->conditions);
 
-    public function getContent(): array
-    {
-        return $this->content;
-    }
+        $compiledActions = array_map(function (Action $action) use ($propertyAccessibleAsset) {
+            return $action->compile($propertyAccessibleAsset);
+        }, $this->actions);
 
-    public function getConditions(): array
-    {
-        return $this->content['conditions'];
-    }
-
-    public function getActions(): array
-    {
-        return $this->content['actions'];
+        return new CompiledRule($compiledConditions, $compiledActions);
     }
 }

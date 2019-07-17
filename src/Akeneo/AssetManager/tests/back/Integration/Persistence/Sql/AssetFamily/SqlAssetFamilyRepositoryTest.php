@@ -63,7 +63,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
+            RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
         $this->repository->create($assetFamily);

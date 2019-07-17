@@ -111,7 +111,7 @@ class ExecuteRuleTemplatesContext implements Context
                 AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 [],
                 Image::createEmpty(),
-                RuleTemplateCollection::createFromNormalized(
+                RuleTemplateCollection::createFromProductLinkRules(
                     [
                         [
                             'conditions' => [
@@ -222,7 +222,7 @@ class ExecuteRuleTemplatesContext implements Context
                 AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 [],
                 Image::createEmpty(),
-                RuleTemplateCollection::createFromNormalized(
+                RuleTemplateCollection::createFromProductLinkRules(
                     [
                         [
                             'conditions' => [

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\RuleTemplates;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\CompiledRule;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\CompiledRule;
 use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\CompiledRuleRunnerInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;

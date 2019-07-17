@@ -195,7 +195,7 @@ final class CreateAssetFamilyContext implements Context
         $expectedIdentifier = AssetFamilyIdentifier::fromString($code);
         $actualAssetFamily = $this->assetFamilyRepository->getByIdentifier($expectedIdentifier);
         $expectedRuleTemplate = $this->getRuleTemplate();
-        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
+        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromProductLinkRules([$expectedRuleTemplate]);
 
         Assert::assertEquals($expectedRuleTemplateCollection, $actualAssetFamily->getRuleTemplateCollection());
     }
