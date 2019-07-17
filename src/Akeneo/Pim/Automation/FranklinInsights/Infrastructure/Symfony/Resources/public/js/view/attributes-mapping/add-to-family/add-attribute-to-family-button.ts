@@ -9,10 +9,9 @@
 
 import {Model, View} from 'backbone';
 import * as _ from 'underscore';
-import AddAttributeToFamily from '../../saver/add-attribute-to-family';
+import AddAttributeToFamily from '../../../saver/add-attribute-to-family';
 
 const __ = require('oro/translator');
-const SecurityContext = require('pim/security-context');
 
 class AddAttributeToFamilyButton extends View<Model> {
   private template = _.template(`
@@ -32,10 +31,6 @@ class AddAttributeToFamilyButton extends View<Model> {
   }
 
   public render() {
-    if (false === this.isGranted()) {
-      return this;
-    }
-
     this.$el.html(this.template({__}));
 
     return this;
@@ -48,10 +43,6 @@ class AddAttributeToFamilyButton extends View<Model> {
     });
 
     this.trigger('attribute_added_to_family', response.code);
-  }
-
-  private isGranted() {
-    return SecurityContext.isGranted('pim_enrich_family_edit_attributes');
   }
 }
 

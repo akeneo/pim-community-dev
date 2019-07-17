@@ -23,6 +23,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamil
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkAddAttributesToFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkAddAttributesToFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkCreateAttributesInFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkCreateAttributesInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyCommand;
@@ -95,6 +97,9 @@ final class AttributesMappingContext implements Context
     /** @var BulkCreateAttributesInFamilyHandler */
     private $bulkCreateAttributeInFamilyHandler;
 
+    /** @var BulkAddAttributesToFamilyHandler */
+    private $bulkAddAttributesToFamilyHandler;
+
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
@@ -106,7 +111,8 @@ final class AttributesMappingContext implements Context
         InMemorySelectExactMatchAttributeCodeQuery $inMemorySelectExactMatchAttributeCodeQuery,
         InMemoryFamilyRepository $familyRepository,
         InMemoryAttributeRepository $attributeRepository,
-        AddAttributeToFamilyHandler $addAttributeToFamilyHandler
+        AddAttributeToFamilyHandler $addAttributeToFamilyHandler,
+        BulkAddAttributesToFamilyHandler $bulkAddAttributesToFamilyHandler
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
@@ -119,6 +125,7 @@ final class AttributesMappingContext implements Context
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->addAttributeToFamilyHandler = $addAttributeToFamilyHandler;
+        $this->bulkAddAttributesToFamilyHandler = $bulkAddAttributesToFamilyHandler;
 
         $this->originalAttributesMapping = null;
         $this->retrievedFamilies = [];
@@ -238,6 +245,19 @@ final class AttributesMappingContext implements Context
     }
 
     /**
+     * @When I bulk create the following attributes in the family :familyCode :
+     */
+    public function iBulkCreateAttributesInTheFamily($familyCode, TableNode $attributesToCreate): void
+    {
+        try {
+            $command = new BulkCreateAttributesInFamilyCommand(new FamilyCode($familyCode), new AttributesToCreate($attributesToCreate->getHash()));
+            $this->bulkCreateAttributeInFamilyHandler->handle($command);
+        } catch (\Exception $e) {
+            ExceptionContext::setThrownException($e);
+        }
+    }
+
+    /**
      * @When I add the attribute :attributeCode to the family :familyCode
      */
     public function iAddTheAttributeToTheFamily(string $attributeCode, string $familyCode): void
@@ -255,13 +275,21 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @When I bulk create the following attributes in the family :familyCode :
+     * @When /^I bulk add the attributes (.*) to the family (.*)$/
      */
-    public function iBulkCreateAttributesInTheFamily($familyCode, TableNode $attributesToCreate): void
+    public function iBulkAddTheAttributeToTheFamily(string $attributeCodes, string $familyCode): void
     {
+        $attributeCodes = explode(', ', str_replace(' and ', ', ', $attributeCodes));
+        $attributeCodes = array_map(function (string $attributeCode) {
+            return new AttributeCode($attributeCode);
+        }, $attributeCodes);
+
         try {
-            $command = new BulkCreateAttributesInFamilyCommand(new FamilyCode($familyCode), new AttributesToCreate($attributesToCreate->getHash()));
-            $this->bulkCreateAttributeInFamilyHandler->handle($command);
+            $command = new BulkAddAttributesToFamilyCommand(
+                new FamilyCode($familyCode),
+                $attributeCodes
+            );
+            $this->bulkAddAttributesToFamilyHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
         }

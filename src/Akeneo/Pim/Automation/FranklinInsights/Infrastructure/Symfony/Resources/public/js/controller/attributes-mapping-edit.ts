@@ -10,6 +10,7 @@
 import BaseView = require('pimui/js/view/base');
 import {getConnectionStatus} from '../fetcher/franklin-connection';
 import ConnectionStatus from '../model/connection-status';
+import FamilyMapping from '../model/family-mapping';
 
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');
@@ -19,12 +20,6 @@ interface Route {
   name: string;
   params: {familyCode: string};
   route: object;
-}
-
-interface FamilyMapping {
-  code: string;
-  enabled: boolean;
-  mapping: Array<{[index: string]: string}>;
 }
 
 interface CanLeaveEvent {

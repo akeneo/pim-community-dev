@@ -9,7 +9,7 @@
 
 import {Model, View} from 'backbone';
 import * as _ from 'underscore';
-import AttributeSaver from '../../saver/attribute-saver';
+import AttributeSaver from '../../../saver/attribute-saver';
 
 const __ = require('oro/translator');
 

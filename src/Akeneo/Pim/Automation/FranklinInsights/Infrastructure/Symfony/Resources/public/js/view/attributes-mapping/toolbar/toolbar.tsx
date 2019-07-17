@@ -7,13 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import * as Backbone from 'backbone';
 import * as React from 'react';
 import {Component} from 'react';
 
-import ActionButton from '../../../common/action-button';
 import {SelectButton, SelectionState} from '../../../common/select-button';
+import AddAttributeToFamily from '../../../saver/add-attribute-to-family';
 import AttributeSaver from '../../../saver/attribute-saver';
+import BulkAddToFamilyButton from '../add-to-family/bulk-add-to-family-button';
+import BulkCreateAttributeButton from '../create-attribute/bulk-create-attribute-button';
 
 const __ = require('oro/translator');
 
@@ -21,7 +22,8 @@ export interface AttributeData {
   franklinLabel: string;
   franklinType: string;
   canCreate: boolean;
-  canAddToFamily: string | null;
+  canAddToFamily: boolean;
+  exactMatchAttributeFromOtherFamily: string | null;
   selected: boolean;
 }
 
@@ -57,31 +59,27 @@ export class Toolbar extends Component<Props> {
         </div>
 
         <div className='AknButtonList'>
-          <ActionButton
-            className='AknButtonList-item'
-            label={__('akeneo_franklin_insights.entity.attributes_mapping.module.toolbar.bulk_create_attribute')}
+          <BulkCreateAttributeButton
             count={this.getAttributesToCreate(selectedAttributes).length}
             onClick={this.bulkCreateAttribute.bind(this)}
           />
 
-          {/* <ActionButton
-            className='AknButtonList-item'
-            label={__('akeneo_franklin_insights.entity.attributes_mapping.module.toolbar.bulk_add_to_family')}
+          <BulkAddToFamilyButton
             count={this.getAttributesToAddToFamily(selectedAttributes).length}
             onClick={this.bulkAddAttributeToFamily.bind(this)}
-          /> */}
+          />
         </div>
       </>
     );
   }
 
   private getAttributesToCreate(selectedAttributes: AttributeData[]): AttributeData[] {
-    return selectedAttributes.filter(attribute => !!attribute.canCreate);
+    return selectedAttributes.filter(attribute => attribute.canCreate);
   }
 
-  // private getAttributesToAddToFamily(selectedAttributes: AttributeData[]): AttributeData[] {
-  //   return selectedAttributes.filter(attribute => !!attribute.canAddToFamily);
-  // }
+  private getAttributesToAddToFamily(selectedAttributes: AttributeData[]): AttributeData[] {
+    return selectedAttributes.filter(attribute => attribute.canAddToFamily);
+  }
 
   private getSelectionState(attributeCount: number, selectedAttributeCount: number): SelectionState {
     if (selectedAttributeCount === attributeCount) {
@@ -103,44 +101,11 @@ export class Toolbar extends Component<Props> {
     }
   }
 
-  private openBulkCreateAttributeConfirmationModal(count: number): Promise<void> {
-    const modal = new (Backbone as any).BootstrapModal({
-      picture: 'illustrations/Attribute.svg',
-      title: __('akeneo_franklin_insights.entity.attributes_mapping.modal.bulk_create_attribute.title', {count}, count),
-      subtitle: __('akeneo_franklin_insights.entity.attributes_mapping.modal.bulk_create_attribute.subtitle'),
-      innerDescription: __(
-        'akeneo_franklin_insights.entity.attributes_mapping.modal.bulk_create_attribute.description',
-        undefined,
-        count
-      ),
-      content: `
-        <div class="AknMessageBox AknMessageBox--warning AknMessageBox--withIcon">
-          ${__(
-            'akeneo_franklin_insights.entity.attributes_mapping.modal.bulk_create_attribute.warning',
-            {count},
-            count
-          )}
-        </div>
-      `,
-      okText: __('akeneo_franklin_insights.entity.attributes_mapping.modal.bulk_create_attribute.ok'),
-      cancelText: ''
-    });
-
-    modal.open();
-
-    return new Promise((resolve, reject) => {
-      modal.listenTo(modal, 'ok', resolve);
-      modal.listenTo(modal, 'cancel', reject);
-    });
-  }
-
   private async bulkCreateAttribute() {
     const attributes = this.getAttributesToCreate(this.selectedFranklinAttributes).map(attribute => ({
       franklinAttributeLabel: attribute.franklinLabel,
       franklinAttributeType: attribute.franklinType
     }));
-
-    await this.openBulkCreateAttributeConfirmationModal(attributes.length);
 
     await AttributeSaver.bulkCreate({
       familyCode: this.props.familyCode,
@@ -150,7 +115,18 @@ export class Toolbar extends Component<Props> {
     this.props.onFamilyMappingUpdate();
   }
 
-  // private bulkAddAttributeToFamily() {}
+  private async bulkAddAttributeToFamily() {
+    const attributeCodes = this.getAttributesToAddToFamily(this.selectedFranklinAttributes).map(
+      attribute => attribute.exactMatchAttributeFromOtherFamily
+    ) as string[];
+
+    await AddAttributeToFamily.bulkAdd({
+      familyCode: this.props.familyCode,
+      attributeCodes
+    });
+
+    this.props.onFamilyMappingUpdate();
+  }
 }
 
 export default Toolbar;

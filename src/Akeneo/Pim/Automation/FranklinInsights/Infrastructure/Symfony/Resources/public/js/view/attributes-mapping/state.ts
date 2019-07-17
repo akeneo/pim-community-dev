@@ -7,8 +7,7 @@
  * file that was distributed with this source code.
  */
 import AttributeMappingStatus from '../../model/attribute-mapping-status';
-import AttributesMapping from '../../model/attributes-mapping';
-import AttributesMappingForFamily from '../../model/attributes-mapping-for-family';
+import AttributeMappingModel from '../../model/attributes-mapping-model';
 
 const BaseState = require('pim/form/common/state');
 
@@ -22,41 +21,37 @@ class State extends BaseState {
     return super.configure();
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public hasModelChanged(): boolean {
-    const model: AttributesMappingForFamily = this.getFormData();
+  public collectState() {
+    const model: AttributeMappingModel = this.getFormData();
 
-    if (this.state !== JSON.stringify(model)) {
+    this.state = this.getStateFromModel(model);
+  }
+
+  public hasModelChanged(): boolean {
+    const model: AttributeMappingModel = this.getFormData();
+
+    if (this.state !== this.getStateFromModel(model)) {
       return true;
     }
 
-    return this.checkAttributeWithPerfectMatch(model.mapping);
-  }
-
-  /**
-   * Return true when a PENDING attribute have suggested value (perfect match) and need to be saved.
-   */
-  private checkAttributeWithPerfectMatch(mappings: AttributesMapping) {
-    for (const mapping of Object.values(mappings)) {
-      if (
-        mapping.status === AttributeMappingStatus.ATTRIBUTE_PENDING &&
-        mapping.attribute !== null &&
-        mapping.attribute !== ''
-      ) {
-        return true;
-      }
-    }
     return false;
   }
 
   private setAttributeMappingStatusAsInactive(franklinAttributeCode: string) {
-    const model = JSON.parse(this.state) as AttributesMappingForFamily;
+    const model = JSON.parse(this.state) as AttributeMappingModel;
 
     model.mapping[franklinAttributeCode].status = AttributeMappingStatus.ATTRIBUTE_INACTIVE;
 
-    (this.state as string) = JSON.stringify(model);
+    this.state = this.getStateFromModel(model);
+  }
+
+  private getStateFromModel(model: AttributeMappingModel): string {
+    const state = {
+      ...model
+    };
+    delete state.selectedFranklinAttributes;
+
+    return JSON.stringify(state);
   }
 }
 

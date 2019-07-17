@@ -84,6 +84,7 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.franklin_insights.handler.add_attribute_to_family'
+            - '@akeneo.pim.automation.franklin_insights.handler.bulk_add_attributes_to_family'
         tags:
             - { name: 'fob.context_service' }
 

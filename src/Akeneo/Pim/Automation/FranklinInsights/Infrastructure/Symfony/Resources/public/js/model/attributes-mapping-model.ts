@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import AttributesMapping from './attributes-mapping';
+import FamilyMapping from './family-mapping';
 
-/**
- * @author Paul Chasle <paul.chasle@akeneo.com>
- */
-export default interface AttributesMappingForFamily {
-  code: string;
-  mapping: AttributesMapping;
+interface Model {
+  selectedFranklinAttributes: {[franklinAttributeCode: string]: boolean};
 }
+
+export type AttributesMappingModel = Model & FamilyMapping;
+
+export default AttributesMappingModel;

@@ -12,3 +12,8 @@ akeneo_franklin_insights_structure_bulk_create_attribute:
     path: /{familyCode}/create-attribute/bulk
     defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.structure:bulkCreateAttributesAction }
     methods: [POST]
+
+akeneo_franklin_insights_structure_bulk_add_attributes_to_family:
+    path: /{familyCode}/add-attributes-to-family/bulk
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.structure:bulkAddAttributesToFamilyAction }
+    methods: [POST]

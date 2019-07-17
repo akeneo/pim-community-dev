@@ -11,33 +11,34 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import View = require('pimui/js/view/base');
-import {isAbleToCreateAttribute} from '../../../common/attribute-mapping-helper';
-import AttributesMappingForFamily from '../../../model/attributes-mapping-for-family';
+import {isAbleToAddAttributeToFamily, isAbleToCreateAttribute} from '../../../common/attribute-mapping-helper';
+import AttributesMappingModel from '../../../model/attributes-mapping-model';
 import Toolbar from './toolbar';
 import {AttributeData} from './toolbar';
 
 class ToolbarView extends View {
-  private selectedFranklinAttributeCodes = new Set<string>();
-
   public configure(): any {
     super.configure();
 
-    this.getFormModel().on('change', this.render, this);
+    this.getFormModel().on('change', () => this.render());
 
-    this.listenTo(this.getRoot(), 'franklin_attribute_selected', this.selectFranklinAttribute);
-    this.listenTo(this.getRoot(), 'franklin_attribute_unselected', this.deselectFranklinAttribute);
+    this.listenTo(this.getRoot(), 'franklin_attribute_selected', () => this.render());
+    this.listenTo(this.getRoot(), 'franklin_attribute_deselected', () => this.render());
   }
 
   public render() {
-    if (0 === this.selectedFranklinAttributeCodes.size) {
+    const model: AttributesMappingModel = this.getFormData();
+    if (undefined === model.mapping) {
+      return this;
+    }
+
+    if (true === Object.values(model.selectedFranklinAttributes).find(selected => true === selected)) {
+      this.$el.show();
+    } else {
       this.$el.hide();
 
       return this;
-    } else {
-      this.$el.show();
     }
-
-    const model: AttributesMappingForFamily = this.getFormData();
 
     this.renderReactToolbar(
       model.code,
@@ -50,8 +51,13 @@ class ToolbarView extends View {
             attributeMapping.status,
             attributeMapping.canCreateAttribute
           ),
-          canAddToFamily: attributeMapping.exactMatchAttributeFromOtherFamily,
-          selected: this.selectedFranklinAttributeCodes.has(franklinAttributeCode)
+          canAddToFamily: isAbleToAddAttributeToFamily(
+            attributeMapping.attribute,
+            attributeMapping.status,
+            attributeMapping.exactMatchAttributeFromOtherFamily
+          ),
+          exactMatchAttributeFromOtherFamily: attributeMapping.exactMatchAttributeFromOtherFamily,
+          selected: true === model.selectedFranklinAttributes[franklinAttributeCode]
         })
       )
     );
@@ -77,25 +83,8 @@ class ToolbarView extends View {
     );
   }
 
-  private selectFranklinAttribute(franklinAttributeCode: string) {
-    this.selectedFranklinAttributeCodes.add(franklinAttributeCode);
-
-    this.render();
-  }
-
-  private deselectFranklinAttribute(franklinAttributeCode: string) {
-    this.selectedFranklinAttributeCodes.delete(franklinAttributeCode);
-
-    this.render();
-  }
-
   private selectAllFranklinAttributes() {
     this.getRoot().trigger('select_all_franklin_attributes');
-
-    const model: AttributesMappingForFamily = this.getFormData();
-    Object.keys(model.mapping).forEach(franklinAttributeCode =>
-      this.selectedFranklinAttributeCodes.add(franklinAttributeCode)
-    );
 
     this.render();
   }
@@ -103,17 +92,12 @@ class ToolbarView extends View {
   private deselectAllFranklinAttributes() {
     this.getRoot().trigger('deselect_all_franklin_attributes');
 
-    this.selectedFranklinAttributeCodes.clear();
-
     this.render();
   }
 
   private refreshFamilyMapping() {
     this.getRoot().trigger('refresh_family_mapping');
-
-    this.selectedFranklinAttributeCodes.clear();
-
-    this.render();
+    this.deselectAllFranklinAttributes();
   }
 }
 

@@ -13,7 +13,7 @@ import * as $ from 'jquery';
 import {ajax} from 'jquery';
 import * as _ from 'underscore';
 
-import {isAbleToCreateAttribute} from '../../common/attribute-mapping-helper';
+import {isAbleToAddAttributeToFamily, isAbleToCreateAttribute} from '../../common/attribute-mapping-helper';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 
@@ -21,14 +21,14 @@ import NormalizedAttribute from 'pim/model/attribute';
 import IAttributeMapping from '../../model/attribute-mapping';
 import AttributeMappingStatus from '../../model/attribute-mapping-status';
 import IAttributesMapping from '../../model/attributes-mapping';
-import IAttributesMappingForFamily from '../../model/attributes-mapping-for-family';
+import IAttributesMappingModel from '../../model/attributes-mapping-model';
 
 import BaseView = require('pimui/js/view/base');
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute from '../common/simple-select-attribute';
-import AddAttributeToFamilyButton from './add-attribute-to-family-button';
+import AddAttributeToFamilyButton from './add-to-family/add-attribute-to-family-button';
 import AttributeTypeMismatchWarning from './attribute-type-mismatch-warning';
-import CreateAttributeButton from './create-attribute-button';
+import CreateAttributeButton from './create-attribute/create-attribute-button';
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -116,9 +116,9 @@ class AttributeMapping extends BaseView {
         this.deactivateFranklinAttribute(event.target.dataset.franklinAttributeCode),
       'click input[data-franklin-attribute-code]': (event: any) => {
         if (event.target.checked) {
-          this.selectFranklinAttribute(event.target.dataset.franklinAttributeCode);
+          this.getRoot().trigger('select_franklin_attribute', event.target.dataset.franklinAttributeCode);
         } else {
-          this.deselectFranklinAttribute(event.target.dataset.franklinAttributeCode);
+          this.getRoot().trigger('deselect_franklin_attribute', event.target.dataset.franklinAttributeCode);
         }
       }
     };
@@ -130,10 +130,14 @@ class AttributeMapping extends BaseView {
   public configure(): JQueryPromise<any> {
     Filterable.set(this);
 
+    this.setData({selectedFranklinAttributes: {}});
+
     this.listenTo(this.getRoot(), 'pim_enrich:form:render:before', this.saveScroll);
     this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.setScroll);
 
+    this.listenTo(this.getRoot(), 'select_franklin_attribute', this.selectFranklinAttribute);
     this.listenTo(this.getRoot(), 'select_all_franklin_attributes', this.selectAllFranklinAttributes);
+    this.listenTo(this.getRoot(), 'deselect_franklin_attribute', this.deselectFranklinAttribute);
     this.listenTo(this.getRoot(), 'deselect_all_franklin_attributes', this.deselectAllFranklinAttributes);
 
     this.listenTo(this.getRoot(), 'refresh_family_mapping', this.refreshFamilyMapping);
@@ -145,13 +149,14 @@ class AttributeMapping extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    const familyMapping: IAttributesMappingForFamily = this.getFormData();
-    const attributesMapping: IAttributesMapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
+    const model: IAttributesMappingModel = this.getFormData();
+    const attributesMapping: IAttributesMapping = model.hasOwnProperty('mapping') ? model.mapping : {};
 
     this.$el.html(
       this.template({
         __,
         mapping: attributesMapping,
+        selectedFranklinAttributes: model.selectedFranklinAttributes,
         escapeHtml: EscapeHtml.escapeHtml,
         franklinAttribute: __(this.config.labels.franklinAttribute),
         catalogAttribute: __(this.config.labels.catalogAttribute),
@@ -194,7 +199,7 @@ class AttributeMapping extends BaseView {
           ) {
             const createAttributeButton = this.appendCreateAttributeButton(
               franklinAttributeCode,
-              familyMapping.code,
+              model.code,
               attributeMapping.franklinAttribute.label,
               attributeMapping.franklinAttribute.type
             );
@@ -205,12 +210,17 @@ class AttributeMapping extends BaseView {
               this.render();
             });
           } else if (
-            null !== attributeMapping.exactMatchAttributeFromOtherFamily &&
-            (null === attributeMapping.attribute || '' === attributeMapping.attribute)
+            true ===
+            isAbleToAddAttributeToFamily(
+              attributeMapping.attribute,
+              attributeMapping.status,
+              attributeMapping.exactMatchAttributeFromOtherFamily
+            )
           ) {
             const addAttributeToFamilyButton = this.appendAddAttributeToFamilyButton(
-              attributeMapping.exactMatchAttributeFromOtherFamily,
-              familyMapping.code
+              franklinAttributeCode,
+              model.code,
+              attributeMapping.exactMatchAttributeFromOtherFamily as string
             );
 
             addAttributeToFamilyButton.on('attribute_added_to_family', (catalogAttributeCode: string) => {
@@ -225,6 +235,8 @@ class AttributeMapping extends BaseView {
           if (type !== '' && false === this.isTypeMappingValid(attributeMapping.franklinAttribute.type, type)) {
             this.appendAttributeTypeMismatchWarning(franklinAttributeCode);
           }
+
+          this.setRowSelection(franklinAttributeCode, model.selectedFranklinAttributes[franklinAttributeCode]);
         });
         if (false !== hasDuplicatedMappedAttribute) {
           Messenger.notify(
@@ -248,7 +260,7 @@ class AttributeMapping extends BaseView {
       return false;
     }
 
-    const familyMapping = this.getFormData() as IAttributesMappingForFamily;
+    const familyMapping = this.getFormData() as IAttributesMappingModel;
 
     const duplicatedPimAttributeCount = Object.values(familyMapping.mapping).filter(
       (attributeMapping: IAttributeMapping) => {
@@ -271,7 +283,7 @@ class AttributeMapping extends BaseView {
   }
 
   private suggestAttributeMapping(franklinAttributeCode: string, catalogAttributeCode: string): void {
-    const familyMapping = this.getFormData() as IAttributesMappingForFamily;
+    const familyMapping = this.getFormData() as IAttributesMappingModel;
 
     const alreadyMappedAttributeMapping = Object.values(familyMapping.mapping).find(
       mapping => mapping.attribute === catalogAttributeCode
@@ -356,10 +368,12 @@ class AttributeMapping extends BaseView {
     return createAttributeButton;
   }
 
-  private appendAddAttributeToFamilyButton(attributeCode: string, familyCode: string) {
+  private appendAddAttributeToFamilyButton(franklinAttributeCode: string, familyCode: string, attributeCode: string) {
     const addAttributeToFamilyButton = new AddAttributeToFamilyButton(familyCode, attributeCode);
 
-    const $host = this.$el.find(`.add-attribute-to-family-button[data-franklin-attribute-code="${attributeCode}"]`);
+    const $host = this.$el.find(
+      `.add-attribute-to-family-button[data-franklin-attribute-code="${franklinAttributeCode}"]`
+    );
     $host.append(addAttributeToFamilyButton.render().el);
 
     return addAttributeToFamilyButton;
@@ -520,7 +534,7 @@ class AttributeMapping extends BaseView {
       return;
     }
 
-    const familyMapping = this.getFormData() as IAttributesMappingForFamily;
+    const familyMapping = this.getFormData() as IAttributesMappingModel;
 
     familyMapping.mapping[franklinAttributeCode].status = AttributeMappingStatus.ATTRIBUTE_INACTIVE;
 
@@ -549,43 +563,57 @@ class AttributeMapping extends BaseView {
     );
   }
 
+  private setRowSelection(franklinAttributeCode: string, checked: boolean) {
+    const checkbox = this.$el.find(`input[data-franklin-attribute-code="${franklinAttributeCode}"]`);
+    checkbox.prop('checked', checked);
+
+    const row = checkbox.parents('.AknGrid-bodyRow');
+    if (true === checked) {
+      row.addClass('AknGrid-bodyRow--selected');
+    } else {
+      row.removeClass('AknGrid-bodyRow--selected');
+    }
+  }
+
   private selectFranklinAttribute(franklinAttributeCode: string) {
-    const row = this.$el
-      .find(`input[data-franklin-attribute-code="${franklinAttributeCode}"]`)
-      .parents('.AknGrid-bodyRow');
-    row.addClass('AknGrid-bodyRow--selected');
+    const model = this.getFormData() as IAttributesMappingModel;
+    model.selectedFranklinAttributes[franklinAttributeCode] = true;
+    this.setData(model);
 
     this.getRoot().trigger('franklin_attribute_selected', franklinAttributeCode);
+
+    this.setRowSelection(franklinAttributeCode, true);
   }
 
   private deselectFranklinAttribute(franklinAttributeCode: string) {
-    const row = this.$el
-      .find(`input[data-franklin-attribute-code="${franklinAttributeCode}"]`)
-      .parents('.AknGrid-bodyRow');
-    row.removeClass('AknGrid-bodyRow--selected');
+    const model = this.getFormData() as IAttributesMappingModel;
+    model.selectedFranklinAttributes[franklinAttributeCode] = false;
+    this.setData(model);
 
-    this.getRoot().trigger('franklin_attribute_unselected', franklinAttributeCode);
+    this.getRoot().trigger('franklin_attribute_deselected', franklinAttributeCode);
+
+    this.setRowSelection(franklinAttributeCode, false);
   }
 
   private selectAllFranklinAttributes() {
-    const checkbox = this.$el.find(`input[data-franklin-attribute-code]`);
-    checkbox.prop('checked', true);
-    checkbox.parents('.AknGrid-bodyRow').addClass('AknGrid-bodyRow--selected');
+    const model = this.getFormData() as IAttributesMappingModel;
+    Object.keys(model.mapping).forEach(franklinAttributeCode => this.selectFranklinAttribute(franklinAttributeCode));
   }
 
   private deselectAllFranklinAttributes() {
-    const checkbox = this.$el.find(`input[data-franklin-attribute-code]`);
-    checkbox.prop('checked', false);
-    checkbox.parents('.AknGrid-bodyRow').removeClass('AknGrid-bodyRow--selected');
+    const model = this.getFormData() as IAttributesMappingModel;
+    Object.keys(model.mapping).forEach(franklinAttributeCode => this.deselectFranklinAttribute(franklinAttributeCode));
   }
 
   private async refreshFamilyMapping() {
-    const familyCode = (this.getFormData() as IAttributesMappingForFamily).code;
+    const familyCode = (this.getFormData() as IAttributesMappingModel).code;
     const familyMapping = (await FetcherRegistry.getFetcher('attributes-mapping-by-family').fetch(familyCode, {
       cached: false
-    })) as IAttributesMappingForFamily;
+    })) as IAttributesMappingModel;
 
     this.setData(familyMapping);
+    this.getRoot().trigger('pim_enrich:form:entity:post_fetch', familyMapping);
+
     this.render();
   }
 }
