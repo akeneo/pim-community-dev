@@ -79,6 +79,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imagePaths'        => [],
             'customFont'        => null,
+            'optionLabels'      => [],
             'filter'            => 'pdf_thumbnail',
             'renderingDate'     => $renderingDate,
         ])->shouldBeCalled();
@@ -132,6 +133,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
                 'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
                 'imagePaths'        => ['fookey'],
                 'customFont'        => null,
+                'optionLabels'      => [],
                 'filter'            => 'pdf_thumbnail',
                 'renderingDate'     => $renderingDate,
             ]
