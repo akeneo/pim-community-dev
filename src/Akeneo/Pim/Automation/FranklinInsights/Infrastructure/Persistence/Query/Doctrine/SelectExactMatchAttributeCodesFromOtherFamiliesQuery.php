@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\A
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Query\SelectExactMatchAttributeCodesFromOtherFamiliesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>

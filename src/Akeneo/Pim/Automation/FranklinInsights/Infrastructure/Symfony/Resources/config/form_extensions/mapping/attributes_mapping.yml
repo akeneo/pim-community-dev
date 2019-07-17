@@ -114,3 +114,10 @@ extensions:
         parent: akeneo-franklin-insights-settings-attributes-mapping-index-attribute-attributes-mapping
         position: 20
         targetZone: filters
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-toolbar:
+        module: akeneo/franklin-insights/view/settings/attributes-mapping/toolbar
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: bottom-panel
+        position: 10
+        className: AknDefault-bottomPanel

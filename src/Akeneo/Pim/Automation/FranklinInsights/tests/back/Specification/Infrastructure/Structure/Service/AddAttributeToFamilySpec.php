@@ -97,6 +97,32 @@ class AddAttributeToFamilySpec extends ObjectBehavior
         )->shouldReturn(null);
     }
 
+    public function it_adds_multiple_attributes_to_a_family(
+        $updater,
+        $saver,
+        $repository,
+        $validator,
+        FamilyInterface $family,
+        ConstraintViolationListInterface $violations
+    ): void {
+        $repository->findOneByIdentifier('bar')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['baz']);
+
+        $updater->update($family, ['attributes' => ['baz', 'Foo', 'Test']])->shouldBeCalled();
+        $validator->validate($family)->willReturn($violations->getWrappedObject());
+        $violations->count()->willReturn(0);
+
+        $saver->save($family)->shouldBeCalled();
+
+        $this->bulkAddAttributesToFamily(
+            new FamilyCode('bar'),
+            [
+                AttributeCode::fromLabel('Foo'),
+                AttributeCode::fromLabel('Test'),
+            ]
+        )->shouldReturn(null);
+    }
+
     public function it_throws_an_exception_when_family_does_not_exist($repository): void
     {
         $repository->findOneByIdentifier('bar')->willReturn(null);

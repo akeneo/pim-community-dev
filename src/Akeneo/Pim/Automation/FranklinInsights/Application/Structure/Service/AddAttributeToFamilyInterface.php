@@ -22,4 +22,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 interface AddAttributeToFamilyInterface
 {
     public function addAttributeToFamily(AttributeCode $attributeCode, FamilyCode $familyCode): void;
+
+    public function bulkAddAttributesToFamily(FamilyCode $familyCode, array $attributeCodes): void;
 }

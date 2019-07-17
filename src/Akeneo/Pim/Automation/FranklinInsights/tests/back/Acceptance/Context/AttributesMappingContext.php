@@ -23,6 +23,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamil
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkCreateAttributesInFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkCreateAttributesInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
@@ -33,6 +35,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\ValueObject\AttributesToCreate;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -84,15 +87,20 @@ final class AttributesMappingContext implements Context
 
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
-
-    /** @var AddAttributeToFamilyHandler */
+    /**
+     * @var AddAttributeToFamilyHandler
+     */
     private $addAttributeToFamilyHandler;
+
+    /** @var BulkCreateAttributesInFamilyHandler */
+    private $bulkCreateAttributeInFamilyHandler;
 
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         CreateAttributeInFamilyHandler $createAttributeInFamilyHandler,
+        BulkCreateAttributesInFamilyHandler $bulkCreateAttributeInFamilyHandler,
         FakeClient $fakeClient,
         GetAttributesMappingWithSuggestionsHandler $getAttributesMappingWithSuggestionsHandler,
         InMemorySelectExactMatchAttributeCodeQuery $inMemorySelectExactMatchAttributeCodeQuery,
@@ -104,6 +112,7 @@ final class AttributesMappingContext implements Context
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
         $this->createAttributeInFamilyHandler = $createAttributeInFamilyHandler;
+        $this->bulkCreateAttributeInFamilyHandler = $bulkCreateAttributeInFamilyHandler;
         $this->fakeClient = $fakeClient;
         $this->getAttributesMappingWithSuggestionsHandler = $getAttributesMappingWithSuggestionsHandler;
         $this->inMemorySelectExactMatchAttributeCodeQuery = $inMemorySelectExactMatchAttributeCodeQuery;
@@ -240,6 +249,19 @@ final class AttributesMappingContext implements Context
             );
 
             $this->addAttributeToFamilyHandler->handle($command);
+        } catch (\Exception $e) {
+            ExceptionContext::setThrownException($e);
+        }
+    }
+
+    /**
+     * @When I bulk create the following attributes in the family :familyCode :
+     */
+    public function iBulkCreateAttributesInTheFamily($familyCode, TableNode $attributesToCreate): void
+    {
+        try {
+            $command = new BulkCreateAttributesInFamilyCommand(new FamilyCode($familyCode), new AttributesToCreate($attributesToCreate->getHash()));
+            $this->bulkCreateAttributeInFamilyHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
         }

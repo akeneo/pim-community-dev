@@ -53,3 +53,15 @@ Feature: Create an attribute and add it to the family
     And the predefined attributes connectivity
     When I create the text attribute "connectivity" in the family "router"
     Then the family "router" should have the text attribute "connectivity"
+
+  Scenario: Successfully bulk create attributes and add them to a family
+    Given the family "router"
+    And the attribute group "franklin"
+    When I bulk create the following attributes in the family "router" :
+      | franklinAttributeLabel | franklinAttributeType |
+      | ports count            | number                |
+      | Warranty               | text                  |
+      | product size           | metric                |
+    Then the family "router" should have the number attribute "ports_count"
+    And the family "router" should have the text attribute "Warranty"
+    And the family "router" should have the text attribute "product_size"

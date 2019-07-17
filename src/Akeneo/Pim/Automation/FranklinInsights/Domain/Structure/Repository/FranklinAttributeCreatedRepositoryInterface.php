@@ -22,5 +22,10 @@ interface FranklinAttributeCreatedRepositoryInterface
 {
     public function save(FranklinAttributeCreated $franklinAttributeCreated): void;
 
+    /**
+     * @param FranklinAttributeCreated[] $franklinAttributeCreatedEvents
+     */
+    public function saveAll(array $franklinAttributeCreatedEvents): void;
+
     public function count(): int;
 }
