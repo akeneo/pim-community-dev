@@ -3,7 +3,6 @@
 
 namespace Akeneo\Tool\Component\StorageUtils\Indexer;
 
-
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
