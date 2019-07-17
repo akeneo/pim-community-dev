@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8551: Replace 'div' by '/' in Measure
+
 # 2.3.53 (2019-07-15)
 
 ## Bug fixes
