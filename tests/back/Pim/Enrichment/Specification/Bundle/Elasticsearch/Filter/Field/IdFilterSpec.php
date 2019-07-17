@@ -18,7 +18,7 @@ class IdFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             ['id'],
             ['IN', 'NOT IN', '=', '!='],
-            ''
+            'product_'
         );
     }
 
@@ -57,7 +57,7 @@ class IdFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'terms' => [
-                    'id' => ['4F3FCFEC-2448-11E7-93AE-92361F002671', '5F61FD3C-2448-11E7-93AE-92361F002671'],
+                    'id' => ['product_4F3FCFEC-2448-11E7-93AE-92361F002671', 'product_5F61FD3C-2448-11E7-93AE-92361F002671'],
                 ],
             ]
         )->shouldBeCalled();
@@ -78,7 +78,7 @@ class IdFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'terms' => [
-                    'id' => ['4F3FCFEC-2448-11E7-93AE-92361F002671', '5F61FD3C-2448-11E7-93AE-92361F002671'],
+                    'id' => ['product_4F3FCFEC-2448-11E7-93AE-92361F002671', 'product_5F61FD3C-2448-11E7-93AE-92361F002671'],
                 ],
             ]
         )->shouldBeCalled();
@@ -99,7 +99,7 @@ class IdFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'term' => [
-                    'id' => '4F3FCFEC-2448-11E7-93AE-92361F002671',
+                    'id' => 'product_4F3FCFEC-2448-11E7-93AE-92361F002671',
                 ],
             ]
         )->shouldBeCalled();
@@ -113,7 +113,7 @@ class IdFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'term' => [
-                    'id' => '4F3FCFEC-2448-11E7-93AE-92361F002671',
+                    'id' => 'product_4F3FCFEC-2448-11E7-93AE-92361F002671',
                 ],
             ]
         )->shouldBeCalled();
