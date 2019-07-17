@@ -12,11 +12,13 @@ Use this documentation to migrate projects based on the Community Edition.
 
 ## Requirements
 
-Make sure that you're using Akeneo PIM v3.1. You can check this information at the bottom of the dashboard.
+Make sure that you're using Akeneo PIM v3.1 on the latest patch. You can check this information at the bottom of the dashboard.
 
 Please, see the complete [list of requirements](https://docs.akeneo.com/3.2/install_pim/manual/system_requirements/system_requirements.html) for PIM v3.2.
 
 Please provide a server with the following requirements before proceeding to the PIM 3.2 migration. To install those requirements, you can follow the official documentations or our installation documentation on [Debian 9](https://docs.akeneo.com/3.2/install_pim/manual/system_requirements/manual_system_installation_debian9.html) or [Ubuntu 16.04](https://docs.akeneo.com/3.2/install_pim/manual/system_requirements/system_install_ubuntu_1604.html).
+
+To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-community-standard/compare/3.1...3.2).
 
 ## Migrate your standard project
 
@@ -46,21 +48,19 @@ Please provide a server with the following requirements before proceeding to the
     pkill -f job-queue-consumer-daemon
     ```
 
-    To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-community-standard/compare/3.1...3.2).
-
-    The `$PIM_DIR` variable will contain the path to your current PIM installation:
-
-
-    ```bash
-    export PIM_DIR=/path/to/your/current/pim/installation
-    ```
-
 2. Download the latest standard edition from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
     ```bash
     wget http://download.akeneo.com/pim-community-standard-v3.2-latest.tar.gz
     tar -zxf pim-community-standard-v3.2-latest.tar.gz
     cd pim-community-standard/
+    ```
+
+    The `$PIM_DIR` variable will contain the path to your current PIM installation:
+    
+    
+    ```bash
+    export PIM_DIR=/path/to/your/current/pim/installation
     ```
 
 3. Update the configuration files:
@@ -72,12 +72,20 @@ Please provide a server with the following requirements before proceeding to the
     Then apply the changes, from the standard edition directory:
 
     ```bash
-    cp docker-compose.yml $PIM/docker-composer.yml
+    cp docker-compose.yml $PIM_DIR/docker-compose.yml
     ```
 
     The only change is the addition of a new container `object-storage`, based on `minio` (see https://min.io/),
     and compatible with the Amazon S3 protocol. This container allows testing object storage configuration for assets and media.
-
+    
+    Don't forget to restart your docker instance:
+    
+    ```bash
+    cd $PIM_DIR
+    docker-compose up -d
+    cd -
+    ```
+    
 
 4. Update your **app/config/config.yml**
 
@@ -118,6 +126,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
     ```bash
     cd $PIM_DIR
     php -d memory_limit=3G composer update
+    cd -
     ```
 
      **This step will copy the upgrades folder from `pim-community-dev/` to your Pim project root in order to migrate.**
@@ -133,7 +142,15 @@ Before updating the dependencies and migrating your data, please deactivate all 
     # then add your own dependencies
     ```
 
-    The following PHP dependencies have changed:
+    Now we are ready to update the frontend dependencies:
+
+    ```bash
+    cd $PIM_DIR
+    yarn install
+    cd -
+    ```
+    
+    The following JS dependencies have changed:
       - `cucumber-html-reporter` upgraded to 5.0.0
       - `eslint` upgraded to 6.0.1
       - `jquery` upgraded to 3.4.0
@@ -144,6 +161,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
 Please, make sure the folder upgrades/schema/ does not contain former migration files (from PIM 2.2 to 2.3 for instance), otherwise the migration command will surely not work properly.
 
     ```bash
+    cd $PIM_DIR
     rm -rf var/cache
     bin/console doctrine:migration:migrate --env=prod
     ```
