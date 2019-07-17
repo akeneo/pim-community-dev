@@ -298,7 +298,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - 3.2
+                            - "3.2"
       jobs:
           - setup
           - back_static_and_acceptance:
