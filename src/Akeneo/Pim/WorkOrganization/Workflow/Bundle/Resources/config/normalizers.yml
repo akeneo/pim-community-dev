@@ -40,6 +40,16 @@ services:
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true
+    
+    pimee_workflow.normalizer.datagrid.published_product:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\PublishedProductNormalizer'
+        arguments:
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.image'
+            - '@pimee_workflow.query.get_published_product_completenesses'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer, priority: 150 }
+        lazy: true
 
     pimee_enrich.normalizer.published_product:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductNormalizer'
