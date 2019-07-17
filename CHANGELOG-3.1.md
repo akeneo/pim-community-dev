@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-8540: Display option label in product PDF
+- PIM-8542: Counter on categories is not being updated when deleting a product on the grid
 - PIM-8549: Fix filter caret invisible when option label is too long
 - PIM-8560: Fix maximum height of categories tree to be able to scroll
  
