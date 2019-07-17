@@ -88,7 +88,7 @@ class ProductModelController
     /** @var AttributeFilterInterface */
     private $productModelAttributeFilter;
 
-    /** @var ProductModelIndexer */
+    /** @var ProductModelIndexer|null */
     private $productModelIndexer;
 
     /**
@@ -109,7 +109,9 @@ class ProductModelController
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
      * @param AttributeFilterInterface          $productModelAttributeFilter
-     * @param ProductModelIndexer               $productModelIndexer
+     * @param ProductModelIndexer|null          $productModelIndexer
+     *
+     * TODO: on master we must remove null for the $productModelIndexer
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -129,7 +131,7 @@ class ProductModelController
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
         AttributeFilterInterface $productModelAttributeFilter,
-        ProductModelIndexer $productModelIndexer
+        ProductModelIndexer $productModelIndexer = null
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->normalizer = $normalizer;
@@ -388,7 +390,10 @@ class ProductModelController
 
         $productModel = $this->findProductModelOr404($id);
         $this->productModelRemover->remove($productModel);
-        $this->productModelIndexer->refreshIndex();
+
+        if (null !== $this->productModelIndexer) {
+            $this->productModelIndexer->refreshIndex();
+        }
 
         return new JsonResponse();
     }

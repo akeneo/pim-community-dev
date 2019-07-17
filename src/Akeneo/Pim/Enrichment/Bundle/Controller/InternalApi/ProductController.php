@@ -94,7 +94,7 @@ class ProductController
     /** @var AttributeFilterInterface */
     protected $productAttributeFilter;
 
-    /** @var ProductIndexer */
+    /** @var ProductIndexer|null */
     private $productIndexer;
 
     /**
@@ -116,7 +116,9 @@ class ProductController
      * @param NormalizerInterface           $constraintViolationNormalizer
      * @param ProductBuilderInterface       $variantProductBuilder
      * @param AttributeFilterInterface      $productAttributeFilter
-     * @param ProductIndexer                $productIndexer
+     * @param ProductIndexer|null           $productIndexer
+     *
+     * TODO: on master we must remove null for the $productIndexer
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -137,7 +139,7 @@ class ProductController
         NormalizerInterface $constraintViolationNormalizer,
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
-        ProductIndexer $productIndexer
+        ProductIndexer $productIndexer = null
     ) {
         $this->productRepository = $productRepository;
         $this->cursorableRepository = $cursorableRepository;
@@ -326,7 +328,10 @@ class ProductController
 
         $product = $this->findProductOr404($id);
         $this->productRemover->remove($product);
-        $this->productIndexer->refreshIndex();
+
+        if (null !== $this->productIndexer) {
+            $this->productIndexer->refreshIndex();
+        }
 
         return new JsonResponse();
     }
