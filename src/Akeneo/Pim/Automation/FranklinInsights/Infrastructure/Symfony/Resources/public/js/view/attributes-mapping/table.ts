@@ -537,6 +537,7 @@ class AttributeMapping extends BaseView {
     const familyMapping = this.getFormData() as IAttributesMappingModel;
 
     familyMapping.mapping[franklinAttributeCode].status = AttributeMappingStatus.ATTRIBUTE_INACTIVE;
+    familyMapping.mapping[franklinAttributeCode].attribute = null;
 
     const request = {
       code: familyMapping.code,
