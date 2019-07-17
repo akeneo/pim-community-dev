@@ -1,7 +1,7 @@
 DOCKER_COMPOSE = docker-compose
 YARN_EXEC = $(DOCKER_COMPOSE) run --rm node yarn
-PHP_RUN = $(DOCKER_COMPOSE) run -u docker --rm fpm php
-PHP_EXEC = $(DOCKER_COMPOSE) exec -u docker fpm php
+PHP_RUN = $(DOCKER_COMPOSE) run -T --rm fpm php
+PHP_EXEC = $(DOCKER_COMPOSE) exec -T fpm php
 
 LESS_FILES=$(shell find web/bundles -name "*.less")
 REQUIRE_JS_FILES=$(shell find . -name "requirejs.yml")
