@@ -41,7 +41,7 @@ define(
                                 options: {
                                     limit: 20,
                                     page: page,
-                                    locale: UserContext.get('uiLocale')
+                                    locale: UserContext.get('catalogLocale')
                                 }
                             };
                         },
@@ -55,7 +55,7 @@ define(
                                     id: key,
                                     text: i18n.getLabel(
                                         value.labels,
-                                        UserContext.get('uiLocale'),
+                                        UserContext.get('catalogLocale'),
                                         value.code
                                     )
                                 });
@@ -73,7 +73,7 @@ define(
                                         id: family.code,
                                         text: i18n.getLabel(
                                             family.labels,
-                                            UserContext.get('uiLocale'),
+                                            UserContext.get('catalogLocale'),
                                             family.code
                                         )
                                     });
@@ -84,4 +84,4 @@ define(
                 }
             }
         }
-});
+    });

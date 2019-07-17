@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8270: Update export jobs after a change on a channel category
+- GITHUB-10314: Fix family locale on mass edit product - cheers @gauquier!
 
 ## BC Breaks
 
