@@ -74,10 +74,16 @@ node_modules: package.json yarn.lock
 	$(YARN_EXEC) install
 
 ## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
-web/css/pim.css: $(LESS_FILES)
+web/css:
+	mkdir web/css
+
+web/js:
+	mkdir web/js
+
+web/css/pim.css: web/css $(LESS_FILES)
 	$(YARN_EXEC) run less
 
-web/js/require-paths.js: $(REQUIRE_JS_FILES)
+web/js/require-paths.js: web/js $(REQUIRE_JS_FILES)
 	$(PHP_EXEC) bin/console pim:installer:dump-require-paths
 
 web/bundles: $(ASSET_FILES)
