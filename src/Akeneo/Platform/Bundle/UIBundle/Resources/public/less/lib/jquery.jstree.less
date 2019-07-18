@@ -10,6 +10,11 @@
 
 .jstree {
   &.jstree-default {
+    ul {
+      max-height: ~"calc(100vh - 213px)";
+      overflow: hidden auto;
+    }
+
     ins {
       height: 25px;
       width: 25px;
@@ -64,7 +69,7 @@
 
     .jstree-closed > ins {
       background-size: 20px 20px;
-      background-image: url(../../images/jstree/icon-right.svg);
+      background-image: url("/bundles/pimui/images/jstree/icon-right.svg");
       opacity: 0.5;
       background-position: 0 3px;
     }
@@ -75,28 +80,28 @@
 
     .jstree-leaf > a > ins.jstree-icon {
       background-size: 20px 20px;
-      background-image: url(../../images/jstree/icon-folder.svg);
+      background-image: url("/bundles/pimui/images/jstree/icon-folder.svg");
       opacity: 1;
       background-position: 0 3px;
     }
 
     .jstree-leaf.jstree-checked > a > ins.jstree-icon {
       background-size: 20px 20px;
-      background-image: url(../../images/jstree/icon-folderfull.svg);
+      background-image: url("/bundles/pimui/images/jstree/icon-folderfull.svg");
       opacity: 1;
       background-position: 0 3px;
     }
 
     .jstree-open > ins {
       background-size: 20px 20px;
-      background-image: url("../../images/jstree/icon-down.svg");
+      background-image: url("/bundles/pimui/images/jstree/icon-down.svg");
       opacity: 0.5;
       background-position: 0 3px;
     }
 
     a .jstree-icon {
       background-size: 20px 20px;
-      background: url("../../images/jstree/icon-folders.svg") 0 0;
+      background: url("/bundles/pimui/images/jstree/icon-folders.svg") 0 0;
       opacity: 1;
       width: 22px;
     }
@@ -104,7 +109,7 @@
     a.jstree-clicked .jstree-icon,
     .jstree-checked > a > ins.jstree-icon {
       background-size: 20px 20px;
-      background: url("../../images/jstree/icon-foldersfull.svg") 0 0;
+      background: url("/bundles/pimui/images/jstree/icon-foldersfull.svg") 0 0;
       opacity: 1;
       height: 22px;
     }
