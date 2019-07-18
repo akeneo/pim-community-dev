@@ -10,7 +10,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -104,12 +103,11 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
         }
 
         $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
-        $data[self::FIELD_COMPLETENESS] = !($completenesses->isEmpty())
-            ? $this->serializer->normalize(
-                $completenesses,
-                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-                $context
-            ) : [];
+        $data[self::FIELD_COMPLETENESS] = $this->serializer->normalize(
+            $completenesses,
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            $context
+        );
 
         $familyVariantCode = null;
         if ($product->isVariant()) {
