@@ -41,6 +41,7 @@ class State extends BaseState {
     const model = JSON.parse(this.state) as AttributeMappingModel;
 
     model.mapping[franklinAttributeCode].status = AttributeMappingStatus.ATTRIBUTE_INACTIVE;
+    model.mapping[franklinAttributeCode].attribute = null;
 
     this.state = this.getStateFromModel(model);
   }
