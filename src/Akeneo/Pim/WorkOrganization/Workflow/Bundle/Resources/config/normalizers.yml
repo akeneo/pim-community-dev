@@ -126,7 +126,7 @@ services:
             - '@pim_catalog.repository.product'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
-    
+
     pimee_enrich.normalizer.product_model:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductModelNormalizer'
         arguments:

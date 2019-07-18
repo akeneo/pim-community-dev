@@ -239,7 +239,7 @@ class PublishedProductNormalizer implements NormalizerInterface
     private function getNormalizedCompletenesses(PublishedProductInterface $publishedProduct): array
     {
         $completenessCollection = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
-        if (count($completenessCollection) === 0) {
+        if ($completenessCollection->isEmpty()) {
             $newCompletenesses = $this->completenessCalculator->calculate($publishedProduct);
             $completenessCollection = new PublishedProductCompletenessCollection(
                 $publishedProduct->getId(),

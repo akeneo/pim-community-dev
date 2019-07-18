@@ -16,7 +16,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class PublishedProductCompletenessCollection implements \IteratorAggregate, \Countable
+final class PublishedProductCompletenessCollection implements \IteratorAggregate
 {
     /** @var int */
     private $publishedProductId;
@@ -37,14 +37,23 @@ class PublishedProductCompletenessCollection implements \IteratorAggregate, \Cou
         return new \ArrayIterator($this->completenesses);
     }
 
-    public function count(): int
-    {
-        return count($this->completenesses);
-    }
-
     public function publishedProductId(): int
     {
         return $this->publishedProductId;
+    }
+
+    public function isEmpty(): bool
+    {
+        return 0 === count($this->completenesses);
+    }
+
+    public function getCompletenessForChannelAndLocale(
+        string $channelCode,
+        string $localeCode
+    ): ?PublishedProductCompleteness {
+        $key = sprintf('%s-%s', $channelCode, $localeCode);
+
+        return $this->completenesses[$key] ?? null;
     }
 
     private function add(PublishedProductCompleteness $completeness): void

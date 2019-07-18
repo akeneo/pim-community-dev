@@ -66,12 +66,11 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
         }
 
         $completenesses = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
-        $data[self::FIELD_COMPLETENESS] = count($completenesses) > 0
-            ? $this->normalizer->normalize(
-                $completenesses,
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
-                $context
-            ) : [];
+        $data[self::FIELD_COMPLETENESS] = $this->normalizer->normalize(
+            $completenesses,
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+            $context
+        );
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$publishedProduct->getValues()->isEmpty()
             ? $this->normalizer->normalize(

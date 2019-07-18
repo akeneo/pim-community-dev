@@ -23,11 +23,6 @@ class PublishedProductCompletenessCollectionSpec extends ObjectBehavior
         $this->shouldImplement(\IteratorAggregate::class);
     }
 
-    function it_is_countable()
-    {
-        $this->shouldImplement(\Countable::class);
-    }
-
     function it_can_only_store_published_product_completenesses()
     {
         $this->beConstructedWith(42, [new \stdClass()]);
@@ -62,5 +57,15 @@ class PublishedProductCompletenessCollectionSpec extends ObjectBehavior
 
         $this->getIterator()->count()->shouldReturn(1);
         $this->getIterator()->getArrayCopy()->shouldReturn(['ecommerce-en_US' => $otherCompleteness]);
+    }
+
+    function it_can_retrieve_a_published_product_completeness_by_channel_and_locale()
+    {
+        $completeness = new PublishedProductCompleteness('ecommerce', 'en_US', 4, []);
+        $otherCompleteness = new PublishedProductCompleteness('ecommerce', 'fr_FR', 5, ['description', 'price']);
+        $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
+
+        $this->getCompletenessForChannelAndLocale('ecommerce', 'fr_FR')->shouldReturn($otherCompleteness);
+        $this->getCompletenessForChannelAndLocale('other_channel', 'en_US')->shouldReturn(null);
     }
 }

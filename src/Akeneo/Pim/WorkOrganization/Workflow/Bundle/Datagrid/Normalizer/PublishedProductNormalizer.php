@@ -125,17 +125,11 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
     private function getCompletenessRatio(PublishedProductInterface $product, array $context): ?int
     {
         $completenesses = $this->getPublishedProductCompletenesses->fromPublishedProductId($product->getId());
-        $locale = current($context['locales']);
         $channel = current($context['channels']);
+        $locale = current($context['locales']);
+        $completeness = $completenesses->getCompletenessForChannelAndLocale($channel, $locale);
 
-        foreach ($completenesses as $completeness) {
-            if ($completeness->channelCode() === $channel &&
-                $completeness->localeCode() === $locale) {
-                return $completeness->ratio();
-            }
-        }
-
-        return null;
+        return $completeness ? $completeness->ratio() : null;
     }
 
     private function getLabel($code, $value = null)

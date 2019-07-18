@@ -92,12 +92,11 @@ class PublishedProductAndModelNormalizer implements NormalizerInterface, Normali
         }
 
         $completenesses = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
-        $data[self::FIELD_COMPLETENESS] = count($completenesses) > 0
-            ? $this->normalizer->normalize(
-                $completenesses,
-                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-                $context
-            ) : [];
+        $data[self::FIELD_COMPLETENESS] = $this->normalizer->normalize(
+            $completenesses,
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            $context
+        );
 
         $familyVariantCode = null;
         $data[self::FIELD_FAMILY_VARIANT] = null;
