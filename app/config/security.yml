@@ -47,6 +47,7 @@ security:
             fos_oauth:                      true
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
+            provider:                       chain_provider # TODO: check if this is the provider we want
 
         main:
             pattern:                        ^/
