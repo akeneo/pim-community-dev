@@ -1,9 +1,5 @@
 # 3.0.x
 
-## Bug fixes
-
-- PIM-8560: Fix maximum height of categories tree to be able to scroll
-
 # 3.0.31 (2019-07-16)
 
 # 3.0.30 (2019-07-05)
