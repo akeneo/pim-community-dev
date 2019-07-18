@@ -1,0 +1,35 @@
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "liip/imagine-bundle":"2.0.0"  
+
+// TMP, to ease upgrade
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "symfony/security-acl":"*" 
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "friendsofsymfony/oauth-server-bundle":"1.6.2" 
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "friendsofsymfony/jsrouting-bundle":"2.1.1"       
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer remove sensio/generator-bundle
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "doctrine/data-fixtures":"1.3.2"    
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "doctrine/doctrine-fixtures-bundle":"3.2.2" 
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "friendsofsymfony/rest-bundle":"2.5.0"
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "symfony/swiftmailer-bundle":"3.2.4"
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "sensio/framework-extra-bundle":"5.2.4"
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "doctrine/doctrine-migrations-bundle":"1.3.2"
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "oneup/flysystem-bundle":"3.0.3" 
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "incenteev/composer-parameter-handler":"2.1.3" 
+
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "doctrine/migrations":"1.8.1" 
+
+// no release is compatible with SF4, need to use dev-master for now
+// https://github.com/minkphp/Mink/issues/757
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require --dev "behat/mink":"dev-master#a534fe7dac9525e8e10ca68e737c3d7e5058ec83"
+
+- "symfony/symfony": "4.1.*"
+- docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer update "symfony/*" --with-all-dependencies
