@@ -86,13 +86,6 @@ services:
     pim_enrich.normalizer.entity_with_family_variant.metric.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\MetricNormalizer'
 
-    # @deprecated
-#    Test to delete it. TODO Remove it if tests pass.
-#    pim_enrich.normalizer.completeness:
-#        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessNormalizer'
-#        tags:
-#            - { name: pim_internal_api_serializer.normalizer }
-
     pim_enrich.normalizer.product_completeness:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessNormalizer'
         tags:
