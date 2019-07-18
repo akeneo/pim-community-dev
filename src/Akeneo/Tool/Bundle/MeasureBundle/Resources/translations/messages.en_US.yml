@@ -148,7 +148,6 @@ pim_measure:
     GALLON: Gallon
     LITER: Liter
     MILLILITER: Milliliter
-    OUNCE: Ounce
     PINT: Pint
   # Weight
     DENIER: Denier
