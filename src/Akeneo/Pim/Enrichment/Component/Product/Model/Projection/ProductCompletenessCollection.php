@@ -39,6 +39,13 @@ final class ProductCompletenessCollection implements \IteratorAggregate
         return count($this->completenesses) === 0;
     }
 
+    public function getCompletenessForChannelAndLocale(string $channelCode, string $localeCode): ?ProductCompleteness
+    {
+        $key = sprintf('%s-%s', $channelCode, $localeCode);
+
+        return $this->completenesses[$key] ?? null;
+    }
+
     private function add(ProductCompleteness $completeness): void
     {
         $key = sprintf('%s-%s', $completeness->channelCode(), $completeness->localeCode());

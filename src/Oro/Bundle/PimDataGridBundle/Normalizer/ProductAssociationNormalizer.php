@@ -102,17 +102,11 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     protected function getCompletenessRatio(ProductInterface $product, array $context): ?int
     {
         $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
-        $locale = current($context['locales']);
         $channel = current($context['channels']);
+        $locale = current($context['locales']);
+        $completeness = $completenesses->getCompletenessForChannelAndLocale($channel, $locale);
 
-        foreach ($completenesses as $completeness) {
-            if ($completeness->channelCode() === $channel &&
-                $completeness->localeCode() === $locale) {
-                return $completeness->ratio();
-            }
-        }
-
-        return null;
+        return $completeness ? $completeness->ratio() : null;
     }
 
     /**
