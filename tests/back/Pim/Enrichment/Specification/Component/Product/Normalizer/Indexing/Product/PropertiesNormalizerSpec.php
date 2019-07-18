@@ -77,7 +77,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $completenessCollection = new ProductCompletenessCollection(67, []);
         $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
-        $serializer->normalize($completenessCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn([]);
+        $serializer->normalize($completenessCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn([]);
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
@@ -404,8 +404,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getGroupCodes()->willReturn([]);
         $product->getCategoryCodes()->willReturn([]);
 
-        $getProductCompletenesses->fromProductId(67)->willReturn(new ProductCompletenessCollection(67, []));
-        $serializer->normalize(new ArrayCollection(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn([]);
+        $completenessCollection = new ProductCompletenessCollection(67, []);
+        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $serializer->normalize($completenessCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn([]);
 
         $product->getValues()->willReturn($valueCollection);
         $valueCollection->isEmpty()->willReturn(true);
