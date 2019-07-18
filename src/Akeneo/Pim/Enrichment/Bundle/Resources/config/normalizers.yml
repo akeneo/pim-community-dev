@@ -132,7 +132,6 @@ services:
             - '@pim_enrich.normalizer.product_completeness'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.repository.cached_locale'
 
     pim_enrich.normalizer.collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer'
