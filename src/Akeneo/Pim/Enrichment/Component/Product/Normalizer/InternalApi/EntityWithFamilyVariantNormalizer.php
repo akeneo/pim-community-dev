@@ -50,7 +50,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
-    /** @var NormalizerInterface */
+    /** @var ProductCompletenessCollectionNormalizer */
     private $completenessCollectionNormalizer;
 
     /** @var CompletenessCalculatorInterface */
@@ -78,7 +78,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        NormalizerInterface $completenessCollectionNormalizer,
+        ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
@@ -246,7 +246,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
                 );
             }
 
-            return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
+            return $this->completenessCollectionNormalizer->normalize($completenessCollection);
         }
 
         return [];
