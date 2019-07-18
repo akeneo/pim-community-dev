@@ -11,8 +11,7 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/datagrid/state-listener',
-        'oro/loading-mask',
-        'oro/mediator'
+        'oro/loading-mask'
     ],
     function(
         _,
@@ -26,8 +25,7 @@ define(
         UserContext,
         FetcherRegistry,
         StateListener,
-        LoadingMask,
-        mediator
+        LoadingMask
     ) {
         return BaseForm.extend({
             config: {},
@@ -39,9 +37,6 @@ define(
             initialize(options) {
                 this.config = options.config;
                 this.loadingMask = new LoadingMask();
-
-                mediator.once('grid_load:start', this.render.bind(this));
-                mediator.on('grid_load:complete', this.render.bind(this));
 
                 return BaseForm.prototype.initialize.apply(this, arguments);
             },
