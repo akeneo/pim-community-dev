@@ -1,11 +1,14 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8542: Fix counter on categories when deleting a product on the grid
+
 # 3.1.14 (2019-07-18)
 
 ## Bug fixes
 
 - PIM-8540: Display option label in product PDF
-- PIM-8542: Fix counter on categories when deleting a product on the grid
 - PIM-8549: Fix filter caret invisible when option label is too long
 - PIM-8560: Fix maximum height of categories tree to be able to scroll
  
