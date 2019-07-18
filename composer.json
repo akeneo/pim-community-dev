@@ -86,7 +86,8 @@
         "twig/extensions": "1.3.0",
         "twig/twig": "1.42.2",
         "box/spout": "2.7.2",
-        "webmozart/assert": "1.3"
+        "webmozart/assert": "1.3",
+        "symfony/acl-bundle": "1.0.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
