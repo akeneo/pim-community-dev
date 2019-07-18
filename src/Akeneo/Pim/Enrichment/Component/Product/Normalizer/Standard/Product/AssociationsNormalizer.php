@@ -106,6 +106,23 @@ class AssociationsNormalizer implements NormalizerInterface
 
         ksort($data);
 
+        if (!empty($data) && $this->isOnlyEmptyAssociations($data)) {
+            return [];
+        }
+
         return $data;
+    }
+
+    private function isOnlyEmptyAssociations(array $associations): bool
+    {
+        foreach ($associations as $associationGroup) {
+            if (!empty($associationGroup['goups'])
+                || !empty($associationGroup['products'])
+                || empty($associationGroup['product_models'])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
