@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -45,7 +46,6 @@ class GetProductCompletenessesIntegration extends TestCase
         );
 
         $completenesses = $this->getCompletenesses($this->getProductId('productA'));
-        Assert::assertContainsOnlyInstancesOf(ProductCompleteness::class, $completenesses);
         // ecommerce + en_US
         // tablet + (en_US, de_DE, fr_FR)
         // ecommerce_china + (en_US, zh_CN)
@@ -82,7 +82,8 @@ class GetProductCompletenessesIntegration extends TestCase
             ]
         );
 
-        Assert::assertSame([], $this->getCompletenesses($this->getProductId('product_without_family')));
+        $completenesses = $this->getCompletenesses($this->getProductId('product_without_family'));
+        Assert::assertTrue($completenesses->isEmpty());
     }
 
     protected function getConfiguration()
@@ -107,14 +108,14 @@ class GetProductCompletenessesIntegration extends TestCase
         return $productId ? (int)$productId : null;
     }
 
-    private function getCompletenesses(int $productId): array
+    private function getCompletenesses(int $productId): ProductCompletenessCollection
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
                     ->fromProductId($productId);
     }
 
     private function assertCompletenessContains(
-        array $completenesses,
+        ProductCompletenessCollection $completenesses,
         string $channelCode,
         string $localeCode,
         int $requiredCount,

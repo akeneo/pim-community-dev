@@ -9,6 +9,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -42,13 +43,18 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     /** @var NormalizerInterface[] */
     private $additionalDataNormalizers;
 
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
+        GetProductCompletenesses $getProductCompletenesses,
         iterable $additionalDataNormalizers = []
     ) {
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+        $this->getProductCompletenesses = $getProductCompletenesses;
 
         $this->ensureAdditionalNormalizersAreValid($additionalDataNormalizers);
         $this->additionalDataNormalizers = $additionalDataNormalizers;
@@ -56,6 +62,8 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
 
     /**
      * {@inheritdoc}
+     *
+     * @var ProductInterface $product
      */
     public function normalize($product, $format = null, array $context = [])
     {
@@ -94,12 +102,12 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
 
-        $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
-            ? $this->serializer->normalize(
-                $product->getCompletenesses(),
-                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-                $context
-            ) : [];
+        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        $data[self::FIELD_COMPLETENESS] = $this->serializer->normalize(
+            $completenesses,
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            $context
+        );
 
         $familyVariantCode = null;
         if ($product->isVariant()) {

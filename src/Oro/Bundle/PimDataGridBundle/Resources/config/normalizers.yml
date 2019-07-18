@@ -24,6 +24,7 @@ services:
         arguments:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.image'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
 
@@ -41,6 +42,7 @@ services:
         class: '%pim_datagrid.normalizer.product_association.class%'
         arguments:
             - '@pim_enrich.normalizer.image'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
 
@@ -92,6 +94,7 @@ services:
         arguments:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.image'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
 

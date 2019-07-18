@@ -51,6 +51,16 @@ INSERT INTO `pim_catalog_completeness` VALUES (773,21058,209,49,100,0,19),(774,2
 
 
 --
+-- Dumping data for table `pim_catalog_completeness_missing_attribute`
+--
+
+
+/*!40000 ALTER TABLE `pim_catalog_completeness_missing_attribute` DISABLE KEYS */;
+INSERT INTO pim_catalog_completeness_missing_attribute VALUES (774, 2541), (774, 2539);
+/*!40000 ALTER TABLE `pim_catalog_completeness_missing_attribute` ENABLE KEYS */;
+
+
+--
 -- Dumping data for table `pim_catalog_group_product`
 --
 
