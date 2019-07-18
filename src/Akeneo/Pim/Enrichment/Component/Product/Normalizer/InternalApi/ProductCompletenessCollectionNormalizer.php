@@ -3,35 +3,49 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Completeness normalizer
+ * TODO This class can be far better optimized!
  *
- * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessCollectionNormalizer implements NormalizerInterface
+class ProductCompletenessCollectionNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
-    protected $normalizer;
+    private $normalizer;
 
-    /**
-     * @param NormalizerInterface $normalizer
-     */
-    public function __construct(NormalizerInterface $normalizer)
-    {
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $localeRepository;
+
+    public function __construct(
+        NormalizerInterface $normalizer,
+        ChannelRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
+    ) {
         $this->normalizer = $normalizer;
+        $this->channelRepository = $channelRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param CompletenessInterface[] $completenesses
+     * @param ProductCompleteness[] $completenesses
      *
      * Normalized completeness collection that is returned looks like:
      *
@@ -78,28 +92,30 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     {
         $normalizedCompletenesses = [];
         $sortedCompletenesses = [];
-        $channels = [];
-        $locales = [];
+        $channelCodes = [];
+        $localeCodes = [];
 
         foreach ($completenesses as $completeness) {
-            $channel = $completeness->getChannel();
-            if (!in_array($channel, $channels)) {
-                $channels[] = $channel;
+            $channelCode = $completeness->channelCode();
+            if (!in_array($channelCode, $channelCodes)) {
+                $channelCodes[] = $channelCode;
             }
 
-            $locale = $completeness->getLocale();
-            if (!in_array($locale, $locales)) {
-                $locales[] = $locale;
+            $localeCode = $completeness->localeCode();
+            if (!in_array($localeCode, $localeCodes)) {
+                $localeCodes[] = $localeCode;
             }
 
-            $sortedCompletenesses[$channel->getCode()][$completeness->getLocale()->getCode()] = $completeness;
+            $sortedCompletenesses[$channelCode][$localeCode] = $completeness;
         }
+
+        $channels = $this->channelRepository->findBy(['code' => $channelCodes]);
 
         foreach ($sortedCompletenesses as $channelCode => $channelCompletenesses) {
             $channelCode = (string) $channelCode;
             $normalizedCompletenesses[] = [
                 'channel'   => $channelCode,
-                'labels'    => $this->getChannelLabels($channels, $locales, $channelCode),
+                'labels'    => $this->getChannelLabels($channels, $localeCodes, $channelCode),
                 'stats'    => [
                     'total'    => count($channelCompletenesses),
                     'complete' => $this->countComplete($channelCompletenesses),
@@ -108,7 +124,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
                 'locales' => $this->normalizeChannelCompletenesses(
                     $channelCompletenesses,
                     $format,
-                    $locales,
+                    $localeCodes,
                     $context
                 ),
             ];
@@ -128,15 +144,15 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * Returns how many completenesses have a ratio of 100 for a provided list of completeness.
      *
-     * @param CompletenessInterface[] $completenesses
+     * @param ProductCompleteness[] $completenesses
      *
      * @return int
      */
-    protected function countComplete(array $completenesses)
+    private function countComplete(array $completenesses)
     {
         $complete = 0;
         foreach ($completenesses as $completeness) {
-            if (100 <= $completeness->getRatio()) {
+            if (100 <= $completeness->ratio()) {
                 $complete++;
             }
         }
@@ -151,11 +167,11 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      *
      * @return int
      */
-    protected function average(array $completenesses)
+    private function average(array $completenesses)
     {
         $complete = 0;
         foreach ($completenesses as $completeness) {
-            $complete += $completeness->getRatio();
+            $complete += $completeness->ratio();
         }
 
         return (int) round($complete / count($completenesses));
@@ -164,34 +180,34 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * Returns the normalized channel completeness
      *
-     * @param CompletenessInterface[] $completenesses
-     * @param string                  $format
-     * @param LocaleInterface[]       $locales
-     * @param array                   $context
+     * @param ProductCompleteness[] $completenesses
+     * @param string                $format
+     * @param string[]              $localeCodes
+     * @param array                 $context
      *
      * @return array
      */
-    protected function normalizeChannelCompletenesses(
+    private function normalizeChannelCompletenesses(
         array $completenesses,
         $format,
-        array $locales,
+        array $localeCodes,
         array $context
     ) {
         $normalizedCompletenesses = [];
 
         //TODO: workaround in order to handle behat empty completeness
         foreach ($completenesses as $completeness) {
-            $localeCode = $completeness->getLocale()->getCode();
+            $localeCode = $completeness->localeCode();
 
             $normalizedCompleteness = [];
             $normalizedCompleteness['completeness'] = $this->normalizer->normalize($completeness, $format, $context);
             $normalizedCompleteness['missing'] = [];
-            $normalizedCompleteness['label'] = $completeness->getLocale()->getName();
+            $normalizedCompleteness['label'] = $this->localeRepository->findOneByIdentifier($completeness->localeCode())->getName();
 
-            foreach ($completeness->getMissingAttributes() as $attribute) {
+            foreach ($completeness->missingAttributeCodes() as $attributeCode) {
                 $normalizedCompleteness['missing'][] = [
-                    'code'   => $attribute->getCode(),
-                    'labels' => $this->normalizeAttributeLabels($attribute, $locales),
+                    'code'   => $attributeCode,
+                    'labels' => $this->normalizeAttributeLabels($attributeCode, $localeCodes),
                 ];
             }
 
@@ -202,16 +218,18 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param LocaleInterface[]  $locales
+     * @param string   $attributeCode
+     * @param string[] $localeCodes
      *
      * @return array
      */
-    protected function normalizeAttributeLabels(AttributeInterface $attribute, $locales): array
+    private function normalizeAttributeLabels(string $attributeCode, array $localeCodes): array
     {
         $result = [];
-        foreach ($locales as $locale) {
-            $result[$locale->getCode()] = $attribute->getTranslation($locale->getCode())->getLabel();
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+        foreach ($localeCodes as $localeCode) {
+            $result[$localeCode] = $attribute->getTranslation($localeCode)->getLabel();
         }
 
         return $result;
@@ -219,20 +237,20 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
 
     /**
      * @param ChannelInterface[] $channels
-     * @param LocaleInterface[]  $locales
+     * @param string[]           $localeCodes
      * @param string             $channelCode
      *
      * @return string[]
      */
-    protected function getChannelLabels(array $channels, array $locales, string $channelCode)
+    private function getChannelLabels(array $channels, array $localeCodes, string $channelCode): array
     {
         $matchingChannels = array_filter($channels, function (ChannelInterface $channel) use ($channelCode) {
             return $channel->getCode() === $channelCode;
         });
         $channel = array_shift($matchingChannels);
 
-        return array_reduce($locales, function ($result, LocaleInterface $locale) use ($channel) {
-            $result[$locale->getCode()] = $channel->getTranslation($locale->getCode())->getLabel();
+        return array_reduce($localeCodes, function ($result, $localeCode) use ($channel) {
+            $result[$localeCode] = $channel->getTranslation($localeCode)->getLabel();
 
             return $result;
         }, []);

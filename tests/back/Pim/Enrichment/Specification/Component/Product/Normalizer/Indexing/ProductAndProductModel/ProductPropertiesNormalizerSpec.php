@@ -4,7 +4,10 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -13,7 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -23,9 +26,14 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function let(
         SerializerInterface $serializer,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        GetProductCompletenesses $getProductCompletenesses
     ) {
-        $this->beConstructedWith($channelRepository, $localeRepository);
+        $this->beConstructedWith(
+            $channelRepository,
+            $localeRepository,
+            $getProductCompletenesses
+        );
     }
 
     function it_is_initializable()
@@ -52,9 +60,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_properties_with_minimum_filled_fields_and_values(
         $serializer,
+        $getProductCompletenesses,
         ProductInterface $product,
-        WriteValueCollection $valueCollection,
-        Collection $completenesses
+        WriteValueCollection $valueCollection
     ) {
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
@@ -88,14 +96,15 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
-        $product->getCompletenesses()->willReturn($completenesses);
-        $completenesses->isEmpty()->willReturn(false);
+        $completeness = new ProductCompleteness('channelCode', 'localeCode', 0, []);
+        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
 
         $serializer->normalize(
-            $completenesses,
+            $completenessCollection,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             []
-        )->willReturn(['the completenesses']);
+        )->willReturn(['normalized_completeness']);
 
         $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
@@ -108,7 +117,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'categories' => [],
                 'categories_of_ancestors' => [],
                 'groups' => [],
-                'completeness' => ['the completenesses'],
+                'completeness' => ['normalized_completeness'],
                 'family_variant' => null,
                 'parent' => null,
                 'values' => [],
@@ -124,11 +133,11 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_properties_with_fields_and_values(
         $serializer,
+        $getProductCompletenesses,
         ProductInterface $product,
         WriteValueCollection $valueCollection,
         FamilyInterface $family,
-        AttributeInterface $sku,
-        Collection $completenesses
+        AttributeInterface $sku
     ) {
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
@@ -173,9 +182,10 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completenesses->isEmpty()->willReturn(false);
-        $product->getCompletenesses()->willReturn($completenesses);
-        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+        $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
+        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $serializer->normalize($completenessCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(
             [
                 'ecommerce' => [
@@ -253,12 +263,12 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         $localeRepository,
         $channelRepository,
+        $getProductCompletenesses,
         AttributeInterface $sku,
         ProductInterface $variantProduct,
         WriteValueCollection $valueCollection,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
-        Collection $completenesses,
         ProductModelInterface $subProductModel,
         ProductModelInterface $rootProductModel,
         ValueInterface $frEcomSku,
@@ -307,10 +317,19 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completenesses->isEmpty()->willReturn(false);
-        $variantProduct->getCompletenesses()->willReturn($completenesses);
+        $completeness1 = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
+        $completeness2 = new ProductCompleteness('ecommerce', 'fr_FR', 3, ['fake_attr']);
+        $completeness3 = new ProductCompleteness('print', 'en_US', 3, ['fake_attr']);
+        $completeness4 = new ProductCompleteness('print', 'fr_FR', 3, ['fake_attr']);
+        $completenessCollection = new ProductCompletenessCollection(67, [
+            $completeness1,
+            $completeness2,
+            $completeness3,
+            $completeness4
+        ]);
+        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
         $serializer->normalize(
-            $completenesses,
+            $completenessCollection,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             []
         )->willReturn(
@@ -451,9 +470,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_variant_product_properties_with_minimum_filled_fields_and_values(
         $serializer,
         $channelRepository,
+        $getProductCompletenesses,
         ProductInterface $variantProduct,
         WriteValueCollection $valueCollection,
-        Collection $completenesses,
         FamilyInterface $family,
         AttributeInterface $sku,
         FamilyVariantInterface $familyVariant,
@@ -508,10 +527,11 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $variantProduct->getCompletenesses()->willReturn($completenesses);
-        $completenesses->isEmpty()->willReturn(false);
-        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
-            ->willReturn(['the completenesses']);
+        $completeness = new ProductCompleteness('ecommerce', 'en_US', 0, []);
+        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $serializer->normalize($completenessCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(['normalized_completeness']);
 
         $variantProduct->getParent()->willReturn($subProductModel);
         $subProductModel->getId()->willReturn(4);
@@ -549,7 +569,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'categories' => [],
                 'categories_of_ancestors' => [],
                 'groups' => [],
-                'completeness' => ['the completenesses'],
+                'completeness' => ['normalized_completeness'],
                 'family_variant' => 'family_variant_A',
                 'parent' => 'model-tshirt-xs',
                 'values' => [],
@@ -573,9 +593,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_variant_product_properties_with_fields_and_values_and_its_parents_values(
         $serializer,
         $localeRepository,
+        $getProductCompletenesses,
         ProductInterface $variantProduct,
         WriteValueCollection $valueCollection,
-        Collection $completenesses,
         FamilyInterface $family,
         AttributeInterface $sku,
         FamilyVariantInterface $familyVariant,
@@ -632,9 +652,10 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completenesses->isEmpty()->willReturn(false);
-        $variantProduct->getCompletenesses()->willReturn($completenesses);
-        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+        $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
+        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $serializer->normalize($completenessCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(
             [
                 'ecommerce' => [
@@ -751,16 +772,16 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     }
 
     function it_adds_extra_data_with_optionnal_normalizers(
+        $serializer,
+        $channelRepository,
+        $localeRepository,
+        $getProductCompletenesses,
         NormalizerInterface $normalizer1,
         NormalizerInterface $normalizer2,
         ProductInterface $product,
-        WriteValueCollection $valueCollection,
-        Collection $completenesses,
-        $serializer,
-        $channelRepository,
-        $localeRepository
+        WriteValueCollection $valueCollection
     ) {
-        $this->beConstructedWith($channelRepository, $localeRepository, [$normalizer1, $normalizer2]);
+        $this->beConstructedWith($channelRepository, $localeRepository, $getProductCompletenesses, [$normalizer1, $normalizer2]);
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
 
@@ -793,11 +814,12 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
-        $product->getCompletenesses()->willReturn($completenesses);
-        $completenesses->isEmpty()->willReturn(false);
+        $completeness = new ProductCompleteness('channelCode', 'localeCode', 0, []);
+        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
 
-        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-            [])->willReturn(['the completenesses']);
+        $serializer->normalize($completenessCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            [])->willReturn(['normalized_completeness']);
 
         $normalizer1
             ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
@@ -818,7 +840,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'categories'              => [],
                 'categories_of_ancestors' => [],
                 'groups'                  => [],
-                'completeness'            => ['the completenesses'],
+                'completeness'            => ['normalized_completeness'],
                 'family_variant'          => null,
                 'parent'                  => null,
                 'values'                  => [],
@@ -834,9 +856,17 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         );
     }
 
-    public function it_fails_if_an_extra_normalizer_is_not_a_normalizer($channelRepository, $localeRepository)
-    {
-        $this->beConstructedWith($channelRepository, $localeRepository, [new \stdClass()]);
+    public function it_fails_if_an_extra_normalizer_is_not_a_normalizer(
+        $channelRepository,
+        $localeRepository,
+        $getProductCompletenesses
+    ) {
+        $this->beConstructedWith(
+            $channelRepository,
+            $localeRepository,
+            $getProductCompletenesses,
+            [new \stdClass()]
+        );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

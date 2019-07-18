@@ -14,7 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 interface CompletenessCalculatorInterface
 {
-
     /**
      * Generates an array of completenesses.
      *
@@ -22,5 +21,5 @@ interface CompletenessCalculatorInterface
      *
      * @return CompletenessInterface[]
      */
-    public function calculate(ProductInterface $product);
+    public function calculate(ProductInterface $product): array;
 }
