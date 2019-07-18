@@ -79,7 +79,7 @@
         "sensio/framework-extra-bundle": "5.2.4",
         "symfony/monolog-bundle": "3.1.2",
         "symfony/swiftmailer-bundle": "3.2.4",
-        "symfony/security-acl": "*",
+        "symfony/security-acl": "3.0.2",
         "symfony/symfony": "4.1.*",
         "symfony/thanks": "^1.0",
         "symfony/polyfill-apcu": "1.4.0",
