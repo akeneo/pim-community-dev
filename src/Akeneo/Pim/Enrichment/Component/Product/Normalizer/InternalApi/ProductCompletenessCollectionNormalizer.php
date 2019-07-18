@@ -5,20 +5,19 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * TODO This class can be far better optimized!
+ * Normalizes a ProductCompletenessCollection of a product (for the Product Edit Form)
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCompletenessCollectionNormalizer implements NormalizerInterface
+class ProductCompletenessCollectionNormalizer
 {
     /** @var NormalizerInterface */
     private $normalizer;
@@ -85,7 +84,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
      *     ['...'],
      * ];
      */
-    public function normalize($completenesses, $format = null, array $context = [])
+    public function normalize($completenesses): array
     {
         $channelCodes = $this->getChannelCodes($completenesses);
         $localeCodes = $this->getLocaleCodes($completenesses);
@@ -99,9 +98,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
                 $channelCode,
                 $channelCompletenesses,
                 $channels,
-                $localeCodes,
-                $format,
-                $context
+                $localeCodes
             );
         }
 
@@ -109,11 +106,74 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param ProductCompletenessCollection $completenesses
+     *
+     * @return string[]
      */
-    public function supportsNormalization($data, $format = null)
+    private function getChannelCodes(ProductCompletenessCollection $completenesses): array
     {
-        return false;
+        $channelCodes = [];
+        foreach ($completenesses as $completeness) {
+            $channelCodes[] = $completeness->channelCode();
+        }
+
+        return array_unique($channelCodes);
+    }
+
+    /**
+     * @param ProductCompletenessCollection $completenesses
+     *
+     * @return string[]
+     */
+    private function getLocaleCodes(ProductCompletenessCollection $completenesses): array
+    {
+        $localeCodes = [];
+        foreach ($completenesses as $completeness) {
+            $localeCodes[] = $completeness->localeCode();
+        }
+
+        return $localeCodes;
+    }
+
+    /**
+     * @param ProductCompletenessCollection $completenesses
+     *
+     * @return array
+     */
+    private function getCompletenessesByChannel(ProductCompletenessCollection $completenesses): array
+    {
+        $sortedCompletenesses = [];
+        foreach ($completenesses as $completeness) {
+            $sortedCompletenesses[$completeness->channelCode()][] = $completeness;
+        }
+
+        return $sortedCompletenesses;
+    }
+
+    /**
+     * @param string                $channelCode
+     * @param ProductCompleteness[] $channelCompletenesses
+     * @param ChannelInterface[]    $channels
+     * @param string[]              $localeCodes
+     *
+     * @return array
+     */
+    private function normalizeChannelCompletenesses(
+        string $channelCode,
+        array $channelCompletenesses,
+        array $channels,
+        array $localeCodes
+    ): array {
+        return [
+            'channel'   => $channelCode,
+            'labels'    => $this->getChannelLabels($channels, $localeCodes, $channelCode),
+            'stats'    => [
+                'total'    => count($channelCompletenesses),
+                'complete' => $this->countComplete($channelCompletenesses),
+                'average'  => $this->average($channelCompletenesses),
+            ],
+            'locales' => $this->normalizeCompletenessesByLocale($channelCompletenesses, $localeCodes),
+        ];
     }
 
     /**
@@ -123,7 +183,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
      *
      * @return int
      */
-    private function countComplete(array $completenesses)
+    private function countComplete(array $completenesses): int
     {
         $complete = 0;
         foreach ($completenesses as $completeness) {
@@ -138,11 +198,11 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * Returns the average completeness of a specific channel
      *
-     * @param CompletenessInterface[] $completenesses
+     * @param ProductCompleteness[] $completenesses
      *
      * @return int
      */
-    private function average(array $completenesses)
+    private function average(array $completenesses): int
     {
         $complete = 0;
         foreach ($completenesses as $completeness) {
@@ -156,37 +216,26 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
      * Returns the normalized channel completeness
      *
      * @param ProductCompleteness[] $completenesses
-     * @param string                $format
      * @param string[]              $localeCodes
-     * @param array                 $context
      *
      * @return array
      */
-    private function normalizeCompletenessesByLocales(
+    private function normalizeCompletenessesByLocale(
         array $completenesses,
-        $format,
-        array $localeCodes,
-        array $context
-    ) {
+        array $localeCodes
+    ): array {
         $normalizedCompletenesses = [];
-
-        //TODO: workaround in order to handle behat empty completeness
         foreach ($completenesses as $completeness) {
-            $localeCode = $completeness->localeCode();
-
-            $normalizedCompleteness = [];
-            $normalizedCompleteness['completeness'] = $this->normalizer->normalize($completeness, $format, $context);
-            $normalizedCompleteness['missing'] = [];
-            $normalizedCompleteness['label'] = $this->getLocaleName($completeness->localeCode());
-
-            foreach ($completeness->missingAttributeCodes() as $attributeCode) {
-                $normalizedCompleteness['missing'][] = [
-                    'code'   => $attributeCode,
-                    'labels' => $this->normalizeAttributeLabels($attributeCode, $localeCodes),
-                ];
-            }
-
-            $normalizedCompletenesses[$localeCode] = $normalizedCompleteness;
+            $normalizedCompletenesses[$completeness->localeCode()] = [
+                'completeness' => $this->normalizer->normalize($completeness, 'internal_api'),
+                'missing' => array_map(function ($attributeCode) use ($localeCodes) {
+                    return [
+                        'code'   => $attributeCode,
+                        'labels' => $this->normalizeAttributeLabels($attributeCode, $localeCodes),
+                    ];
+                }, $completeness->missingAttributeCodes()),
+                'label' => $this->getLocaleName($completeness->localeCode()),
+            ];
         }
 
         return $normalizedCompletenesses;
@@ -242,85 +291,5 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
         $locale->setCode($localeCode);
 
         return $locale->getName();
-    }
-
-    /**
-     * @param ProductCompletenessCollection $completenesses
-     *
-     * @return string[]
-     */
-    private function getChannelCodes(ProductCompletenessCollection $completenesses): array
-    {
-        $channelCodes = [];
-        foreach ($completenesses as $completeness) {
-            $channelCodes[] = $completeness->channelCode();
-        }
-
-        return array_unique($channelCodes);
-    }
-
-    /**
-     * @param ProductCompletenessCollection $completenesses
-     *
-     * @return string[]
-     */
-    private function getLocaleCodes(ProductCompletenessCollection $completenesses): array
-    {
-        $localeCodes = [];
-        foreach ($completenesses as $completeness) {
-            $localeCodes[] = $completeness->localeCode();
-        }
-
-        return $localeCodes;
-    }
-
-    /**
-     * @param ProductCompletenessCollection $completenesses
-     *
-     * @return array
-     */
-    private function getCompletenessesByChannel(ProductCompletenessCollection $completenesses): array
-    {
-        $sortedCompletenesses = [];
-        foreach ($completenesses as $completeness) {
-            $sortedCompletenesses[$completeness->channelCode()][$completeness->localeCode()] = $completeness;
-        }
-
-        return $sortedCompletenesses;
-    }
-
-    /**
-     * @param string             $channelCode
-     * @param array              $channelCompletenesses
-     * @param ChannelInterface[] $channels
-     * @param string[]           $localeCodes
-     * @param string             $format
-     * @param array              $context
-     *
-     * @return array
-     */
-    private function normalizeChannelCompletenesses(
-        string $channelCode,
-        array $channelCompletenesses,
-        array $channels,
-        array $localeCodes,
-        string $format,
-        array $context
-    ): array {
-        return [
-            'channel'   => $channelCode,
-            'labels'    => $this->getChannelLabels($channels, $localeCodes, $channelCode),
-            'stats'    => [
-                'total'    => count($channelCompletenesses),
-                'complete' => $this->countComplete($channelCompletenesses),
-                'average'  => $this->average($channelCompletenesses),
-            ],
-            'locales' => $this->normalizeCompletenessesByLocales(
-                $channelCompletenesses,
-                $format,
-                $localeCodes,
-                $context
-            ),
-        ];
     }
 }
