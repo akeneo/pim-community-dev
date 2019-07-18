@@ -72,7 +72,8 @@ To give you a quick overview of the changes made to a standard project, you can 
     Then apply the changes, from the standard edition directory:
 
     ```bash
-    cp docker-compose.yml $PIM_DIR/docker-compose.yml
+    cp docker-compose.yml $PIM_DIR/
+    cp docker-compose.override.yml.dist $PIM_DIR/
     ```
 
     The only change is the addition of a new container `object-storage`, based on `minio` (see https://min.io/),
@@ -158,7 +159,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
 
 11. Migrate your MySQL database
 
-Please, make sure the folder upgrades/schema/ does not contain former migration files (from PIM 2.2 to 2.3 for instance), otherwise the migration command will surely not work properly.
+Please, make sure the folder `upgrades/schema/` does not contain former migration files (from PIM 3.0 to 3.1 for instance), otherwise the migration command will surely not work properly.
 
     ```bash
     cd $PIM_DIR
@@ -194,36 +195,24 @@ Please, make sure the folder upgrades/schema/ does not contain former migration 
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ValueCollection#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\WriteValueCollection#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#ValueCollectionIn\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
-    please apply `sed 's/ValueCollectionInterface/WriteValueCollection/g` (it also rename the ValueCollection)
     ```
+    
+    Please apply `sed 's/ValueCollectionInterface/WriteValueCollection/g` (it also renames the ValueCollection).
 
 2. Adapt your custom codes to handle this breaking changes we introduced:
 
  - Service `pim_catalog.saver.channel` class has been changed to `Akeneo\Channel\Bundle\Storage\Orm\ChannelSaver`.
- - Interface `Akeneo\Channel\Component\Model\ChannelInterface` has a new methods `popEvents(): array
+ - Interface `Akeneo\Channel\Component\Model\ChannelInterface` has a new method `popEvents(): array`
  - The following classes have been removed:
 
-   - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\RemoveUserSubscriber`
-    This subscriber has been replaced by a proper Doctrine mapping that set the user at `null` in the `Comment` entity
-    for which the user is the author when the user is removed.
-    If you override this service, you can use the same events (`StorageEvents::PRE_REMOVE` and `StorageEvents::POST_REMOVE`)
-    on `Akeneo\UserManagement\Component\Model\UserInterface`to fire your own subscriber.
-
+   - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\RemoveUserSubscriber`. This subscriber has been replaced by a proper Doctrine mapping that set the user at `null` in the `Comment` entity for which the user is the author when the user is removed. If you override this service, you can use the same events (`StorageEvents::PRE_REMOVE` and `StorageEvents::POST_REMOVE`) on `Akeneo\UserManagement\Component\Model\UserInterface`to fire your own subscriber.
    - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel`
-
-
    - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetMetadataForProductModel`
    - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata`
    - `Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface`
-   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface`
-    These class and interface have been removed from the refactoring of the `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels`.
-    You can check the new class `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels` to see how it has been replaced.
-
-
+   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface`. These class and interface have been removed from the refactoring of the `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels`. You can check the new class `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels` to see how it has been replaced. 
    - `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface`
-   - `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`
-    These interfaces have been removed. You can now directly extends `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory` and `Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection`
-
+   - `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`. These interfaces have been removed. You can now directly extends `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory` and `Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection`
 
 3. Reactivate your custom code
 
