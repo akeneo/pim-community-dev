@@ -16,12 +16,13 @@ config:
         pimee/productasset/uploader:    pimenterpriseproductasset/js/form/uploader
         pimee/productasset/media-field: pimenterpriseproductasset/js/form/media-field
         pimee/productasset/mass-upload: pimenterpriseproductasset/js/mass-upload
+        pimee/asset-fetcher:            pimenterpriseproductasset/js/asset-fetcher
 
     config:
         pim/fetcher-registry:
             fetchers:
                 asset:
-                    module: pim/base-fetcher
+                    module: pimee/asset-fetcher
                     options:
                         warmup: false
                         urls:

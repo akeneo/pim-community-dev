@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8546: Fix asset fetch from PEF when uri too long
+
 # 2.3.53 (2019-07-15)
 
 # 2.3.52 (2019-07-02)
