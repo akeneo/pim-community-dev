@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
@@ -27,19 +28,14 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $localeRepository;
-
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -202,7 +198,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
             $normalizedCompleteness = [];
             $normalizedCompleteness['completeness'] = $this->normalizer->normalize($completeness, $format, $context);
             $normalizedCompleteness['missing'] = [];
-            $normalizedCompleteness['label'] = $this->localeRepository->findOneByIdentifier($completeness->localeCode())->getName();
+            $normalizedCompleteness['label'] = $this->getLocaleName($completeness->localeCode());
 
             foreach ($completeness->missingAttributeCodes() as $attributeCode) {
                 $normalizedCompleteness['missing'][] = [
@@ -254,5 +250,18 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
 
             return $result;
         }, []);
+    }
+
+    /**
+     * @param string $localeCode
+     *
+     * @return string|null
+     */
+    private function getLocaleName(string $localeCode): ?string
+    {
+        $locale = new Locale();
+        $locale->setCode($localeCode);
+
+        return $locale->getName();
     }
 }
