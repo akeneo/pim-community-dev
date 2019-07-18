@@ -816,14 +816,14 @@ JSON;
       "convert": {
         "mul": "1"
       },
-      "symbol": "mdivs"
+      "symbol": "m/s"
     },
     {
       "code": "METER_PER_MINUTE",
       "convert": {
         "div": "60"
       },
-      "symbol": "mdivm"
+      "symbol": "m/mn"
     },
     {
       "code": "METER_PER_HOUR",
@@ -831,7 +831,7 @@ JSON;
         "mul": "1",
         "div": "3600"
       },
-      "symbol": "mdivh"
+      "symbol": "m/h"
     },
     {
       "code": "KILOMETER_PER_HOUR",
@@ -839,14 +839,14 @@ JSON;
         "mul": "1000",
         "div": "3600"
       },
-      "symbol": "kmdivh"
+      "symbol": "km/h"
     },
     {
       "code": "FOOT_PER_SECOND",
       "convert": {
         "mul": "0.3048"
       },
-      "symbol": "ftdivs"
+      "symbol": "ft/s"
     },
     {
       "code": "FOOT_PER_HOUR",
@@ -854,7 +854,7 @@ JSON;
         "mul": "0.3048",
         "div": "3600"
       },
-      "symbol": "ftdivh"
+      "symbol": "ft/h"
     },
     {
       "code": "YARD_PER_HOUR",
@@ -862,7 +862,7 @@ JSON;
         "mul": "0.9144",
         "div": "3600"
       },
-      "symbol": "yddivh"
+      "symbol": "yd/h"
     },
     {
       "code": "MILE_PER_HOUR",
@@ -870,7 +870,7 @@ JSON;
         "mul": "1609.344",
         "div": "3600"
       },
-      "symbol": "midivh"
+      "symbol": "mi/h"
     }
   ]
 }
