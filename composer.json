@@ -93,7 +93,7 @@
         "akeneo/php-coupling-detector": "0.3.*",
         "behat/behat": "3.4.3",
         "behat/gherkin":"4.5.1",
-        "behat/mink":"1.7.1",
+        "behat/mink":"dev-master#a534fe7dac9525e8e10ca68e737c3d7e5058ec83",
         "behat/transliterator":"1.2.0",
         "behat/mink-browserkit-driver": "1.3.3",
         "behat/mink-extension": "2.3.1",
