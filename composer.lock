@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80d7aec9c9df32b6f94c7b8de45da1dd",
+    "content-hash": "770b89475fbc490dc0167768088a78c6",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -2754,28 +2754,27 @@
         },
         {
             "name": "oneup/flysystem-bundle",
-            "version": "1.14.0",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupFlysystemBundle.git",
-                "reference": "1224bd9f50b5c655fea312a10f624d029768d3ff"
+                "reference": "f144242c765e4d3e0a20551f71e76b33cc0a2c0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupFlysystemBundle/zipball/1224bd9f50b5c655fea312a10f624d029768d3ff",
-                "reference": "1224bd9f50b5c655fea312a10f624d029768d3ff",
+                "url": "https://api.github.com/repos/1up-lab/OneupFlysystemBundle/zipball/f144242c765e4d3e0a20551f71e76b33cc0a2c0f",
+                "reference": "f144242c765e4d3e0a20551f71e76b33cc0a2c0f",
                 "shasum": ""
             },
             "require": {
                 "league/flysystem": "^1.0.26",
-                "php": ">=5.4.0",
-                "symfony/framework-bundle": "~2.0|~3.0"
+                "php": "^7.0",
+                "symfony/framework-bundle": "^3.3|^4.0"
             },
             "require-dev": {
                 "jenko/flysystem-gaufrette": "^1.0",
                 "league/flysystem-aws-s3-v2": "^1.0",
                 "league/flysystem-cached-adapter": "^1.0",
-                "league/flysystem-dropbox": "^1.0",
                 "league/flysystem-gridfs": "^1.0",
                 "league/flysystem-memory": "^1.0",
                 "league/flysystem-rackspace": "^1.0",
@@ -2785,12 +2784,13 @@
                 "league/flysystem-ziparchive": "^1.0",
                 "litipk/flysystem-fallback-adapter": "^0.1",
                 "phpunit/phpunit": "^4.4",
+                "spatie/flysystem-dropbox": "^1.0",
                 "superbalist/flysystem-google-storage": "^4.0",
-                "symfony/asset": "^2.0|^3.0",
-                "symfony/browser-kit": "^2.0|^3.0",
-                "symfony/finder": "^2.0|^3.0",
-                "symfony/templating": "^2.0|^3.0",
-                "symfony/translation": "^2.0|^3.0",
+                "symfony/asset": "^3.3|^4.0",
+                "symfony/browser-kit": "^3.3|^4.0",
+                "symfony/finder": "^3.3|^4.0",
+                "symfony/templating": "^3.3|^4.0",
+                "symfony/translation": "^3.3|^4.0",
                 "twistor/flysystem-stream-wrapper": "^1.0"
             },
             "suggest": {
@@ -2800,14 +2800,14 @@
                 "league/flysystem-aws-s3-v2": "Use S3 storage with AWS SDK v2",
                 "league/flysystem-aws-s3-v3": "Use S3 storage with AWS SDK v3",
                 "league/flysystem-cached-adapter": "Flysystem adapter decorator for metadata caching",
-                "league/flysystem-dropbox": "Use Dropbox storage",
                 "league/flysystem-gridfs": "Allows you to use GridFS adapter",
                 "league/flysystem-rackspace": "Allows you to use Rackspace Cloud Files",
-                "league/flysystem-replicate-adapter": "Allows you to use the Replica adapter from Flysystem",
+                "league/flysystem-replicate-adapter": "Allows you to use the Replicate adapter from Flysystem",
                 "league/flysystem-sftp": "Allows SFTP server storage via phpseclib",
                 "league/flysystem-webdav": "Allows you to use WebDAV storage",
                 "league/flysystem-ziparchive": "Allows you to use ZipArchive adapter",
                 "litipk/flysystem-fallback-adapter": "Allows you to use a fallback filesystem",
+                "spatie/flysystem-dropbox": "Use Dropbox storage",
                 "superbalist/flysystem-google-storage": "Allows you to use Google Cloud Storage buckets",
                 "twistor/flysystem-stream-wrapper": "Allows you to use stream wrapper"
             },
@@ -2827,6 +2827,12 @@
                     "email": "js@1up.io",
                     "homepage": "http://1up.io",
                     "role": "Developer"
+                },
+                {
+                    "name": "David Greminger",
+                    "email": "dg@1up.io",
+                    "homepage": "http://1up.io",
+                    "role": "Developer"
                 }
             ],
             "description": "Integrates Flysystem filesystem abstraction library to your Symfony2 project.",
@@ -2837,7 +2843,7 @@
                 "abstraction",
                 "filesystem"
             ],
-            "time": "2017-06-13T08:16:42+00:00"
+            "time": "2018-12-03T08:14:22+00:00"
         },
         {
             "name": "paragonie/random_compat",

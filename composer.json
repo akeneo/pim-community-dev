@@ -74,7 +74,7 @@
         "imagine/imagine": "0.7.1",
         "monolog/monolog": "1.23.0",
         "ocramius/proxy-manager": "2.1.1",
-        "oneup/flysystem-bundle": "1.14.0",
+        "oneup/flysystem-bundle": "3.0.3",
         "ramsey/uuid": "3.7.0",
         "sensio/framework-extra-bundle": "5.2.4",
         "symfony/monolog-bundle": "3.1.2",
