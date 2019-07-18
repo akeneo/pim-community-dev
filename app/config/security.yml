@@ -1,10 +1,4 @@
 security:
-    acl:
-        connection: default
-        cache:
-            id: security.acl.cache.doctrine
-            prefix: sf2_acl_
-
     providers:
         chain_provider:
             chain:
@@ -74,3 +68,9 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/, role: pim_api_overall_access }
+
+acl:
+    connection: default
+    cache:
+        id: security.acl.cache.doctrine
+        prefix: sf2_acl_
