@@ -7,6 +7,7 @@ use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -41,7 +42,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param ProductCompleteness[] $completenesses
+     * @param ProductCompletenessCollection $completenesses
      *
      * Normalized completeness collection that is returned looks like:
      *
@@ -86,47 +87,25 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
      */
     public function normalize($completenesses, $format = null, array $context = [])
     {
-        $normalizedCompletenesses = [];
-        $sortedCompletenesses = [];
-        $channelCodes = [];
-        $localeCodes = [];
-
-        foreach ($completenesses as $completeness) {
-            $channelCode = $completeness->channelCode();
-            if (!in_array($channelCode, $channelCodes)) {
-                $channelCodes[] = $channelCode;
-            }
-
-            $localeCode = $completeness->localeCode();
-            if (!in_array($localeCode, $localeCodes)) {
-                $localeCodes[] = $localeCode;
-            }
-
-            $sortedCompletenesses[$channelCode][$localeCode] = $completeness;
-        }
+        $channelCodes = $this->getChannelCodes($completenesses);
+        $localeCodes = $this->getLocaleCodes($completenesses);
+        $completenessesByChannel = $this->getCompletenessesByChannel($completenesses);
 
         $channels = $this->channelRepository->findBy(['code' => $channelCodes]);
 
-        foreach ($sortedCompletenesses as $channelCode => $channelCompletenesses) {
-            $channelCode = (string) $channelCode;
-            $normalizedCompletenesses[] = [
-                'channel'   => $channelCode,
-                'labels'    => $this->getChannelLabels($channels, $localeCodes, $channelCode),
-                'stats'    => [
-                    'total'    => count($channelCompletenesses),
-                    'complete' => $this->countComplete($channelCompletenesses),
-                    'average'  => $this->average($channelCompletenesses),
-                ],
-                'locales' => $this->normalizeChannelCompletenesses(
-                    $channelCompletenesses,
-                    $format,
-                    $localeCodes,
-                    $context
-                ),
-            ];
+        $normalizedCompletenessesPerChannel = [];
+        foreach ($completenessesByChannel as $channelCode => $channelCompletenesses) {
+            $normalizedCompletenessesPerChannel[] = $this->normalizeChannelCompletenesses(
+                $channelCode,
+                $channelCompletenesses,
+                $channels,
+                $localeCodes,
+                $format,
+                $context
+            );
         }
 
-        return $normalizedCompletenesses;
+        return $normalizedCompletenessesPerChannel;
     }
 
     /**
@@ -183,7 +162,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    private function normalizeChannelCompletenesses(
+    private function normalizeCompletenessesByLocales(
         array $completenesses,
         $format,
         array $localeCodes,
@@ -263,5 +242,85 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
         $locale->setCode($localeCode);
 
         return $locale->getName();
+    }
+
+    /**
+     * @param ProductCompletenessCollection $completenesses
+     *
+     * @return string[]
+     */
+    private function getChannelCodes(ProductCompletenessCollection $completenesses): array
+    {
+        $channelCodes = [];
+        foreach ($completenesses as $completeness) {
+            $channelCodes[] = $completeness->channelCode();
+        }
+
+        return array_unique($channelCodes);
+    }
+
+    /**
+     * @param ProductCompletenessCollection $completenesses
+     *
+     * @return string[]
+     */
+    private function getLocaleCodes(ProductCompletenessCollection $completenesses): array
+    {
+        $localeCodes = [];
+        foreach ($completenesses as $completeness) {
+            $localeCodes[] = $completeness->localeCode();
+        }
+
+        return $localeCodes;
+    }
+
+    /**
+     * @param ProductCompletenessCollection $completenesses
+     *
+     * @return array
+     */
+    private function getCompletenessesByChannel(ProductCompletenessCollection $completenesses): array
+    {
+        $sortedCompletenesses = [];
+        foreach ($completenesses as $completeness) {
+            $sortedCompletenesses[$completeness->channelCode()][$completeness->localeCode()] = $completeness;
+        }
+
+        return $sortedCompletenesses;
+    }
+
+    /**
+     * @param string             $channelCode
+     * @param array              $channelCompletenesses
+     * @param ChannelInterface[] $channels
+     * @param string[]           $localeCodes
+     * @param string             $format
+     * @param array              $context
+     *
+     * @return array
+     */
+    private function normalizeChannelCompletenesses(
+        string $channelCode,
+        array $channelCompletenesses,
+        array $channels,
+        array $localeCodes,
+        string $format,
+        array $context
+    ): array {
+        return [
+            'channel'   => $channelCode,
+            'labels'    => $this->getChannelLabels($channels, $localeCodes, $channelCode),
+            'stats'    => [
+                'total'    => count($channelCompletenesses),
+                'complete' => $this->countComplete($channelCompletenesses),
+                'average'  => $this->average($channelCompletenesses),
+            ],
+            'locales' => $this->normalizeCompletenessesByLocales(
+                $channelCompletenesses,
+                $format,
+                $localeCodes,
+                $context
+            ),
+        ];
     }
 }
