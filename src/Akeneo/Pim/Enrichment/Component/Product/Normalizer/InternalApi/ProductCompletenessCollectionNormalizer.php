@@ -13,6 +13,46 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * Normalizes a ProductCompletenessCollection of a product (for the Product Edit Form)
  *
+ * [
+ *     [
+ *         'channel'  => 'ecommerce',
+ *         'labels'   => [
+ *             'en_US' => 'Ecommerce',
+ *             'fr_FR' => 'E-commerce',
+ *         ],
+ *         'stats'    => [
+ *             'total'    => 3,
+ *             'complete' => 0,
+ *         ],
+ *         'locales' => [
+ *             'de_DE' => [
+ *                 'completeness' => [
+ *                     'required' => 4,
+ *                     'missing' => 2,
+ *                     'ratio' => 50,
+ *                     'locale' => 'de_DE',
+ *                     'channel' => 'ecommerce'
+ *                 ],
+ *                 'missing' => [
+ *                     [
+ *                         'code' = 'description',
+ *                         'labels' = [
+ *                             'en_US' => 'Description',
+ *                             'fr_FR' => 'Description'
+ *                         ]
+ *                     ],
+ *                     ['...'],
+ *                 ],
+ *                 'label': 'German'
+ *             ],
+ *             'fr_FR'    => ['...'],
+ *             'en_US'     => ['...'],
+ *         ],
+ *     ],
+ *     ['...'],
+ *     ['...'],
+ * ]
+ *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -39,52 +79,11 @@ class ProductCompletenessCollectionNormalizer
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param ProductCompletenessCollection $completenesses
      *
-     * Normalized completeness collection that is returned looks like:
-     *
-     * [
-     *     [
-     *         'channel'  => 'ecommerce',
-     *         'labels'   => [
-     *             'en_US' => 'Ecommerce',
-     *             'fr_FR' => 'E-commerce',
-     *         ],
-     *         'stats'    => [
-     *             'total'    => 3,
-     *             'complete' => 0,
-     *         ],
-     *         'locales' => [
-     *             'de_DE' => [
-     *                 'completeness' => [
-     *                     'required' => 4,
-     *                     'missing' => 2,
-     *                     'ratio' => 50,
-     *                     'locale' => 'de_DE',
-     *                     'channel' => 'ecommerce'
-     *                 ],
-     *                 'missing' => [
-     *                     [
-     *                         'code' = 'description',
-     *                         'labels' = [
-     *                             'en_US' => 'Description',
-     *                             'fr_FR' => 'Description'
-     *                         ]
-     *                     ],
-     *                     ['...'],
-     *                 ],
-     *             ],
-     *             'fr_FR'    => ['...'],
-     *             'en_US'     => ['...'],
-     *         ],
-     *     ],
-     *     ['...'],
-     *     ['...'],
-     * ];
+     * @return array
      */
-    public function normalize($completenesses): array
+    public function normalize(ProductCompletenessCollection $completenesses): array
     {
         $channelCodes = $this->getChannelCodes($completenesses);
         $localeCodes = $this->getLocaleCodes($completenesses);
