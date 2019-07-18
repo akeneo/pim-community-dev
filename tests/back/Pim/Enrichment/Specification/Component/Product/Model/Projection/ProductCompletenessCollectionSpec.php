@@ -56,4 +56,14 @@ class ProductCompletenessCollectionSpec extends ObjectBehavior
         $this->getIterator()->count()->shouldReturn(1);
         $this->getIterator()->getArrayCopy()->shouldReturn(['ecommerce-en_US' => $otherCompleteness]);
     }
+
+    function it_can_retriev_a_completeness_by_channel_and_locale()
+    {
+        $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, []);
+        $otherCompleteness = new ProductCompleteness('ecommerce', 'fr_FR', 4, []);
+        $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
+
+        $this->getCompletenessForChannelAndLocale('ecommerce', 'fr_FR')->shouldReturn($otherCompleteness);
+        $this->getCompletenessForChannelAndLocale('other_channel', 'en_US')->shouldReturn(null);
+    }
 }

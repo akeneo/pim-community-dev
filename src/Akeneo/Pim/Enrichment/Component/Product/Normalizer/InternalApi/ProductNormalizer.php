@@ -13,9 +13,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
@@ -108,32 +113,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CatalogContext */
     protected $catalogContext;
 
-    /**
-     * @param NormalizerInterface                       $normalizer
-     * @param NormalizerInterface                       $versionNormalizer
-     * @param VersionManager                            $versionManager
-     * @param ImageNormalizer                           $imageNormalizer
-     * @param LocaleRepositoryInterface                 $localeRepository
-     * @param StructureVersionProviderInterface         $structureVersionProvider
-     * @param FormProviderInterface                     $formProvider
-     * @param AttributeConverterInterface               $localizedConverter
-     * @param ConverterInterface                        $productValueConverter
-     * @param ObjectManager                             $productManager
-     * @param CompletenessManager                       $completenessManager
-     * @param ChannelRepositoryInterface                $channelRepository
-     * @param CollectionFilterInterface                 $collectionFilter
-     * @param NormalizerInterface                       $completenessCollectionNormalizer
-     * @param UserContext                               $userContext
-     * @param CompletenessCalculatorInterface           $completenessCalculator
-     * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
-     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
-     * @param VariantNavigationNormalizer               $navigationNormalizer
-     * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
-     * @param NormalizerInterface                       $incompleteValuesNormalizer
-     * @param MissingAssociationAdder                   $missingAssociationAdder
-     * @param NormalizerInterface                       $parentAssociationsNormalizer
-     * @param CatalogContext                            $catalogContext
-     */
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
@@ -158,7 +140,8 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
-        CatalogContext $catalogContext
+        CatalogContext $catalogContext,
+        GetProductCompletenesses $getProductCompletenesses
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -184,6 +167,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
         $this->missingAssociationAdder          = $missingAssociationAdder;
         $this->catalogContext                   = $catalogContext;
+        $this->getProductCompletenesses = $getProductCompletenesses;
     }
 
     /**
@@ -302,13 +286,26 @@ class ProductNormalizer implements NormalizerInterface
      */
     protected function getNormalizedCompletenesses(ProductInterface $product)
     {
-        $completenessCollection = $product->getCompletenesses();
+        $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
         if ($completenessCollection->isEmpty()) {
-            $newCompletenesses = $this->completenessCalculator->calculate($product);
-            foreach ($newCompletenesses as $completeness) {
-                $completenessCollection->add($completeness);
-            }
+            $completenessCollection = new ProductCompletenessCollection(
+                $product->getId(),
+                array_map(
+                    function (CompletenessInterface $completeness) {
+                        return new ProductCompleteness(
+                            $completeness->getChannel()->getCode(),
+                            $completeness->getLocale()->getCode(),
+                            $completeness->getRequiredCount(),
+                            array_map(function (AttributeInterface $attribute) {
+                                return $attribute->getCode();
+                            }, $completeness->getMissingAttributes()->toArray())
+                        );
+                    },
+                    $this->completenessCalculator->calculate($product)
+                )
+            );
         }
+
         return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -16,7 +16,7 @@ interface GetProductCompletenesses
     /**
      * @param int $productId
      *
-     * @return ProductCompleteness[]
+     * @return ProductCompletenessCollection
      */
-    public function fromProductId(int $productId): array;
+    public function fromProductId(int $productId): ProductCompletenessCollection;
 }

@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model\Projection;
 
-use IteratorAggregate;
-
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCompletenessCollection implements IteratorAggregate
+final class ProductCompletenessCollection implements \IteratorAggregate
 {
     /** @var int */
     private $productId;
@@ -34,6 +32,18 @@ class ProductCompletenessCollection implements IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->completenesses);
+    }
+
+    public function isEmpty(): bool
+    {
+        return count($this->completenesses) === 0;
+    }
+
+    public function getCompletenessForChannelAndLocale(string $channelCode, string $localeCode): ?ProductCompleteness
+    {
+        $key = sprintf('%s-%s', $channelCode, $localeCode);
+
+        return $this->completenesses[$key] ?? null;
     }
 
     private function add(ProductCompleteness $completeness): void

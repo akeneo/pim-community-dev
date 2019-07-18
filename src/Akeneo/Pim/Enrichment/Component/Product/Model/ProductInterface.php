@@ -116,6 +116,8 @@ interface ProductInterface extends
     /**
      * Get product completenesses
      *
+     * TODO Remove getCompletenesses
+     *
      * @return Collection of CompletenessInterface
      */
     public function getCompletenesses();

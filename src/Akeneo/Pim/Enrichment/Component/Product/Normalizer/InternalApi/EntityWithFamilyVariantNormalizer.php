@@ -8,13 +8,17 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -67,6 +71,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var CatalogContext */
     private $catalogContext;
 
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     public function __construct(
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
@@ -77,6 +84,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         ImageAsLabel $imageAsLabel,
         CatalogContext $catalogContext,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        GetProductCompletenesses $getProductCompletenesses,
         AxisValueLabelsNormalizer ...$normalizers
     ) {
         $this->imageNormalizer                  = $imageNormalizer;
@@ -88,6 +96,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         $this->imageAsLabel                     = $imageAsLabel;
         $this->catalogContext                   = $catalogContext;
         $this->attributeOptionRepository        = $attributeOptionRepository;
+        $this->getProductCompletenesses = $getProductCompletenesses;
         $this->normalizers = $normalizers;
     }
 
@@ -217,12 +226,24 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         }
 
         if ($entity instanceof ProductInterface && $entity->isVariant()) {
-            $completenessCollection = $entity->getCompletenesses();
+            $completenessCollection = $this->getProductCompletenesses->fromProductId($entity->getId());
             if ($completenessCollection->isEmpty()) {
-                $newCompletenesses = $this->completenessCalculator->calculate($entity);
-                foreach ($newCompletenesses as $completeness) {
-                    $completenessCollection->add($completeness);
-                }
+                $completenessCollection = new ProductCompletenessCollection(
+                    $entity->getId(),
+                    array_map(
+                        function (CompletenessInterface $completeness) {
+                            return new ProductCompleteness(
+                                $completeness->getChannel()->getCode(),
+                                $completeness->getLocale()->getCode(),
+                                $completeness->getRequiredCount(),
+                                array_map(function (AttributeInterface $attribute) {
+                                    return $attribute->getCode();
+                                }, $completeness->getMissingAttributes()->toArray())
+                            );
+                        },
+                        $this->completenessCalculator->calculate($entity)
+                    )
+                );
             }
 
             return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
