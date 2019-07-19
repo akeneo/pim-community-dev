@@ -44,7 +44,11 @@ FROM pim_catalog_channel channel
 INNER JOIN pim_catalog_channel_translation trans ON channel.id=trans.foreign_key
 WHERE channel.code IN (:channelCodes)
 SQL;
-        $rows = $this->connection->executeQuery($sql, ['channelCodes' => $channelCodes])->fetchAll();
+        $rows = $this->connection->executeQuery(
+            $sql,
+            ['channelCodes' => $channelCodes],
+            ['channelCodes' => Connection::PARAM_STR_ARRAY]
+        )->fetchAll();
 
         $result = [];
         foreach ($rows as $row) {
