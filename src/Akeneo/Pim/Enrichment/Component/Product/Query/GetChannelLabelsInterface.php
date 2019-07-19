@@ -22,5 +22,5 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Query;
  */
 interface GetChannelLabelsInterface
 {
-    public function getLabels(array $channelCodes): array;
+    public function forChannelCodes(array $channelCodes): array;
 }

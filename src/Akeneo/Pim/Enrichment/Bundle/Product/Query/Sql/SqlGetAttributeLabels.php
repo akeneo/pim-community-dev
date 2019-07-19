@@ -33,7 +33,7 @@ final class SqlGetAttributeLabels implements GetAttributeLabelsInterface
         $this->connection = $connection;
     }
 
-    public function getLabels(array $attributeCodes): array
+    public function forAttributeCodes(array $attributeCodes): array
     {
         $sql = <<<SQL
 SELECT

@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
@@ -89,8 +88,8 @@ class ProductCompletenessCollectionNormalizer
         $missingAttributeCodes = $this->getMissingAttributeCodes($completenesses);
         $completenessesByChannel = $this->getCompletenessesByChannel($completenesses);
 
-        $channelLabels = $this->getChannelLabels->getLabels($channelCodes);
-        $attributeLabels = $this->getAttributeLabels->getLabels($missingAttributeCodes);
+        $channelLabels = $this->getChannelLabels->forChannelCodes($channelCodes);
+        $attributeLabels = $this->getAttributeLabels->forAttributeCodes($missingAttributeCodes);
 
         $normalizedCompletenessesPerChannel = [];
         foreach ($completenessesByChannel as $channelCode => $channelCompletenesses) {
@@ -307,13 +306,10 @@ class ProductCompletenessCollectionNormalizer
     /**
      * @param string $localeCode
      *
-     * @return string|null
+     * @return string
      */
-    private function getLocaleName(string $localeCode): ?string
+    private function getLocaleName(string $localeCode): string
     {
-        $locale = new Locale();
-        $locale->setCode($localeCode);
-
-        return $locale->getName();
+        return \Locale::getDisplayName($localeCode);
     }
 }

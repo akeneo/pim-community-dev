@@ -130,8 +130,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer'
         arguments:
             - '@pim_enrich.normalizer.product_completeness'
-            - '@akeneo.pim.enrichment.channel.get_labels'
-            - '@akeneo.pim.enrichment.attribute.get_labels'
+            - '@akeneo.pim.enrichment.channel.query.get_labels'
+            - '@akeneo.pim.enrichment.attribute.query.get_labels'
 
     pim_enrich.normalizer.collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer'

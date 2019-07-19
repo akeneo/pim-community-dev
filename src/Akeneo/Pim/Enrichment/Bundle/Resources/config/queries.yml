@@ -229,12 +229,12 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.channel.get_labels:
+    akeneo.pim.enrichment.channel.query.get_labels:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetChannelLabels
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.attribute.get_labels:
+    akeneo.pim.enrichment.attribute.query.get_labels:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetAttributeLabels
         arguments:
             - '@database_connection'
