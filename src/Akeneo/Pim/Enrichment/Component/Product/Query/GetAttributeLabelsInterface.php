@@ -22,5 +22,5 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Query;
  */
 interface GetAttributeLabelsInterface
 {
-    public function getLabels(array $attributeCodes): array;
+    public function forAttributeCodes(array $attributeCodes): array;
 }
