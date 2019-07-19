@@ -101,7 +101,15 @@ Please provide a server with the following requirements before proceeding to the
     
     The `authentication` monolog handler has been updated in favor of a dedicated service.
 
-8. Update your **app/AppKernel.php**:
+5. Update your **app/config/routing.yml** file
+
+    Apply the changes for **routing.yml**, from the standard edition directory:
+
+    ```bash
+    cp app/config/routing.yml $PIM_DIR/app/config/
+    ```
+
+6. Update your **app/AppKernel.php**:
     
     Apply the changes, from the standard edition directory:
     
@@ -112,11 +120,11 @@ Please provide a server with the following requirements before proceeding to the
         
     The only change is the addition of the bundle `Akeneo\AssetManager\Infrastructure\Symfony\AkeneoAssetManagerBundle()` in the method `getPimEnterpriseBundles`.
         
-9. Deactivate your custom code
+7. Deactivate your custom code
 
 Before updating the dependencies and migrating your data, please deactivate all your custom bundles and configuration. This will considerably ease the migration of your data. You can disable your custom code by commenting out your custom bundles in your `AppKernel.php` file.
 
-10. Update your PHP dependencies
+8. Update your PHP dependencies
 
    From the downloaded archive:
 
@@ -142,7 +150,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
     If you have custom code in your project, this step may raise errors in the "post-script" command.
     In this case, go to the chapter "Migrate your custom code" before running the database migration.
 
-11. Update your JS dependencies
+9. Update your JS dependencies
 
    From the downloaded archive:
 
@@ -167,7 +175,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
       - `@types/react` upgraded to ^16.8.0
       - `@types/react-dom` upgraded to ^16.8.0 
 
-12. Migrate your MySQL database: 
+10. Migrate your MySQL database:
 
     Please, make sure the folder `upgrades/schema/` does not contain former migration files (from PIM 3.0 to 3.1 for instance), otherwise the migration command will surely not work properly.
 
@@ -177,7 +185,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
     bin/console doctrine:migration:migrate --env=prod
     ```
 
-13. Migrate your Elasticsearch indices
+11. Migrate your Elasticsearch indices
 
     In case you updated the settings of Elasticsearch (like normalizers, filters and analyzers), please make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.1/app/config/pim_parameters.yml#L58-L68).
 
