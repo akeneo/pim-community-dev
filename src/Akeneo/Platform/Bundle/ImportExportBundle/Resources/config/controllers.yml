@@ -59,6 +59,7 @@ services:
 
     pim_enrich.controller.rest.job_instance:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController'
+        public: true
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.job.job_registry'

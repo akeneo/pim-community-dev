@@ -181,6 +181,7 @@ services:
 
     pim_enrich.controller.rest.attribute_type:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeTypeController'
+        public: true
         arguments:
             - '@pim_catalog.registry.attribute_type'
 

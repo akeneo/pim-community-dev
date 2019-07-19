@@ -242,6 +242,7 @@ services:
 
     pim_enrich.controller.category_tree.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
+        public: true
         arguments:
             - '@event_dispatcher'
             - '@pim_user.context.user'
