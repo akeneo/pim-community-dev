@@ -47,3 +47,6 @@ find src -name "*.yml" | grep -v /translations/
 find tests -name "*.yml" | grep -v /translations/
 find web -name "*.yml" | grep -v /translations/
 
+## TODO to help migration
+
+- remove class Message and translate messages directly in the controller. The `addFlash` method now only accept strings, not objects.
