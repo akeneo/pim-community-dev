@@ -49,7 +49,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $getChannelLabels->getLabels(['mobile', 'print', '1234567890'])->willReturn([
+        $getChannelLabels->forChannelCodes(['mobile', 'print', '1234567890'])->willReturn([
             'mobile' => [
                 'en_US' => 'Mobile',
                 'fr_FR' => 'Mobile',
@@ -59,7 +59,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
             ]
         ]);
 
-        $getAttributeLabels->getLabels(['name', 'sku', 'description'])->willReturn([
+        $getAttributeLabels->forAttributeCodes(['name', 'sku', 'description'])->willReturn([
             'sku' => [
                 'en_US' => 'SKU',
                 'fr_FR' => 'SKU',

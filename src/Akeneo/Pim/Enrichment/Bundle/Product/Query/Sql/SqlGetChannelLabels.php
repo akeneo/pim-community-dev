@@ -33,7 +33,7 @@ final class SqlGetChannelLabels implements GetChannelLabelsInterface
         $this->connection = $connection;
     }
 
-    public function getLabels(array $channelCodes): array
+    public function forChannelCodes(array $channelCodes): array
     {
         $sql = <<<SQL
 SELECT
