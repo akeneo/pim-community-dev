@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8565: Add ProjectCompleteness filter in sequential edit
+
 # 2.3.54 (2019-07-19)
 
 ## Bug fixes
