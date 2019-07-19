@@ -1,3 +1,5 @@
+## Upgrade dependencies
+
 - docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require "liip/imagine-bundle":"2.0.0"  
 
 // TMP, to ease upgrade
@@ -36,3 +38,11 @@
 
 // TMP, remove phpunit notices are fixed
 docker-compose exec -T fpm php -d memory_limit=3G /usr/local/bin/composer require --dev symfony/phpunit-bridge
+
+
+## yml to yaml
+
+find app -name "*.yml" | grep -v /translations/
+find src -name "*.yml" | grep -v /translations/
+find web -name "*.yml" | grep -v /translations/
+
