@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8542: Fix counter on categories when deleting a product on the grid
+
 # 3.1.14 (2019-07-18)
 
 ## Bug fixes

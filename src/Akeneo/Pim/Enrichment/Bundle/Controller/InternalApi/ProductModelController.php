@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
@@ -87,6 +88,9 @@ class ProductModelController
     /** @var AttributeFilterInterface */
     private $productModelAttributeFilter;
 
+    /** @var ProductModelIndexer|null */
+    private $productModelIndexer;
+
     /**
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
@@ -105,6 +109,9 @@ class ProductModelController
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
      * @param AttributeFilterInterface          $productModelAttributeFilter
+     * @param ProductModelIndexer|null          $productModelIndexer
+     *
+     * TODO: on master we must remove null for the $productModelIndexer
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -123,7 +130,8 @@ class ProductModelController
         SimpleFactoryInterface $productModelFactory,
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
-        AttributeFilterInterface $productModelAttributeFilter
+        AttributeFilterInterface $productModelAttributeFilter,
+        ProductModelIndexer $productModelIndexer = null
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->normalizer = $normalizer;
@@ -142,6 +150,7 @@ class ProductModelController
         $this->violationNormalizer = $violationNormalizer;
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
+        $this->productModelIndexer = $productModelIndexer;
     }
 
     /**
@@ -381,6 +390,10 @@ class ProductModelController
 
         $productModel = $this->findProductModelOr404($id);
         $this->productModelRemover->remove($productModel);
+
+        if (null !== $this->productModelIndexer) {
+            $this->productModelIndexer->refreshIndex();
+        }
 
         return new JsonResponse();
     }

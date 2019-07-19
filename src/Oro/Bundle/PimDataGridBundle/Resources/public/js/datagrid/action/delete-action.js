@@ -72,6 +72,7 @@ define([
                         messenger.notify('success', messageText);
                         userContext.initialize();
 
+                        mediator.trigger('grid_action_execute:product-grid:delete');
                         mediator.trigger('datagrid:doRefresh:' + this.gridName);
                     }.bind(this)
                 });

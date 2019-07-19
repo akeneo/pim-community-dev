@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
@@ -93,6 +94,9 @@ class ProductController
     /** @var AttributeFilterInterface */
     protected $productAttributeFilter;
 
+    /** @var ProductIndexer|null */
+    private $productIndexer;
+
     /**
      * @param ProductRepositoryInterface    $productRepository
      * @param CursorableRepositoryInterface $cursorableRepository
@@ -112,6 +116,9 @@ class ProductController
      * @param NormalizerInterface           $constraintViolationNormalizer
      * @param ProductBuilderInterface       $variantProductBuilder
      * @param AttributeFilterInterface      $productAttributeFilter
+     * @param ProductIndexer|null           $productIndexer
+     *
+     * TODO: on master we must remove null for the $productIndexer
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -131,7 +138,8 @@ class ProductController
         ConverterInterface $productValueConverter,
         NormalizerInterface $constraintViolationNormalizer,
         ProductBuilderInterface $variantProductBuilder,
-        AttributeFilterInterface $productAttributeFilter
+        AttributeFilterInterface $productAttributeFilter,
+        ProductIndexer $productIndexer = null
     ) {
         $this->productRepository = $productRepository;
         $this->cursorableRepository = $cursorableRepository;
@@ -151,6 +159,7 @@ class ProductController
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->variantProductBuilder = $variantProductBuilder;
         $this->productAttributeFilter = $productAttributeFilter;
+        $this->productIndexer = $productIndexer;
     }
 
     /**
@@ -319,6 +328,10 @@ class ProductController
 
         $product = $this->findProductOr404($id);
         $this->productRemover->remove($product);
+
+        if (null !== $this->productIndexer) {
+            $this->productIndexer->refreshIndex();
+        }
 
         return new JsonResponse();
     }

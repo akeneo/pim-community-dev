@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\RefreshIndexInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
+class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface, RefreshIndexInterface
 {
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
     /** @var NormalizerInterface */
@@ -156,5 +157,11 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
         if (!isset($normalization['id'])) {
             throw new \InvalidArgumentException('Only products with an "id" property can be indexed in the search engine.');
         }
+    }
+
+    public function refreshIndex(): void
+    {
+        $this->productClient->refreshIndex();
+        $this->productAndProductModelClient->refreshIndex();
     }
 }
