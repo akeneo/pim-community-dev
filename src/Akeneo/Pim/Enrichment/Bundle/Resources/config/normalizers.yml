@@ -131,7 +131,7 @@ services:
         arguments:
             - '@pim_enrich.normalizer.product_completeness'
             - '@akeneo.pim.enrichment.channel.get_labels'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.enrichment.attribute.get_labels'
 
     pim_enrich.normalizer.collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer'
