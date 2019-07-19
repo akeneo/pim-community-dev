@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -52,7 +53,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         CompletenessManager $completenessManager,
         ChannelRepositoryInterface $channelRepository,
         CollectionFilterInterface $collectionFilter,
-        NormalizerInterface $completenessCollectionNormalizer,
+        ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
@@ -117,6 +118,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $missingAssociationAdder,
         $getProductCompletenesses,
         $completenessCalculator,
+        $completenessCollectionNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -200,8 +202,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $getProductCompletenesses->fromProductId(12)->willReturn(new ProductCompletenessCollection(12, []));
+        $productCompletenessCollection = new ProductCompletenessCollection(12, []);
+        $getProductCompletenesses->fromProductId(12)->willReturn($productCompletenessCollection);
         $completenessCalculator->calculate($mug)->willReturn([]);
+        $completenessCollectionNormalizer->normalize($productCompletenessCollection)->willReturn(['normalizedCompleteness']);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
@@ -225,7 +229,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
                     'structure_version' => 12,
-                    'completenesses'    => null,
+                    'completenesses'    => ['normalizedCompleteness'],
                     'required_missing_attributes' => 'INCOMPLETE VALUES',
                     'image'             => [
                         'filePath'         => '/p/i/m/4/all.png',
@@ -273,6 +277,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $missingAssociationAdder,
         $getProductCompletenesses,
         $completenessCalculator,
+        $completenessCollectionNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -361,8 +366,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $getProductCompletenesses->fromProductId(12)->willReturn(new ProductCompletenessCollection(12, []));
+        $productCompletenessCollection = new ProductCompletenessCollection(12, []);
+        $getProductCompletenesses->fromProductId(12)->willReturn($productCompletenessCollection);
         $completenessCalculator->calculate($mug)->willReturn([]);
+        $completenessCollectionNormalizer->normalize($productCompletenessCollection)->willReturn(['normalizedCompletenesses']);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
@@ -408,7 +415,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
                     'structure_version' => 12,
-                    'completenesses'    => null,
+                    'completenesses'    => ['normalizedCompletenesses'],
                     'required_missing_attributes' => 'INCOMPLETE VALUES',
                     'image'             => [
                         'filePath'         => '/p/i/m/4/all.png',
