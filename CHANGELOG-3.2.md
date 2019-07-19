@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.0-ALPHA1 (2019-07-19)
+
 ## Bug fixes
 
 - PIM-8270: Update export jobs after a change on a channel category
