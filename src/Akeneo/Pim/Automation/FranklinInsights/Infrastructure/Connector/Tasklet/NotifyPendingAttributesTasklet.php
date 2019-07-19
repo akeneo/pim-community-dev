@@ -15,7 +15,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Taskle
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\FilterUsersToNotifyAboutGivenFamilyMissingMappingQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUsersAbleToCompleteFamiliesMissingMappingQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -26,7 +27,7 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
  */
 class NotifyPendingAttributesTasklet implements TaskletInterface
 {
-    /** @var SelectUserIdsAndFamilyCodesWithMissingMappingQuery */
+    /** @var SelectUsersAbleToCompleteFamiliesMissingMappingQuery */
     private $userIdsAndFamilyCodesQuery;
 
     /** @var UserRepositoryInterface */
@@ -41,22 +42,28 @@ class NotifyPendingAttributesTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
+    /** @var FilterUsersToNotifyAboutGivenFamilyMissingMappingQuery */
+    private $filterUsersToNotify;
+
     /**
-     * @param SelectUserIdsAndFamilyCodesWithMissingMappingQuery $userIdsAndFamilyCodesQuery
-     * @param UserRepositoryInterface                            $userRepository
-     * @param FamilyRepositoryInterface                          $familyRepository
-     * @param NotifyUserAboutMissingMapping                      $notifyUserAboutMissingMapping
+     * @param SelectUsersAbleToCompleteFamiliesMissingMappingQuery $userIdsAndFamilyCodesQuery
+     * @param UserRepositoryInterface $userRepository
+     * @param FamilyRepositoryInterface $familyRepository
+     * @param NotifyUserAboutMissingMapping $notifyUserAboutMissingMapping
+     * @param FilterUsersToNotifyAboutGivenFamilyMissingMappingQuery $filterUsersToNotify
      */
     public function __construct(
-        SelectUserIdsAndFamilyCodesWithMissingMappingQuery $userIdsAndFamilyCodesQuery,
+        SelectUsersAbleToCompleteFamiliesMissingMappingQuery $userIdsAndFamilyCodesQuery,
         UserRepositoryInterface $userRepository,
         FamilyRepositoryInterface $familyRepository,
-        NotifyUserAboutMissingMapping $notifyUserAboutMissingMapping
+        NotifyUserAboutMissingMapping $notifyUserAboutMissingMapping,
+        FilterUsersToNotifyAboutGivenFamilyMissingMappingQuery $filterUsersToNotify
     ) {
         $this->userIdsAndFamilyCodesQuery = $userIdsAndFamilyCodesQuery;
         $this->userRepository = $userRepository;
         $this->familyRepository = $familyRepository;
         $this->notifyUserAboutMissingMapping = $notifyUserAboutMissingMapping;
+        $this->filterUsersToNotify = $filterUsersToNotify;
     }
 
     /**
@@ -72,18 +79,17 @@ class NotifyPendingAttributesTasklet implements TaskletInterface
      */
     public function execute(): void
     {
-        $userIdsAndFamilyCodes = $this->userIdsAndFamilyCodesQuery->execute();
-
-        foreach ($userIdsAndFamilyCodes as $userId => $familyCodes) {
-            $user = $this->userRepository->find($userId);
-            if (null === $user) {
+        $familyCodesAndUserIds = $this->userIdsAndFamilyCodesQuery->execute();
+        foreach ($familyCodesAndUserIds as $rawFamilyCode => $userIds) {
+            $familyCode = new FamilyCode($rawFamilyCode);
+            $family = $this->familyRepository->findOneByIdentifier($familyCode);
+            if (null === $family) {
                 continue;
             }
-
-            foreach ($familyCodes as $rawFamilyCode) {
-                $familyCode = new FamilyCode($rawFamilyCode);
-                $family = $this->familyRepository->findOneByIdentifier($familyCode);
-                if (null === $family) {
+            $usersToNotify = $this->filterUsersToNotify->filter($familyCode, $userIds);
+            foreach ($usersToNotify as $userId) {
+                $user = $this->userRepository->find($userId);
+                if (null === $user) {
                     continue;
                 }
 
