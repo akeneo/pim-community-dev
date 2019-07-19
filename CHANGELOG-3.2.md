@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.0-ALPHA1 (2019-07-19)
+
 ## Improvements
 
 - DAPI-138: Always display the button _Send for approval_ on the PEF as a shortcut to save and send a draft for approval
