@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8542: Fix counter on categories when deleting a product on the grid
+- PIM-8564: fixes link dialog rendering for wysiwyg editors on product edition page
 
 # 3.1.14 (2019-07-18)
 
