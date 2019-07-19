@@ -98,7 +98,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 
         $pqb = $this->createProductQueryBuilder($pqbOptions);
         $pqb->setQueryBuilder(new SearchQueryBuilder());
-        
+
         foreach ($options['filters'] as $filter) {
             $pqb->addFilter($filter['field'], $filter['operator'], $filter['value'], $filter['context']);
         }
