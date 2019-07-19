@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query;
+namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Query;
 
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject;
+namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\ValueObject;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Exception\AttributeOptionsMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 
 /**

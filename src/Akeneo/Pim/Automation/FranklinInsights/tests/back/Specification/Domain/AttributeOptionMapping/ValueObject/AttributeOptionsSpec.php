@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject;
+namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\ValueObject;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Exception\AttributeOptionsMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use PhpSpec\ObjectBehavior;
 

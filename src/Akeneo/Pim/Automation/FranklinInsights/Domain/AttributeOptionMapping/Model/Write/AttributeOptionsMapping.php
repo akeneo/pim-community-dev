@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write;
+namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Write;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
