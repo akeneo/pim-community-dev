@@ -44,7 +44,11 @@ FROM pim_catalog_attribute attribute
 INNER JOIN pim_catalog_attribute_translation trans ON attribute.id=trans.foreign_key
 WHERE attribute.code IN (:attributeCodes)
 SQL;
-        $rows = $this->connection->executeQuery($sql, ['attributeCodes' => $attributeCodes])->fetchAll();
+        $rows = $this->connection->executeQuery(
+            $sql,
+            ['attributeCodes' => $attributeCodes],
+            ['attributeCodes' => Connection::PARAM_STR_ARRAY]
+        )->fetchAll();
 
         $result = [];
         foreach ($rows as $row) {
