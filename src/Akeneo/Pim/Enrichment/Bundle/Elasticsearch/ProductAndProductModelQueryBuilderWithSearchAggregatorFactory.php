@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
@@ -15,7 +20,22 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 class ProductAndProductModelQueryBuilderWithSearchAggregatorFactory implements ProductQueryBuilderFactoryInterface
 {
     /** @var string */
-    private $pqbClass;
+    protected $pqbClass;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** FilterRegistryInterface */
+    protected $filterRegistry;
+
+    /** SorterRegistryInterface */
+    protected $sorterRegistry;
+
+    /** CursorFactoryInterface */
+    protected $cursorFactory;
+
+    /** @var ProductQueryBuilderOptionsResolverInterface */
+    protected $optionsResolver;
 
     /** @var ProductQueryBuilderFactoryInterface */
     private $factory;
@@ -25,10 +45,20 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactory implements P
 
     public function __construct(
         string $pqbClass,
+        AttributeRepositoryInterface $attributeRepository,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
+        CursorFactoryInterface $cursorFactory,
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
         ProductQueryBuilderFactoryInterface $factory,
         ProductAndProductModelSearchAggregator $searchAggregator = null
     ) {
         $this->pqbClass = $pqbClass;
+        $this->attributeRepository = $attributeRepository;
+        $this->filterRegistry = $filterRegistry;
+        $this->sorterRegistry = $sorterRegistry;
+        $this->cursorFactory = $cursorFactory;
+        $this->optionsResolver = $optionsResolver;
         $this->factory = $factory;
         $this->searchAggregator = $searchAggregator;
     }
@@ -40,6 +70,15 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactory implements P
     {
         $basePqb = $this->factory->create($options);
 
-        return new $this->pqbClass($basePqb, $this->searchAggregator);
+        return new $this->pqbClass(
+            $this->attributeRepository,
+            $this->filterRegistry,
+            $this->sorterRegistry,
+            $this->cursorFactory,
+            $this->optionsResolver,
+            $options,
+            $basePqb,
+            $this->searchAggregator
+        );
     }
 }
