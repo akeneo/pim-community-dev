@@ -16,11 +16,13 @@ parameters:
 
 services:
     oro_datagrid.datagrid.manager:
+        public: true
         class: '%oro_datagrid.datagrid.manager.class%'
         arguments:
             - '@service_container'
 
     oro_datagrid.datagrid.builder:
+        public: true
         class: '%oro_datagrid.datagrid.builder.class%'
         arguments:
             - '%oro_datagrid.datagrid.base.class%'
@@ -29,6 +31,7 @@ services:
             - '@oro_security.security_facade'
 
     oro_datagrid.datagrid.request_params:
+        public: true
         class: '%oro_datagrid.datagrid.request_params.class%'
         arguments:
             - '@request_stack'
@@ -47,12 +50,13 @@ services:
             - { name: oro_datagrid.configuration.provider, priority: -10 }
 
     oro_datagrid.configuration.provider.chain:
+        public: true
         class: '%oro_datagrid.configuration.provider.chain.class%'
 
     oro_datagrid.datagrid.metadata_parser:
         class: '%oro_datagrid.datagrid.metadata_parser.class%'
         arguments:
-            - '@service_container'
+            - '@fragment.handler'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@router'

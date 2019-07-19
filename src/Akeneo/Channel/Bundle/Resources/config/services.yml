@@ -88,6 +88,7 @@ services:
             - '@event_dispatcher'
 
     pim_catalog.repository.channel:
+        public: true
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.channel.class%']

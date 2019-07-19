@@ -3,6 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\DependencyInjection\LazyLoadingFragmentHandler;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -16,22 +17,16 @@ class MetadataParser
 {
     const ROUTE = 'oro_datagrid_index';
 
-    /** @var ContainerInterface */
-    private $container;
+    /** @var LazyLoadingFragmentHandler */
+    private $fragmentHandler;
 
-    /**
-     * @param ContainerInterface $container
-     * @param Manager            $manager
-     * @param RequestParameters  $requestParams
-     * @param RouterInterface    $router
-     */
     public function __construct(
-        ContainerInterface $container,
+        LazyLoadingFragmentHandler $fragmentHandler,
         Manager $manager,
         RequestParameters $requestParams,
         RouterInterface $router
     ) {
-        $this->container = $container;
+        $this->fragmentHandler = $fragmentHandler;
         $this->manager = $manager;
         $this->requestParams = $requestParams;
         $this->router = $router;
@@ -64,7 +59,7 @@ class MetadataParser
      */
     public function getGridData(string $name, array $params = []): string
     {
-        return $this->container->get('fragment.handler')->render($this->generateUrl($name, $params));
+        return $this->fragmentHandler->render($this->generateUrl($name, $params));
     }
 
     /**

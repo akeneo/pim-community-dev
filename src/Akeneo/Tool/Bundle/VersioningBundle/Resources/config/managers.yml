@@ -5,6 +5,7 @@ parameters:
 services:
     pim_versioning.manager.version:
         class: '%pim_versioning.manager.version.class%'
+        public: true
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@pim_versioning.builder.version'
@@ -13,3 +14,4 @@ services:
 
     pim_versioning.context.version:
         class: '%pim_versioning.context.version.class%'
+        public: true
