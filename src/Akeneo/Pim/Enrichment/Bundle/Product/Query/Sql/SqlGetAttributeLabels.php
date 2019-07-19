@@ -8,7 +8,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
 use Doctrine\DBAL\Connection;
 
 /**
- * TODO DESC
+ * Executes SQL query to get the stored labels of a collection of attributes.
+ *
+ * Returns an array like:
+ * [
+ *      'name' => [
+ *          'en_US' => 'Name',
+ *          'fr_FR' => 'Nom',
+ *          'de_DE' => 'Name'
+ *      ], ...
+ * ]
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
