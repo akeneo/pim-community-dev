@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8550: Fix blank page on multiple edit of multiple options for multiple attribute select on Reference entities
+
 # 3.1.14 (2019-07-18)
 
 ## Bug fixes
