@@ -7,11 +7,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
-use Akeneo\Test\Common\EntityWithValue\Builder\Product;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
@@ -30,7 +29,6 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantPr
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 {
@@ -38,7 +36,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        NormalizerInterface $completenessCollectionNormalizer,
+        ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
@@ -162,7 +160,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $completenessCollectionNormalizer->normalize(new ProductCompletenessCollection(42, [
             new ProductCompleteness('ecommerce', 'fr_FR', 0, []),
             new ProductCompleteness('ecommerce', 'en_US', 0, [])
-        ]), 'internal_api')->willReturn(['NORMALIZED_COMPLETENESS']);
+        ]))->willReturn(['NORMALIZED_COMPLETENESS']);
 
         $simpleSelectOptionNormalizer->supports(Argument::any())->willReturn(false);
         $simpleSelectOptionNormalizer->supports('pim_catalog_simpleselect')->willReturn(true);

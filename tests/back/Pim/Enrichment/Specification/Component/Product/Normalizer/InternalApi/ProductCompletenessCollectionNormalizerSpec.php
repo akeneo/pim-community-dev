@@ -4,11 +4,10 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Inter
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -20,15 +19,13 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
-        ChannelRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository
+        GetChannelLabelsInterface $getChannelLabels,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
             $normalizer,
-            $channelRepository,
-            $attributeRepository,
-            $localeRepository
+            $getChannelLabels,
+            $attributeRepository
         );
     }
 
@@ -39,8 +36,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_completenesses_and_indexes_them(
         NormalizerInterface $normalizer,
-        ChannelRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
+        GetChannelLabelsInterface $getChannelLabels,
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $completenessCollection = new ProductCompletenessCollection(
@@ -60,33 +56,33 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
             $this->createChannel('print', ['en_US' => 'print', 'fr_FR' => 'impression']),
             $this->createChannel('1234567890', ['en_US' => '1234567890', 'fr_FR' => '1234567890']),
         ];
-        $channelRepository->findBy(['code' => ['mobile', 'print', '1234567890']])->willReturn([
-            $mobile,
-            $print,
-            $numeric
+        $getChannelLabels->getLabels(['mobile', 'print', '1234567890'])->willReturn([
+            'mobile' => [
+                'en_US' => 'Mobile',
+                'fr_FR' => 'Mobile',
+            ],
+            'print' => [
+                'en_US' => 'Print',
+            ]
         ]);
-
-        $localeRepository->findOneByIdentifier('en_US')->willReturn((new Locale())->setCode('en_US'));
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn((new Locale())->setCode('fr_FR'));
 
         $name = $this->createAttribute('name', ['en_US' => 'Name', 'fr_FR' => 'Nom']);
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
 
         $normalizer->normalize(
             Argument::type(ProductCompleteness::class),
-            'internal_api',
-            ['a_context_key' => 'context_value']
+            'internal_api'
         )->willReturn([])->shouldBeCalledTimes(6);
 
         $this
-            ->normalize($completenessCollection, 'internal_api', ['a_context_key' => 'context_value'])
+            ->normalize($completenessCollection, 'internal_api')
             ->shouldReturn(
                 [
                     [
                         'channel' => 'mobile',
                         'labels' => [
-                            'en_US' => 'mobile',
-                            'fr_FR' => 'mobile',
+                            'en_US' => 'Mobile',
+                            'fr_FR' => 'Mobile',
                         ],
                         'stats' => [
                             'total' => 2,
@@ -125,8 +121,8 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                     [
                         'channel' => 'print',
                         'labels' => [
-                            'en_US' => 'print',
-                            'fr_FR' => 'impression',
+                            'en_US' => 'Print',
+                            'fr_FR' => '[print]',
                         ],
                         'stats' => [
                             'total' => 2,
@@ -165,8 +161,8 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                     [
                         'channel' => '1234567890',
                         'labels' => [
-                            'en_US' => '1234567890',
-                            'fr_FR' => '1234567890',
+                            'en_US' => '[1234567890]',
+                            'fr_FR' => '[1234567890]',
                         ],
                         'stats' => [
                             'total' => 2,
