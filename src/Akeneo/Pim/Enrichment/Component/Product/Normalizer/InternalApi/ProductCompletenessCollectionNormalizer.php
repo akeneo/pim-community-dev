@@ -5,8 +5,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -64,17 +64,17 @@ class ProductCompletenessCollectionNormalizer
     /** @var GetChannelLabelsInterface */
     private $getChannelLabels;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributeLabelsInterface */
+    private $getAttributeLabels;
 
     public function __construct(
         NormalizerInterface $normalizer,
-        GetChannelLabelsInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        GetChannelLabelsInterface $getChannelLabels,
+        GetAttributeLabelsInterface $getAttributeLabels
     ) {
         $this->normalizer = $normalizer;
-        $this->getChannelLabels = $channelRepository;
-        $this->attributeRepository = $attributeRepository;
+        $this->getChannelLabels = $getChannelLabels;
+        $this->getAttributeLabels = $getAttributeLabels;
     }
 
     /**
@@ -86,9 +86,11 @@ class ProductCompletenessCollectionNormalizer
     {
         $channelCodes = $this->getChannelCodes($completenesses);
         $localeCodes = $this->getLocaleCodes($completenesses);
+        $missingAttributeCodes = $this->getMissingAttributeCodes($completenesses);
         $completenessesByChannel = $this->getCompletenessesByChannel($completenesses);
 
         $channelLabels = $this->getChannelLabels->getLabels($channelCodes);
+        $attributeLabels = $this->getAttributeLabels->getLabels($missingAttributeCodes);
 
         $normalizedCompletenessesPerChannel = [];
         foreach ($completenessesByChannel as $channelCode => $channelCompletenesses) {
@@ -96,6 +98,7 @@ class ProductCompletenessCollectionNormalizer
                 $channelCode,
                 $channelCompletenesses,
                 $channelLabels,
+                $attributeLabels,
                 $localeCodes
             );
         }
@@ -116,6 +119,21 @@ class ProductCompletenessCollectionNormalizer
         }
 
         return array_values(array_unique($channelCodes));
+    }
+
+    /**
+     * @param ProductCompletenessCollection $completenesses
+     *
+     * @return string[]
+     */
+    private function getMissingAttributeCodes(ProductCompletenessCollection $completenesses): array
+    {
+        $attributeCodes = [];
+        foreach ($completenesses as $completeness) {
+            $attributeCodes = array_merge($attributeCodes, $completeness->missingAttributeCodes());
+        }
+
+        return array_values(array_unique($attributeCodes));
     }
 
     /**
@@ -152,6 +170,7 @@ class ProductCompletenessCollectionNormalizer
      * @param string                $channelCode
      * @param ProductCompleteness[] $channelCompletenesses
      * @param array                 $channelLabels
+     * @param array                 $attributeLabels
      * @param string[]              $localeCodes
      *
      * @return array
@@ -160,6 +179,7 @@ class ProductCompletenessCollectionNormalizer
         string $channelCode,
         array $channelCompletenesses,
         array $channelLabels,
+        array $attributeLabels,
         array $localeCodes
     ): array {
         return [
@@ -170,7 +190,7 @@ class ProductCompletenessCollectionNormalizer
                 'complete' => $this->countComplete($channelCompletenesses),
                 'average'  => $this->average($channelCompletenesses),
             ],
-            'locales' => $this->normalizeCompletenessesByLocale($channelCompletenesses, $localeCodes),
+            'locales' => $this->normalizeCompletenessesByLocale($channelCompletenesses, $localeCodes, $attributeLabels),
         ];
     }
 
@@ -215,21 +235,23 @@ class ProductCompletenessCollectionNormalizer
      *
      * @param ProductCompleteness[] $completenesses
      * @param string[]              $localeCodes
+     * @param array                 $attributeLabels
      *
      * @return array
      */
     private function normalizeCompletenessesByLocale(
         array $completenesses,
-        array $localeCodes
+        array $localeCodes,
+        array $attributeLabels
     ): array {
         $normalizedCompletenesses = [];
         foreach ($completenesses as $completeness) {
             $normalizedCompletenesses[$completeness->localeCode()] = [
                 'completeness' => $this->normalizer->normalize($completeness, 'internal_api'),
-                'missing' => array_map(function ($attributeCode) use ($localeCodes) {
+                'missing' => array_map(function ($attributeCode) use ($localeCodes, $attributeLabels) {
                     return [
                         'code'   => $attributeCode,
-                        'labels' => $this->normalizeAttributeLabels($attributeCode, $localeCodes),
+                        'labels' => $this->normalizeAttributeLabels($attributeLabels, $attributeCode, $localeCodes),
                     ];
                 }, $completeness->missingAttributeCodes()),
                 'label' => $this->getLocaleName($completeness->localeCode()),
@@ -240,18 +262,21 @@ class ProductCompletenessCollectionNormalizer
     }
 
     /**
+     * @param array    $attributeLabels
      * @param string   $attributeCode
      * @param string[] $localeCodes
      *
      * @return array
      */
-    private function normalizeAttributeLabels(string $attributeCode, array $localeCodes): array
+    private function normalizeAttributeLabels(array $attributeLabels, string $attributeCode, array $localeCodes): array
     {
         $result = [];
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-
         foreach ($localeCodes as $localeCode) {
-            $result[$localeCode] = $attribute->getTranslation($localeCode)->getLabel();
+            $label = '[' . $attributeCode . ']';
+            if (isset($attributeLabels[$attributeCode][$localeCode])) {
+                $label = $attributeLabels[$attributeCode][$localeCode];
+            }
+            $result[$localeCode] = $label;
         }
 
         return $result;
