@@ -101,6 +101,14 @@ Please provide a server with the following requirements before proceeding to the
     
     The `authentication` monolog handler has been updated in favor of a dedicated service.
 
+5. Update your **app/config/routing.yml** file
+
+    Apply the changes for **routing.yml**, from the standard edition directory:
+
+    ```bash
+    cp app/config/routing.yml $PIM_DIR/app/config/
+    ```
+
 8. Update your **app/AppKernel.php**:
     
     Apply the changes, from the standard edition directory:
