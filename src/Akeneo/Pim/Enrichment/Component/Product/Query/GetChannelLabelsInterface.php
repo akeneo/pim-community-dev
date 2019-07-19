@@ -12,7 +12,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Query;
  *      'print' => [
  *          'en_US' => 'Print',
  *          'fr_FR' => 'Impression',
- *          'de_DE' =>  'Drucken'
+ *          'de_DE' => 'Drucken'
  *      ], ...
  * ]
  *

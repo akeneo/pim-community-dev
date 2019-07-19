@@ -8,14 +8,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use Doctrine\DBAL\Connection;
 
 /**
- * Executes SQL query to get the stored labels of a collection of arrays.
+ * Executes SQL query to get the stored labels of a collection of channels.
  *
  * Returns an array like:
  * [
  *      'print' => [
  *          'en_US' => 'Print',
  *          'fr_FR' => 'Impression',
- *          'de_DE' =>  'Drucken'
+ *          'de_DE' => 'Drucken'
  *      ], ...
  * ]
  *
