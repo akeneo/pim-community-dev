@@ -7,6 +7,7 @@ parameters:
 
 services:
     pim_datagrid.controller.datagrid:
+        public: true
         class: '%pim_datagrid.controller.datagrid.class%'
         arguments:
             - '@templating'
@@ -39,6 +40,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
 
     pim_datagrid.controller.rest.datagrid_view:
+        public: true
         class: '%pim_datagrid.controller.rest.datagrid_view.class%'
         arguments:
             - '@pim_internal_api_serializer'
@@ -55,6 +57,7 @@ services:
 
     pim_datagrid.controller.productgrid:
         class: Oro\Bundle\PimDataGridBundle\Controller\ProductGridController
+        public: true
         arguments:
             - '@pim_datagrid.product_grid.query.list_attributes'
             - '@pim_datagrid.datagrid.configuration.product.filters_configurator'

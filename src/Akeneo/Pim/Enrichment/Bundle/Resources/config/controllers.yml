@@ -19,6 +19,7 @@ services:
 
     pim_localization.controller.format:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\FormatController'
+        public: true
         arguments:
             - '@pim_catalog.localization.factory.date'
             - '@pim_catalog.localization.factory.datetime'
@@ -116,6 +117,7 @@ services:
 
     pim_enrich.controller.rest.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
+        public: true
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product'
@@ -254,6 +256,7 @@ services:
 
     pim_enrich.controller.file:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController'
+        public: true
         arguments:
             - '@liip_imagine.controller'
             - '@akeneo_file_storage.file_storage.filesystem_provider'

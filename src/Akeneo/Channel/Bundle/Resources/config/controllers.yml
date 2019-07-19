@@ -1,6 +1,7 @@
 services:
 
     pim_enrich.controller.rest.locale:
+        public: true
         class: 'Akeneo\Channel\Bundle\Controller\InternalApi\LocaleController'
         arguments:
             - '@pim_catalog.repository.locale'
@@ -34,6 +35,7 @@ services:
 
     pim_enrich.controller.rest.channel:
         class: 'Akeneo\Channel\Bundle\Controller\InternalApi\ChannelController'
+        public: true
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_internal_api_serializer'
@@ -54,6 +56,7 @@ services:
 
     pim_enrich.controller.rest.currency:
         class: 'Akeneo\Channel\Bundle\Controller\InternalApi\CurrencyController'
+        public: true
         arguments:
             - '@pim_catalog.repository.currency'
 

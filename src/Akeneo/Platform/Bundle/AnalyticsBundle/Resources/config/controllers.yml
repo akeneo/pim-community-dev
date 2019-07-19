@@ -4,6 +4,7 @@ parameters:
 
 services:
     pim_analytics.controller.data:
+        public: true
         class: '%pim_analytics.controller.data.class%'
         arguments:
             - '@pim_analytics.data_collector.chained'

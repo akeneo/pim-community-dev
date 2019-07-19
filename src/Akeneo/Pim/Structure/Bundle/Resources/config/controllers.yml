@@ -96,6 +96,7 @@ services:
     ### Internal Api
     pim_enrich.controller.rest.attribute:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeController'
+        public: true
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
@@ -115,6 +116,7 @@ services:
 
     pim_enrich.controller.rest.attribute_group:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController'
+        public: true
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_enrich.repository.attribute_group.search'
@@ -134,6 +136,7 @@ services:
 
     pim_enrich.controller.rest.family:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController'
+        public: true
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_internal_api_serializer'
@@ -161,6 +164,7 @@ services:
 
     pim_enrich.controller.attribute_option:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeOptionController'
+        public: true
         arguments:
             - '@pim_internal_api_serializer'
             - '@doctrine.orm.entity_manager'

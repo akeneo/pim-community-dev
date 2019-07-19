@@ -5,6 +5,7 @@ parameters:
 
 services:
     pim_user.controller.user_rest:
+        public: true
         class: '%pim_user.controller.user_rest.class%'
         arguments:
             - '@security.token_storage'
@@ -23,6 +24,7 @@ services:
             - '@translator'
 
     pim_user.controller.security_rest:
+        public: true
         class: '%pim_user.controller.security_rest.class%'
         arguments:
             - '@oro_security.security_facade'
