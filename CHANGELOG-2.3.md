@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8349: fixes missing variable passed to pim_enrich.job.upload translation
+
 # 2.3.54 (2019-07-19)
 
 ## Bug fixes
