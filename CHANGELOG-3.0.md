@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.32 (2019-07-19)
+
 ## Bug fixes
 
 - PIM-8555: Fix display of metric as variant axis in PEF
