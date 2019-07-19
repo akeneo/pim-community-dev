@@ -109,7 +109,10 @@ define(
             setStyleForLinkModal: function (jqueryEvent) {
                 const source = $(jqueryEvent.originalEvent.path[0]);
 
-                if (source.hasClass('icon-link') || source.hasClass('btn-sm')) {
+                if (
+                    source.hasClass('icon-link')
+                    || (source.hasClass('btn-sm') && ('showLinkDialog' === source.data('event')))
+                ) {
                     const editor = source.closest('.note-editor');
                     const modal = editor.find('.note-link-dialog.modal');
 
