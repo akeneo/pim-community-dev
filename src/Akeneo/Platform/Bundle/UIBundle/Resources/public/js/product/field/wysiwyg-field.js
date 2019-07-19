@@ -110,7 +110,8 @@ define(
                 const source = $(jqueryEvent.originalEvent.path[0]);
 
                 if (source.hasClass('icon-link') || source.hasClass('btn-sm')) {
-                    const modal = $('.note-link-dialog.modal');
+                    const editor = source.closest('.note-editor');
+                    const modal = editor.find('.note-link-dialog.modal');
 
                     // Set PIM style
                     modal.find('.note-link-text, .note-link-url').addClass('AknTextField');
