@@ -6,6 +6,7 @@ parameters:
 services:
     oro_datagrid.extension.action.type.navigate:
         class: '%oro_datagrid.extension.action.type.navigate.class%'
+        public: true
         shared: false
         tags:
             - { name:  oro_datagrid.extension.action.type, type: navigate }
@@ -18,6 +19,7 @@ services:
 
     oro_datagrid.extension.action.type.delete:
         class: '%oro_datagrid.extension.action.type.delete.class%'
+        public: true
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: delete }

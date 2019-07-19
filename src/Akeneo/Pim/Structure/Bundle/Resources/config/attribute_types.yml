@@ -15,6 +15,7 @@ parameters:
 services:
     pim_catalog.registry.attribute_type:
         class: 'Akeneo\Pim\Structure\Component\AttributeTypeRegistry'
+        public: true
 
     pim_catalog.attributetype.identifier:
         class: '%pim_catalog.attribute_type.identifier.class%'

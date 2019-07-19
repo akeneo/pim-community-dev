@@ -52,6 +52,7 @@ services:
     ### Internal API
     pim_enrich.repository.attribute_group:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupRepository'
+        public: true
         arguments:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'

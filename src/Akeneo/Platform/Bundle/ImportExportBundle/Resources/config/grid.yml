@@ -4,5 +4,6 @@ parameters:
 services:
     pim_import_export.datagrid.provider.job:
         class: '%pim_import_export.datagrid.provider.job.class%'
+        public: true
         arguments:
             - '@akeneo_batch.job.job_registry'
