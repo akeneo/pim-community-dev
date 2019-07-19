@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * A normalizer to transform a product model entity into a flat array
@@ -16,8 +16,10 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class ProductModelNormalizer implements NormalizerInterface
 {
+    use SerializerAwareTrait;
+
     /** @staticvar string */
     private const FIELD_CATEGORY = 'categories';
 
