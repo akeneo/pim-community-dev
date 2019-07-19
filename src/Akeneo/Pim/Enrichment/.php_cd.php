@@ -125,6 +125,7 @@ $rules = [
 
         // TIP-920: PIM/Enrichment should not be linked to Locale
         'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Model\Locale',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
         // TIP-921: PIM/Enrichment should not be linked to Channel
