@@ -91,13 +91,10 @@ class CompletenessForScopableAttributeIntegration extends AbstractCompletenessTe
 
         $completeness = $this->getCurrentCompleteness($product);
 
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals($channelCode, $completeness->getChannel()->getCode());
-        $this->assertEquals(50, $completeness->getRatio());
-        $this->assertEquals(2, $completeness->getRequiredCount());
-        $this->assertEquals(1, $completeness->getMissingCount());
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals($channelCode, $completeness->channelCode());
+        $this->assertEquals(50, $completeness->ratio());
+        $this->assertEquals(2, $completeness->requiredCount());
         $this->assertMissingAttributeCodes($completeness, $expectedAttributeCodes);
     }
 
@@ -111,13 +108,10 @@ class CompletenessForScopableAttributeIntegration extends AbstractCompletenessTe
 
         $completeness = $this->getCurrentCompleteness($product);
 
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals($channelCode, $completeness->getChannel()->getCode());
-        $this->assertEquals(100, $completeness->getRatio());
-        $this->assertEquals(2, $completeness->getRequiredCount());
-        $this->assertEquals(0, $completeness->getMissingCount());
-        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals($channelCode, $completeness->channelCode());
+        $this->assertEquals(100, $completeness->ratio());
+        $this->assertEquals(2, $completeness->requiredCount());
+        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
     }
 }

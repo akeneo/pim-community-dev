@@ -30,15 +30,11 @@ abstract class AbstractCompletenessPerAttributeTypeTestCase extends AbstractComp
         $this->assertCompletenessesCount($product, 1);
 
         $completeness = $this->getCurrentCompleteness($product);
-
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('ecommerce', $completeness->getChannel()->getCode());
-        $this->assertEquals(100, $completeness->getRatio());
-        $this->assertEquals(2, $completeness->getRequiredCount());
-        $this->assertEquals(0, $completeness->getMissingCount());
-        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals('ecommerce', $completeness->channelCode());
+        $this->assertEquals(100, $completeness->ratio());
+        $this->assertEquals(2, $completeness->requiredCount());
+        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
     }
 
     /**
@@ -52,14 +48,11 @@ abstract class AbstractCompletenessPerAttributeTypeTestCase extends AbstractComp
         $this->assertCompletenessesCount($product, 1);
 
         $completeness = $this->getCurrentCompleteness($product);
-
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('ecommerce', $completeness->getChannel()->getCode());
-        $this->assertEquals(50, $completeness->getRatio());
-        $this->assertEquals(2, $completeness->getRequiredCount());
-        $this->assertEquals(1, $completeness->getMissingCount());
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals('ecommerce', $completeness->channelCode());
+        $this->assertEquals(50, $completeness->ratio());
+        $this->assertEquals(2, $completeness->requiredCount());
+        $this->assertEquals(1, count($completeness->missingAttributeCodes()));
     }
 
     /**
