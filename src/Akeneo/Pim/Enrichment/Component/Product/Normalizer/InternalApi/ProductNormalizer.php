@@ -79,7 +79,7 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
-    /** @var NormalizerInterface */
+    /** @var ProductCompletenessCollectionNormalizer */
     protected $completenessCollectionNormalizer;
 
     /** @var UserContext */
@@ -130,7 +130,7 @@ class ProductNormalizer implements NormalizerInterface
         CompletenessManager $completenessManager,
         ChannelRepositoryInterface $channelRepository,
         CollectionFilterInterface $collectionFilter,
-        NormalizerInterface $completenessCollectionNormalizer,
+        ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
@@ -306,7 +306,7 @@ class ProductNormalizer implements NormalizerInterface
             );
         }
 
-        return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
+        return $this->completenessCollectionNormalizer->normalize($completenessCollection);
     }
 
     /**

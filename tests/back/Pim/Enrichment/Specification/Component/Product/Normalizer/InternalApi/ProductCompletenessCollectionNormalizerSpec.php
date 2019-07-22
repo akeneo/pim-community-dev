@@ -2,16 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,15 +15,14 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
-        ChannelRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository
-    ) {
+        GetChannelLabelsInterface $getChannelLabels,
+        GetAttributeLabelsInterface $getAttributeLabels
+    )
+    {
         $this->beConstructedWith(
             $normalizer,
-            $channelRepository,
-            $attributeRepository,
-            $localeRepository
+            $getChannelLabels,
+            $getAttributeLabels
         );
     }
 
@@ -39,54 +33,56 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_completenesses_and_indexes_them(
         NormalizerInterface $normalizer,
-        ChannelRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
-    ) {
+        GetChannelLabelsInterface $getChannelLabels,
+        GetAttributeLabelsInterface $getAttributeLabels
+    )
+    {
         $completenessCollection = new ProductCompletenessCollection(
             42,
             [
                 new ProductCompleteness('mobile', 'en_US', 2, ['name']),
-                new ProductCompleteness('mobile', 'fr_FR', 2, ['name']),
-                new ProductCompleteness('print', 'en_US', 2, ['name']),
+                new ProductCompleteness('mobile', 'fr_FR', 2, ['sku']),
+                new ProductCompleteness('print', 'en_US', 2, ['description']),
                 new ProductCompleteness('print', 'fr_FR', 2, ['name']),
                 new ProductCompleteness('1234567890', 'en_US', 2, ['name']),
                 new ProductCompleteness('1234567890', 'fr_FR', 2, ['name']),
             ]
         );
 
-        list($mobile, $print, $numeric) = [
-            $this->createChannel('mobile', ['en_US' => 'mobile', 'fr_FR' => 'mobile']),
-            $this->createChannel('print', ['en_US' => 'print', 'fr_FR' => 'impression']),
-            $this->createChannel('1234567890', ['en_US' => '1234567890', 'fr_FR' => '1234567890']),
-        ];
-        $channelRepository->findBy(['code' => ['mobile', 'print', '1234567890']])->willReturn([
-            $mobile,
-            $print,
-            $numeric
+        $getChannelLabels->forChannelCodes(['mobile', 'print', '1234567890'])->willReturn([
+            'mobile' => [
+                'en_US' => 'Mobile',
+                'fr_FR' => 'Mobile',
+            ],
+            'print' => [
+                'en_US' => 'Print',
+            ]
         ]);
 
-        $localeRepository->findOneByIdentifier('en_US')->willReturn((new Locale())->setCode('en_US'));
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn((new Locale())->setCode('fr_FR'));
-
-        $name = $this->createAttribute('name', ['en_US' => 'Name', 'fr_FR' => 'Nom']);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $getAttributeLabels->forAttributeCodes(['name', 'sku', 'description'])->willReturn([
+            'sku' => [
+                'en_US' => 'SKU',
+                'fr_FR' => 'SKU',
+            ],
+            'name' => [
+                'en_US' => 'Name'
+            ]
+        ]);
 
         $normalizer->normalize(
             Argument::type(ProductCompleteness::class),
-            'internal_api',
-            ['a_context_key' => 'context_value']
+            'internal_api'
         )->willReturn([])->shouldBeCalledTimes(6);
 
         $this
-            ->normalize($completenessCollection, 'internal_api', ['a_context_key' => 'context_value'])
+            ->normalize($completenessCollection, 'internal_api')
             ->shouldReturn(
                 [
                     [
                         'channel' => 'mobile',
                         'labels' => [
-                            'en_US' => 'mobile',
-                            'fr_FR' => 'mobile',
+                            'en_US' => 'Mobile',
+                            'fr_FR' => 'Mobile',
                         ],
                         'stats' => [
                             'total' => 2,
@@ -101,7 +97,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                                         'code' => 'name',
                                         'labels' => [
                                             'en_US' => 'Name',
-                                            'fr_FR' => 'Nom',
+                                            'fr_FR' => '[name]',
                                         ],
                                     ],
                                 ],
@@ -111,10 +107,10 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                                 'completeness' => [],
                                 'missing' => [
                                     [
-                                        'code' => 'name',
+                                        'code' => 'sku',
                                         'labels' => [
-                                            'en_US' => 'Name',
-                                            'fr_FR' => 'Nom',
+                                            'en_US' => 'SKU',
+                                            'fr_FR' => 'SKU',
                                         ],
                                     ],
                                 ],
@@ -125,8 +121,8 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                     [
                         'channel' => 'print',
                         'labels' => [
-                            'en_US' => 'print',
-                            'fr_FR' => 'impression',
+                            'en_US' => 'Print',
+                            'fr_FR' => '[print]',
                         ],
                         'stats' => [
                             'total' => 2,
@@ -138,10 +134,10 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                                 'completeness' => [],
                                 'missing' => [
                                     [
-                                        'code' => 'name',
+                                        'code' => 'description',
                                         'labels' => [
-                                            'en_US' => 'Name',
-                                            'fr_FR' => 'Nom',
+                                            'en_US' => '[description]',
+                                            'fr_FR' => '[description]',
                                         ],
                                     ],
                                 ],
@@ -154,7 +150,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                                         'code' => 'name',
                                         'labels' => [
                                             'en_US' => 'Name',
-                                            'fr_FR' => 'Nom',
+                                            'fr_FR' => '[name]',
                                         ],
                                     ],
                                 ],
@@ -165,8 +161,8 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                     [
                         'channel' => '1234567890',
                         'labels' => [
-                            'en_US' => '1234567890',
-                            'fr_FR' => '1234567890',
+                            'en_US' => '[1234567890]',
+                            'fr_FR' => '[1234567890]',
                         ],
                         'stats' => [
                             'total' => 2,
@@ -181,7 +177,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                                         'code' => 'name',
                                         'labels' => [
                                             'en_US' => 'Name',
-                                            'fr_FR' => 'Nom',
+                                            'fr_FR' => '[name]',
                                         ],
                                     ],
                                 ],
@@ -194,7 +190,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                                         'code' => 'name',
                                         'labels' => [
                                             'en_US' => 'Name',
-                                            'fr_FR' => 'Nom',
+                                            'fr_FR' => '[name]',
                                         ],
                                     ],
                                 ],
@@ -204,29 +200,5 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
                     ],
                 ]
             );
-    }
-
-    private function createChannel(string $code, array $translations): ChannelInterface
-    {
-        $channel = new Channel();
-        $channel->setCode($code);
-        foreach ($translations as $localeCode => $label) {
-            $channel->setLocale($localeCode);
-            $channel->setLabel($label);
-        }
-
-        return $channel;
-    }
-
-    private function createAttribute(string $code, array $translations): AttributeInterface
-    {
-        $attribute = new Attribute();
-        $attribute->setCode($code);
-        foreach ($translations as $localeCode => $label) {
-            $attribute->setLocale($localeCode);
-            $attribute->setLabel($label);
-        }
-
-        return $attribute;
     }
 }
