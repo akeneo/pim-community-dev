@@ -162,7 +162,6 @@ services:
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.product_completeness_collection'
