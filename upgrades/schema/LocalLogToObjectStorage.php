@@ -22,6 +22,9 @@ class LocalLogToObjectStorage
     /** @var array */
     private $errors = [];
 
+    /** @var int */
+    private $countRelocated = 0;
+
     public function __construct(
         Filesystem $filesystem,
         Connection $database
@@ -35,6 +38,11 @@ class LocalLogToObjectStorage
         return $this->database->executeQuery(
             'SELECT COUNT(*) FROM akeneo_batch_job_execution je INNER JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id WHERE ji.type IN (\'export\', \'import\')'
         )->fetchColumn();
+    }
+
+    public function countRelocated(): int
+    {
+        return $this->countRelocated;
     }
 
     public function relocateFiles(): array
@@ -70,6 +78,8 @@ class LocalLogToObjectStorage
         if (is_resource($file)) {
             fclose($file);
         }
+
+        $this->countRelocated++;
     }
 
     private function open(array $logInfo)

@@ -26,6 +26,9 @@ class LocaleArchivesToObjectStorage
     /** @var array */
     private $errors = [];
 
+    /** @var int */
+    private $countRelocated = 0;
+
     public function __construct(
         Filesystem $filesystem,
         string $archiveDirectory
@@ -38,6 +41,11 @@ class LocaleArchivesToObjectStorage
     public function countFiles(): int
     {
         return $this->archiveFileSystem->count();
+    }
+
+    public function countRelocated(): int
+    {
+        return $this->countRelocated;
     }
 
     public function relocateFiles(): array
@@ -69,6 +77,8 @@ class LocaleArchivesToObjectStorage
         if (is_resource($file)) {
             fclose($file);
         }
+
+        $this->countRelocated++;
     }
 
     /**
