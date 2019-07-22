@@ -59,8 +59,8 @@ class Condition
         $field = Field::createFromNormalized($condition['field']);
         $operator = Operator::createFromNormalized($condition['operator']);
         $value = Value::createFromNormalized($condition['value']);
-        $channel = key_exists('channel', $condition) ? ChannelReference::createFromNormalized($condition['channel']) : ChannelReference::noReference();
-        $locale = key_exists('locale', $condition) ? LocaleReference::createFromNormalized($condition['locale']) : LocaleReference::noReference();
+        $channel = ChannelReference::createFromNormalized($condition['channel'] ?? null);
+        $locale = LocaleReference::createFromNormalized($condition['locale'] ?? null);
 
         return new self($field, $operator, $value, $channel, $locale);
     }

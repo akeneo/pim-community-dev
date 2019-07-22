@@ -30,7 +30,7 @@ use Webmozart\Assert\Assert;
  */
 class Action
 {
-    const ITEM_PATTERN = '{{code}}';
+    private const ITEM_PATTERN = '{{code}}';
 
     /** @var Field */
     private $field;
@@ -65,8 +65,8 @@ class Action
         $field = Field::createFromNormalized($action['field']);
         $type = Type::createFromNormalized($action['type']);
         $items = ItemCollection::createFromNormalized($action['items']);
-        $channel = key_exists('channel', $action) ? ChannelReference::createFromNormalized($action['channel']) : ChannelReference::noReference();
-        $locale = key_exists('locale', $action) ? LocaleReference::createFromNormalized($action['locale']) : LocaleReference::noReference();
+        $channel = ChannelReference::createFromNormalized($action['channel'] ?? null);
+        $locale = LocaleReference::createFromNormalized($action['locale'] ?? null);
 
         return new self($field, $type, $items, $channel, $locale);
     }

@@ -27,6 +27,11 @@ use Webmozart\Assert\Assert;
  */
 class RuleTemplate
 {
+    private const CONDITIONS = 'conditions';
+    private const ACTIONS = 'actions';
+    private const PRODUCT_SELECTIONS = 'product_selections';
+    private const ASSIGN_ASSETS_TO = 'assign_assets_to';
+
     /** @var Condition[] */
     private $conditions;
 
@@ -35,22 +40,25 @@ class RuleTemplate
 
     private function __construct(array $conditions, array $actions)
     {
+        Assert::allIsInstanceOf($conditions, Condition::class);
+        Assert::allIsInstanceOf($actions, Action::class);
+
         $this->conditions = $conditions;
         $this->actions    = $actions;
     }
 
     public static function createFromNormalized(array $content): RuleTemplate
     {
-        Assert::keyExists($content, 'conditions');
-        Assert::keyExists($content, 'actions');
+        Assert::keyExists($content, self::CONDITIONS);
+        Assert::keyExists($content, self::ACTIONS);
 
         $conditions = array_map(function (array $condition) {
             return Condition::createFromNormalized($condition);
-        }, $content['conditions']);
+        }, $content[self::CONDITIONS]);
 
         $actions = array_map(function (array $action) {
             return Action::createFromNormalized($action);
-        }, $content['actions']);
+        }, $content[self::ACTIONS]);
 
         return new self($conditions, $actions);
     }
@@ -75,16 +83,11 @@ class RuleTemplate
      */
     public static function createFromProductLinkRule(array $content): RuleTemplate
     {
-        Assert::keyExists($content, 'product_selections');
-        Assert::keyExists($content, 'assign_assets_to');
+        Assert::keyExists($content, self::PRODUCT_SELECTIONS);
+        Assert::keyExists($content, self::ASSIGN_ASSETS_TO);
 
-        $conditions = array_map(function (array $condition) {
-            return Condition::createFromProductLinkRule($condition);
-        }, $content['product_selections']);
-
-        $actions = array_map(function (array $action) {
-            return Action::createFromProductLinkRule($action);
-        }, $content['assign_assets_to']);
+        $conditions = self::createConditions($content);
+        $actions = self::createActions($content);
 
         return new self($conditions, $actions);
     }
@@ -115,8 +118,22 @@ class RuleTemplate
         }, $this->actions);
 
         return [
-            'conditions' => $normalizedConditions,
-            'actions' => $normalizedActions,
+            self::CONDITIONS => $normalizedConditions,
+            self::ACTIONS    => $normalizedActions,
         ];
+    }
+
+    private static function createConditions(array $content): array
+    {
+        return array_map(function (array $condition) {
+            return Condition::createFromProductLinkRule($condition);
+        }, $content[self::PRODUCT_SELECTIONS]);
+    }
+
+    private static function createActions(array $content): array
+    {
+        return array_map(function (array $action) {
+            return Action::createFromProductLinkRule($action);
+        }, $content[self::ASSIGN_ASSETS_TO]);
     }
 }
