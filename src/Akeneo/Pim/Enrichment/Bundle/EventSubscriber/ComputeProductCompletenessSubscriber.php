@@ -55,6 +55,7 @@ final class ComputeProductCompletenessSubscriber implements EventSubscriberInter
         }
 
         $completenesses = $this->completenessCalculator->calculate($product);
+
         $collection = new ProductCompletenessCollection(
             $product->getId(),
             array_map(
