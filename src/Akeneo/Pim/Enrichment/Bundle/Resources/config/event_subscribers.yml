@@ -143,7 +143,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.compute_product_completeness:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductCompletenessSubscriber'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeAndPersistProductCompletenessSubscriber'
         arguments:
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
