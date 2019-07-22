@@ -233,15 +233,6 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
-        $products = [];
-        for ($i = 0; $i<=10001; $i++) {
-            $products[] = $this->getFromTestContainer('pim_catalog.builder.product')->createProduct('sku' . $i);
-        }
-
-        $this->getFromTestContainer('pim_versioning.manager.version')->setRealTimeVersioning(false);
-        $this->getFromTestContainer('pim_catalog.saver.product')->saveAll($products);
-        $this->getFromTestContainer('akeneo_elasticsearch.client.product')->refreshIndex();
-
         $client->request('GET', 'api/rest/v1/products?page=101&limit=100');
 
         $message = addslashes('You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead');
