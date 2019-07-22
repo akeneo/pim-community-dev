@@ -16,11 +16,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
+ * This subscriber should be executed before the subscriber to index the products In ES, as the completeness is also
+ * indexed. This subscriber has a big priority for that reason.
+ *
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ComputeProductCompletenessSubscriber implements EventSubscriberInterface
+final class ComputeAndPersistProductCompletenessSubscriber implements EventSubscriberInterface
 {
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;

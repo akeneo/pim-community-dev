@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductCompletenessSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeAndPersistProductCompletenessSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
@@ -17,7 +17,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ComputeProductCompletenessSubscriberSpec extends ObjectBehavior
+class ComputeAndPersistProductCompletenessSubscriberSpec extends ObjectBehavior
 {
     function let(
         CompletenessCalculatorInterface $completenessCalculator,
@@ -33,7 +33,7 @@ class ComputeProductCompletenessSubscriberSpec extends ObjectBehavior
 
     function it_is_a_compute_product_completeness_event_subscriber()
     {
-        $this->shouldHaveType(ComputeProductCompletenessSubscriber::class);
+        $this->shouldHaveType(ComputeAndPersistProductCompletenessSubscriber::class);
     }
 
     function it_computes_and_saves_completenesses_for_a_product(
