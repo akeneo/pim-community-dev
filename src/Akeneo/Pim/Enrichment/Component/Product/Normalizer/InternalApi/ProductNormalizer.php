@@ -12,7 +12,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorI
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
@@ -70,9 +69,6 @@ class ProductNormalizer implements NormalizerInterface
     /** @var ObjectManager */
     protected $productManager;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
@@ -127,7 +123,6 @@ class ProductNormalizer implements NormalizerInterface
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         ObjectManager $productManager,
-        CompletenessManager $completenessManager,
         ChannelRepositoryInterface $channelRepository,
         CollectionFilterInterface $collectionFilter,
         ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
@@ -153,7 +148,6 @@ class ProductNormalizer implements NormalizerInterface
         $this->localizedConverter               = $localizedConverter;
         $this->productValueConverter            = $productValueConverter;
         $this->productManager                   = $productManager;
-        $this->completenessManager              = $completenessManager;
         $this->channelRepository                = $channelRepository;
         $this->collectionFilter                 = $collectionFilter;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
