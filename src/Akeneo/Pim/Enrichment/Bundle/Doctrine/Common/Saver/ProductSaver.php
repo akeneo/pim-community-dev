@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
