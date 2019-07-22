@@ -5,6 +5,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -28,26 +30,22 @@ abstract class AbstractCompletenessTestCase extends TestCase
     /**
      * @param ProductInterface $product
      *
-     * @return CompletenessInterface
+     * @return ProductCompleteness
      */
     protected function getCurrentCompleteness(ProductInterface $product)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
 
-        return current($completenesses);
+        return $completenesses->getIterator()->current();
     }
 
     /**
-     * @param CompletenessInterface $completeness
-     * @param string[]              $expectedAttributeCodes
+     * @param ProductCompleteness $completeness
+     * @param string[]            $expectedAttributeCodes
      */
-    protected function assertMissingAttributeCodes(CompletenessInterface $completeness, array $expectedAttributeCodes)
+    protected function assertMissingAttributeCodes(ProductCompleteness $completeness, array $expectedAttributeCodes)
     {
-        $missingAttributes = $completeness->getMissingAttributes();
-
-        $missingAttributeCodes = array_map(function (AttributeInterface $missingAttribute) {
-            return $missingAttribute->getCode();
-        }, $missingAttributes->toArray());
+        $missingAttributeCodes = $completeness->missingAttributeCodes();
 
         sort($expectedAttributeCodes);
         sort($missingAttributeCodes);
@@ -60,8 +58,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function assertCompletenessesCount(ProductInterface $product, $expectedNumberOfCompletenesses)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
         $this->assertCount($expectedNumberOfCompletenesses, $completenesses);
     }
 
@@ -180,6 +177,14 @@ abstract class AbstractCompletenessTestCase extends TestCase
         $attributeRequirementToRemove = $this->getAttributeRequirement($family, $channelCode, $attributeCode);
         $family->removeAttributeRequirement($attributeRequirementToRemove);
         $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    /**
+     * @return GetProductCompletenesses
+     */
+    protected function getProductCompletenesses()
+    {
+        return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses');
     }
 
     /**

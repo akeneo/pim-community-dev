@@ -50,7 +50,8 @@ class CompletenessFloorRoundedRatioIntegration extends AbstractCompletenessTestC
 
         // the real ratio would 1/3 = 33.33333...%
         // here we want to floor to 33%
-        $this->assertEquals(33, $firstProduct->getCompletenesses()->first()->getRatio());
+        $completeness = $this->getProductCompletenesses()->fromProductId($firstProduct->getId())->getIterator()->current();
+        $this->assertEquals(33, $completeness->ratio());
 
         $secondProduct = $this->createProductWithStandardValues(
             $family,
@@ -76,6 +77,7 @@ class CompletenessFloorRoundedRatioIntegration extends AbstractCompletenessTestC
         );
         // the real ratio would 123 = 66.666666...%
         // here we want to floor to 66%
-        $this->assertEquals(66, $secondProduct->getCompletenesses()->first()->getRatio());
+        $completeness = $this->getProductCompletenesses()->fromProductId($secondProduct->getId())->getIterator()->current();
+        $this->assertEquals(66, $completeness->ratio());
     }
 }

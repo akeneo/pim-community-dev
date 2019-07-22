@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
@@ -174,14 +175,13 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      * @param string           $localeCode
      *
      * @throws \Exception
-     * @return CompletenessInterface
+     * @return ProductCompleteness
      */
     private function getCompletenessByLocaleCode(ProductInterface $product, $localeCode)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
         foreach ($completenesses as $completeness) {
-            if ($localeCode === $completeness->getLocale()->getCode()) {
+            if ($localeCode === $completeness->localeCode()) {
                 return $completeness;
             }
         }
@@ -205,13 +205,10 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
 
         $completeness = $this->getCompletenessByLocaleCode($product, $localeCode);
 
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals($localeCode, $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('ecommerce', $completeness->getChannel()->getCode());
-        $this->assertEquals(50, $completeness->getRatio());
-        $this->assertEquals($requiredCount, $completeness->getRequiredCount());
-        $this->assertEquals(1, $completeness->getMissingCount());
+        $this->assertEquals($localeCode, $completeness->localeCode());
+        $this->assertEquals('ecommerce', $completeness->channelCode());
+        $this->assertEquals(50, $completeness->ratio());
+        $this->assertEquals($requiredCount, $completeness->requiredCount());
         $this->assertMissingAttributeCodes($completeness, $expectedAttributeCodes);
     }
 
@@ -226,13 +223,10 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
 
         $completeness = $this->getCompletenessByLocaleCode($product, $localeCode);
 
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals($localeCode, $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('ecommerce', $completeness->getChannel()->getCode());
-        $this->assertEquals(100, $completeness->getRatio());
-        $this->assertEquals($requiredCount, $completeness->getRequiredCount());
-        $this->assertEquals(0, $completeness->getMissingCount());
-        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
+        $this->assertEquals($localeCode, $completeness->localeCode());
+        $this->assertEquals('ecommerce', $completeness->channelCode());
+        $this->assertEquals(100, $completeness->ratio());
+        $this->assertEquals($requiredCount, $completeness->requiredCount());
+        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
     }
 }
