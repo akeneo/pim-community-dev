@@ -50,4 +50,16 @@ class ProductCompletenessSpec extends ObjectBehavior
         );
         $this->ratio()->shouldReturn(100);
     }
+
+    function it_returns_floor_integer_33()
+    {
+        $this->beConstructedWith('ecommerce', 'fr_FR', 3, ['name', 'brand']);
+        $this->ratio()->shouldReturn(33);
+    }
+
+    function it_returns_floor_integer_66()
+    {
+        $this->beConstructedWith('ecommerce', 'fr_FR', 3, ['name']);
+        $this->ratio()->shouldReturn(66);
+    }
 }
