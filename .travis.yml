@@ -1,3 +1,4 @@
+dist: xenial
 language: php
 
 php:
@@ -11,14 +12,6 @@ branches:
 # Extra dependencies
 services:
   - mysql
-
-# For mysql 5.7 instead of 5.6
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-server
 
 sudo: false
 
