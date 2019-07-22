@@ -11,8 +11,6 @@ parameters:
 services:
     pim_user.event_subscriber.user_preferences:
         class: '%pim_user.event_subscriber.user_preferences.class%'
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
 
