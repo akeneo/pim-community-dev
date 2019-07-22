@@ -32,17 +32,13 @@ $storage = new \Pim\Upgrade\Schema\LocaleArchivesToObjectStorage(
 
 echo "Relocating {$storage->countFiles()} local archive files to the object storage...\n";
 
-$errors = $storage->relocateFiles();
+$warnings = $storage->relocateFiles();
 
-if (!empty($errors)) {
+if (!empty($warnings)) {
     echo "The following files have NOT been relocated:\n";
-    foreach ($errors as $error) {
-        echo "- $error\n";
+    foreach ($warnings as $warning) {
+        echo "- $warning\n";
     }
 }
 
 echo "Done!\n";
-
-if (!empty($errors)) {
-    exit(-1);
-}
