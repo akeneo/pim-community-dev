@@ -10,7 +10,7 @@
 
 .jstree {
   &.jstree-default {
-    ul {
+    & > ul {
       max-height: ~"calc(100vh - 213px)";
       overflow: hidden auto;
     }
@@ -81,6 +81,7 @@
     .jstree-leaf > a > ins.jstree-icon {
       background-size: 20px 20px;
       background-image: url("/bundles/pimui/images/jstree/icon-folder.svg");
+      background-repeat: no-repeat;
       opacity: 1;
       background-position: 0 3px;
     }
@@ -88,6 +89,7 @@
     .jstree-leaf.jstree-checked > a > ins.jstree-icon {
       background-size: 20px 20px;
       background-image: url("/bundles/pimui/images/jstree/icon-folderfull.svg");
+      background-repeat: no-repeat;
       opacity: 1;
       background-position: 0 3px;
     }
@@ -102,6 +104,7 @@
     a .jstree-icon {
       background-size: 20px 20px;
       background: url("/bundles/pimui/images/jstree/icon-folders.svg") 0 0;
+      background-repeat: no-repeat;
       opacity: 1;
       width: 22px;
     }
