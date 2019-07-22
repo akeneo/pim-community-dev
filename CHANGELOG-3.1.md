@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.16 (2019-07-22)
+
 ## Bug fixes:
 
 - PIM-8570: Fix category tree display
