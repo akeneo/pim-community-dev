@@ -12,7 +12,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorI
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -50,7 +49,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         ObjectManager $productManager,
-        CompletenessManager $completenessManager,
         ChannelRepositoryInterface $channelRepository,
         CollectionFilterInterface $collectionFilter,
         ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
@@ -77,7 +75,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             $localizedConverter,
             $productValueConverter,
             $productManager,
-            $completenessManager,
             $channelRepository,
             $collectionFilter,
             $completenessCollectionNormalizer,
