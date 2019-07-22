@@ -337,7 +337,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - master
+                            - "3.2"
       jobs:
           - setup:
                 is_pull_request: false
