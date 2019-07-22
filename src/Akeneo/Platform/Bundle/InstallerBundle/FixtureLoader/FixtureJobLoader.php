@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,46 +22,59 @@ class FixtureJobLoader
     const JOB_TYPE = 'fixtures';
 
     /** @var FixturePathProvider */
-    protected $pathProvider;
+    private $pathProvider;
 
     /** @var JobInstancesBuilder */
-    protected $jobInstancesBuilder;
+    private $jobInstancesBuilder;
 
     /** @var JobInstancesConfigurator */
-    protected $jobInstancesConfigurator;
+    private $jobInstancesConfigurator;
 
-    /** @var ContainerInterface */
-    protected $container;
+    /** @var BulkSaverInterface */
+    private $jobInstanceSaver;
+
+    /** @var BulkRemoverInterface */
+    private $jobInstanceRemover;
+
+    /** @var ObjectRepository */
+    private $jobInstanceRepository;
 
     /**
      * @param FixturePathProvider      $pathProvider
      * @param JobInstancesBuilder      $jobInstancesBuilder
      * @param JobInstancesConfigurator $jobInstancesConfigurator
-     * @param ContainerInterface       $container
+     * @param BulkSaverInterface       $jobInstanceSaver
+     * @param BulkRemoverInterface     $jobInstanceRemover
+     * @param ObjectRepository         $jobInstanceRepository
      */
     public function __construct(
         FixturePathProvider $pathProvider,
         JobInstancesBuilder $jobInstancesBuilder,
         JobInstancesConfigurator $jobInstancesConfigurator,
-        ContainerInterface $container
+        BulkSaverInterface $jobInstanceSaver,
+        BulkRemoverInterface $jobInstanceRemover,
+        ObjectRepository $jobInstanceRepository
     ) {
-        $this->container = $container;
         $this->pathProvider = $pathProvider;
         $this->jobInstancesBuilder = $jobInstancesBuilder;
         $this->jobInstancesConfigurator = $jobInstancesConfigurator;
+        $this->jobInstanceSaver = $jobInstanceSaver;
+        $this->jobInstanceRemover = $jobInstanceRemover;
+        $this->jobInstanceRepository = $jobInstanceRepository;
     }
 
     /**
      * Load the fixture jobs in database
      *
      * @param array $replacePaths
+     *
+     * @throws \Exception
      */
     public function loadJobInstances(array $replacePaths = [])
     {
         $jobInstances = $this->jobInstancesBuilder->build();
         $configuredJobInstances = $this->configureJobInstances($jobInstances, $replacePaths);
-        $saver = $this->getJobInstanceSaver();
-        $saver->saveAll($configuredJobInstances, ['is_installation' => true]);
+        $this->jobInstanceSaver->saveAll($configuredJobInstances, ['is_installation' => true]);
     }
 
     /**
@@ -68,9 +82,8 @@ class FixtureJobLoader
      */
     public function deleteJobInstances()
     {
-        $jobInstances = $this->getJobInstanceRepository()->findBy(['type' => static::JOB_TYPE]);
-        $remover = $this->getJobInstanceRemover();
-        $remover->removeAll($jobInstances);
+        $jobInstances = $this->jobInstanceRepository->findBy(['type' => static::JOB_TYPE]);
+        $this->jobInstanceRemover->removeAll($jobInstances);
     }
 
     /**
@@ -80,7 +93,7 @@ class FixtureJobLoader
      */
     public function getLoadedJobInstances()
     {
-        $jobs = $this->getJobInstanceRepository()->findBy(['type' => self::JOB_TYPE]);
+        $jobs = $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
 
         return $jobs;
     }
@@ -101,31 +114,5 @@ class FixtureJobLoader
                 $replacePaths
             );
         }
-    }
-
-    /**
-     * @return BulkSaverInterface
-     */
-    protected function getJobInstanceSaver()
-    {
-        return $this->container->get('akeneo_batch.saver.job_instance');
-    }
-
-    /**
-     * @return BulkRemoverInterface
-     */
-    protected function getJobInstanceRemover()
-    {
-        return $this->container->get('akeneo_batch.remover.job_instance');
-    }
-
-    /**
-     * @return ObjectRepository
-     */
-    protected function getJobInstanceRepository()
-    {
-        $em = $this->container->get('doctrine.orm.entity_manager');
-
-        return $em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'));
     }
 }
