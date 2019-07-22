@@ -28,7 +28,7 @@ final class UpdateIndexMapping
     public function updateIndexMapping(Client $client, string $indexNameOrAlias, Loader $indexConfiguration): void
     {
         // We don't care about the index name anymore as we use alias
-        $newIndexName = $indexNameOrAlias . '_' . str_replace('.', '_', CommunityVersion::VERSION) . '_' . Uuid::uuid4();
+        $newIndexName = strtolower($indexNameOrAlias . '_' . str_replace('.', '_', CommunityVersion::VERSION) . '_' . Uuid::uuid4());
 
         $this
             ->createIndexReadyForNewConfiguration($client->indices(), $newIndexName, $indexConfiguration)
