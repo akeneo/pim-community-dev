@@ -33,6 +33,12 @@ $storage = new \Pim\Upgrade\Schema\LocalLogToObjectStorage(
 echo "Relocating {$storage->countFiles()} local import/export logs to the object storage...\n";
 
 $warnings = $storage->relocateFiles();
+$relocated = $storage->countRelocated();
+
+if (0 === $relocated) {
+    echo "No file have been relocated!\nDone!\n";
+    exit(-1);
+}
 
 if (!empty($warnings)) {
     echo "The following files have NOT been relocated:\n";
