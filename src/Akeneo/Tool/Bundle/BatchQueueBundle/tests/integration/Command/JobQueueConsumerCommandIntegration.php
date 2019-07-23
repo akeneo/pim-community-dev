@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Doctrine\DBAL\Driver\Connection;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Process\Process;
 
 class JobQueueConsumerCommandIntegration extends TestCase
@@ -45,25 +46,25 @@ class JobQueueConsumerCommandIntegration extends TestCase
 
         $standardOutput = $output->fetch();
 
-        $this->assertStringContainsString(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
+        Assert::assertStringContainsString(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
-        $this->assertEquals(BatchStatus::COMPLETED, $row['status']);
-        $this->assertEquals(ExitStatus::COMPLETED, $row['exit_code']);
-        $this->assertNotNull($row['health_check_time']);
+        Assert::assertEquals(BatchStatus::COMPLETED, $row['status']);
+        Assert::assertEquals(ExitStatus::COMPLETED, $row['exit_code']);
+        Assert::assertNotNull($row['health_check_time']);
 
         $jobExecution = $this->get('pim_enrich.repository.job_execution')->findBy(['id' => $jobExecution->getId()]);
         $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution[0]);
 
-        $this->assertEquals(BatchStatus::COMPLETED, $jobExecution->getStatus()->getValue());
-        $this->assertEquals(ExitStatus::COMPLETED, $jobExecution->getExitStatus()->getExitCode());
+        Assert::assertEquals(BatchStatus::COMPLETED, $jobExecution->getStatus()->getValue());
+        Assert::assertEquals(ExitStatus::COMPLETED, $jobExecution->getExitStatus()->getExitCode());
 
         $stmt = $this->getConnection()->prepare('SELECT consumer from akeneo_batch_job_execution_queue');
         $stmt->execute();
         $row = $stmt->fetch();
 
-        $this->assertNotEmpty($row['consumer']);
+        Assert::assertNotEmpty($row['consumer']);
     }
 
     public function testLaunchFilteredJobExecution()
@@ -72,25 +73,25 @@ class JobQueueConsumerCommandIntegration extends TestCase
 
         $output = $this->jobLauncher->launchConsumerOnce(['-j' => ['csv_product_export']]);
         $standardOutput = $output->fetch();
-        $this->assertContains(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
+        Assert::assertStringContainsString(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
-        $this->assertEquals(BatchStatus::COMPLETED, $row['status']);
-        $this->assertEquals(ExitStatus::COMPLETED, $row['exit_code']);
-        $this->assertNotNull($row['health_check_time']);
+        Assert::assertEquals(BatchStatus::COMPLETED, $row['status']);
+        Assert::assertEquals(ExitStatus::COMPLETED, $row['exit_code']);
+        Assert::assertNotNull($row['health_check_time']);
 
         $jobExecution = $this->get('pim_enrich.repository.job_execution')->findBy(['id' => $jobExecution->getId()]);
         $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution[0]);
 
-        $this->assertEquals(BatchStatus::COMPLETED, $jobExecution->getStatus()->getValue());
-        $this->assertEquals(ExitStatus::COMPLETED, $jobExecution->getExitStatus()->getExitCode());
+        Assert::assertEquals(BatchStatus::COMPLETED, $jobExecution->getStatus()->getValue());
+        Assert::assertEquals(ExitStatus::COMPLETED, $jobExecution->getExitStatus()->getExitCode());
 
         $stmt = $this->getConnection()->prepare('SELECT consumer from akeneo_batch_job_execution_queue');
         $stmt->execute();
         $row = $stmt->fetch();
 
-        $this->assertNotEmpty($row['consumer']);
+        Assert::assertNotEmpty($row['consumer']);
     }
 
     public function testStatusOfACrashedJobExecution()
@@ -115,15 +116,15 @@ class JobQueueConsumerCommandIntegration extends TestCase
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
-        $this->assertEquals(BatchStatus::FAILED, $row['status']);
-        $this->assertEquals(ExitStatus::FAILED, $row['exit_code']);
-        $this->assertNotNull($row['health_check_time']);
+        Assert::assertEquals(BatchStatus::FAILED, $row['status']);
+        Assert::assertEquals(ExitStatus::FAILED, $row['exit_code']);
+        Assert::assertNotNull($row['health_check_time']);
 
         $jobExecution = $this->get('pim_enrich.repository.job_execution')->findBy(['id' => $jobExecution->getId()]);
         $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution[0]);
 
-        $this->assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue());
-        $this->assertEquals(ExitStatus::FAILED, $jobExecution->getExitStatus()->getExitCode());
+        Assert::assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue());
+        Assert::assertEquals(ExitStatus::FAILED, $jobExecution->getExitStatus()->getExitCode());
     }
 
     public function testJobExecutionStatusResolverWhenDaemonAndJobExecutionCrash()
@@ -148,15 +149,15 @@ class JobQueueConsumerCommandIntegration extends TestCase
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
-        $this->assertEquals(BatchStatus::STARTED, $row['status']);
-        $this->assertEquals(ExitStatus::UNKNOWN, $row['exit_code']);
-        $this->assertNotNull($row['health_check_time']);
+        Assert::assertEquals(BatchStatus::STARTED, $row['status']);
+        Assert::assertEquals(ExitStatus::UNKNOWN, $row['exit_code']);
+        Assert::assertNotNull($row['health_check_time']);
 
         $jobExecution = $this->get('pim_enrich.repository.job_execution')->findBy(['id' => $jobExecution->getId()]);
         $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution[0]);
 
-        $this->assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue());
-        $this->assertEquals(ExitStatus::FAILED, $jobExecution->getExitStatus()->getExitCode());
+        Assert::assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue());
+        Assert::assertEquals(ExitStatus::FAILED, $jobExecution->getExitStatus()->getExitCode());
     }
 
     /**
