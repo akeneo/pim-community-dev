@@ -2,13 +2,17 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\EventListener;
 
+use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;use Akeneo\UserManagement\Component\Model\UserInterface;use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;use Doctrine\Common\EventSubscriber;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -41,8 +45,6 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         OnFlushEventArgs $args,
         EntityManagerInterface $em,
         UnitOfWork $uow,
-        ContainerInterface $container,
-        UserManager $userManager,
         UserRepositoryInterface $userRepository,
         CategoryInterface $masterCategory,
         CategoryInterface $summerCategory,
@@ -51,20 +53,18 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         CategoryRepositoryInterface $categoryRepository,
         ClassMetadata $metadata
     ) {
-        $this->setContainer($container);
-        $container->get('pim_user.manager')->willReturn($userManager);
-
         $args->getEntityManager()->willReturn($em);
         $em->getUnitOfWork()->willReturn($uow);
+        $em->getRepository(Category::class)->willReturn($categoryRepository);
+        $em->getRepository(User::class)->willReturn($userRepository);
+
         $uow->getScheduledEntityUpdates()->willReturn([]);
         $uow->getScheduledEntityDeletions()->willReturn([$masterCategory]);
 
         $masterCategory->isRoot()->willReturn(true);
 
-        $userManager->getRepository()->willReturn($userRepository);
         $userRepository->findBy(['defaultTree' => $masterCategory])->willReturn([$mary, $julia]);
 
-        $container->get('pim_catalog.repository.category')->willReturn($categoryRepository);
         $categoryRepository->getTrees()->willReturn([$summerCategory, $masterCategory]);
 
         $summerCategory->getCode()->willReturn('summer');
@@ -82,7 +82,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         $this->onFlush($args)->shouldReturn(null);
     }
 
-    function it_deletes_a_channe_before_flush(
+    function it_deletes_a_channel_before_flush(
         OnFlushEventArgs $args,
         EntityManagerInterface $em,
         UnitOfWork $uow,
@@ -95,15 +95,13 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         ClassMetadata $metadata
     ) {
-        $this->setContainer($container);
-        $container->get('pim_user.manager')->willReturn($userManager);
-
         $args->getEntityManager()->willReturn($em);
         $em->getUnitOfWork()->willReturn($uow);
+        $em->getRepository(Channel::class)->willReturn($channelRepository);
+        $em->getRepository(User::class)->willReturn($userRepository);
         $uow->getScheduledEntityUpdates()->willReturn([]);
         $uow->getScheduledEntityDeletions()->willReturn([$ecommerceChannel]);
 
-        $userManager->getRepository()->willReturn($userRepository);
         $userRepository->findBy(['catalogScope' => $ecommerceChannel])->willReturn([$mary]);
 
         $container->get('pim_catalog.repository.channel')->willReturn($channelRepository);

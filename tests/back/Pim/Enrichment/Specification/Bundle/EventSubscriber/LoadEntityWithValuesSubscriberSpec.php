@@ -14,12 +14,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class LoadEntityWithValuesSubscriberSpec extends ObjectBehavior
 {
     function let(
-        ContainerInterface $container,
         WriteValueCollectionFactory $valueCollectionFactory
     ) {
-        $this->beConstructedWith($container);
-
-        $container->get('pim_catalog.factory.value_collection')->willReturn($valueCollectionFactory);
+        $this->beConstructedWith($valueCollectionFactory);
     }
 
     function it_is_initializable()
@@ -52,10 +49,9 @@ class LoadEntityWithValuesSubscriberSpec extends ObjectBehavior
         $this->postLoad($event);
     }
 
-    function it_works_only_with_products($container, LifecycleEventArgs $event, \stdClass $object)
+    function it_works_only_with_entity_with_values(LifecycleEventArgs $event, \stdClass $object)
     {
         $event->getObject()->willReturn($object);
-        $container->get(Argument::any())->shouldNotBeCalled();
 
         $this->postLoad($event);
     }
