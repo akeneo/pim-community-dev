@@ -246,6 +246,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface',
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer',
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
