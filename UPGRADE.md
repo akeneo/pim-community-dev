@@ -196,6 +196,8 @@ Before updating the dependencies and migrating your data, please deactivate all 
     Also, as Elasticsearch does not take into account case insensitivity of option codes when searching and as we modified the way products values are loaded from MySQL, Elasticsearch search has to be case insensitive when searching on option codes. Thus, all mappings have to updated.
     
     You also need to create a new index for the Asset Manager feature.
+    
+    For your information, this migration took ~10 minutes for a catalog containing 500 000 products.
 
     To take into account those two changes:
 
