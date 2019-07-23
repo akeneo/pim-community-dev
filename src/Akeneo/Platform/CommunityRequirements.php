@@ -109,17 +109,6 @@ class CommunityRequirements
             'Set the "<strong>memory_limit</strong>" setting in php.ini<a href="#phpini">*</a> to at least "512M".'
         );
 
-        $directories = array(
-            'web/bundles'
-        );
-        foreach ($directories as $directory) {
-            $requirements[] = new Requirement(
-                is_writable($this->baseDir.'/'.$directory),
-                $directory.' directory must be writable',
-                'Change the permissions of the "<strong>'.$directory.'</strong>" directory so that the web server can write into it.'
-            );
-        }
-
         $currentMySQLVersion = $this->getMySQLVersion();
         $requirements[] = new Requirement(
             version_compare($currentMySQLVersion, self::LOWEST_REQUIRED_MYSQL_VERSION, '>=')  &&
