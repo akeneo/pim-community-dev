@@ -23,7 +23,7 @@ class FieldSpec extends ObjectBehavior
         $this->shouldHaveType(Field::class);
     }
 
-    public function it_cannot_create_an_empty_string()
+    public function it_cannot_be_created_from_an_empty_string()
     {
         $this->beConstructedThrough('createFromNormalized', ['']);
         $this->shouldThrow(new \InvalidArgumentException('Field value of condition should not be empty'))->duringInstantiation();

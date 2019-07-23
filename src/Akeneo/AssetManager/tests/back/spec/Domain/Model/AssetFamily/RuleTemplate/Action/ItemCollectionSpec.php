@@ -23,7 +23,7 @@ class ItemCollectionSpec extends ObjectBehavior
         $this->shouldHaveType(ItemCollection::class);
     }
 
-    public function it_cannot_create_an_empty_string()
+    public function it_cannot_be_created_from_an_empty_string()
     {
         $this->beConstructedThrough('createFromNormalized', [['']]);
         $this->shouldThrow(new \InvalidArgumentException('All the item values should be a string not empty'))->duringInstantiation();

@@ -24,7 +24,7 @@ class ValueSpec extends ObjectBehavior
         $this->shouldHaveType(Value::class);
     }
 
-    public function it_cannot_create_an_empty_string()
+    public function it_cannot_be_created_from_an_empty_string()
     {
         $this->beConstructedThrough('createFromNormalized', ['']);
         $this->shouldThrow(new \InvalidArgumentException('Value of condition should not be empty'))->duringInstantiation();
