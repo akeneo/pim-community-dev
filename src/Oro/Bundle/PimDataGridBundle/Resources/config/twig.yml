@@ -6,6 +6,8 @@ services:
     pim_datagrid.twig.filter_extension:
         class: '%pim_datagrid.twig.filter_extension.class%'
         arguments:
-            - '@service_container'
+            - '@oro_datagrid.datagrid.manager'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@translator'
         tags:
             - { name: twig.extension }
