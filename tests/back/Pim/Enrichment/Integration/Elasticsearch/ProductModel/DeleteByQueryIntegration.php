@@ -12,7 +12,7 @@ class DeleteByQueryIntegration extends AbstractPimCatalogTestCase
 {
     public function testItDeletesByQuery()
     {
-        $this->get('akeneo_elasticsearch.client.product')->deleteByQuery([
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->deleteByQuery([
             'query' => [
                 'term' => [
                     'ancestors.ids' => 'product_model_1',

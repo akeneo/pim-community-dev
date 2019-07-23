@@ -74,8 +74,8 @@ class CatalogConfigurationContext extends PimContext
         switch ($entity) {
             case 'product':
                 $db->exec('DELETE FROM pim_catalog_product');
-                $this->getContainer()->get('akeneo_elasticsearch.client.product')->resetIndex();
-                $this->getContainer()->get('akeneo_elasticsearch.client.product')->refreshIndex();
+                $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
+                $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
                 break;
             case 'product model':
                 $db->exec('DELETE FROM pim_catalog_product_model');
@@ -163,7 +163,7 @@ class CatalogConfigurationContext extends PimContext
      */
     protected function getElasticsearchProductClient()
     {
-        return $this->getContainer()->get('akeneo_elasticsearch.client.product');
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model');
     }
 
     /**

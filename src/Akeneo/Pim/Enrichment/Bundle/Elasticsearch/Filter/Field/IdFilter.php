@@ -17,15 +17,29 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 class IdFilter extends AbstractFieldFilter
 {
     /**
+     * @var string
+     */
+    private $prefix;
+
+    /**
+     * @var string
+     */
+    private $fieldName;
+
+    /**
      * @param array $supportedFields
      * @param array $supportedOperators
+     * @param string $prefix
      */
     public function __construct(
         array $supportedFields = [],
-        array $supportedOperators = []
+        array $supportedOperators = [],
+        string $prefix
     ) {
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
+        $this->fieldName = $supportedFields[0];
+        $this->prefix = $prefix;
     }
 
     /**
@@ -48,12 +62,12 @@ class IdFilter extends AbstractFieldFilter
         if (is_array($value)) {
             $value = array_map(
                 function ($value) {
-                    return (string)$value;
+                    return (string) $this->prefix.$value;
                 },
                 $value
             );
         } else {
-            $value = (string)$value;
+            $value = (string)$this->prefix.$value;
         }
 
         switch ($operator) {

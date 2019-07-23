@@ -8,7 +8,6 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -73,7 +72,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $format
         );
         $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->serializer->normalize(
-            $product->getUpdated(),
+            $this->getUpdatedAt($product),
             $format
         );
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->serializer->normalize(
@@ -340,5 +339,22 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
                 throw new \InvalidArgumentException('$normalizer is not a Normalizer');
             }
         }
+    }
+
+    private function getUpdatedAt(ProductInterface $product): \DateTime
+    {
+        $date = $product->getUpdated();
+        if ($product->isVariant()) {
+            $dates = [$date];
+            $parent = $product->getParent();
+            while (null !== $parent) {
+                $dates[] = $parent->getUpdated();
+                $parent = $parent->getParent();
+            }
+
+            $date = max($dates);
+        }
+
+        return $date;
     }
 }

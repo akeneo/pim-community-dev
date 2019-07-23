@@ -155,7 +155,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
 
                 $this->searchQueryBuilder->addMustNot($clause);
                 break;
-                
+
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }

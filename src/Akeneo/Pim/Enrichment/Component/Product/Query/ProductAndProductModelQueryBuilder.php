@@ -9,64 +9,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Query;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
+
+class ProductAndProductModelQueryBuilder extends AbstractEntityWithValuesQueryBuilder
 {
-    /** @var ProductQueryBuilderInterface */
-    private $pqb;
-
-    /**
-     * @param ProductQueryBuilderInterface $pqb
-     */
-    public function __construct(ProductQueryBuilderInterface $pqb)
-    {
-        $this->pqb = $pqb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addFilter($field, $operator, $value, array $context = [])
-    {
-        return $this->pqb->addFilter($field, $operator, $value, $context);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addSorter($field, $direction, array $context = [])
-    {
-        return $this->pqb->addSorter($field, $direction, $context);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRawFilters()
-    {
-        return $this->pqb->getRawFilters();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getQueryBuilder()
-    {
-        return $this->pqb->getQueryBuilder();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQueryBuilder($queryBuilder)
-    {
-        return $this->pqb->setQueryBuilder($queryBuilder);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function execute()
-    {
-        return $this->pqb->execute();
-    }
 }

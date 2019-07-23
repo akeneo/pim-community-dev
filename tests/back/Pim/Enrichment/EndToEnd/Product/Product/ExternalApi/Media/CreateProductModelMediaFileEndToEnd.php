@@ -609,8 +609,7 @@ JSON;
         $this->assertCount(0, $this->getFromTestContainer('pim_catalog.validator.product_model')->validate($productModel));
         $this->getFromTestContainer('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->getFromTestContainer('akeneo_elasticsearch.client.product_model')->refreshIndex();
-        $this->getFromTestContainer('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->fileRepository = $this->getFromTestContainer('pim_api.repository.media_file');
         $this->productModelRepository = $this->getFromTestContainer('pim_catalog.repository.product_model');

@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductAndProductModelQueryBuilder;
+use Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\ObjectBehavior;
@@ -14,7 +14,11 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactorySpec extends 
         ProductQueryBuilderFactoryInterface $factory,
         ProductAndProductModelSearchAggregator $resultAggregator
     ) {
-        $this->beConstructedWith(ProductAndProductModelQueryBuilder::class, $factory, $resultAggregator);
+        $this->beConstructedWith(
+            ProductAndProductModelQueryBuilder::class,
+            $factory,
+            $resultAggregator
+        );
     }
 
     public function it_is_a_product_query_builder_factory()
@@ -27,7 +31,7 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactorySpec extends 
         $factory->create(['default_locale' => 'en_US', 'default_scope' => 'print'])->willReturn($basePqb);
 
         $this->create(['default_locale' => 'en_US', 'default_scope' => 'print'])->shouldBeAnInstanceOf(
-            ProductAndProductModelQueryBuilder::class
+            ProductQueryBuilderInterface::class
         );
     }
 }

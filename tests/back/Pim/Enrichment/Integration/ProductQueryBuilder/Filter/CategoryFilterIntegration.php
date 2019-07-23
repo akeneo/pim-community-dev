@@ -286,7 +286,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
             ],
         ]);
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**
@@ -305,7 +305,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**
@@ -319,7 +319,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
         $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
         $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**

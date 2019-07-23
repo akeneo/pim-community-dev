@@ -117,8 +117,8 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
 
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'encoded69',
-            'search_after' => ['encoded69']
+            'search_after_unique_key' => 'product_model_encoded69',
+            'search_after' => ['product_model_encoded69']
         ])->shouldBeCalled()->willReturn($productQueryBuilder);
 
         $productQueryBuilder->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
