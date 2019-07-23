@@ -243,7 +243,6 @@ You are now ready to reactivate your custom bundles in the `AppKernel.php` file.
     ```bash
     bin/console cache:clear --env=prod
     bin/console pim:installer:assets --clean --env=prod
-    yarn run less
     yarn run webpack
     ```
 
