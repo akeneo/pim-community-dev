@@ -54,6 +54,7 @@ class OroToPimGridFilterAdapter extends BaseAdapter
                     )
                 );
             }
+
             return $filters;
         }
 
