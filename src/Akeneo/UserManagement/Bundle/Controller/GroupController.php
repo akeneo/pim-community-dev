@@ -29,7 +29,7 @@ class GroupController extends Controller
     /**
      * Edit group form
      *
-     * @Template
+     * @Template("PimUserBundle:Group:update.html.twig")
      * @AclAncestor("pim_user_group_edit")
      */
     public function updateAction(Group $entity)
