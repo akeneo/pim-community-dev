@@ -84,9 +84,8 @@ class ActionSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn(
             [
-                'field' => '{{attribute}}',
-                'type'  => 'add',
-                'items' => ['{{code}}'],
+                'attribute' => '{{attribute}}',
+                'mode'  => 'add',
                 'channel' => null,
                 'locale' => null
             ]

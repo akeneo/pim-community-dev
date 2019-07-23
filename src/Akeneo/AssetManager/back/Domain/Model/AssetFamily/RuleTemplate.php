@@ -95,11 +95,11 @@ class RuleTemplate
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): CompiledRule
     {
         $compiledConditions = array_map(function (Condition $condition) use ($propertyAccessibleAsset) {
-            return $condition->compile($propertyAccessibleAsset)->normalize();
+            return $condition->compile($propertyAccessibleAsset);
         }, $this->conditions);
 
         $compiledActions = array_map(function (Action $action) use ($propertyAccessibleAsset) {
-            return $action->compile($propertyAccessibleAsset)->normalize();
+            return $action->compile($propertyAccessibleAsset);
         }, $this->actions);
 
         return new CompiledRule($compiledConditions, $compiledActions);
@@ -118,8 +118,8 @@ class RuleTemplate
         }, $this->actions);
 
         return [
-            self::CONDITIONS => $normalizedConditions,
-            self::ACTIONS    => $normalizedActions,
+            self::PRODUCT_SELECTIONS => $normalizedConditions,
+            self::ASSIGN_ASSETS_TO   => $normalizedActions,
         ];
     }
 

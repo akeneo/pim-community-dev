@@ -111,7 +111,7 @@ CREATE TABLE `akeneo_asset_manager_asset_family` (
     `image` VARCHAR(255) NULL,
     `attribute_as_label` VARCHAR(255) NULL,
     `attribute_as_image` VARCHAR(255) NULL,
-    `rule_templates` JSON NOT NULL,
+    `product_link_rules` JSON NOT NULL,
     PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

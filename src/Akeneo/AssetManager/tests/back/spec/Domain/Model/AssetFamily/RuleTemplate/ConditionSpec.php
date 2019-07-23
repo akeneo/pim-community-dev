@@ -111,7 +111,7 @@ class ConditionSpec extends ObjectBehavior
 
         $accessibleAsset->hasValue('code')->willReturn(true);
         $accessibleAsset->getValue('code')->willReturn('nice_asset');
-        $this->compile($accessibleAsset)->normalize()->shouldReturn([
+        $this->compile($accessibleAsset)->shouldReturn([
             'field' => 'sku',
             'operator' => '=',
             'value' => 'nice_asset',

@@ -85,15 +85,15 @@ class RuleTemplateSpec extends ObjectBehavior
         $content = [
             'conditions' => [
                 [
-                    'field'      => 'sku',
+                    'field'    => 'sku',
                     'operator' => '=',
-                    'value' => '{{code}}'
+                    'value'    => '{{code}}'
                 ]
             ],
             'actions' => [
                 [
-                    'field'      => '{{attribute}}',
-                    'type' => 'set',
+                    'field' => '{{attribute}}',
+                    'type'  => 'set',
                     'items' => ['{{code}}']
                 ]
             ],
@@ -145,7 +145,7 @@ class RuleTemplateSpec extends ObjectBehavior
         ];
         $this->beConstructedThrough('createFromProductLinkRule', [$content]);
         $this->normalize()->shouldReturn([
-            'conditions' => [
+            'product_selections' => [
                 [
                     'field'    => 'sku',
                     'operator' => '=',
@@ -154,11 +154,10 @@ class RuleTemplateSpec extends ObjectBehavior
                     'locale'   => null,
                 ],
             ],
-            'actions' => [
+            'assign_assets_to' => [
                 [
-                    'field' => '{{attribute}}',
-                    'type'  => 'add',
-                    'items' => ['{{code}}'],
+                    'attribute' => '{{attribute}}',
+                    'mode'      => 'add',
                     'channel' => null,
                     'locale'  => null,
                 ],

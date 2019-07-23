@@ -56,6 +56,7 @@ class Condition
         Assert::keyExists($condition, 'field');
         Assert::keyExists($condition, 'operator');
         Assert::keyExists($condition, 'value');
+
         $field = Field::createFromNormalized($condition['field']);
         $operator = Operator::createFromNormalized($condition['operator']);
         $value = Value::createFromNormalized($condition['value']);
@@ -70,18 +71,18 @@ class Condition
         return self::createFromNormalized($condition);
     }
 
-    public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): self
+    public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): array
     {
         $field = ReplacePattern::replace($this->field->stringValue(), $propertyAccessibleAsset);
         $value = ReplacePattern::replace($this->value->stringValue(), $propertyAccessibleAsset);
 
-        return new self(
-            Field::createFromNormalized($field),
-            $this->operator,
-            Value::createFromNormalized($value),
-            $this->channel,
-            $this->locale
-        );
+        return [
+            'field'    => Field::createFromNormalized($field)->stringValue(),
+            'operator' => $this->operator->stringValue(),
+            'value'    => Value::createFromNormalized($value)->stringValue(),
+            'channel'  => $this->channel->normalize(),
+            'locale'   => $this->locale->normalize(),
+        ];
     }
 
     public function normalize(): array

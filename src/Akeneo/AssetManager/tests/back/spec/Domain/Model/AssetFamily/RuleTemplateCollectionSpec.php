@@ -63,7 +63,7 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
     function it_can_normalize_itself()
     {
         $normalizedRuleTemplate = [
-            'conditions' => [
+            'product_selections' => [
                 [
                     'field' => 'sku',
                     'operator' => 'EQUALS',
@@ -72,11 +72,10 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
                     'locale' => null
                 ]
             ],
-            'actions' => [
+            'assign_assets_to' => [
                 [
-                    'field' => '{{target_attribute}}',
-                    'type' => 'add',
-                    'items' => ['{{ code }}'],
+                    'attribute' => '{{target_attribute}}',
+                    'mode' => 'add',
                     'channel' => null,
                     'locale' => null
                 ]
