@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8577: Convert dates to user timezone in the dashboard's last operations widget
+
 # 3.1.16 (2019-07-22)
 
 ## Bug fixes:
