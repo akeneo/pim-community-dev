@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -25,23 +25,24 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class PublishedProductCompletenessCollectionNormalizer implements NormalizerInterface
 {
-    /** @var GetChannelLabelsInterface */
-    private $getChannelLabels;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
-
     /** @var NormalizerInterface */
     private $standardNormalizer;
 
+    /** @var GetChannelLabelsInterface */
+    private $getChannelLabels;
+
+    /** @var GetAttributeLabelsInterface */
+    private $getAttributeLabels;
+
+
     public function __construct(
+        NormalizerInterface $standardNormalizer,
         GetChannelLabelsInterface $getChannelLabels,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        NormalizerInterface $standardNormalizer
+        GetAttributeLabelsInterface $getAttributeLabels
     ) {
-        $this->getChannelLabels = $getChannelLabels;
-        $this->attributeRepository = $attributeRepository;
         $this->standardNormalizer = $standardNormalizer;
+        $this->getChannelLabels = $getChannelLabels;
+        $this->getAttributeLabels = $getAttributeLabels;
     }
 
     /**
@@ -49,29 +50,16 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
      */
     public function normalize($completenesses, $format = null, array $context = []): array
     {
-        $normalizedCompletenesses = [];
-        $sortedCompletenesses = [];
-        $channelCodes = [];
-        $localeCodes = [];
-
-        foreach ($completenesses as $completeness) {
-            $channelCode = $completeness->channelCode();
-            if (!in_array($channelCode, $channelCodes)) {
-                $channelCodes[] = $channelCode;
-            }
-
-            $localeCode = $completeness->localeCode();
-            if (!in_array($localeCode, $localeCodes)) {
-                $localeCodes[] = $localeCode;
-            }
-
-            $sortedCompletenesses[$channelCode][$localeCode] = $completeness;
-        }
+        $channelCodes = $this->getChannelCodes($completenesses);
+        $localeCodes = $this->getLocaleCodes($completenesses);
+        $missingAttributeCodes = $this->getMissingAttributeCodes($completenesses);
+        $completenessesByChannel = $this->getCompletenessesByChannel($completenesses);
 
         $channelLabels = $this->getChannelLabels->forChannelCodes($channelCodes);
+        $attributeLabels = $this->getAttributeLabels->forAttributeCodes($missingAttributeCodes);
 
-        foreach ($sortedCompletenesses as $channelCode => $channelCompletenesses) {
-            $channelCode = (string)$channelCode;
+        $normalizedCompletenesses = [];
+        foreach ($completenessesByChannel as $channelCode => $channelCompletenesses) {
             $normalizedCompletenesses[] = [
                 'channel' => $channelCode,
                 'labels' => $this->getChannelLabels($channelLabels, $localeCodes, $channelCode),
@@ -79,6 +67,7 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
                     $channelCompletenesses,
                     $format,
                     $localeCodes,
+                    $attributeLabels,
                     $context
                 ),
                 'stats' => [
@@ -90,6 +79,66 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
         }
 
         return $normalizedCompletenesses;
+    }
+
+    /**
+     * @param PublishedProductCompletenessCollection $completenesses
+     *
+     * @return string[]
+     */
+    private function getChannelCodes(PublishedProductCompletenessCollection $completenesses): array
+    {
+        $channelCodes = [];
+        foreach ($completenesses as $completeness) {
+            $channelCodes[] = $completeness->channelCode();
+        }
+
+        return array_values(array_unique($channelCodes));
+    }
+
+    /**
+     * @param PublishedProductCompletenessCollection $completenesses
+     *
+     * @return string[]
+     */
+    private function getMissingAttributeCodes(PublishedProductCompletenessCollection $completenesses): array
+    {
+        $attributeCodes = [];
+        foreach ($completenesses as $completeness) {
+            $attributeCodes = array_merge($attributeCodes, $completeness->missingAttributeCodes());
+        }
+
+        return array_values(array_unique($attributeCodes));
+    }
+
+    /**
+     * @param PublishedProductCompletenessCollection $completenesses
+     *
+     * @return string[]
+     */
+    private function getLocaleCodes(PublishedProductCompletenessCollection $completenesses): array
+    {
+        $localeCodes = [];
+        foreach ($completenesses as $completeness) {
+            $localeCodes[] = $completeness->localeCode();
+        }
+
+        return array_values(array_unique($localeCodes));
+    }
+
+    /**
+     * @param PublishedProductCompletenessCollection $completenesses
+     *
+     * @return array
+     */
+    private function getCompletenessesByChannel(PublishedProductCompletenessCollection $completenesses): array
+    {
+        $sortedCompletenesses = [];
+        foreach ($completenesses as $completeness) {
+            $sortedCompletenesses[$completeness->channelCode()][] = $completeness;
+        }
+
+        return $sortedCompletenesses;
     }
 
     /**
@@ -150,6 +199,7 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
         array $completenesses,
         $format,
         array $localeCodes,
+        array $attributeLabels,
         array $context
     ) {
         $normalizedCompletenesses = [];
@@ -165,7 +215,7 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
             foreach ($completeness->missingAttributeCodes() as $attributeCode) {
                 $normalizedCompleteness['missing'][] = [
                     'code' => $attributeCode,
-                    'labels' => $this->normalizeAttributeLabels($attributeCode, $localeCodes),
+                    'labels' => $this->normalizeAttributeLabels($attributeLabels, $attributeCode, $localeCodes),
                 ];
             }
 
@@ -176,18 +226,21 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     }
 
     /**
-     * @param string $attributeCode
+     * @param array    $attributeLabels
+     * @param string   $attributeCode
      * @param string[] $localeCodes
      *
      * @return array
      */
-    private function normalizeAttributeLabels(string $attributeCode, array $localeCodes): array
+    private function normalizeAttributeLabels(array $attributeLabels, string $attributeCode, array $localeCodes): array
     {
         $result = [];
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-
         foreach ($localeCodes as $localeCode) {
-            $result[$localeCode] = $attribute->getTranslation($localeCode)->getLabel();
+            $label = '[' . $attributeCode . ']';
+            if (isset($attributeLabels[$attributeCode][$localeCode])) {
+                $label = $attributeLabels[$attributeCode][$localeCode];
+            }
+            $result[$localeCode] = $label;
         }
 
         return $result;

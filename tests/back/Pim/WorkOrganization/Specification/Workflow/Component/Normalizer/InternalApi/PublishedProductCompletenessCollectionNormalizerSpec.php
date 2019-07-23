@@ -2,29 +2,24 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductCompletenessNormalizer;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PublishedProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 {
     function let(
-        ObjectRepository $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        NormalizerInterface $standardNormalizer,
+        GetChannelLabelsInterface $getChannelLabels,
+        GetAttributeLabelsInterface $getAttributeLabels
     ) {
         $this->beConstructedWith(
-            $channelRepository,
-            $localeRepository,
-            $attributeRepository,
-            new PublishedProductCompletenessNormalizer()
+            $standardNormalizer,
+            $getChannelLabels,
+            $getAttributeLabels
         );
     }
 
@@ -42,103 +37,77 @@ class PublishedProductCompletenessCollectionNormalizerSpec extends ObjectBehavio
              ->shouldReturn(true);
     }
 
-    function it_returns_an_empty_array_for_an_empty_collection()
-    {
-        $this->normalize(new PublishedProductCompletenessCollection(1, []))->shouldReturn([]);
+    function it_returns_an_empty_array_for_an_empty_collection(
+        GetChannelLabelsInterface $getChannelLabels,
+        GetAttributeLabelsInterface $getAttributeLabels,
+        NormalizerInterface $standardNormalizer
+    ) {
+        $completenesses = new PublishedProductCompletenessCollection(1, []);
+        $getChannelLabels->forChannelCodes([])->willReturn([]);
+        $getAttributeLabels->forAttributeCodes([])->willReturn([]);
+
+        $this->normalize($completenesses)->shouldReturn([]);
     }
 
     function it_normalizes_a_published_product_completeness_collection(
-        ObjectRepository $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetChannelLabelsInterface $getChannelLabels,
+        GetAttributeLabelsInterface $getAttributeLabels,
         NormalizerInterface $standardNormalizer
     ) {
-        $frFR = new Locale();
-        $frFR->setCode('fr_FR');
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
-        $enUS = new Locale();
-        $enUS->setCode('en_US');
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
+        $getChannelLabels->forChannelCodes(['ecommerce', 'mobile'])->willReturn([
+            'ecommerce' => [
+                'en_US' => 'Ecommerce',
+                'fr_FR' => 'E-commerce'
+            ]
+        ]);
 
-        $ecommerce = new Channel();
-        $ecommerce->setCode('ecommerce');
-        $ecommerce->setLocale('en_US');
-        $ecommerce->setLabel('Ecommerce');
-        $ecommerce->setLocale('fr_FR');
-        $ecommerce->setLabel('Ecommerce');
-        $mobile = new Channel();
-        $mobile->setCode('mobile');
-        $mobile->setLocale('en_US');
-        $mobile->setLabel('Mobile');
-        $mobile->setLocale('fr_FR');
-        $mobile->setLabel('Mobile');
-        $channelRepository->findBy(['code' => ['ecommerce', 'mobile']])->willReturn([$ecommerce, $mobile]);
+        $getAttributeLabels->forAttributeCodes(['description', 'weight', 'picture'])->willReturn([
+            'weight' => [
+                'en_US' => 'Weight',
+                'fr_FR' => 'Poids'
+            ],
+            'description' => [
+                'en_US' => 'Description'
+            ]
+        ]);
 
-        $weight = new Attribute();
-        $weight->setCode('weight');
-        $weight->setLocale('en_US');
-        $weight->setLabel('Weight');
-        $weight->setLocale('fr_FR');
-        $weight->setLabel('Poids');
-        $attributeRepository->findOneByIdentifier('weight')->willReturn($weight);
-        $description = new Attribute();
-        $description->setCode('description');
-        $description->setLocale('en_US');
-        $description->setLabel('Description');
-        $description->setLocale('fr_FR');
-        $description->setLabel('Description');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($description);
-        $picture = new Attribute();
-        $picture->setCode('picture');
-        $picture->setLocale('en_US');
-        $picture->setLabel('Picture');
-        $picture->setLocale('fr_FR');
-        $picture->setLabel('Image');
-        $attributeRepository->findOneByIdentifier('picture')->willReturn($picture);
+        $completenessEcommerceEn = new PublishedProductCompleteness('ecommerce', 'en_US', 5, []);
+        $completenessEcommerceFr = new PublishedProductCompleteness('ecommerce', 'fr_FR', 5, ['description', 'weight']);
+        $completenessMobileEn = new PublishedProductCompleteness('mobile', 'en_US', 8, ['description', 'picture']);
+        $completenessMobileFr = new PublishedProductCompleteness('mobile', 'fr_FR', 8, ['description']);
 
         $collection = new PublishedProductCompletenessCollection(
             42,
-            [
-                new PublishedProductCompleteness('ecommerce', 'en_US', 5, []),
-                new PublishedProductCompleteness('ecommerce', 'fr_FR', 5, ['description', 'weight']),
-                new PublishedProductCompleteness('mobile', 'en_US', 8, ['description', 'picture']),
-                new PublishedProductCompleteness('mobile', 'fr_FR', 8, ['description']),
-            ]
+            [$completenessEcommerceEn, $completenessEcommerceFr, $completenessMobileEn, $completenessMobileFr]
         );
+
+        $standardNormalizer->normalize($completenessEcommerceFr, 'internal_api', [])->willReturn(['normalized completeness Ecommerce FR']);
+        $standardNormalizer->normalize($completenessEcommerceEn, 'internal_api', [])->willReturn(['normalized completeness Ecommerce EN']);
+        $standardNormalizer->normalize($completenessMobileFr, 'internal_api', [])->willReturn(['normalized completeness Mobile FR']);
+        $standardNormalizer->normalize($completenessMobileEn, 'internal_api', [])->willReturn(['normalized completeness Mobile EN']);
+
         $this->normalize($collection, 'internal_api')->shouldReturn(
             [
                 [
                     'channel' => 'ecommerce',
                     'labels' => [
                         'en_US' => 'Ecommerce',
-                        'fr_FR' => 'Ecommerce',
+                        'fr_FR' => 'E-commerce',
                     ],
                     'locales' => [
                         'en_US' => [
-                            'completeness' => [
-                                'required' => 5,
-                                'missing' => 0,
-                                'ratio' => 100,
-                                'locale' => 'en_US',
-                                'channel' => 'ecommerce',
-                            ],
+                            'completeness' => ['normalized completeness Ecommerce EN'],
                             'missing' => [],
                             'label' => 'English (United States)',
                         ],
                         'fr_FR' => [
-                            'completeness' => [
-                                'required' => 5,
-                                'missing' => 2,
-                                'ratio' => 60,
-                                'locale' => 'fr_FR',
-                                'channel' => 'ecommerce',
-                            ],
+                            'completeness' => ['normalized completeness Ecommerce FR'],
                             'missing' => [
                                 [
                                     'code' => 'description',
                                     'labels' => [
                                         'en_US' => 'Description',
-                                        'fr_FR' => 'Description',
+                                        'fr_FR' => '[description]',
                                     ],
                                 ],
                                 [
@@ -161,50 +130,38 @@ class PublishedProductCompletenessCollectionNormalizerSpec extends ObjectBehavio
                 [
                     'channel' => 'mobile',
                     'labels' => [
-                        'en_US' => 'Mobile',
-                        'fr_FR' => 'Mobile',
+                        'en_US' => '[mobile]',
+                        'fr_FR' => '[mobile]',
                     ],
                     'locales' => [
                         'en_US' => [
-                            'completeness' => [
-                                'required' => 8,
-                                'missing' => 2,
-                                'ratio' => 75,
-                                'locale' => 'en_US',
-                                'channel' => 'mobile',
-                            ],
+                            'completeness' => ['normalized completeness Mobile EN'],
                             'missing' => [
                                 [
                                     'code' => 'description',
                                     'labels' => [
                                         'en_US' => 'Description',
-                                        'fr_FR' => 'Description',
+                                        'fr_FR' => '[description]',
                                     ],
                                 ],
                                 [
                                     'code' => 'picture',
                                     'labels' => [
-                                        'en_US' => 'Picture',
-                                        'fr_FR' => 'Image',
+                                        'en_US' => '[picture]',
+                                        'fr_FR' => '[picture]',
                                     ],
                                 ],
                             ],
                             'label' => 'English (United States)',
                         ],
                         'fr_FR' => [
-                            'completeness' => [
-                                'required' => 8,
-                                'missing' => 1,
-                                'ratio' => 87,
-                                'locale' => 'fr_FR',
-                                'channel' => 'mobile',
-                            ],
+                            'completeness' => ['normalized completeness Mobile FR'],
                             'missing' => [
                                 [
                                     'code' => 'description',
                                     'labels' => [
                                         'en_US' => 'Description',
-                                        'fr_FR' => 'Description',
+                                        'fr_FR' => '[description]',
                                     ],
                                 ],
                             ],
