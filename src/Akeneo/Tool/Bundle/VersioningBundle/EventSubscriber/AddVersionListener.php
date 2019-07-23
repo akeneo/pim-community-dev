@@ -2,14 +2,15 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Aims to audit data updates on versionable entities
@@ -18,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddVersionSubscriber implements EventSubscriber
+class AddVersionListener
 {
     /** @var object[] */
     protected $versionableEntities = [];
@@ -29,29 +30,28 @@ class AddVersionSubscriber implements EventSubscriber
     /** @var string[] */
     protected $versions = [];
 
-    /** @var ContainerInterface */
-    protected $container;
+    /** @var VersionManager */
+    private $versionManager;
 
-    /**
-     * Constructor. We have to inject the container here as Doctrine event subscribers throws circular
-     * reference dependency exceptions if we try to inject services that requiring doctrine.
-     * For instance the dependency occurs with the version manager.
-     *
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    /** @var NormalizerInterface */
+    private $versioningNormalizer;
 
-    /**
-     * Specifies the list of events to listen
-     *
-     * @return string[]
-     */
-    public function getSubscribedEvents()
-    {
-        return ['onFlush', 'postFlush'];
+    /** @var UpdateGuesserInterface */
+    private $updateGuesser;
+
+    /** @var VersionContext */
+    private $versionContext;
+
+    public function __construct(
+        VersionManager $versionManager,
+        NormalizerInterface $versioningNormalizer,
+        UpdateGuesserInterface $updateGuesser,
+        VersionContext $versionContext
+    ) {
+        $this->versionManager = $versionManager;
+        $this->versioningNormalizer = $versioningNormalizer;
+        $this->updateGuesser = $updateGuesser;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -106,7 +106,7 @@ class AddVersionSubscriber implements EventSubscriber
         $this->versionableEntities = [];
 
         if ($versionedCount) {
-            $this->container->get('pim_versioning.manager.version')->getObjectManager()->flush();
+            $this->versionManager->getObjectManager()->flush();
             $this->detachVersions();
         }
     }
@@ -117,11 +117,11 @@ class AddVersionSubscriber implements EventSubscriber
     protected function createVersion($versionable)
     {
         $changeset = [];
-        if (!$this->container->get('pim_versioning.manager.version')->isRealTimeVersioning()) {
-            $changeset = $this->container->get('pim_versioning.serializer')
+        if (!$this->versionManager->isRealTimeVersioning()) {
+            $changeset = $this->versioningNormalizer
                 ->normalize($versionable, 'flat', ['versioning' => true]);
         }
-        $versions = $this->container->get('pim_versioning.manager.version')->buildVersion($versionable, $changeset);
+        $versions = $this->versionManager->buildVersion($versionable, $changeset);
 
         foreach ($versions as $version) {
             $this->versions[] = $version;
@@ -137,7 +137,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function checkScheduledUpdate($em, $entity)
     {
-        $pendings = $this->container->get('pim_versioning.update_guesser.chained')
+        $pendings = $this->updateGuesser
             ->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
 
         foreach ($pendings as $pending) {
@@ -153,7 +153,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function checkScheduledCollection($em, $entity)
     {
-        $pendings = $this->container->get('pim_versioning.update_guesser.chained')
+        $pendings = $this->updateGuesser
             ->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_UPDATE_COLLECTION);
 
         foreach ($pendings as $pending) {
@@ -169,7 +169,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function checkScheduledDeletion($em, $entity)
     {
-        $pendings = $this->container->get('pim_versioning.update_guesser.chained')
+        $pendings = $this->updateGuesser
             ->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_DELETE);
 
         foreach ($pendings as $pending) {
@@ -197,7 +197,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function computeChangeSet(Version $version)
     {
-        $om = $this->container->get('pim_versioning.manager.version')->getObjectManager();
+        $om = $this->versionManager->getObjectManager();
 
         if ($version->getChangeset()) {
             $om->persist($version);
@@ -220,7 +220,7 @@ class AddVersionSubscriber implements EventSubscriber
         return sprintf(
             '%s#%s',
             spl_object_hash($object),
-            sha1($this->container->get('pim_versioning.context.version')->getContextInfo())
+            sha1($this->versionContext->getContextInfo())
         );
     }
 
@@ -229,7 +229,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function detachVersions()
     {
-        $om = $this->container->get('pim_versioning.manager.version')->getObjectManager();
+        $om = $this->versionManager->getObjectManager();
 
         foreach ($this->versions as $version) {
             $om->detach($version);
