@@ -20,7 +20,6 @@ parameters:
 
     upload_dir:           '%kernel.root_dir%/uploads/product'
     archive_dir:          '%kernel.root_dir%/archive'
-    logs_dir:             '%kernel.logs_dir%'
     catalog_storage_dir:  '%kernel.root_dir%/file_storage/catalog'
     asset_storage_dir:    '%kernel.root_dir%/file_storage/asset'
     tmp_storage_dir:      '/tmp/pim/file_storage'

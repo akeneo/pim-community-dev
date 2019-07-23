@@ -9,7 +9,7 @@
     processIsolation="false"
     stopOnFailure="false"
     beStrictAboutTestsThatDoNotTestAnything="false"
-    bootstrap="./autoload.php">
+    bootstrap="../vendor/autoload.php">
 
     <php>
         <ini name="date.timezone" value="Europe/Paris"/>

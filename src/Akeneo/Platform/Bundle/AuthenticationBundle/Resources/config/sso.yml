@@ -41,7 +41,7 @@ services:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive'
         arguments:
             - '@oneup_flysystem.logs_storage_filesystem'
-            - '%logs_dir%'
+            - '%kernel.logs_dir%'
             - '%tmp_storage_dir%'
 
     hslavich_onelogin_saml.saml_token_factory:

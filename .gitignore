@@ -8,6 +8,7 @@ web/cache/*
 app/archive/*
 app/cache/*
 app/config/parameters.yml
+app/config/parameters_test.yml
 app/logs/*
 var/*
 !var/SymfonyRequirements.php
