@@ -1,5 +1,17 @@
 # 2.3.x
 
+# 2.3.55 (2019-07-23)
+
+## Bug fixes
+
+- PIM-8565: Add ProjectCompleteness filter in sequential edit
+
+# 2.3.54 (2019-07-19)
+
+## Bug fixes
+
+- PIM-8546: Fix asset fetch from PEF when uri too long
+
 # 2.3.53 (2019-07-15)
 
 # 2.3.52 (2019-07-02)

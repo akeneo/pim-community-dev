@@ -61,7 +61,7 @@ pimee_product_asset_original:
 pimee_product_asset_rest_index:
     path: /rest/
     defaults: { _controller: pimee_product_asset.controller.rest.product_asset:indexAction, _format: json }
-    methods: [GET]
+    methods: [GET, POST]
 
 pimee_product_asset_edit:
     path: /{id}/edit

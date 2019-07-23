@@ -20,6 +20,7 @@ config:
         pimee/productasset/variations:  akeneoasset/js/form/variations
         pimee/productasset/uploader:    akeneoasset/js/form/uploader
         pimee/productasset/mass-upload: akeneoasset/js/mass-upload
+        pimee/asset-fetcher:            akeneoasset/js/asset-fetcher
 
     config:
         pim/fetcher-registry:
