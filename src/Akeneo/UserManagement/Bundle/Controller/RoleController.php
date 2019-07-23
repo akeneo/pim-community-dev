@@ -24,7 +24,7 @@ class RoleController extends Controller
 
     /**
      * @AclAncestor("pim_user_role_edit")
-     * @Template
+     * @Template("PimUserBundle:Role:update.html.twig")
      */
     public function updateAction(Role $entity)
     {
