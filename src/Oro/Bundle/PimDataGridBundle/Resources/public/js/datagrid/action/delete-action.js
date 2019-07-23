@@ -65,7 +65,7 @@ define([
                             }
                         }
 
-                        this.getErrorDialog(message).open();
+                        this.showErrorFlashMessage(message)
                     }.bind(this),
                     success: function() {
                         var messageText = __('pim_enrich.entity.' + this.getEntityCode() + '.flash.delete.success');
@@ -95,7 +95,7 @@ define([
              *
              * @return {oro.Modal}
              */
-            getErrorDialog: function(response) {
+            showErrorFlashMessage: function(response) {
                 let message = '';
 
                 if (typeof response === 'string') {
@@ -108,16 +108,7 @@ define([
                     }
                 }
 
-                this.errorModal = new Backbone.BootstrapModal({
-                    title: __('pim_datagrid.delete_error.title'),
-                    content: '' === message ?
-                        __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail') :
-                        message,
-                    buttonClass: 'AknButton--important',
-                    illustrationClass: 'delete',
-                    cancelText: '',
-                });
-                return this.errorModal;
+                messenger.notify('error', '' === message ? __('error.removing.' + this.getEntityHint()) : message);
             }
         });
     }
