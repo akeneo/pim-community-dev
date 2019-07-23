@@ -176,6 +176,8 @@ Please, make sure the folder `upgrades/schema/` does not contain former migratio
     As of PIM v3.2, we now take advantage of [Elasticsearch's aliases](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/indices-aliases.html). Thus, all indices have to be reindexed.
 
     Also, as Elasticsearch does not take into account case insensitivity of option codes when searching and as we modified the way products values are loaded from MySQL, Elasticsearch search has to be case insensitive when searching on option codes. Thus, all mappings have to updated.
+    
+    For your information, this migration took ~10 minutes for a catalog containing 500 000 products.
 
     To take into account those two changes:
 
