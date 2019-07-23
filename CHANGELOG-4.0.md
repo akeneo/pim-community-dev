@@ -1,0 +1,40 @@
+# 4.0.x
+
+# Technical Improvements
+
+## Classes
+
+- Add `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer`. This should be used instead of `ProductIndexer`.
+- Add `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\ProductProposalAndProductModelProposalQueryBuilder`
+- Add `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublishedProductQueryBuilder`
+
+## BC breaks
+
+- Remove `published_product_and_published_product_model` ES index. To search on published products, use `PublishedProductQueryBuilder`
+- Remove `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\QueryProductProposalCommand`
+- Update `Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RefreshIndexesBeforeRuleSelectionSubscriber` to remove `$productClient` and `$productModelClient`.
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\MediaFilter` to add `Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper` as the second argument.
+- Update `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber` to use `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer`.
+
+### Services
+
+- Update `akeneo.pim.enrichment.category.category_tree.query.list_root_categories_with_count_including_sub_categories` to use `akeneo_elasticsearch.client.product_and_product_model`.
+- Update `akeneo.pim.enrichment.category.category_tree.query.list_root_categories_with_count_not_including_sub_categorie` to use `akeneo_elasticsearch.client.product_and_product_model`.
+- Update `akeneo.pim.enrichment.category.category_tree.query.list_children_categories_with_count_including_sub_categories` to use `akeneo_elasticsearch.client.product_and_product_model`.
+- Update `akeneo.pim.enrichment.category.category_tree.query.list_children_categories_with_count_not_including_sub_categories` to use `akeneo_elasticsearch.client.product_and_product_model`.
+- Update `pim_catalog.factory.product_cursor_without_permission` to use `akeneo_elasticsearch.client.product_and_product_model`.
+- Remove decoration from `pimee_catalog.query.product_and_product_model_query_builder_factory_with_permissions` and add parameters:
+    - `pim_catalog.repository.attribute`
+    - `pim_catalog.query.filter.product_and_product_model_registry`
+    - `pim_catalog.query.sorter.registry`
+    - `pim_catalog.query.product_query_builder_resolver`
+- Remove `pimee_workflow.factory.product_proposal_cursor`
+- Remove `pimee_workflow.factory.product_proposal_from_size_cursor`
+- Update `pim_datagrid.extension.mass_action.handler.mass_refuse` to use `pimee_workflow.factory.product_and_product_model_proposal_cursor` as the second argument
+- Update `pim_catalog.elasticsearch.published_product_indexer` to replace `pim_catalog.elasticsearch.indexer.product.class` with `pimee_workflow.elasticsearch.indexer.published_product.class`
+- Update `pimee_workflow.event_subscriber.published_product.check_removal` to replace `pimee_workflow.doctrine.query.published_product_query_builder_factory` with `pimee_workflow.doctrine.query.published_product_query_builder_factory.without_permission`
+- Update `pimee_workflow.doctrine.query.published_product_query_builder_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublishedProductQueryBuilder` and `pimee_workflow.query.filter.published_product_registry`
+- Update `pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublishedProductQueryBuilder` and `pimee_workflow.query.filter.published_product_registry`
+- Update `pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublishedProductQueryBuilder` and `pimee_workflow.query.filter.published_product_registry`
+- Remove `pimee_workflow.query.product_proposal_query_builder_factory`
+- Update `pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\ProductProposalAndProductModelProposalQueryBuilder`

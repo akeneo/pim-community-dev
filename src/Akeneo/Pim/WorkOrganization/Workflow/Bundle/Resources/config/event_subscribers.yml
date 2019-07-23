@@ -21,7 +21,7 @@ services:
         class: '%pimee_workflow.event_subscriber.published_product.check_removal.class%'
         arguments:
             - '@pimee_workflow.repository.published_product'
-            - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_factory.without_permission'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
         tags:

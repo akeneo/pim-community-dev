@@ -81,6 +81,7 @@ $rules = [
         // TIP-987: Published should be less coupled to Product
         // TIP-988: Split Published vs Draft/Proposal
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -101,6 +102,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductIdsQueryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper',
 
         // TIP-949: Assets should not be Reference Data
         // TIP-963: Define the Products public API
@@ -206,6 +208,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder',
 
         // TIP-980: Workflow should not be linked to User
         // TIP-982: Rework User/Draft link

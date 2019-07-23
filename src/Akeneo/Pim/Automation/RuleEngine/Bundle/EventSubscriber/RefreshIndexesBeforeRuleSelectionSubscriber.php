@@ -32,19 +32,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class RefreshIndexesBeforeRuleSelectionSubscriber implements EventSubscriberInterface
 {
     /** @var Client */
-    private $productClient;
-
-    /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var Client */
-    private $productModelClient;
-
-    public function __construct(Client $productClient, Client $productAndProductModelClient, Client $productModelClient)
+    public function __construct(Client $productAndProductModelClient)
     {
-        $this->productClient = $productClient;
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productModelClient = $productModelClient;
     }
 
     public static function getSubscribedEvents(): array
@@ -56,8 +48,6 @@ final class RefreshIndexesBeforeRuleSelectionSubscriber implements EventSubscrib
 
     public function refreshIndexes(RuleEvent $event): void
     {
-        $this->productClient->refreshIndex();
         $this->productAndProductModelClient->refreshIndex();
-        $this->productModelClient->refreshIndex();
     }
 }

@@ -12,16 +12,29 @@ services:
     pim_catalog.factory.product_cursor_without_permission:
         class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
         arguments:
-            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.repository.product_without_permission'
             - '%akeneo_elasticsearch.cursor.cursor.class%'
             - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
 
-    pimee_catalog.query.product_and_product_model_query_builder_factory_with_permissions:
-        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
-        decorates: pim_catalog.query.product_and_product_model_query_builder_factory
-        decoration_inner_name: pim_catalog.query.product_and_product_model_query_builder_factory.without_permission
+    pim_catalog.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor:
+        public: false
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_and_product_model_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pimee_catalog.query.product_and_product_model_query_builder_factory_with_permissions:
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
             - '@pimee_catalog.query.product_and_product_model_query_builder_factory.product_and_product_model_cursor_with_permissions'
+            - '@pim_catalog.query.product_query_builder_resolver'

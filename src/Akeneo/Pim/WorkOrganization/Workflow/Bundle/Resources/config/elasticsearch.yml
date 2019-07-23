@@ -1,14 +1,14 @@
 parameters:
+    pimee_workflow.elasticsearch.indexer.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer
     pimee_workflow.elasticsearch.indexer.product_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductProposalIndexer
     pimee_workflow.elasticsearch.indexer.product_model_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductModelProposalIndexer
 
 services:
     pim_catalog.elasticsearch.published_product_indexer:
-        class: '%pim_catalog.elasticsearch.indexer.product.class%'
+        class: '%pimee_workflow.elasticsearch.indexer.published_product.class%'
         arguments:
             - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.published_product'
-            - '@akeneo_elasticsearch.client.published_product_and_product_model'
             - 'pimee_workflow_published_product'
 
     pim_catalog.elasticsearch.product_proposal_indexer:

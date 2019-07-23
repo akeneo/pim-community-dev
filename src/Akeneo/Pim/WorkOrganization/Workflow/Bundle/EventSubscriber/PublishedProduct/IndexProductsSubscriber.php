@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedP
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -40,14 +41,14 @@ class IndexProductsSubscriber implements EventSubscriberInterface
     /** @var ProductIndexer */
     protected $productIndexer;
 
-    /** @var ProductIndexer */
+    /** @var PublishedProductIndexer */
     protected $publishedProductIndexer;
 
     /**
      * @param ProductIndexer $productIndexer
-     * @param ProductIndexer $publishedProductIndexer
+     * @param PublishedProductIndexer $publishedProductIndexer
      */
-    public function __construct(ProductIndexer $productIndexer, ProductIndexer $publishedProductIndexer)
+    public function __construct(ProductIndexer $productIndexer, PublishedProductIndexer $publishedProductIndexer)
     {
         $this->productIndexer = $productIndexer;
         $this->publishedProductIndexer = $publishedProductIndexer;

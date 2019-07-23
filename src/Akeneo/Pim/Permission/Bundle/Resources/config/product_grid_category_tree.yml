@@ -3,26 +3,26 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\CategoryTree\ListGrantedRootCategoriesWithCountIncludingSubCategories'
         arguments:
             - '@database_connection'
-            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'pim_catalog_product'
 
     akeneo.pim.enrichment.category.category_tree.query.list_root_categories_with_count_not_including_sub_categories:
         class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\CategoryTree\ListGrantedRootCategoriesWithCountNotIncludingSubCategories'
         arguments:
             - '@database_connection'
-            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'pim_catalog_product'
 
     akeneo.pim.enrichment.category.category_tree.query.list_children_categories_with_count_including_sub_categories:
         class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\CategoryTree\ListGrantedChildrenCategoriesWithCountIncludingSubCategories'
         arguments:
             - '@database_connection'
-            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'pim_catalog_product'
 
     akeneo.pim.enrichment.category.category_tree.query.list_children_categories_with_count_not_including_sub_categories:
         class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\CategoryTree\ListGrantedChildrenCategoriesWithCountNotIncludingSubCategories'
         arguments:
             - '@database_connection'
-            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'pim_catalog_product'

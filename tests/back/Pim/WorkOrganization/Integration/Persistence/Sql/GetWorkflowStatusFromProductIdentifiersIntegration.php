@@ -254,7 +254,7 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
         array $changes,
         bool $ready = false
     ) : EntityWithValuesDraftInterface {
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 

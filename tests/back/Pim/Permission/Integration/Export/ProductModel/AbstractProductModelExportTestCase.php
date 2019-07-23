@@ -59,7 +59,7 @@ abstract class AbstractProductModelExportTestCase extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $productModel;
     }

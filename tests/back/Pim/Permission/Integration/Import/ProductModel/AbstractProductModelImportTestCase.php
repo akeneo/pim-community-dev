@@ -50,7 +50,7 @@ abstract class AbstractProductModelImportTestCase extends TestCase
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-        $this->get('akeneo_elasticsearch.client.product_model')->resetIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
     }
 
     /**
@@ -63,6 +63,6 @@ abstract class AbstractProductModelImportTestCase extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct($sku, $familyCode);
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product')->resetIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
     }
 }
