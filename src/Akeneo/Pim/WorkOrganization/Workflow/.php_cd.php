@@ -124,6 +124,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
@@ -147,7 +149,6 @@ $rules = [
         'Oro\Bundle\FilterBundle',
         'Oro\Bundle\PimDataGridBundle',
         'Oro\Bundle\PimFilterBundle',
-
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
         'Doctrine\Common',
