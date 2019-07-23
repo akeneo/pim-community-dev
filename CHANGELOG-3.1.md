@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8535: Prevent attribute filter popup from being hidden behind the left menu
+
 # 3.1.16 (2019-07-22)
 
 # 3.1.15 (2019-07-19)
