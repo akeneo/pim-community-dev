@@ -68,7 +68,7 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter',
 
         // TIP-977: Move CommandExecutor to Tool
-        'Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor'
+        'Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor',
     ])->in('Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle'),
     $builder->only([
         'Symfony\Component',

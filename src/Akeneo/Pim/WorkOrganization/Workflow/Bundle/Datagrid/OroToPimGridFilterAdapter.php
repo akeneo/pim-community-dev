@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter;
 use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter as BaseAdapter;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 
@@ -39,12 +40,55 @@ class OroToPimGridFilterAdapter extends BaseAdapter
      */
     public function adapt(array $parameters)
     {
-        if ($parameters['gridName'] === self::PUBLISHED_PRODUCT_GRID_NAME) {
-            return $this->massActionDispatcher->getRawFilters($parameters);
+        if (in_array($parameters['gridName'], [self::PRODUCT_GRID_NAME, self::PUBLISHED_PRODUCT_GRID_NAME])) {
+            $filters = $this->massActionDispatcher->getRawFilters($parameters);
+
+            //It is project view from grid
+            if (isset($parameters['filters']['project_completeness'])) {
+                $filters = array_merge(
+                    $filters,
+                    $this->getCompletenessForProjectFilter(
+                        $parameters['filters']['project_completeness']['value'],
+                        $parameters['dataLocale'],
+                        $parameters['dataScope']['value']
+                    )
+                );
+            }
+
+            return $filters;
         }
 
         if ($parameters['gridName'] === self::APPROVE_GRID_NAME) {
             return ['values' => $this->massActionDispatcher->dispatch($parameters)];
+        }
+    }
+
+    private function getCompletenessForProjectFilter(int $projectCompleteness, string $locale, string $channel): array
+    {
+        $completenessFilter = function (string $operator, int $value) use ($locale, $channel): array {
+            return [
+                'field' => 'completeness',
+                'operator' => $operator,
+                'value' => $value,
+                'context' => [
+                    'locale' => $locale,
+                    'scope' => $channel
+                ]
+            ];
+        };
+
+        switch ($projectCompleteness) {
+            case ProjectCompletenessFilter::CONTRIBUTOR_TODO:
+            case ProjectCompletenessFilter::OWNER_TODO:
+                return [$completenessFilter('=', 0)];
+            case ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS:
+            case ProjectCompletenessFilter::OWNER_IN_PROGRESS:
+                return [$completenessFilter('>', 0), $completenessFilter('<', 100)];
+            case ProjectCompletenessFilter::CONTRIBUTOR_DONE:
+            case ProjectCompletenessFilter::OWNER_DONE:
+                return [$completenessFilter('=', 100)];
+            default:
+                return [];
         }
     }
 }
