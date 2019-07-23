@@ -65,7 +65,7 @@ class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends Object
         $this->computePublishedProductCompleteness(new GenericEvent($publishedProduct));
     }
 
-    function it_does_nothing_for_anything_but_a_product(
+    function it_does_nothing_for_anything_but_a_published_product(
         CompletenessCalculatorInterface $completenessCalculator,
         SavePublishedProductCompletenesses $savePublishedProductCompletenesses
     ) {
