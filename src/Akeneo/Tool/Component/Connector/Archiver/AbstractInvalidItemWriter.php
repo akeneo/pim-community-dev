@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 
 /**
  * Mutualizes code for writers
@@ -47,7 +47,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      * @param InvalidItemsCollector          $collector
      * @param ItemWriterInterface            $writer
      * @param FileIteratorFactory            $fileIteratorFactory
-     * @param Filesystem                     $filesystem
+     * @param FilesystemInterface            $filesystem
      * @param DefaultValuesProviderInterface $defaultValuesProvider
      * @param string                         $invalidItemFileFormat
      */
@@ -55,7 +55,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
         InvalidItemsCollector $collector,
         ItemWriterInterface $writer,
         FileIteratorFactory $fileIteratorFactory,
-        Filesystem $filesystem,
+        FilesystemInterface $filesystem,
         DefaultValuesProviderInterface $defaultValuesProvider,
         $invalidItemFileFormat
     ) {
@@ -100,6 +100,13 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
 
             if ($invalidItemPositions->contains($currentItemPosition)) {
                 $headers = $fileIterator->getHeaders();
+
+                $readItem = $this->removeDataWithEmptyHeaders($headers, $readItem);
+
+                $headers = array_filter($headers, function (string $columnName) {
+                    return '' !== trim($columnName);
+                });
+
                 $invalidItem = array_combine($headers, array_slice($readItem, 0, count($headers)));
                 if (false !== $invalidItem) {
                     $itemsToWrite[] = $invalidItem;
@@ -156,4 +163,17 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      * @return FileIteratorInterface
      */
     abstract protected function getInputFileIterator(JobParameters $jobParameters);
+
+    private function removeDataWithEmptyHeaders(array $headers, array $readItem): array
+    {
+        $emptyHeaderKeys = array_keys(array_filter($headers, function (string $columnName) {
+            return '' === trim($columnName);
+        }));
+
+        foreach ($emptyHeaderKeys as $key) {
+            unset($readItem[$key]);
+        }
+
+        return $readItem;
+    }
 }
