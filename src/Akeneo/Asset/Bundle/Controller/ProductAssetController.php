@@ -211,7 +211,7 @@ class ProductAssetController extends Controller
     /**
      * Create an asset
      *
-     * @Template
+     * @Template("@AkeneoAsset/ProductAsset/create.html.twig")
      * @AclAncestor("pimee_product_asset_create")
      *
      * @param Request $request
