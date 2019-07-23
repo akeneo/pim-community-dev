@@ -244,28 +244,28 @@ measures_config:
         units:
             METER_PER_SECOND:
                 convert: [{'mul': '1'}]
-                symbol: mdivs
+                symbol: 'm/s'
             METER_PER_MINUTE:
                 convert: [{'div': '60'}]
-                symbol: mdivm
+                symbol: 'm/mn'
             METER_PER_HOUR:
                 convert: [{'mul': '1'}, {'div': '3600'}]
-                symbol: mdivh
+                symbol: 'm/h'
             KILOMETER_PER_HOUR:
                 convert: [{'mul': '1000'}, {'div': '3600'}]
-                symbol: kmdivh
+                symbol: 'km/h'
             FOOT_PER_SECOND:
                 convert: [{'mul': '0.3048'}]
-                symbol: ftdivs
+                symbol: 'ft/s'
             FOOT_PER_HOUR:
                 convert: [{'mul': '0.3048'}, {'div': '3600'}]
-                symbol: ftdivh
+                symbol: 'ft/h'
             YARD_PER_HOUR:
                 convert: [{'mul': '0.9144'}, {'div': '3600'}]
-                symbol: yddivh
+                symbol: 'yd/h'
             MILE_PER_HOUR:
                 convert: [{'mul': '1609.344'}, {'div': '3600'}]
-                symbol: midivh
+                symbol: 'mi/h'
     ElectricCharge:
         standard: AMPEREHOUR
         units:
