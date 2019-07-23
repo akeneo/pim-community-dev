@@ -6,6 +6,12 @@
 
 # 3.2.0-BETA1 (2019-07-19)
 
+## Features
+
+Performance enhancements - Export products with the API way faster than before
+API - Add the family code in the product model format
+API - New filter to retrieve the variant products of a given product model
+
 ## Bug fixes
 
 - PIM-8270: Update export jobs after a change on a channel category
