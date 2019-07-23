@@ -29,9 +29,6 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     private $getChannelLabels;
 
     /** @var IdentifiableObjectRepositoryInterface */
-    private $localeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
     /** @var NormalizerInterface */
@@ -39,12 +36,10 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
 
     public function __construct(
         GetChannelLabelsInterface $getChannelLabels,
-        IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         NormalizerInterface $standardNormalizer
     ) {
         $this->getChannelLabels = $getChannelLabels;
-        $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
         $this->standardNormalizer = $standardNormalizer;
     }
@@ -165,7 +160,7 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
             $normalizedCompleteness = [];
             $normalizedCompleteness['completeness'] = $this->standardNormalizer->normalize($completeness, $format, $context);
             $normalizedCompleteness['missing'] = [];
-            $normalizedCompleteness['label'] = $this->localeRepository->findOneByIdentifier($completeness->localeCode())->getName();
+            $normalizedCompleteness['label'] = $this->getLocaleName($completeness->localeCode());
 
             foreach ($completeness->missingAttributeCodes() as $attributeCode) {
                 $normalizedCompleteness['missing'][] = [
@@ -218,5 +213,15 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    private function getLocaleName(string $localeCode): string
+    {
+        return \Locale::getDisplayName($localeCode);
     }
 }
