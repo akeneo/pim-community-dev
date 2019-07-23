@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.55 (2019-07-23)
+
 ## Bug fixes
 
 - PIM-8570: Fix category tree display
