@@ -6,6 +6,21 @@
 
 # 3.2.0-BETA1 (2019-07-19)
 
+## Features
+
+- Reference entities: Addition of the number attribute type
+- Reference entities: Display the products linked to a record
+- Franklin insights: Perfect match to ease the mapping of the attributes
+- Franklin insights: Suggestion of attribute creation to ease the mapping of the attributes
+- Franklin insights: Suggestion of attribute attachment to a family to ease the mapping of the attributes
+- Franklin insights: Progress bar to follow the attributes mapping process
+- Workflow: New filter on draft status in the product grid
+- Workflow: Send for approval drafts directly in the product sequential edition
+- Workflow: Send for approval drafts directly in the bulk action
+- Performance enhancements: Export products with the API way faster than before
+- API: Add the family code in the product model format
+- API: New filter to retrieve the variant products of a given product model
+
 ## Improvements
 
 - DAPI-138: Always display the button _Send for approval_ on the PEF as a shortcut to save and send a draft for approval
