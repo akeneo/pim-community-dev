@@ -79,7 +79,7 @@ services:
     pimee_workflow.normalizer.internal_api.published_product_completeness_collection:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductCompletenessCollectionNormalizer'
         arguments:
-            - '@pim_catalog.repository.channel'
+            - '@akeneo.pim.enrichment.channel.query.get_labels'
             - '@pim_catalog.repository.cached_locale'
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_workflow.normalizer.internal_api.published_product_completeness'

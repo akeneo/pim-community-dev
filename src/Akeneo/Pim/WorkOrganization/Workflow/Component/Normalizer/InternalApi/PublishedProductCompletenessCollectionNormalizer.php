@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -26,8 +25,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class PublishedProductCompletenessCollectionNormalizer implements NormalizerInterface
 {
-    /** @var ObjectRepository */
-    private $channelRepository;
+    /** @var GetChannelLabelsInterface */
+    private $getChannelLabels;
 
     /** @var IdentifiableObjectRepositoryInterface */
     private $localeRepository;
@@ -39,12 +38,12 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     private $standardNormalizer;
 
     public function __construct(
-        ObjectRepository $channelRepository,
+        GetChannelLabelsInterface $getChannelLabels,
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         NormalizerInterface $standardNormalizer
     ) {
-        $this->channelRepository = $channelRepository;
+        $this->getChannelLabels = $getChannelLabels;
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
         $this->standardNormalizer = $standardNormalizer;
@@ -74,13 +73,13 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
             $sortedCompletenesses[$channelCode][$localeCode] = $completeness;
         }
 
-        $channels = $this->channelRepository->findBy(['code' => $channelCodes]);
+        $channelLabels = $this->getChannelLabels->forChannelCodes($channelCodes);
 
         foreach ($sortedCompletenesses as $channelCode => $channelCompletenesses) {
             $channelCode = (string)$channelCode;
             $normalizedCompletenesses[] = [
                 'channel' => $channelCode,
-                'labels' => $this->getChannelLabels($channels, $localeCodes, $channelCode),
+                'labels' => $this->getChannelLabels($channelLabels, $localeCodes, $channelCode),
                 'locales' => $this->normalizeChannelCompletenesses(
                     $channelCompletenesses,
                     $format,
@@ -200,30 +199,24 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     }
 
     /**
-     * @param ChannelInterface[] $channels
+     * @param array    $channelLabels
      * @param string[] $localeCodes
-     * @param string $channelCode
+     * @param string   $channelCode
      *
      * @return string[]
      */
-    private function getChannelLabels(array $channels, array $localeCodes, string $channelCode): array
+    private function getChannelLabels(array $channelLabels, array $localeCodes, string $channelCode): array
     {
-        $matchingChannels = array_filter(
-            $channels,
-            function (ChannelInterface $channel) use ($channelCode) {
-                return $channel->getCode() === $channelCode;
+        $result = [];
+        foreach ($localeCodes as $localeCode) {
+            $label = '[' . $channelCode . ']';
+            if (isset($channelLabels[$channelCode][$localeCode])) {
+                $label = $channelLabels[$channelCode][$localeCode];
             }
-        );
-        $channel = array_shift($matchingChannels);
 
-        return array_reduce(
-            $localeCodes,
-            function ($result, $localeCode) use ($channel) {
-                $result[$localeCode] = $channel->getTranslation($localeCode)->getLabel();
+            $result[$localeCode] = $label;
+        }
 
-                return $result;
-            },
-            []
-        );
+        return $result;
     }
 }
