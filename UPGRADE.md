@@ -138,24 +138,24 @@ Before updating the dependencies and migrating your data, please deactivate all 
 
    From the downloaded archive:
 
-    ```bash
-    cp package.json $PIM_DIR/
-    # then add your own dependencies
-    ```
+   ```bash
+   cp package.json $PIM_DIR/
+   # then add your own dependencies
+   ```
+   
+   Now we are ready to update the frontend dependencies:
 
-    Now we are ready to update the frontend dependencies:
-
-    ```bash
-    cd $PIM_DIR
-    yarn install
-    cd -
-    ```
-    
-    The following JS dependencies have changed:
-      - `cucumber-html-reporter` upgraded to 5.0.0
-      - `eslint` upgraded to 6.0.1
-      - `jquery` upgraded to 3.4.0
-      - `lodash` upgraded to 4.17.14
+   ```bash
+   cd $PIM_DIR
+   yarn install
+   cd -
+   ```
+   
+   The following JS dependencies have changed:
+     - `cucumber-html-reporter` upgraded to 5.0.0
+     - `eslint` upgraded to 6.0.1
+     - `jquery` upgraded to 3.4.0
+     - `lodash` upgraded to 4.17.14
 
 11. Migrate your MySQL database
 
