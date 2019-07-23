@@ -54,7 +54,7 @@ services:
     oro_datagrid.datagrid.metadata_parser:
         class: '%oro_datagrid.datagrid.metadata_parser.class%'
         arguments:
-            - '@service_container'
+            - '@fragment.handler'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@router'
