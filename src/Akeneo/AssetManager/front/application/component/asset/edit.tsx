@@ -32,7 +32,7 @@ import {NormalizedCode as NormalizedAttributeCode} from 'akeneoassetmanager/doma
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
 
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 
 interface StateProps {
   sidebar: {
@@ -316,11 +316,11 @@ export default connect(
       rights: {
         asset: {
           edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
           delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
         },
       },

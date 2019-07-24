@@ -9,7 +9,7 @@ import {redirectToAssetFamily} from 'akeneoassetmanager/application/action/asset
 import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
 import {assetFamilyCreationStart} from 'akeneoassetmanager/domain/event/asset-family/create';
 import CreateAssetFamilyModal from 'akeneoassetmanager/application/component/asset-family/create';
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {
@@ -200,7 +200,8 @@ export default connect(
         active: state.create.active,
       },
       acls: {
-        create: securityContext.isGranted('akeneo_assetmanager_asset_family_create'),
+        // create: securityContext.isGranted('akeneo_assetmanager_asset_family_create'),
+        create: true,
       },
     };
   },
