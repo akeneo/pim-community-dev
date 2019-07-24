@@ -5,7 +5,7 @@ namespace spec\Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AddVersionSubscriberSpec extends ObjectBehavior
+class AddVersionListenerSpec extends ObjectBehavior
 {
     function let(ContainerInterface $container)
     {
