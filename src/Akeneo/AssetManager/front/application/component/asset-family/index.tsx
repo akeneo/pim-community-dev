@@ -55,6 +55,19 @@ class AssetFamilyListView extends React.Component<StateProps & DispatchProps> {
           <div className="AknDefault-thirdColumn" />
         </div>
         <div className="AknDefault-contentWithBottom">
+          {/* @todo to remove when the feature is available */}
+          <div style={{
+            display: 'flex',
+            fontSize: '15px',
+            color: 'rgb(255, 255, 255)',
+            minHeight: '50px',
+            alignItems: 'center',
+            lineHeight: '17px',
+            background: 'rgba(189, 10, 10, 0.62)',
+            justifyContent: 'center'
+          }}>
+            <p>The Asset Manager is still in progress. This page is under development. This is a temporary screen which is not supported.</p>
+          </div>
           <div className="AknDefault-mainContent">
             <header className="AknTitleContainer">
               <div className="AknTitleContainer-line">
@@ -95,29 +108,29 @@ class AssetFamilyListView extends React.Component<StateProps & DispatchProps> {
                     </div>
                   </div>
                   <div className="AknTitleContainer-line">
-                    {grid.isLoading === false && grid.assetFamilies.length === 0 ? (
-                      <div className="AknDescriptionHeader AknDescriptionHeader--sticky AknDescriptionHeader--push">
-                        <div
-                          className="AknDescriptionHeader-icon"
-                          style={{
-                            backgroundImage: 'mediaLink("/bundles/pimui/images/illustrations/Reference-entities.svg")',
-                          }}
-                        />
-                        <div className="AknDescriptionHeader-title">
-                          {__('pim_asset_manager.asset_family.index.grid.help.title')}
-                          <div className="AknDescriptionHeader-description">
-                            {__('pim_asset_manager.asset_family.index.grid.help.description_part_one')} <br />
-                            {__('pim_asset_manager.asset_family.index.grid.help.description_part_two')} <br />
-                            {__('pim_asset_manager.asset_family.index.grid.help.description_part_three')} <br />
-                            {__('pim_asset_manager.asset_family.index.grid.help.description_part_four')} <br />
-                            <a href="https://help.akeneo.com/pim/articles/what-about-asset-families.html?utm_source=akeneo-app&utm_medium=ref-entities-grid">
-                              {__('pim_asset_manager.asset_family.index.grid.help.description_part_five')}
-                            </a>
-                            <br />
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
+                    {/*{grid.isLoading === false && grid.assetFamilies.length === 0 ? (*/}
+                      {/*<div className="AknDescriptionHeader AknDescriptionHeader--sticky AknDescriptionHeader--push">*/}
+                        {/*<div*/}
+                          {/*className="AknDescriptionHeader-icon"*/}
+                          {/*style={{*/}
+                            {/*backgroundImage: 'mediaLink("/bundles/pimui/images/illustrations/Reference-entities.svg")',*/}
+                          {/*}}*/}
+                        {/*/>*/}
+                        {/*<div className="AknDescriptionHeader-title">*/}
+                          {/*{__('pim_asset_manager.asset_family.index.grid.help.title')}*/}
+                          {/*<div className="AknDescriptionHeader-description">*/}
+                            {/*{__('pim_asset_manager.asset_family.index.grid.help.description_part_one')} <br />*/}
+                            {/*{__('pim_asset_manager.asset_family.index.grid.help.description_part_two')} <br />*/}
+                            {/*{__('pim_asset_manager.asset_family.index.grid.help.description_part_three')} <br />*/}
+                            {/*{__('pim_asset_manager.asset_family.index.grid.help.description_part_four')} <br />*/}
+                            {/*<a href="https://help.akeneo.com/pim/articles/what-about-asset-families.html?utm_source=akeneo-app&utm_medium=ref-entities-grid">*/}
+                              {/*{__('pim_asset_manager.asset_family.index.grid.help.description_part_five')}*/}
+                            {/*</a>*/}
+                            {/*<br />*/}
+                          {/*</div>*/}
+                        {/*</div>*/}
+                      {/*</div>*/}
+                    {/* ) : ( */}
                       <div className="AknTitleContainer-title">
                         <span className={grid.isLoading ? 'AknLoadingPlaceHolder' : ''}>
                           {__(
@@ -129,7 +142,7 @@ class AssetFamilyListView extends React.Component<StateProps & DispatchProps> {
                           )}
                         </span>
                       </div>
-                    )}
+                    {/* )} */}
                     <div className="AknTitleContainer-state" />
                   </div>
                 </div>

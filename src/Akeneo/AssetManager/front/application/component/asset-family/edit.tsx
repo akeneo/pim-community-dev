@@ -62,6 +62,19 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           <div className="AknDefault-thirdColumn" />
         </div>
         <div className="AknDefault-contentWithBottom">
+          {/* @todo to remove when the feature is available */}
+          <div style={{
+            display: 'flex',
+            fontSize: '15px',
+            color: 'rgb(255, 255, 255)',
+            minHeight: '50px',
+            alignItems: 'center',
+            lineHeight: '17px',
+            background: 'rgba(189, 10, 10, 0.62)',
+            justifyContent: 'center'
+          }}>
+            <p>The Asset Manager is still in progress. This page is under development. This is a temporary screen which is not supported.</p>
+          </div>
           <div
             className="AknDefault-mainContent AknDefault-mainContent--withoutBottomPadding"
             data-tab={this.props.sidebar.currentTab}

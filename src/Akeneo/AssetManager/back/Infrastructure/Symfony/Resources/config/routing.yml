@@ -1,11 +1,11 @@
-akeneo_asset_manager_asset_family_index:
-    path: '/asset'
-
-akeneo_asset_manager_asset_family_edit:
-    path: '/asset/{identifier}/{tab}'
-
-akeneo_asset_manager_asset_edit:
-    path: '/asset/{assetFamilyIdentifier}/asset/{assetCode}/{tab}'
+#akeneo_asset_manager_asset_family_index:
+#    path: '/asset'
+#
+#akeneo_asset_manager_asset_family_edit:
+#    path: '/asset/{identifier}/{tab}'
+#
+#akeneo_asset_manager_asset_edit:
+#    path: '/asset/{assetFamilyIdentifier}/asset/{assetCode}/{tab}'
 
 akeneo_asset_manager_asset_family_index_rest:
     path: '/rest/asset_manager'
