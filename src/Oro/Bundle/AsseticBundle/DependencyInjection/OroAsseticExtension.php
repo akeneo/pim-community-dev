@@ -93,6 +93,14 @@ class OroAsseticExtension extends Extension
 
     protected function getAssetics(array $assets, array $debugGroups, bool $debugAll, array $stylesheets): array
     {
+        $allStylesheetGroups = array_reduce(
+            $stylesheets,
+            function ($previous, $stylesheetConf) {
+                return array_replace($previous, $stylesheetConf['groups']);
+            },
+            []
+        );
+
         $assetsGroupedByStylesheets = [];
 
         foreach ($stylesheets as $stylesheetName => $stylesheetConf) {
@@ -104,6 +112,15 @@ class OroAsseticExtension extends Extension
             }
 
             foreach ($assets as $groupName => $files) {
+                if (!in_array($groupName, $allStylesheetGroups)) {
+                    $assetsGroupedByStylesheets[self::DEFAULT_STYLESHEET_NAME]['compress'] = array_merge(
+                        $assetsGroupedByStylesheets[self::DEFAULT_STYLESHEET_NAME]['compress'],
+                        $files
+                    );
+
+                    continue;
+                }
+
                 if (!in_array($groupName, $stylesheetConf['groups'])) {
                     continue;
                 }
