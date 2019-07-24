@@ -7,11 +7,8 @@ parameters:
     database_password:                    akeneo_pim
     locale:                               en
     secret:                               ThisTokenIsNotSoSecretChangeIt
-    product_index_name:                   akeneo_pim_product
     product_proposal_index_name:          akeneo_pim_product_proposal
     published_product_index_name:         akeneo_pim_published_product
-    published_product_and_product_model_index_name: akeneo_pim_published_product_and_product_model
-    product_model_index_name:             akeneo_pim_product_model
     product_and_product_model_index_name: akeneo_pim_product_and_product_model
     record_index_name:                    akeneo_referenceentity_record
     asset_index_name:                     akeneo_assetmanager_asset
