@@ -16,13 +16,11 @@
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
-            "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
-            "Akeneo\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights"
+            "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back"
         },
         "classmap": [
             "app/AppKernel.php",
-            "app/AppCache.php",
-            "tests/back/Integration/AppKernelTest.php"
+            "app/AppCache.php"
         ],
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/app/AppKernel.php",
@@ -34,18 +32,19 @@
             "Context": "vendor/akeneo/pim-community-dev/tests/legacy/features/",
             "": "tests/legacy/features/"
         },
+        "classmap": [
+            "tests/back/Integration/AppKernelTest.php"
+        ],
         "psr-4": {
             "Pim\\Behat\\": "vendor/akeneo/pim-community-dev/tests/legacy/features/Behat",
+            "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",
             "AkeneoTest\\": "vendor/akeneo/pim-community-dev/tests/back",
             "AkeneoTestEnterprise\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/IntegrationTestsBundle/",
-            "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
-            "Akeneo\\Test\\Acceptance\\": "vendor/akeneo/pim-community-dev/tests/back/Acceptance/",
-            "Akeneo\\Test\\Common\\": "vendor/akeneo/pim-community-dev/tests/back/Common/",
-            "Akeneo\\Test\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights/tests/back",
-            "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
+            "Akeneo\\Test\\": "vendor/akeneo/pim-community-dev/tests/back/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
+            "Akeneo\\Test\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights/tests/back",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back"
         }
@@ -86,14 +85,7 @@
     },
     "scripts": {
         "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "php bin/console --ansi fos:js-routing:dump --target=web/js/routes.js",
-            "php bin/console --ansi pim:installer:assets"
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
         ],
         "post-install-cmd": [
             "@symfony-scripts"

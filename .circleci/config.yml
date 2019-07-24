@@ -85,6 +85,9 @@ jobs:
                 name: Start containers
                 command: docker-compose up -d fpm
           - run:
+                name: Generate production environment cache
+                command: docker-compose exec fpm bin/console cache:clear -e dev
+          - run:
                 name: PhpSpec
                 command: docker-compose exec fpm vendor/bin/phpspec run -vvv
           - run:
