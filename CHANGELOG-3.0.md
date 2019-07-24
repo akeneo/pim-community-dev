@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-8582: Fix wysiwyg edit link not visible
+- PIM-8582: Fix wysiwyg edit link modal not visible
 
 # 3.0.33 (2019-07-24)
 
