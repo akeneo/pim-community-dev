@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.56 (2019-07-24)
+
 ## Bug fixes
 
 - PIM-7667: Display draft icon for modified attributes in product model edit form
