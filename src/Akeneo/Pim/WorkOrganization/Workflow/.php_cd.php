@@ -147,6 +147,8 @@ $rules = [
         'Oro\Bundle\PimDataGridBundle',
         'Oro\Bundle\PimFilterBundle',
 
+        // TIP-1199: Workflow OroToPimGridFilterAdapter should not be linked to TeamworkAssistant ProjectCompletenessFilter
+        'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
         'Doctrine\Common',
