@@ -2,14 +2,13 @@
 
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
-use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\UserManagement\Component\Model\User;
-use Doctrine\Common\EventSubscriber;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
@@ -22,7 +21,7 @@ use Doctrine\ORM\UnitOfWork;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserPreferencesSubscriber implements EventSubscriber
+class UserPreferencesSubscriber
 {
     /** @var array */
     protected $metadata = [];
@@ -30,17 +29,28 @@ class UserPreferencesSubscriber implements EventSubscriber
     /** @var array */
     protected $deactivatedLocales = [];
 
-    /**
-     * Specifies the list of events to listen
-     *
-     * @return array
-     */
-    public function getSubscribedEvents()
-    {
-        return [
-            'onFlush',
-            'postFlush',
-        ];
+    /** @var CategoryRepositoryInterface */
+    private $categoryRepository;
+
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    /** @var UserRepositoryInterface */
+    private $userRepository;
+
+    public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        UserRepositoryInterface $userRepository
+    ) {
+        $this->categoryRepository = $categoryRepository;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -150,8 +160,8 @@ class UserPreferencesSubscriber implements EventSubscriber
         EntityManagerInterface $manager,
         ChannelInterface $removedChannel
     ) {
-        $users = $this->findUsersBy($manager, ['catalogScope' => $removedChannel]);
-        $channels = $manager->getRepository(Channel::class)->findAll();
+        $users = $this->userRepository->findBy(['catalogScope' => $removedChannel]);
+        $channels = $this->channelRepository->findAll();
 
         $defaultScope = current(
             array_filter(
@@ -175,8 +185,8 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onTreeRemoved(UnitOfWork $uow, EntityManagerInterface $manager, CategoryInterface $removedTree)
     {
-        $users = $this->findUsersBy($manager, ['defaultTree' => $removedTree]);
-        $trees = $manager->getRepository(Category::class)->getTrees();
+        $users = $this->userRepository->findBy(['defaultTree' => $removedTree]);
+        $trees = $this->categoryRepository->getTrees();
 
         $defaultTree = current(
             array_filter(
@@ -198,13 +208,12 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onLocalesDeactivated(EntityManagerInterface $manager)
     {
-        $localeRepository = $manager->getRepository(Locale::class);
-        $activeLocales = $localeRepository->getActivatedLocales();
+        $activeLocales = $this->localeRepository->getActivatedLocales();
         $defaultLocale = current($activeLocales);
 
         foreach ($this->deactivatedLocales as $localeCode) {
-            $deactivatedLocale = $localeRepository->findOneByIdentifier($localeCode);
-            $users = $this->findUsersBy($manager, ['catalogLocale' => $deactivatedLocale]);
+            $deactivatedLocale = $this->localeRepository->findOneByIdentifier($localeCode);
+            $users = $this->userRepository->findBy(['catalogLocale' => $deactivatedLocale]);
 
             foreach ($users as $user) {
                 $user->setCatalogLocale($defaultLocale);
@@ -214,18 +223,5 @@ class UserPreferencesSubscriber implements EventSubscriber
         $this->deactivatedLocales = [];
 
         $manager->flush();
-    }
-
-    /**
-     * Return users matching the specified criteria
-     *
-     * @param EntityManagerInterface $manager
-     * @param array                  $criteria
-     *
-     * @return User[]
-     */
-    protected function findUsersBy(EntityManagerInterface $manager, array $criteria)
-    {
-        return $manager->getRepository(User::class)->findBy($criteria);
     }
 }
