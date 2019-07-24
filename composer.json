@@ -15,7 +15,10 @@
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
     },
     "autoload-dev": {
         "psr-0": {
@@ -25,9 +28,7 @@
             "Pim\\Behat\\": "tests/legacy/features/Behat",
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
-            "Akeneo\\Test\\Integration\\": "tests/back/Integration/",
-            "Akeneo\\Test\\Acceptance\\": "tests/back/Acceptance/",
-            "Akeneo\\Test\\Common\\": "tests/back/Common/"
+            "Akeneo\\Test\\": "tests/back/"
         },
         "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
     },
@@ -131,14 +132,7 @@
     },
     "scripts": {
         "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "php bin/console --ansi fos:js-routing:dump --target=web/js/routes.js",
-            "php bin/console --ansi pim:installer:assets"
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
         ],
         "post-install-cmd": [
             "@symfony-scripts"
