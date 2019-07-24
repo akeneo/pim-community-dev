@@ -55,10 +55,6 @@ datagrid:
                     type:      string
                     label:     Code
                     data_name: g.code
-                label:
-                    type:      string
-                    label:     Label
-                    data_name: translation.label
                 type:
                     type:      choice
                     label:     Type
