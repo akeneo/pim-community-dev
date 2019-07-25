@@ -15,6 +15,6 @@ services:
     akeneo_assetmanager.application.asset.subscriber.link_asset:
         class: Akeneo\AssetManager\Application\Asset\Subscribers\LinkAssetSubscriber
         arguments:
-            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
+            - '@akeneo_assetmanager.job.asynchronous_product_link_rule_launcher'
         tags:
             - { name: kernel.event_subscriber }

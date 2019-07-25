@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleTemplateExecutor;
+use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\AsynchronousProductLinkRuleLauncherInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,12 +14,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LinkAssetSubscriber implements EventSubscriberInterface
 {
-    /** @var RuleTemplateExecutor */
-    private $ruleExecutor;
+    /** @var AsynchronousProductLinkRuleLauncherInterface */
+    private $asynchronousProductLinkRuleLauncher;
 
-    public function __construct(RuleTemplateExecutor $ruleExecutor)
+    public function __construct(AsynchronousProductLinkRuleLauncherInterface $asynchronousProductLinkRuleLauncher)
     {
-        $this->ruleExecutor = $ruleExecutor;
+        $this->asynchronousProductLinkRuleLauncher = $asynchronousProductLinkRuleLauncher;
     }
 
     /**
@@ -34,6 +34,9 @@ class LinkAssetSubscriber implements EventSubscriberInterface
 
     public function whenAssetCreated(AssetCreatedEvent $assetCreatedEvent): void
     {
-        $this->ruleExecutor->execute($assetCreatedEvent->getAssetFamilyIdentifier(), $assetCreatedEvent->getAssetCode());
+        $this->asynchronousProductLinkRuleLauncher->launch(
+            $assetCreatedEvent->getAssetFamilyIdentifier(),
+            $assetCreatedEvent->getAssetCode()
+        );
     }
 }

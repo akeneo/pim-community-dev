@@ -1,0 +1,34 @@
+services:
+    akeneo_assetmanager.job.asynchronous_product_link_rule_launcher:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\AsynchronousProductLinkRuleLauncher'
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'
+
+    # JOB
+    akeneo_assetmanager.job.link_assets_to_products:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'asset_manager_link_assets_to_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo_assetmanager.step.link_assets_to_products'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Akeneo Asset Manager Connector', type: 'akeneo_assetmanager.link_assets_to_products' }
+
+    # STEP
+    akeneo_assetmanager.step.link_assets_to_products:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'link_assets_to_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_assetmanager.tasklet.link_assets_to_products'
+        public: false
+
+    # TASKLET
+    akeneo_assetmanager.tasklet.link_assets_to_products:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\LinkAssetsToProductsTasklet'
+        arguments:
+            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
+        public: false
