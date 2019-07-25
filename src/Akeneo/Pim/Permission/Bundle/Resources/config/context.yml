@@ -12,5 +12,5 @@ services:
             - '@request_stack'
             - '@security.authorization_checker'
             - '@pimee_security.repository.category_access'
-            - '%locale%'
+            - '%env(APP_DEFAULT_LOCALE)%'
             - 'defaultTree'

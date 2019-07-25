@@ -19,7 +19,7 @@ framework:
         enabled: true
     templating:
         engines: 'twig'
-    default_locale:  '%locale%'
+    default_locale:  '%env(APP_DEFAULT_LOCALE)%'
     session:
         name:           BAPID
         handler_id:     session.handler.pdo
