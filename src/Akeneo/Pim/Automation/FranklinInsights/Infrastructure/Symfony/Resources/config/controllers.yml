@@ -1,5 +1,6 @@
 services:
     akeneo.pim.automation.franklin_insights.controller.product_subscription:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\ProductSubscriptionController'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.handler.subscribe_product'
@@ -9,6 +10,7 @@ services:
             - '@oro_security.security_facade'
 
     akeneo.pim.automation.franklin_insights.controller.franklin:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\FranklinConnectionController'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.configuration.command.activate_connection_handler'
@@ -18,6 +20,7 @@ services:
             - '@oro_security.security_facade'
 
     akeneo.pim.automation.franklin_insights.controller.identifiers_mapping:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\IdentifiersMappingController'
         arguments:
            - '@akeneo.pim.automation.franklin_insights.handler.get_identifiers_mapping'
@@ -25,6 +28,7 @@ services:
            - '@oro_security.security_facade'
 
     akeneo.pim.automation.franklin_insights.controller.attributes_mapping:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\AttributesMappingController'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
@@ -35,6 +39,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.handler.get_attribute_mapping_with_suggestions'
 
     akeneo.pim.automation.franklin_insights.controller.attribute_options_mapping:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\AttributeOptionsMappingController'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.handler.get_attribute_options_mapping_by_family_and_attribute'
@@ -42,6 +47,7 @@ services:
             - '@oro_security.security_facade'
 
     akeneo.pim.automation.franklin_insights.controller.structure:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\StructureController'
         arguments:
             - '@oro_security.security_facade'
@@ -49,6 +55,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.handler.add_attribute_to_family'
 
     akeneo.pim.automation.franklin_insights.controller.key_figure:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\KeyFigureController'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.handler.get_key_measurements'

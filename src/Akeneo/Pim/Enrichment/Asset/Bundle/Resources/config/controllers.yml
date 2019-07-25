@@ -1,5 +1,6 @@
 services:
     pim_enrich.controller.file:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController'
         arguments:
             - '@liip_imagine.controller'

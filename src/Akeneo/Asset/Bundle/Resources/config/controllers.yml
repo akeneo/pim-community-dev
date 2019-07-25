@@ -13,6 +13,7 @@ parameters:
 
 services:
     pimee_product_asset.controller.product_asset:
+        public: true
         class: '%pimee_product_asset.controller.product_asset.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
@@ -41,12 +42,14 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pimee_product_asset.controller.rest.product_asset:
+        public: true
         class: '%pimee_product_asset.controller.rest.product_asset.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_internal_api_serializer'
 
     pimee_product_asset.controller.rest.mass_upload:
+        public: true
         class: '%pimee_product_asset.controller.rest.mass_upload.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
@@ -58,6 +61,7 @@ services:
             - '%tmp_storage_dir%'
 
     pimee_product_asset.controller.category_tree:
+        public: true
         class: 'Akeneo\Asset\Bundle\Controller\UI\AssetCategoryTreeController'
         arguments:
             - '@event_dispatcher'
@@ -75,6 +79,7 @@ services:
             - '@session'
 
     pimee_product_asset.controller.category_tree_asset_picker:
+        public: true
         class: 'Akeneo\Asset\Bundle\Controller\UI\AssetCategoryTreeController'
         arguments:
             - '@event_dispatcher'
@@ -92,12 +97,14 @@ services:
             - '@session'
 
     pimee_product_asset.controller.rest.asset_category:
+        public: true
         class: '%pimee_product_asset.controller.rest.asset_category.class%'
         arguments:
             - '@pimee_product_asset.repository.asset_category'
             - '@pim_internal_api_serializer'
 
     pimee_product_asset.controller.asset_transformation:
+        public: true
         class: '%pimee_product_asset.controller.asset_transformation.class%'
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
@@ -105,6 +112,7 @@ services:
 
     # External Api
     pimee_product_asset.controller.asset_category:
+        public: true
         class: '%pimee_product_asset.controller.asset_category.class%'
         arguments:
             - '@pimee_product_asset.repository.external_api.asset_category'
@@ -121,6 +129,7 @@ services:
 
 
     pimee_product_asset.controller.asset_reference:
+        public: true
         class: '%pimee_product_asset.controller.asset_reference.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
@@ -139,6 +148,7 @@ services:
             - '@pimee_product_asset.finder.asset'
 
     pimee_product_asset.controller.asset_variation:
+        public: true
         class: '%pimee_product_asset.controller.asset_variation.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
@@ -157,6 +167,7 @@ services:
             - '@event_dispatcher'
 
     pimee_product_asset.controller.asset:
+        public: true
         class : '%pimee_product_asset.controller.asset.class%'
         arguments:
             - '@pimee_product_asset.api.repository.asset'
@@ -175,6 +186,7 @@ services:
             - '%pim_api.configuration%'
 
     pimee_product_asset.controller.asset_tag:
+        public: true
         class : '%pimee_product_asset.controller.asset_tag.class%'
         arguments:
             - '@pimee_product_asset.repository.external_api.tag'
@@ -188,6 +200,7 @@ services:
             - '%pim_api.configuration%'
 
     pimee_product_asset.controller.ajax_option:
+        public: true
         class: '%pimee_product_asset.controller.ajax_option.class%'
         arguments:
             - '@doctrine'

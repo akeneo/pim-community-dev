@@ -10,6 +10,7 @@ parameters:
 
 services:
     pimee_workflow.controller.product_draft:
+        public: true
         class: '%pimee_workflow.controller.product_draft.class%'
         arguments:
             - '@request_stack'
@@ -28,6 +29,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_workflow.controller.published_product:
+        public: true
         class: '%pimee_workflow.controller.published_product.class%'
         arguments:
             - '@request_stack'
@@ -41,6 +43,7 @@ services:
             - '@security.authorization_checker'
 
     pimee_workflow.controller.published_product_rest:
+        public: true
         class: '%pimee_workflow.controller.published_product_rest.class%'
         arguments:
             - '@security.authorization_checker'
@@ -49,6 +52,7 @@ services:
             - '@pim_internal_api_serializer'
 
     pimee_workflow.controller.product_draft_rest:
+        public: true
         class: '%pimee_workflow.controller.product_draft_rest.class%'
         arguments:
             - '@security.authorization_checker'
@@ -68,6 +72,7 @@ services:
             - '@pim_datagrid.extension.filter'
 
     pimee_workflow.controller.rest.product:
+        public: true
         class: '%pimee_workflow.controller.rest.product.class%'
         arguments:
             - '@pimee_workflow.repository.product_draft'
@@ -76,6 +81,7 @@ services:
             - '@pim_catalog.filter.chained'
 
     pimee_workflow.controller.product_model_draft_rest:
+        public: true
         class: '%pimee_workflow.controller.product_model_draft_rest.class%'
         arguments:
             - '@pim_catalog.repository.product_model'
@@ -90,6 +96,7 @@ services:
             - '@pim_catalog.repository.locale'
 
     pimee_workflow.controller.product_model_draft:
+        public: true
         class: '%pimee_workflow.controller.product_model_draft.class%'
         arguments:
             - '@request_stack'
@@ -108,12 +115,14 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_workflow.controller.author_draft:
+        public: true
         class: '%pimee_workflow.controller.author_draft.class%'
         arguments:
             - '@pimee_workflow.query.draft_authors'
             - '@pim_user.context.user'
 
     pimee_workflow.controller.category_tree.published_product:
+        public: true
         class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
@@ -130,6 +139,7 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pimee_workflow.controller.rest.mass_edit:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MassEditController'
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
@@ -139,6 +149,7 @@ services:
             - '@pim_datagrid.adapter.items_counter'
 
     pim_enrich.controller.rest.product:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
         arguments:
             - '@pim_catalog.repository.product'
@@ -161,6 +172,7 @@ services:
             - '@pim_enrich.filter.product_attribute_filter'
 
     pim_enrich.controller.rest.product_model:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController'
         arguments:
             - '@pim_catalog.repository.product_model'
