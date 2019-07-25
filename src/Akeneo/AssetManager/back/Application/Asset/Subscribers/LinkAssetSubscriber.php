@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\AsynchronousProductLinkRuleLauncherInterface;
+use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\ProductLinkRuleLauncherInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,10 +14,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LinkAssetSubscriber implements EventSubscriberInterface
 {
-    /** @var AsynchronousProductLinkRuleLauncherInterface */
+    /** @var ProductLinkRuleLauncherInterface */
     private $asynchronousProductLinkRuleLauncher;
 
-    public function __construct(AsynchronousProductLinkRuleLauncherInterface $asynchronousProductLinkRuleLauncher)
+    public function __construct(ProductLinkRuleLauncherInterface $asynchronousProductLinkRuleLauncher)
     {
         $this->asynchronousProductLinkRuleLauncher = $asynchronousProductLinkRuleLauncher;
     }

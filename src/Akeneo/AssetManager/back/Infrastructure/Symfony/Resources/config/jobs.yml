@@ -1,6 +1,6 @@
 services:
-    akeneo_assetmanager.job.asynchronous_product_link_rule_launcher:
-        class: 'Akeneo\AssetManager\Infrastructure\Job\AsynchronousProductLinkRuleLauncher'
+    akeneo_assetmanager.job.product_link_rule_launcher:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\ProductLinkRuleLauncher'
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
 

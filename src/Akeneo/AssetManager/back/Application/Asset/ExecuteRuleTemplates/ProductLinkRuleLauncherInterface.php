@@ -17,12 +17,12 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Asynchronous launcher for a Product Link Rule for a given Asset Family Identifier and an Asset Code.
+ * Launcher of a Product Link Rule for a given Asset Family Identifier and an Asset Code.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-interface AsynchronousProductLinkRuleLauncherInterface
+interface ProductLinkRuleLauncherInterface
 {
     public function launch(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): void;
 }

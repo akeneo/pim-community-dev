@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Job;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\AsynchronousProductLinkRuleLauncherInterface;
+use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\ProductLinkRuleLauncherInterface;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 
 /**
- * Implementation of the AsynchronousProductLinkRuleLauncherInterface using Akeneo PIM Job Queue system.
+ * Implementation of the ProductLinkRuleLauncherInterface using Akeneo PIM Job Queue system.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class AsynchronousProductLinkRuleLauncher implements AsynchronousProductLinkRuleLauncherInterface
+class ProductLinkRuleLauncher implements ProductLinkRuleLauncherInterface
 {
     /** @var PublishJobToQueue */
     private $publishJobToQueue;
