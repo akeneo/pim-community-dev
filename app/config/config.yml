@@ -6,11 +6,12 @@ imports:
     - { resource: security.yml }
 
 framework:
-    translator:      { fallback: en_US }
-    secret:          "%secret%"
+    translator:
+        fallback: en_US
+    secret: '%env(APP_SECRET)%'
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: "%kernel.debug%"
+        resource: '%kernel.root_dir%/config/routing.yml'
+        strict_requirements: '%kernel.debug%'
     form:            true
     csrf_protection: true
     validation:
@@ -18,7 +19,7 @@ framework:
         enabled: true
     templating:
         engines: 'twig'
-    default_locale:  "%locale%"
+    default_locale:  '%locale%'
     session:
         name:           BAPID
         handler_id:     session.handler.pdo
@@ -32,20 +33,15 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
+    debug:            '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
     globals:
-        uservoice_key: "%uservoice_key%"
+        uservoice_key: '%uservoice_key%'
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport:                "%mailer_transport%"
-    host:                     "%mailer_host%"
-    port:                     "%mailer_port%"
-    encryption:               "%mailer_encryption%"
-    username:                 "%mailer_user%"
-    password:                 "%mailer_password%"
-    spool:                    { type: memory }
+    url: '%env(MAILER_URL)%'
+    spool: { type: 'memory' }
 
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
