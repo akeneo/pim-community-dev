@@ -2,16 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeAndPersistProductCompletenessSubscriber;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
+use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Doctrine\Common\Collections\ArrayCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,10 +14,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ComputeAndPersistProductCompletenessSubscriberSpec extends ObjectBehavior
 {
     function let(
-        CompletenessCalculatorInterface $completenessCalculator,
-        SaveProductCompletenesses $saveProductCompletenesses
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
     ) {
-        $this->beConstructedWith($completenessCalculator, $saveProductCompletenesses);
+        $this->beConstructedWith($computeAndPersistProductCompletenesses);
     }
 
     function it_is_an_event_subscriber()
@@ -37,39 +30,20 @@ class ComputeAndPersistProductCompletenessSubscriberSpec extends ObjectBehavior
     }
 
     function it_computes_and_saves_completenesses_for_a_product(
-        CompletenessCalculatorInterface $completenessCalculator,
-        SaveProductCompletenesses $saveProductCompletenesses
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
     ) {
-        $product = new Product();
-        $product->setId(42);
-        $ecommerce = new Channel();
-        $ecommerce->setCode('ecommerce');
-        $frFr = new Locale();
-        $frFr->setCode('fr_FR');
-        $enUs = new Locale();
-        $enUs->setCode('en_US');
-        $description = new Attribute();
-        $description->setCode('description');
-        $picture = new Attribute();
-        $picture->setCode('picture');
+        $computeAndPersistProductCompletenesses->fromProductIdentifier('product')->shouldBeCalled();
 
-        $completenessCalculator->calculate($product)->willReturn(
-            [
-                new Completeness($product, $ecommerce, $enUs, new ArrayCollection([$description]), 1, 20),
-                new Completeness($product, $ecommerce, $enUs, new ArrayCollection([$description, $picture]), 2, 25),
-            ]
-        )->shouldBeCalled();
-        $saveProductCompletenesses->save(Argument::type(ProductCompletenessCollection::class))->shouldBeCalled();
+        $product = new Product();
+        $product->setIdentifier(ScalarValue::value('foo', 'product'));
 
         $this->computeProductCompleteness(new GenericEvent($product));
     }
 
     function it_does_nothing_for_anything_but_a_product(
-        CompletenessCalculatorInterface $completenessCalculator,
-        SaveProductCompletenesses $saveProductCompletenesses
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
     ) {
-        $completenessCalculator->calculate(Argument::any())->shouldNotBeCalled();
-        $saveProductCompletenesses->save(Argument::any())->shouldNotBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductIdentifier(Argument::any())->shouldNotBeCalled();
 
         $this->computeProductCompleteness(new GenericEvent(new \stdClass()));
     }

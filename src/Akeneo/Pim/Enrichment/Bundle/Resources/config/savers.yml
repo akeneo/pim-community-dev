@@ -66,14 +66,12 @@ services:
     pim_catalog.saver.product_model_descendants:
         class: '%pim_catalog.saver.product_model_descendants.class%'
         arguments:
-            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@pim_catalog.elasticsearch.indexer.product_model'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.completeness.product.compute_and_persist'
             - '%pim_job_product_batch_size%'
 
     pim_comment.saver.comment:
