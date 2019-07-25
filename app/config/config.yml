@@ -60,3 +60,29 @@ akeneo_pim_structure:
 
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%'
+
+services:
+    Akeneo\Pim\Enrichment\Bundle\Controller\:
+        resource: '../../src/Akeneo/Pim/Enrichment/Bundle/Controller'
+        tags:
+            - 'controller.service_arguments'
+
+    Akeneo\Platform\Bundle\AnalyticsBundle\Controller\:
+        resource: '../../src/Akeneo/Platform/Bundle/AnalyticsBundle/Controller'
+        tags:
+            - 'controller.service_arguments'
+
+    Akeneo\Platform\Bundle\DashboardBundle\Controller\:
+        resource: '../../src/Akeneo/Platform/Bundle/DashboardBundle/Controller'
+        tags:
+            - 'controller.service_arguments'
+
+    Akeneo\Platform\Bundle\NotificationBundle\Controller\:
+        resource: '../../src/Akeneo/Platform/Bundle/NotificationBundle/Controller'
+        tags:
+            - 'controller.service_arguments'
+
+    Akeneo\UserManagement\Bundle\Controller\:
+        resource: '../../src/Akeneo/UserManagement/Bundle/Controller'
+        tags:
+            - 'controller.service_arguments'
