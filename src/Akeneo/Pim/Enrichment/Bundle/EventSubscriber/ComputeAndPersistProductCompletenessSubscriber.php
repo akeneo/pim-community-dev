@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -25,18 +20,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class ComputeAndPersistProductCompletenessSubscriber implements EventSubscriberInterface
 {
-    /** @var CompletenessCalculatorInterface */
-    private $completenessCalculator;
+    /** @var ComputeAndPersistProductCompletenesses */
+    private $computeAndPersistProductCompletenesses;
 
-    /** @var SaveProductCompletenesses */
-    private $saveProductCompletenesses;
-
-    public function __construct(
-        CompletenessCalculatorInterface $completenessCalculator,
-        SaveProductCompletenesses $saveProductCompletenesses
-    ) {
-        $this->completenessCalculator = $completenessCalculator;
-        $this->saveProductCompletenesses = $saveProductCompletenesses;
+    public function __construct(ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses)
+    {
+        $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
     }
 
     /**
@@ -61,26 +50,6 @@ final class ComputeAndPersistProductCompletenessSubscriber implements EventSubsc
             return;
         }
 
-        $completenesses = $this->completenessCalculator->calculate($product);
-
-        $collection = new ProductCompletenessCollection(
-            $product->getId(),
-            array_map(
-                function (CompletenessInterface $completeness): ProductCompleteness {
-                    return new ProductCompleteness(
-                        $completeness->getChannel()->getCode(),
-                        $completeness->getLocale()->getCode(),
-                        $completeness->getRequiredCount(),
-                        $completeness->getMissingAttributes()->map(
-                            function (AttributeInterface $missingAttribute): string {
-                                return $missingAttribute->getCode();
-                            }
-                        )->toArray()
-                    );
-                },
-                $completenesses
-            )
-        );
-        $this->saveProductCompletenesses->save($collection);
+        $this->computeAndPersistProductCompletenesses->fromProductIdentifier($product->getIdentifier());
     }
 }

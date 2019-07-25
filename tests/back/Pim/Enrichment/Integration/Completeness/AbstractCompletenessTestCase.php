@@ -182,7 +182,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
     /**
      * @return GetProductCompletenesses
      */
-    protected function getProductCompletenesses()
+    protected function getProductCompletenesses(): GetProductCompletenesses
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses');
     }
