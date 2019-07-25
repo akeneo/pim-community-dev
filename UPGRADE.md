@@ -206,6 +206,14 @@ Before updating the dependencies and migrating your data, please deactivate all 
     php bin/console akeneo:elasticsearch:update-mapping -e prod --all
     ```
 
+12. Remove orphan archives
+
+    You can remove import/export archives that are not used anymore with the following script:
+
+    ```bash
+    php bin/console upgrades/schema/remove_orphan_archives.php
+    ```
+
 ## Migrate your custom code
 
 1. Apply the sed commands
