@@ -61,9 +61,9 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
         $serializedLabels = $this->getSerializedLabels($assetFamily);
         $insert = <<<SQL
         INSERT INTO akeneo_asset_manager_asset_family 
-            (identifier, labels, attribute_as_label, attribute_as_image, product_link_rules) 
+            (identifier, labels, attribute_as_label, attribute_as_image, rule_templates) 
         VALUES 
-            (:identifier, :labels, :attributeAsLabel, :attributeAsImage, :productLinkRules);
+            (:identifier, :labels, :attributeAsLabel, :attributeAsImage, :ruleTemplates);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -72,7 +72,7 @@ SQL;
                 'labels' => $serializedLabels,
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
                 'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
-                'productLinkRules' => json_encode($assetFamily->getRuleTemplateCollection()->normalize())
+                'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize())
             ]
         );
         if ($affectedRows !== 1) {
@@ -101,7 +101,7 @@ SQL;
             image = :image, 
             attribute_as_label = :attributeAsLabel, 
             attribute_as_image = :attributeAsImage,
-            product_link_rules = :productLinkRules
+            rule_templates = :ruleTemplates
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -112,7 +112,7 @@ SQL;
                 'image' => $assetFamily->getImage()->isEmpty() ? null : $assetFamily->getImage()->getKey(),
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
                 'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
-                'productLinkRules' => json_encode($assetFamily->getRuleTemplateCollection()->normalize())
+                'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize())
             ]
         );
 
@@ -126,7 +126,7 @@ SQL;
     public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily
     {
         $fetch = <<<SQL
-        SELECT af.identifier, af.labels, fi.image, af.attribute_as_label, af.attribute_as_image, af.product_link_rules
+        SELECT af.identifier, af.labels, fi.image, af.attribute_as_label, af.attribute_as_image, af.rule_templates
         FROM akeneo_asset_manager_asset_family af
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
@@ -151,14 +151,14 @@ SQL;
             null !== $result['image'] ? json_decode($result['image'], true) : null,
             $result['attribute_as_label'],
             $result['attribute_as_image'],
-            $result['product_link_rules']
+            $result['rule_templates']
         );
     }
 
     public function all(): \Iterator
     {
         $selectAllQuery = <<<SQL
-        SELECT identifier, labels, attribute_as_label, attribute_as_image, product_link_rules
+        SELECT identifier, labels, attribute_as_label, attribute_as_image, rule_templates
         FROM akeneo_asset_manager_asset_family;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
@@ -172,7 +172,7 @@ SQL;
                 null,
                 $result['attribute_as_label'],
                 $result['attribute_as_image'],
-                $result['product_link_rules']
+                $result['rule_templates']
             );
         }
     }
@@ -263,6 +263,6 @@ SQL;
     {
         $normalizedRuleTemplates = json_decode($normalizedRuleTemplates, true);
 
-        return RuleTemplateCollection::createFromProductLinkRules($normalizedRuleTemplates);
+        return RuleTemplateCollection::createFromNormalized($normalizedRuleTemplates);
     }
 }

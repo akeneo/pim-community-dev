@@ -80,29 +80,30 @@ class Action
         return self::createFromNormalized($action);
     }
 
-    public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): array
+    public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): self
     {
         $field = ReplacePattern::replace($this->field->stringValue(), $propertyAccessibleAsset);
         $items = array_map(function (string $item) use ($propertyAccessibleAsset) {
             return ReplacePattern::replace($item, $propertyAccessibleAsset);
         }, $this->items->normalize());
 
-        return [
-            'field' => Field::createFromNormalized($field)->stringValue(),
-            'type'  => $this->type->stringValue(),
-            'items'  => ItemCollection::createFromNormalized($items)->normalize(),
-            'channel'  => $this->channel->normalize(),
-            'locale'  => $this->locale->normalize(),
-        ];
+        return new self(
+            Field::createFromNormalized($field),
+            $this->type,
+            ItemCollection::createFromNormalized($items),
+            $this->channel,
+            $this->locale
+        );
     }
 
     public function normalize(): array
     {
         return [
-            'attribute' => $this->field->stringValue(),
-            'mode'      => $this->type->stringValue(),
-            'channel'   => $this->channel->normalize(),
-            'locale'    => $this->locale->normalize(),
+            'field'   => $this->field->stringValue(),
+            'type'    => $this->type->stringValue(),
+            'items'   => $this->items->normalize(),
+            'channel' => $this->channel->normalize(),
+            'locale'  => $this->locale->normalize(),
         ];
     }
 }
