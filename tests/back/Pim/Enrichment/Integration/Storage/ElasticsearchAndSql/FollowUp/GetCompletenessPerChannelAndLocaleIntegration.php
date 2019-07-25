@@ -78,7 +78,6 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
             'attribute_requirements' => [
                 'ecommerce' => ['sku', 'name'],
                 'mobile' => ['sku', 'name'],
-
             ]
         ]);
 
@@ -91,6 +90,35 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
             ]
         ]);
 
+        $this->createAttribute([
+            'code'              => 'size',
+            'type'              => AttributeTypes::BOOLEAN,
+            'localizable'       => false,
+            'scopable'          => false,
+        ]);
+
+        $this->createFamily([
+            'code'        => 'family_for_pm',
+            'attributes'  => ['sku', 'name', 'description', 'size'],
+            'attribute_requirements' => [
+                'ecommerce' => ['sku', 'name', 'description', 'size'],
+                'mobile' => ['sku', 'name', 'description', 'size']
+            ]
+        ]);
+
+        $this->createFamilyVariant([
+            'code'        => 'familyv',
+            'family'      => 'family_for_pm',
+            'variant_attribute_sets' => [
+                [
+                    'level' => 1,
+                    'axes' => ['size'],
+                    'attributes' => ['size'],
+                ],
+            ]
+        ]);
+
+        $this->createProductModel();
         $this->createProducts(5, 5);
     }
 
@@ -112,6 +140,7 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
         $translationLocale = $this->get('pim_user.context.user')->getCurrentLocaleCode();
         $results = $this->get('akeneo.pim.enrichment.follow_up.completeness_widget_query')->fetch($translationLocale);
 
+        var_dump($results);
         $this->assertSame($completenessWidget->toArray(), $results->toArray());
     }
 
@@ -146,6 +175,24 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
                 ]
             ]);
         }
+    }
+
+    protected function createProductModel()
+    {
+        $data = [
+            'code' => 'product_model_incomplete',
+            'family_variant' => 'familyv',
+            'categories' => ['shoes'],
+            'values'  => [
+                'name'       => [
+                    ['data' => 'name_mobile_US_1', 'locale' => 'en_US', 'scope' => 'mobile']
+                ]
+            ]
+        ];
+
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
     }
 
     protected function createChannel(array $data = []): ChannelInterface
