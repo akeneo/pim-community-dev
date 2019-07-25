@@ -814,3 +814,66 @@ Pistes d'amélioration:
 - Bulk get assets from identifiers
 - Build SearchableAssets From Asset object instead of fetch from DB
 - Adaptater SQL => SqlElasticsearch (remove Event)
+
+## 25/07/2019
+
+### Product link rules
+
+#### Problem:
+
+To link the assets to a product, we decided to have a rule on the asset family. Like that each time we create an asset in
+the regarding asset family, it will execute the rule and link the asset to the product selected.
+
+The format used for the product link rules is following that :
+```
+“product_link_rule”:{
+  “product_selections”:[{
+     “field”: “sku”,
+     “operator”: “EQUALS”,
+     “value”: “product_ref”,
+     “channel”: “ecommerce”, (optional)
+     “locale”: “fr_FR” (optional)
+  }],
+  “assign_assets_to”:[{
+     “attribute”:”my_product_attribute”,
+     “channel”:”ecommerce”, (optional)
+     “locale”:”fr_FR”, (optional)
+     “mode”:”add” or “replace”
+  }]
+}
+```
+
+However, to be faster in our development we decided to use the existing rule engine to execute it.
+The problem is the rule engine isn't able to read the latter format. So, we need to compile the rule in this
+following format :
+```
+“rule_templates”:{
+  “conditions”:[{
+     “field”: “sku”,
+     “operator”: “EQUALS”,
+     “value”: “product_ref”,
+     “channel”: “ecommerce”, (optional)
+     “locale”: “fr_FR” (optional)
+  }],
+  “actions”:[{
+     “type”:”add”,
+     “field”:”target_attribute”,
+     “items”:[”code”],
+     “channel”:”ecommerce”, (optional)
+     “locale”:”fr_FR”, (optional)
+  }]
+}
+```
+
+The question we were asking ourselves about this difference of those two formats is : 
+
+"Do we should have to update our Domain and the DB to be compliant with the format for the product link rules or keep the naming from the rule engine ?"
+
+
+### Solution :
+
+As we weren't really confident about the modifications it could happen on the new format used for the product link rule, we have chosen to see this format only as a presentational one.
+
+So, we update the format expected by the asset family API to follow the one from the product link rules. But we keep the Domain and the DB with the one from the rule engine.
+
+Like that, we are preventing all changes on the format used for the product link rule and preserving as well our domain layer.
