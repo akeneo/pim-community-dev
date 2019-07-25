@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8591: Fix product history author display
+
 # 3.0.34 (2019-07-24)
 
 ## Bug fixes
