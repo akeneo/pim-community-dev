@@ -137,6 +137,10 @@ function getLocalDirectoriesForJob(string $archiveDir, string $jobType, string $
 
 function removeDirectory(string $directory): void
 {
-    (new Filesystem())->remove($directory);
-    echo "Directory $directory removed.\n";
+    $fs = new Filesystem();
+
+    if ($fs->exists($directory)) {
+        $fs->remove($directory);
+        echo "Directory $directory removed.\n";
+    }
 }
