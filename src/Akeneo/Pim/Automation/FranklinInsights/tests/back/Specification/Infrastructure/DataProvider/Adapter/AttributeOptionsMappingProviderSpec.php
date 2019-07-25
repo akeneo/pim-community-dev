@@ -15,7 +15,6 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Read\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
@@ -33,7 +32,6 @@ class AttributeOptionsMappingProviderSpec extends ObjectBehavior
 {
     public function let(
         ConfigurationRepositoryInterface $configurationRepo,
-        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
         OptionsMappingWebService $api,
         AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
     ): void {
@@ -43,7 +41,6 @@ class AttributeOptionsMappingProviderSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $configurationRepo,
-            $invalidTokenExceptionFactory,
             $api,
             $attributeOptionsMappingNormalizer
         );

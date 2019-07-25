@@ -42,11 +42,6 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.normalizers.suggested_data'
 
-    akeneo.pim.automation.franklin_insights.factory.invalid_token_exception:
-        class: Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory
-        arguments:
-            - '@akeneo.pim.automation.franklin_insights.notifier.notify_about_invalid_token'
-
     akeneo.pim.automation.franklin_insights.notifier.notify_about_missing_mapping:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping'
         arguments:

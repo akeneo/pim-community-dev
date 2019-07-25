@@ -39,19 +39,12 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
     /** @var AttributeOptionsMappingNormalizer */
     private $attributeOptionsMappingNormalizer;
 
-    /**
-     * @param OptionsMappingWebService $api
-     * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param InvalidTokenExceptionFactory $invalidTokenExceptionFactory
-     * @param AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
-     */
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
         OptionsMappingWebService $api,
         AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
     ) {
-        parent::__construct($configurationRepository, $invalidTokenExceptionFactory);
+        parent::__construct($configurationRepository);
 
         $this->api = $api;
         $this->attributeOptionsMappingNormalizer = $attributeOptionsMappingNormalizer;
@@ -73,7 +66,7 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }
@@ -105,7 +98,7 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         }
     }
 }

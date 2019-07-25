@@ -15,7 +15,6 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\StatisticsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
@@ -30,14 +29,13 @@ class StatisticsProviderSpec extends ObjectBehavior
 {
     public function let(
         ConfigurationRepositoryInterface $configurationRepo,
-        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
         StatisticsWebService $api
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
 
-        $this->beConstructedWith($configurationRepo, $invalidTokenExceptionFactory, $api);
+        $this->beConstructedWith($configurationRepo, $api);
     }
 
     public function it_is_a_statistics_provider(): void
@@ -76,14 +74,12 @@ class StatisticsProviderSpec extends ObjectBehavior
             ->during('getCreditsUsageStatistics');
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid($invalidTokenExceptionFactory, $api): void
+    public function it_throws_a_data_provider_exception_when_token_is_invalid($api): void
     {
         $thrownException = new InvalidTokenException();
         $api->getCreditsUsageStatistics()->willThrow($thrownException);
 
         $dataProviderException = DataProviderException::authenticationError($thrownException);
-
-        $invalidTokenExceptionFactory->create($thrownException)->willReturn($dataProviderException);
 
         $api->setToken('valid-token')->shouldBeCalled();
         $this
