@@ -211,7 +211,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
     You can remove import/export archives that are not used anymore with the following script:
 
     ```bash
-    php bin/console upgrades/schema/remove_orphan_archives.php
+    php upgrades/schema/remove_orphan_archives.php
     ```
 
 ## Migrate your custom code
