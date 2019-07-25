@@ -47,10 +47,12 @@ $container = $kernel->getContainer();
 $archiveDir = $container->getParameter('archive_dir');
 $database = $container->get('doctrine.dbal.default_connection');
 
-echo "Removing orphan directories in the local archive storage $archiveDir...\n";
+echo "Purging orphan directories from local archives storage $archiveDir...\n\n";
+echo "Purging orphan job execution directories...\n";
 removeOrphanJobExecutionDirectories($database, $archiveDir);
+echo "\nPurging orphan job directories...\n";
 removeOrphanJobDirectories($database, $archiveDir);
-echo "Done!\n";
+echo "\nDone!\n";
 
 function removeOrphanJobExecutionDirectories(Connection $database, string $archiveDir): void
 {
@@ -99,6 +101,7 @@ SQL;
     );
 
     foreach ($localDirectories as $localDirectory) {
+        echo "  - Processing job directory $localDirectory.\n";
         $jobName = basename($localDirectory);
 
         if (!in_array($jobName, $existingJobNames)) {
@@ -110,19 +113,22 @@ SQL;
 function removeOrphanJobExecutionDirectoriesForJob(string $archiveDir, array $job)
 {
     $jobDirectory = $archiveDir . DIRECTORY_SEPARATOR . $job['type'] . DIRECTORY_SEPARATOR . $job['code'];
+    echo "  - Looking for job execution directories to remove in $jobDirectory.\n";
+
     if (!(new Filesystem())->exists($jobDirectory)) {
         return;
     }
 
     $jobExecutionDirectories = getLocalDirectoriesForJob($jobDirectory);
     foreach ($jobExecutionDirectories as $directory) {
-        if (doesDirectoryBelongToDeletedJobExecution($directory, $job['job_execution_ids'])) {
+        echo "  - Job execution directory $directory found.\n";
+        if (isDirectoryOrphan($directory, $job['job_execution_ids'])) {
             removeDirectory($directory);
         }
     }
 }
 
-function doesDirectoryBelongToDeletedJobExecution(string $directory, string $existingJobExecutionIds): bool
+function isDirectoryOrphan(string $directory, string $existingJobExecutionIds): bool
 {
     $ids = explode(',', $existingJobExecutionIds);
     $directoryId = basename($directory);
@@ -144,6 +150,6 @@ function removeDirectory(string $directory): void
 
     if ($fs->exists($directory)) {
         $fs->remove($directory);
-        echo "Directory $directory removed.\n";
+        echo "  - Directory $directory removed.\n";
     }
 }
