@@ -2,7 +2,6 @@ imports:
     - { resource: '../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' }
     - { resource: '../../src/Akeneo/Platform/config/pimee.yml' }
     - { resource: pim_parameters.yml }
-    - { resource: parameters.yml }
     - { resource: security.yml }
 
 framework:
@@ -12,20 +11,20 @@ framework:
     router:
         resource: '%kernel.root_dir%/config/routing.yml'
         strict_requirements: '%kernel.debug%'
-    form:            true
+    form: true
     csrf_protection: true
     validation:
         enable_annotations: true
         enabled: true
     templating:
         engines: 'twig'
-    default_locale:  '%env(APP_DEFAULT_LOCALE)%'
+    default_locale: '%env(APP_DEFAULT_LOCALE)%'
     session:
-        name:           BAPID
-        handler_id:     session.handler.pdo
+        name: BAPID
+        handler_id: session.handler.pdo
         gc_maxlifetime: 3600
     serializer:
-        enabled:              true
+        enabled: true
     assets:
         packages:
             frontend:
@@ -33,7 +32,7 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            '%kernel.debug%'
+    debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
         uservoice_key: '%uservoice_key%'
@@ -46,3 +45,12 @@ swiftmailer:
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
     pim_ee_dev_src_folder_location: '%kernel.project_dir%'
+    index_hosts: '%env(APP_INDEX_HOSTS)%'
+    product_index_name: '%env(APP_PRODUCT_INDEX_NAME)%'
+    product_proposal_index_name: '%env(APP_PRODUCT_PROPOSAL_INDEX_NAME)%'
+    published_product_index_name: '%env(APP_PUBLISHED_PRODUCT_INDEX_NAME)%'
+    published_product_and_product_model_index_name: '%env(APP_PUBLISHED_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
+    product_model_index_name: '%env(APP_PRODUCT_MODEL_INDEX_NAME)%'
+    product_and_product_model_index_name: '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
+    record_index_name: '%env(APP_RECORD_INDEX_NAME)%'
+    asset_index_name: '%env(APP_ASSET_INDEX_NAME)%'
