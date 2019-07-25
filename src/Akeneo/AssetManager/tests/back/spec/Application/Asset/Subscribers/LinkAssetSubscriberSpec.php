@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleTemplateExecutor;
+use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\ProductLinkRuleLauncherInterface;
 use Akeneo\AssetManager\Application\Asset\Subscribers\LinkAssetSubscriber;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -19,9 +19,9 @@ use Prophecy\Argument;
  */
 class LinkAssetSubscriberSpec extends ObjectBehavior
 {
-    function let(RuleTemplateExecutor $ruleTemplateExecutor)
+    function let(ProductLinkRuleLauncherInterface $productLinkRuleLauncher)
     {
-        $this->beConstructedWith($ruleTemplateExecutor);
+        $this->beConstructedWith($productLinkRuleLauncher);
     }
 
     function it_is_initializable()
@@ -38,12 +38,12 @@ class LinkAssetSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_triggers_the_rule_template_executor(RuleTemplateExecutor $ruleTemplateExecutor)
+    function it_triggers_the_rule_template_executor(ProductLinkRuleLauncherInterface $productLinkRuleLauncher)
     {
         $expectedAssetCode = 'starck';
         $expectedAssetFamilyIdentifier = 'designer';
 
-        $ruleTemplateExecutor->execute(
+        $productLinkRuleLauncher->launch(
             Argument::that(
                 function (AssetFamilyIdentifier $actualFamilyIdentifier) use ($expectedAssetFamilyIdentifier)
                 {
