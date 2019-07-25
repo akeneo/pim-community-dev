@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\FollowUp\Query\GetCompletenessPerChannelAndL
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\ChannelCompleteness;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\CompletenessWidget;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\LocaleCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 
@@ -153,15 +154,22 @@ SQL;
                                     [
                                         'terms' => [
                                             'categories' => $categoriesCodeAndLocalesByChannel['category_codes_in_channel']
-                                        ]
+                                        ],
                                     ],
                                     [
                                         'bool' => [
                                             'must' => [
-                                                'term' => ["enabled" => true]
+                                                [
+                                                    'term' => ["enabled" => true]
+                                                ],
+                                                [
+                                                    'term' => [
+                                                        'document_type' => ProductInterface::class,
+                                                    ]
+                                                ]
                                             ]
                                         ]
-                                    ]
+                                    ],
                                 ]
                             ]
                         ]
@@ -219,10 +227,17 @@ SQL;
                                         [
                                             'bool' => [
                                                 'should' => [
-                                                    ['term' => ["completeness." . $categoriesCodeAndLocalesByChannel['channel_code'] . "." . $locale => 100]]
+                                                    ['term' => ["completeness." . $categoriesCodeAndLocalesByChannel['channel_code'] . "." . $locale => 100]],
                                                 ],
                                                 'must' => [
-                                                    'term' => ["enabled" => true]
+                                                    [
+                                                        'term' => ["enabled" => true]
+                                                    ],
+                                                    [
+                                                        'term' => [
+                                                            'document_type' => ProductInterface::class,
+                                                        ]
+                                                    ]
                                                 ]
                                             ]
                                         ]

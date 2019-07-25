@@ -140,7 +140,6 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
         $translationLocale = $this->get('pim_user.context.user')->getCurrentLocaleCode();
         $results = $this->get('akeneo.pim.enrichment.follow_up.completeness_widget_query')->fetch($translationLocale);
 
-        var_dump($results);
         $this->assertSame($completenessWidget->toArray(), $results->toArray());
     }
 
