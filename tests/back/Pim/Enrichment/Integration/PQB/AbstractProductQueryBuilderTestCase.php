@@ -105,9 +105,6 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         $family_variant = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update($family_variant, $data);
         $constraintList = $this->get('validator')->validate($family_variant);
-        foreach ($constraintList as $violation) {
-            echo $violation->getMessage().'<br>';
-        }
         $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.family_variant')->save($family_variant);
 
