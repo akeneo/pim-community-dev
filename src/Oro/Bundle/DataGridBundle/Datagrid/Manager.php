@@ -3,7 +3,6 @@
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Manager

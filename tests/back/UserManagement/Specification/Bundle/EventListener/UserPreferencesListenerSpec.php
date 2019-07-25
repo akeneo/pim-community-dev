@@ -7,7 +7,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber;
+use Akeneo\UserManagement\Bundle\EventListener\UserPreferencesListener;
 use Akeneo\UserManagement\Component\Model\UserInterface;use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -16,7 +16,7 @@ use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class UserPreferencesSubscriberSpec extends ObjectBehavior
+class UserPreferencesListenerSpec extends ObjectBehavior
 {
     function let(
         CategoryRepositoryInterface $categoryRepository,
@@ -29,7 +29,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(UserPreferencesSubscriber::class);
+        $this->shouldHaveType(UserPreferencesListener::class);
     }
 
     function it_deletes_a_tree_before_flush(

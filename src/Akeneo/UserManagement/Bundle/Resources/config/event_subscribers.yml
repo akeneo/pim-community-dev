@@ -1,5 +1,4 @@
 parameters:
-    pim_user.event_subscriber.user_preferences.class: Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber
     pim_user.event_subscriber.group.class:            Akeneo\UserManagement\Bundle\EventListener\GroupSubscriber
     # Move this class
     pim_user.event_subscriber.remove_role.class:      Akeneo\UserManagement\Bundle\EventListener\RemoveRoleSubscriber
@@ -8,8 +7,8 @@ parameters:
     pim_user.event_listener.create_user_system.class: Akeneo\UserManagement\Bundle\EventListener\CreateUserSystemListener
 
 services:
-    pim_user.event_subscriber.user_preferences:
-        class: '%pim_user.event_subscriber.user_preferences.class%'
+    pim_user.event_listener.user_preferences:
+        class: 'Akeneo\UserManagement\Bundle\EventListener\UserPreferencesListener'
         lazy: true
         arguments:
             - '@pim_catalog.repository.category'
