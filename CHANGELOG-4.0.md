@@ -6,7 +6,13 @@
 
 ## BC breaks
 
-- Remove akeneo_pim_product and akeneo_pim_product_model ES indexes and merge into akeneo_pim_product_and_product_model. `ProductQueryBuilder` should be used to search products and `ProductModelQueryBuilder` should be used to search product models. 
+### Elasticsearch
+
+- Remove akeneo_pim_product and akeneo_pim_product_model ES indexes and merge into akeneo_pim_product_and_product_model.
+ 
+### Codebase
+ 
+ `ProductQueryBuilder` should be used to search products and `ProductModelQueryBuilder` should be used to search product models. 
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdFilter` to add `$prefix`.
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` to remove `$productClient`.
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` to remove `$productClient` and `$productModelClient`.
@@ -23,6 +29,46 @@
     - `Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface`
     - `Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber` to remove `$productClient` and `$productModelClient`.
+- Rename `Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` as `Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener`
+- Rename `Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber` as `Akeneo\UserManagement\Bundle\EventListener\UserPreferencesListener`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber` to remove `Symfony\Component\DependencyInjection\ContainerInterface` and to add `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory`
+- Change constructor of `Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader` to remove `Symfony\Component\DependencyInjection\ContainerInterface` and to add:
+    - `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface`
+    - `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface`
+    - `Doctrine\Common\Persistence\ObjectRepository`
+- Change constructor of `Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener` to remove `Symfony\Component\DependencyInjection\ContainerInterface` and to add:
+    - `Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager`
+    - `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
+    - `Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface`
+    - `Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext`
+- Change constructor of `Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber` to remove `Symfony\Component\DependencyInjection\ContainerInterface` and to add:
+    - `Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface`
+    - `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`
+    - `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface`
+    - `Akeneo\UserManagement\Component\Repository\UserRepositoryInterface`
+- Change constructor of `Oro\Bundle\DataGridBundle\Datagrid\Manager` to remove `Symfony\Component\DependencyInjection\ContainerInterface` and to add:
+    - `Oro\Bundle\DataGridBundle\Datagrid\Builder`
+    - `Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface`
+    - `Oro\Bundle\DataGridBundle\Datagrid\Builder\RequestParameters`
+- Change constructor of `Oro\Bundle\DataGridBundle\Datagrid\MetadataParser` to remove `Symfony\Component\DependencyInjection\ContainerInterface` and to add `Symfony\Component\HttpKernel\Fragment\FragmentHandler`
+- Change constructor of `Oro\Bundle\PimDataGridBundle\Twig\FilterExtension` to remove `Symfony\Component\DependencyInjection\ContainerInterface` and to add:
+    - `Oro\Bundle\DataGridBundle\Datagrid\Manager`
+    - `Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator`
+    - `Symfony\Component\Translation\TranslatorInterface`
+- Remove class `Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\SequentialEditActionHandler`
+- Remove class `Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler`
+- Remove class `Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler`
+- Remove class `Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediator`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\DeleteMassActionHandler`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\WindowMassAction`
+- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\DeleteMassAction`
+
 
 ### Services
 
@@ -52,3 +98,5 @@
 - Update `akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor` to use `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory`
 - Update `pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor` to use `pim_catalog.query.elasticsearch.product_and_model_query_builder_factory`
 - Update `pim_enrich.query.product_query_sequential_edit_builder_factory` to use `pim_catalog.query.product_and_product_model_query_builder.class`
+- Rename `pim_versioning.event_subscriber.addversion` to `pim_versioning.event_listener.addversion`
+- Rename `pim_user.event_listener.user_preferences` to `pim_user.event_subscriber.user_preferences`
