@@ -32,9 +32,13 @@
 
   &-label {
     color: @AknSlateGrey;
-    flex-grow: 1;
     font-size: @AknDefaultFontSize;
-    display: flex;
+    flex: 1;
+    min-width: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-right: 5px;
 
     &--grey {
       color: @AknGrey;
