@@ -4,12 +4,14 @@ parameters:
 
 services:
     pim_pdf_generator.controller.product:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_pdf_generator.renderer.registry'
 
     pim_comment.controller.comment:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CommentController'
         arguments:
             - '@security.token_storage'
@@ -18,6 +20,7 @@ services:
             - '%pim_comment.entity.comment.class%'
 
     pim_localization.controller.format:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\FormatController'
         arguments:
             - '@pim_catalog.localization.factory.date'
@@ -30,6 +33,7 @@ services:
 
     ### External API
     pim_api.controller.product:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController'
         arguments:
             - '@pim_external_api_serializer'
@@ -59,6 +63,7 @@ services:
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
 
     pim_api.controller.product_model:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
@@ -84,6 +89,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.category:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CategoryController'
         arguments:
             - '@pim_api.repository.category'
@@ -99,6 +105,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_enrich.controller.rest.category:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController'
         arguments:
             - '@pim_catalog.repository.category'
@@ -107,6 +114,7 @@ services:
             - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.product_category:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCategoryController'
         arguments:
             - '@pim_catalog.repository.product'
@@ -115,6 +123,7 @@ services:
 
 
     pim_enrich.controller.rest.product:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
         arguments:
             - '@pim_catalog.repository.product'
@@ -137,6 +146,7 @@ services:
             - '@pim_enrich.filter.product_attribute_filter'
 
     pim_enrich.controller.rest.product_comment:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCommentController'
         arguments:
             - '@security.token_storage'
@@ -151,6 +161,7 @@ services:
             - '@pim_enrich.resolver.locale'
 
     pim_enrich.controller.rest.product_model_category:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelCategoryController'
         arguments:
             - '@pim_catalog.repository.product_model'
@@ -159,6 +170,7 @@ services:
 
 
     pim_enrich.controller.rest.product_model:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController'
         arguments:
             - '@pim_catalog.repository.product_model'
@@ -180,6 +192,7 @@ services:
             - '@pim_enrich.filter.product_model_attribute_filter'
 
     pim_enrich.controller.rest.group:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\GroupController'
         arguments:
             - '@pim_catalog.repository.group'
@@ -195,6 +208,7 @@ services:
             - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.sequential_edit:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\SequentialEditController'
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
@@ -202,6 +216,7 @@ services:
             - '@pim_enrich.query.product_and_product_model_query_sequential_edit_builder_factory'
 
     pim_enrich.controller.rest.value:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ValuesController'
         arguments:
             - '@pim_catalog.builder.product'
@@ -214,6 +229,7 @@ services:
             - '@pim_enrich.normalizer.product_violation'
 
     pim_enrich.controller.rest.mass_edit:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MassEditController'
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
@@ -223,6 +239,7 @@ services:
             - '@pim_datagrid.adapter.items_counter'
 
     pim_enrich.controller.rest.media:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MediaController'
         arguments:
             - '@validator'
@@ -231,6 +248,7 @@ services:
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pim_enrich.controller.rest.versioning:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\VersioningController'
         arguments:
             - '@pim_versioning.repository.version'
@@ -239,6 +257,7 @@ services:
             - '@pim_user.context.user'
 
     pim_enrich.controller.category_tree.product:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
@@ -253,6 +272,7 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.file:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController'
         arguments:
             - '@liip_imagine.controller'
@@ -263,6 +283,7 @@ services:
             - ['catalogStorage']
 
     pim_enrich.controller.product_model:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController'
         arguments:
             - '@pim_catalog.repository.product_model'
@@ -274,6 +295,7 @@ services:
             - '@@AkeneoPimEnrichment/ProductModel/listCategories.json.twig'
 
     pim_enrich.controller.product:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController'
         arguments:
             - '@translator'
@@ -288,6 +310,7 @@ services:
             - '@@AkeneoPimEnrichment/Product/listCategories.json.twig'
 
     pim_api.controller.media_file:
+        public: true
         class: '%pim_api.controller.media_file.class%'
         arguments:
         - '@pim_api.repository.media_file'

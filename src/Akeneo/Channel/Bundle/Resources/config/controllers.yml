@@ -1,6 +1,7 @@
 services:
 
     pim_enrich.controller.rest.locale:
+        public: true
         class: 'Akeneo\Channel\Bundle\Controller\InternalApi\LocaleController'
         arguments:
             - '@pim_catalog.repository.locale'
@@ -8,6 +9,7 @@ services:
             - '@pim_catalog.filter.chained'
 
     pim_api.controller.locale:
+        public: true
         class: 'Akeneo\Channel\Bundle\Controller\ExternalApi\LocaleController'
         arguments:
             - '@pim_api.repository.locale'
@@ -18,6 +20,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.channel:
+        public: true
         class: 'Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController'
         arguments:
             - '@pim_api.repository.channel'
@@ -33,6 +36,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_enrich.controller.rest.channel:
+        public: true
         class: 'Akeneo\Channel\Bundle\Controller\InternalApi\ChannelController'
         arguments:
             - '@pim_catalog.repository.channel'
@@ -44,6 +48,7 @@ services:
             - '@validator'
 
     pim_api.controller.currency:
+        public: true
         class: 'Akeneo\Channel\Bundle\Controller\ExternalApi\CurrencyController'
         arguments:
             - '@pim_api.repository.currency'
@@ -53,11 +58,13 @@ services:
             - '%pim_api.configuration%'
 
     pim_enrich.controller.rest.currency:
+        public: true
         class: 'Akeneo\Channel\Bundle\Controller\InternalApi\CurrencyController'
         arguments:
             - '@pim_catalog.repository.currency'
 
     pim_enrich.controller.currency:
+        public: true
         class: 'Akeneo\Channel\Bundle\Controller\UI\CurrencyController'
         arguments:
             - '@request_stack'

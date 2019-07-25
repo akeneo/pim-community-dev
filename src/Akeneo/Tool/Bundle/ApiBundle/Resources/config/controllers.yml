@@ -4,11 +4,13 @@ parameters:
 
 services:
     pim_api.controller.token:
+        public: true
         class: '%pim_api.controller.token.class%'
         arguments:
             - '@fos_oauth_server.server'
 
     pim_api.controller.root_endpoint:
+        public: true
         class: '%pim_api.controller.root_endpoint.class%'
         arguments:
             - '@router'

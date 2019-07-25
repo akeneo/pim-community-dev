@@ -3,6 +3,7 @@ parameters:
 
 services:
     pim_dashboard.controller.widget:
+        public: true
         class: '%pim_dashboard.controller.widget.class%'
         arguments:
             - '@pim_dashboard.widget.registry'
