@@ -109,8 +109,13 @@ SQL;
 
 function removeOrphanJobExecutionDirectoriesForJob(string $archiveDir, array $job)
 {
-    $localDirectories = getLocalDirectoriesForJob($archiveDir, $job['type'], $job['code']);
-    foreach ($localDirectories as $directory) {
+    $jobDirectory = $archiveDir . DIRECTORY_SEPARATOR . $job['type'] . DIRECTORY_SEPARATOR . $job['code'];
+    if (!(new Filesystem())->exists($jobDirectory)) {
+        return;
+    }
+
+    $jobExecutionDirectories = getLocalDirectoriesForJob($jobDirectory);
+    foreach ($jobExecutionDirectories as $directory) {
         if (doesDirectoryBelongToDeletedJobExecution($directory, $job['job_execution_ids'])) {
             removeDirectory($directory);
         }
@@ -125,10 +130,8 @@ function doesDirectoryBelongToDeletedJobExecution(string $directory, string $exi
     return !in_array($directoryId, $ids);
 }
 
-function getLocalDirectoriesForJob(string $archiveDir, string $jobType, string $jobName): Finder
+function getLocalDirectoriesForJob(string $localStorageDirectory): Finder
 {
-    $localStorageDirectory = $archiveDir . DIRECTORY_SEPARATOR . $jobType . DIRECTORY_SEPARATOR . $jobName;
-
     $finder = new Finder();
     $finder->directories()->depth(0)->in($localStorageDirectory);
 
