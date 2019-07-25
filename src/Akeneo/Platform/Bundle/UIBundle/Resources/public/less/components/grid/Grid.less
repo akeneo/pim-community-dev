@@ -118,7 +118,6 @@
       color: @AknLightPurple;
       font-style: italic;
       font-size: @AknFontSizeBig;
-      white-space: nowrap;
       max-width: 15vw;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -135,6 +134,10 @@
 
     &--noWrap {
       white-space: nowrap;
+    }
+
+    &--noMaxWidth {
+      max-width: unset;
     }
   }
 
