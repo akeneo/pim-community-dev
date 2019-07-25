@@ -9,3 +9,5 @@ services:
             - '@pim_user.context.user'
             - '@pim_notification.repository.user_notification'
             - '@pim_notification.remover.user_notification'
+        tags:
+            - 'controller.service_arguments'

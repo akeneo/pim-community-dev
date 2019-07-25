@@ -7,6 +7,8 @@ services:
         class: '%pim_analytics.controller.data.class%'
         arguments:
             - '@pim_analytics.data_collector.chained'
+        tags:
+            - 'controller.service_arguments'
 
     pim_analytics.controller.system_info:
         class: '%pim_analytics.controller.system_info.class%'

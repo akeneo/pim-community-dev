@@ -27,6 +27,8 @@ services:
             -
                 decimal_separators: '%pim_catalog.localization.decimal_separators%'
                 date_formats: '%pim_catalog.localization.date_formats%'
+        tags:
+            - 'controller.service_arguments'
 
     ### External API
     pim_api.controller.product:

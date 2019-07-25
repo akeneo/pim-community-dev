@@ -21,12 +21,16 @@ services:
             - '@pim_user.remover.user'
             - '@pim_catalog.localization.factory.number'
             - '@translator'
+        tags:
+            - 'controller.service_arguments'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'
         arguments:
             - '@oro_security.security_facade'
             - '@oro_security.acl.annotation_provider'
+        tags:
+            - 'controller.service_arguments'
 
     pim_user.controller.user_group_rest:
         class: '%pim_user.controller.user_group_rest.class%'

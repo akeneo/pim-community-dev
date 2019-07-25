@@ -7,3 +7,5 @@ services:
         arguments:
             - '@pim_dashboard.widget.registry'
             - '@templating'
+        tags:
+            - 'controller.service_arguments'
