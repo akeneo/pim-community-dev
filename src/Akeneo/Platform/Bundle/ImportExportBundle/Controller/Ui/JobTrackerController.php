@@ -209,20 +209,6 @@ class JobTrackerController extends Controller
     }
 
     /**
-     * Renders a view.
-     *
-     * @param string   $view       The view name
-     * @param array    $parameters An array of parameters to pass to the view
-     * @param Response $response   A response instance
-     *
-     * @return Response A Response instance
-     */
-    public function render($view, array $parameters = [], Response $response = null)
-    {
-        return $this->templating->renderResponse($view, $parameters, $response);
-    }
-
-    /**
      * Returns if a user has read permission on an import or export
      *
      * @param JobExecution  $jobExecution
