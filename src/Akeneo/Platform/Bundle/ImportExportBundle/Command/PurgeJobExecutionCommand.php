@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\BatchBundle\Command;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Command;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
