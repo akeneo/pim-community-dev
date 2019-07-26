@@ -135,10 +135,6 @@
     &--noWrap {
       white-space: nowrap;
     }
-
-    &--noMaxWidth {
-      max-width: unset;
-    }
   }
 
   &-bodyRow:hover &-bodyCell--actions,
@@ -568,5 +564,24 @@
     overflow: hidden;
     margin: 0 10px 0 0;
     max-width: 250px;
+  }
+}
+
+.AknGridHistory {
+
+  &-bodyCell {
+    &--highlight {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknFontSizeBig;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &--changes {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      min-width: 250px;
+    }
   }
 }
