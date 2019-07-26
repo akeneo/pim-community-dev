@@ -867,7 +867,7 @@ following format :
 
 The question we were asking ourselves about this difference of those two formats is : 
 
-"Do we should have to update our Domain and the DB to be compliant with the format for the product link rules or keep the naming from the rule engine ?"
+"Should we have to update our Domain and the DB to be compliant with the format for the product link rules or keep the naming from the rule engine ?"
 
 
 ### Solution :
