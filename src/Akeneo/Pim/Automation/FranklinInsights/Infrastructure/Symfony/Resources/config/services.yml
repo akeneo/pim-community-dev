@@ -64,6 +64,7 @@ services:
             - '@validator'
             - '@akeneo.pim.automation.franklin_insights.application.structure.service.ensure_franklin_attribute_group_exists'
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin'
+            - '@logger'
 
     akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\AddAttributeToFamily'

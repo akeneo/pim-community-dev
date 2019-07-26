@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeTy
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeAddedToFamily;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeAddedToFamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\ValueObject\AttributesToCreate;
@@ -62,7 +63,7 @@ class BulkCreateAttributesInFamilyHandlerSpec extends ObjectBehavior
     ) {
         $pimFamilyCode = new FamilyCode('my_family_code');
 
-        $attributes = new AttributesToCreate([
+        $attributesToCreate = new AttributesToCreate([
             [
                 'franklinAttributeLabel' => 'color',
                 'franklinAttributeType' => 'text',
@@ -77,25 +78,25 @@ class BulkCreateAttributesInFamilyHandlerSpec extends ObjectBehavior
             ],
         ]);
 
-        $createAttribute->bulkCreate(
-            [
-                [
-                    'attributeCode' => AttributeCode::fromLabel('color'),
-                    'attributeLabel' => new AttributeLabel('color'),
-                    'attributeType' => new AttributeType(AttributeTypes::TEXT),
-                ],
-                [
-                    'attributeCode' => AttributeCode::fromLabel('height'),
-                    'attributeLabel' => new AttributeLabel('height'),
-                    'attributeType' => new AttributeType(AttributeTypes::NUMBER),
-                ],
-                [
-                    'attributeCode' => AttributeCode::fromLabel('frequency'),
-                    'attributeLabel' => new AttributeLabel('frequency'),
-                    'attributeType' => new AttributeType(AttributeTypes::TEXT),
-                ]
-            ]
-        )->shouldBeCalled();
+        $attributes = [
+            new Attribute(
+                AttributeCode::fromLabel('color'),
+                new AttributeLabel('color'),
+                new AttributeType(AttributeTypes::TEXT)
+            ),
+            new Attribute(
+                AttributeCode::fromLabel('height'),
+                new AttributeLabel('height'),
+                new AttributeType(AttributeTypes::NUMBER)
+            ),
+            new Attribute(
+                AttributeCode::fromLabel('frequency'),
+                new AttributeLabel('frequency'),
+                new AttributeType(AttributeTypes::TEXT)
+            )
+        ];
+
+        $createAttribute->bulkCreate($attributes)->willReturn($attributes);
 
         $attributeCreatedRepository
             ->saveAll(Argument::that(function($events) {
@@ -119,7 +120,7 @@ class BulkCreateAttributesInFamilyHandlerSpec extends ObjectBehavior
 
         $command = new BulkCreateAttributesInFamilyCommand(
             $pimFamilyCode,
-            $attributes
+            $attributesToCreate
         );
         $this->handle($command);
     }

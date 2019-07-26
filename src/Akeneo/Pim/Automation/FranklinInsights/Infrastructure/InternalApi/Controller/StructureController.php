@@ -117,9 +117,9 @@ class StructureController
         $attributes = json_decode($request->getContent(), true);
 
         $command = new BulkCreateAttributesInFamilyCommand(new FamilyCode($familyCode), new AttributesToCreate($attributes));
-        $this->bulkCreateAttributesInFamilyHandler->handle($command);
+        $attributesCreatedCount = $this->bulkCreateAttributesInFamilyHandler->handle($command);
 
-        return new JsonResponse(null, Response::HTTP_CREATED);
+        return new JsonResponse(['attributesCreatedCount' => $attributesCreatedCount], Response::HTTP_CREATED);
     }
 
     public function bulkAddAttributesToFamilyAction(string $familyCode, Request $request): JsonResponse

@@ -57,7 +57,7 @@ export class AttributeSaver {
 
   public static async bulkCreate(request: BulkCreateAttributeRequest): Promise<void> {
     try {
-      await ajax({
+      const response = await ajax({
         url: Routing.generate('akeneo_franklin_insights_structure_bulk_create_attribute', {
           familyCode: request.familyCode
         }),
@@ -66,7 +66,7 @@ export class AttributeSaver {
         data: JSON.stringify(request.attributes)
       });
 
-      this.notifySuccess(request.familyCode, request.attributes.length);
+      this.notifySuccess(request.familyCode, request.attributes.length, response.attributesCreatedCount);
 
       return;
     } catch (error) {
@@ -76,7 +76,7 @@ export class AttributeSaver {
     }
   }
 
-  private static async notifySuccess(familyCode: string, attributeCreatedCount = 1): Promise<void> {
+  private static async notifySuccess(familyCode: string, attributeToCreateCount = 1, attributeCreatedCount = 1): Promise<void> {
     const family: Family = await FetcherRegistry.getFetcher('family').fetch(familyCode);
 
     const familyLabel = I18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
@@ -84,8 +84,8 @@ export class AttributeSaver {
       'success',
       __(
         'akeneo_franklin_insights.entity.attributes_mapping.flash.create_attribute_success',
-        {family: familyLabel, count: attributeCreatedCount},
-        attributeCreatedCount
+        {family: familyLabel, requestCount: attributeToCreateCount, successCount: attributeCreatedCount},
+        attributeToCreateCount
       )
     );
   }

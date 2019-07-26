@@ -48,7 +48,7 @@ akeneo_franklin_insights:
             label: Attributes mapping
             flash:
                 do_not_map_attribute_success: 'Attribute successfully updated.'
-                create_attribute_success: '{1} Attribute successfully created and attached to the family "{{ family }}". |[2,Inf[ {{ count }} attributes successfully created and attached to the family "{{ family }}".'
+                create_attribute_success: '{0} Sorry, none of the {{ requestCount }} attributes have been created. |{1} Attribute successfully created and attached to the family "{{ family }}". |[2,Inf[ {{ successCount }} attributes out of {{ requestCount }} have been successfully created and attached to the family "{{ family }}".'
                 create_attribute_error: 'Sorry, an error occurred while creating or attaching the attribute to the family.'
                 suggest_attribute_mapping_error: 'Catalog attribute "[{{ catalogAttributeCode }}]" is already mapped on the Franklin attribute "{{ franklinAttributeLabel }}".'
                 add_attribute_to_family_success: '{1} Attribute "{{ attribute }}" successfully attached to the family "{{ family }}". |[2,Inf[ Attributes successfully attached to the family "{{ family }}".'

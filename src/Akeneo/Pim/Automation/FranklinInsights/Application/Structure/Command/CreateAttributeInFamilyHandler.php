@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
@@ -47,11 +47,13 @@ class CreateAttributeInFamilyHandler
     {
         $pimAttributeType = $this->convertFranklinAttributeTypeToPimAttributeType($command->getFranklinAttributeType());
 
-        $this->createAttribute->create(
+        $attribute = new Attribute(
             $command->getPimAttributeCode(),
             new AttributeLabel((string) $command->getFranklinAttributeLabel()),
-             $pimAttributeType
+            $pimAttributeType
         );
+
+        $this->createAttribute->create($attribute);
 
         $this->franklinAttributeCreatedRepository->save(
             new FranklinAttributeCreated($command->getPimAttributeCode(), $pimAttributeType)

@@ -15,13 +15,13 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\AddAttributeToFamilyInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeAddedToFamily;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeAddedToFamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -51,33 +51,47 @@ class BulkCreateAttributesInFamilyHandler
         $this->franklinAttributeAddedToFamilyRepository = $franklinAttributeAddedToFamilyRepository;
     }
 
-    public function handle(BulkCreateAttributesInFamilyCommand $command): void
+    /**
+     * @param BulkCreateAttributesInFamilyCommand $command
+     *
+     * @return int Number of attributes successfully created.
+     */
+    public function handle(BulkCreateAttributesInFamilyCommand $command): int
     {
         $attributes = [];
-        $attributeCodes = [];
-        $franklinAttributeCreatedEvents = [];
-        $franklinAttributeAddedToFamilyEvents = [];
-
         foreach ($command->getAttributesToCreate() as $attributeToCreate) {
             $attributeType = $this->convertFranklinAttributeTypeToPimAttributeType($attributeToCreate['franklinAttributeType']);
             $attributeCode = AttributeCode::fromLabel((string) $attributeToCreate['franklinAttributeLabel']);
 
-            $attributes[] = [
-                'attributeCode' => $attributeCode,
-                'attributeLabel' => new AttributeLabel((string) $attributeToCreate['franklinAttributeLabel']),
-                'attributeType' => $attributeType,
-            ];
-
-            $attributeCodes[] = $attributeCode;
-            $franklinAttributeCreatedEvents[] = new FranklinAttributeCreated($attributeCode, $attributeType);
-            $franklinAttributeAddedToFamilyEvents[] = new FranklinAttributeAddedToFamily($attributeCode, $command->getPimFamilyCode());
+            $attributes[] = new Attribute(
+                $attributeCode,
+                new AttributeLabel((string) $attributeToCreate['franklinAttributeLabel']),
+                $attributeType
+            );
         }
 
-        $this->createAttribute->bulkCreate($attributes);
+        $createdAttributes = $this->createAttribute->bulkCreate($attributes);
+
+        if (empty($createdAttributes)) {
+            return 0;
+        }
+
+        $createdAttributesCodes = [];
+        $franklinAttributeCreatedEvents = [];
+        $franklinAttributeAddedToFamilyEvents = [];
+
+        foreach ($createdAttributes as $createdAttribute) {
+            $createdAttributesCodes[] = $createdAttribute->getCode();
+            $franklinAttributeCreatedEvents[] = new FranklinAttributeCreated($createdAttribute->getCode(), $createdAttribute->getType());
+            $franklinAttributeAddedToFamilyEvents[] = new FranklinAttributeAddedToFamily($createdAttribute->getCode(), $command->getPimFamilyCode());
+        }
+
         $this->franklinAttributeCreatedRepository->saveAll($franklinAttributeCreatedEvents);
 
-        $this->updateFamily->bulkAddAttributesToFamily($command->getPimFamilyCode(), $attributeCodes);
+        $this->updateFamily->bulkAddAttributesToFamily($command->getPimFamilyCode(), $createdAttributesCodes);
         $this->franklinAttributeAddedToFamilyRepository->saveAll($franklinAttributeAddedToFamilyEvents);
+
+        return count($createdAttributes);
     }
 
     private function convertFranklinAttributeTypeToPimAttributeType(FranklinAttributeType $franklinAttributeType): AttributeType

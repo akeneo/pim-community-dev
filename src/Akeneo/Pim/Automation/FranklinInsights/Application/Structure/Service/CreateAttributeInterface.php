@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
 interface CreateAttributeInterface
 {
-    public function create(
-        AttributeCode $attributeCode,
-        AttributeLabel $attributeLabel,
-        AttributeType $attributeType
-    ): void;
+    public function create(Attribute $attribute): void;
 
-    public function bulkCreate(array $attributesToCreate): void;
+    /**
+     * @param Attribute[] $attributesToCreate
+     *
+     * @return Attribute[] List of the attributes successfully created
+     */
+    public function bulkCreate(array $attributesToCreate): array;
 }
