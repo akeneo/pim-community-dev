@@ -5,14 +5,10 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use PhpParser\Node\Arg;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -50,7 +46,6 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
     function it_computes_completeness_and_indexes_a_product_model_descendants_which_are_products_and_sub_product_models(
         $productModelRepository,
         $pqbFactory,
-        $completenessManager,
         $bulkProductIndexer,
         $bulkProductModelIndexer,
         $productModelIndexer,
@@ -93,8 +88,6 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
     function it_does_not_fail_when_product_model_has_no_child(
         $productModelRepository,
         $pqbFactory,
-        $completenessManager,
-        $objectManager,
         $bulkProductIndexer,
         $bulkProductModelIndexer,
         $productModelIndexer,
