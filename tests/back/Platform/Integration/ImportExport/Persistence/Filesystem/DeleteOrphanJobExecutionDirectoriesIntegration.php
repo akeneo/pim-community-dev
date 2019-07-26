@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\ImportExport\Repository\InternalApi;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionFiles;
+use Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionDirectories;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use League\Flysystem\Filesystem;
 use PHPUnit\Framework\Assert;
 
-class DeleteOrphanJobExecutionFilesIntegration extends TestCase
+class DeleteOrphanJobExecutionDirectoriesIntegration extends TestCase
 {
     /** @var Filesystem */
     private $archivistFilesystem;
@@ -25,7 +25,7 @@ class DeleteOrphanJobExecutionFilesIntegration extends TestCase
     /** @var JobInstanceRepository */
     private $jobInstanceRepository;
 
-    /** @var DeleteOrphanJobExecutionFiles */
+    /** @var DeleteOrphanJobExecutionDirectories */
     private $deleteOrphansJobExecutionFiles;
 
     protected function setUp(): void
@@ -35,7 +35,7 @@ class DeleteOrphanJobExecutionFilesIntegration extends TestCase
         $this->archivistFilesystem = $this->get('oneup_flysystem.archivist_filesystem');
         $this->jobExecutionRepository = $this->get('akeneo_batch.job_repository');
         $this->jobInstanceRepository = $this->get('akeneo_batch.job.job_instance_repository');
-        $this->deleteOrphansJobExecutionFiles = $this->get('akeneo.platform.import_export.filesystem.delete_orphans_job_execution_files');
+        $this->deleteOrphansJobExecutionFiles = $this->get('akeneo.platform.import_export.filesystem.delete_orphans_job_execution_directories');
     }
 
     /**
@@ -64,7 +64,7 @@ class DeleteOrphanJobExecutionFilesIntegration extends TestCase
         Assert::assertTrue($this->archivistFilesystem->has($orphanFile3));
         Assert::assertTrue($this->archivistFilesystem->has($orphanFile4));
 
-        $this->deleteOrphansJobExecutionFiles->purge();
+        $this->deleteOrphansJobExecutionFiles->execute();
 
         Assert::assertTrue($this->archivistFilesystem->has($jobExecutionFilePath));
         Assert::assertFalse($this->archivistFilesystem->has($orphanFile1));

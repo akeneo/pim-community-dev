@@ -2,8 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution;
+use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,24 +51,12 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
             return;
         }
 
-        $deleteJobExecution = $this->getDeleteJobExecutionQuery();
-        $numberOfDeletedJobExecution = $deleteJobExecution->olderThanDays($days);
-
-        $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecution));
-
-        $this->deleteJobExecutionMessageOrphans();
+        $numberOfDeletedJobExecutions = $this->purgeJobExecution()->olderThanDays($days);
+        $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
     }
 
-    /**
-     * @return DoctrineJobRepository
-     */
-    protected function getDeleteJobExecutionQuery(): DeleteJobExecution
+    private function purgeJobExecution(): PurgeJobExecution
     {
-        return $this->getContainer()->get('akeneo_batch.delete_job_execution');
-    }
-
-    private function deleteJobExecutionMessageOrphans(): void
-    {
-        $this->getContainer()->get('akeneo_batch_queue.query.delete_job_execution_message_orphans')->execute();
+        return  $this->getContainer()->get('akeneo.platform.import_export.purge_job_execution');
     }
 }
