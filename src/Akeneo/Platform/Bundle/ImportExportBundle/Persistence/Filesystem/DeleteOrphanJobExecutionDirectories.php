@@ -27,7 +27,7 @@ final class DeleteOrphanJobExecutionDirectories
 
     public function execute(): void
     {
-        $paths = $this->archivistFilesystem->listFiles('.',  true);
+        $paths = $this->archivistFilesystem->listFiles('.', true);
 
         $jobExecutionIds = $this->getJobExecutionIdsFromPaths($paths);
         $existingJobExecutionIds = $this->getExistingJobExecutionIds($jobExecutionIds);
