@@ -37,23 +37,6 @@ behat.yml:
 	sed -i "s/127.0.0.1\//httpd-behat\//g" ./behat.yml
 	sed -i "s/127.0.0.1/selenium/g" ./behat.yml
 
-app/config/parameters.yml:
-	cp ./app/config/parameters.yml.dist ./app/config/parameters.yml
-	# Sed commands should be removed when env var will be introduce in the PIM
-	sed -i "s/database_host:.*localhost/database_host: mysql/g" ./app/config/parameters.yml
-	sed -i "s/localhost: 9200/elastic:changeme@elasticsearch:9200/g" ./app/config/parameters.yml
-
-app/config/parameters_test.yml:
-	cp ./app/config/parameters_test.yml.dist ./app/config/parameters_test.yml
-	# Sed commands should be removed when env var will be introduce in the PIM
-	sed -i "s/database_host:.*localhost/database_host:                        mysql-behat/g" ./app/config/parameters_test.yml
-	sed -i "s/localhost: 9200/elastic:changeme@elasticsearch:9200/g" ./app/config/parameters_test.yml
-	sed -i "s/product_and_product_model_index_name:.*akeneo_pim_product_and_product_model/product_and_product_model_index_name:  test_akeneo_pim_product_and_product_model/g" ./app/config/parameters_test.yml
-	sed -i "s/record_index_name:.*akeneo_referenceentity_record/record_index_name:                     test_akeneo_referenceentity_record/g" ./app/config/parameters_test.yml
-	sed -i "s/product_proposal_index_name:.*akeneo_pim_product_proposal/product_proposal_index_name:           test_akeneo_pim_product_proposal/g" ./app/config/parameters_test.yml
-	sed -i "s/published_product_index_name:.*akeneo_pim_published_product/published_product_index_name:          test_akeneo_pim_published_product/g" ./app/config/parameters_test.yml
-	sed -i "s/published_product_and_product_model_index_name:.*akeneo_pim_published_product_and_product_model/published_product_and_product_model_index_name: test_akeneo_pim_published_product_and_product_model/g" ./app/config/parameters_test.yml
-
 docker-compose.override.yml:
 	cp docker-compose.override.yml.dist docker-compose.override.yml
 
@@ -63,7 +46,7 @@ docker-compose.override.yml:
 ## Remove all configuration file generated
 .PHONY: reset-conf
 reset-conf:
-	rm .env docker-compose.override.yml app/config/parameters_test.yml app/config/parameters.yml behat.yml
+	rm .env docker-compose.override.yml behat.yml
 
 ##
 ## PIM installation
@@ -102,11 +85,11 @@ install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-pa
 
 ## Initialize the PIM database depending on an environment
 .PHONY: install-database-test
-install-database-test: docker-compose.override.yml app/config/parameters_test.yml vendor
+install-database-test: docker-compose.override.yml vendor
 	$(PHP_EXEC) bin/console --env=behat pim:installer:db
 
 .PHONY: install-database-prod
-install-database-prod: docker-compose.override.yml app/config/parameters.yml vendor
+install-database-prod: docker-compose.override.yml vendor
 	$(PHP_EXEC) bin/console --env=prod pim:installer:db
 
 ## Initialize the PIM frontend depending on an environment
@@ -120,7 +103,7 @@ build-front-test: docker-compose.override.yml node_modules
 
 ## Initialize the PIM: install database (behat/prod) and run webpack
 .PHONY: install-pim
-install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor node_modules clean install-asset build-front-dev build-front-test install-database-test install-database-prod
+install-pim: vendor node_modules clean install-asset build-front-dev build-front-test install-database-test install-database-prod
 
 ##
 ## Docker
@@ -128,7 +111,7 @@ install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor nod
 
 ## Start docker containers
 .PHONY: up
-up: .env docker-compose.override.yml app/config/parameters.yml app/config/parameters_test.yml
+up: .env docker-compose.override.yml app/config/parameters_test.yml
 	$(DOCKER_COMPOSE) up -d --remove-orphan
 
 ## Stop docker containers, remove volumes and networks
@@ -166,18 +149,18 @@ phpspec-debug: vendor
 	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: behat-acceptance
-behat-acceptance: behat.yml app/config/parameters_test.yml vendor
+behat-acceptance: behat.yml vendor
 	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: behat-acceptance-debug
-behat-acceptance-debug: behat.yml app/config/parameters_test.yml vendor
+behat-acceptance-debug: behat.yml vendor
 	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: phpunit
-phpunit: app/config/parameters_test.yml vendor
+phpunit: vendor
 	${PHP_EXEC} vendor/bin/phpunit -c app ${F}
 
 .PHONY: behat-legacy
-behat-legacy: behat.yml app/config/parameters_test.yml vendor node_modules
+behat-legacy: behat.yml vendor node_modules
 	${PHP_EXEC} vendor/bin/behat -p legacy ${F}
 

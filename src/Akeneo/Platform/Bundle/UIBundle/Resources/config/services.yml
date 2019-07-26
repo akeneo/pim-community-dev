@@ -14,7 +14,7 @@ services:
         class: 'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver'
         arguments:
             - '@request_stack'
-            - '%locale%'
+            - '%env(APP_DEFAULT_LOCALE)%'
 
     pim_enrich.version_strategy:
         class: 'Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy'

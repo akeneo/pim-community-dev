@@ -7,7 +7,7 @@ services:
             class: '%pim_installer.install_status_manager.class%'
             arguments:
                 - '@doctrine'
-                - '%database_name%'
+                - '%env(APP_DATABASE_NAME)%'
 
     pim_installer.directories_registry:
         class: '%pim_installer.directories_registry.class%'
