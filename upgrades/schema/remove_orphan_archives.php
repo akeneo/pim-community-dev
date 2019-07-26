@@ -146,10 +146,9 @@ function getLocalDirectoriesForJob(string $localStorageDirectory): Finder
 
 function removeDirectory(string $directory): void
 {
-    $fs = new Filesystem();
-
-    if ($fs->exists($directory)) {
-        $fs->remove($directory);
+    if ((new Filesystem())->exists($directory)) {
+        // using directly rm -rf instead of Filesytem::remove for NFS performance/stability problems
+        exec("rm -rf $directory");
         echo "  - Directory $directory removed.\n";
     }
 }
