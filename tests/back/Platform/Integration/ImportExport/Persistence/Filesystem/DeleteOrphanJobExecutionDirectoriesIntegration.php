@@ -75,10 +75,6 @@ class DeleteOrphanJobExecutionDirectoriesIntegration extends TestCase
         Assert::assertFalse($this->archivistFilesystem->has('type/job_name_1/1'));
         Assert::assertFalse($this->archivistFilesystem->has('type/job_name_1/2'));
         Assert::assertFalse($this->archivistFilesystem->has('type/job_name_2/1'));
-
-        // we don't care about cleaning empty job_name directories
-        Assert::assertTrue($this->archivistFilesystem->has('type/job_name_1'));
-        Assert::assertTrue($this->archivistFilesystem->has('type/job_name_2'));
     }
 
     protected function getConfiguration(): Configuration
