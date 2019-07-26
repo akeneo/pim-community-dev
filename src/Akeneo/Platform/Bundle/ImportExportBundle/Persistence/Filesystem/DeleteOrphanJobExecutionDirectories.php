@@ -31,7 +31,7 @@ final class DeleteOrphanJobExecutionDirectories
 
         $jobExecutionIds = $this->getJobExecutionIdsFromPaths($paths);
         $existingJobExecutionIds = $this->getExistingJobExecutionIds($jobExecutionIds);
-        $this->deleteOrphanJobExecutionFiles($paths, $existingJobExecutionIds);
+        $this->deleteOrphanJobExecutionDirectories($paths, $existingJobExecutionIds);
     }
 
     private function getJobExecutionIdsFromPaths(array $paths): array
@@ -62,7 +62,7 @@ final class DeleteOrphanJobExecutionDirectories
         return $existingJobExecutionIds;
     }
 
-    private function deleteOrphanJobExecutionFiles(array $paths, array $existingJobExecutionIds): void
+    private function deleteOrphanJobExecutionDirectories(array $paths, array $existingJobExecutionIds): void
     {
         foreach ($paths as $path) {
             $directories = explode(DIRECTORY_SEPARATOR, $path['dirname']);
