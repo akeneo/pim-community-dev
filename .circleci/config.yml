@@ -83,10 +83,16 @@ jobs:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
           - run:
+                name: Install the latest docker composer version
+                command: |
+                    sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                    sudo chmod +x /usr/local/bin/docker-compose
+                    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+          - run:
                 name: Start containers
                 command: docker-compose up -d fpm
           - run:
-                name: Generate production environment cache
+                name: Generate dev environment cache (for symfony phpstan extension)
                 command: docker-compose exec fpm bin/console cache:clear -e dev
           - run:
                 name: PhpSpec

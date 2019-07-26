@@ -1,33 +1,22 @@
 <?php
+
+use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
-require __DIR__.'/../vendor/autoload.php';
-$kernel = new AppKernel('prod', false);
-//$kernel = new AppCache($kernel);
+require dirname(__DIR__).'/app/bootstrap.php';
 
-// When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
-//Request::enableHttpMethodParameterOverride();
-$request = Request::createFromGlobals();
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
 
-/* In case your app is running behind a reverse-proxy/load-balancer set an environment variable TRUSTED_PROXY_IPS
-   defining IPs or IP ranges as a comma list (example : TRUSTED_PROXY_IPS="10.0.0.0/8")
-   to allow usage of X-Forwarded-* headers.
-   This also allows keeping the HTTPS protocol for any URL generated in the PIM */
-$loadBalancerTrustedIPs = getenv('TRUSTED_PROXY_IPS');
-if (!empty($loadBalancerTrustedIPs)) {
-    $ipsArray = explode(',', $loadBalancerTrustedIPs);
-    Request::setTrustedProxies(
-        // the IP address (or range) of your proxy
-        $ipsArray,
-        // trust *all* "X-Forwarded-*" headers
-        Request::HEADER_X_FORWARDED_ALL
-        // or, if your proxy instead uses the "Forwarded" header
-        // Request::HEADER_FORWARDED
-        // or, if you're using AWS ELB
-        // Request::HEADER_X_FORWARDED_AWS_ELB
-    );
+    Debug::enable();
 }
 
+if ($trustedProxies = $_SERVER['TRUSTED_PROXY_IPS'] ?? $_ENV['TRUSTED_PROXY_IPS'] ?? false) {
+    Request::setTrustedProxies(explode(',', $trustedProxies),Request::HEADER_X_FORWARDED_ALL);
+}
+
+$kernel = new AppKernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
