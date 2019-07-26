@@ -32,13 +32,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_enrich.event_subscriber.translate_flash_messages:
-        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\TranslateFlashMessagesSubscriber'
-        arguments:
-            - '@translator'
-        tags:
-            - { name: kernel.event_subscriber }
-
     stof_doctrine_extensions.event_listener.locale:
         class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\UserContextListener'
         arguments:

@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -20,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Category Tree Controller
@@ -54,18 +54,9 @@ class CategoryTreeController extends Controller
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * Constructor
-     *
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param UserContext                 $userContext
-     * @param SaverInterface              $categorySaver
-     * @param RemoverInterface            $categoryRemover
-     * @param SimpleFactoryInterface      $categoryFactory
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param SecurityFacade              $securityFacade
-     * @param array                       $rawConfiguration
-     */
+    /** @var TranslatorInterface */
+    protected $translator;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
@@ -74,6 +65,7 @@ class CategoryTreeController extends Controller
         SimpleFactoryInterface $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
+        TranslatorInterface $translator,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -88,6 +80,7 @@ class CategoryTreeController extends Controller
         $this->configure($resolver);
 
         $this->rawConfiguration = $resolver->resolve($rawConfiguration);
+        $this->translator = $translator;
     }
 
     /**
@@ -282,8 +275,8 @@ class CategoryTreeController extends Controller
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $message = new Message(sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
-                $this->addFlash('success', $message);
+                $message = sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree');
+                $this->addFlash('success', $this->translator->trans($message));
 
                 return new JsonResponse(
                     [
@@ -329,8 +322,8 @@ class CategoryTreeController extends Controller
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $message = new Message(sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
-                $this->addFlash('success', $message);
+                $message = sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree');
+                $this->addFlash('success', $this->translator->trans($message));
             }
         }
 
