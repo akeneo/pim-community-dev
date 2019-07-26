@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7850: Ignore empty parent for simple products in the proposal product import job
+
 # 2.3.56 (2019-07-24)
 
 ## Bug fixes

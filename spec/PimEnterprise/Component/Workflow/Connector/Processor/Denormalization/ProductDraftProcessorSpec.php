@@ -63,6 +63,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $product->isVariant()->willReturn(false);
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
 
         $values = $this->getValues();
@@ -133,10 +134,10 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
-        JobInstance $jobInstance,
         TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $product->isVariant()->willReturn(false);
 
         $values = $this->getValues();
 
@@ -157,6 +158,47 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 
         $this->process($values)->shouldReturn(null);
+    }
+
+    public function it_ignores_the_parent_field_if_product_is_not_a_variant(
+        $repository,
+        $updater,
+        $validator,
+        $productDraftBuilder,
+        $stepExecution,
+        $tokenStorage,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList,
+        EntityWithValuesDraftInterface $productDraft,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        TokenInterface $token
+    )
+    {
+        $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $product->isVariant()->willReturn(false);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
+
+        $values = $this->getValues();
+
+        $updater
+            ->update($product, $values)
+            ->shouldBeCalled();
+
+        $validator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $productDraftBuilder->build($product, 'mary')->willReturn($productDraft);
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUsername()->willReturn('mary');
+
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+
+        $values['parent'] = '';
+        $this->process($values)->shouldReturn($productDraft);
     }
 
     function getValues()
