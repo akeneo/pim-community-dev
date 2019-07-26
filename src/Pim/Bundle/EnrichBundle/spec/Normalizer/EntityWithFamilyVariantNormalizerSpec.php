@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -199,5 +200,56 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             'model_type'         => 'product_model',
             'completeness'       => ['NORMALIZED COMPLETENESS']
         ]);
+    }
+
+    function it_normalizes_an_entity_with_family_variant_with_a_boolean_attribute_as_axis(
+        $localeRepository,
+        $attributesProvider,
+        $variantProductRatioQuery,
+        ProductModelInterface $productModel,
+        AttributeInterface $booleanAttribute,
+        ValueInterface $boolValue,
+        CompleteVariantProducts $completeVariantProducts
+    ) {
+        $context = [
+            'locale' => 'en_US'
+        ];
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
+
+        $productModel->getLabel('fr_FR', null)->willReturn('Tshirt Non');
+        $productModel->getLabel('en_US', null)->willReturn('Tshirt No');
+        $productModel->getId()->willReturn(5);
+
+        $productModel->getCode()->willReturn('tshirt_no');
+
+        $attributesProvider->getAxes($productModel)->willReturn([$booleanAttribute]);
+
+        $booleanAttribute->getCode()->willReturn('a_yes_no');
+        $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
+        $productModel->getValue('a_yes_no')->willReturn($boolValue);
+
+        $boolValue->getData()->willReturn(false);
+
+        $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
+        $completeVariantProducts->values()->willReturn(['NORMALIZED COMPLETENESS']);
+
+        $this->normalize($productModel, 'internal_api', $context)->shouldReturn(
+            [
+                'id' => 5,
+                'identifier' => 'tshirt_no',
+                'axes_values_labels' => [
+                    'fr_FR' => '0',
+                    'en_US' => '0',
+                ],
+                'labels' => [
+                    'fr_FR' => 'Tshirt Non',
+                    'en_US' => 'Tshirt No',
+                ],
+                'order' => ['0'],
+                'image' => null,
+                'model_type' => 'product_model',
+                'completeness' => ['NORMALIZED COMPLETENESS'],
+            ]
+        );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\EntityWithFamilyVariant\Query\GetValuesOfSiblings;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -182,8 +183,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
         foreach ($axes as $axis) {
             $value = $values->getByCodes($axis->getCode());
-
-            $combination[] = (string)$value;
+            if (AttributeTypes::BOOLEAN === $axis->getType()) {
+                $combination[] = (true === $value->getData() ? '1' : '0');
+            } else {
+                $combination[] = (string)$value;
+            }
         }
 
         return implode(',', $combination);

@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\EntityWithFamilyVariant\Query\GetValuesOfSiblings;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -12,10 +13,12 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
+use Pim\Component\Catalog\Value\ScalarValue;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -133,6 +136,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $entity->getValuesForVariation()->willReturn($values);
         $values->getByCodes('color')->willReturn($emptyValue);
         $axesProvider->getAxes($entity)->willReturn([$color]);
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $color->getCode()->willReturn('color');
         $entity->getValue('color')->willReturn($emptyValue);
         $emptyValue->__toString()->willReturn('');
@@ -164,6 +168,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $axesProvider->getAxes($entity)->willReturn([$color]);
         $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
 
         $values->getByCodes('color')->willReturn($blue);
         $entity->getValuesForVariation()->willReturn($values);
@@ -172,10 +177,12 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $red->__toString()->willReturn('[red]');
         $yellow->__toString()->willReturn('[yellow]');
 
-        $getValuesOfSiblings->for($entity)->willReturn([
-            'sibling1' => $valuesOfFirstSibling,
-            'sibling2' => $valuesOfSecondSibling,
-        ]);
+        $getValuesOfSiblings->for($entity)->willReturn(
+            [
+                'sibling1' => $valuesOfFirstSibling,
+                'sibling2' => $valuesOfSecondSibling,
+            ]
+        );
 
         $valuesOfFirstSibling->getByCodes('color')->willReturn($red);
         $valuesOfSecondSibling->getByCodes('color')->willReturn($yellow);
@@ -209,6 +216,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $axesProvider->getAxes($entity)->willReturn([$color]);
         $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
 
         $blue->__toString()->willReturn('[blue]');
         $red->__toString()->willReturn('[red]');
@@ -249,6 +257,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $entity->getValuesForVariation()->willReturn($values);
         $axesProvider->getAxes($entity)->willReturn([$color]);
         $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
 
         $getValuesOfSiblings->for($entity)->willReturn(
             [
@@ -307,6 +316,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $entity->getValuesForVariation()->willReturn($values);
         $axesProvider->getAxes($entity)->willReturn([$color]);
         $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
 
         $getValuesOfSiblings->for($entity)->willReturn(
             [
@@ -331,6 +341,67 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 [
                     '%values%' => '[blue]',
                     '%attributes%' => 'color',
+                    '%validated_entity%' => 'my_identifier',
+                    '%sibling_with_same_value%' => 'sibling2',
+                ]
+            )
+            ->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($entity, $constraint);
+    }
+
+    function it_raises_a_violation_if_there_is_a_duplicate_boolean_value_in_any_sibling_variant_product(
+        ExecutionContextInterface $context,
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
+        UniqueAxesCombinationSet $uniqueAxesCombinationSet,
+        GetValuesOfSiblings $getValuesOfSiblings,
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $parent,
+        ProductInterface $entity,
+        AttributeInterface $booleanAttribute,
+        UniqueVariantAxis $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $booleanAttribute->getCode()->willReturn('a_yes_no');
+        $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
+        $booleanAttribute->isUnique()->willReturn(false);
+
+        $entity->getIdentifier()->willReturn('my_identifier');
+        $entity->getParent()->willReturn($parent);
+        $entity->getFamilyVariant()->willReturn($familyVariant);
+        $entity->getValuesForVariation()->willReturn(
+            new ValueCollection(
+                [
+                    New ScalarValue($booleanAttribute->getWrappedObject(), null, null, false),
+                ]
+            )
+        );
+
+        $axesProvider->getAxes($entity)->willReturn([$booleanAttribute]);
+        $getValuesOfSiblings->for($entity)->willReturn(
+            [
+                'sibling1' => new ValueCollection(
+                    [
+                        new ScalarValue($booleanAttribute->getWrappedObject(), null, null, true),
+                    ]
+                ),
+                'sibling2' => new ValueCollection(
+                    [
+                        new ScalarValue($booleanAttribute->getWrappedObject(), null, null, false),
+                    ]
+                ),
+            ]
+        );
+
+        $uniqueAxesCombinationSet->addCombination($entity, '0')->shouldBeCalled();
+        $context
+            ->buildViolation(
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_VARIANT_PRODUCT,
+                [
+                    '%values%' => '0',
+                    '%attributes%' => 'a_yes_no',
                     '%validated_entity%' => 'my_identifier',
                     '%sibling_with_same_value%' => 'sibling2',
                 ]
@@ -368,7 +439,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $axesProvider->getAxes($entity)->willReturn([$color, $size]);
         $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $size->getCode()->willReturn('size');
+        $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
 
         $values->getByCodes('color')->willReturn($blue);
         $values->getByCodes('size')->willReturn($xl);
@@ -435,7 +508,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $axesProvider->getAxes($entity)->willReturn([$color, $size]);
         $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $size->getCode()->willReturn('size');
+        $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
 
         $values->getByCodes('color')->willReturn($blue);
         $values->getByCodes('size')->willReturn($xl);
@@ -496,6 +571,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $entity1->getFamilyVariant()->willReturn($familyVariant);
         $axesProvider->getAxes($entity1)->willReturn([$color]);
         $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $getValuesOfSiblings->for($entity1)->willReturn([]);
 
         $entity2->getCode()->willReturn('entity_2');
@@ -549,6 +625,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $entity1->getFamilyVariant()->willReturn($familyVariant);
         $axesProvider->getAxes($entity1)->willReturn([$color]);
         $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $getValuesOfSiblings->for($entity1)->willReturn([]);
 
         $entity2->getIdentifier()->willReturn('entity_2');
