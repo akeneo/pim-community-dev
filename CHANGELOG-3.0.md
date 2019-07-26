@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8591: Fix product history author display
+- PIM-8589: Fix add attribute to attribute group when no permission on group "Other"
 
 # 3.0.34 (2019-07-24)
 
