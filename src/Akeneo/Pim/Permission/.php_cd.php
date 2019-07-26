@@ -144,9 +144,6 @@ $rules = [
         'Oro\Bundle\FilterBundle',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\DatagridViewTypes',
 
-        // TIP-1014: Do not use custom Flash Messages
-        'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
-
         // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
 

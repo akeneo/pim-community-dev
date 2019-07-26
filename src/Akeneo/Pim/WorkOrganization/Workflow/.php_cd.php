@@ -138,9 +138,6 @@ $rules = [
         // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle',
 
-        // TIP-1014: Do not use custom Flash Messages
-        'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
-
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
 

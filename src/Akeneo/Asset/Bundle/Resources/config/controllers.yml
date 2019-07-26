@@ -38,6 +38,7 @@ services:
             - '@pimee_product_asset.manager.category'
             - '@pimee_product_asset.builder.reference'
             - '@pimee_product_asset.builder.variation'
+            - '@translator'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
@@ -77,6 +78,7 @@ services:
             - '@templating'
             - '@form.factory'
             - '@session'
+            - '@translator'
 
     pimee_product_asset.controller.category_tree_asset_picker:
         public: true
@@ -95,6 +97,7 @@ services:
             - '@templating'
             - '@form.factory'
             - '@session'
+            - '@translator'
 
     pimee_product_asset.controller.rest.asset_category:
         public: true
