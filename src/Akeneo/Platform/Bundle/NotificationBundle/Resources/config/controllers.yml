@@ -3,6 +3,7 @@ parameters:
 
 services:
     pim_notification.controller.notification:
+        public: true
         class: '%pim_notification.controller.notification.class%'
         arguments:
             - '@templating'

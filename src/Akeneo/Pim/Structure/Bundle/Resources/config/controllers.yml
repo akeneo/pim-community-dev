@@ -1,6 +1,7 @@
 services:
     ### External API
     pim_api.controller.attribute:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeController'
         arguments:
             - '@pim_api.repository.attribute'
@@ -16,6 +17,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.attribute_group:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeGroupController'
         arguments:
             - '@pim_api.repository.attribute_group'
@@ -31,6 +33,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.attribute_option:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeOptionController'
         arguments:
             - '@pim_api.repository.attribute'
@@ -48,6 +51,7 @@ services:
             - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
 
     pim_api.controller.family:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyController'
         arguments:
             - '@pim_api.repository.family'
@@ -63,6 +67,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.family_variant:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyVariantController'
         arguments:
             - '@pim_api.repository.family'
@@ -79,6 +84,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.association_type:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AssociationTypeController'
         arguments:
             - '@pim_api.repository.association_type'
@@ -95,6 +101,7 @@ services:
 
     ### Internal Api
     pim_enrich.controller.rest.attribute:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeController'
         arguments:
             - '@pim_catalog.repository.attribute'
@@ -114,6 +121,7 @@ services:
             - '@pim_catalog.doctrine.query.attribute_is_an_family_variant_axis'
 
     pim_enrich.controller.rest.attribute_group:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController'
         arguments:
             - '@pim_catalog.repository.attribute_group'
@@ -133,6 +141,7 @@ services:
             - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.family:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController'
         arguments:
             - '@pim_catalog.repository.family'
@@ -147,6 +156,7 @@ services:
             - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.family_variant:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyVariantController'
         arguments:
             - '@pim_catalog.repository.family_variant'
@@ -160,6 +170,7 @@ services:
             - '@pim_enrich.repository.family_variant.search'
 
     pim_enrich.controller.attribute_option:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeOptionController'
         arguments:
             - '@pim_internal_api_serializer'
@@ -176,11 +187,13 @@ services:
             - '@pim_enrich.normalizer.structured.attribute_option'
 
     pim_enrich.controller.rest.attribute_type:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeTypeController'
         arguments:
             - '@pim_catalog.registry.attribute_type'
 
     pim_enrich.controller.rest.association_type:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AssociationTypeController'
         arguments:
             - '@pim_catalog.repository.association_type'
@@ -193,6 +206,7 @@ services:
             - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.group_type:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GroupTypeController'
         arguments:
             - '@pim_catalog.repository.group_type'
@@ -206,6 +220,7 @@ services:
             - '@pim_enrich.normalizer.violation'
 
     pim_reference_data.controller.configuration_rest:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\ReferenceDataConfigurationRestController'
         arguments:
             - '@pim_reference_data.registry'

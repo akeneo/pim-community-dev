@@ -5,6 +5,7 @@ parameters:
 
 services:
     pim_user.controller.user_rest:
+        public: true
         class: '%pim_user.controller.user_rest.class%'
         arguments:
             - '@security.token_storage'
@@ -23,17 +24,20 @@ services:
             - '@translator'
 
     pim_user.controller.security_rest:
+        public: true
         class: '%pim_user.controller.security_rest.class%'
         arguments:
             - '@oro_security.security_facade'
             - '@oro_security.acl.annotation_provider'
 
     pim_user.controller.user_group_rest:
+        public: true
         class: '%pim_user.controller.user_group_rest.class%'
         arguments:
             - '@pim_user.repository.group'
 
     pim_enrich.controller.rest.api_client:
+        public: true
         class: 'Akeneo\UserManagement\Bundle\Controller\ApiClientController'
         arguments:
             - '@fos_oauth_server.client_manager.default'
@@ -41,6 +45,7 @@ services:
             - '@pim_internal_api_serializer'
 
     pim_user.controller.user_role_rest:
+        public: true
         class: 'Akeneo\UserManagement\Bundle\Controller\Rest\UserRoleController'
         arguments:
             - '@pim_user.repository.role'

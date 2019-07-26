@@ -6,6 +6,7 @@ parameters:
 
 services:
     pim_import_export.controller.export_profile:
+        public: true
         class: '%pim_import_export.controller.export_profile.class%'
         arguments:
             - '@templating'
@@ -19,6 +20,7 @@ services:
             - export
 
     pim_import_export.controller.import_profile:
+        public: true
         class: '%pim_import_export.controller.import_profile.class%'
         arguments:
             - '@templating'
@@ -32,6 +34,7 @@ services:
             - import
 
     pim_import_export.controller.export_execution:
+        public: true
         class: '%pim_import_export.controller.export_execution.class%'
         arguments:
             - '@templating'
@@ -45,6 +48,7 @@ services:
             - export
 
     pim_import_export.controller.import_execution:
+        public: true
         class: '%pim_import_export.controller.import_execution.class%'
         arguments:
             - '@templating'
@@ -58,6 +62,7 @@ services:
             - import
 
     pim_enrich.controller.rest.job_instance:
+        public: true
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController'
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
@@ -81,6 +86,7 @@ services:
             - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_enrich.controller.rest.job_execution:
+        public: true
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobExecutionController'
         arguments:
             - '@translator'
@@ -91,6 +97,7 @@ services:
 
 
     pim_enrich.controller.job_tracker:
+        public: true
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController'
         arguments:
             - '@templating'
