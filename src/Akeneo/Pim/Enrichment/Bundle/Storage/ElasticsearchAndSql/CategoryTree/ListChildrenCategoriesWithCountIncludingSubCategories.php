@@ -201,6 +201,8 @@ SQL;
         }
 
         $body = [];
+
+        // Add document type
         foreach ($categoriesWithoutCount as $category) {
             $categoryCodes = $category['children_codes'];
             $categoryCodes[] = $category['child_code'];
