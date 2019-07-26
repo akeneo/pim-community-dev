@@ -44,7 +44,7 @@ final class ComputeAndPersistProductCompletenessSubscriber implements EventSubsc
 
         if (
             !$product instanceof ProductInterface
-            // TODO Remove this when decoupling PublishedProduct from Enrichment
+            // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
             || get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
         ) {
             return;

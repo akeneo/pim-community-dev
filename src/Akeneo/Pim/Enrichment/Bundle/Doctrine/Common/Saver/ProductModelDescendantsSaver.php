@@ -50,14 +50,6 @@ class ProductModelDescendantsSaver implements SaverInterface
     /** @var integer */
     private $batchSize;
 
-    /**
-     * @param ProductModelRepositoryInterface        $productModelRepository
-     * @param BulkIndexerInterface                   $bulkProductIndexer
-     * @param BulkIndexerInterface                   $bulkProductModelIndexer
-     * @param IndexerInterface                       $productModelIndexer
-     * @param ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
-     * @param integer                                $batchSize
-     */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
