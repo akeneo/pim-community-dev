@@ -257,7 +257,7 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testCreateAndUpdateProductModelsWithUpdatedAxeValue()
+    public function testCreateAndUpdateProductModelsWithAlreadyExistingAxeValue()
     {
         $data =
 <<<JSON
@@ -269,6 +269,27 @@ JSON;
 <<<JSON
 {"line":1,"code":"sub_sweat_option_a","status_code":204}
 {"line":2,"code":"sub_sweat_option_b","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Cannot set value \"Option A\" for the attribute axis \"a_simple_select\" on product model \"sub_sweat_option_b\", as the product model \"sub_sweat_option_a\" already has this value"}]}
+JSON;
+
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
+        $httpResponse = $response['http_response'];
+
+        $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
+        $this->assertSame($expectedContent, $response['content']);
+    }
+
+    public function testCreateAndUpdateProductModelsWithUpdatedAxeValue()
+    {
+        $data =
+            <<<JSON
+    {"code": "sub_sweat_option_a", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionB"}]}}
+    {"code": "sub_sweat_option_b", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionB"}]}}
+JSON;
+
+        $expectedContent =
+            <<<JSON
+{"line":1,"code":"sub_sweat_option_a","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Variant axis \"a_simple_select\" cannot be modified, \"Option B\" given"}]}
+{"line":2,"code":"sub_sweat_option_b","status_code":201}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
