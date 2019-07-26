@@ -61,12 +61,12 @@ class CategoryTreeFixturesLoader
     /**
      * @param array $products
      */
-    public function givenTheProductModelsWithCategories(array $products): void
+    public function givenTheProductModelsWithCategories(array $categoryCodes): void
     {
         $this->createFamily();
         $this->createFamilyVariant();
 
-        foreach ($products as $identifier => $categories) {
+        foreach ($categoryCodes as $identifier => $categories) {
             $productModel = $this->container->get('pim_catalog.factory.product_model')->create();
             $this->container->get('pim_catalog.updater.product_model')->update($productModel, [
                 'categories' => $categories,
