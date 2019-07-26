@@ -3,6 +3,7 @@ parameters:
 
 services:
     pimee_revert.controller.product_version:
+        public: true
         class: '%pimee_revert.controller.product_version.class%'
         arguments:
             - '@doctrine'
