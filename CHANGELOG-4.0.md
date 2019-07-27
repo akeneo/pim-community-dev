@@ -59,13 +59,10 @@
 - Remove class `Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler`
 - Remove class `Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler`
 - Remove class `Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler`
-- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface`
-- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse`
 - Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface`
 - Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediator`
 - Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface`
 - Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher`
-- Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\DeleteMassActionHandler`
 - Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\WindowMassAction`
 - Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\DeleteMassAction`
 
