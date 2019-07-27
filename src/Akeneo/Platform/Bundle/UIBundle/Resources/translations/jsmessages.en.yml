@@ -2,10 +2,10 @@
 "Yes, do it": "Yes, do it"
 "Ok, got it.": "Ok, got it."
 "Edit": "Edit"
-"Unexpected error occured. Please contact system administrator.": "Unexpected error occured. Please contact system administrator."
-"Yes, revoke": "Yes, Revoke"
-"Revoke Confirmation": "Revoke Confirmation"
-Prev: Prev
+"Unexpected error occured. Please contact system administrator.": "An unexpected error has occurred. Please contact the system administrator."
+"Yes, revoke": "Yes, revoke"
+"Revoke Confirmation": "Revoke confirmation"
+Prev: Previous
 Today: Today
 Wk: Wk
 AM: AM
@@ -94,11 +94,11 @@ oro_config:
           title: System
       group:
         localization:
-          title: Localization
+          title: Localisation
           system_locale: Language
         notification:
           title: Notifications
-          system_notification: New versions notifications
+          system_notification: New version notifications
         loading_message:
           title: Loading messages
           label: Enable loading messages
@@ -106,8 +106,8 @@ oro_config:
           label: Available loading messages
 pim_ui:
   flash:
-    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
-"Sorry, page was not loaded correctly": "Sorry, page was not loaded correctly"
+    unsaved_changes: 'You have unsaved changes. Are you sure that you want to leave?'
+"Sorry, page was not loaded correctly": "Sorry, the page was not loaded correctly"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Your local changes will be lost. Are you sure you want to refresh the page?"
 "navigation.message.content.outdated": "Content of {{ title }} page is outdated, please <a href='#' data-action='page-refresh'>refresh the page</a>"
 "Content of pinned page is outdated": "Content of pinned page is outdated"
@@ -125,6 +125,7 @@ pim_common:
   code: Code
   confirm: Confirm
   confirm_deletion: Confirm deletion
+  confirm_revocation: Confirm revocation
   create: Create
   created: Created
   delete: Delete
@@ -136,6 +137,7 @@ pim_common:
   history: History
   label: Label
   label_translations: Label translations
+  Label or identifier: label or identifier
   less_than: Less than
   loading: Loading...
   media_upload: Drag and drop to upload or click here
@@ -181,13 +183,13 @@ error:
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
-    error_occured_during_submission: An error occured during the form submission on the server
+    error_occured_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
-    not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
+    not_available: Your web browser does not seem compatible with sessionStorage. Please contact your administrator
 pim_enrich.entity.fallback:
   flash:
-    generic_error: An error occured
+    generic_error: An error occurred
     update:
       fail: Update failed
       success: Successfully updated
@@ -213,6 +215,9 @@ pim_enrich.entity.api_connection:
       fail: Cannot revoke this API connection
   page_title:
     index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
+  module:
+    revoke:
+      confirm: Are you sure you want to revoke this API connection?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
@@ -283,9 +288,9 @@ pim_menu:
     group: Groups
     group_type: Group types
     product_model: Product Models
-    export_history: Exports history
+    export_history: Export history
     export_profile: Export profiles
-    import_history: Imports history
+    import_history: Import history
     import_profile: Import profiles
     configuration: Configuration
     user_management: Users Management
@@ -302,7 +307,7 @@ pim_menu:
     user: Users management navigation
     settings: Settings navigation
     product: Product navigation
-    product_infos: Product infos
+    product_infos: Product info
   user:
     logout: Logout
     user_account: My Account

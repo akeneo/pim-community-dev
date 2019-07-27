@@ -48,7 +48,7 @@ pim_ui.system_config:
     loading_message.title: S'estan carregant els missatges
 other_actions: Altres accions
 pim_common:
-  cancel: Cancelar
+  cancel: Cancel·lar
   save: Desar
   delete: Suprimir
   update: Actualitzar

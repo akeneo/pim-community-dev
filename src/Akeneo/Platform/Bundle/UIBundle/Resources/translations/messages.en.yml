@@ -31,12 +31,13 @@ Add: Add
 Pinbar: Pinbar
 Favorites: Favorites
 Most Viewed: Most Viewed
-"Add this page to favorites": "Add this page to favorites"
-"Minimize the window to the pinbar": "Minimize the window to the pinbar"
-"Loading ...": "Loading ..."
+"Add this page to favorites": "Add this page to favourites"
+"Minimize the window to the pinbar": "Minimise the window to the pinbar"
+"Loading ...": "Loading..."
 "Yes": "Yes"
 "No": "No"
 required: (required)
+The element could not be deleted: The element could not be deleted
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Enable loading messages
@@ -78,6 +79,7 @@ pim_enrich:
       associations_view: View the associations of a product
       associations_edit: Add associations to a product
       change_family: Change product family
+      change_state: Change the status of a product
       add_to_groups: Add product to groups
       mass_edit: Product mass edit actions
       comment: Comment products
@@ -107,8 +109,8 @@ pim_enrich:
     family:
       index: List families
       create: Create a family
-      edit_properties: Edit properties of a family
-      edit_attributes: Edit attributes of a family
+      edit_properties: Edit the properties of a family
+      edit_attributes: Edit the attributes of a family
       edit_variants: Edit a family variant
       remove: Remove a family
       history: View family history
@@ -169,7 +171,7 @@ pim_enrich:
   notification:
     settings:
       remove_completeness_for_channel_and_locale:
-        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
+        start: The locale has been removed from the channel. We are currently recalculating completeness linked to it.
         done: Removal of a locale on a channel finished.
   create:
     attribute: create attribute
@@ -188,7 +190,7 @@ pim_enrich:
 confirmation:
   delete: Confirm deletion
   leave: Are you sure you want to leave this page?
-  discard changes: You will lose changes to the %entity% if you leave the page.
+  discard changes: You will lose changes to the %entity% if you leave this page.
   remove:
     category: Are you sure you want to delete the category %name%?
     user: Are you sure you want to delete the user %name%?
@@ -201,7 +203,7 @@ flash:
     removed: Category successfully removed
   tree:
     removed: Tree successfully removed
-    not removable: Trees associated to channels cannot be removed.
+    not removable: Trees associated with channels cannot be removed.
   currency:
     updated: Currency successfully updated
     error.linked_to_channel: You cannot disable a currency linked to a channel.
@@ -244,7 +246,7 @@ info:
     none exist: No association types exist.
     create one: Click here to create one
   attribute:
-    auto option sorting: If enabled, options will be sorted automatically by their localized labels
+    auto option sorting: If enabled, options will be sorted automatically by their localised labels
   completeness:
     not calculated: Not yet calculated
 Created: Created
@@ -263,11 +265,11 @@ Unique: Unique
 Not required: Not required
 Translatable: Translatable
 Scopable: Scopable
-Localizable: Localizable
+Localizable: Localisable
 Unique value: Unique value
 Attribute group: Attribute group
 Other: Other
-Variants behavior when edited: Variants behavior when edited
+Variants behavior when edited: Variants behaviour when edited
 Remove: Remove
 Parameters: Parameters
 System: System
@@ -301,7 +303,7 @@ Choose the attribute group: Choose the attribute group
 Drag and drop a file or click here: Drag and drop a file or click here
 Drop an image or click here: Drop an image or click here
 Automatic option sorting: Automatic option sorting
-save_attribute_before_manage_option: To manage options, please save the attribute first
+save_attribute_before_manage_option: To manage options, please first save the attribute
 Please select: Please select
 Active: Active
 Inactive: Inactive
@@ -309,7 +311,7 @@ Do not convert: Do not convert
 Create: Create
 Choose a family: Choose a family
 Choose a unit: Choose a unit
-No matches found: No matches found
+No matches found: No match found
 Category tree: Category tree
 Completeness: Completeness
 Attribute used as label: Attribute used as label
@@ -325,14 +327,6 @@ Group values: Group values
 New group: New group
 Groups overview: Groups overview
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
-Max characters: Max characters
-Validation rule: Validation rule
-Validation regexp: Validation regexp
-Wysiwyg enabled: WYSIWYG enabled
-Number min: Min number
-Number max: Max number
-Decimals allowed: Allow decimals
-Negative allowed: Allow negative values
 Date min: Min date
 Date max: Max date
 Metric family: Metric family
@@ -416,8 +410,8 @@ Old values: Old values
 New values: New values
 System configuration: System configuration
 General setup: General setup
-Localization: Localization
-Localization options: Localization options
+Localization: Localisation
+Localization options: Localisation options
 Locale: Locale
 Location: Location
 Format address by address country: Format address by address country
@@ -440,17 +434,8 @@ oro.locale:
     tooltip:
       locale: "Select the locale option used to format numbers, addresses, names and dates"
       location: " Location will be used to format addresses when 'Format address by address country' option is disabled"
-      format_address_by_address_country: "Selecting this option will enabled addresses to be formatted by the country they are in. Disabeling this option will cause the addresses to be formatted in your location address format"
-      language: "Select the system language you wish to use"
-      timezone: "Select the timezone for displaying date and time"
-      currency: "Select the default currency"
-Selected products successfully deleted: Selected products successfully deleted
 pim_mass_edit:
   notification:
-    mass_edit:
-      error: Mass edit <strong>%label%</strong> failed
-      warning: Mass edit <strong>%label%</strong> finished with some warnings
-      success: Mass edit <strong>%label%</strong> finished
     quick_export:
       error: Quick export <strong>%label%</strong> failed
       warning: Quick export <strong>%label%</strong> finished with some warnings
