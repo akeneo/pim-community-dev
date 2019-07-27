@@ -4,9 +4,8 @@ parameters:
     pim_datagrid.extension.mass_action.handler.edit.class:     Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
     pim_datagrid.extension.mass_action.dispatcher.class:                  Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.handler.registry.class:            Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionHandlerRegistry
-    pim_datagrid.extension.mass_action.util.product_fields_builder.class: Oro\Bundle\PimDataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
     pim_datagrid.extension.mass_action.handler.delete.class:              Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
-    
+
 services:
     # Dispatchers
     pim_datagrid.extension.mass_action.dispatcher:
