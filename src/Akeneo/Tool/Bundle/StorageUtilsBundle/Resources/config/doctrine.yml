@@ -13,12 +13,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    akeneo_storage_utils.doctrine.table_name_builder:
-        class: '%akeneo_storage_utils.doctrine.table_name_builder.class%'
-        arguments:
-            - '@service_container'
-            - '@doctrine.orm.default_entity_manager'
-
     akeneo_storage_utils.doctrine.object_detacher:
         class: '%akeneo_storage_utils.doctrine.object_detacher.class%'
         arguments:
