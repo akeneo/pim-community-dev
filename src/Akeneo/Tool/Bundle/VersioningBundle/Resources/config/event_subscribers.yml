@@ -8,6 +8,7 @@ parameters:
 services:
     pim_versioning.event_listener.addversion:
         class: 'Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener'
+        lazy: true
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_versioning.serializer'
