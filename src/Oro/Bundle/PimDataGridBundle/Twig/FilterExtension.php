@@ -3,6 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Twig;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -18,19 +19,16 @@ use Twig_SimpleFunction;
  */
 class FilterExtension extends Twig_Extension
 {
-    /** @var ContainerInterface */
-    private $container;
-
     /** @var Manager */
     private $datagridManager;
 
-    /** @var FiltersConfigurator */
+    /** @var ConfiguratorInterface */
     private $filtersConfigurator;
 
     /** @var TranslatorInterface */
     private $translator;
 
-    public function __construct(Manager $datagridManager, FiltersConfigurator $filtersConfigurator, TranslatorInterface $translator)
+    public function __construct(Manager $datagridManager, ConfiguratorInterface $filtersConfigurator, TranslatorInterface $translator)
     {
         $this->datagridManager = $datagridManager;
         $this->filtersConfigurator = $filtersConfigurator;
