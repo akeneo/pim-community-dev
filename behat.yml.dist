@@ -924,6 +924,7 @@ acceptance:
                 tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\SymfonyExtension:
+            bootstrap: app/bootstrap.php
             kernel:
                 environment: test_fake
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
