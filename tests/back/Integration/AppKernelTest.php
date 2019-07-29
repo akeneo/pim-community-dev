@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * App kernel for the integration tests.
  *
@@ -10,60 +12,14 @@
 class AppKernelTest extends AppKernel
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
+     *
+     * Necessary to make gedmo extension tree work. Otherwise the path located in
+     * "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/bundles/gedmo_doctrine_extensions.yml"
+     * is never the right one...
      */
-    protected function registerProjectBundles(): array
+    public function getRootDir(): string
     {
-        return [
-            new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle(),
-            new Akeneo\Test\IntegrationTestsBundle\AkeneoIntegrationTestsBundle(),
-            new AkeneoEnterprise\Test\IntegrationTestsBundle\AkeneoEnterpriseIntegrationTestsBundle(),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheDir(): string
-    {
-        return dirname(__DIR__)
-            . DIRECTORY_SEPARATOR
-            . '..'
-            . DIRECTORY_SEPARATOR
-            . '..'
-            . DIRECTORY_SEPARATOR
-            . 'var'
-            . DIRECTORY_SEPARATOR
-            . 'cache'
-            . DIRECTORY_SEPARATOR
-            . 'test_kernel';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogDir(): string
-    {
-        return dirname(__DIR__)
-            . DIRECTORY_SEPARATOR
-            . '..'
-            . DIRECTORY_SEPARATOR
-            . '..'
-            . DIRECTORY_SEPARATOR
-            . 'var'
-            . DIRECTORY_SEPARATOR
-            . 'logs';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName(): string
-    {
-        if (null === $this->name) {
-            $this->name =  parent::getName() . '_test';
-        }
-
-        return $this->name;
+        return $this->getProjectDir() . DIRECTORY_SEPARATOR . 'app';
     }
 }
