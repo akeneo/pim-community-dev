@@ -8,6 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
+  LC_ALL: C.UTF-8 
   SYMFONY_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
   PIM_INSTALLER_DATA: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}

@@ -1,3 +1,4 @@
+{{- if .Values.pim.hook.installPim.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -78,3 +79,4 @@ spec:
             - key: akobOnboarderKey
               path: key.json
         {{- end }}
+{{- end }}

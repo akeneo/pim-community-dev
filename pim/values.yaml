@@ -87,6 +87,8 @@ image:
 
 pim:
   hook:
+    installPim:
+      enabled: true
     upgradePim:
       enabled: false # Set me to true when upgrading to a minor version
       hook: "pre-upgrade"
