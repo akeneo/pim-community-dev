@@ -7,6 +7,7 @@ namespace Akeneo\AssetManager\Acceptance\Context;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\CompiledRuleRunnerInterface;
 use Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy;
+use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -83,6 +84,9 @@ class ExecuteRuleTemplatesContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var ProductLinkRuleLauncherSpy */
+    private $productLinkRuleLauncherSpy;
+
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -90,7 +94,8 @@ class ExecuteRuleTemplatesContext implements Context
         CreateAssetHandler $createAssetHandler,
         CompiledRuleRunnerInterface $compiledRuleRunnerSpy,
         ValidatorInterface $validator,
-        ExceptionContext $exceptionContext
+        ExceptionContext $exceptionContext,
+        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy
     ) {
         $this->assetRepository = $assetRepository;
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -99,6 +104,7 @@ class ExecuteRuleTemplatesContext implements Context
         $this->validator = $validator;
         $this->exceptionContext = $exceptionContext;
         $this->compiledRuleRunnerSpy = $compiledRuleRunnerSpy;
+        $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
     }
 
     /**
@@ -169,11 +175,11 @@ class ExecuteRuleTemplatesContext implements Context
     }
 
     /**
-     * @Then /^some rules have been executed to link the asset to products$/
+     * @Then /^a job has been launched to link assets to products$/
      */
-    public function someRulesHaveBeenExecutedToLinkTheAssetToProducts(): void
+    public function aJobHasBeenLaunchedToLinkAssetsToProducts(): void
     {
-        $this->compiledRuleRunnerSpy->assertHasRunTimes(2);
+        $this->productLinkRuleLauncherSpy->assertHasRunOnce();
     }
 
     /**
@@ -189,14 +195,6 @@ class ExecuteRuleTemplatesContext implements Context
                 RuleTemplateCollection::empty()
             )
         );
-    }
-
-    /**
-     * @Then /^there is no rule executed to link the asset to products$/
-     */
-    public function thereIsNoRuleExecutedToLinkTheAssetToProducts()
-    {
-        $this->compiledRuleRunnerSpy->assertHasRunTimes(0);
     }
 
     /**

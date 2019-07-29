@@ -201,5 +201,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.rule_template.rule_engine_runner'
             - '@validator'
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
         tags:
             - { name: fob.context_service }

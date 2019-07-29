@@ -15,11 +15,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class LinkAssetSubscriber implements EventSubscriberInterface
 {
     /** @var ProductLinkRuleLauncherInterface */
-    private $asynchronousProductLinkRuleLauncher;
+    private $productLinkRuleLauncher;
 
-    public function __construct(ProductLinkRuleLauncherInterface $asynchronousProductLinkRuleLauncher)
+    public function __construct(ProductLinkRuleLauncherInterface $productLinkRuleLauncher)
     {
-        $this->asynchronousProductLinkRuleLauncher = $asynchronousProductLinkRuleLauncher;
+        $this->productLinkRuleLauncher = $productLinkRuleLauncher;
     }
 
     /**
@@ -34,7 +34,7 @@ class LinkAssetSubscriber implements EventSubscriberInterface
 
     public function whenAssetCreated(AssetCreatedEvent $assetCreatedEvent): void
     {
-        $this->asynchronousProductLinkRuleLauncher->launch(
+        $this->productLinkRuleLauncher->launch(
             $assetCreatedEvent->getAssetFamilyIdentifier(),
             $assetCreatedEvent->getAssetCode()
         );

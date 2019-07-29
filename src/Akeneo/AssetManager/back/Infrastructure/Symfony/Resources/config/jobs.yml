@@ -1,8 +1,14 @@
 services:
-    akeneo_assetmanager.job.product_link_rule_launcher:
+    akeneo_assetmanager.infrastructure.job.product_link_rule_launcher:
         class: 'Akeneo\AssetManager\Infrastructure\Job\ProductLinkRuleLauncher'
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
+
+    akeneo_assetmanager.infrastructure.job.provider.link_assets_to_products:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\LinkAssetsToProducts'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     # JOB
     akeneo_assetmanager.job.link_assets_to_products:
@@ -14,7 +20,7 @@ services:
             -
                 - '@akeneo_assetmanager.step.link_assets_to_products'
         tags:
-            - { name: akeneo_batch.job, connector: 'Akeneo Asset Manager Connector', type: 'akeneo_assetmanager.link_assets_to_products' }
+            - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.link_assets_to_products' }
 
     # STEP
     akeneo_assetmanager.step.link_assets_to_products:

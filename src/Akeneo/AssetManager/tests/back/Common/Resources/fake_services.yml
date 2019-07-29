@@ -245,6 +245,9 @@ services:
     akeneo_assetmanager.infrastructure.rule_template.rule_engine_runner:
         class: Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy
 
+    akeneo_assetmanager.infrastructure.job.product_link_rule_launcher:
+        class: 'Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy'
+
     # Third party services
     oro_security.security_facade:
         class: Akeneo\AssetManager\Common\Fake\SecurityFacadeStub
