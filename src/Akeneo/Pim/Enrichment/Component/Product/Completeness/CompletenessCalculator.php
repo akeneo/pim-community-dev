@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -18,6 +19,12 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
 
     /** @var SqlGetCompletenessFamilyMasks */
     private $getCompletenessFamilyMasks;
+
+    public function __construct(SqlGetProducts $getProducts, SqlGetCompletenessFamilyMasks $getCompletenessFamilyMasks)
+    {
+        $this->getProducts = $getProducts;
+        $this->getCompletenessFamilyMasks = $getCompletenessFamilyMasks;
+    }
 
     public function calculate(ProductInterface $product): array
     {
@@ -38,10 +45,15 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
             $familyMask = $familyMasks[$product->familyCode()];
             // TODO Need the activated locales for this family. Not sure if it depends of the channel.
             $localeCodes = ['en_US'];
-            $result[] = $familyMask->getCompletenessCollection($product, $localeCodes);
+            $result[$product->getId()] = $familyMask->getCompletenessCollection($product, $localeCodes);
         }
 
         return $result;
+    }
+
+    public function fromProductIdentifier($productIdentifier): ProductCompletenessCollection
+    {
+        return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier];
     }
 
     /**

@@ -32,4 +32,11 @@ interface CompletenessCalculatorInterface
      * @return ProductCompletenessCollection[]
      */
     public function fromProductIdentifiers($productIdentifiers): array;
+
+    /**
+     * @param string $productIdentifier
+     *
+     * @return ProductCompletenessCollection
+     */
+    public function fromProductIdentifier($productIdentifier): ProductCompletenessCollection;
 }

@@ -52,7 +52,7 @@ class CompletenessFamilyMask
 
                 $diff = array_diff($familyMasks, $productMask);
                 $missingAttributeCodes = array_map(function (string $mask) {
-                    return substr($mask, 0, strstr($mask, '-'));
+                    return substr($mask, 0, strpos($mask, '-'));
                 }, $diff);
 
                 $completeness = new ProductCompleteness(
@@ -71,9 +71,14 @@ class CompletenessFamilyMask
 
     private function getFamilyMasks(string $channelCode, string $localeCode): array
     {
+        var_dump('Family mask');
         $result = [];
         foreach ($this->masksByChannel[$channelCode] as $attributeCode) {
-            $result[] = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
+            $familyMask = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
+
+            var_dump($familyMask);
+
+            $result[] = $familyMask;
         }
 
         return $result;

@@ -30,7 +30,7 @@ final class SqlGetProducts
     {
         $sql = <<<SQL
 SELECT
-    product.id AS id
+    product.id AS id,
     product.raw_values AS rawValues,
     family.code AS familyCode,
     product.identifier AS identifier
@@ -47,10 +47,10 @@ SQL;
         $result = [];
         foreach ($rows as $row) {
             $result[] = new Product(
-                $row['id'],
+                intval($row['id']),
                 $row['identifier'],
                 $row['familyCode'],
-                json_decode($row['rawValues'])
+                json_decode($row['rawValues'], true)
             );
         }
 

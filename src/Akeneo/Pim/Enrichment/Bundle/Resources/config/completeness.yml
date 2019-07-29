@@ -10,6 +10,12 @@ services:
             - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
             - '%pim_catalog.entity.completeness.class%'
 
+    pim_catalog.completeness.calculator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator'
+        arguments:
+            - '@sql_get_products'
+            - '@sql_get_familymasks'
+
     pim_catalog.completeness.generator:
         class: '%pim_catalog.completeness.generator.class%'
         arguments:
@@ -20,6 +26,16 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses'
         arguments:
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.completeness.legacy_calculator'
+            - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
 
+    # TODO Move
+    sql_get_products:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\SqlGetProducts'
+        arguments:
+            - '@database_connection'
+
+    sql_get_familymasks:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\SqlGetCompletenessFamilyMasks'
+        arguments:
+            - '@database_connection'

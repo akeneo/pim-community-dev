@@ -42,7 +42,7 @@ FROM (
     INNER JOIN pim_catalog_channel channel ON channel.id=requirement.channel_id
     INNER JOIN pim_catalog_family family ON family.id=requirement.family_id
     WHERE requirement.required=1
-        AND family.id IN (:familyCodes)
+        AND family.code IN (:familyCodes)
     GROUP BY family.code, channel.code
 ) masks
 GROUP BY familyCode
@@ -57,7 +57,7 @@ SQL;
         foreach ($rows as $row) {
             $result[$row['familyCode']] = new CompletenessFamilyMask(
                 $row['familyCode'],
-                json_decode($row['mask'])
+                json_decode($row['mask'], true)
             );
         }
 
