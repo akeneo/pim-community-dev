@@ -70,8 +70,8 @@ final class DeleteOrphanJobExecutionDirectories
                 continue;
             }
 
-            [$jobExecutionType, $jobExecutionCode, $jobExecutionId] = explode(DIRECTORY_SEPARATOR, $path['dirname']);
-            $pathToDelete = $jobExecutionType . DIRECTORY_SEPARATOR . $jobExecutionCode . DIRECTORY_SEPARATOR . $jobExecutionId;
+            [$jobExecutionType, $jobName, $jobExecutionId] = explode(DIRECTORY_SEPARATOR, $path['dirname']);
+            $pathToDelete = $jobExecutionType . DIRECTORY_SEPARATOR . $jobName . DIRECTORY_SEPARATOR . $jobExecutionId;
 
             if (!in_array($jobExecutionId, $existingJobExecutionIds) && $this->archivistFilesystem->has($pathToDelete)) {
                 $this->archivistFilesystem->deleteDir($pathToDelete);
