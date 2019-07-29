@@ -86,8 +86,8 @@ jobs:
                 name: Start containers
                 command: docker-compose up -d fpm
           - run:
-                name: Generate dev environment cache (for symfony phpstan extension)
-                command: docker-compose exec fpm bin/console -e dev cache:clear
+                name: Generate dev cache for Symfony's Phpstan extension
+                command: docker-compose exec fpm bin/console --env=dev cache:clear
           - run:
                 name: PhpSpec
                 command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
@@ -141,7 +141,7 @@ jobs:
                 name: PHPunit Integration
                 command: |
                     TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
-                    .circleci/run_phpunit.sh $TESTFILES
+                    .circleci/run_phpunit.sh app $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -172,7 +172,7 @@ jobs:
                 name: PHPunit End to end
                 command: |
                     TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh End_to_End | circleci tests split)
-                    .circleci/run_phpunit.sh $TESTFILES
+                    .circleci/run_phpunit.sh app $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
