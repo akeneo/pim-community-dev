@@ -1,131 +1,66 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 /**
- * Calculates the completenesses for a provided product.
- *
- * @author    Damien Carcel (damien.carcel@akeneo.com)
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class CompletenessCalculator implements CompletenessCalculatorInterface
 {
-    /** @var RequiredValueCollectionFactory */
-    private $requiredValueCollectionFactory;
+    /** @var SqlGetProducts */
+    private $getProducts;
 
-    /** @var IncompleteValueCollectionFactory */
-    private $incompleteValueCollectionFactory;
+    /** @var SqlGetCompletenessFamilyMasks */
+    private $getCompletenessFamilyMasks;
 
-    /** @var string */
-    private $completenessClass;
-
-    /**
-     * @param RequiredValueCollectionFactory   $requiredValueCollectionFactory
-     * @param IncompleteValueCollectionFactory $incompleteValueCollectionFactory
-     * @param string                           $completenessClass
-     */
-    public function __construct(
-        RequiredValueCollectionFactory $requiredValueCollectionFactory,
-        IncompleteValueCollectionFactory $incompleteValueCollectionFactory,
-        $completenessClass
-    ) {
-        $this->completenessClass = $completenessClass;
-        $this->requiredValueCollectionFactory = $requiredValueCollectionFactory;
-        $this->incompleteValueCollectionFactory = $incompleteValueCollectionFactory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function calculate(ProductInterface $product): array
     {
-        $family = $product->getFamily();
-        if (null === $family) {
-            return [];
-        }
-
-        $completenesses = [];
-
-        foreach ($this->getChannelsFromRequirements($family) as $channel) {
-            $requiredValuesForChannel = $this->requiredValueCollectionFactory->forChannel($family, $channel);
-
-            foreach ($channel->getLocales() as $locale) {
-                $requiredValues = $requiredValuesForChannel->filterByChannelAndLocale($channel, $locale);
-                $incompleteValues = $this->incompleteValueCollectionFactory->forChannelAndLocale(
-                    $requiredValues,
-                    $channel,
-                    $locale,
-                    $product
-                );
-
-                $completenesses[] = $this->createCompleteness(
-                    $product,
-                    $channel,
-                    $locale,
-                    $incompleteValues->attributes(),
-                    $incompleteValues->count(),
-                    $requiredValues->count()
-                );
-            }
-        }
-
-        return $completenesses;
+        throw new \Exception('Drop this from the interface!');
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
-     * @param Collection       $missingAttributes
-     * @param int              $missingCount
-     * @param int              $requiredCount
-     *
-     * @return CompletenessInterface
-     */
-    private function createCompleteness(
-        ProductInterface $product,
-        ChannelInterface $channel,
-        LocaleInterface $locale,
-        Collection $missingAttributes,
-        $missingCount,
-        $requiredCount
-    ) {
-        return new $this->completenessClass(
-            $product,
-            $channel,
-            $locale,
-            $missingAttributes,
-            $missingCount,
-            $requiredCount
-        );
-    }
-
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return Collection
-     */
-    private function getChannelsFromRequirements(FamilyInterface $family): Collection
+    public function fromProductIdentifiers($productIdentifiers): array
     {
-        $channels = new ArrayCollection();
-        foreach ($family->getAttributeRequirements() as $attributeRequirement) {
-            $channel = $attributeRequirement->getChannel();
-            if (!$channels->contains($channel)) {
-                $channels->add($channel);
-            }
+        $products = $this->fetchProducts($productIdentifiers);
+        $familyCodes = array_map(function (Product $product) {
+            return $product->familyCode();
+        }, $products);
+
+        $familyMasks = $this->fetchFamilyMasks($familyCodes);
+
+        $result = [];
+        foreach ($products as $product) {
+            $familyMask = $familyMasks[$product->familyCode()];
+            // TODO Need the activated locales for this family. Not sure if it depends of the channel.
+            $localeCodes = ['en_US'];
+            $result[] = $familyMask->getCompletenessCollection($product, $localeCodes);
         }
 
-        return $channels;
+        return $result;
+    }
+
+    /**
+     * @param string[] $productIdentifiers
+     *
+     * @return Product[]
+     */
+    private function fetchProducts(array $productIdentifiers): array
+    {
+        return $this->getProducts->fromProductIdentifiers($productIdentifiers);
+    }
+
+    /**
+     * @param string[] $familyCodes
+     *
+     * @return CompletenessFamilyMask[]
+     */
+    private function fetchFamilyMasks(array $familyCodes): array
+    {
+        return $this->getCompletenessFamilyMasks->fromFamilyCodes($familyCodes);
     }
 }

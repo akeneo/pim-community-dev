@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\LegacyCompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollection;
@@ -34,7 +34,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CompletenessCalculator::class);
+        $this->shouldHaveType(LegacyCompletenessCalculator::class);
     }
 
     function it_is_a_completeness_calculator()
