@@ -14,7 +14,6 @@ namespace Akeneo\Asset\Bundle\Controller\UI;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -34,6 +33,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Anael Chardan <anael.chardan@akeneo.com>
@@ -88,19 +88,9 @@ class AssetCategoryTreeController
     /** @var SessionInterface */
     private $session;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param UserContext $userContext
-     * @param SaverInterface $categorySaver
-     * @param RemoverInterface $categoryRemover
-     * @param SimpleFactoryInterface $categoryFactory
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param SecurityFacade $securityFacade
-     * @param array $rawConfiguration
-     * @param CategoryAccessRepository $categoryAccessRepo
-     * @param TokenStorageInterface $tokenStorage
-     * @param string|null $indexTemplate
-     */
+    /** @var TranslatorInterface */
+    private $translator;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
@@ -114,7 +104,8 @@ class AssetCategoryTreeController
         TokenStorageInterface $tokenStorage,
         EngineInterface $engine,
         FormFactoryInterface $formFactory,
-        SessionInterface $session
+        SessionInterface $session,
+        TranslatorInterface $translator
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->userContext = $userContext;
@@ -133,6 +124,7 @@ class AssetCategoryTreeController
         $resolver->setRequired(['related_entity', 'form_type', 'acl', 'route']);
 
         $this->rawConfiguration = $resolver->resolve($rawConfiguration);
+        $this->translator = $translator;
     }
 
     /**
@@ -278,8 +270,8 @@ class AssetCategoryTreeController
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $message = new Message(sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
-                $this->session->getFlashBag()->add('success', $message);
+                $message = sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree');
+                $this->session->getFlashBag()->add('success', $this->translator->trans($message));
 
                 return new JsonResponse(
                     [
@@ -325,8 +317,8 @@ class AssetCategoryTreeController
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $message = new Message(sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
-                $this->session->getFlashBag()->add('success', $message);
+                $message = sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree');
+                $this->session->getFlashBag()->add('success', $this->translator->trans($message));
             }
         }
 

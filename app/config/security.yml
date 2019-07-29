@@ -55,6 +55,7 @@ security:
             fos_oauth:                      true
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
+            provider:                       chain_provider
 
         sso:
             pattern:   ^/

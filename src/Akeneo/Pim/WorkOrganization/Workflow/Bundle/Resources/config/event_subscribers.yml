@@ -2,7 +2,6 @@ parameters:
     pim_versioning.event_subscriber.addversion.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber
     pimee_workflow.event_subscriber.published_product.check_removal.class:              Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
     pimee_workflow.event_subscriber.published_product.detach_product.class:             Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber
-    pimee_workflow.event_subscriber.product_draft.replace_flash_message.class:          Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ReplaceProductUpdatedFlashMessageSubscriber
     pimee_workflow.event_subscriber.product_draft.send_for_approval.class:              Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\SendForApprovalSubscriber
     pimee_workflow.event_subscriber.import.new_proposals.class:                         Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\Import\ImportProposalsSubscriber
     pimee_workflow.event_subscriber.product_draft.approve_notification.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber
@@ -52,14 +51,6 @@ services:
     ##
     # Product drafts event subscribers
     ##
-    pimee_workflow.event_subscriber.product_draft.replace_flash_message:
-        class: '%pimee_workflow.event_subscriber.product_draft.replace_flash_message.class%'
-        arguments:
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.product'
-        tags:
-            - { name: kernel.event_subscriber }
-
     pimee_workflow.event_subscriber.product_draft.approve_notification:
         class: '%pimee_workflow.event_subscriber.product_draft.approve_notification.class%'
         arguments:

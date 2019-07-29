@@ -38,7 +38,6 @@ use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -59,6 +58,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Asset controller
@@ -136,30 +136,9 @@ class ProductAssetController extends Controller
     /** @var VariationBuilderInterface */
     protected $variationBuilder;
 
-    /**
-     * @param AssetRepositoryInterface         $assetRepository
-     * @param ReferenceRepositoryInterface     $referenceRepository
-     * @param VariationRepositoryInterface     $variationRepository
-     * @param FileMetadataRepositoryInterface  $metadataRepository
-     * @param LocaleRepositoryInterface        $localeRepository
-     * @param ChannelRepositoryInterface       $channelRepository
-     * @param VariationFileGeneratorInterface  $variationFileGenerator
-     * @param FilesUpdaterInterface            $assetFilesUpdater
-     * @param SaverInterface                   $assetSaver
-     * @param SaverInterface                   $referenceSaver
-     * @param SaverInterface                   $variationSaver
-     * @param RemoverInterface                 $assetRemover
-     * @param EventDispatcherInterface         $eventDispatcher
-     * @param AssetFactory                     $assetFactory
-     * @param FileInfoFactoryInterface         $fileInfoFactory
-     * @param UserContext                      $userContext
-     * @param FileController                   $fileController
-     * @param AssetCategoryRepositoryInterface $assetCategoryRepo
-     * @param CategoryRepositoryInterface      $categoryRepository
-     * @param CategoryManager                  $categoryManager
-     * @param ReferenceBuilderInterface        $referenceBuilder
-     * @param VariationBuilderInterface        $variationBuilder
-     */
+    /** @var TranslatorInterface */
+    protected $translator;
+
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         ReferenceRepositoryInterface $referenceRepository,
@@ -182,7 +161,8 @@ class ProductAssetController extends Controller
         CategoryRepositoryInterface $categoryRepository,
         CategoryManager $categoryManager,
         ReferenceBuilderInterface $referenceBuilder,
-        VariationBuilderInterface $variationBuilder
+        VariationBuilderInterface $variationBuilder,
+        TranslatorInterface $translator
     ) {
         $this->assetRepository = $assetRepository;
         $this->referenceRepository = $referenceRepository;
@@ -206,6 +186,7 @@ class ProductAssetController extends Controller
         $this->categoryManager = $categoryManager;
         $this->referenceBuilder = $referenceBuilder;
         $this->variationBuilder = $variationBuilder;
+        $this->translator = $translator;
     }
 
     /**
@@ -861,8 +842,8 @@ class ProductAssetController extends Controller
      */
     protected function addFlashMessage($type, $message, array $parameters = [])
     {
-        $message = new Message($message, $parameters);
-        parent::addFlash($type, $message);
+        $flash = $this->translator->trans($message, $parameters);
+        parent::addFlash($type, $flash);
     }
 
     /**
