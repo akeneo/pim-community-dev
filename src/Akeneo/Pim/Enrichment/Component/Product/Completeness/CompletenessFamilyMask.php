@@ -17,70 +17,42 @@ class CompletenessFamilyMask
     /** @var string */
     private $familyCode;
 
-    /**
-     * Example:
-     *  [
-     *      "tablet": ["a_multi_select", "a_scopable_price"],
-     *      "mobile": ["a_file", "a_number_integer"]
-     *  ]
-     *
-     * @var array
-     */
-    private $masksByChannel;
+    /** @var CompletenessFamilyMaskPerChannelAndLocale[] */
+    private $masks;
 
     public function __construct(
         string $familyCode,
         array $masksByChannel
     ) {
         $this->familyCode = $familyCode;
-        $this->masksByChannel = $masksByChannel;
+        $this->masks = $masksByChannel;
     }
 
     /**
      * @param Product  $product
-     * @param string[] $localeCodes
+     *
      * @return ProductCompletenessCollection
      */
-    public function getCompletenessCollection(Product $product, array $localeCodes): ProductCompletenessCollection
+    public function getCompletenessCollection(Product $product): ProductCompletenessCollection
     {
         $productMask = $product->getMask();
 
-        $completenesses = [];
-        foreach ($localeCodes as $localeCode) {
-            foreach (array_keys($this->masksByChannel) as $channelCode) {
-                $familyMasks = $this->getFamilyMasks($channelCode, $localeCode);
+        return new ProductCompletenessCollection($product->getId(), array_map(
+            function (CompletenessFamilyMaskPerChannelAndLocale $familyMaskPerChannelAndLocale) use ($productMask) {
+                $diff = array_diff($familyMaskPerChannelAndLocale->mask(), $productMask);
 
-                $diff = array_diff($familyMasks, $productMask);
                 $missingAttributeCodes = array_map(function (string $mask) {
                     return substr($mask, 0, strpos($mask, '-'));
                 }, $diff);
 
-                $completeness = new ProductCompleteness(
-                    $channelCode,
-                    $localeCode,
-                    count($familyMasks),
+                return new ProductCompleteness(
+                    $familyMaskPerChannelAndLocale->channelCode(),
+                    $familyMaskPerChannelAndLocale->localeCode(),
+                    count($familyMaskPerChannelAndLocale->mask()),
                     $missingAttributeCodes
                 );
-
-                $completenesses[] = $completeness;
-            }
-        }
-
-        return new ProductCompletenessCollection($product->getId(), $completenesses);
-    }
-
-    private function getFamilyMasks(string $channelCode, string $localeCode): array
-    {
-        var_dump('Family mask');
-        $result = [];
-        foreach ($this->masksByChannel[$channelCode] as $attributeCode) {
-            $familyMask = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
-
-            var_dump($familyMask);
-
-            $result[] = $familyMask;
-        }
-
-        return $result;
+            },
+            $this->masks
+        ));
     }
 }

@@ -43,9 +43,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
         $result = [];
         foreach ($products as $product) {
             $familyMask = $familyMasks[$product->familyCode()];
-            // TODO Need the activated locales for this family. Not sure if it depends of the channel.
-            $localeCodes = ['en_US'];
-            $result[$product->getId()] = $familyMask->getCompletenessCollection($product, $localeCodes);
+            $result[$product->getId()] = $familyMask->getCompletenessCollection($product);
         }
 
         return $result;

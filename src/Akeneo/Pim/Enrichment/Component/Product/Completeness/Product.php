@@ -74,12 +74,12 @@ class Product
     {
         // TODO Move this for prices
         $result = [];
-        var_dump('Product mask');
+//        var_dump('Product mask');
         foreach ($this->rawValues as $attributeCode => $valuesByChannel) {
             foreach ($valuesByChannel as $channelCode => $valuesByLocale) {
                 foreach ($valuesByLocale as $localeCode => $value) {
                     $mask = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
-                    var_dump($mask);
+//                    var_dump($mask);
                     $result[] = $mask;
                 }
             }
