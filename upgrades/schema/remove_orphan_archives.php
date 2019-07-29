@@ -86,11 +86,12 @@ SQL;
 function removeOrphanJobDirectories(Connection $database, string $archiveDir): void
 {
     $existingJobsWithJobExecutions = <<<SQL
-SELECT ji.code
+SELECT ji.job_name
 FROM akeneo_batch_job_execution je 
 INNER JOIN akeneo_batch_job_instance ji 
     ON ji.id = je.job_instance_id 
-WHERE ji.type IN ('import', 'export');
+WHERE ji.type IN ('import', 'export')
+GROUP BY ji.job_name;
 SQL;
 
     $stmt = $database->executeQuery($existingJobsWithJobExecutions);
