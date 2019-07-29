@@ -28,13 +28,12 @@ class LinkAssetsToProductsTaskletSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
 
-        $this->setStepExecution($stepExecution);
-
         $ruleExecutor->execute(
             AssetFamilyIdentifier::fromString('packshot'),
             AssetCode::fromString('iphone4')
         )->shouldBeCalled();
 
+        $this->setStepExecution($stepExecution);
         $this->execute();
     }
 }
