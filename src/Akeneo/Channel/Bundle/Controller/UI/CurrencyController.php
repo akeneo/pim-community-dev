@@ -4,12 +4,12 @@ namespace Akeneo\Channel\Bundle\Controller\UI;
 
 use Akeneo\Channel\Component\Exception\LinkedChannelException;
 use Akeneo\Channel\Component\Model\Currency;
-use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Currency controller for configuration
@@ -21,24 +21,27 @@ use Symfony\Component\Routing\RouterInterface;
 class CurrencyController
 {
     /** @var RequestStack */
-    protected $requestStack;
+    private $requestStack;
 
     /** @var RouterInterface */
-    protected $router;
+    private $router;
 
     /** @var SaverInterface */
-    protected $currencySaver;
+    private $currencySaver;
 
-    /**
-     * @param RequestStack    $requestStack
-     * @param RouterInterface $router
-     * @param SaverInterface  $currencySaver
-     */
-    public function __construct(RequestStack $requestStack, RouterInterface $router, SaverInterface $currencySaver)
-    {
+    /** @var TranslatorInterface */
+    private $translator;
+
+    public function __construct(
+        RequestStack $requestStack,
+        RouterInterface $router,
+        SaverInterface $currencySaver,
+        TranslatorInterface $translator
+    ) {
         $this->requestStack = $requestStack;
         $this->router = $router;
         $this->currencySaver = $currencySaver;
+        $this->translator = $translator;
     }
 
     /**
@@ -61,17 +64,17 @@ class CurrencyController
             $request
                 ->getSession()
                 ->getFlashBag()
-                ->add('success', new Message('flash.currency.updated'));
+                ->add('success', $this->translator->trans('flash.currency.updated'));
         } catch (LinkedChannelException $e) {
             $request
                 ->getSession()
                 ->getFlashBag()
-                ->add('error', new Message('flash.currency.error.linked_to_channel'));
+                ->add('error', $this->translator->trans('flash.currency.error.linked_to_channel'));
         } catch (\Exception $e) {
             $request
                 ->getSession()
                 ->getFlashBag()
-                ->add('error', new Message('flash.error ocurred'));
+                ->add('error', $this->translator->trans('flash.error ocurred'));
         }
 
         return new JsonResponse(['route' => 'pim_enrich_currency_index']);

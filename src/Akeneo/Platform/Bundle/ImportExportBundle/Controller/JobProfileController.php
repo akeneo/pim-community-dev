@@ -3,7 +3,6 @@
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType;
-use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -13,6 +12,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Job Profile controller
@@ -52,17 +52,9 @@ class JobProfileController
     /** @var JobParametersFactory */
     protected $jobParametersFactory;
 
-    /**
-     * @param EngineInterface              $templating
-     * @param RouterInterface              $router
-     * @param FormFactoryInterface         $formFactory
-     * @param JobRegistry                  $jobRegistry
-     * @param JobInstanceFormType          $jobInstanceFormType
-     * @param JobInstanceFactory           $jobInstanceFactory
-     * @param EntityManagerInterface       $entityManager
-     * @param JobParametersFactory         $jobParametersFactory
-     * @param string                       $jobType
-     */
+    /** @var TranslatorInterface */
+    protected $translator;
+
     public function __construct(
         EngineInterface $templating,
         RouterInterface $router,
@@ -72,6 +64,7 @@ class JobProfileController
         JobInstanceFactory $jobInstanceFactory,
         EntityManagerInterface $entityManager,
         JobParametersFactory $jobParametersFactory,
+        TranslatorInterface $translator,
         $jobType
     ) {
         $this->jobRegistry = $jobRegistry;
@@ -86,6 +79,7 @@ class JobProfileController
         $this->templating = $templating;
         $this->entityManager = $entityManager;
         $this->jobParametersFactory = $jobParametersFactory;
+        $this->translator = $translator;
     }
 
     /**
@@ -111,8 +105,9 @@ class JobProfileController
                 $this->entityManager->persist($jobInstance);
                 $this->entityManager->flush();
 
+                $message = sprintf('flash.%s.created', $this->getJobType());
                 $request->getSession()->getFlashBag()
-                    ->add('success', new Message(sprintf('flash.%s.created', $this->getJobType())));
+                    ->add('success', $this->translator->trans($message));
 
                 $url = $this->router->generate(
                     sprintf('pim_importexport_%s_profile_edit', $this->getJobType()),

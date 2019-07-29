@@ -3,7 +3,6 @@
 namespace Oro\Bundle\PimDataGridBundle\Controller\Rest;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -64,19 +63,6 @@ class DatagridViewController
     /** @var SimpleFactoryInterface */
     protected $factory;
 
-    /**
-     * @param NormalizerInterface             $normalizer
-     * @param DatagridViewRepositoryInterface $datagridViewRepo
-     * @param TokenStorageInterface           $tokenStorage
-     * @param DatagridViewManager             $datagridViewManager
-     * @param SaverInterface                  $saver
-     * @param RemoverInterface                $remover
-     * @param ValidatorInterface              $validator
-     * @param TranslatorInterface             $translator
-     * @param CollectionFilterInterface       $datagridViewFilter
-     * @param ObjectUpdaterInterface          $updater
-     * @param SimpleFactoryInterface          $factory
-     */
     public function __construct(
         NormalizerInterface $normalizer,
         DatagridViewRepositoryInterface $datagridViewRepo,
@@ -227,7 +213,7 @@ class DatagridViewController
 
         if ($creation) {
             $request->getSession()->getFlashBag()
-                ->add('success', new Message('pim_datagrid.view_selector.flash.created'));
+                ->add('success', $this->translator->trans('pim_datagrid.view_selector.flash.created'));
         }
 
         return new JsonResponse(['id' => $datagridView->getId()]);
@@ -259,7 +245,7 @@ class DatagridViewController
 
         $this->remover->remove($view);
         $request->getSession()->getFlashBag()
-            ->add('success', new Message('pim_datagrid.view_selector.flash.removed'));
+            ->add('success', $this->translator->trans('pim_datagrid.view_selector.flash.removed'));
 
         return new JsonResponse(null, 204);
     }

@@ -19,7 +19,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerAwareInterface;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
@@ -31,11 +30,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_is_a_normalizer()
     {
         $this->shouldImplement(NormalizerInterface::class);
-    }
-
-    function it_is_serializer_aware()
-    {
-        $this->shouldImplement(SerializerAwareInterface::class);
     }
 
     function it_supports_flat_normalization_of_product_model(

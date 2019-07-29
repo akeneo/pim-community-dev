@@ -17,6 +17,7 @@ services:
             - '@akeneo_batch.job_instance_factory'
             - '@doctrine.orm.entity_manager'
             - '@akeneo_batch.job_parameters_factory'
+            - '@translator'
             - export
 
     pim_import_export.controller.import_profile:
@@ -31,6 +32,7 @@ services:
             - '@akeneo_batch.job_instance_factory'
             - '@doctrine.orm.entity_manager'
             - '@akeneo_batch.job_parameters_factory'
+            - '@translator'
             - import
 
     pim_import_export.controller.export_execution:

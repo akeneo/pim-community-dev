@@ -20,9 +20,6 @@ $rules = [
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
 
-        // TIP-1014: Do not use custom Flash Messages
-        'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
-
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
     ])->in('Akeneo\Channel\Bundle'),
