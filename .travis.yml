@@ -40,7 +40,7 @@ install:
     - composer install --prefer-dist --no-interaction
     - cp tests/travis/parameters_test.yml app/config/parameters_test.yml
     - ./bin/console pim:install:assets --env=behat
-    - ./bin/console pim:install:db --withoutIndexes --withoutFixtures --env=behat
+    - ./bin/console pim:install:db --withoutIndexes --env=behat
     - yarn install
     - yarn less
     - yarn webpack-test --env=prod
