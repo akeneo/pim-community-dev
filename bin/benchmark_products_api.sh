@@ -36,7 +36,6 @@ boot_and_install_pim()
     docker-compose up -d --remove-orphans
     PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)
     rm -rf var/cache/*
-    rm -f app/config/parameters_test.yml
     bin/docker/pim-setup.sh
     docker-compose exec -T fpm bin/console cache:warmup -e behat
     docker-compose exec -T fpm bin/console pim:installer:db -e behat

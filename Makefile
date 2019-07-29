@@ -111,7 +111,7 @@ install-pim: vendor node_modules clean install-asset build-front-dev build-front
 
 ## Start docker containers
 .PHONY: up
-up: .env docker-compose.override.yml app/config/parameters_test.yml
+up: .env docker-compose.override.yml
 	$(DOCKER_COMPOSE) up -d --remove-orphan
 
 ## Stop docker containers, remove volumes and networks
