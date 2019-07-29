@@ -69,12 +69,12 @@ function removeOrphanJobExecutionDirectories(Connection $database, string $archi
      * +-------------------+---------------------------+--------+
      */
     $existingJobExecutions = <<<SQL
-SELECT GROUP_CONCAT(je.id) AS job_execution_ids, ji.code, ji.type 
+SELECT GROUP_CONCAT(je.id) AS job_execution_ids, ji.job_name, ji.type 
 FROM akeneo_batch_job_execution je 
 INNER JOIN akeneo_batch_job_instance ji 
     ON ji.id = je.job_instance_id 
 WHERE ji.type IN ('import', 'export') 
-GROUP BY ji.type, ji.code;
+GROUP BY ji.type, ji.job_name;
 SQL;
 
     $stmt = $database->executeQuery($existingJobExecutions);
