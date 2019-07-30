@@ -40,8 +40,6 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     {
         return
             in_array($format, [
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
-                ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX,
                 ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             ]) &&
             $data instanceof ProductCompletenessCollection;

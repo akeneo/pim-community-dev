@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -21,7 +20,6 @@ class ReferenceDataNormalizer extends AbstractProductValueNormalizer implements 
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ReferenceDataValue && (
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format ||
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
             );
     }
