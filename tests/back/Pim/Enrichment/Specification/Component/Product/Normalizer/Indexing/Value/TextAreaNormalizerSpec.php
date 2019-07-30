@@ -43,6 +43,9 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('my_textarea_attribute')->willReturn($textAreaAttribute);
         $attributeRepository->findOneByIdentifier('my_number_attribute')->willReturn($numberAttribute);
 
+        $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
+        $this->supportsNormalization($numberValue, 'whatever')->shouldReturn(false);
+
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
         $this->supportsNormalization($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
