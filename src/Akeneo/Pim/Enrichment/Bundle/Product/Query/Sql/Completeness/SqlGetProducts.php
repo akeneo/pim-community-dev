@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\Product;
 use Doctrine\DBAL\Connection;
 
