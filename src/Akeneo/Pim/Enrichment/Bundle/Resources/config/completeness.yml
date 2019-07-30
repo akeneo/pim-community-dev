@@ -13,8 +13,8 @@ services:
     pim_catalog.completeness.calculator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator'
         arguments:
-            - '@sql_get_products'
-            - '@sql_get_familymasks'
+            - '@akeneo.pim.enrichment.completeness.query.get_products'
+            - '@akeneo.pim.enrichment.completeness.query.get_family_masks'
 
     pim_catalog.completeness.generator:
         class: '%pim_catalog.completeness.generator.class%'
@@ -28,14 +28,3 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
-
-    # TODO Move
-    sql_get_products:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\SqlGetProducts'
-        arguments:
-            - '@database_connection'
-
-    sql_get_familymasks:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\SqlGetCompletenessFamilyMasks'
-        arguments:
-            - '@database_connection'

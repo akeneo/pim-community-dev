@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
+namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMask;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -11,7 +14,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlGetCompletenessFamilyMasks
+final class SqlGetCompletenessFamilyMasks implements GetCompletenessFamilyMasks
 {
     /** @var Connection */
     private $connection;
@@ -72,8 +75,8 @@ FROM pim_catalog_family family
     JOIN (
         SELECT 
             channel.id AS channel_id,
-            channel.code AS channel_code, 
-            locale.id AS locale_id, 
+            channel.code AS channel_code,
+            locale.id AS locale_id,
             locale.code AS locale_code
         FROM pim_catalog_channel channel
             JOIN pim_catalog_channel_locale pccl ON channel.id = pccl.channel_id
@@ -81,7 +84,7 @@ FROM pim_catalog_family family
     ) AS channel_locale ON channel_locale.channel_id = pcar.channel_id
     JOIN pim_catalog_attribute attribute ON pcar.attribute_id = attribute.id
     LEFT JOIN pim_catalog_attribute_locale pcal ON attribute.id = pcal.attribute_id
-WHERE 
+WHERE
     pcar.required is true
     AND (pcal.locale_id IS NULL or pcal.locale_id = channel_locale.locale_id)
     AND family.code IN (:familyCodes)
@@ -102,7 +105,6 @@ SQL;
             );
         }
 
-//        var_dump($familyCodes);
         $result = [];
         foreach ($masksPerFamily as $familyCode => $masksPerChannelAndLocale) {
             $result[$familyCode] = new CompletenessFamilyMask(

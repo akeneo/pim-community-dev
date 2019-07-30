@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
+namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 

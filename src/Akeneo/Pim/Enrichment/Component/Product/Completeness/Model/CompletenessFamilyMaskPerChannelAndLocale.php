@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
+namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
@@ -15,7 +15,11 @@ class CompletenessFamilyMaskPerChannelAndLocale
     /** @var string */
     private $localeCode;
 
-    /** @var string[] */
+    /**
+     * ['name-ecommerce-en_US', 'sku-<all_channel>-<all_locales>', ...]
+     *
+     * @var string[]
+     */
     private $mask;
 
     public function __construct(string $channelCode, string $localeCode, array $mask)

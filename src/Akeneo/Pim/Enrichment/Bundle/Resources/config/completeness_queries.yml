@@ -1,0 +1,10 @@
+services:
+    akeneo.pim.enrichment.completeness.query.get_products:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetProducts'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.completeness.query.get_family_masks:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetCompletenessFamilyMasks'
+        arguments:
+            - '@database_connection'

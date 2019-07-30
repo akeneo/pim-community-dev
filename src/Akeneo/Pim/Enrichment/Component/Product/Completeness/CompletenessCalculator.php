@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMask;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 
@@ -14,14 +18,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness
  */
 class CompletenessCalculator implements CompletenessCalculatorInterface
 {
-    /** @var SqlGetProducts */
+    /** @var GetProducts */
     private $getProducts;
 
-    /** @var SqlGetCompletenessFamilyMasks */
+    /** @var GetCompletenessFamilyMasks */
     private $getCompletenessFamilyMasks;
 
-    public function __construct(SqlGetProducts $getProducts, SqlGetCompletenessFamilyMasks $getCompletenessFamilyMasks)
-    {
+    public function __construct(
+        GetProducts $getProducts,
+        GetCompletenessFamilyMasks $getCompletenessFamilyMasks
+    ) {
         $this->getProducts = $getProducts;
         $this->getCompletenessFamilyMasks = $getCompletenessFamilyMasks;
     }
