@@ -21,15 +21,15 @@ use Doctrine\DBAL\Connection;
  * Those family codes are grouped by user IDs, those of the users owning products
  * of those families, and so being able to complete the corresponding attribute
  * mappings.
- * The data returned are formatted as "user_id" => ["family_code"]:
+ * The data returned are formatted as "family_code" => ["user_ids"]:
  * [
- *     1 => ['family_1', 'family_2'],
- *     2 => ['family_1', 'family_3', 'family_4'],
+ *     'fridges' => [1, 42],
+ *     'scanners' => [2, 42, 7],
  * ].
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SelectUserIdsAndFamilyCodesWithMissingMappingQuery
+class SelectUsersAbleToCompleteFamiliesMissingMappingQuery
 {
     /** @var Connection */
     private $connection;
@@ -50,7 +50,7 @@ class SelectUserIdsAndFamilyCodesWithMissingMappingQuery
     public function execute(): array
     {
         $sql = <<<SQL
-SELECT user_id, JSON_ARRAYAGG(family_code) AS family_codes
+SELECT family_code, JSON_ARRAYAGG(user_id) AS user_ids
 FROM (
     SELECT DISTINCT uag.user_id, f.code AS family_code
     FROM pimee_franklin_insights_subscription s
@@ -63,14 +63,14 @@ FROM (
     WHERE s.misses_mapping IS TRUE
         AND (cp.category_id IS NULL OR pca.own_items IS TRUE)
 ) user_family
-GROUP BY user_id;
+GROUP BY family_code;
 SQL;
 
-        $result = $this->connection->executeQuery($sql)->fetchAll();
+        $results = $this->connection->executeQuery($sql)->fetchAll();
 
         $formattedUserIdsAndFamilyCodes = [];
-        foreach ($result as $familyCodesPerUser) {
-            $formattedUserIdsAndFamilyCodes[$familyCodesPerUser['user_id']] = json_decode($familyCodesPerUser['family_codes'], true);
+        foreach ($results as $usersPerFamily) {
+            $formattedUserIdsAndFamilyCodes[$usersPerFamily['family_code']] = json_decode($usersPerFamily['user_ids'], true);
         }
 
         return $formattedUserIdsAndFamilyCodes;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine;
 
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUsersAbleToCompleteFamiliesMissingMappingQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Common\EntityWithValue\Builder;
 use Akeneo\Test\Integration\Configuration;
@@ -24,7 +24,7 @@ use PHPUnit\Framework\Assert;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SelectUserIdsAndFamilyCodesWithMissingMappingQueryIntegration extends TestCase
+class SelectUsersAbleToCompleteFamiliesMissingMappingQueryIntegration extends TestCase
 {
     /** @var int[] */
     private $productIds;
@@ -54,12 +54,16 @@ class SelectUserIdsAndFamilyCodesWithMissingMappingQueryIntegration extends Test
 
         $queryResult = $this->getUserIdsAndFamilyCodesQuery()->execute();
 
+        $admin = $this->getUserId('admin');
+        $julia = $this->getUserId('julia');
+        $mary = $this->getUserId('mary');
+        $kevin = $this->getUserId('kevin');
+
         Assert::assertEqualsCanonicalizing(
             [
-                $this->getUserId('admin') => ['familyA', 'familyA1', 'familyA2'],
-                $this->getUserId('julia') => ['familyA', 'familyA1', 'familyA2'],
-                $this->getUserId('mary') => ['familyA', 'familyA2'],
-                $this->getUserId('kevin') => ['familyA', 'familyA2'],
+                'familyA' => [$admin, $julia, $mary, $kevin],
+                'familyA1' => [$admin, $julia],
+                'familyA2' => [$admin, $julia, $mary, $kevin],
             ],
             $queryResult
         );
@@ -73,8 +77,7 @@ class SelectUserIdsAndFamilyCodesWithMissingMappingQueryIntegration extends Test
 
         Assert::assertEqualsCanonicalizing(
             [
-                $this->getUserId('admin') => ['familyA1'],
-                $this->getUserId('julia') => ['familyA1'],
+                'familyA1' => [$this->getUserId('admin'), $this->getUserId('julia')],
             ],
             $queryResult
         );
@@ -198,11 +201,11 @@ SQL;
     }
 
     /**
-     * @return SelectUserIdsAndFamilyCodesWithMissingMappingQuery
+     * @return SelectUsersAbleToCompleteFamiliesMissingMappingQuery
      */
-    private function getUserIdsAndFamilyCodesQuery(): SelectUserIdsAndFamilyCodesWithMissingMappingQuery
+    private function getUserIdsAndFamilyCodesQuery(): SelectUsersAbleToCompleteFamiliesMissingMappingQuery
     {
-        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_user_ids_and_family_codes_with_missing_mapping');
+        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_users_able_to_complete_families_missing_mapping');
     }
 
     /**
