@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
@@ -46,14 +45,8 @@ class OptionsNormalizerSpec extends ObjectBehavior
         $optionsAttribute->getBackendType()->willReturn('options');
         $textAttribute->getBackendType()->willReturn('text');
 
-        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
-
-        $this->supportsNormalization($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
         $this->supportsNormalization($optionsValue, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(true);
 
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
@@ -79,7 +72,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn([]);
 
-        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -106,7 +99,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -136,7 +129,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -166,7 +159,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     'ecommerce' => [
@@ -196,7 +189,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     'ecommerce' => [
