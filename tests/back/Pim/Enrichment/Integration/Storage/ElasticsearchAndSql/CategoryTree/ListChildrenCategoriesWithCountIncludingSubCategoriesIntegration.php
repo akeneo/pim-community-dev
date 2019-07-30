@@ -45,6 +45,12 @@ class ListChildrenCategoriesWithCountIncludingSubCategoriesIntegration extends T
             'product_2' => ['tree_1_child_1_level_3', 'tree_2'],
             'product_3' => ['tree_2_child_2_level_3', 'tree_1_child_2_level_1']
         ]);
+
+        $fixturesLoader->givenTheProductModelsWithCategories([
+            'product_1' => ['tree_1_child_1_level_1', 'tree_1_child_1_level_2'],
+            'product_2' => ['tree_1_child_1_level_3', 'tree_2'],
+            'product_3' => ['tree_2_child_2_level_3', 'tree_1_child_2_level_1']
+        ]);
     }
 
     public function test_list_child_categories()
