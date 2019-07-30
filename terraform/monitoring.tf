@@ -150,19 +150,28 @@ resource "null_resource" "metric" {
   count = "${length(local.metrics)}"
 
   triggers = {
-    files = "${local_file.metric-rendered.*.content[count.index]}"
+    google_project_id = "${var.google_project_id}"
+    pfid              = "${local.pfid}"
+    files             = "${local_file.metric-rendered.*.content[count.index]}"
   }
 
   provisioner "local-exec" {
     command = <<EOF
-      gcloud beta logging metrics create ${local.pfid}-${local.metrics[count.index]} \
-        --config-from-file ${local_file.metric-rendered.*.filename[count.index]} \
-        --project ${var.google_project_id} \
-        --quiet && \
-      for limit in {1..600}; do \
-        [[ ! -z "$(gcloud beta logging metrics list --project ${var.google_project_id} --quiet --format='value(name)' --filter='name~^${local.pfid}-${local.metrics[count.index]}$')" ]] \
-        && break || echo "wait $limit"; sleep 1; \
-      done;
+      if [[ -z "$(gcloud beta logging metrics list --project ${var.google_project_id} --quiet --format='value(name)' --filter='name~^${local.pfid}-${local.metrics[count.index]}$')" ]]; then \ 
+        gcloud beta logging metrics create ${local.pfid}-${local.metrics[count.index]} \
+          --config-from-file ${local_file.metric-rendered.*.filename[count.index]} \
+          --project ${var.google_project_id} \
+          --quiet && \
+        for limit in {1..600}; do \
+          [[ ! -z "$(gcloud beta logging metrics list --project ${var.google_project_id} --quiet --format='value(name)' --filter='name~^${local.pfid}-${local.metrics[count.index]}$')" ]] \
+          && break || echo "wait $limit"; sleep 1; \
+        done; \
+      else \
+        gcloud beta logging metrics update ${local.pfid}-${local.metrics[count.index]} \
+          --config-from-file ${local_file.metric-rendered.*.filename[count.index]} \
+          --project ${var.google_project_id} \
+          --quiet; \
+      fi
 EOF
   }
 
