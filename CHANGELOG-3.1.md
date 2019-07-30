@@ -5,6 +5,7 @@
 - PIM-8535: Prevent attribute filter popup from being hidden behind the left menu
 - PIM-8588: Fix proposal diff for reference entity collection
 - PIM-8571: Fix asset description display in product form
+- PIM-8599: Fix API pagination when getting reference entity records with the API
 
 # 3.1.16 (2019-07-22)
 

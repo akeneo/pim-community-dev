@@ -65,7 +65,8 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
                 reference_entity_identifier, 
                 value_collection
             FROM akeneo_reference_entity_record
-            WHERE identifier IN (:identifiers);
+            WHERE identifier IN (:identifiers)
+            ORDER BY FIELD(identifier, :identifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
