@@ -55,12 +55,18 @@ class LastOperationsFetcher
                 'pim_import_export.batch_status.%d',
                 $operation['status']
             );
-            if ($operation['date'] instanceof \DateTime) {
-                $operation['date'] = $this->presenter->present($operation['date'], [
-                    'locale' => $locale,
-                    'timezone' => $timezone,
-                ]);
+
+            $date = $operation['date'] ?? null;
+            if (is_string($date)) {
+                $operation['date'] = $this->presenter->present(
+                    new \DateTime($date, new \DateTimeZone('UTC')),
+                    [
+                        'locale' => $locale,
+                        'timezone' => $timezone,
+                    ]
+                );
             }
+
             $operation['canSeeReport'] = !in_array($operation['type'], ['import', 'export']) ||
                 $this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $operation['type']));
         }

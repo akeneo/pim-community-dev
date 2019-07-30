@@ -51,7 +51,8 @@ define(
             templateProduct: _.template(templateProduct),
             templateProductModel: _.template(templateProductModel),
             templateAddChild: _.template(templateAddChild),
-            dropdowns: {},
+            dropdowns: [],
+            formModal: null,
             queryTimer: null,
             events: {
                 'click [data-action="navigateToLevel"]': 'navigateToLevel'
@@ -64,6 +65,22 @@ define(
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            shutdown: function () {
+                this.dropdowns.forEach(dropdown => {
+                    dropdown.close();
+                });
+
+                if (this.formModal) {
+                    this.formModal.close();
+                    this.formModal.$el.remove();
+                }
+
+                BaseForm.prototype.shutdown.apply(this, arguments);
             },
 
             /**
@@ -143,7 +160,7 @@ define(
                             this.addSelect2Footer(dropDown)
                         });
 
-                    this.dropdowns[index] = dropDown;
+                    this.dropdowns.push(dropDown.data('select2'));
                 });
             },
 
@@ -253,6 +270,8 @@ define(
                         );
 
                         formModal.open();
+
+                        this.formModal = formModal;
                     });
             },
 
