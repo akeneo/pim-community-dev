@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface, RefreshIndexInterface
+class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
     /** @var NormalizerInterface */
@@ -214,12 +214,5 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
                 'Only product models with an "id" property can be indexed in the search engine.'
             );
         }
-    }
-
-    public function refreshIndex(): void
-    {
-        $this->productClient->refreshIndex();
-        $this->productModelClient->refreshIndex();
-        $this->productAndProductModelClient->refreshIndex();
     }
 }

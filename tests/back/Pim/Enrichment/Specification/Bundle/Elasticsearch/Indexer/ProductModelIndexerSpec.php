@@ -263,16 +263,4 @@ class ProductModelIndexerSpec extends ObjectBehavior
 
         $this->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()]);
     }
-
-    public function it_refreshes_product_and_product_model_indexes(
-        Client $productClient,
-        Client $productModelClient,
-        Client $productAndProductModelClient
-    ) {
-        $productClient->refreshIndex()->shouldBeCalled();
-        $productModelClient->refreshIndex()->shouldBeCalled();
-        $productAndProductModelClient->refreshIndex()->shouldBeCalled();
-
-        $this->refreshIndex()->shouldReturn(null);
-    }
 }
