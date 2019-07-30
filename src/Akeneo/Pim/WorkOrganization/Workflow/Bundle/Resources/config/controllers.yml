@@ -159,6 +159,8 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.product'
             - '@pim_enrich.filter.product_attribute_filter'
+            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
 
     pim_enrich.controller.rest.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController'
@@ -180,3 +182,5 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@pim_catalog.repository.family_variant'
             - '@pim_enrich.filter.product_model_attribute_filter'
+            - '@akeneo_elasticsearch.client.product_model'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
