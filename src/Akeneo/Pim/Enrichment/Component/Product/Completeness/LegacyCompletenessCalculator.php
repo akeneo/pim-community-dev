@@ -135,8 +135,13 @@ class LegacyCompletenessCalculator implements CompletenessCalculatorInterface
         throw new \Exception('Nope');
     }
 
+    /**
+     * @param string $productIdentifier
+     *
+     * @return ProductCompletenessCollection
+     */
     public function fromProductIdentifier($productIdentifier): ProductCompletenessCollection
     {
-        throw new \Exception('Nope non plus');
+        // TODO: Implement fromProductIdentifier() method.
     }
 }

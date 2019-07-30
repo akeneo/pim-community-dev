@@ -19,7 +19,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
-class CompletenessCalculatorSpec extends ObjectBehavior
+class LegacyCompletenessCalculatorSpec extends ObjectBehavior
 {
     function let(
         RequiredValueCollectionFactory $requiredValueCollectionFactory,

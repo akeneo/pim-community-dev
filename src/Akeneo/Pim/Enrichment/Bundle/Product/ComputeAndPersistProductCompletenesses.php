@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -15,9 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
  */
 class ComputeAndPersistProductCompletenesses
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;
 
@@ -25,12 +21,9 @@ class ComputeAndPersistProductCompletenesses
     private $saveProductCompletenesses;
 
     public function __construct(
-        ProductRepositoryInterface $productRepository,
         CompletenessCalculatorInterface $completenessCalculator,
         SaveProductCompletenesses $saveProductCompletenesses
     ) {
-        // TODO Remove this
-        $this->productRepository = $productRepository;
         $this->completenessCalculator = $completenessCalculator;
         $this->saveProductCompletenesses = $saveProductCompletenesses;
     }
