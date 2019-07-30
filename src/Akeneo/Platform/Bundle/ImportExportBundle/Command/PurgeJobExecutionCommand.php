@@ -26,7 +26,7 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     {
         $this->setName('akeneo:batch:purge-job-execution');
         $this->setDescription(
-            'Purge jobs execution older than number of days you want except the last one, by default 90 days'
+            'Purge jobs execution older than number of days you want except the last one, by default 90 days, minimum is 1 day'
         );
         $this->addOption(
             'days',
@@ -43,9 +43,9 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $days = $input->getOption('days');
-        if (!is_numeric($days)) {
+        if (!(is_numeric($days) && $days > 0)) {
             $output->writeln(
-                sprintf('<error>Option --days must be a number, "%s" given.</error>', $input->getOption('days'))
+                sprintf('<error>Option --days must be a number strictly superior to 0, "%s" given.</error>', $input->getOption('days'))
             );
 
             return;
