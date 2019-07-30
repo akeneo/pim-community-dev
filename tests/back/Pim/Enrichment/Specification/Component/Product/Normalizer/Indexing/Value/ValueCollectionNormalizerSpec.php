@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -29,11 +28,8 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
     function it_support_product_value_collection($valueCollection)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
-        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(false);
         $this->supportsNormalization($valueCollection, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($valueCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(true);
+
 
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
@@ -42,7 +38,7 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_empty_value_collection() {
-        $this->normalize(new WriteValueCollection(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,[])->shouldReturn([]);
+        $this->normalize(new WriteValueCollection(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,[])->shouldReturn([]);
     }
 
     function it_normalizes_product_value_collection(
@@ -59,7 +55,7 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
 
         $valueCollectionIterator->next()->shouldBeCalled();
 
-        $serializer->normalize($value1, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
+        $serializer->normalize($value1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(
             [
                 'box_quantity-decimal' => [
                     '<all_channels>' => [
@@ -69,7 +65,7 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $serializer->normalize($value2, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
+        $serializer->normalize($value2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(
             [
                 'description-textarea' => [
                     '<all_channels>' => [
@@ -79,7 +75,7 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $this->normalize($valueCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,[])->shouldReturn(
+        $this->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,[])->shouldReturn(
             [
                 'box_quantity-decimal' => [
                     '<all_channels>' => [
