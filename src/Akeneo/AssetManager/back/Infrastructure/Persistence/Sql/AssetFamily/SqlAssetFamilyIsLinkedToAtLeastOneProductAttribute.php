@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetSingleLinkType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -50,8 +49,7 @@ SQL;
             $query,
             [
                 'attribute_types' => [
-                    AssetMultipleLinkType::ASSET_MULTIPLE_LINK,
-                    AssetSingleLinkType::ASSET_SINGLE_LINK,
+                    AssetMultipleLinkType::ASSET_MULTIPLE_LINK
                 ]
             ],
             [

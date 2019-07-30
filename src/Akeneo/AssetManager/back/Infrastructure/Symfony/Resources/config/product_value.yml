@@ -6,35 +6,14 @@ services:
         tags:
             - { name: pim_catalog.attribute_type, alias: akeneo_asset_multiple_link, entity: '%pim_catalog.entity.product.class%' }
 
-    akeneo_assetmanager.attribute_type.asset_family:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetSingleLinkType
-        arguments:
-            - 'reference_data_options'
-        tags:
-            - { name: pim_catalog.attribute_type, alias: akeneo_asset_single_link, entity: '%pim_catalog.entity.product.class%' }
-
     akeneo_assetmanager.enrich.provider.asset_multiple_link_provider:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Provider\AssetMultipleLinkProvider
         tags:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }
 
-    akeneo_assetmanager.enrich.provider.asset_single_link_provider:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Provider\AssetSingleLinkProvider
-        tags:
-            - { name: pim_enrich.provider.field, priority: 100 }
-            - { name: pim_enrich.provider.empty_value, priority: 80 }
-
     akeneo_assetmanager.factory.product_value.asset_multiple_link:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Factory\AssetMultipleLinkValueFactory
-        public: false
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-        tags:
-            - { name: pim_catalog.factory.value }
-
-    akeneo_assetmanager.factory.product_value.asset_family:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Factory\AssetSingleLinkValueFactory
         public: false
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
@@ -48,18 +27,11 @@ services:
         tags:
             - { name: pim_catalog.attribute.comparator }
 
-    akeneo_assetmanager.comparator.attribute.asset_family:
-        class: '%pim_catalog.comparator.attribute.option.class%'
-        arguments:
-            - ['akeneo_asset_single_link']
-        tags:
-            - { name: pim_catalog.attribute.comparator }
-
     akeneo_assetmanager.updater.setter.product_asset_family_value:
         class: Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetter
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - ['akeneo_asset_multiple_link', 'akeneo_asset_single_link']
+            - ['akeneo_asset_multiple_link']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -71,27 +43,11 @@ services:
         tags:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
 
-    akeneo_assetmanager.array_converter.standard_to_flat.product.value_converter.asset_family:
-        class: Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\SimpleSelectConverter
-        arguments:
-            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
-            - ['akeneo_asset_single_link']
-        tags:
-            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
-
     akeneo_assetmanager.array_converter.flat_to_standard.product.value_converter.asset_multiple_link:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\MultiSelectConverter
         parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
         arguments:
             - ['akeneo_asset_multiple_link']
-        tags:
-            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
-
-    akeneo_assetmanager.array_converter.flat_to_standard.product.value_converter.asset_family:
-        class: Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\SimpleSelectConverter
-        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
-        arguments:
-            - ['akeneo_asset_single_link']
         tags:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
@@ -110,13 +66,6 @@ services:
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
-    akeneo_assetmanager.infrastructure.catalog.normalizer.asset_family_value:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\AssetSingleLinkValueNormalizer
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
-        tags:
-            - { name: pim_indexing_serializer.normalizer, priority: 90 }
-
     akeneo_assetmanager.infrastructure.catalog.normalizer.asset_code:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\AssetCodeNormalizer
         tags:
@@ -124,20 +73,6 @@ services:
         - { name: pim_standard_format_serializer.normalizer, priority: 90 }
         - { name: pim_storage_serializer.normalizer, priority: 90 }
         - { name: pim_versioning.serializer.normalizer, priority: 100 }
-
-    akeneo_assetmanager.infrastructure.catalog.normalizer.asset_family_axis_label_normalizer:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\AssetAxisLabelNormalizer
-        arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_details'
-
-    pimee_datagrid.normalizer.product.asset_family_value:
-        class: Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Normalizer\AssetSingleLinkValueNormalizer
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
-            - '@pimee.asset_manager.datagrid.query.get_asset_information'
-        tags:
-            - { name: pim_datagrid_serializer.normalizer }
 
     pimee_datagrid.normalizer.product.asset_multiple_link_value:
         class: Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Normalizer\AssetMultipleLinkValueNormalizer
@@ -154,21 +89,8 @@ services:
         tags:
             - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
 
-    akeneo_assetmanager.factory.non_existent_values_filter.asset_families_simple_select_filter:
-        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Factory\NonExistentValuesFilter\NonExistingAssetFamiliesSimpleSelectFilter'
-        arguments:
-            - '@pimee.asset_manager.enrichment.find_all_existent_assets_for_asset_identifiers'
-        tags:
-            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
-
     akeneo_assetmanager.factory.read.product_value.asset_multiple_link:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Factory\Read\Value\AssetMultipleLinkValueFactory
-        public: false
-        tags:
-            - { name: akeneo.pim.enrichment.factory.read.product_value }
-
-    akeneo_assetmanager.factory.read.product_value.asset_family:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Factory\Read\Value\AssetSingleLinkValueFactory
         public: false
         tags:
             - { name: akeneo.pim.enrichment.factory.read.product_value }

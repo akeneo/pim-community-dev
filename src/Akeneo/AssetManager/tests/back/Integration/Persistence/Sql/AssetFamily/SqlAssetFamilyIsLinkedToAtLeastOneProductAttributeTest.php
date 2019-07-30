@@ -20,7 +20,6 @@ use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetSingleLinkType;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 
 /**
@@ -136,7 +135,7 @@ class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrat
         $this->get('pim_catalog.saver.attribute')->save($attributeAssetMultipleLink);
 
         $attributeAssetFamily = $this->get('pim_catalog.factory.attribute')
-            ->createAttribute(AssetSingleLinkType::ASSET_SINGLE_LINK);
+            ->createAttribute(AssetMultipleLinkType::ASSET_MULTIPLE_LINK);
         $this->get('pim_catalog.updater.attribute')
             ->update($attributeAssetFamily, [
                 'code' => 'main_city',
