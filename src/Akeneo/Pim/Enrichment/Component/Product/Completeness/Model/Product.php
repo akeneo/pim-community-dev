@@ -46,13 +46,15 @@ class Product
         foreach ($this->rawValues as $attributeCode => $valuesByChannel) {
             foreach ($valuesByChannel as $channelCode => $valuesByLocale) {
                 foreach ($valuesByLocale as $localeCode => $value) {
-                    $mask = sprintf(
-                        '%s-%s-%s',
-                        $this->formatAttributeCode($attributeCode, $value),
-                        $channelCode,
-                        $localeCode
-                    );
-                    $result[] = $mask;
+                    if (null !== $value) {
+                        $mask = sprintf(
+                            '%s-%s-%s',
+                            $this->formatAttributeCode($attributeCode, $value),
+                            $channelCode,
+                            $localeCode
+                        );
+                        $result[] = $mask;
+                    }
                 }
             }
         }
