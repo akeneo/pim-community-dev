@@ -96,8 +96,6 @@ services:
         arguments: ['%pimee_security.entity.asset_category_access.class%']
         tags:
             - { name: 'pim_repository' }
-        calls:
-            - [setTableNameBuilder, ['@akeneo_storage_utils.doctrine.table_name_builder']]
 
     pimee_catalog_rule.repository.asset_mass_action:
         class: '%pimee_catalog_rule.repository.asset_mass_action.class%'

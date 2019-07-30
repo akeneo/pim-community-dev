@@ -14,7 +14,6 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repo
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\TableNameMapper;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProcessingRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,16 +28,12 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     /** @var EntityManagerInterface */
     protected $entityManager;
 
-    /** @var TableNameMapper */
-    protected $tableNameMapper;
-
     /**
      * @param EntityManagerInterface $objectManager
      */
-    public function __construct(EntityManagerInterface $objectManager, TableNameMapper $tableNameMapper)
+    public function __construct(EntityManagerInterface $objectManager)
     {
         $this->entityManager = $objectManager;
-        $this->tableNameMapper = $tableNameMapper;
     }
 
     /**
@@ -47,11 +42,10 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     public function isProcessableAttributeGroupCompleteness(ProductInterface $product, ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();
-        $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group');
 
         $query = <<<SQL
 SELECT MIN(`attribute_group_completeness`.`calculated_at`)
-FROM $sqlTable AS `attribute_group_completeness`
+FROM `pimee_teamwork_assistant_completeness_per_attribute_group` AS `attribute_group_completeness`
 WHERE `attribute_group_completeness`.`product_id` = :product_id
 AND `attribute_group_completeness`.`channel_id` = :channel_id
 AND `attribute_group_completeness`.`locale_id` = :locale_id
@@ -79,12 +73,11 @@ SQL;
     {
         $query = <<<SQL
 SELECT count(project_id)
-FROM @pimee_teamwork_assistant.project_product@ AS project_product
+FROM pimee_teamwork_assistant_project_product AS project_product
 WHERE product_id = :product_id
 SQL;
 
         $connection = $this->entityManager->getConnection();
-        $query = $this->tableNameMapper->createQuery($query);
         $projects = $connection->fetchColumn($query, ['product_id' => $product->getId()]);
 
         return 0 < $projects;
@@ -100,14 +93,13 @@ SQL;
         array $attributeGroupCompleteness
     ) {
         $connection = $this->entityManager->getConnection();
-        $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group');
 
         $productId = $product->getId();
         $channelId = $channel->getId();
         $localeId = $locale->getId();
 
         $connection->delete(
-            $sqlTable,
+            'pimee_teamwork_assistant_completeness_per_attribute_group',
             [
                 'product_id' => $productId,
                 'channel_id' => $channelId,
@@ -117,7 +109,7 @@ SQL;
 
         foreach ($attributeGroupCompleteness as $attributeGroup) {
             $connection->insert(
-                $sqlTable,
+                'pimee_teamwork_assistant_completeness_per_attribute_group',
                 [
                     'product_id'                                 => $productId,
                     'channel_id'                                 => $channelId,
@@ -137,9 +129,8 @@ SQL;
     public function addProduct(ProjectInterface $project, ProductInterface $product)
     {
         $connection = $this->entityManager->getConnection();
-        $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.project_product');
 
-        $connection->insert($sqlTable, [
+        $connection->insert('pimee_teamwork_assistant_project_product', [
             'project_id' => $project->getId(),
             'product_id' => $product->getId(),
         ]);
@@ -151,10 +142,9 @@ SQL;
     public function prepareProjectCalculation(ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();
-        $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.project_product');
         $projectId = $project->getId();
 
-        $connection->delete($sqlTable, [
+        $connection->delete('pimee_teamwork_assistant_project_product', [
             'project_id' => $projectId,
         ]);
     }
@@ -165,21 +155,19 @@ SQL;
     public function remove(ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();
-        $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.project_product');
         $projectId = $project->getId();
         $query = <<<SQL
 DELETE completeness
-FROM @pimee_teamwork_assistant.completeness_per_attribute_group@ AS completeness
-INNER JOIN @pimee_teamwork_assistant.project_product@ AS project_product1
+FROM pimee_teamwork_assistant_completeness_per_attribute_group AS completeness
+INNER JOIN pimee_teamwork_assistant_project_product AS project_product1
     ON project_product1.product_id = completeness.product_id
-LEFT OUTER JOIN @pimee_teamwork_assistant.project_product@ AS project_product2
+LEFT OUTER JOIN pimee_teamwork_assistant_project_product AS project_product2
     ON project_product2.product_id = completeness.product_id AND project_product2.project_id <> :project_id
 WHERE project_product1.project_id = :project_id AND project_product2.product_id IS NULL
 SQL;
 
-        $query = $this->tableNameMapper->createQuery($query);
         $connection->executeUpdate($query, ['project_id' => $projectId]);
-        $connection->delete($sqlTable, [
+        $connection->delete('pimee_teamwork_assistant_project_product', [
             'project_id' => $projectId,
         ]);
     }

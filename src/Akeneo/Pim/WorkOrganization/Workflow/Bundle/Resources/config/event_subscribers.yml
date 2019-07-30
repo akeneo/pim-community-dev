@@ -16,6 +16,18 @@ services:
     ##
     # Published product events
     ##
+    pimee_workflow_versioning.event_listener.addversion:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionListener'
+        lazy: true
+        arguments:
+            - '@pim_versioning.manager.version'
+            - '@pim_versioning.serializer'
+            - '@pim_versioning.update_guesser.chained'
+            - '@pim_versioning.context.version'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, lazy: true }
+            - { name: doctrine.event_listener, event: postFlush, lazy: true }
+
     pimee_workflow.event_subscriber.published_product.check_removal:
         class: '%pimee_workflow.event_subscriber.published_product.check_removal.class%'
         arguments:

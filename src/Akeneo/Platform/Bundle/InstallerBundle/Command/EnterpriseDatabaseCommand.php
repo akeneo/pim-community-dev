@@ -48,8 +48,8 @@ class EnterpriseDatabaseCommand extends DatabaseCommand
         $output->writeln('<info>Initialize teamwork assistant </info>');
 
         $sql = <<<'SQL'
-DROP TABLE IF EXISTS `@pimee_teamwork_assistant.completeness_per_attribute_group@`;
-CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
+DROP TABLE IF EXISTS `pimee_teamwork_assistant_completeness_per_attribute_group`;
+CREATE TABLE `pimee_teamwork_assistant_completeness_per_attribute_group` (
     `locale_id` INT NOT NULL,
     `channel_id` INT NOT NULL, 
     `product_id` INT NOT NULL, 
@@ -62,25 +62,23 @@ CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     KEY `attr_grp_completeness_channel_index` (`channel_id`),
     KEY `attr_grp_completeness_product_index` (`product_id`),
     KEY `attr_grp_completeness_attribute_group_index` (`attribute_group_id`),
-    CONSTRAINT `attr_grp_completeness_locale_foreign_key` FOREIGN KEY (`locale_id`) REFERENCES `@pim_catalog.entity.locale@` (id) ON DELETE CASCADE,
-    CONSTRAINT `attr_grp_completeness_channel_foreign_key` FOREIGN KEY (`channel_id`) REFERENCES `@pim_catalog.entity.channel@` (id) ON DELETE CASCADE,
-    CONSTRAINT `attr_grp_completeness_product_foreign_key` FOREIGN KEY (`product_id`) REFERENCES `@pim_catalog.entity.product@` (id) ON DELETE CASCADE,
-    CONSTRAINT `attr_grp_completeness_attribute_group_foreign_key` FOREIGN KEY (`attribute_group_id`) REFERENCES `@pim_catalog.entity.attribute_group@` (id) ON DELETE CASCADE
+    CONSTRAINT `attr_grp_completeness_locale_foreign_key` FOREIGN KEY (`locale_id`) REFERENCES `pim_catalog_locale` (id) ON DELETE CASCADE,
+    CONSTRAINT `attr_grp_completeness_channel_foreign_key` FOREIGN KEY (`channel_id`) REFERENCES `pim_catalog_channel` (id) ON DELETE CASCADE,
+    CONSTRAINT `attr_grp_completeness_product_foreign_key` FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (id) ON DELETE CASCADE,
+    CONSTRAINT `attr_grp_completeness_attribute_group_foreign_key` FOREIGN KEY (`attribute_group_id`) REFERENCES `pim_catalog_attribute_group` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `@pimee_teamwork_assistant.project_product@`;
-CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
+DROP TABLE IF EXISTS `pimee_teamwork_assistant_project_product`;
+CREATE TABLE `pimee_teamwork_assistant_project_product` (
   `project_id` INT NOT NULL,
   `product_id` INT NOT NULL,
   PRIMARY KEY (`project_id`,`product_id`),
   KEY `product_selection_project_index` (`project_id`),
   KEY `product_selection_product_index`  (`product_id`),
-  CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `@pimee_teamwork_assistant.model.project@` (id) ON DELETE CASCADE,
-  CONSTRAINT product_selection_product_foreign_key FOREIGN KEY (`product_id`) REFERENCES `@pim_catalog.entity.product@` (id) ON DELETE CASCADE
+  CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `pimee_teamwork_assistant_project` (id) ON DELETE CASCADE,
+  CONSTRAINT product_selection_product_foreign_key FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
-
-        $sql = $this->getContainer()->get('pimee_teamwork_assistant.table_name_mapper')->createQuery($sql);
 
         $this->getContainer()
             ->get('doctrine')

@@ -3,16 +3,9 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Permission\Bundle\Entity\AttributeGroupAccess;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
-use Prophecy\Argument;
 
 class AttributeGroupAccessRepositorySpec extends ObjectBehavior
 {
@@ -20,73 +13,5 @@ class AttributeGroupAccessRepositorySpec extends ObjectBehavior
     {
         $class->name = AttributeGroupAccess::class;
         $this->beConstructedWith($em, $class);
-    }
-
-    function it_returns_granted_attribute_ids_with_filterable_ids(
-        $em,
-        QueryBuilder $qb,
-        Expr $expr,
-        ArrayCollection $groups,
-        AbstractQuery $query,
-        UserInterface $user
-    ) {
-        $user->getGroups()->willReturn($groups);
-        $accessLevel = Attributes::VIEW_ATTRIBUTES;
-        $filterableIds = [1, 2];
-
-        $query = $this->buildGrantedAttributeQuery($em, $qb, $query, $expr, $filterableIds);
-        $query->getArrayResult()->willReturn([
-            0 => ['id' => 1],
-            1 => ['id' => 2]
-        ]);
-
-        $this->getGrantedAttributeIds($user, $accessLevel, $filterableIds)->shouldReturn([1, 2]);
-    }
-
-    function it_returns_granted_attribute_ids_without_filterable_ids(
-        $em,
-        QueryBuilder $qb,
-        Expr $expr,
-        ArrayCollection $groups,
-        AbstractQuery $query,
-        UserInterface $user
-    ) {
-        $user->getGroups()->willReturn($groups);
-        $accessLevel = Attributes::VIEW_ATTRIBUTES;
-        $filterableIds = [];
-
-        $query = $this->buildGrantedAttributeQuery($em, $qb, $query, $expr, $filterableIds);
-        $query->getArrayResult()->willReturn([]);
-
-        $this->getGrantedAttributeIds($user, $accessLevel, $filterableIds)->shouldReturn([]);
-    }
-
-    private function buildGrantedAttributeQuery(
-        EntityManager $em,
-        QueryBuilder $qb,
-        AbstractQuery $query,
-        Expr $expr,
-        $filterableIds
-    ) {
-        $em->createQueryBuilder()->willReturn($qb);
-        $qb->select('aga', null)->willReturn($qb);
-        $qb->select('ag.id', null)->willReturn($qb);
-        $qb->select('a.id', null)->willReturn($qb);
-        $qb->from(AttributeGroupAccess::class, 'aga', null)->willReturn($qb);
-        $qb->innerJoin('aga.attributeGroup', 'ag', 'ag.id')->willReturn($qb);
-        $qb->innerJoin('ag.attributes', 'a')->willReturn($qb);
-        $qb->andWhere(null)->willReturn($qb);
-        $qb->andWhere($expr->in('aga.userGroup', ':groups'))->willReturn($qb);
-        $qb->andWhere(Argument::any(), true)->willReturn($qb);
-        $qb->andWhere($expr->in('a.id', $filterableIds));
-        $qb->setParameter('groups', null)->willReturn($qb);
-        $qb->resetDQLParts(['select'])->willReturn($qb);
-        $qb->distinct(true)->willReturn($qb);
-
-        $qb->expr()->willReturn($expr);
-
-        $qb->getQuery()->willReturn($query);
-
-        return $query;
     }
 }

@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
-use Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber;
+use Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener;
 
 /**
  * Disable the versioning of published product in EE.
@@ -21,7 +21,7 @@ use Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class SkipVersionSubscriber extends AddVersionSubscriber
+class SkipVersionListener extends AddVersionListener
 {
     /**
      * {@inheritdoc}

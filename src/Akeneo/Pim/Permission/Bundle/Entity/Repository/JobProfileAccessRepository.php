@@ -13,7 +13,6 @@ namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Repository\AccessRepositoryInterface;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
@@ -30,11 +29,6 @@ class JobProfileAccessRepository extends EntityRepository implements
     AccessRepositoryInterface,
     IdentifiableObjectRepositoryInterface
 {
-    /**
-     * @var TableNameBuilder
-     */
-    protected $tableNameBuilder;
-
     /**
      * Get user groups that have the specified access to a job instance
      *

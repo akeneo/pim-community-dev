@@ -208,18 +208,6 @@ services:
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: mass-refuse-proposal }
 
-    pimee_workflow.datagrid.extension.mass_action.util.published_product_fields_builder:
-        class: '%pim_datagrid.extension.mass_action.util.product_fields_builder.class%'
-        arguments:
-            - '@pimee_workflow.repository.published_product'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.currency'
-            - '@pim_catalog.repository.association_type'
-            - '@pim_catalog.context.catalog'
-            - '@pimee_security.repository.attribute_group_access'
-            - '@security.token_storage'
-
     pim_datagrid.extension.mass_action.handler.mass_refuse:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler\MassRefuseActionHandler'
         arguments:

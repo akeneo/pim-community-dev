@@ -122,16 +122,3 @@ services:
             - '@akeneo.pim.enrichment.category.get_editable_category_codes'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_permission }
-
-    # Mass action
-    pim_datagrid.extension.mass_action.util.product_fields_builder:
-        class: 'Akeneo\Pim\Permission\Bundle\Datagrid\MassAction\ProductFieldsBuilder'
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.currency'
-            - '@pim_catalog.repository.association_type'
-            - '@pim_catalog.context.catalog'
-            - '@pimee_security.repository.attribute_group_access'
-            - '@security.token_storage'

@@ -17,8 +17,8 @@ use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindExistingRecordCodes;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
@@ -36,7 +36,7 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
 
-    /** @var SqlFindExistingRecordCodes */
+    /** @var FindExistingRecordCodesInterface */
     private $existingRecordCodesQuery;
 
     /**
@@ -55,7 +55,7 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        SqlFindExistingRecordCodes $existingRecordCodesQuery
+        FindExistingRecordCodesInterface $existingRecordCodesQuery
     ) {
         parent::__construct($factory, $util, $userContext, $attributeRepository, $attributeOptionRepository);
 

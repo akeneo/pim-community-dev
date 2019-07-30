@@ -13,7 +13,6 @@ namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
@@ -28,11 +27,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AttributeGroupAccessRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
-    /**
-     * @var TableNameBuilder
-     */
-    protected $tableNameBuilder;
-
     /**
      * Get user groups that have the specified access to an attribute group
      *
@@ -124,51 +118,6 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
     }
 
     /**
-     * Get revoked attribute group query builder
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     *
-     * @return \Doctrine\DBAL\Query\QueryBuilder
-     */
-    public function getRevokedAttributeGroupQB(UserInterface $user, $accessLevel)
-    {
-        // prepare access field depending on access level
-        $accessField = ($accessLevel === Attributes::EDIT_ATTRIBUTES)
-            ? 'aga.edit_attributes'
-            : 'aga.view_attributes';
-
-        // get group ids
-        $groupIds = array_map(
-            function (GroupInterface $group) {
-                return $group->getId();
-            },
-            $user->getGroups()->toArray()
-        );
-
-        $groupTable = $this->getTableName('pim_catalog.entity.attribute_group.class');
-        $groupAccessTable = $this->getTableName('pimee_security.entity.attribute_group_access.class');
-
-        $conn = $this->_em->getConnection();
-        $qb = $conn->createQueryBuilder();
-        $qb
-            ->select('*')
-            ->from($groupTable, 'g')
-            ->leftJoin('g', $groupAccessTable, 'aga', 'aga.attribute_group_id = g.id')
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->andX(
-                        $qb->expr()->neq($accessField, true),
-                        $qb->expr()->in('aga.user_group_id', $groupIds)
-                    ),
-                    $qb->expr()->isNull($accessField)
-                )
-            );
-
-        return $qb;
-    }
-
-    /**
      * Returns granted attribute groups ids
      *
      * @param UserInterface $user
@@ -179,80 +128,6 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
     public function getGrantedAttributeGroupIds(UserInterface $user, $accessLevel)
     {
         $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
-
-        return $this->hydrateAsIds($qb);
-    }
-
-    /**
-     * Returns revoked attribute group ids
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     *
-     * @return int[]
-     */
-    public function getRevokedAttributeGroupIds(UserInterface $user, $accessLevel)
-    {
-        $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
-        $qb->select('DISTINCT g.id');
-
-        return array_map(
-            function ($row) {
-                return $row['id'];
-            },
-            $qb->execute()->fetchAll()
-        );
-    }
-
-    /**
-     * Returns revoked attribute ids
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     *
-     * @return int[]
-     */
-    public function getRevokedAttributeIds(UserInterface $user, $accessLevel)
-    {
-        $attTable = $this->getTableName('pim_catalog.entity.attribute.class');
-
-        $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
-        $qb
-            ->select('DISTINCT a.id')
-            ->innerJoin('g', $attTable, 'a', 'a.group_id = g.id');
-
-        return array_map(
-            function ($row) {
-                return $row['id'];
-            },
-            $qb->execute()->fetchAll()
-        );
-    }
-
-    /**
-     * Get granted attribute ids for a user
-     * If $filterableIds is provided, the returned ids will consist of these ids
-     * filtered by the given access level
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     * @param int[]         $filterableIds
-     *
-     * @return int[]
-     */
-    public function getGrantedAttributeIds(UserInterface $user, $accessLevel, array $filterableIds = [])
-    {
-        $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
-        $qb
-            ->select('a.id')
-            ->innerJoin('ag.attributes', 'a')
-            ->distinct(true);
-
-        if (!empty($filterableIds)) {
-            $qb->andWhere(
-                $qb->expr()->in('a.id', $filterableIds)
-            );
-        }
 
         return $this->hydrateAsIds($qb);
     }
@@ -286,33 +161,6 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
             },
             $qb->getQuery()->getArrayResult()
         );
-    }
-
-    /**
-     * Set table name builder
-     *
-     * @param TableNameBuilder $tableNameBuilder
-     *
-     * @return AttributeGroupAccessRepository
-     */
-    public function setTableNameBuilder(TableNameBuilder $tableNameBuilder)
-    {
-        $this->tableNameBuilder = $tableNameBuilder;
-
-        return $this;
-    }
-
-    /**
-     * Get table name of entity defined
-     *
-     * @param string      $classParam
-     * @param string|null $targetEntity
-     *
-     * @return string
-     */
-    protected function getTableName($classParam, $targetEntity = null)
-    {
-        return $this->tableNameBuilder->getTableName($classParam, $targetEntity);
     }
 
     /**

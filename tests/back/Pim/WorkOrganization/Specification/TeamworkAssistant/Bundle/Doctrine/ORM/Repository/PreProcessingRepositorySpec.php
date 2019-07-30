@@ -13,9 +13,9 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProces
 
 class PreProcessingRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, TableNameMapper $tableNameMapper, Connection $connection)
+    function let(EntityManager $entityManager, Connection $connection)
     {
-        $this->beConstructedWith($entityManager, $tableNameMapper);
+        $this->beConstructedWith($entityManager);
 
         $entityManager->getConnection()->willReturn($connection);
     }
@@ -32,7 +32,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_adds_products_to_a_project(
         $entityManager,
-        $tableNameMapper,
         Connection $connection,
         ProjectInterface $project,
         ProductInterface $product
@@ -41,9 +40,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $product->getId()->willReturn(37);
 
         $entityManager->getConnection()->willReturn($connection);
-
-        $tableNameMapper->getTableName('pimee_teamwork_assistant.project_product')
-            ->willReturn('pimee_teamwork_assistant_project_product');
 
         $connection->insert('pimee_teamwork_assistant_project_product', [
             'project_id' => 13,
@@ -55,13 +51,9 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_prepares_the_project_calculation_by_deleting_associated_products(
         $connection,
-        $tableNameMapper,
         ProjectInterface $project
     ) {
         $project->getId()->willReturn(40);
-
-        $tableNameMapper->getTableName('pimee_teamwork_assistant.project_product')
-            ->willReturn('pimee_teamwork_assistant_project_product');
 
         $connection->delete('pimee_teamwork_assistant_project_product', [
             'project_id' => 40,

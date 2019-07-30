@@ -1,5 +1,4 @@
 parameters:
-    pimee_teamwork_assistant.table_name_mapper.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\TableNameMapper'
     pimee_teamwork_assistant.repository.user.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\UserRepository'
     pimee_teamwork_assistant.repository.product.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProductRepository'
     pimee_teamwork_assistant.repository.family_requirement.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
@@ -21,12 +20,6 @@ parameters:
     pimee_teamwork_assistant.project_completeness_filter.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter'
 
 services:
-    pimee_teamwork_assistant.table_name_mapper:
-        class: '%pimee_teamwork_assistant.table_name_mapper.class%'
-        arguments:
-            - '@akeneo_storage_utils.doctrine.table_name_builder'
-            - '%pimee_teamwork_assistant.pre_processing.tables%'
-
     ### Repositories
     pimee_teamwork_assistant.repository.user:
         class: '%pimee_teamwork_assistant.repository.user.class%'
@@ -56,7 +49,6 @@ services:
         class: '%pimee_teamwork_assistant.repository.pre_processing.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@pimee_teamwork_assistant.table_name_mapper'
 
     pimee_teamwork_assistant.repository.project_status:
         class: '%pimee_teamwork_assistant.repository.project_status.class%'
