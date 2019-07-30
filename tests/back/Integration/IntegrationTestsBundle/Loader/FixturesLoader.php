@@ -147,10 +147,10 @@ class FixturesLoader implements FixturesLoaderInterface
         foreach ($files as $file) {
             $this->execCommand([
                 'mysql',
-                '-h '.$this->container->getParameter('database_host'),
-                '-u '.$this->container->getParameter('database_user'),
-                '-p'.$this->container->getParameter('database_password'),
-                $this->container->getParameter('database_name'),
+                '-h '.getenv('APP_DATABASE_HOST'),
+                '-u '.getenv('APP_DATABASE_USER'),
+                '-p'.getenv('APP_DATABASE_PASSWORD'),
+                getenv('APP_DATABASE_NAME'),
                 sprintf('< %s', $file),
             ]);
         }
@@ -306,12 +306,12 @@ class FixturesLoader implements FixturesLoaderInterface
 
         $this->execCommand([
             'mysqldump',
-            '-h '.$this->container->getParameter('database_host'),
-            '-u '.$this->container->getParameter('database_user'),
-            '-p'.$this->container->getParameter('database_password'),
+            '-h '.getenv('APP_DATABASE_HOST'),
+            '-u '.getenv('APP_DATABASE_USER'),
+            '-p'.getenv('APP_DATABASE_PASSWORD'),
             '--no-create-info',
             '--quick',
-            $this->container->getParameter('database_name'),
+            getenv('APP_DATABASE_NAME'),
             '> '.$filepath,
         ]);
     }
@@ -323,10 +323,10 @@ class FixturesLoader implements FixturesLoaderInterface
     {
         $this->execCommand([
             'mysql',
-            '-h '.$this->container->getParameter('database_host'),
-            '-u '.$this->container->getParameter('database_user'),
-            '-p'.$this->container->getParameter('database_password'),
-            $this->container->getParameter('database_name'),
+            '-h '.getenv('APP_DATABASE_HOST'),
+            '-u '.getenv('APP_DATABASE_USER'),
+            '-p'.getenv('APP_DATABASE_PASSWORD'),
+            getenv('APP_DATABASE_NAME'),
             '< '.$filepath,
         ]);
     }
