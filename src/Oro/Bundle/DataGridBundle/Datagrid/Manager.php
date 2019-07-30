@@ -3,7 +3,6 @@
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Manager
@@ -15,15 +14,23 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Manager implements ManagerInterface
 {
-    /** @var ContainerInterface */
-    private $container;
+    /** @var Builder */
+    private $datagridBuilder;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    /** @var ConfigurationProviderInterface */
+    private $configurationProvider;
+
+    /** @var RequestParameters */
+    private $requestParameters;
+
+    public function __construct(
+        Builder $datagridBuilder,
+        ConfigurationProviderInterface $configurationProvider,
+        RequestParameters $requestParameters
+    ) {
+        $this->datagridBuilder= $datagridBuilder;
+        $this->configurationProvider = $configurationProvider;
+        $this->requestParameters = $requestParameters;
     }
 
     /**
@@ -32,9 +39,9 @@ class Manager implements ManagerInterface
     public function getDatagrid($name)
     {
         // prepare for work with current grid
-        $this->getRequestParameters()->setRootParameter($name);
+        $this->requestParameters->setRootParameter($name);
         $config = $this->getConfigurationForGrid($name);
-        $datagrid = $this->getDatagridBuilder()->build($config);
+        $datagrid = $this->datagridBuilder->build($config);
 
         return $datagrid;
     }
@@ -44,36 +51,6 @@ class Manager implements ManagerInterface
      */
     public function getConfigurationForGrid($name)
     {
-        return $this->getConfigurationProvider()->getConfiguration($name);
-    }
-
-    /**
-     * Internal getter for builder
-     *
-     * @return Builder
-     */
-    final protected function getDatagridBuilder()
-    {
-        return $this->container->get('oro_datagrid.datagrid.builder');
-    }
-
-    /**
-     * Internal getter for builder
-     *
-     * @return ConfigurationProviderInterface
-     */
-    final protected function getConfigurationProvider()
-    {
-        return $this->container->get('oro_datagrid.configuration.provider.chain');
-    }
-
-    /**
-     * Internal getter for builder
-     *
-     * @return RequestParameters
-     */
-    final protected function getRequestParameters()
-    {
-        return $this->container->get('oro_datagrid.datagrid.request_params');
+        return $this->configurationProvider->getConfiguration($name);
     }
 }

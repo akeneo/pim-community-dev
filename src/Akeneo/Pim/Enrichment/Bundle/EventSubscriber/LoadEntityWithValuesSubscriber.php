@@ -23,25 +23,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class LoadEntityWithValuesSubscriber implements EventSubscriber
 {
-    /** @var ContainerInterface */
-    protected $container;
-
     /** @var WriteValueCollectionFactory */
-    protected $valueCollectionFactory;
+    private $valueCollectionFactory;
 
-    /**
-     * TODO: The container is injected here to avoid a circular reference
-     * TODO: I didn't find any other way to do it :(
-     * TODO: Open to every proposal :)
-     *
-     * TODO: Basically we have this each time we try to inject something related to the Doctrine entity manager
-     * TODO: in a Symfony subscriber.
-     *
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
+    public function __construct(WriteValueCollectionFactory $valueCollectionFactory)
     {
-        $this->container = $container;
+        $this->valueCollectionFactory = $valueCollectionFactory;
     }
 
     /**
@@ -71,19 +58,7 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
 
         $rawValues = $entity->getRawValues();
 
-        $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
+        $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
         $entity->setValues($values);
-    }
-
-    /**
-     * @return WriteValueCollectionFactory
-     */
-    private function getProductValueCollectionFactory(): WriteValueCollectionFactory
-    {
-        if (null === $this->valueCollectionFactory) {
-            $this->valueCollectionFactory = $this->container->get('pim_catalog.factory.value_collection');
-        }
-
-        return $this->valueCollectionFactory;
     }
 }

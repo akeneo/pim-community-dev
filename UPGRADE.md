@@ -65,35 +65,16 @@ Please provide a server with the following requirements before proceeding to the
 
 3. Update the configuration files:
 
-    We will copy the configuration file from the new standard edition version.
-    You shouldn't have made a single change to them in your project, but if you did, don't forget to reapply your own changes to the files.
-
-
-    Then apply the changes, from the standard edition directory:
-
-    ```bash
-    cp docker-compose.yml $PIM/docker-composer.yml
-    ```
-
-    The only change is the addition of a new container `object-storage`, based on `minio` (see https://min.io/),
-    and compatible with the Amazon S3 protocol. This container allows testing object storage configuration for assets and media.
-
-
 4. Update your **app/config/config.yml**
 
-    The **app/config/config.yml** file didn't change between 3.1 and 3.2.
 
 5. Update your **app/config/config_dev.yml** and **app/config/config_prod.yml**
 
-    The **app/config/config.yml_dev.yml** and **app/config/config_prod.yml** files didn't change between 3.1 and 3.2.
 
 6. Update your **app/config/config_behat.yml** and **app/config/config_test.yml**:
 
-    The **app/config/config.yml_behat.yml** and **app/config/config_test.yml** files didn't change between 3.1 and 3.2.
 
 7. Update your **app/AppKernel.php**:
-
-    The **app/AppKernel.php** file didn't change between 3.1 and 3.2.
 
 8. Deactivate your custom code
 
@@ -107,12 +88,6 @@ Before updating the dependencies and migrating your data, please deactivate all 
     cp composer.json $PIM_DIR/
     # then add your own dependencies
     ```
-
-    The following PHP dependencies have changed:
-     - `symfony/symfony` upgraded to 3.4.28
-     - `twig/twig` upgraded to 1.42.2
-     - `league/flysystem-aws-s3-v3` 1.0 added
-
     Now we are ready to update the backend dependencies:
 
     ```bash
@@ -133,35 +108,13 @@ Before updating the dependencies and migrating your data, please deactivate all 
     # then add your own dependencies
     ```
 
-    The following PHP dependencies have changed:
-      - `cucumber-html-reporter` upgraded to 5.0.0
-      - `eslint` upgraded to 6.0.1
-      - `jquery` upgraded to 3.4.0
-      - `lodash` upgraded to 4.17.14
-
 11. Migrate your MySQL database
 
-Please, make sure the folder upgrades/schema/ does not contain former migration files (from PIM 2.2 to 2.3 for instance), otherwise the migration command will surely not work properly.
+Please, make sure the folder upgrades/schema/ does not contain former migration files (from PIM 3.0 to 3.2 for instance), otherwise the migration command will surely not work properly.
 
     ```bash
     rm -rf var/cache
     bin/console doctrine:migration:migrate --env=prod
-    ```
-
-12. Migrate your Elasticsearch indices
-
-    In case you updated the settings of Elasticsearch (like normalizers, filters and analyzers), please make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.1/app/config/pim_parameters.yml#L58-L68).
-
-    Same in case you have a big catalog and increased the [index.mapping.total_fields.limit](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/mapping.html#mapping-limit-settings). Make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-community-standard/blob/3.1/app/config/pim_parameters.yml#L55-L57).
-
-    As of PIM v3.2, we now take advantage of [Elasticsearch's aliases](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/indices-aliases.html). Thus, all indices have to be reindexed.
-
-    Also, as Elasticsearch does not take into account case insensitivity of option codes when searching and as we modified the way products values are loaded from MySQL, Elasticsearch search has to be case insensitive when searching on option codes. Thus, all mappings have to updated.
-
-    To take into account those two changes:
-
-    ```bash
-    php bin/console akeneo:elasticsearch:update-mapping -e prod --all
     ```
 
 ## Migrate your custom code
@@ -171,40 +124,11 @@ Please, make sure the folder upgrades/schema/ does not contain former migration 
    Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
     ```bash
-    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorFilter#Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Field\\AncestorIdFilter#g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactory#Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\WriteValueCollectionFactory#g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ValueCollection#Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\WriteValueCollection#g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's#ValueCollectionIn\\Pim\\Enrichment\\Bundle\\Storage\\ORM\\Connector\\GetConnectorProductModels#Akeneo\\Pim\\Enrichment\\Bundle\\Storage\\Sql\\Connector\\SqlGetConnectorProductModels#g'
-    please apply `sed 's/ValueCollectionInterface/WriteValueCollection/g` (it also rename the ValueCollection)
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber#Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber#Akeneo\UserManagement\Bundle\EventListener\UserPreferencesListener#g'
     ```
 
 2. Adapt your custom codes to handle this breaking changes we introduced:
-
- - Service `pim_catalog.saver.channel` class has been changed to `Akeneo\Channel\Bundle\Storage\Orm\ChannelSaver`.
- - Interface `Akeneo\Channel\Component\Model\ChannelInterface` has a new methods `popEvents(): array
- - The following classes have been removed:
-
-   - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\RemoveUserSubscriber`
-    This subscriber has been replaced by a proper Doctrine mapping that set the user at `null` in the `Comment` entity
-    for which the user is the author when the user is removed.
-    If you override this service, you can use the same events (`StorageEvents::PRE_REMOVE` and `StorageEvents::POST_REMOVE`)
-    on `Akeneo\UserManagement\Component\Model\UserInterface`to fire your own subscriber.
-
-   - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel`
-
-
-   - `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetMetadataForProductModel`
-   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata`
-   - `Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface`
-   - `Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface`
-    These class and interface have been removed from the refactoring of the `Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels`.
-    You can check the new class `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels` to see how it has been replaced.
-
-
-   - `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface`
-   - `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`
-    These interfaces have been removed. You can now directly extends `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory` and `Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection`
 
 
 3. Reactivate your custom code

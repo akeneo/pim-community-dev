@@ -1,20 +1,23 @@
 parameters:
-    pim_user.event_subscriber.user_preferences.class: Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber
     pim_user.event_subscriber.group.class:            Akeneo\UserManagement\Bundle\EventListener\GroupSubscriber
     # Move this class
     pim_user.event_subscriber.remove_role.class:      Akeneo\UserManagement\Bundle\EventListener\RemoveRoleSubscriber
     # Move this class
     pim_locale.locale_subscriber.class:               Akeneo\UserManagement\Bundle\EventListener\LocaleSubscriber
-    pim_locale.locale_listener.class:                 Pim\Bundle\UserBundle\EventListener\LocaleListener
     pim_user.event_listener.create_user_system.class: Akeneo\UserManagement\Bundle\EventListener\CreateUserSystemListener
 
 services:
-    pim_user.event_subscriber.user_preferences:
-        class: '%pim_user.event_subscriber.user_preferences.class%'
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
+    pim_user.event_listener.user_preferences:
+        class: 'Akeneo\UserManagement\Bundle\EventListener\UserPreferencesListener'
+        lazy: true
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_user.repository.user'
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: onFlush, lazy: true }
+            - { name: doctrine.event_listener, event: postFlush, lazy: true }
 
     pim_user.event_subscriber.group:
         class: '%pim_user.event_subscriber.group.class%'

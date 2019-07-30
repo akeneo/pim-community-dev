@@ -31,7 +31,9 @@ services:
             - '@pim_installer.fixture_loader.path_provider'
             - '@pim_installer.fixture_loader.job_instances_builder'
             - '@pim_installer.fixture_loader.job_instances_configurator'
-            - '@service_container'
+            - '@akeneo_batch.saver.job_instance'
+            - '@akeneo_batch.remover.job_instance'
+            - '@akeneo_batch.job.job_instance_repository'
 
     # we don't use the connector job instance processor to avoid circular reference detected during the installation for the service
     # "pim_connector.processor.denormalization.job_instance"

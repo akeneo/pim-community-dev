@@ -14,15 +14,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 class FilterExtensionSpec extends ObjectBehavior
 {
     function let(
-        ContainerInterface $container,
         FiltersConfigurator $configurator,
         TranslatorInterface $translator,
         Manager $manager
-    ) {
-        $container->get('oro_datagrid.datagrid.manager')->willReturn($manager);
-        $container->get('pim_datagrid.datagrid.configuration.product.filters_configurator')->willReturn($configurator);
-        $container->get('translator')->willReturn($translator);
-        $this->beConstructedWith($container);
+    ) {;
+        $this->beConstructedWith($manager, $configurator, $translator);
     }
 
     function it_is_a_twig_extension()

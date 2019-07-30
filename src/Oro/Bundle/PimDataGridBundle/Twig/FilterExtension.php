@@ -3,8 +3,10 @@
 namespace Oro\Bundle\PimDataGridBundle\Twig;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
@@ -17,12 +19,20 @@ use Twig_SimpleFunction;
  */
 class FilterExtension extends Twig_Extension
 {
-    /** @var ContainerInterface */
-    private $container;
+    /** @var Manager */
+    private $datagridManager;
 
-    public function __construct(ContainerInterface $container)
+    /** @var ConfiguratorInterface */
+    private $filtersConfigurator;
+
+    /** @var TranslatorInterface */
+    private $translator;
+
+    public function __construct(Manager $datagridManager, ConfiguratorInterface $filtersConfigurator, TranslatorInterface $translator)
     {
-        $this->container = $container;
+        $this->datagridManager = $datagridManager;
+        $this->filtersConfigurator = $filtersConfigurator;
+        $this->translator = $translator;
     }
 
     /**
@@ -42,8 +52,8 @@ class FilterExtension extends Twig_Extension
      */
     public function filterLabel($code)
     {
-        $configuration = $this->getDatagridManager()->getDatagrid('product-grid')->getAcceptor()->getConfig();
-        $this->getFiltersConfigurator()->configure($configuration);
+        $configuration = $this->datagridManager->getDatagrid('product-grid')->getAcceptor()->getConfig();
+        $this->filtersConfigurator->configure($configuration);
 
         $label = $configuration->offsetGetByPath(sprintf('[filters][columns][%s][label]', $code));
 
@@ -51,24 +61,8 @@ class FilterExtension extends Twig_Extension
             return null;
         }
 
-        $label = $this->container->get('translator')->trans($label);
+        $label = $this->translator->trans($label);
 
         return $label;
-    }
-
-    /**
-     * @return Manager
-     */
-    final protected function getDatagridManager()
-    {
-        return $this->container->get('oro_datagrid.datagrid.manager');
-    }
-
-    /**
-     * @return FiltersConfigurator
-     */
-    final protected function getFiltersConfigurator()
-    {
-        return $this->container->get('pim_datagrid.datagrid.configuration.product.filters_configurator');
     }
 }

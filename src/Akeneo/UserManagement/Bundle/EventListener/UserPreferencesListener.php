@@ -4,13 +4,15 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Doctrine\Common\EventSubscriber;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Aims to add/remove locales, channels and trees to user preference choices
@@ -19,42 +21,36 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserPreferencesSubscriber implements EventSubscriber
+class UserPreferencesListener
 {
-    /** @var ContainerInterface */
-    protected $container;
-
     /** @var array */
     protected $metadata = [];
 
     /** @var array */
     protected $deactivatedLocales = [];
 
-    /**
-     * Inject service container
-     *
-     * @param ContainerInterface $container
-     *
-     * @return UserPreferencesSubscriber
-     */
-    public function setContainer($container)
-    {
-        $this->container = $container;
+    /** @var CategoryRepositoryInterface */
+    private $categoryRepository;
 
-        return $this;
-    }
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
 
-    /**
-     * Specifies the list of events to listen
-     *
-     * @return array
-     */
-    public function getSubscribedEvents()
-    {
-        return [
-            'onFlush',
-            'postFlush',
-        ];
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    /** @var UserRepositoryInterface */
+    private $userRepository;
+
+    public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        UserRepositoryInterface $userRepository
+    ) {
+        $this->categoryRepository = $categoryRepository;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -157,21 +153,21 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param UnitOfWork             $uow
      * @param EntityManagerInterface $manager
-     * @param ChannelInterface       $channel
+     * @param ChannelInterface       $removedChannel
      */
     protected function onChannelRemoved(
         UnitOfWork $uow,
         EntityManagerInterface $manager,
-        ChannelInterface $channel
+        ChannelInterface $removedChannel
     ) {
-        $users = $this->findUsersBy(['catalogScope' => $channel]);
-        $scopes = $this->container->get('pim_catalog.repository.channel')->findAll();
+        $users = $this->userRepository->findBy(['catalogScope' => $removedChannel]);
+        $channels = $this->channelRepository->findAll();
 
         $defaultScope = current(
             array_filter(
-                $scopes,
-                function ($scope) use ($channel) {
-                    return $scope->getCode() !== $channel->getCode();
+                $channels,
+                function ($channel) use ($removedChannel) {
+                    return $channel->getCode() !== $removedChannel->getCode();
                 }
             )
         );
@@ -185,18 +181,18 @@ class UserPreferencesSubscriber implements EventSubscriber
     /**
      * Update default tree of users using a tree that will be removed
      *
-     * @param CategoryInterface $category
+     * @param CategoryInterface $removedTree
      */
-    protected function onTreeRemoved(UnitOfWork $uow, EntityManagerInterface $manager, CategoryInterface $category)
+    protected function onTreeRemoved(UnitOfWork $uow, EntityManagerInterface $manager, CategoryInterface $removedTree)
     {
-        $users = $this->findUsersBy(['defaultTree' => $category]);
-        $trees = $this->container->get('pim_catalog.repository.category')->getTrees();
+        $users = $this->userRepository->findBy(['defaultTree' => $removedTree]);
+        $trees = $this->categoryRepository->getTrees();
 
         $defaultTree = current(
             array_filter(
                 $trees,
-                function ($tree) use ($category) {
-                    return $tree->getCode() !== $category->getCode();
+                function ($tree) use ($removedTree) {
+                    return $tree->getCode() !== $removedTree->getCode();
                 }
             )
         );
@@ -212,13 +208,12 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onLocalesDeactivated(EntityManagerInterface $manager)
     {
-        $localeRepository = $this->container->get('pim_catalog.repository.locale');
-        $activeLocales = $localeRepository->getActivatedLocales();
+        $activeLocales = $this->localeRepository->getActivatedLocales();
         $defaultLocale = current($activeLocales);
 
         foreach ($this->deactivatedLocales as $localeCode) {
-            $deactivatedLocale = $localeRepository->findOneByIdentifier($localeCode);
-            $users = $this->findUsersBy(['catalogLocale' => $deactivatedLocale]);
+            $deactivatedLocale = $this->localeRepository->findOneByIdentifier($localeCode);
+            $users = $this->userRepository->findBy(['catalogLocale' => $deactivatedLocale]);
 
             foreach ($users as $user) {
                 $user->setCatalogLocale($defaultLocale);
@@ -228,17 +223,5 @@ class UserPreferencesSubscriber implements EventSubscriber
         $this->deactivatedLocales = [];
 
         $manager->flush();
-    }
-
-    /**
-     * Return users matching the specified criteria
-     *
-     * @param array $criteria
-     *
-     * @return array
-     */
-    protected function findUsersBy(array $criteria)
-    {
-        return $this->container->get('pim_user.manager')->getRepository()->findBy($criteria);
     }
 }

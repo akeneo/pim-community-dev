@@ -18,7 +18,9 @@ services:
     oro_datagrid.datagrid.manager:
         class: '%oro_datagrid.datagrid.manager.class%'
         arguments:
-            - '@service_container'
+            - '@oro_datagrid.datagrid.builder'
+            - '@oro_datagrid.configuration.provider.chain'
+            - '@oro_datagrid.datagrid.request_params'
 
     oro_datagrid.datagrid.builder:
         class: '%oro_datagrid.datagrid.builder.class%'
@@ -52,7 +54,7 @@ services:
     oro_datagrid.datagrid.metadata_parser:
         class: '%oro_datagrid.datagrid.metadata_parser.class%'
         arguments:
-            - '@service_container'
+            - '@fragment.handler'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@router'

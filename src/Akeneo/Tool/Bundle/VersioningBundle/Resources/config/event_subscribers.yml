@@ -1,5 +1,4 @@
 parameters:
-    pim_versioning.event_subscriber.addversion.class:                  Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber
     pim_versioning.event_subscriber.adduser.class:                     Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber
     pim_versioning.event_subscriber.addcontext.class:                  Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddContextSubscriber
     pim_versioning.event_subscriber.add_remove_version.class:          Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddRemoveVersionSubscriber
@@ -7,12 +6,17 @@ parameters:
     pim_versioning.event_subscriber.purge_progress_bar_advancer.class: Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\PurgeProgressBarAdvancerSubscriber
 
 services:
-    pim_versioning.event_subscriber.addversion:
-        class: '%pim_versioning.event_subscriber.addversion.class%'
+    pim_versioning.event_listener.addversion:
+        class: 'Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener'
+        lazy: true
         arguments:
-            - '@service_container'
+            - '@pim_versioning.manager.version'
+            - '@pim_versioning.serializer'
+            - '@pim_versioning.update_guesser.chained'
+            - '@pim_versioning.context.version'
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: onFlush, lazy: true }
+            - { name: doctrine.event_listener, event: postFlush, lazy: true }
 
     pim_versioning.event_subscriber.adduser:
         class: '%pim_versioning.event_subscriber.adduser.class%'
