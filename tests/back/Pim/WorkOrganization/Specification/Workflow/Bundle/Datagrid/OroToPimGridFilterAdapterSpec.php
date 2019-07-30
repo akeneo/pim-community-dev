@@ -25,4 +25,54 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 
         $this->adapt(['gridName' => 'published-product-grid','oro grid parameters'])->shouldReturn(['pim grid parameters']);
     }
+
+    function it_adds_completeness_filter_if_it_is_for_a_project_view($massActionDispatcher)
+    {
+        $parameters = [
+            'dataLocale' => 'en_US',
+            'dataScope' => ['value' => 'ecommerce'],
+            'gridName' => 'product-grid',
+            'filters' => [
+                'project_completeness' => [
+                    'value' => 5
+                ]
+            ]
+        ];
+
+        $massActionRawFilters = [
+            [
+                'field' => 'sku',
+                'operator' => 'CONTAINS',
+                'value' => 'DP',
+            ],
+            [
+                'field' => 'categories.id',
+                'operator' => 'IN',
+                'value' => [12, 13, 14],
+            ]
+        ];
+
+        $massActionDispatcher->getRawFilters($parameters)->willReturn($massActionRawFilters);
+
+        $this->adapt($parameters)->shouldReturn(array_merge($massActionRawFilters, [
+            [
+                'field'    => 'completeness',
+                'operator' => '>',
+                'value'    => 0,
+                'context'  => [
+                    'locale' => 'en_US',
+                    'scope'  => 'ecommerce'
+                ]
+            ],
+            [
+                'field'    => 'completeness',
+                'operator' => '<',
+                'value'    => 100,
+                'context'  => [
+                    'locale' => 'en_US',
+                    'scope'  => 'ecommerce'
+                ]
+            ]
+        ]));
+    }
 }

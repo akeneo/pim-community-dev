@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -180,7 +181,7 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, true]);
     }
 
-    function it_creates_a_null_reference_entity_value_if_record_does_not_exist_anymore(
+    function it_creates_a_null_reference_entity_value_if_record_does_not_exist_anymore_and_ignoring_unknow_data(
         RecordRepositoryInterface $recordRepository,
         AttributeInterface $attribute
     ) {
@@ -196,13 +197,14 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $recordRepository->getByReferenceEntityAndCode(
             $designerIdentifier,
             RecordCode::fromString('dyson')
-        )->willReturn(null);
+        )->willThrow(RecordNotFoundException::class);
 
         $productValue = $this->create(
             $attribute,
             null,
             null,
-            null
+            'dyson',
+            true
         );
 
         $productValue->shouldReturnAnInstanceOf(ReferenceEntityValue::class);
@@ -210,6 +212,37 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
         $productValue->shouldBeEmpty();
+    }
+
+    function it_throws_exception_if_record_does_not_exist_anymore_when_not_ignoring_unknow_data(
+        RecordRepositoryInterface $recordRepository,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('designer');
+        $attribute->getType()->willReturn('akeneo_reference_entity');
+        $attribute->getBackendType()->willReturn('reference_data_option');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('designer');
+
+        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $dysonCode = RecordCode::fromString('dyson');
+
+        $exception = RecordNotFoundException::withReferenceEntityAndCode(
+            $designerIdentifier,
+            $dysonCode
+        );
+
+        $recordRepository->getByReferenceEntityAndCode($designerIdentifier,$dysonCode)
+            ->willThrow($exception);
+
+        $this->shouldThrow($exception)->during('create', [
+            $attribute,
+            null,
+            null,
+            'dyson',
+        ]);
     }
 
     public function getMatchers(): array

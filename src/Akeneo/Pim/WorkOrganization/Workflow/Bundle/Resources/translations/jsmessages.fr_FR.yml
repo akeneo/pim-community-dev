@@ -130,8 +130,6 @@ pimee_enrich.entity.product:
     approval:
       send: Envoyer pour approbation
       sent: Envoyé pour validation
-      send_and_next: Envoyer et passer au suivant
-      send_and_finish: Envoyer et terminer
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -165,7 +163,6 @@ pimee_enrich.entity.product_draft:
     create:
       success: Le brouillon a été envoyé pour validation
       fail: Vous ne pouvez pas envoyer ce brouillon pour validation
-      skip: Le brouillon n'a pas été envoyé pour approbation car aucune valeur n'a été modifiée
   module:
     proposal:
       accept: Accepter la proposition

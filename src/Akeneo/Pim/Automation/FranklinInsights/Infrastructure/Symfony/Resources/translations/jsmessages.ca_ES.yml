@@ -3,14 +3,6 @@ pim_menu:
     franklin: Estadístiques de Franklin
 akeneo_franklin_insights:
   entity:
-    franklin_attribute:
-      type:
-        boolean: Booleà
-        metric: Mètrica
-        multiselect: 'Selecció múltiple'
-        number: Nombre
-        select: Seleccionar
-        text: Text
     data_provider:
       ask_franklin_down: "Ho sentim, alguna cosa ha anat malament. Torna-ho a provar més tard."
       authentication_error: "Ho sentim, no s'ha pogut autenticar a Franklin Insights, el token no és vàlid. Introduïu un token vàlid o contacteu amb nosaltres per obtenir ajuda, si us plau."
@@ -43,19 +35,14 @@ akeneo_franklin_insights:
         localizable_not_allowed: "Els atributs localitzables no s'admeten com a identificadors"
     attributes_mapping:
       label: Mapatge dels atributs
-      flash:
-        create_attribute_success: 'Atribut creat satisfactòriament i vinculat a la família "{{ family }}".'
-        create_attribute_error: 'Ho sentim, s''ha produït un error al crear o adjuntar l''atribut a la família.'
       fields:
         franklin_attribute: 'Atribut de Franklin'
-        franklin_attribute_type: '{{ type }} atribut'
         franklin_insights:
           label: Estatus d'atribut de Franklin
           pending: Pendent
           active: Actiu
           inactive: Inactiu
-        create_attribute:
-          btn: Crear atribut
+        values_summary: "Resum de valors: {{ label }}"
       module:
         subscribe:
           subscribe: 'Subscriure família a Franklin'
@@ -178,8 +165,6 @@ pim_enrich.entity.attribute:
     save:
       title: 'Atenció!'
       warning: '{1}Suprimir un atribut pot afectar 1 subscripció de Franklin. Esteu segur? |]1,+Inf[Suprimir un atribut pot afectar {{ count }} subscripcions de Franklin. Esteu segur?'
-pim_title:
-  akeneo_franklin_insights_connection_edit: Connexió de les estadístiques de Franklin
 pim_notification:
   types:
     franklin_insights: Estadístiques de Franklin

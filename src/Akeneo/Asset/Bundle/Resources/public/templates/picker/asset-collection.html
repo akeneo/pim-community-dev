@@ -20,7 +20,7 @@
                     localeCode: locale
                  }) + '?' + new Date().getTime() %>')">
             </div>
-            <footer>
+            <footer title="<%- asset.description %>">
                 <% if (asset.description) { %>
                     <%- asset.description.substring(0, 30) %><%- asset.description.length > 30 ? '...' : '' %>
                 <% } %>

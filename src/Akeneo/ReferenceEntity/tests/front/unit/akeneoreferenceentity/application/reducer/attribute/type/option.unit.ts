@@ -525,4 +525,26 @@ describe('akeneo > reference entity > application > reducer > attribute > type >
       errors: errors,
     });
   });
+
+  test('I start to update options after already having update some on another attribute', () => {
+    const state = editOptionsReducer(undefined, {});
+    const newState = editOptionsReducer(state, {
+      type: 'OPTIONS_EDITION_SELECTED',
+      id: 2
+    });
+    const stateUpdated = editOptionsReducer(newState, {
+      type: 'OPTIONS_EDITION_START',
+      options: normalizedOptions,
+    });
+    expect(stateUpdated).toEqual({
+      isActive: true,
+      isDirty: false,
+      isSaving: false,
+      errors: [],
+      originalData: stringifiedOptions,
+      options: normalizedOptions,
+      currentOptionId: 0,
+      numberOfLockedOptions: 2,
+    });
+  });
 });
