@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\Ca
 
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 
@@ -230,8 +231,15 @@ SQL;
                 'query' => [
                     'constant_score' => [
                         'filter' => [
-                            'terms' => [
-                                'categories' => $categoryCodes
+                            'bool' => [
+                                'filter' => [
+                                    ['terms' => [
+                                        'categories' => $categoryCodes
+                                    ]],
+                                    ['term' => [
+                                        'document_type' => ProductInterface::class
+                                    ]]
+                                ]
                             ]
                         ]
                     ]

@@ -59,6 +59,14 @@ class ListGrantedChildrenCategoriesWithCountIncludingSubCategoriesIntegration ex
             'product_4' => ['tree_1_child_2_level_2'],
             'product_5' => ['tree_1_child_2_level_1', 'tree_2_child_1_level_2'],
         ]);
+
+        $fixturesLoader->givenTheProductModelsWithCategories([
+            'product_model_1' => ['tree_1', 'tree_1_child_1_level_1'],
+            'product_model_2' => ['tree_1_child_1_level_1'],
+            'product_model_3' => ['tree_1_child_1_level_3'],
+            'product_model_4' => ['tree_1_child_2_level_2'],
+            'product_model_5' => ['tree_1_child_2_level_1', 'tree_2_child_1_level_2'],
+        ]);
     }
 
     public function test_list_child_categories_with_permissions_applied()
