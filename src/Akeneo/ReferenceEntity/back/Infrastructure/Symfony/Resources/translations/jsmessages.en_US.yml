@@ -127,7 +127,7 @@ pim_reference_entity:
         title: It's a bit crowded around here, we show you {{ productCount }}/{{ totalCount }} products.
         subtitle:
           usable_in_grid: To discover all the products linked, just click below!
-          not_usable_in_grid: To display all the products, just click here!
+          not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
         button: View all products
       no_product:
         title: There are no products linked for the product attribute "{{ entityLabel }}"
