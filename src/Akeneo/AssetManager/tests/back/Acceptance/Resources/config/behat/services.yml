@@ -140,7 +140,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
 
-    akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_mediaLink:
+    akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_media_link:
         class: Akeneo\AssetManager\Acceptance\Context\EditAsset\EditMediaLinkContext
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'

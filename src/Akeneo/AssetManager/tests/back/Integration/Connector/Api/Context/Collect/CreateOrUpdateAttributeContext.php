@@ -576,7 +576,7 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the mediaLink attribute Preview that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties$/
+     * @Given /^the media_link attribute Preview that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties$/
      */
     public function theMediaLinkAttributePreviewThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
@@ -598,7 +598,7 @@ class CreateOrUpdateAttributeContext implements Context
         $connectorAttribute = new ConnectorAttribute(
             $attribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Preview']),
-            'mediaLink',
+            'media_link',
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),

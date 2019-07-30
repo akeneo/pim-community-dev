@@ -50,7 +50,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
             ],
             '_links'  => [
                 'image_download' => [
-                    'href' => 'http://localhost/api/rest/v1/asset-families-media-files/images/starck.png'
+                    'href' => 'http://localhost/api/rest/v1/asset-media-files/images/starck.png'
                 ]
             ]
         ];

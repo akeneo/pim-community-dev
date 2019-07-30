@@ -50,6 +50,6 @@ class OtherGenerator implements PreviewGeneratorInterface
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
-        return $this->defaultImageProvider->getImageMediaLink(self::DEFAULT_OTHER, $type);
+        return $this->defaultImageProvider->getImageUrl(self::DEFAULT_OTHER, $type);
     }
 }

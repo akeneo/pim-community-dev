@@ -37,7 +37,10 @@ const renderRow = (label: string, normalizedRecord: NormalizedItemRecord, withLi
       : '';
 
   return `
-  <img width="34" height="34" src="${getImageShowUrl(denormalizeFile(normalizedRecord.image), 'thumbnail_small')}"/>
+  <img width="34" height="34" src="${getImageShowUrl(
+    denormalizeFile(normalizedRecord.image),
+    'thumbnail_small'
+  )}" style="object-fit: cover;"/>
   <span class="select2-result-label-main">
     <span class="select2-result-label-top">
       ${normalizedRecord.code}

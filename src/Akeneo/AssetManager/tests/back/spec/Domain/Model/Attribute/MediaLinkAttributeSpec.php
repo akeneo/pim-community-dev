@@ -55,7 +55,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
         $this->hasOrder(AttributeOrder::fromInteger(1))->shouldReturn(false);
     }
 
-    function it_creates_an_image_mediaLink()
+    function it_creates_an_image_media_link()
     {
         $this->beConstructedThrough(
             'create',
@@ -75,7 +75,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
         );
     }
 
-    function it_creates_an_image_mediaLink_without_prefix_and_suffix()
+    function it_creates_an_image_media_link_without_prefix_and_suffix()
     {
         $this->beConstructedThrough(
             'create',
@@ -107,7 +107,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
                 'is_required'                 => true,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
-                'type'                        => 'mediaLink',
+                'type'                        => 'media_link',
                 'media_type'                => 'image',
                 'prefix'                      => 'http:://www.binder.com',
                 'suffix'                      => '/500x500'

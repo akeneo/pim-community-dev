@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaLinkAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -24,7 +25,7 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['type']) && 'mediaLink' === $normalizedCommand['type'];
+        return isset($normalizedCommand['type']) && MediaLinkAttribute::ATTRIBUTE_TYPE === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand

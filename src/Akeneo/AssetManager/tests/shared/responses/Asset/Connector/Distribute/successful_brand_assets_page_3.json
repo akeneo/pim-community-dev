@@ -56,7 +56,7 @@
                                     "data": "test/brand_7_image.jpg",
                                     "_links": {
                                         "download": {
-                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_7_image.jpg"
+                                            "href": "http://localhost/api/rest/v1/asset-media-files/test/brand_7_image.jpg"
                                         }
                                     }
                                 }

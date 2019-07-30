@@ -305,7 +305,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
               <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
                 <div
                   className="AknDescriptionHeader-icon"
-                  style={{backgroundImage: 'mediaLink("/bundles/pimui/images/illustrations/Product.svg")'}}
+                  style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Product.svg")'}}
                 />
                 <div className="AknDescriptionHeader-title">
                   {__('pim_asset_manager.asset.grid.more_result.title')}

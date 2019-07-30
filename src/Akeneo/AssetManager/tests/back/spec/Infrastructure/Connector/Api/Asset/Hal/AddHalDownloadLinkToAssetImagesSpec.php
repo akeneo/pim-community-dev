@@ -79,7 +79,7 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
             ['fileCode' => 'starck-cover.jpg'],
             UrlGeneratorInterface::ABSOLUTE_URL
         )
-            ->willReturn('http://localhost/api/rest/v1/asset-families-media-files/starck-cover.jpg');
+            ->willReturn('http://localhost/api/rest/v1/asset-media-files/starck-cover.jpg');
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
@@ -118,7 +118,7 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
                         'data'    => 'starck-cover.jpg',
                         '_links'  => [
                             'download' => [
-                                'href' => 'http://localhost/api/rest/v1/asset-families-media-files/starck-cover.jpg'
+                                'href' => 'http://localhost/api/rest/v1/asset-media-files/starck-cover.jpg'
                             ]
                         ]
                     ],

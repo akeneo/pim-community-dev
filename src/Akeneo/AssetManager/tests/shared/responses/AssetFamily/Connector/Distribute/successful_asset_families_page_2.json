@@ -28,7 +28,7 @@
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_4"
               },
               "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_4.jpg"
+                "href": "http://localhost/api/rest/v1/asset-media-files/test/image_asset_family_4.jpg"
               }
             },
             "code": "asset_family_4",
@@ -43,7 +43,7 @@
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_5"
               },
               "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_5.jpg"
+                "href": "http://localhost/api/rest/v1/asset-media-files/test/image_asset_family_5.jpg"
               }
             },
             "code": "asset_family_5",
@@ -58,7 +58,7 @@
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_6"
               },
               "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_6.jpg"
+                "href": "http://localhost/api/rest/v1/asset-media-files/test/image_asset_family_6.jpg"
               }
             },
             "code": "asset_family_6",

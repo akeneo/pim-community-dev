@@ -24,14 +24,14 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
     {
         parent::setUp();
 
-        $this->mediaLinkImageGenerator = $this->get('akeneo_assetmanager.infrastructure.generator.mediaLink_image_generator');
+        $this->mediaLinkImageGenerator = $this->get('akeneo_assetmanager.infrastructure.generator.media_link_image_generator');
         $this->loadFixtures();
     }
 
     /**
      * @test
      */
-    public function it_can_support_media_type_image_of_an_mediaLink_attribute()
+    public function it_can_support_media_type_image_of_an_media_link_attribute()
     {
         $isSupported = $this->mediaLinkImageGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
 
@@ -41,7 +41,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
     /**
      * @test
      */
-    public function it_can_support_only_supported_type_image_of_an_mediaLink_attribute()
+    public function it_can_support_only_supported_type_image_of_an_media_link_attribute()
     {
         $isSupported = $this->mediaLinkImageGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
 
@@ -63,7 +63,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
     /**
      * @test
      */
-    public function it_get_a_preview_for_an_image_mediaLink_attribute()
+    public function it_get_a_preview_for_an_image_media_link_attribute()
     {
         $this->mediaLinkImageGenerator->supports('google-logo.png', $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
         $previewImage = $this->mediaLinkImageGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
@@ -74,7 +74,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
     /**
      * @test
      */
-    public function it_get_a_preview_for_an_image_mediaLink_attribute_from_the_cache()
+    public function it_get_a_preview_for_an_image_media_link_attribute_from_the_cache()
     {
         $this->mediaLinkImageGenerator->supports('akeneo.png', $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
         $previewImage = $this->mediaLinkImageGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);

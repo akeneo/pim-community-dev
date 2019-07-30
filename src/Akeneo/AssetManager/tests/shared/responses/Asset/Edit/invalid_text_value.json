@@ -82,7 +82,7 @@
                 "textarea": false,
                 "validationRuleSetToRegularExpression": false,
                 "validationRuleSetToEmail": false,
-                "validationRuleSetToMediaLink": false,
+                "validationRuleSetToUrl": false,
                 "validationRule": true,
                 "type": "text",
                 "identifier": [
@@ -112,7 +112,7 @@
                 "textarea": true,
                 "validationRuleSetToRegularExpression": false,
                 "validationRuleSetToEmail": false,
-                "validationRuleSetToMediaLink": false,
+                "validationRuleSetToUrl": false,
                 "validationRule": true,
                 "type": "text",
                 "identifier": [
@@ -142,7 +142,7 @@
                 "textarea": true,
                 "validationRuleSetToRegularExpression": false,
                 "validationRuleSetToEmail": false,
-                "validationRuleSetToMediaLink": false,
+                "validationRuleSetToUrl": false,
                 "validationRule": true,
                 "type": "text",
                 "identifier": [
@@ -173,7 +173,7 @@
                 "textarea": false,
                 "validationRuleSetToRegularExpression": false,
                 "validationRuleSetToEmail": false,
-                "validationRuleSetToMediaLink": true,
+                "validationRuleSetToUrl": true,
                 "validationRule": false,
                 "type": "text",
                 "identifier": [
@@ -249,7 +249,7 @@
             "textarea": false,
             "validationRuleSetToRegularExpression": false,
             "validationRuleSetToEmail": false,
-            "validationRuleSetToMediaLink": true,
+            "validationRuleSetToUrl": true,
             "validationRule": false,
             "type": "text",
             "identifier": [

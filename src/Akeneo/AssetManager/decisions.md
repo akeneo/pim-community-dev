@@ -153,7 +153,7 @@ For the external API, import and exports we will need to map the code and asset 
 
 #### Problem:
 
-In almost all cases, we identify the asset with it's code and asset family (import/export, api, mediaLinks, rules, product values, etc). We also did a refactor to use a unique identifier (not the composite key) on the asset.
+In almost all cases, we identify the asset with it's code and asset family (import/export, api, urls, rules, product values, etc). We also did a refactor to use a unique identifier (not the composite key) on the asset.
 
 So we have a situation where, we almost always have to do a mapping step to convert this composite key to the unique identifier.
 
@@ -583,12 +583,12 @@ To support our new search usecases, we need to update the index with the "links"
             ],
         ],
     ]
-    
+
 ##### Results
 
 | Batch Size                | Refresh 10 000 assets    | Refresh 1 000 000 assets  |
 |---------------------------|---------------------------|---------------------------|
-| 100 Assets               | 35.87 s                   | ~1 hour                    | 
+| 100 Assets               | 35.87 s                   | ~1 hour                    |
 
 
 ## 07/01/19

@@ -21,10 +21,10 @@ class MediaLinkAttributeHydratorSpec extends ObjectBehavior
         $this->shouldHaveType(MediaLinkAttributeHydrator::class);
     }
 
-    function it_only_supports_the_hydration_of_mediaLink_attributes()
+    function it_only_supports_the_hydration_of_media_ink_attributes()
     {
         $this->supports(['attribute_type' => 'text'])->shouldReturn(false);
-        $this->supports(['attribute_type' => 'mediaLink'])->shouldReturn(true);
+        $this->supports(['attribute_type' => 'media_link'])->shouldReturn(true);
         $this->supports([])->shouldReturn(false);
     }
 
@@ -40,7 +40,7 @@ class MediaLinkAttributeHydratorSpec extends ObjectBehavior
             'code' => 'shooting',
             'asset_family_identifier' => 'ad',
             'labels' => json_encode(['fr_FR' => 'Shooting']),
-            'attribute_type' => 'mediaLink',
+            'attribute_type' => 'media_link',
             'attribute_order' => '0',
             'is_required' => '1',
             'value_per_channel' => '0',
@@ -65,7 +65,7 @@ class MediaLinkAttributeHydratorSpec extends ObjectBehavior
             'is_required' => true,
             'value_per_channel' => false,
             'value_per_locale' => true,
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'media_type' => 'image',
             'prefix' => 'http://mydam.com/ads/',
             'suffix' => null,

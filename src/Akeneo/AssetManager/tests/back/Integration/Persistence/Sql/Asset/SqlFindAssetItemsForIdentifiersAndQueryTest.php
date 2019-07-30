@@ -101,6 +101,7 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
         $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
         $labelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier()->normalize();
+        $imageIdentifier = $assetFamily->getAttributeAsImageReference()->getIdentifier()->normalize();
         $attributeAsLabelValueKey = $labelIdentifier . '_fr_FR';
 
         $starck = new AssetItem();
@@ -117,7 +118,7 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
             ]
         ];
         $starck->completeness = ['complete' => 0, 'required' => 0];
-        $starck->image = null;
+        $starck->image = sprintf('/rest/asset_manager/image_preview/%s/thumbnail?data=', $imageIdentifier);
 
         $coco = new AssetItem();
         $coco->identifier = (string) $this->cocoIdentifier;
@@ -133,7 +134,7 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
             ]
         ];
         $coco->completeness = ['complete' => 0, 'required' => 0];
-        $coco->image = null;
+        $coco->image = sprintf('/rest/asset_manager/image_preview/%s/thumbnail?data=', $imageIdentifier);
 
         $this->assertAssetItem($starck, $assetItems[0]);
         $this->assertAssetItem($coco, $assetItems[1]);

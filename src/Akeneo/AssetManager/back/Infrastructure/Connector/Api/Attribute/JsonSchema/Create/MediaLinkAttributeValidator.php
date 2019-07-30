@@ -16,7 +16,7 @@ use JsonSchema\Validator;
 
 class MediaLinkAttributeValidator implements AttributeValidatorInterface
 {
-    private const API_URL_ATTRIBUTE_TYPE = 'mediaLink';
+    private const API_URL_ATTRIBUTE_TYPE = 'media_link';
 
     public function validate(array $normalizedAttribute): array
     {
