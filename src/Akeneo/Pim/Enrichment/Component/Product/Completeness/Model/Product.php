@@ -42,12 +42,16 @@ class Product
 
     public function getMask(): array
     {
-        // TODO Move this for prices
         $result = [];
         foreach ($this->rawValues as $attributeCode => $valuesByChannel) {
             foreach ($valuesByChannel as $channelCode => $valuesByLocale) {
                 foreach ($valuesByLocale as $localeCode => $value) {
-                    $mask = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
+                    $mask = sprintf(
+                        '%s-%s-%s',
+                        $this->formatAttributeCode($attributeCode, $value),
+                        $channelCode,
+                        $localeCode
+                    );
                     $result[] = $mask;
                 }
             }
@@ -59,5 +63,40 @@ class Product
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * TODO Put this in a Registry to allow specific masks for new attribute types
+     *
+     * Case when $value is like
+     * [{"amount": "2.00", "currency": "EUR"}, {"amount": "3.00", "currency": "USD"}]
+     *
+     * The currencies are sorted because the family masks are sorted too.
+     *
+     * @param string $attributeCode
+     * @param mixed  $value
+     *
+     * @return string
+     */
+    private function formatAttributeCode(string $attributeCode, $value)
+    {
+        if (is_array($value)) {
+            $isPrice = true;
+            $currencies = [];
+            foreach ($value as $v) {
+                if (!(isset($v['amount']) && isset($v['currency']))) {
+                    $isPrice = false;
+                } else {
+                    $currencies[] = $v['currency'];
+                }
+            }
+            sort($currencies);
+
+            if ($isPrice) {
+                return $attributeCode . '-' . join('-', $currencies);
+            }
+        }
+
+        return $attributeCode;
     }
 }

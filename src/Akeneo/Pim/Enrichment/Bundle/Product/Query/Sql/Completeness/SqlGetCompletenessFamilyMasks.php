@@ -63,7 +63,11 @@ SELECT
     locale_code,
     JSON_ARRAYAGG(
         CONCAT(
-            attribute.code,
+            IF(
+                attribute.attribute_type = 'pim_catalog_price_collection', 
+                CONCAT(attribute.code, '-', currency_codes.currency_codes),
+                attribute.code
+            ),
             '-',
             IF(attribute.is_scopable, channel_locale.channel_code, '<all_channels>'),
             '-',
@@ -84,12 +88,22 @@ FROM pim_catalog_family family
     ) AS channel_locale ON channel_locale.channel_id = pcar.channel_id
     JOIN pim_catalog_attribute attribute ON pcar.attribute_id = attribute.id
     LEFT JOIN pim_catalog_attribute_locale pcal ON attribute.id = pcal.attribute_id
+    LEFT JOIN (
+        SELECT
+            channel.id AS channel_id,
+            GROUP_CONCAT(currency.code ORDER BY currency.code SEPARATOR '-') AS currency_codes
+        FROM pim_catalog_channel channel
+            JOIN pim_catalog_channel_currency pccc ON channel.id = pccc.channel_id
+            JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
+        GROUP BY channel.id
+    ) AS currency_codes on currency_codes.channel_id = channel_locale.channel_id
 WHERE
     pcar.required is true
     AND (pcal.locale_id IS NULL or pcal.locale_id = channel_locale.locale_id)
     AND family.code IN (:familyCodes)
-GROUP BY family.code, channel_code, locale_code
+GROUP BY family.code, channel_code, locale_code, currency_codes.currency_codes
 SQL;
+
         $rows = $this->connection->executeQuery(
             $sql,
             ['familyCodes' => $familyCodes],
