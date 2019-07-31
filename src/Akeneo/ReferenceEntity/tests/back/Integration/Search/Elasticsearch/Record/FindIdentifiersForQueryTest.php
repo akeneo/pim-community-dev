@@ -325,7 +325,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
 
         $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
         Assert::assertSame([
-            'identifiers' => ['brand_kartell', 'brand_alessi'],
+            'identifiers' => ['brand_alessi', 'brand_kartell'],
             'matches_count' => 2
         ], $matchingidentifiers->normalize());
     }

@@ -136,6 +136,7 @@ pim_reference_entity:
     grid:
       search: Buscar en la etiqueta, el código y el texto de los atributos
       filter:
+        counter: '{{ matchesCount }} resultados|{{ matchesCount }} resultados'
         completeness:
           label: Completo
           all: Todo
