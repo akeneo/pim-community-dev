@@ -12,7 +12,8 @@ TEST_FILES=$(docker-compose run -u www-data --rm -T php php $FIND_PHPUNIT_SCRIPT
 fail=0
 for TEST_FILE in $TEST_FILES; do
     echo $TEST_FILE
-    docker-compose exec -u www-data -T fpm ./vendor/bin/phpunit -c $CONFIG_DIRECTORY --log-junit var/tests/phpunit/phpunit_$(uuidgen).xml $TEST_FILE
+    uuid=$(uuidgen)
+    docker-compose exec -u www-data -T fpm ./vendor/bin/phpunit -c $CONFIG_DIRECTORY --log-junit var/tests/phpunit/phpunit_$(uuid).xml --coverage-php var/coverage/${uuid}_phpunit.cov $TEST_FILE
     fail=$(($fail + $?))
 done
 
