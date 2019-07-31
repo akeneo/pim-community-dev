@@ -74,11 +74,6 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Raccolta asset
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        compute_completeness_of_products_linked_to_assets: Calcolo della completezza dei prodotti legati alle risorse
 pim_title:
   pimee_product_asset_mass_upload: Carica asset
   pimee_product_asset_index: Asset
@@ -144,8 +139,6 @@ batch_jobs:
     perform.label: Sposta gli asset nelle categorie
   add_tags_to_assets:
     perform.label: Aggiungi tag agli asset
-  compute_completeness_of_products_linked_to_assets:
-    compute_completeness_of_products_linked_to_assets.label: Calcolo della completezza dei prodotti legati alle risorse
 jstree:
   asset:
     all: Tutti gli asset

@@ -184,7 +184,6 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Téléchargement en masse de ressources
-      compute_completeness_of_products_linked_to_assets: Calcul de la complétude des produits liés aux ressources
 pim_analytics:
   info_type:
     nb_assets: Nombre de ressources produit
