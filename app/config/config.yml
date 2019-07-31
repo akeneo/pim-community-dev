@@ -9,7 +9,6 @@ framework:
         fallback: en_US
     secret: '%env(APP_SECRET)%'
     router:
-        resource: '%kernel.root_dir%/config/routing.yml'
         strict_requirements: '%kernel.debug%'
     form: true
     csrf_protection: true
