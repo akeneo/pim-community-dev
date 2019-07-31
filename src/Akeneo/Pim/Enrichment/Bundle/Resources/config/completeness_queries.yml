@@ -3,3 +3,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetCompletenessFamilyMasks'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.completeness.query.get_product_masks:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetCompletenessProductMasks'
+        arguments:
+            - '@database_connection'
