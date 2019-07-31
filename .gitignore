@@ -40,7 +40,6 @@ composer.phar
 !/bin/pim-front.sh
 !/bin/check-services-instantiability
 !/bin/benchmark_products_api.sh
-behat.yml
 /phpspec.yml
 uploads_test/
 .phpspec/*.tpl
@@ -65,3 +64,17 @@ coverage/*
 /.env.*.local
 /public/bundles/
 ###< symfony/framework-bundle ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> behat/symfony2-extension ###
+behat.yml
+###< behat/symfony2-extension ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
