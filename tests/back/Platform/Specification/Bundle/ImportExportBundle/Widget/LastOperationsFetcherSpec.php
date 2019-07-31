@@ -36,7 +36,7 @@ class LastOperationsFetcherSpec extends ObjectBehavior
         TokenInterface $token,
         LocaleInterface $locale
     ) {
-        $date = new \DateTime('2019-12-01');
+        $date = '2019-12-01 12:00:00';
         $operation = [
             'date'   => $date,
             'type'   => 'import',
@@ -52,10 +52,13 @@ class LastOperationsFetcherSpec extends ObjectBehavior
         $user->getUiLocale()->willReturn($locale);
         $user->getTimezone()->willReturn('Pacific/Kiritimati');
         $locale->getCode()->willReturn('fr_FR');
-        $presenter->present($date, ['locale' => 'fr_FR', 'timezone' => 'Pacific/Kiritimati'])->willReturn('01/12/2019');
+        $presenter->present(
+            new \DateTime($date, new \DateTimeZone('UTC')),
+            ['locale' => 'fr_FR', 'timezone' => 'Pacific/Kiritimati']
+        )->willReturn('02/12/2019 02:00:00');
 
         $operation['statusLabel'] = 'pim_import_export.batch_status.1';
-        $operation['date'] = '01/12/2019';
+        $operation['date'] = '02/12/2019 02:00:00';
         $operation['canSeeReport'] = false;
 
         $this->fetch()->shouldReturn([$operation]);
