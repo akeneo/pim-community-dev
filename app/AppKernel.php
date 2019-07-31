@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * PIM AppKernel
@@ -12,194 +17,58 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class AppKernel extends Kernel
 {
+    use MicroKernelTrait;
+
     /**
-     * Registers your custom bundles
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function registerProjectBundles()
+    public function registerBundles(): iterable
     {
-        return [
-            // your app bundles should be registered here
-            new Acme\Bundle\AppBundle\AcmeAppBundle(),
-        ];
+        $contents = require $this->getProjectDir().'/app/bundles.php';
+        foreach ($contents as $class => $envs) {
+            if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+                yield new $class();
+            }
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function registerBundles()
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $bundles = $this->registerProjectBundles();
+        $confDir = $this->getProjectDir().'/app/config';
 
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
+        $routes->import($confDir.'/routing.yml');
+
+        if ('dev' === $this->environment) {
+            $routes->import($confDir.'/routing_dev.yml');
         }
-
-        $bundles = array_merge(
-            $this->getSymfonyBundles(),
-            $this->getOroDependencies(),
-            $this->getOroBundles(),
-            $this->getPimDependenciesBundles(),
-            $this->getPimBundles(),
-            $bundles
-        );
-
-        if ('test_fake' === $this->getEnvironment()) {
-            $bundles[] = new FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle();
-        }
-
-        return $bundles;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader): void
     {
-        $loader->load($this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml');
+        $confDir = $this->getProjectDir().'/app/config';
 
-        if (is_file($file = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '_local.yml')) {
-            $loader->load($file);
-        }
+        $loader->load($confDir.'/config_'.$this->environment.'.yml');
     }
 
     /**
-     * Bundles coming from the PIM
-     *
-     * @return array
-     */
-    protected function getPimBundles()
-    {
-        return [
-            // BAP overriden bundles
-            new Oro\Bundle\PimFilterBundle\PimFilterBundle(),
-            new Oro\Bundle\PimDataGridBundle\PimDataGridBundle(),
-            new Akeneo\UserManagement\Bundle\PimUserBundle(),
-
-            // Channel bundles
-            new Akeneo\Channel\Bundle\AkeneoChannelBundle(),
-
-            // PIM bundles
-            new Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle(),
-            new Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle(),
-
-            // Platform bundles
-            new Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
-            new Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle(),
-            new Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle(),
-            new Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle(),
-            new Akeneo\Platform\Bundle\UIBundle\PimUIBundle(),
-            new Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
-        ];
-    }
-
-    /**
-     * Bundles required by the PIM
-     *
-     * @return array
-     */
-    protected function getPimDependenciesBundles()
-    {
-        return [
-            new Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle(),
-            new Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
-            new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),
-            new Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
-            new Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle(),
-            new Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
-            new Akeneo\Tool\Bundle\BufferBundle\AkeneoBufferBundle(),
-            new Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
-            new Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle(),
-            new Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
-            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
-            // PimApiBundle must be registered after FOSOAuthServerBundle
-            new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
-            new Oneup\FlysystemBundle\OneupFlysystemBundle(),
-        ];
-    }
-
-    /**
-     * Bundles coming from Symfony Standard Framework.
-     *
-     * @return array
-     */
-    protected function getSymfonyBundles()
-    {
-        return [
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\TwigBundle\TwigBundle(),
-        ];
-    }
-
-    /**
-     * * Bundles required by Oro Platform
-     *
-     * @return array
-     */
-    protected function getOroDependencies()
-    {
-        return [
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new FOS\RestBundle\FOSRestBundle(),
-            new Liip\ImagineBundle\LiipImagineBundle(),
-        ];
-    }
-
-    /**
-     * Bundles coming from Oro Platform
-     *
-     * @return array
-     */
-    protected function getOroBundles()
-    {
-        return [
-            new Oro\Bundle\ConfigBundle\OroConfigBundle(),
-            new Oro\Bundle\DataGridBundle\OroDataGridBundle(),
-            new Oro\Bundle\FilterBundle\OroFilterBundle(),
-            new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
-            new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getRootDir(): string
-    {
-        return __DIR__;
-    }
-
-    /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCacheDir(): string
     {
-        return dirname(__DIR__)
-            . DIRECTORY_SEPARATOR
-            . 'var'
-            . DIRECTORY_SEPARATOR
-            . 'cache'
-            . DIRECTORY_SEPARATOR
-            . $this->getEnvironment();
+        return $this->getProjectDir().'/var/cache/'.$this->environment;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getLogDir(): string
     {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'logs';
+        return $this->getProjectDir().'/var/logs';
     }
 }

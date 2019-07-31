@@ -1,7 +1,5 @@
 <?php
 
-use Akeneo\Test\Common\Path;
-
 /**
  * App kernel for the integration tests.
  *
@@ -12,41 +10,14 @@ use Akeneo\Test\Common\Path;
 class AppKernelTest extends AppKernel
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
+     *
+     * Necessary to make gedmo extension tree work. Otherwise the path located in
+     * "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/bundles/gedmo_doctrine_extensions.yml"
+     * is never the right one...
      */
-    protected function registerProjectBundles(): array
+    public function getRootDir(): string
     {
-        return [
-            new Acme\Bundle\AppBundle\AcmeAppBundle(),
-            new Akeneo\Test\IntegrationTestsBundle\AkeneoIntegrationTestsBundle()
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheDir(): string
-    {
-        return new Path('var', 'cache', 'test_kernel');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogDir(): string
-    {
-        return new Path('var', 'logs');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName(): string
-    {
-        if (null === $this->name) {
-            $this->name =  parent::getName() . '_test';
-        }
-
-        return $this->name;
+        return $this->getProjectDir() . DIRECTORY_SEPARATOR . 'app';
     }
 }
