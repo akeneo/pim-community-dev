@@ -45,7 +45,7 @@ class CompletenessProductMask
         return $this->mask;
     }
 
-    public function getId(): int
+    public function id(): int
     {
         return $this->id;
     }
