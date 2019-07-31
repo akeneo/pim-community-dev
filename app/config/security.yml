@@ -85,7 +85,7 @@ security:
             logout:
                 path:                       pim_user_security_logout
             remember_me:
-                secret:                     "%secret%"
+                secret:                     "%env(APP_SECRET)%"
                 name:                       BAPRM
                 lifetime:                   1209600   # stay logged for two weeks
             anonymous:                      false

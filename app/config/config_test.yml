@@ -1,6 +1,5 @@
 imports:
     - { resource: config.yml }
-    - { resource: parameters_test.yml }
     - { resource: security_test.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/helpers.yml }
     - { resource: ../../src/Akeneo/AssetManager/tests/back/Common/Resources/helpers.yml }
