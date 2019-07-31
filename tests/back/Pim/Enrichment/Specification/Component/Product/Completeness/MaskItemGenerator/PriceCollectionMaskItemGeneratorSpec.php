@@ -48,4 +48,14 @@ class PriceCollectionMaskItemGeneratorSpec extends ObjectBehavior
         $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
             ->shouldReturn(['attributeCode-EUR-channelCode-localeCode']);
     }
+
+    public function it_does_not_add_null_amount()
+    {
+        $value = [
+            ['amount' => null, 'currency' => 'USD'],
+            ['amount' => 100, 'currency' => 'EUR']
+        ];
+        $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
+            ->shouldReturn(['attributeCode-EUR-channelCode-localeCode']);
+    }
 }
