@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8600: Fix import filepath tooltip
+
 # 3.1.17 (2019-07-30)
 
 ## Bug fixes
