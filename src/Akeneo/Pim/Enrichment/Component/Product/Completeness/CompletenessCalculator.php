@@ -1,131 +1,110 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMask;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 
 /**
- * Calculates the completenesses for a provided product.
- *
- * @author    Damien Carcel (damien.carcel@akeneo.com)
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class CompletenessCalculator implements CompletenessCalculatorInterface
 {
-    /** @var RequiredValueCollectionFactory */
-    private $requiredValueCollectionFactory;
+    /** @var GetProducts */
+    private $getProducts;
 
-    /** @var IncompleteValueCollectionFactory */
-    private $incompleteValueCollectionFactory;
+    /** @var GetCompletenessFamilyMasks */
+    private $getCompletenessFamilyMasks;
 
-    /** @var string */
-    private $completenessClass;
-
-    /**
-     * @param RequiredValueCollectionFactory   $requiredValueCollectionFactory
-     * @param IncompleteValueCollectionFactory $incompleteValueCollectionFactory
-     * @param string                           $completenessClass
-     */
     public function __construct(
-        RequiredValueCollectionFactory $requiredValueCollectionFactory,
-        IncompleteValueCollectionFactory $incompleteValueCollectionFactory,
-        $completenessClass
+        GetProducts $getProducts,
+        GetCompletenessFamilyMasks $getCompletenessFamilyMasks
     ) {
-        $this->completenessClass = $completenessClass;
-        $this->requiredValueCollectionFactory = $requiredValueCollectionFactory;
-        $this->incompleteValueCollectionFactory = $incompleteValueCollectionFactory;
+        $this->getProducts = $getProducts;
+        $this->getCompletenessFamilyMasks = $getCompletenessFamilyMasks;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculate(ProductInterface $product): array
     {
-        $family = $product->getFamily();
-        if (null === $family) {
-            return [];
-        }
-
-        $completenesses = [];
-
-        foreach ($this->getChannelsFromRequirements($family) as $channel) {
-            $requiredValuesForChannel = $this->requiredValueCollectionFactory->forChannel($family, $channel);
-
-            foreach ($channel->getLocales() as $locale) {
-                $requiredValues = $requiredValuesForChannel->filterByChannelAndLocale($channel, $locale);
-                $incompleteValues = $this->incompleteValueCollectionFactory->forChannelAndLocale(
-                    $requiredValues,
-                    $channel,
-                    $locale,
-                    $product
-                );
-
-                $completenesses[] = $this->createCompleteness(
-                    $product,
-                    $channel,
-                    $locale,
-                    $incompleteValues->attributes(),
-                    $incompleteValues->count(),
-                    $requiredValues->count()
-                );
-            }
-        }
-
-        return $completenesses;
+        throw new \Exception('Drop this from the interface!');
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
-     * @param Collection       $missingAttributes
-     * @param int              $missingCount
-     * @param int              $requiredCount
-     *
-     * @return CompletenessInterface
-     */
-    private function createCompleteness(
-        ProductInterface $product,
-        ChannelInterface $channel,
-        LocaleInterface $locale,
-        Collection $missingAttributes,
-        $missingCount,
-        $requiredCount
-    ) {
-        return new $this->completenessClass(
-            $product,
-            $channel,
-            $locale,
-            $missingAttributes,
-            $missingCount,
-            $requiredCount
-        );
-    }
-
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return Collection
-     */
-    private function getChannelsFromRequirements(FamilyInterface $family): Collection
+    public function fromProductIdentifiers($productIdentifiers): array
     {
-        $channels = new ArrayCollection();
-        foreach ($family->getAttributeRequirements() as $attributeRequirement) {
-            $channel = $attributeRequirement->getChannel();
-            if (!$channels->contains($channel)) {
-                $channels->add($channel);
-            }
+        $productMasks = $this->getProductMasks($productIdentifiers);
+
+        $familyCodes = array_map(function (CompletenessProductMask $product) {
+            return $product->familyCode();
+        }, $productMasks);
+
+        $familyMasks = $this->getFamilyMasks($familyCodes);
+
+        $result = [];
+        foreach ($productMasks as $productMask) {
+            $familyMask = $familyMasks[$productMask->familyCode()];
+            $result[$productMask->getId()] = $this->applyMask($familyMask, $productMask);
         }
 
-        return $channels;
+        return $result;
+    }
+
+    public function fromProductIdentifier($productIdentifier): ProductCompletenessCollection
+    {
+        return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier];
+    }
+
+    /**
+     * @param string[] $productIdentifiers
+     *
+     * @return CompletenessProductMask[]
+     */
+    private function getProductMasks(array $productIdentifiers): array
+    {
+        return $this->getProducts->fromProductIdentifiers($productIdentifiers);
+    }
+
+    /**
+     * @param string[] $familyCodes
+     *
+     * @return CompletenessFamilyMask[]
+     */
+    private function getFamilyMasks(array $familyCodes): array
+    {
+        return $this->getCompletenessFamilyMasks->fromFamilyCodes($familyCodes);
+    }
+
+    private function applyMask(
+        CompletenessFamilyMask $familyMask,
+        CompletenessProductMask $completenessProductMask
+    ): ProductCompletenessCollection {
+        $productMask = $completenessProductMask->mask();
+
+        return new ProductCompletenessCollection($completenessProductMask->getId(), array_map(
+            function (CompletenessFamilyMaskPerChannelAndLocale $familyMaskPerChannelAndLocale) use ($productMask) {
+                $diff = array_diff($familyMaskPerChannelAndLocale->mask(), $productMask);
+
+                $missingAttributeCodes = array_map(function (string $mask) {
+                    return substr($mask, 0, strpos($mask, '-'));
+                }, $diff);
+
+                return new ProductCompleteness(
+                    $familyMaskPerChannelAndLocale->channelCode(),
+                    $familyMaskPerChannelAndLocale->localeCode(),
+                    count($familyMaskPerChannelAndLocale->mask()),
+                    $missingAttributeCodes
+                );
+            },
+            $familyMask->masks()
+        ));
     }
 }
