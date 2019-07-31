@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8603: Sort attribute columns by label if no order is defined
+
 # 3.1.17 (2019-07-30)
 
 ## Bug fixes
