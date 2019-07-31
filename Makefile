@@ -162,5 +162,5 @@ phpunit: vendor
 
 .PHONY: behat-legacy
 behat-legacy: behat.yml vendor node_modules
-	${PHP_EXEC} vendor/bin/behat -p legacy ${F}
+	$(DOCKER_COMPOSE) exec -u docker -e APP_ENV=behat fpm php vendor/bin/behat -p legacy ${F}
 
