@@ -3,7 +3,7 @@
 define('EXIT_WRONG_USAGE', 127);
 define('EXIT_SERVICES_NON_INSTANTIABLE', 1);
 
-if (!file_exists('app/AppKernel.php')) {
+if (!file_exists('src/AppKernel.php')) {
     die("Please run this command from your Symfony application root.");
 }
 
