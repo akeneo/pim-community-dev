@@ -188,7 +188,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-        # The version of docker compose used by circle ci does not support -`e` option (`docker-composer exec -e ENV_VAR=value`) to set environment variables to containers
+        # The version of docker compose used by circle ci does not support `-e` option (`docker-composer exec -e ENV_VAR=value`) to set environment variables to containers.
         # To load .env.behat (app/bootstrap.php) we need to set APP_ENV=behat but it is not possible because of the version of docker-composer.
         # To avoid to upgrade it, we use this little trick
       - run:
