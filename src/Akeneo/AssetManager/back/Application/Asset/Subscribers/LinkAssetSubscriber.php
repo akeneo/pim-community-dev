@@ -34,9 +34,10 @@ class LinkAssetSubscriber implements EventSubscriberInterface
 
     public function whenAssetCreated(AssetCreatedEvent $assetCreatedEvent): void
     {
-        $this->productLinkRuleLauncher->launch(
-            $assetCreatedEvent->getAssetFamilyIdentifier(),
-            $assetCreatedEvent->getAssetCode()
-        );
+//        TODO: This part will be reworked in an upcoming PR
+//        $this->productLinkRuleLauncher->launch(
+//            $assetCreatedEvent->getAssetFamilyIdentifier(),
+//            $assetCreatedEvent->getAssetCode()
+//        );
     }
 }
