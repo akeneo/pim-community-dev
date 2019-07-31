@@ -74,8 +74,6 @@ SQL;
                 intval($row['id']),
                 $row['identifier'],
                 $row['familyCode'],
-                // TODO [review] I did 2 json_decode, I don't know if it's so costly we have to save it somewhere on the
-                //      first call and don't want to to premature optimization.
                 $this->getMask(json_decode($row['rawValues'], true), $attributes)
             );
         }

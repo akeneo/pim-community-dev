@@ -54,8 +54,6 @@ class DefaultMaskItemGenerator implements MaskItemGeneratorForAttributeType
 
     public function supportedAttributeTypes(): array
     {
-        // TODO [review] Don't know if this has to be injected via DI. They already contains EE ones, but I don't know
-        //      how difficult it can be for extensibility.
         return [
             AttributeTypes::BOOLEAN,
             AttributeTypes::DATE,

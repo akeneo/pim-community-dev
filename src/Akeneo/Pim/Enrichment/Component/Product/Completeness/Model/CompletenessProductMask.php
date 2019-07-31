@@ -49,4 +49,9 @@ class CompletenessProductMask
     {
         return $this->id;
     }
+
+    public function identifier(): string
+    {
+        return $this->identifier;
+    }
 }

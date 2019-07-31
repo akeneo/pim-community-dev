@@ -36,7 +36,7 @@ class MaskItemGenerator
 
     private function getGenerator(string $attributeType): MaskItemGeneratorForAttributeType
     {
-        if (!array_key_exists($attributeType, $this->generators)) {
+        if (!isset($this->generators[$attributeType])) {
             throw new \LogicException(sprintf('MaskItemGenerator for attribute type "%s" not found', $attributeType));
         }
 

@@ -17,16 +17,12 @@ class MetricMaskItemGenerator implements MaskItemGeneratorForAttributeType
     {
         if (
             !isset($value['amount']) ||
-            null === $value['amount'] ||
             '' === $value['amount'] ||
             !isset($value['unit']) ||
-            null === $value['unit'] ||
             '' === $value['unit'] ||
             !isset($value['base_data']) ||
-            null === $value['base_data'] ||
             '' === $value['base_data'] ||
             !isset($value['base_unit']) ||
-            null === $value['base_unit'] ||
             '' === $value['base_unit']
         ) {
             return [];

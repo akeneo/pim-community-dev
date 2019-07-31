@@ -19,10 +19,8 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
         foreach ($value as $price) {
             if (
                 is_array($price) &&
-                isset($price['currency']) &&
                 isset($price['amount']) &&
-                null !== $price['amount']
-                && '' !== $price['amount']
+                '' !== $price['amount']
             ) {
                 $filledCurrencies[] = $price['currency'];
             }
