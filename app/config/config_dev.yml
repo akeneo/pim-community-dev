@@ -18,6 +18,3 @@ monolog:
         console:
             type:     console
             channels: ['!event', '!doctrine']
-
-swiftmailer:
-    disable_delivery: true
