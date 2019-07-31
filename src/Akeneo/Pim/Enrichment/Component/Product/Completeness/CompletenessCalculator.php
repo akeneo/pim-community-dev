@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamil
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
@@ -20,14 +20,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness
  */
 class CompletenessCalculator implements CompletenessCalculatorInterface
 {
-    /** @var GetProducts */
+    /** @var GetCompletenessProductMasks */
     private $getProducts;
 
     /** @var GetCompletenessFamilyMasks */
     private $getCompletenessFamilyMasks;
 
     public function __construct(
-        GetProducts $getProducts,
+        GetCompletenessProductMasks $getProducts,
         GetCompletenessFamilyMasks $getCompletenessFamilyMasks
     ) {
         $this->getProducts = $getProducts;
@@ -52,7 +52,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
         $result = [];
         foreach ($productMasks as $productMask) {
             $familyMask = $familyMasks[$productMask->familyCode()];
-            $result[$productMask->getId()] = $this->applyMask($familyMask, $productMask);
+            $result[$productMask->id()] = $this->applyMask($familyMask, $productMask);
         }
 
         return $result;
@@ -89,7 +89,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     ): ProductCompletenessCollection {
         $productMask = $completenessProductMask->mask();
 
-        return new ProductCompletenessCollection($completenessProductMask->getId(), array_map(
+        return new ProductCompletenessCollection($completenessProductMask->id(), array_map(
             function (CompletenessFamilyMaskPerChannelAndLocale $familyMaskPerChannelAndLocale) use ($productMask) {
                 $diff = array_diff($familyMaskPerChannelAndLocale->mask(), $productMask);
 
