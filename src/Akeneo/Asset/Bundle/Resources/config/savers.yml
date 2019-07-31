@@ -30,7 +30,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pimee_product_asset.remover.completeness'
 
     pimee_product_asset.saver.file_metadata:
         class: '%pimee_product_asset.saver.file_metadata.class%'
