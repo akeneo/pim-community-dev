@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -14,7 +14,7 @@ interface GetProducts
     /**
      * @param string[] $productIdentifiers
      *
-     * @return Product[]
+     * @return CompletenessProductMask[]
      */
     public function fromProductIdentifiers(array $productIdentifiers): array;
 }
