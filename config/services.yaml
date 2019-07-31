@@ -1,5 +1,8 @@
-# this file contains all non local parameters required by the PIM to work
-# if you need to override one of these parameter, you can do it directly in your own parameters.yml file
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     database_unix_socket: ~
 
@@ -84,3 +87,9 @@ parameters:
     count_product_model_values_limit: -1
     count_product_and_product_model_values_limit: -1
     count_users_limit: -1
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: false      # Automatically injects dependencies in your services.
+        autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.

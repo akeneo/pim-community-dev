@@ -1,6 +1,5 @@
 imports:
     - { resource: '../../src/Akeneo/Platform/config/pim.yml' }
-    - { resource: pim_parameters.yml }
     - { resource: security.yml }
 
 framework:
