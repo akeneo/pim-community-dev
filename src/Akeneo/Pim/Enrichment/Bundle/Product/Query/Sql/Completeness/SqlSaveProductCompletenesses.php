@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\CannotSaveProductCompletenessCollectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Doctrine\DBAL\Connection;
 
@@ -23,6 +24,9 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $this->connection = $connection;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function save(ProductCompletenessCollection $completenesses): void
     {
         $this->connection->beginTransaction();
@@ -55,7 +59,13 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             );
         }
 
-        $this->connection->commit();
+        try {
+            $this->connection->commit();
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+
+            throw new CannotSaveProductCompletenessCollectionException($productId, $e->getCode(), $e);
+        }
     }
 
     private function getDeleteQuery(): string
