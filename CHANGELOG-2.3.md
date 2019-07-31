@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.57 (2019-07-31)
+
 ## Bug fixes
 
 - PIM-7741: use the catalog locale when choosing a new parent product model
