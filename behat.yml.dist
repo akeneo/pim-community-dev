@@ -153,7 +153,7 @@ legacy:
             files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
-                bootstrap: app/bootstrap.php
+                bootstrap: config/bootstrap.php
                 env: behat
                 debug: false
         SensioLabs\Behat\PageObjectExtension:
@@ -223,7 +223,7 @@ acceptance:
                 tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\SymfonyExtension:
-            bootstrap: app/bootstrap.php
+            bootstrap: config/bootstrap.php
             kernel:
                 environment: test_fake
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
