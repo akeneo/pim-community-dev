@@ -1,6 +1,5 @@
 imports:
     - { resource: '../../src/Akeneo/Platform/config/pim.yml' }
-    - { resource: security.yml }
 
 akeneo_pim_structure:
     reference_data:

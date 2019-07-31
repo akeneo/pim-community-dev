@@ -1028,7 +1028,7 @@ class AclManager extends AbstractAclManager
     {
         if ($this->aclProvider === null) {
             throw new InvalidConfigurationException(
-                'Seems that ACL is not enabled. Please check "security/acl" parameter in "app/config/security.yml"'
+                'Seems that ACL is not enabled. Please check "security/acl" parameter in "config/security.yml"'
             );
         }
     }
