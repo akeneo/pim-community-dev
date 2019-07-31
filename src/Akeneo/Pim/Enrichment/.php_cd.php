@@ -15,6 +15,7 @@ $rules = [
         'Symfony\Bundle',
         'Akeneo\Tool',
         'Akeneo\Pim\Enrichment\Component',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
