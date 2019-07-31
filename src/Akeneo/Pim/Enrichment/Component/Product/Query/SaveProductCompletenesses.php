@@ -13,5 +13,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness
  */
 interface SaveProductCompletenesses
 {
+    /**
+     * @throws CannotSaveProductCompletenessCollectionException
+     */
     public function save(ProductCompletenessCollection $completenesses): void;
 }
