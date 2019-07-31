@@ -2,13 +2,6 @@ imports:
     - { resource: '../../src/Akeneo/Platform/config/pim.yml' }
     - { resource: security.yml }
 
-# Twig Configuration
-twig:
-    debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'
-    globals:
-        uservoice_key: '%uservoice_key%'
-
 akeneo_pim_structure:
     reference_data:
         fabrics:
