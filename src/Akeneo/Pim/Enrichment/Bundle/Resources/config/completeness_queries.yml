@@ -3,3 +3,5 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetCompletenessProductMasks'
         arguments:
             - '@database_connection'
+            - '@akeneo.pim.enrichment.completeness.mask_item_generator.generator'
+            - '@akeneo.pim.structure.query.sql_get_attributes'
