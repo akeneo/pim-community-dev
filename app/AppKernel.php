@@ -24,7 +24,7 @@ class AppKernel extends Kernel
      */
     public function registerBundles(): iterable
     {
-        $contents = require $this->getProjectDir().'/app/bundles.php';
+        $contents = require $this->getProjectDir().'/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
