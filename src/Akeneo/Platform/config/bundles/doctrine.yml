@@ -4,14 +4,13 @@ doctrine:
         default_connection:   default
         connections:
             default:
-                driver:       "%database_driver%"
-                host:         "%database_host%"
-                port:         "%database_port%"
-                unix_socket:  "%database_unix_socket%"
-                dbname:       "%database_name%"
-                user:         "%database_user%"
-                password:     "%database_password%"
-                charset:      utf8mb4
+                driver: 'pdo_mysql'
+                dbname: '%env(APP_DATABASE_NAME)%'
+                host: '%env(APP_DATABASE_HOST)%'
+                port: '%env(APP_DATABASE_PORT)%'
+                user: '%env(APP_DATABASE_USER)%'
+                password: '%env(APP_DATABASE_PASSWORD)%'
+                charset: utf8mb4
                 default_table_options:
                         charset: utf8mb4
                         collate: utf8mb4_unicode_ci
@@ -20,14 +19,13 @@ doctrine:
                 mapping_types:
                     json: string
             session:
-                driver:       "%database_driver%"
-                host:         "%database_host%"
-                port:         "%database_port%"
-                unix_socket:  "%database_unix_socket%"
-                dbname:       "%database_name%"
-                user:         "%database_user%"
-                password:     "%database_password%"
-                charset:      utf8mb4
+                driver: 'pdo_mysql'
+                dbname: '%env(APP_DATABASE_NAME)%'
+                host: '%env(APP_DATABASE_HOST)%'
+                port: '%env(APP_DATABASE_PORT)%'
+                user: '%env(APP_DATABASE_USER)%'
+                password: '%env(APP_DATABASE_PASSWORD)%'
+                charset: utf8mb4
                 default_table_options:
                         charset: utf8mb4
                         collate: utf8mb4_unicode_ci
@@ -38,7 +36,7 @@ doctrine:
                 class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\JsonType
                 commented: true
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true
         resolve_target_entities:
             placeholder: placeholder

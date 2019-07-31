@@ -20,5 +20,5 @@ services:
         class: '%pim_api.security.primary_key_encrypter.class%'
         arguments:
             - 'AES-256-OFB'
-            - '%secret%'
-            - '%secret%'
+            - '%env(APP_SECRET)%'
+            - '%env(APP_SECRET)%'

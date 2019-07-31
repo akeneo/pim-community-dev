@@ -200,46 +200,19 @@ class CommunityRequirements
     }
 
     /**
-     * If no connection is reached, or that "parameters.yml" do not exists, an
-     * exception is thrown, then catch. If "parameters_test.yml" do not exists
-     * either, then the exception is thrown again.
      * If it exits, an attempt to connect is done, and can result in an exception
      * if no connection is reached.
      */
     protected function getConnection() : PDO
     {
-        $file = file_get_contents($this->baseDir.'/app/config/parameters.yml');
-
-        if (false === $file) {
-            throw new RuntimeException(
-                'The file "app/config/parameters.yml" does not exist, please create it'
-            );
-        }
-
-        $parameters = Yaml::parse($file);
-
-        try {
-            if (null === $parameters) {
-                throw new RuntimeException(
-                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
-                );
-            }
-        } catch (RuntimeException $e) {
-            $parameters = Yaml::parse(file_get_contents($this->baseDir.'/app/config/parameters_test.yml'));
-
-            if (null === $parameters) {
-                throw $e;
-            }
-        }
-
         return new PDO(
             sprintf(
                 'mysql:port=%s;host=%s',
-                $parameters['parameters']['database_port'],
-                $parameters['parameters']['database_host']
+                getenv('APP_DATABASE_PORT'),
+                getenv('APP_DATABASE_HOST')
             ),
-            $parameters['parameters']['database_user'],
-            $parameters['parameters']['database_password']
+            getenv('APP_DATABASE_USER'),
+            getenv('APP_DATABASE_PASSWORD')
         );
     }
 

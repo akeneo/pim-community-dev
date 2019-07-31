@@ -189,6 +189,9 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+            name: Copy env file
+            command: cp .env.behat .env
+      - run:
             name: Get Behat Suite name to run
             command: |
                 TESTSUITE=$(echo $CIRCLE_BRANCH | sed -e 's/^.*-\([^-]*\)$/\1/g')
