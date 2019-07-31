@@ -88,6 +88,8 @@ parameters:
     count_product_and_product_model_values_limit: -1
     count_users_limit: -1
 
+    pim_ce_dev_src_folder_location: '%kernel.project_dir%'
+
 services:
     # default configuration for services in *this* file
     _defaults:

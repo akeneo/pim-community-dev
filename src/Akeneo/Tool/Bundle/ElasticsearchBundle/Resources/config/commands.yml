@@ -3,6 +3,6 @@ services:
         class: 'Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateMappingIndexCommand'
         arguments:
             $clientRegistry: '@akeneo_elasticsearch.registry.clients'
-            $hosts: '%index_hosts%'
+            $hosts: '%env(APP_INDEX_HOSTS)%'
         tags:
             - {name: console.command}
