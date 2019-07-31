@@ -62,9 +62,9 @@ services:
     image: 'mysql:5.7'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_USER: '${APP_DATABASE_USER}'
-      MYSQL_DATABASE: '${APP_DATABASE_NAME}'
-      MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
+      MYSQL_USER: '${APP_DATABASE_USER:-akeneo_pim}'
+      MYSQL_DATABASE: '${APP_DATABASE_NAME:-akeneo_pim}'
+      MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD:-akeneo_pim}'
     networks:
       - 'akeneo'
 
@@ -72,9 +72,9 @@ services:
     image: 'mysql:5.7'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_USER: '${APP_DATABASE_USER}'
-      MYSQL_DATABASE: '${APP_DATABASE_NAME}'
-      MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
+      MYSQL_USER: '${APP_DATABASE_USER:-akeneo_pim}'
+      MYSQL_DATABASE: '${APP_DATABASE_NAME:-akeneo_pim}'
+      MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD:-akeneo_pim}'
     networks:
       - 'behat'
 
