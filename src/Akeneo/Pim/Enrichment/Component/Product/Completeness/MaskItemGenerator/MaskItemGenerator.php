@@ -14,9 +14,14 @@ class MaskItemGenerator
     /** @var MaskItemGeneratorForAttributeType[] */
     private $generators;
 
-    public function __construct()
+    public function __construct(iterable $generators)
     {
         $this->generators = [];
+        foreach ($generators as $generator) {
+            foreach ($generator->supportedAttributeTypes() as $attributeType) {
+                $this->generators[$attributeType] = $generator;
+            }
+        }
     }
 
     public function generate(
@@ -36,12 +41,5 @@ class MaskItemGenerator
         }
 
         return $this->generators[$attributeType];
-    }
-
-    public function addGenerator(MaskItemGeneratorForAttributeType $generator): void
-    {
-        foreach ($generator->supportedAttributeTypes() as $attributeType) {
-            $this->generators[$attributeType] = $generator;
-        }
     }
 }

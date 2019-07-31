@@ -16,13 +16,10 @@ class MaskItemGeneratorSpec extends ObjectBehavior
         MaskItemGeneratorForAttributeType $generator2,
         MaskItemGeneratorForAttributeType $generator3
     ) {
-        $this->beConstructedWith();
         $generator1->supportedAttributeTypes()->willReturn([]);
         $generator2->supportedAttributeTypes()->willReturn(['attributeType2']);
         $generator3->supportedAttributeTypes()->willReturn(['attributeType3', 'attributeType3bis']);
-        $this->addGenerator($generator1);
-        $this->addGenerator($generator2);
-        $this->addGenerator($generator3);
+        $this->beConstructedWith([$generator1, $generator2, $generator3]);
     }
 
     public function it_is_a_mask_item_generator()

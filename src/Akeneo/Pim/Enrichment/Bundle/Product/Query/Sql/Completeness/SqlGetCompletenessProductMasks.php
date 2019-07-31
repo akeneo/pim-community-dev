@@ -91,25 +91,22 @@ SQL;
      */
     private function getMask($rawValues, array $attributes): array
     {
-        $result = [];
+        $masks = [];
         foreach ($rawValues as $attributeCode => $valuesByChannel) {
             $attributeType = $attributes[$attributeCode]->type();
             foreach ($valuesByChannel as $channelCode => $valuesByLocale) {
                 foreach ($valuesByLocale as $localeCode => $value) {
-                    $result = array_merge(
-                        $result,
-                        $this->maskItemGenerator->generate(
-                            $attributeCode,
-                            $attributeType,
-                            $channelCode,
-                            $localeCode,
-                            $value
-                        )
+                    $masks[] = $this->maskItemGenerator->generate(
+                        $attributeCode,
+                        $attributeType,
+                        $channelCode,
+                        $localeCode,
+                        $value
                     );
                 }
             }
         }
 
-        return $result;
+        return array_merge(...$masks);
     }
 }
