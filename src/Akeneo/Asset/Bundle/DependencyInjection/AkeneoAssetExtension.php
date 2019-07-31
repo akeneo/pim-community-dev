@@ -34,7 +34,6 @@ class AkeneoAssetExtension extends Extension
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
         $loader->load('category_counters.yml');
-        $loader->load('completeness_checkers.yml');
         $loader->load('connector/array_converters.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
