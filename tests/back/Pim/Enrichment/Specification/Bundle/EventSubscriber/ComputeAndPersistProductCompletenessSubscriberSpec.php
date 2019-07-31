@@ -32,7 +32,7 @@ class ComputeAndPersistProductCompletenessSubscriberSpec extends ObjectBehavior
     function it_computes_and_saves_completenesses_for_a_product(
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
     ) {
-        $computeAndPersistProductCompletenesses->fromProductIdentifier('product')->shouldBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductIdentifiers(['product'])->shouldBeCalled();
 
         $product = new Product();
         $product->setIdentifier(ScalarValue::value('foo', 'product'));
@@ -40,11 +40,35 @@ class ComputeAndPersistProductCompletenessSubscriberSpec extends ObjectBehavior
         $this->computeProductCompleteness(new GenericEvent($product));
     }
 
+    function it_does_not_compute_if_it_is_not_unitary_for_save(
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
+    ) {
+        $computeAndPersistProductCompletenesses->fromProductIdentifiers(['product'])->shouldBeCalled();
+
+        $product = new Product();
+        $product->setIdentifier(ScalarValue::value('foo', 'product'));
+
+        $this->computeProductCompleteness(new GenericEvent($product, ['unitary' => true]));
+    }
+
     function it_does_nothing_for_anything_but_a_product(
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
     ) {
-        $computeAndPersistProductCompletenesses->fromProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductIdentifiers([Argument::any()])->shouldNotBeCalled();
 
         $this->computeProductCompleteness(new GenericEvent(new \stdClass()));
+    }
+
+    function it_computes_and_saves_completenesses_for_multiple_products(
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
+    ) {
+        $computeAndPersistProductCompletenesses->fromProductIdentifiers(['product_a', 'product_b'])->shouldBeCalled();
+
+        $productA = new Product();
+        $productA->setIdentifier(ScalarValue::value('foo', 'product_a'));
+        $productB = new Product();
+        $productB->setIdentifier(ScalarValue::value('bar', 'product_b'));
+
+        $this->computeProductsCompleteness(new GenericEvent([$productA, $productB]));
     }
 }
