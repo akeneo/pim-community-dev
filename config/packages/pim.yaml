@@ -1,0 +1,2 @@
+imports:
+    - { resource: '../../src/Akeneo/Platform/config/pim.yml' }
