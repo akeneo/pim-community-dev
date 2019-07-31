@@ -67,7 +67,7 @@
         "friendsofsymfony/jsrouting-bundle": "2.1.1",
         "friendsofsymfony/oauth-server-bundle": "1.6.2",
         "friendsofsymfony/rest-bundle": "2.5.0",
-        "gedmo/doctrine-extensions":"v2.4.26",
+        "gedmo/doctrine-extensions":"v2.4.37",
         "league/flysystem": "1.0.40",
         "league/flysystem-ziparchive": "1.0.3",
         "liip/imagine-bundle": "2.0.0",
