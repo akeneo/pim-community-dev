@@ -112,7 +112,7 @@ SQL;
 
 function removeOrphanJobExecutionDirectoriesForJob(string $archiveDir, array $job)
 {
-    $jobDirectory = $archiveDir . DIRECTORY_SEPARATOR . $job['type'] . DIRECTORY_SEPARATOR . $job['code'];
+    $jobDirectory = $archiveDir . DIRECTORY_SEPARATOR . $job['type'] . DIRECTORY_SEPARATOR . $job['job_name'];
     echo "  - Looking for job execution directories to remove in $jobDirectory.\n";
 
     if (!(new Filesystem())->exists($jobDirectory)) {
