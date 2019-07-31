@@ -58,3 +58,10 @@ package-lock.json
 yarn-error.log
 coverage/*
 .phpunit.result.cache
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+###< symfony/framework-bundle ###
