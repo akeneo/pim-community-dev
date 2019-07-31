@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCategoryIt
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterComparatorsPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFilterPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterMaskItemGeneratorsPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductUpdaterPass;
@@ -50,6 +51,7 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new RegisterFilterPass())
             ->addCompilerPass(new RegisterComparatorsPass())
             ->addCompilerPass(new RegisterCompleteCheckerPass())
+            ->addCompilerPass(new RegisterMaskItemGeneratorsPass())
             ->addCompilerPass(new RegisterLocalizersPass())
             ->addCompilerPass(new RegisterPresentersPass())
             ->addCompilerPass(new RegisterSerializerPass('pim_internal_api_serializer'))

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGenerator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProducts;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -18,10 +21,20 @@ final class SqlGetCompletenessProductMasks implements GetProducts
     /** @var Connection */
     private $connection;
 
+    /** @var MaskItemGenerator */
+    private $maskItemGenerator;
+
+    /** @var GetAttributes */
+    private $getAttributes;
+
     public function __construct(
-        Connection $connection
+        Connection $connection,
+        MaskItemGenerator $maskItemGenerator,
+        GetAttributes $getAttributes
     ) {
         $this->connection = $connection;
+        $this->maskItemGenerator = $maskItemGenerator;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -47,13 +60,21 @@ SQL;
             ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
+        $attributeCodes = [];
+        foreach ($rows as $row) {
+            foreach (array_keys(json_decode($row['rawValues'], true)) as $attributeCode) {
+                $attributeCodes[] = $attributeCode;
+            }
+        }
+        $attributes = $this->getAttributes->forCodes(array_unique($attributeCodes));
+
         $result = [];
         foreach ($rows as $row) {
             $result[] = new CompletenessProductMask(
                 intval($row['id']),
                 $row['identifier'],
                 $row['familyCode'],
-                $this->getMask(json_decode($row['rawValues'], true))
+                $this->getMask(json_decode($row['rawValues'], true), $attributes)
             );
         }
 
@@ -61,65 +82,32 @@ SQL;
     }
 
     /**
-     * @param array $rawValues
+     * @param array       $rawValues
+     * @param Attribute[] $attributes
      *
      * @return string[]
      */
-    private function getMask($rawValues): array
+    private function getMask($rawValues, array $attributes): array
     {
+        $result = [];
         foreach ($rawValues as $attributeCode => $valuesByChannel) {
+            $attributeType = $attributes[$attributeCode]->type();
             foreach ($valuesByChannel as $channelCode => $valuesByLocale) {
                 foreach ($valuesByLocale as $localeCode => $value) {
-                    // TODO Add Registry
-                    // TODO This does not work for null metrics, e.g. "{"unit":null,"amount":null,"family":"Length","base_data":null,"base_unit":"METER"}"
-                    if (null !== $value) {
-                        $mask = sprintf(
-                            '%s-%s-%s',
-                            $this->formatAttributeCode($attributeCode, $value),
+                    $result = array_merge(
+                        $result,
+                        $this->maskItemGenerator->generate(
+                            $attributeCode,
+                            $attributeType,
                             $channelCode,
-                            $localeCode
-                        );
-                        $result[] = $mask;
-                    }
+                            $localeCode,
+                            $value
+                        )
+                    );
                 }
             }
         }
 
         return $result;
-    }
-
-    /**
-     * TODO Put this in a Registry to allow specific masks for new attribute types
-     *
-     * Case when $value is like
-     * [{"amount": "2.00", "currency": "EUR"}, {"amount": "3.00", "currency": "USD"}]
-     *
-     * The currencies are sorted because the family masks are sorted too.
-     *
-     * @param string $attributeCode
-     * @param mixed  $value
-     *
-     * @return string
-     */
-    private function formatAttributeCode(string $attributeCode, $value)
-    {
-        if (is_array($value)) {
-            $isPrice = true;
-            $currencies = [];
-            foreach ($value as $v) {
-                if (!is_array($v) || !isset($v['amount']) || !isset($v['currency'])) {
-                    $isPrice = false;
-                } else {
-                    $currencies[] = $v['currency'];
-                }
-            }
-            sort($currencies);
-
-            if ($isPrice) {
-                return $attributeCode . '-' . join('-', $currencies);
-            }
-        }
-
-        return $attributeCode;
     }
 }
