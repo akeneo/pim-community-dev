@@ -1,9 +1,6 @@
 imports:
     - { resource: config.yml }
 
-framework:
-    profiler: { only_exceptions: false }
-
 web_profiler:
     toolbar: true
     intercept_redirects: false

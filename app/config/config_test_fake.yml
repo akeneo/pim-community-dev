@@ -7,13 +7,5 @@ imports:
     - { resource: ../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml }
     - { resource: ../../tests/back/Pim/Enrichment/Acceptance/Resources/config/behat/services.yml }
 
-framework:
-    test: ~
-    session:
-        storage_id: session.storage.mock_file
-    csrf_protection: true
-    profiler:
-        collect: false
-
 swiftmailer:
     disable_delivery: true
