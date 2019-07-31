@@ -17,8 +17,6 @@ use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
-use Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -95,25 +93,6 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     protected function getVariationsCollectionFileGenerator()
     {
         return $this->getContainer()->get('pimee_product_asset.variations_collection_files_generator');
-    }
-
-    /**
-     * @deprecated will be remove in 3.0
-     *
-     * @return CompletenessGeneratorInterface
-     */
-    protected function getCompletenessGenerator()
-    {
-        return $this->getContainer()->get('pim_catalog.completeness.generator');
-    }
-
-    /**
-     *
-     * @return CompletenessRemoverInterface
-     */
-    protected function getCompletenessRemover()
-    {
-        return $this->getContainer()->get('pimee_product_asset.remover.completeness');
     }
 
     /**
@@ -201,9 +180,7 @@ SQL;
 
         foreach ($chunks as $missingVariationIdsToProcess) {
             $missingVariations = $this->getVariationRepository()->findBy(['id' => $missingVariationIdsToProcess]);
-
-            $processedAssets = $this->generateVariationFiles($output, $missingVariations);
-            $this->scheduleCompleteness($output, $processedAssets);
+            $this->generateVariationFiles($output, $missingVariations);
 
             $this->clearCache();
         }
@@ -261,20 +238,6 @@ SQL;
         }
 
         return $processedAssets;
-    }
-
-    /**
-     * @param OutputInterface  $output
-     * @param AssetInterface[] $processedAssets
-     */
-    protected function scheduleCompleteness(OutputInterface $output, array $processedAssets): void
-    {
-        $output->writeln('<info>Schedule completeness calculation</info>');
-
-        foreach ($processedAssets as $asset) {
-            $output->writeln(sprintf('<info>Schedule completeness for asset %s</info>', $asset->getCode()));
-            $this->getCompletenessRemover()->removeForAsset($asset);
-        }
     }
 
     /**
