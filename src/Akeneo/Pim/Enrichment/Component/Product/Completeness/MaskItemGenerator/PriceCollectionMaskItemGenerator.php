@@ -15,18 +15,24 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
 {
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
-        $currencies = [];
-        foreach ($value as $v) {
-            if (is_array($v) && isset($v['currency'])) {
-                $currencies[] = $v['currency'];
+        $filledCurrencies = [];
+        foreach ($value as $price) {
+            if (
+                is_array($price) &&
+                isset($price['currency']) &&
+                isset($price['amount']) &&
+                null !== $price['amount']
+                && '' !== $price['amount']
+            ) {
+                $filledCurrencies[] = $price['currency'];
             }
         }
-        sort($currencies);
+        sort($filledCurrencies);
 
         return [
             sprintf('%s-%s-%s-%s',
                 $attributeCode,
-                join('-', $currencies),
+                join('-', $filledCurrencies),
                 $channelCode,
                 $localeCode
             )

@@ -38,7 +38,7 @@ class MaskItemGenerator
         return $this->generators[$attributeType];
     }
 
-    public function addGenerator(MaskItemGeneratorForAttributeType $generator)
+    public function addGenerator(MaskItemGeneratorForAttributeType $generator): void
     {
         foreach ($generator->supportedAttributeTypes() as $attributeType) {
             $this->generators[$attributeType] = $generator;

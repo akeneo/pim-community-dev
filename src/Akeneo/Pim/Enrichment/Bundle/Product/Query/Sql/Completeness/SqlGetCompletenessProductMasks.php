@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGenerator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Doctrine\DBAL\Connection;
@@ -16,7 +16,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlGetCompletenessProductMasks implements GetProducts
+final class SqlGetCompletenessProductMasks implements GetCompletenessProductMasks
 {
     /** @var Connection */
     private $connection;
@@ -74,6 +74,8 @@ SQL;
                 intval($row['id']),
                 $row['identifier'],
                 $row['familyCode'],
+                // TODO [review] I did 2 json_decode, I don't know if it's so costly we have to save it somewhere on the
+                //      first call and don't want to to premature optimization.
                 $this->getMask(json_decode($row['rawValues'], true), $attributes)
             );
         }
