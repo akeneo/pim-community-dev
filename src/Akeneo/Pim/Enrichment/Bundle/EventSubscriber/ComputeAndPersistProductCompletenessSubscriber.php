@@ -34,22 +34,40 @@ final class ComputeAndPersistProductCompletenessSubscriber implements EventSubsc
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => ['computeProductCompleteness', 320],
+            StorageEvents::POST_SAVE => ['computeProductCompleteness', '320'],
+            StorageEvents::POST_SAVE_ALL => ['computeProductsCompleteness', '320']
         ];
     }
 
     public function computeProductCompleteness(GenericEvent $event): void
     {
-        $product = $event->getSubject();
+        $isUnitary = $event->getArguments()['unitary'] ?? true;
 
-        if (
-            !$product instanceof ProductInterface
-            // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-            || get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
-        ) {
+        if (!$isUnitary) {
             return;
         }
 
-        $this->computeAndPersistProductCompletenesses->fromProductIdentifier($product->getIdentifier());
+        $this->computeProductsCompleteness(new GenericEvent([$event->getSubject()], $event->getArguments()));
+    }
+
+    public function computeProductsCompleteness(GenericEvent $event): void
+    {
+        $products = $event->getSubject();
+
+        $products = array_filter($products, function ($product): bool {
+            return $product instanceof ProductInterface
+                // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+                && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
+        });
+
+        if ($products === []) {
+            return;
+        }
+
+        $productIdentifiers = array_map(function (ProductInterface $product): string {
+            return $product->getIdentifier();
+        }, $products);
+
+        $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($productIdentifiers);
     }
 }
