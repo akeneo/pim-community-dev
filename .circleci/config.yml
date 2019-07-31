@@ -15,7 +15,7 @@ jobs:
                 docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer var/coverage
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
@@ -84,6 +84,16 @@ jobs:
           - run:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
+          -   run:
+                name: Install Pcov extension
+                command: |
+                    docker-compose exec fpm sh -c "wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -"
+                    docker-compose exec fpm sudo apt-get update
+                    docker-compose exec fpm sudo apt-get -y install make php7.2-dev php-pear
+                    docker-compose exec fpm sudo pecl install pcov
+                    docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/fpm/php.ini'
+                    docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/cli/php.ini'
+                    docker-compose restart fpm
           - run:
                 name: Generate dev cache for Symfony's Phpstan extension
                 command: APP_ENV=dev make cache
@@ -121,6 +131,10 @@ jobs:
                 path: var/tests
           - store_artifacts:
                 path: var/logs
+          - persist_to_workspace:
+                root: ~/
+                paths:
+                    - project/var/coverage
 
   back_phpunit:
       machine:
@@ -138,6 +152,16 @@ jobs:
                     docker load -i php-pim-image.tar
                     APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
                     docker/wait_docker_up.sh
+          - run:
+                name: Install Pcov extension
+                command: |
+                    docker-compose exec fpm sh -c "wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -"
+                    docker-compose exec fpm sudo apt-get update
+                    docker-compose exec fpm sudo apt-get -y install make php7.2-dev php-pear
+                    docker-compose exec fpm sudo pecl install pcov
+                    docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/fpm/php.ini'
+                    docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/cli/php.ini'
+                    docker-compose restart fpm
           - run:
                 name: Install database
                 command: APP_ENV=test make database
@@ -157,6 +181,55 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/logs
+          - persist_to_workspace:
+                root: ~/
+                paths:
+                    - project/var/coverage
+
+back_phpunit_end_to_end:
+    machine:
+        enabled: true
+        docker_layer_caching: true
+    parallelism: 10
+    steps:
+        - attach_workspace:
+              at: ~/
+        - run:
+              name: Change owner on project dir in order to archive the project into the workspace
+              command: sudo chown -R 1000:1000 ../project
+        - run:
+              name: Start containers
+              command: docker-compose up -d
+        - run:
+              name: Install Pcov extension
+              command: |
+                  docker-compose exec fpm sh -c "wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -"
+                  docker-compose exec fpm sudo apt-get update
+                  docker-compose exec fpm sudo apt-get -y install make php7.2-dev php-pear
+                  docker-compose exec fpm sudo pecl install pcov
+                  docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/fpm/php.ini'
+                  docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/cli/php.ini'
+                  docker-compose restart fpm
+        - run:
+              name: Install database
+              command: |
+                  sleep 25 # wait mysql to be up
+                  docker-compose exec fpm bin/console --env=behat pim:install:db
+        - run:
+              name: PHPunit End to end
+              command: |
+                  TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh End_to_End | circleci tests split)
+                  .circleci/run_phpunit.sh app $TESTFILES
+        - store_test_results:
+              path: var/tests/phpunit
+        - store_artifacts:
+              path: var/tests/phpunit
+        - store_artifacts:
+              path: var/logs
+        - persist_to_workspace:
+              root: ~/
+              paths:
+                  - project/var/coverage
 
   back_behat_legacy:
     machine:
@@ -184,6 +257,16 @@ jobs:
                 APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium' make up
                 docker/wait_docker_up.sh
       - run:
+            name: Install Pcov extension
+            command: |
+                docker-compose exec fpm sh -c "wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -"
+                docker-compose exec fpm sudo apt-get update
+                docker-compose exec fpm sudo apt-get -y install make php7.2-dev php-pear
+                docker-compose exec fpm sudo pecl install pcov
+                docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/fpm/php.ini'
+                docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/cli/php.ini'
+                docker-compose restart fpm
+      - run:
             name: Install database
             command: APP_ENV=behat make database
       - run:
@@ -191,11 +274,11 @@ jobs:
             command: |
                 TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
                 .circleci/run_behat.sh $TESTSUITE $TESTFILES
-      - run:
-            name: Critical Behat
-            command: |
-                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh critical $TESTFILES
+#      - run:
+#            name: Critical Behat
+#            command: |
+#                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
+#                .circleci/run_behat.sh critical $TESTFILES
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |
@@ -212,6 +295,10 @@ jobs:
           path: var/tests/screenshots
       - store_artifacts:
           path: var/logs
+      - persist_to_workspace:
+            root: ~/
+            paths:
+                - project/var/coverage
 
   front_static_acceptance_and_integration:
       machine:
@@ -242,6 +329,39 @@ jobs:
             command: docker-compose run --rm node yarn run integration
             when: always
 
+
+  merge_code_coverage:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: docker-compose up -d
+          - run:
+                name: Install Pcov extension
+                command: |
+                    docker-compose exec fpm sh -c "wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -"
+                    docker-compose exec fpm sudo apt-get update
+                    docker-compose exec fpm sudo apt-get -y install make php7.2-dev php-pear
+                    docker-compose exec fpm sudo pecl install pcov
+                    docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/fpm/php.ini'
+                    docker-compose exec fpm sudo sh -c 'echo "extension=pcov.so" >> /etc/php/7.2/cli/php.ini'
+                    docker-compose restart fpm
+          - run:
+                name: Merge Pcov files
+                command: |
+                    docker-compose exec fpm php -d memory_limit=6G vendor/bin/phpcov merge --html=./var/coverage/html ./var/coverage
+                    tar -czvf var/coverage.tar.gz var/coverage
+                no_output_timeout: 60m
+          - store_artifacts:
+                path: var/coverage.tar.gz
+
 workflows:
   version: 2
   pull_request:
@@ -258,16 +378,22 @@ workflows:
           - back_static_and_acceptance:
                 requires:
                     - build_dev
-          - front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
+#          - front_static_acceptance_and_integration:
+#                requires:
+#                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
                     - front_static_acceptance_and_integration
+          - back_phpunit_end_to_end:
+                requires:
+                    - back_phpunit
           - back_behat_legacy:
                 requires:
                     - back_phpunit
+          - merge_code_coverage:
+                requires:
+                    - back_behat_legacy
 
   nightly:
       triggers:
