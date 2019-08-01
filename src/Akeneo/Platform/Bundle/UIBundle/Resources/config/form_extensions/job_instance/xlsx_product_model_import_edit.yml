@@ -95,7 +95,7 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: false
             label: pim_import_export.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
+            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help_import
 
     pim-job-instance-xlsx-product-model-import-edit-properties-file-upload:
         module: pim/job/common/edit/field/allow-file-upload
