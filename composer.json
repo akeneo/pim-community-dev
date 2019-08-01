@@ -73,6 +73,7 @@
         "oneup/flysystem-bundle": "3.0.3",
         "ramsey/uuid": "3.7.0",
         "sensio/framework-extra-bundle": "^5.4",
+        "symfony/acl-bundle": "1.0.0",
         "symfony/asset": "^4.3",
         "symfony/flex": "^1.4",
         "symfony/form": "^4.3",
