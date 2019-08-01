@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.2 (2019-08-01)
+
 ## Bug fixes
 
 - PIM-8595: Fix missing translation (pim_common.code) in attributes list / family list
