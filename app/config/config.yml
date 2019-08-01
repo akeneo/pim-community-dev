@@ -41,6 +41,12 @@ swiftmailer:
     url: '%env(MAILER_URL)%'
     spool: { type: 'memory' }
 
+akeneo_pim_structure:
+    reference_data:
+        assets:
+            class: Akeneo\Asset\Component\Model\Asset
+            type: multi
+
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
     pim_ee_dev_src_folder_location: '%kernel.project_dir%'
