@@ -1,0 +1,4 @@
+# TODO: find a better way to do that
+# ideally, we should put most of this configuration into config/packages/
+imports:
+    - { resource: '../../src/Akeneo/Platform/config/pim.yml' }
