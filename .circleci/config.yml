@@ -131,12 +131,12 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: docker-compose up -d
+                command: |
+                    docker-compose up -d
+                    .circleci/wait_docker_up.sh
           - run:
                 name: Install database
-                command: |
-                    sleep 25 # wait mysql to be up
-                    docker-compose exec fpm bin/console --env=behat pim:install:db
+                command: docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
                 name: PHPunit Integration
                 command: |
@@ -162,12 +162,12 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: docker-compose up -d
+                command: |
+                    docker-compose up -d
+                    .circleci/wait_docker_up.sh
           - run:
                 name: Install database
-                command: |
-                    sleep 25 # wait mysql to be up
-                    docker-compose exec fpm bin/console --env=behat pim:install:db
+                command: docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
                 name: PHPunit End to end
                 command: |
@@ -211,12 +211,12 @@ jobs:
           command: docker-compose pull
       - run:
             name: Start containers
-            command: docker-compose up -d
+            command: |
+                docker-compose up -d
+                .circleci/wait_docker_up.sh
       - run:
             name: Install database
-            command: |
-                sleep 25 # wait mysql to be up
-                docker-compose exec fpm bin/console --env=behat pim:install:db
+            command: docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
             name: Non critical Behat
             command: |
