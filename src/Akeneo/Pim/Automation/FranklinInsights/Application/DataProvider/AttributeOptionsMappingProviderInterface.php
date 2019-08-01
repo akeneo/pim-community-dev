@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 

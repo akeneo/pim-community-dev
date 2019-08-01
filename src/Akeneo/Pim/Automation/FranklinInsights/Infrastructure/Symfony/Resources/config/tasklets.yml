@@ -27,7 +27,8 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\NotifyPendingAttributesTasklet'
         public: false
         arguments:
-            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_user_ids_and_family_codes_with_missing_mapping'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_users_able_to_complete_families_missing_mapping'
             - '@pim_user.repository.user'
             - '@akeneo.pim.automation.franklin_insights.repository.family'
             - '@akeneo.pim.automation.franklin_insights.notifier.notify_about_missing_mapping'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.filter_users_to_notify_about_given_family_missing_mapping'

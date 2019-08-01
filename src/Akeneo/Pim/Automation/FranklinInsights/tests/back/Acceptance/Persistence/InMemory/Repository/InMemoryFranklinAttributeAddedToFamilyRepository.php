@@ -28,6 +28,13 @@ class InMemoryFranklinAttributeAddedToFamilyRepository implements FranklinAttrib
         $this->events[] = $franklinAttributeAddedToFamily;
     }
 
+    public function saveAll(array $franklinAttributeAddedToFamilyEvents): void
+    {
+        foreach ($franklinAttributeAddedToFamilyEvents as $franklinAttributeAddedToFamily) {
+            $this->events[] = $franklinAttributeAddedToFamily;
+        }
+    }
+
     public function count(): int
     {
         return count($this->events);

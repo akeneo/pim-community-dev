@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Ada
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService;
@@ -41,11 +40,10 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
      */
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
         IdentifiersMappingWebService $api,
         IdentifiersMappingNormalizer $normalizer
     ) {
-        parent::__construct($configurationRepository, $invalidTokenExceptionFactory);
+        parent::__construct($configurationRepository);
 
         $this->api = $api;
         $this->normalizer = $normalizer;
@@ -63,7 +61,7 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }

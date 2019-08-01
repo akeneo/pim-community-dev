@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>

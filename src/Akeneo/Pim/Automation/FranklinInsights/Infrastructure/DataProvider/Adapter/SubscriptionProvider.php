@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Ada
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
@@ -50,11 +49,10 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
         SubscriptionWebService $api,
         FamilyRepositoryInterface $familyRepository
     ) {
-        parent::__construct($configurationRepository, $invalidTokenExceptionFactory);
+        parent::__construct($configurationRepository);
 
         $this->api = $api;
         $this->familyRepository = $familyRepository;
@@ -128,7 +126,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }
@@ -150,7 +148,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }
@@ -172,7 +170,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }
@@ -240,7 +238,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (InsufficientCreditsException $e) {
             throw ProductSubscriptionException::insufficientCredits();
         } catch (BadRequestException $e) {

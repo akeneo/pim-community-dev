@@ -25,6 +25,11 @@ interface AddAttributeToFamilyResponse {
   code: string;
 }
 
+interface BulkAddToFamilyRequest {
+  familyCode: string;
+  attributeCodes: string[];
+}
+
 export default class AddAttributeToFamily {
   public static async add(request: AddAttributeToFamilyRequest): Promise<AddAttributeToFamilyResponse> {
     try {
@@ -39,7 +44,7 @@ export default class AddAttributeToFamily {
           .catch(reject);
       });
 
-      this.notifySuccess(request.familyCode, request.attributeCode);
+      this.notifySuccess(request.familyCode, [request.attributeCode]);
 
       return response;
     } catch (error) {
@@ -49,16 +54,46 @@ export default class AddAttributeToFamily {
     }
   }
 
-  private static async notifySuccess(familyCode: string, attributeCode: string): Promise<void> {
+  public static async bulkAdd(request: BulkAddToFamilyRequest): Promise<void> {
+    try {
+      await ajax({
+        url: Routing.generate('akeneo_franklin_insights_structure_bulk_add_attributes_to_family', {
+          familyCode: request.familyCode
+        }),
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(request.attributeCodes)
+      });
+
+      this.notifySuccess(request.familyCode, request.attributeCodes, request.attributeCodes.length);
+
+      return;
+    } catch (error) {
+      this.notifyError();
+
+      throw error;
+    }
+  }
+
+  private static async notifySuccess(
+    familyCode: string,
+    attributeCodes: string[],
+    attributeAddedCount = 1
+  ): Promise<void> {
     const family: Family = await FetcherRegistry.getFetcher('family').fetch(familyCode);
 
     const familyLabel = I18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
     Messenger.notify(
       'success',
-      __('akeneo_franklin_insights.entity.attributes_mapping.flash.add_attribute_to_family_success', {
-        family: familyLabel,
-        attribute: attributeCode
-      })
+      __(
+        'akeneo_franklin_insights.entity.attributes_mapping.flash.add_attribute_to_family_success',
+        {
+          family: familyLabel,
+          attribute: attributeCodes[0],
+          count: attributeAddedCount
+        },
+        attributeAddedCount
+      )
     );
   }
 

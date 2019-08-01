@@ -48,10 +48,10 @@ akeneo_franklin_insights:
             label: Attributes mapping
             flash:
                 do_not_map_attribute_success: 'Attribute successfully updated.'
-                create_attribute_success: 'Attribute successfully created and attached to the family "{{ family }}".'
+                create_attribute_success: '{0} Sorry, none of the {{ requestCount }} attributes have been created. |{1} Attribute successfully created and attached to the family "{{ family }}". |[2,Inf[ {{ successCount }} attributes out of {{ requestCount }} have been successfully created and attached to the family "{{ family }}".'
                 create_attribute_error: 'Sorry, an error occurred while creating or attaching the attribute to the family.'
                 suggest_attribute_mapping_error: 'Catalog attribute "[{{ catalogAttributeCode }}]" is already mapped on the Franklin attribute "{{ franklinAttributeLabel }}".'
-                add_attribute_to_family_success: 'Attribute "{{ attribute }}" successfully attached to the family "{{ family }}".'
+                add_attribute_to_family_success: '{1} Attribute "{{ attribute }}" successfully attached to the family "{{ family }}". |[2,Inf[ Attributes successfully attached to the family "{{ family }}".'
                 add_attribute_to_family_error: 'Sorry, an error occurred while attaching the attribute to the family.'
             fields:
                 franklin_attribute: 'Franklin attribute'
@@ -84,11 +84,27 @@ akeneo_franklin_insights:
                         title: 'Number of mapped attributes'
                         description: "Use this bar to see at a glance your work status"
                         mapped_attribute_count: '{{ count }} mapped attributes'
+                toolbar:
+                    bulk_create_attribute: Create attribute
+                    bulk_add_to_family: Add to family
+                    selection_count: '{{ count }} item selected | {{ count }} items selected'
             modal:
                 deactivate_franklin_attribute:
                     title: "Are you sure you don't want to map this attribute?"
                     subtitle: 'Franklin Insights'
                     ok: "Don't map"
+                bulk_create_attribute:
+                    title: '{1} Create 1 attribute |[2,Inf[ Create {{ count }} attributes'
+                    subtitle: 'Franklin Insights'
+                    description: '{1} The selected attribute will be created and added to the family |[2,Inf[ The selected attributes will be created and added to the family'
+                    warning: '{1} Please confirm the creation of a new attribute. |[2,Inf[ Please confirm the creation of {{ count }} new attributes.'
+                    ok: Confirm
+                bulk_add_to_family:
+                    title: '{1} Add 1 attribute to the family |[2,Inf[ Add {{ count }} attributes to the family'
+                    subtitle: 'Franklin Insights'
+                    description: '{1} The selected attribute will be added to the family |[2,Inf[ The selected attributes will be added to the family'
+                    warning: '{1} Please confirm the addition of a new attribute to the family. |[2,Inf[ Please confirm the addition of {{ count }} new attributes to the family.'
+                    ok: Confirm
             constraint:
                 missing_target_key: 'Missing target key for mapping'
                 missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'

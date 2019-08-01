@@ -25,6 +25,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeCreatedRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use PhpSpec\ObjectBehavior;
@@ -62,11 +63,11 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
         $franklinAttrLabel = new FranklinAttributeLabel('Franklin attr label');
         $franklinAttrType = new FranklinAttributeType('text');
 
-        $createAttribute->create(
+        $createAttribute->create(new Attribute(
             $pimAttrCode,
             new AttributeLabel('Franklin attr label'),
             new AttributeType(AttributeTypes::TEXT)
-        )->shouldBeCalled();
+        ))->shouldBeCalled();
 
         $attributeCreatedRepository->save(Argument::type(FranklinAttributeCreated::class));
 
@@ -93,11 +94,11 @@ class CreateAttributeInFamilyHandlerSpec extends ObjectBehavior
         $franklinAttrLabel = new FranklinAttributeLabel('Franklin metric attribute label');
         $franklinAttrType = new FranklinAttributeType('metric');
 
-        $createAttribute->create(
+        $createAttribute->create(new Attribute(
             $pimAttrCode,
             new AttributeLabel('Franklin metric attribute label'),
             new AttributeType(AttributeTypes::TEXT)
-        )->shouldBeCalled();
+        ))->shouldBeCalled();
 
         $attributeCreatedRepository->save(Argument::type(FranklinAttributeCreated::class));
 

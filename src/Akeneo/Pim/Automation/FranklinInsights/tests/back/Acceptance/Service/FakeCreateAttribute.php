@@ -15,10 +15,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -57,18 +55,30 @@ class FakeCreateAttribute implements CreateAttributeInterface
         $this->ensureFranklinAttributeGroupExists = $ensureFranklinAttributeGroupExists;
     }
 
-    public function create(
-        AttributeCode $attributeCode,
-        AttributeLabel $attributeLabel,
-        AttributeType $attributeType
-    ): void {
+    public function create(Attribute $attributeToCreate): void
+    {
         $this->ensureFranklinAttributeGroupExists->ensureExistence();
 
         $attribute = $this->attributeFactory->create();
-        $attribute->setCode((string) $attributeCode);
-        $attribute->setType((string) $attributeType);
+        $attribute->setCode((string) $attributeToCreate->getCode());
+        $attribute->setType((string) $attributeToCreate->getType());
         $this->attributeUpdater->update($attribute, ['group' => FranklinAttributeGroup::CODE]);
 
         $this->attributeRepository->save($attribute);
+    }
+
+    public function bulkCreate(array $attributesToCreate): array
+    {
+        $this->ensureFranklinAttributeGroupExists->ensureExistence();
+
+        foreach ($attributesToCreate as $attributeToCreate) {
+            $attribute = $this->attributeFactory->create();
+            $attribute->setCode((string) $attributeToCreate->getCode());
+            $attribute->setType((string) $attributeToCreate->getType());
+            $this->attributeUpdater->update($attribute, ['group' => FranklinAttributeGroup::CODE]);
+            $this->attributeRepository->save($attribute);
+        }
+
+        return $attributesToCreate;
     }
 }

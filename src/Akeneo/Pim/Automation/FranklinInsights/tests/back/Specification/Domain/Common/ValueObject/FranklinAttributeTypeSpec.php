@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -79,5 +81,11 @@ class FranklinAttributeTypeSpec extends ObjectBehavior
     {
         $this->beConstructedWith('boolean');
         $this->__toString()->shouldReturn('boolean');
+    }
+
+    public function it_converts_franklin_type_to_pim_type()
+    {
+        $this->beConstructedWith(FranklinAttributeType::TEXT_TYPE);
+        $this->convertToPimAttributeType()->shouldBeLike(new AttributeType(AttributeTypes::TEXT));
     }
 }

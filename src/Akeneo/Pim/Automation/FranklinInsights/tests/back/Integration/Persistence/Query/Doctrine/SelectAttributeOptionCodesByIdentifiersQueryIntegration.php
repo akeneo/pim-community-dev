@@ -13,7 +13,7 @@ declare (strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as PimAttribute;

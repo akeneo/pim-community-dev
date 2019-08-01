@@ -48,7 +48,8 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery',
-            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUsersAbleToCompleteFamiliesMissingMappingQuery',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\FilterUsersToNotifyAboutGivenFamilyMissingMappingQuery',
 
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping',
 
@@ -158,9 +159,14 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch',
 
+            // TODO: to remove by using Domain exceptions
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception',
+
             // External dependencies
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
+            'Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent',
+            'Symfony\Component\HttpKernel\KernelEvents',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',

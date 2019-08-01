@@ -16,11 +16,11 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributeOptionsMappingCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Exception\AttributeOptionsMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Write\AttributeOption;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;

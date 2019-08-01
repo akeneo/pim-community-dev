@@ -8,7 +8,7 @@
  */
 
 /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus */
-enum AttributeMappingStatus {
+export enum AttributeMappingStatus {
   ATTRIBUTE_PENDING = 'pending',
   ATTRIBUTE_ACTIVE = 'active',
   ATTRIBUTE_INACTIVE = 'inactive'

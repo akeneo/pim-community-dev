@@ -35,6 +35,7 @@
 
 ## Bug fixes
 
+- DAPI-366: Fix icon used for Franklin-Insights notifications 
 - GITHUB-10083: Fix proposal datagrid render when deleting values
 
 ## Technical improvement

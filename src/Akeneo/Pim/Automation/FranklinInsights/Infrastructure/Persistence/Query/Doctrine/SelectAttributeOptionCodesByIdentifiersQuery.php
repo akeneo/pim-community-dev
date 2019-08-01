@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**

@@ -56,8 +56,8 @@ class NotifyUserAboutMissingMapping
             ->setMessage('akeneo_franklin_insights.entity.attributes_mapping.notification.new_attributes_to_map')
             ->setMessageParams(['%familyLabel%' => $family->getLabel($locale)])
             ->setRoute('akeneo_franklin_insights_attributes_mapping_edit')
-            ->setRouteParams(['familyCode' => $family->getCode()])
-            ->setContext(['actionType' => 'franklin_insights']);
+            ->setRouteParams(['familyCode' => (string) $family->getCode()])
+            ->setContext(['actionType' => 'franklin_insights', 'familyCode' => (string) $family->getCode()]);
 
         $this->notifier->notify($notification, [$user->getUsername()]);
     }
