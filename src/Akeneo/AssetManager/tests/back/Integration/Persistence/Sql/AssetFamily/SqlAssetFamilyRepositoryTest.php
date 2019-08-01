@@ -63,7 +63,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
             Image::createEmpty(),
-            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
+            RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
         $this->repository->create($assetFamily);
@@ -270,18 +270,17 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     private function getRuleTemplate(): array
     {
         return [
-            'conditions' => [
+            'product_selections' => [
                 [
                     'field'    => 'sku',
                     'operator' => '=',
                     'value'    => '{{product_sku}}'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to' => [
                 [
-                    'type'  => 'add',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
+                    'mode'      => 'set',
+                    'attribute' => '{{attribute}}'
                 ]
             ]
         ];

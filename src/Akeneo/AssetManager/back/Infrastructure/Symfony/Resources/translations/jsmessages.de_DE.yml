@@ -119,7 +119,7 @@ pim_asset_manager:
       header:
         title: Anlegen
       subtitle: Referenzentitäten
-      title: Neu hinzufügen {{ entityLabel }}}} 
+      title: Neu hinzufügen {{ entityLabel }}}}
       input:
         label: Bezeichnung
         code: Code (erforderlich)
@@ -243,7 +243,7 @@ pim_asset_manager:
             none: Keine
             email: E-Mail
             regular_expression: Regulärer Ausdruck
-            mediaLink: URL
+            url: URL
     delete:
       message: Sind Sie sicher, dass Sie das Attribut "{{ attributeLabel }}}" löschen wollen?
       title: Attribut
@@ -280,7 +280,6 @@ pim_enrich:
       property:
         type:
           akeneo_asset_multiple_link: Referenz-Entität Mehrfachverknüpfungen
-          akeneo_asset_single_link: Referenz-Entität Einzelverknüpfung
         section:
           type_specific: Spezifische Parameter
         asset_family:

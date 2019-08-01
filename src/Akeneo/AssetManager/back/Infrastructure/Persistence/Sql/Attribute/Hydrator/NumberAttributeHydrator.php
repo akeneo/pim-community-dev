@@ -26,7 +26,7 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
 {
     public function supports(array $row): bool
     {
-        return isset($row['attribute_type']) && 'number' === $row['attribute_type'];
+        return isset($row['attribute_type']) && NumberAttribute::ATTRIBUTE_TYPE === $row['attribute_type'];
     }
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array

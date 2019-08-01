@@ -101,7 +101,7 @@ class EditMediaLinkContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an mediaLink attribute and a asset belonging to this asset family$/
+     * @Given /^an asset family with an media_link attribute and an asset belonging to this asset family$/
      */
     public function aAssetFamilyWithAnMediaLinkAttributeAndAAssetBelongingToThisAssetFamily(): void
     {

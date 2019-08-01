@@ -41,7 +41,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
       return;
     }
 
-    const { value } = this.props;
+    const {value} = this.props;
     const $el = $(this.select.current) as any;
 
     if (value.length === 0) {

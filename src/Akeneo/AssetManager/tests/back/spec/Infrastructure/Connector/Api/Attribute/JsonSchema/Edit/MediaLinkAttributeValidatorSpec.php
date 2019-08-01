@@ -63,7 +63,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'labels' => [
@@ -93,7 +93,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     function it_is_mandatory_to_provide_the_code_of_the_attribute()
     {
         $attribute = [
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
         ];
@@ -108,7 +108,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
         $attribute = [
             'unknown_property' => 'michel',
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
         ];

@@ -51,13 +51,17 @@ final class CreateAssetFamilyContext implements Context
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
     private $activatedLocales;
 
+    /** @var int  */
+    private $ruleTemplateByAssetFamilyLimit;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         CreateAssetFamilyHandler $createAssetFamilyHandler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
         ConstraintViolationsContext $violationsContext,
-        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->createAssetFamilyHandler = $createAssetFamilyHandler;
@@ -65,6 +69,7 @@ final class CreateAssetFamilyContext implements Context
         $this->exceptionContext = $exceptionContext;
         $this->violationsContext = $violationsContext;
         $this->activatedLocales = $activatedLocales;
+        $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
     }
 
     /**
@@ -165,7 +170,7 @@ final class CreateAssetFamilyContext implements Context
      */
     public function theUserCreatesAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
-        $ruleTemplate = $this->getExpectedRuleTemplate();
+        $ruleTemplate = $this->getRuleTemplate();
 
         $command = new CreateAssetFamilyCommand(
             $code,
@@ -189,30 +194,56 @@ final class CreateAssetFamilyContext implements Context
     {
         $expectedIdentifier = AssetFamilyIdentifier::fromString($code);
         $actualAssetFamily = $this->assetFamilyRepository->getByIdentifier($expectedIdentifier);
-        $expectedRuleTemplate = $this->getExpectedRuleTemplate();
-        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
+        $expectedRuleTemplate = $this->getRuleTemplate();
+        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromProductLinkRules([$expectedRuleTemplate]);
 
         Assert::assertEquals($expectedRuleTemplateCollection, $actualAssetFamily->getRuleTemplateCollection());
     }
 
     /**
+     * @When /^the user tries to create an asset family \'([^\']*)\' with a collection of rule templates having more items than the limit$/
+     */
+    public function theUserTriesToCreateAnAssetFamilyWithACollectionOfRuleTemplatesHavingMoreItemsThanTheLimit(string $code)
+    {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+
+        $ruleTemplates = [];
+        for ($i = 1; $i <= $this->ruleTemplateByAssetFamilyLimit+1; $i++) {
+            $ruleTemplates[] = $this->getRuleTemplate();
+        }
+
+        $command = new CreateAssetFamilyCommand(
+            $code,
+            ['en_US' => ucfirst($code)],
+            $ruleTemplates
+        );
+
+        $this->violationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->createAssetFamilyHandler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
      * @return array
      */
-    private function getExpectedRuleTemplate(): array
+    private function getRuleTemplate(): array
     {
         return [
-            'conditions' => [
+            'product_selections' => [
                 [
-                    'field'    => 'sku',
-                    'operator' => '=',
-                    'value'    => '{{product_sku}}'
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '{{product_sku}}'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to'    => [
                 [
-                    'type'  => 'add',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
+                    'mode'      => 'set',
+                    'attribute' => '{{attribute}}'
                 ]
             ]
         ];

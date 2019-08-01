@@ -66,6 +66,11 @@ Feature: Create an asset family
     When the user creates an asset family 'packshot' with a collection of rule templates
     Then there is an asset family 'packshot' with a collection of rule templates
 
+  @acceptance-back
+  Scenario: Cannot create an asset family with a collection of rule templates that contains more than 2 items
+    When the user tries to create an asset family 'packshot' with a collection of rule templates having more items than the limit
+    Then there should be a validation error with message 'You cannot create the asset family "Packshot" because you have reached the limit of 2 product link rules'
+
   @acceptance-front
   Scenario: Creating an asset family
     Given the user has the following rights:

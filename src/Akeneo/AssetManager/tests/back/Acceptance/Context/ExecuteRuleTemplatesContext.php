@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Acceptance\Context;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\CompiledRule;
 use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\CompiledRuleRunnerInterface;
 use Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy;
+use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\CompiledRule;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -53,13 +54,13 @@ class ExecuteRuleTemplatesContext implements Context
     private const SKU = 'sku';
     private const CATEGORY_FIELD = 'category_field';
     private const CATEGORY = 'category';
-    private const PRODUCT_SIMPLE_LINK = 'product_simple_link';
     private const PRODUCT_MULTIPLE_LINK = 'product_multiple_link';
+    private const ANOTHER_PRODUCT_MULTIPLE_LINK = 'another_product_multiple_link';
     private const SKU_DATA = 'MY SKU';
     private const CATEGORY_FIELD_DATA = 'category';
     private const CATEGORY_DATA = 'couch';
-    private const PRODUCT_SIMPLE_LINK_DATA = 'asset_simple_link';
     private const PRODUCT_MULTIPLE_LINK_DATA = 'asset_multiple_link';
+    private const ANOTHER_PRODUCT_MULTIPLE_LINK_DATA = 'another_asset_multiple_link';
     private const FINGERPRINT = 'fingerprint';
 
     /** @var AssetRepositoryInterface */
@@ -83,6 +84,9 @@ class ExecuteRuleTemplatesContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var ProductLinkRuleLauncherSpy */
+    private $productLinkRuleLauncherSpy;
+
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -90,7 +94,8 @@ class ExecuteRuleTemplatesContext implements Context
         CreateAssetHandler $createAssetHandler,
         CompiledRuleRunnerInterface $compiledRuleRunnerSpy,
         ValidatorInterface $validator,
-        ExceptionContext $exceptionContext
+        ExceptionContext $exceptionContext,
+        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy
     ) {
         $this->assetRepository = $assetRepository;
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -99,6 +104,7 @@ class ExecuteRuleTemplatesContext implements Context
         $this->validator = $validator;
         $this->exceptionContext = $exceptionContext;
         $this->compiledRuleRunnerSpy = $compiledRuleRunnerSpy;
+        $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
     }
 
     /**
@@ -111,47 +117,39 @@ class ExecuteRuleTemplatesContext implements Context
                 AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 [],
                 Image::createEmpty(),
-                RuleTemplateCollection::createFromNormalized(
+                RuleTemplateCollection::createFromProductLinkRules(
                     [
                         [
-                            'conditions' => [
+                            'product_selections' => [
                                 [
                                     'field'    => self::SKU,
                                     'operator' => Operators::EQUALS,
                                     'value'    => '1111111304'
                                 ]
                             ],
-                            'actions'    => [
+                            'assign_assets_to'    => [
                                 [
-                                    'type'  => 'add',
-                                    'field' => 'new_asset_multiple_link',
-                                    'items' => ['1212121212']
+                                    'mode'  => 'add',
+                                    'attribute' => 'new_asset_multiple_link',
                                 ],
                                 [
-                                    'type'  => 'set',
-                                    'field' => 'new_asset_single_link',
-                                    'value' => '123123123123'
+                                    'mode'  => 'set',
+                                    'attribute' => 'new_asset_single_link',
                                 ]
                             ]
                         ],
                         [
-                            'conditions' => [
+                            'product_selections' => [
                                 [
                                     'field'    => self::SKU,
                                     'operator' => Operators::EQUALS,
                                     'value'    => '1111111304'
                                 ]
                             ],
-                            'actions'    => [
+                            'assign_assets_to'    => [
                                 [
-                                    'type'  => 'add',
-                                    'field' => 'new_asset_multiple_link',
-                                    'items' => ['1212121212']
-                                ],
-                                [
-                                    'type'  => 'set',
-                                    'field' => 'new_asset_single_link',
-                                    'value' => '123123123123'
+                                    'mode'  => 'add',
+                                    'attribute' => 'new_asset_multiple_link',
                                 ]
                             ]
                         ]
@@ -177,11 +175,11 @@ class ExecuteRuleTemplatesContext implements Context
     }
 
     /**
-     * @Then /^some rules have been executed to link the asset to products$/
+     * @Then /^a job has been launched to link assets to products$/
      */
-    public function someRulesHaveBeenExecutedToLinkTheAssetToProducts(): void
+    public function aJobHasBeenLaunchedToLinkAssetsToProducts(): void
     {
-        $this->compiledRuleRunnerSpy->assertHasRunTimes(2);
+        $this->productLinkRuleLauncherSpy->assertHasRunOnce();
     }
 
     /**
@@ -200,14 +198,6 @@ class ExecuteRuleTemplatesContext implements Context
     }
 
     /**
-     * @Then /^there is no rule executed to link the asset to products$/
-     */
-    public function thereIsNoRuleExecutedToLinkTheAssetToProducts()
-    {
-        $this->compiledRuleRunnerSpy->assertHasRunTimes(0);
-    }
-
-    /**
      * @Given /^an asset family with a rule template having a dynamic patterns depending on the asset values$/
      */
     public function anAssetFamilyWithARuleTemplateHavingADynamicValuesDependingOnTheAssetValues()
@@ -215,17 +205,17 @@ class ExecuteRuleTemplatesContext implements Context
         $this->createTextAttribute(self::SKU);
         $this->createTextAttribute(self::CATEGORY_FIELD);
         $this->createTextAttribute(self::CATEGORY);
-        $this->createTextAttribute(self::PRODUCT_SIMPLE_LINK);
         $this->createTextAttribute(self::PRODUCT_MULTIPLE_LINK);
+        $this->createTextAttribute(self::ANOTHER_PRODUCT_MULTIPLE_LINK);
         $this->assetFamilyRepository->create(
             AssetFamily::create(
                 AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
                 [],
                 Image::createEmpty(),
-                RuleTemplateCollection::createFromNormalized(
+                RuleTemplateCollection::createFromProductLinkRules(
                     [
                         [
-                            'conditions' => [
+                            'product_selections' => [
                                 [
                                     'field'    => self::SKU,
                                     'operator' => Operators::EQUALS,
@@ -237,21 +227,14 @@ class ExecuteRuleTemplatesContext implements Context
                                     'value'    => '{{category}}'
                                 ]
                             ],
-                            'actions'    => [
+                            'assign_assets_to'    => [
                                 [
-                                    'type'  => 'add',
-                                    'field' => '{{product_simple_link}}',
-                                    'items' => ['{{code}}']
+                                    'mode'  => 'add',
+                                    'attribute' => '{{product_multiple_link}}',
                                 ],
                                 [
-                                    'type'  => 'set',
-                                    'field' => '{{product_multiple_link}}',
-                                    'value' => '{{code}}'
-                                ],
-                                [
-                                    'type'  => 'set',
-                                    'field' => 'another_asset_single_link',
-                                    'value' => '{{sku}}'
+                                    'mode'  => 'set',
+                                    'attribute' => '{{another_product_multiple_link}}',
                                 ]
                             ]
                         ]
@@ -326,22 +309,22 @@ class ExecuteRuleTemplatesContext implements Context
                         Value::create(
                             AttributeIdentifier::create(
                                 self::ASSET_FAMILY_IDENTIFIER,
-                                self::PRODUCT_SIMPLE_LINK,
-                                self::FINGERPRINT
-                            ),
-                            ChannelReference::noReference(),
-                            LocaleReference::noReference(),
-                            TextData::fromString(self::PRODUCT_SIMPLE_LINK_DATA)
-                        ),
-                        Value::create(
-                            AttributeIdentifier::create(
-                                self::ASSET_FAMILY_IDENTIFIER,
                                 self::PRODUCT_MULTIPLE_LINK,
                                 self::FINGERPRINT
                             ),
                             ChannelReference::noReference(),
                             LocaleReference::noReference(),
                             TextData::fromString(self::PRODUCT_MULTIPLE_LINK_DATA)
+                        ),
+                        Value::create(
+                            AttributeIdentifier::create(
+                                self::ASSET_FAMILY_IDENTIFIER,
+                                self::ANOTHER_PRODUCT_MULTIPLE_LINK,
+                                self::FINGERPRINT
+                            ),
+                            ChannelReference::noReference(),
+                            LocaleReference::noReference(),
+                            TextData::fromString(self::ANOTHER_PRODUCT_MULTIPLE_LINK_DATA)
                         )
                     ]
                 )
@@ -361,29 +344,32 @@ class ExecuteRuleTemplatesContext implements Context
                     [
                         'field'    => self::SKU,
                         'operator' => Operators::EQUALS,
-                        'value'    => self::SKU_DATA
+                        'value'    => self::SKU_DATA,
+                        'channel'  => null,
+                        'locale'   => null
                     ],
                     [
                         'field'    => self::CATEGORY_FIELD_DATA,
                         'operator' => Operators::EQUALS,
-                        'value'    => self::CATEGORY_DATA
+                        'value'    => self::CATEGORY_DATA,
+                        'channel'  => null,
+                        'locale'   => null
                     ]
                 ],
                 [
                     [
                         'type'  => 'add',
-                        'field' => self::PRODUCT_SIMPLE_LINK_DATA,
-                        'items' => ['sofa']
-                    ],
-                    [
-                        'type'  => 'set',
                         'field' => self::PRODUCT_MULTIPLE_LINK_DATA,
-                        'value' => 'sofa'
+                        'items' => ['sofa'],
+                        'channel'  => null,
+                        'locale'   => null
                     ],
                     [
                         'type'  => 'set',
-                        'field' => 'another_asset_single_link',
-                        'value' => self::SKU_DATA
+                        'field' => self::ANOTHER_PRODUCT_MULTIPLE_LINK_DATA,
+                        'items' => ['sofa'],
+                        'channel'  => null,
+                        'locale'   => null
                     ]
                 ]
             )

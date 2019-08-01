@@ -19,7 +19,7 @@ export class ConcreteImageUploader implements Uploader<Image> {
 
       this.jQuery
         .ajax({
-          mediaLink: this.router.generate(this.route),
+          url: this.router.generate(this.route),
           type: 'POST',
           data: formData,
           contentType: false,

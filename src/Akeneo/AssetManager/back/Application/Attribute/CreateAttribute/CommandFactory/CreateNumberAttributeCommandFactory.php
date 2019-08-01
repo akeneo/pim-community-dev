@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -24,7 +25,7 @@ class CreateNumberAttributeCommandFactory extends AbstractCreateAttributeCommand
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['type']) && 'number' === $normalizedCommand['type'];
+        return isset($normalizedCommand['type']) && NumberAttribute::ATTRIBUTE_TYPE === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand

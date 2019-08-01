@@ -25,7 +25,7 @@ class AssetCollectionAttributeHydrator extends AbstractAttributeHydrator
 {
     public function supports(array $row): bool
     {
-        return isset($row['attribute_type']) && 'asset_collection' === $row['attribute_type'];
+        return isset($row['attribute_type']) && AssetCollectionAttribute::ATTRIBUTE_TYPE === $row['attribute_type'];
     }
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array

@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -27,7 +28,7 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
 
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['type']) && 'image' === $normalizedCommand['type'];
+        return isset($normalizedCommand['type']) && ImageAttribute::ATTRIBUTE_TYPE === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand

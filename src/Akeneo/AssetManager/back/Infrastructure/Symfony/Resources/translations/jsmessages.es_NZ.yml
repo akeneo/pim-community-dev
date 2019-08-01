@@ -193,7 +193,7 @@ pim_asset_manager:
             none: None
             email: E-mail
             regular_expression: Regular expression
-            mediaLink: URL
+            url: URL
     delete:
       message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
       title: Attribute
@@ -225,7 +225,6 @@ pim_enrich:
       property:
         type:
           akeneo_asset_multiple_link: Asset family multiple link
-          akeneo_asset_single_link: Asset family simple link
         section:
           type_specific: Type specific parameters
         asset_family:

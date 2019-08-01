@@ -156,26 +156,26 @@ Feature: Create an attribute linked to an asset family
     Then there should be a validation error with message 'This value should be a number with the right decimal separator.'
 
   @acceptance-back
-  Scenario: Create an mediaLink attribute to an asset family
-    When the user creates an mediaLink attribute "dam_image" to the asset family "city" with:
+  Scenario: Create an media_link attribute to an asset family
+    When the user creates a media_link attribute "dam_image" to the asset family "city" with:
       | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | image        | null   | null   |
-    Then there is an mediaLink attribute "dam_image" in the asset family "city" with:
+    Then there is an media_link attribute "dam_image" in the asset family "city" with:
       | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | type | media_type | prefix | suffix |
-      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | mediaLink  | image        | null   | null   |
+      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | media_link  | image        | null   | null   |
 
   @acceptance-back
-  Scenario: Create an mediaLink attribute to an asset family
-    When the user creates an mediaLink attribute "dam_image" to the asset family "city" with:
+  Scenario: Create an media_link attribute to an asset family
+    When the user creates a media_link attribute "dam_image" to the asset family "city" with:
       | code  | labels                               | is_required | order | value_per_channel | value_per_locale | media_type | prefix                | suffix   |
       | image | {"en_US": "Image", "fr_FR": "Image"} | true        | 0     | false             | false            | image        | http://my-prefix.com/ | /500x500 |
-    Then there is an mediaLink attribute "dam_image" in the asset family "city" with:
+    Then there is an media_link attribute "dam_image" in the asset family "city" with:
       | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | type | media_type | prefix                | suffix   |
-      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | mediaLink  | image        | http://my-prefix.com/ | /500x500 |
+      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | media_link  | image        | http://my-prefix.com/ | /500x500 |
 
   @acceptance-back
-  Scenario: Create an invalid mediaLink attribute on an asset family
-    When the user creates an mediaLink attribute "dam_image" to the asset family "city" with:
+  Scenario: Create an invalid media_link attribute on an asset family
+    When the user creates a media_link attribute "dam_image" to the asset family "city" with:
       | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | video        | null   | null   |
     Then there should be a validation error with message 'The media type given is not corresponding to the expected ones (image, other).'

@@ -31,15 +31,15 @@ class AddHalDownloadLinkToAssetFamilyImage
     public function __invoke(array $normalizedAssetFamily): array
     {
         if (!empty($normalizedAssetFamily['image'])) {
-            $imageMediaLink = $this->generateImageMediaLink($normalizedAssetFamily['image']);
-            $imageLink = new Link('image_download', $imageMediaLink);
+            $imageUrl = $this->generateImageUrl($normalizedAssetFamily['image']);
+            $imageLink = new Link('image_download', $imageUrl);
             $normalizedAssetFamily['_links'] = ($normalizedAssetFamily['_links'] ?? []) + $imageLink->toArray();
         }
 
         return $normalizedAssetFamily;
     }
 
-    private function generateImageMediaLink(string $imageCode): string
+    private function generateImageUrl(string $imageCode): string
     {
         return $this->router->generate(
             'akeneo_asset_manager_media_file_rest_connector_download',

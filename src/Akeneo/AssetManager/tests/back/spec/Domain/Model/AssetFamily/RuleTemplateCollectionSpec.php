@@ -29,7 +29,7 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
                 [
                     'type' => 'add',
                     'field' => '{{target_attribute}}',
-                    'value' => '{{ code }}'
+                    'items' => ['{{ code }}']
                 ]
             ]
         ];
@@ -68,13 +68,17 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
                     'field' => 'sku',
                     'operator' => 'EQUALS',
                     'value' => '{{product_sku}}',
+                    'channel' => null,
+                    'locale' => null
                 ]
             ],
             'actions' => [
                 [
-                    'type' => 'add',
                     'field' => '{{target_attribute}}',
-                    'value' => '{{ code }}'
+                    'type' => 'add',
+                    'items' => ['{{ code }}'],
+                    'channel' => null,
+                    'locale' => null
                 ]
             ]
         ];

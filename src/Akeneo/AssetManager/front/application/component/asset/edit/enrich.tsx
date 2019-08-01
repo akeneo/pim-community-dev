@@ -11,7 +11,7 @@ import Value from 'akeneoassetmanager/domain/model/asset/value';
 import Key from 'akeneoassetmanager/tools/key';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 
 interface StateProps {
   form: EditionFormState;
@@ -95,11 +95,11 @@ export default connect(
         },
         asset: {
           edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
           delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
         },
       },

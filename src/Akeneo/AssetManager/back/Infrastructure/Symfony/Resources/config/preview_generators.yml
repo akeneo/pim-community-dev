@@ -12,7 +12,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.preview_generator }
 
-    akeneo_assetmanager.infrastructure.generator.mediaLink_image_generator:
+    akeneo_assetmanager.infrastructure.generator.media_link_image_generator:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkImageGenerator
         arguments:
             - '@liip_imagine.data.manager'

@@ -59,13 +59,17 @@ final class EditAssetFamilyContext implements Context
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
     private $activatedLocales;
 
+    /** @var int */
+    private $ruleTemplateByAssetFamilyLimit;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         EditAssetFamilyHandler $editAssetFamilyHandler,
         CreateAssetFamilyHandler $createAssetFamilyHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
-        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->editAssetFamilyHandler = $editAssetFamilyHandler;
@@ -73,6 +77,7 @@ final class EditAssetFamilyContext implements Context
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->activatedLocales = $activatedLocales;
+        $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
     }
 
     /**
@@ -327,8 +332,24 @@ final class EditAssetFamilyContext implements Context
      */
     public function theUserUpdatesTheAssetFamilyToSetACollectionOfRuleTemplates(string $code)
     {
-        $ruleTemplate = $this->getExpectedRuleTemplate();
+        $ruleTemplate = $this->getRuleTemplate();
         $editAssetFamilyCommand = new EditAssetFamilyCommand($code, [], null, [$ruleTemplate]);
+        $this->editAssetFamily($editAssetFamilyCommand);
+    }
+
+    /**
+     * @When /^the user updates the asset family \'([^\']*)\' to set a collection of rule templates having more items than the limit$/
+     */
+    public function theUserUpdatesTheAssetFamilyToSetACollectionOfRuleTemplatesHavingMoreItemsThanTheLimit(string $code)
+    {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+
+        $ruleTemplates = [];
+        for ($i = 1; $i <= $this->ruleTemplateByAssetFamilyLimit+1; $i++) {
+            $ruleTemplates[] = $this->getRuleTemplate();
+        }
+
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, ['en_US' => ucfirst($code)], null, $ruleTemplates);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -339,8 +360,8 @@ final class EditAssetFamilyContext implements Context
     {
         $this->constraintViolationsContext->assertThereIsNoViolations();
 
-        $expectedRuleTemplate = $this->getExpectedRuleTemplate();
-        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromNormalized([$expectedRuleTemplate]);
+        $expectedRuleTemplate = $this->getRuleTemplate();
+        $expectedRuleTemplateCollection = RuleTemplateCollection::createFromProductLinkRules([$expectedRuleTemplate]);
 
         $assetFamily = $this->assetFamilyRepository
             ->getByIdentifier(AssetFamilyIdentifier::fromString($code));
@@ -348,21 +369,20 @@ final class EditAssetFamilyContext implements Context
         Assert::assertEquals($expectedRuleTemplateCollection, $assetFamily->getRuleTemplateCollection());
     }
 
-    private function getExpectedRuleTemplate(): array
+    private function getRuleTemplate(): array
     {
         return [
-            'conditions' => [
+            'product_selections' => [
                 [
-                    'field'    => 'sku',
-                    'operator' => '=',
-                    'value'    => '{{product_sku}}'
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '{{product_sku}}'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to'    => [
                 [
-                    'type'  => 'set',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
+                    'mode'  => 'set',
+                    'attribute' => '{{attribute}}'
                 ]
             ]
         ];

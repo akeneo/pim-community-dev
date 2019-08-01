@@ -1,10 +1,15 @@
 # Asset family
 Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand:
+    group_sequence:
+            - EditAssetFamilyCommand
+            - other_constraints
     properties:
         labels:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         image:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Image: ~
+    constraints:
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimit: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand:
     group_sequence:
@@ -18,6 +23,7 @@ Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyC
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyCodeShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessAssetFamilyThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimit: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand:
     group_sequence:

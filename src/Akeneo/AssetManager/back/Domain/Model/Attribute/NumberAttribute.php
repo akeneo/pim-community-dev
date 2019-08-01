@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
  */
 class NumberAttribute extends AbstractAttribute
 {
-    private const ATTRIBUTE_TYPE = 'number';
+    public const ATTRIBUTE_TYPE = 'number';
 
     /** @var AttributeDecimalsAllowed */
     private $decimalsAllowed;

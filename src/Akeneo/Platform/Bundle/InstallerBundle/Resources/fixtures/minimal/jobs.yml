@@ -232,3 +232,8 @@ jobs:
         alias:     compute_completeness_of_products_linked_to_assets
         label:     compute completeness of products linked to assets
         type:      compute_completeness_of_products_linked_to_assets
+    asset_manager_link_assets_to_products:
+        connector: internal
+        alias:     asset_manager_link_assets_to_products
+        label:     asset manager link assets to products
+        type:      asset_manager_link_assets_to_products

@@ -67,7 +67,7 @@ class AssetValidatorTest extends SqlIntegrationTestCase
                 'main_material',        // option
                 'materials',            // option collection
                 'year',                 // number
-                'website'               // mediaLink
+                'website'               // media_link
             ])
             ->load();
     }

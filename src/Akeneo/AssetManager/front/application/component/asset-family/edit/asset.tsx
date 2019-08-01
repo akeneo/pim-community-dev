@@ -40,7 +40,7 @@ import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {
@@ -293,20 +293,20 @@ export default connect(
       rights: {
         asset: {
           create:
-            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_create') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           deleteAll:
-            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_assets_delete_all') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_assets_delete_all') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },

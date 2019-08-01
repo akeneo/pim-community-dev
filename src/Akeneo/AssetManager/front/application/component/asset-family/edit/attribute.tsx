@@ -20,7 +20,7 @@ import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-bo
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditLocale, canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {
@@ -296,14 +296,14 @@ export default connect(
         },
         attribute: {
           create:
-            securityContext.isGranted('akeneo_assetmanager_attribute_create') &&
+            // securityContext.isGranted('akeneo_assetmanager_attribute_create') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           edit:
-            securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_attribute_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_attribute_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },

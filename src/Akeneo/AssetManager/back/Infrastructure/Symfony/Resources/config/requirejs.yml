@@ -110,13 +110,9 @@ config:
                 akeneo_asset_multiple_link:
                     create: pim-attribute-form-asset
                     edit:   pim-attribute-form-asset
-                akeneo_asset_single_link:
-                    create: pim-attribute-form-asset
-                    edit:   pim-attribute-form-asset
         pim/form/common/attributes/create-button:
             attribute_icons:
                 akeneo_asset_multiple_link: asset-multiple-link
-                akeneo_asset_single_link: asset-single-link
 
     paths:
         pim/controller/asset-family/list: akeneoassetmanager/infrastructure/controller/asset-family/list.tsx

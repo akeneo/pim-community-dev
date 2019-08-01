@@ -25,7 +25,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
  */
 class MediaLinkAttribute extends AbstractAttribute
 {
-    public const ATTRIBUTE_TYPE = 'mediaLink';
+    public const ATTRIBUTE_TYPE = 'media_link';
 
     /** @var Prefix  */
     private $prefix;
@@ -119,7 +119,7 @@ class MediaLinkAttribute extends AbstractAttribute
     {
         $this->suffix = $suffix;
     }
-    
+
     public function setMediaType(MediaType $mediaType): void
     {
         $this->mediaType = $mediaType;

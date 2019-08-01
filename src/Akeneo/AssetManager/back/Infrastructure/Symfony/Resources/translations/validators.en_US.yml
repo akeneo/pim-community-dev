@@ -14,6 +14,8 @@ pim_asset_manager:
             product_attributes:
                 should_not_be_linked: 'You can not delete this entity because product attributes are related to this entity'
             should_exist: 'The asset family "%asset_family_code%" was not found.'
+            rule_template:
+                limit_reached: 'You cannot create the asset family "%asset_family_label%" because you have reached the limit of %limit% product link rules'
     asset:
         validation:
             code:

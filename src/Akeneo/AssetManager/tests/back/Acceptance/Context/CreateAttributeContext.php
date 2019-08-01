@@ -590,13 +590,13 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates an mediaLink attribute "([^"]*)" to the asset family "([^"]*)" with:$/
+     * @When /^the user creates a media_link attribute "([^"]*)" to the asset family "([^"]*)" with:$/
      */
     public function theUserCreatesAnMediaLinkAttributeToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
-        $attributeData['type'] = 'mediaLink';
+        $attributeData['type'] = 'media_link';
         $attributeData['identifier']['identifier'] = $attributeCode;
         $attributeData['identifier']['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
@@ -620,7 +620,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is an mediaLink attribute "([^"]*)" in the asset family "([^"]*)" with:$/
+     * @Then /^there is an media_link attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
     public function thereIsAnMediaLinkAttributeInTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $expected): void
     {

@@ -15,7 +15,7 @@ class AttributeValidationRule
     public const NONE = 'none';
     public const EMAIL = 'email';
     public const REGULAR_EXPRESSION = 'regular_expression';
-    public const URL = 'mediaLink';
+    public const URL = 'url';
     public const VALIDATION_RULE_TYPES = [self::EMAIL, self::REGULAR_EXPRESSION, self::URL, self::NONE];
 
     /** @var ?string */
@@ -59,7 +59,7 @@ class AttributeValidationRule
         return self::EMAIL === $this->validationRule;
     }
 
-    public function isMediaLink(): bool
+    public function isUrl(): bool
     {
         return self::URL === $this->validationRule;
     }

@@ -14,7 +14,7 @@ import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/mod
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import File from 'akeneoassetmanager/domain/model/file';
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import {canEditLocale, canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
@@ -150,11 +150,11 @@ export default connect(
         },
         assetFamily: {
           edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_family_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_family_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },

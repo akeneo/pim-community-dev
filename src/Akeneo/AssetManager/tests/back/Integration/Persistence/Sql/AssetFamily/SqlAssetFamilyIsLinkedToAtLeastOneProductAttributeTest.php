@@ -50,10 +50,6 @@ class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrat
         $isLinked = $this->query->isLinked($identifier);
         $this->assertTrue($isLinked);
 
-        $identifier = AssetFamilyIdentifier::fromString('city');
-        $isLinked = $this->query->isLinked($identifier);
-        $this->assertTrue($isLinked);
-
         $identifier = AssetFamilyIdentifier::fromString('brand');
         $isLinked = $this->query->isLinked($identifier);
         $this->assertFalse($isLinked);
@@ -73,17 +69,6 @@ class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrat
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ],
-            Image::createEmpty(),
-            RuleTemplateCollection::empty()
-        );
-        $assetFamilyRepository->create($assetFamily);
-
-        $assetFamily = AssetFamily::create(
-            AssetFamilyIdentifier::fromString('city'),
-            [
-                'fr_FR' => 'Ville',
-                'en_US' => 'City',
             ],
             Image::createEmpty(),
             RuleTemplateCollection::empty()
@@ -133,27 +118,5 @@ class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrat
         }
 
         $this->get('pim_catalog.saver.attribute')->save($attributeAssetMultipleLink);
-
-        $attributeAssetFamily = $this->get('pim_catalog.factory.attribute')
-            ->createAttribute(AssetMultipleLinkType::ASSET_MULTIPLE_LINK);
-        $this->get('pim_catalog.updater.attribute')
-            ->update($attributeAssetFamily, [
-                'code' => 'main_city',
-                'reference_data_name' => 'city',
-                'group' => 'other'
-            ]);
-
-        $errors = $this->get('validator')->validate($attributeAssetFamily);
-        if ($errors->count() > 0) {
-            throw new \Exception(
-                sprintf(
-                    'Cannot create the attribute "%s": %s',
-                    $attributeAssetFamily->getCode(),
-                    (string) $errors[0]
-                )
-            );
-        }
-
-        $this->get('pim_catalog.saver.attribute')->save($attributeAssetFamily);
     }
 }

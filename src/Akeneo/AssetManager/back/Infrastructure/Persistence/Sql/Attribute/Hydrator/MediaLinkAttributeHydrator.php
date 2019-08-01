@@ -27,7 +27,7 @@ class MediaLinkAttributeHydrator extends AbstractAttributeHydrator
 {
     public function supports(array $row): bool
     {
-        return isset($row['attribute_type']) && 'mediaLink' === $row['attribute_type'];
+        return isset($row['attribute_type']) && MediaLinkAttribute::ATTRIBUTE_TYPE === $row['attribute_type'];
     }
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array

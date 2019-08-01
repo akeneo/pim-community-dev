@@ -38,7 +38,7 @@
             "data": "2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg",
             "_links": {
               "download": {
-                "href": "http://localhost/api/rest/v1/asset-families-media-files/2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg"
+                "href": "http://localhost/api/rest/v1/asset-media-files/2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg"
               }
             }
           }

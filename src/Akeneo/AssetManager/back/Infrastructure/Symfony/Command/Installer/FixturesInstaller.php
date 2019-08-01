@@ -201,28 +201,27 @@ SQL;
 
     private function loadPackshots(): void
     {
-        $ruleTemplate = [
-            'conditions' => [
-                [
-                    'field'    => 'sku',
-                    'operator' => '=',
-                    'value'    => '{{product_sku}}'
-                ]
-            ],
-            'actions'    => [
-                [
-                    'type'  => 'add',
-                    'field' => '{{linked_attribute}}',
-                    'value' => '{{code}}'
-                ]
-            ]
-        ];
+//        $ruleTemplate = [
+//            'product_selections' => [
+//                [
+//                    'field' => 'sku',
+//                    'operator'  => '=',
+//                    'value'     => '{{product_sku}}'
+//                ]
+//            ],
+//            'assign_assets_to'    => [
+//                [
+//                    'mode'  => 'set',
+//                    'attribute' => '{{linked_attribute}}'
+//                ]
+//            ]
+//        ];
 
         $packshot = AssetFamily::create(
             AssetFamilyIdentifier::fromString('packshot'),
             ['en_US' => 'Packshots'],
             Image::createEmpty(),
-            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($packshot);
@@ -331,8 +330,8 @@ SQL;
         $this->attributeRepository->create($description);
         $this->attributeRepository->create($datePublished);
         $this->attributeRepository->create($shootedBy);
-        $this->attributeRepository->create($original);
-        $this->attributeRepository->create($small);
+//        $this->attributeRepository->create($original);
+//        $this->attributeRepository->create($small);
         $this->attributeRepository->create($linkedAttribute);
         $this->attributeRepository->create($productSku);
     }
@@ -523,7 +522,7 @@ SQL;
         $this->attributeRepository->create($description);
         $this->attributeRepository->create($targetCountries);
         $this->attributeRepository->create($datePublished);
-        $this->attributeRepository->create($original);
+//        $this->attributeRepository->create($original);
         $this->attributeRepository->create($linkedAttribute);
         $this->attributeRepository->create($productSku);
     }
@@ -583,43 +582,41 @@ SQL;
 
     private function loadVideoPresentation(): void
     {
-        $ruleTemplateToAdd = [
-            'conditions' => [
-                [
-                    'field'    => 'sku',
-                    'operator' => '=',
-                    'value'    => '{{product_sku}}'
-                ]
-            ],
-            'actions'    => [
-                [
-                    'type'  => 'add',
-                    'field' => '{{linked_attribute}}',
-                    'value' => '{{code}}'
-                ]
-            ]
-        ];
-        $ruleTemplateToSet = [
-            'conditions' => [
-                [
-                    'field'    => 'sku',
-                    'operator' => '=',
-                    'value'    => '{{product_sku}}'
-                ]
-            ],
-            'actions'    => [
-                [
-                    'type'  => 'set',
-                    'field' => '{{linked_attribute}}',
-                    'value' => '{{code}}'
-                ]
-            ]
-        ];
+//        $ruleTemplateToAdd = [
+//            'product_selections' => [
+//                [
+//                    'field'    => 'sku',
+//                    'operator' => '=',
+//                    'value'    => '{{product_sku}}'
+//                ]
+//            ],
+//            'assign_assets_to' => [
+//                [
+//                    'mode'      => 'add',
+//                    'attribute' => '{{linked_attribute}}'
+//                ]
+//            ]
+//        ];
+//        $ruleTemplateToSet = [
+//            'product_selections' => [
+//                [
+//                    'field'    => 'sku',
+//                    'operator' => '=',
+//                    'value'    => '{{product_sku}}'
+//                ]
+//            ],
+//            'assign_assets_to' => [
+//                [
+//                    'mode'      => 'set',
+//                    'attribute' => '{{linked_attribute}}'
+//                ]
+//            ]
+//        ];
         $videoPresentation = AssetFamily::create(
             AssetFamilyIdentifier::fromString('video_presentation'),
             ['en_US' => 'Video Presentation'],
             Image::createEmpty(),
-            RuleTemplateCollection::createFromNormalized([$ruleTemplateToAdd, $ruleTemplateToSet])
+            RuleTemplateCollection::empty()
         );
 
         $this->assetFamilyRepository->create($videoPresentation);
@@ -684,7 +681,7 @@ SQL;
         );
 
         $this->attributeRepository->create($videoTranscription);
-        $this->attributeRepository->create($original);
+//        $this->attributeRepository->create($original);
         $this->attributeRepository->create($linkedAttribute);
         $this->attributeRepository->create($productSku);
     }

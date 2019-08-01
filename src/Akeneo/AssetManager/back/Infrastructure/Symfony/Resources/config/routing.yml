@@ -1,11 +1,11 @@
-akeneo_asset_manager_asset_family_index:
-    path: '/asset'
+# akeneo_asset_manager_asset_family_index:
+#    path: '/asset'
 
-akeneo_asset_manager_asset_family_edit:
-    path: '/asset/{identifier}/{tab}'
+# akeneo_asset_manager_asset_family_edit:
+#    path: '/asset/{identifier}/{tab}'
 
-akeneo_asset_manager_asset_edit:
-    path: '/asset/{assetFamilyIdentifier}/asset/{assetCode}/{tab}'
+# akeneo_asset_manager_asset_edit:
+#    path: '/asset/{assetFamilyIdentifier}/asset/{assetCode}/{tab}'
 
 akeneo_asset_manager_asset_family_index_rest:
     path: '/rest/asset_manager'
@@ -98,7 +98,7 @@ akeneo_asset_manager_product_get_linked_product:
     methods: [GET]
 
 akeneo_asset_manager_image_preview:
-    path: '/rest/asset_manager/image_preview/{data}/{attributeIdentifier}/{type}'
+    path: '/rest/asset_manager/image_preview/{attributeIdentifier}/{type}'
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.image_preview }
     methods: [GET]
 
@@ -157,14 +157,14 @@ akeneo_asset_manager_assets_rest_connector_get:
     methods: [GET]
 
 akeneo_asset_manager_media_file_rest_connector_download:
-    path: '/api/rest/v1/asset-families-media-files/{fileCode}'
+    path: '/api/rest/v1/asset-media-files/{fileCode}'
     defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.media_file_download }
     methods: [GET]
     requirements:
         fileCode: ([a-zA-Z0-9_./]+)
 
 akeneo_asset_manager_media_file_rest_connector_upload:
-    path: '/api/rest/v1/asset-families-media-files'
+    path: '/api/rest/v1/asset-media-files'
     defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.media_file_upload }
     methods: [POST]
 

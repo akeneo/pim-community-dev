@@ -36,7 +36,7 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(MediaLinkUpdater::class);
     }
 
-    function it_only_supports_edit_mediaLink_value_command(
+    function it_only_supports_edit_media_link_value_command(
         EditStoredFileValueCommand $editStoredFileValueCommand,
         EditMediaLinkValueCommand $editTextValueCommand
     ) {
@@ -44,7 +44,7 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
         $this->supports($editTextValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_mediaLink_value_of_a_asset(Asset $asset) {
+    function it_edits_the_media_link_value_of_a_asset(Asset $asset) {
         $mediaLinkAttribute = $this->mediaLinkAttribute();
 
         $editTextValueCommand = new EditMediaLinkValueCommand(
