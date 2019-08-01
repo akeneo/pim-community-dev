@@ -52,7 +52,7 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
         sort($filledCurrencies);
 
         $result = [];
-        foreach($this->getCurrencyCombinations($filledCurrencies) as $currencyCombination) {
+        foreach ($this->getCurrencyCombinations($filledCurrencies) as $currencyCombination) {
             $result[] = sprintf('%s-%s-%s-%s',
                 $attributeCode,
                 join('-', $currencyCombination),
@@ -69,7 +69,8 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
         return [AttributeTypes::PRICE_COLLECTION];
     }
 
-    private function getCurrencyCombinations($currencies) {
+    private function getCurrencyCombinations($currencies)
+    {
         $combinations = [[]];
 
         foreach ($currencies as $currency) {
