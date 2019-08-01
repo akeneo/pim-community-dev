@@ -3,39 +3,9 @@ imports:
 
 framework:
     test: ~
-    csrf_protection: true
-
-doctrine:
-    orm:
-        entity_managers:
-            default:
-                metadata_cache_driver: array
-                query_cache_driver:    array
-
-monolog:
-    handlers:
-        main:
-            type:         fingers_crossed
-            action_level: warning
-            handler:      nested
-        nested:
-            type: stream
-            path: '%kernel.logs_dir%/%kernel.environment%.log'
-            level: info
-        console:
-            type:  console
-
-swiftmailer:
-    disable_delivery: true
 
 pim_import_export:
     record_mails: true
 
 parameters:
-    max_products_category_removal: 20
-    installer_data:       PimInstallerBundle:minimal
-    upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'
-    archive_dir:          '%kernel.root_dir%/../var/cache/archive'
-    catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
-    tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
-    upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
+    installer_data: PimInstallerBundle:minimal
