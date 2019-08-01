@@ -53,12 +53,15 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
         $sql = <<<SQL
 SELECT
     product.id AS id,
-    product.raw_values AS rawValues,
+    product.identifier AS identifier,
     family.code AS familyCode,
-    product.identifier AS identifier
+    JSON_MERGE(COALESCE(pm1.raw_values, '{}'), COALESCE(pm2.raw_values, '{}'), product.raw_values) as rawValues
 FROM pim_catalog_product product
-INNER JOIN pim_catalog_family family ON product.family_id=family.id
+    INNER JOIN pim_catalog_family family ON product.family_id = family.id
+    LEFT JOIN pim_catalog_product_model pm1 ON product.product_model_id = pm1.id
+    LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
 WHERE product.identifier IN (:productIdentifiers)
+GROUP BY product.identifier
 SQL;
         $rows = $this->connection->executeQuery(
             $sql,
