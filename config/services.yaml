@@ -95,3 +95,18 @@ services:
     _defaults:
         autowire: false      # Automatically injects dependencies in your services.
         autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.
+
+    # TODO: it seems the autoconfigure set to true doesn't work
+    # TODO: dig why, maybe it's because no path is defined here
+    # see https://symfony.com/doc/current/console.html#registering-the-command
+    # see https://symfony.com/doc/current/service_container.html#creating-configuring-services-in-the-container
+    commands:
+        namespace: Akeneo\
+        resource: '../src/Akeneo/**/Command/*'
+        exclude:
+            - '../src/Akeneo/**/spec'
+            - '../src/Akeneo/**/tests'
+            - '../src/Akeneo/Pim/Enrichment/Bundle/Command/Cleaner'
+            - '../src/Akeneo/Pim/Enrichment/Bundle/Command/ProductQueryHelp'
+            - '../src/Akeneo/Platform/Bundle/AnalyticsBundle/Command/Style'
+        tags: ['console.command']
