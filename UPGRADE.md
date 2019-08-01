@@ -194,11 +194,24 @@ Before updating the dependencies and migrating your data, please deactivate all 
     As of PIM v3.2, we now take advantage of [Elasticsearch's aliases](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/indices-aliases.html). Thus, all indices have to be reindexed.
 
     Also, as Elasticsearch does not take into account case insensitivity of option codes when searching and as we modified the way products values are loaded from MySQL, Elasticsearch search has to be case insensitive when searching on option codes. Thus, all mappings have to updated.
+    
+    You also need to create a new index for the Asset Manager feature.
+    
+    For your information, this migration took ~10 minutes for a catalog containing 500 000 products.
 
     To take into account those two changes:
 
     ```bash
+    php upgrades/schema/es_20190715140437_ee_create_asset_manager_index.php
     php bin/console akeneo:elasticsearch:update-mapping -e prod --all
+    ```
+
+12. Remove orphan archives
+
+    You can remove import/export archives that are not used anymore with the following script:
+
+    ```bash
+    php upgrades/schema/remove_orphan_archives.php
     ```
 
 ## Migrate your custom code
@@ -240,7 +253,6 @@ You are now ready to reactivate your custom bundles in the `AppKernel.php` file.
     ```bash
     bin/console cache:clear --env=prod
     bin/console pim:installer:assets --clean --env=prod
-    yarn run less
     yarn run webpack
     ```
 

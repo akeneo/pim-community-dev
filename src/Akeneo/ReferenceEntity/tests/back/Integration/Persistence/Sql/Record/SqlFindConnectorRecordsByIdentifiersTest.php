@@ -76,7 +76,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
      */
     public function it_finds_records_from_a_list_of_identifiers()
     {
-        $this->loadRecords(['starck', 'dyson', 'newson']);
+        $this->loadRecords(['Starck_with_uppercase', 'starck', 'dyson', 'newson']);
         $this->loadRecords(['unexpected_record']);
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
@@ -87,10 +87,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             null,
             []
         );
-        $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
+        $identifiers = ['designer_Starck_with_uppercase_fingerprint ', 'designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
         $expectedConnectorRecords = [];
-        foreach (['dyson', 'newson', 'starck'] as $code) {
+        foreach (['Starck_with_uppercase', 'dyson', 'newson', 'starck'] as $code) {
             $expectedConnectorRecords[] = new ConnectorRecord(
                 RecordCode::fromString($code),
                 [

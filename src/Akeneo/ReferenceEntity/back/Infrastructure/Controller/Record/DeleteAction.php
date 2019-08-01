@@ -16,6 +16,7 @@ use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,16 +46,21 @@ class DeleteAction
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var RecordIndexerInterface */
+    private $recordIndexer;
+
     public function __construct(
         DeleteRecordHandler $deleteRecordHandler,
         SecurityFacade $securityFacade,
         CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        RecordIndexerInterface $recordIndexer
     ) {
         $this->deleteRecordHandler = $deleteRecordHandler;
         $this->securityFacade = $securityFacade;
         $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
         $this->tokenStorage = $tokenStorage;
+        $this->recordIndexer = $recordIndexer;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $recordCode): Response
@@ -70,6 +76,7 @@ class DeleteAction
 
         try {
             ($this->deleteRecordHandler)($command);
+            $this->recordIndexer->refresh();
         } catch (RecordNotFoundException $exception) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }

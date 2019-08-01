@@ -50,14 +50,14 @@ class ProductAssetController
      */
     public function indexAction(Request $request)
     {
-        $options = $request->query->get('options');
+        $options = $request->get('options');
 
-        if ($request->query->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
+        if ($request->query->has('identifiers') || $request->request->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->get('identifiers'));
         }
 
         $assets = $this->assetRepository->findEntitiesBySearch(
-            $request->query->get('search'),
+            $request->get('search'),
             $options
         );
 
