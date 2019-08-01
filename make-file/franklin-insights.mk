@@ -24,7 +24,7 @@ franklin-insights-integration:
 
 .PHONY: franklin-insights-end-to-end
 franklin-insights-end-to-end:
-	$(PHP_EXEC) vendor/bin/behat -p legacy -s insights
+	$(PHP_EXEC) vendor/bin/behat -p legacy -s franklin-insights
 
 .PHONY: franklin-insights-cs
 franklin-insights-cs:
