@@ -65,16 +65,7 @@ SELECT
         CONCAT(
             IF(
                 attribute.attribute_type = 'pim_catalog_price_collection',
-                IF (
-                    attribute.is_scopable,
-                    CONCAT(attribute.code, '-', currency_codes.currency_codes),
-                    CONCAT(attribute.code, '-', (
-                        SELECT
-                            GROUP_CONCAT(DISTINCT currency.code ORDER BY currency.code SEPARATOR '-') AS currency_codes
-                        FROM pim_catalog_channel_currency pccc
-                            JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
-                    ))
-                ),
+                CONCAT(attribute.code, '-', currency_codes.currency_codes),
                 attribute.code
             ),
             '-',

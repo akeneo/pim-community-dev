@@ -13,6 +13,28 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeType
 {
+    /**
+     * In the case of prices, we need to generate several masks. First, we need to take in account only the filled
+     * currencies.
+     *
+     * For example, if we have 3 channels:
+     * - ecommerce, with USD
+     * - print, with EUR
+     * - tablet, with EUR and USD
+     *
+     * Then, there is several cases:
+     * - The price attribute is non localizable:
+     *   - The generated ecommerce mask will be price-USD-<all_channels>-<all_locales>.
+     *     The generated price mask needs to contain this mask too if USD is filled.
+     *   - The generated print mask will be price-EUR-<all_channels>-<all_locales>.
+     *     The generated price mask needs to contain this mask too if EUR is filled.
+     *   - The generated tablet mask will be price-EUR-USD-<all_channels>-<all_locales>.
+     *     The generated price mask needs to contain this mask if EUR and USD are filled.
+     *
+     * So this method will return every combinations of the filled currencies; if EUR, GPB and USD are filled, the
+     * generated masks will be -, -EUR, -GPB, -USD, -EUR-GPB, -EUR-USD, -GPB-USD and -EUR-GPB-USD, to fit with all
+     * the generated family masks.
+     */
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
         $filledCurrencies = [];
@@ -29,18 +51,33 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
         }
         sort($filledCurrencies);
 
-        return [
-            sprintf('%s-%s-%s-%s',
+        $result = [];
+        foreach($this->getCurrencyCombinations($filledCurrencies) as $currencyCombination) {
+            $result[] = sprintf('%s-%s-%s-%s',
                 $attributeCode,
-                join('-', $filledCurrencies),
+                join('-', $currencyCombination),
                 $channelCode,
                 $localeCode
-            )
-        ];
+            );
+        }
+
+        return $result;
     }
 
     public function supportedAttributeTypes(): array
     {
         return [AttributeTypes::PRICE_COLLECTION];
+    }
+
+    private function getCurrencyCombinations($currencies) {
+        $combinations = [[]];
+
+        foreach ($currencies as $currency) {
+            foreach ($combinations as $combination) {
+                array_push($combinations, array_merge($combination, [$currency]));
+            }
+        }
+
+        return $combinations;
     }
 }
