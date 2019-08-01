@@ -75,6 +75,7 @@
         "ocramius/proxy-manager": "2.1.1",
         "oneup/flysystem-bundle": "3.0.3",
         "ramsey/uuid": "3.7.0",
+        "symfony/acl-bundle": "1.0.0",
         "sensio/framework-extra-bundle": "5.2.4",
         "symfony/monolog-bundle": "3.1.2",
         "symfony/swiftmailer-bundle": "3.2.4",
