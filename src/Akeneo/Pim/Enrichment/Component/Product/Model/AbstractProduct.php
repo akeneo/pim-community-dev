@@ -622,7 +622,6 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * {@inheritdoc}
-     * TODO: Remove getCompletenesses
      */
     public function getCompletenesses()
     {

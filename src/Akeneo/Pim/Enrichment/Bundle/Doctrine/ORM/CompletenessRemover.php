@@ -78,7 +78,6 @@ class CompletenessRemover implements CompletenessRemoverInterface
         $statement->bindValue('productId', $product->getId());
         $statement->execute();
 
-        // TODO Remove getCompletenesses
         $product->getCompletenesses()->clear();
 
         $this->indexer->index($product);
@@ -97,7 +96,6 @@ class CompletenessRemover implements CompletenessRemoverInterface
         $statement->bindValue('productId', $product->getId());
         $statement->execute();
 
-        // TODO Remove getCompletenesses
         $product->getCompletenesses()->clear();
     }
 
@@ -200,7 +198,6 @@ class CompletenessRemover implements CompletenessRemoverInterface
         ChannelInterface $channel = null,
         LocaleInterface $locale = null
     ) {
-        // TODO Remove getCompletenesses
         if (null === $channel && null === $locale) {
             $product->getCompletenesses()->clear();
         } else {
