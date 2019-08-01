@@ -26,5 +26,6 @@ class PimInstallerExtension extends Extension
         $loader->load('jobs.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');
+        $loader->load('cli_command.yml');
     }
 }

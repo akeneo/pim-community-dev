@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
+use Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,11 +20,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InstallCommand extends ContainerAwareCommand
 {
-    /** @staticvar string */
-    const APP_NAME = 'Akeneo PIM';
+    protected static $defaultName = 'pim:install';
 
     /** @var CommandExecutor */
-    protected $commandExecutor;
+    private $commandExecutor;
+
+    /** @var InstallStatusManager */
+    private $installStatusManager;
+
+    public function __construct(InstallStatusManager $installStatusManager)
+    {
+        parent::__construct();
+        $this->installStatusManager = $installStatusManager;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,8 +40,7 @@ class InstallCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:install')
-            ->setDescription(sprintf('%s Application Installer.', static::APP_NAME))
+            ->setDescription('Akeneo PIM Application Installer.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
             ->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
             ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous install');
@@ -59,7 +69,7 @@ class InstallCommand extends ContainerAwareCommand
             throw new \RuntimeException('Akeneo PIM is already installed.');
         }
 
-        $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
+        $output->writeln('<info>Installing Akeneo PIM Application.</info>');
         $output->writeln('');
 
         try {
@@ -76,7 +86,7 @@ class InstallCommand extends ContainerAwareCommand
         }
 
         $output->writeln('');
-        $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
+        $output->writeln('<info>Akeneo PIM Application has been successfully installed.</info>');
 
         return 0;
     }
@@ -145,10 +155,8 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function isPimInstalled(OutputInterface $output) : bool
     {
-        $installStatus = $this->getContainer()->get('pim_installer.install_status_manager');
-
         $output->writeln('<info>Check PIM installation</info>');
 
-        return $installStatus->isPimInstalled();
+        return $this->installStatusManager->isPimInstalled();
     }
 }
