@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGenerator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Doctrine\DBAL\Connection;
@@ -27,14 +28,19 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
     /** @var GetAttributes */
     private $getAttributes;
 
+    /** @var EmptyValuesCleaner */
+    private $emptyValuesCleaner;
+
     public function __construct(
         Connection $connection,
         MaskItemGenerator $maskItemGenerator,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        EmptyValuesCleaner $emptyValuesCleaner
     ) {
         $this->connection = $connection;
         $this->maskItemGenerator = $maskItemGenerator;
         $this->getAttributes = $getAttributes;
+        $this->emptyValuesCleaner = $emptyValuesCleaner;
     }
 
     /**
@@ -61,8 +67,9 @@ SQL;
         )->fetchAll();
 
         $attributeCodes = [];
-        foreach ($rows as $row) {
-            foreach (array_keys(json_decode($row['rawValues'], true)) as $attributeCode) {
+        foreach ($rows as &$row) {
+            $row['cleanedRawValues'] = $this->cleanEmptyValues(json_decode($row['rawValues'], true));
+            foreach (array_keys($row['cleanedRawValues']) as $attributeCode) {
                 $attributeCodes[] = $attributeCode;
             }
         }
@@ -74,7 +81,7 @@ SQL;
                 intval($row['id']),
                 $row['identifier'],
                 $row['familyCode'],
-                $this->getMask(json_decode($row['rawValues'], true), $attributes)
+                $this->getMask($row['cleanedRawValues'], $attributes)
             );
         }
 
@@ -106,5 +113,10 @@ SQL;
         }
 
         return array_merge(...$masks);
+    }
+
+    private function cleanEmptyValues(array $rawValues): array
+    {
+        return $this->emptyValuesCleaner->cleanAllValues(['ID' => $rawValues])['ID'];
     }
 }

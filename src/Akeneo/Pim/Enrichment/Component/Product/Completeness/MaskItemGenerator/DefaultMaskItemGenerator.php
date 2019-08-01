@@ -15,41 +15,14 @@ class DefaultMaskItemGenerator implements MaskItemGeneratorForAttributeType
 {
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
-        $result = [];
-        if ($this->valueIsFilled($value)) {
-            $mask = sprintf(
+        return [
+            sprintf(
                 '%s-%s-%s',
                 $attributeCode,
                 $channelCode,
                 $localeCode
-            );
-            $result = [$mask];
-        }
-
-        return $result;
-    }
-
-    private function valueIsFilled($value): bool
-    {
-        if (null === $value) {
-            return false;
-        }
-
-        if ('' === $value) {
-            return false;
-        }
-
-        if (is_array($value)) {
-            foreach ($value as $subValue) {
-                if ($this->valueIsFilled($subValue)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        return true;
+            )
+        ];
     }
 
     public function supportedAttributeTypes(): array
