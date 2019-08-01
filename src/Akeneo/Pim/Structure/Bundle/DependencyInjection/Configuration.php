@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('reference_data')
+                    ->useAttributeAsKey('name')
                     ->arrayPrototype()
                         ->children()
                             ->scalarNode('class')->isRequired()->canNotBeEmpty()->end()
