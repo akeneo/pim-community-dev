@@ -55,7 +55,11 @@ SELECT
     product.id AS id,
     product.identifier AS identifier,
     family.code AS familyCode,
-    JSON_MERGE(COALESCE(pm1.raw_values, '{}'), COALESCE(pm2.raw_values, '{}'), product.raw_values) as rawValues
+    JSON_MERGE(
+           CASE pm1.raw_values WHEN '[]' THEN '{}' ELSE COALESCE(pm1.raw_values, '{}') END,
+           CASE pm2.raw_values WHEN '[]' THEN '{}' ELSE COALESCE(pm2.raw_values, '{}') END,
+           product.raw_values
+    ) AS rawValues
 FROM pim_catalog_product product
     INNER JOIN pim_catalog_family family ON product.family_id = family.id
     LEFT JOIN pim_catalog_product_model pm1 ON product.product_model_id = pm1.id
@@ -63,6 +67,7 @@ FROM pim_catalog_product product
 WHERE product.identifier IN (:productIdentifiers)
 GROUP BY product.identifier
 SQL;
+
         $rows = $this->connection->executeQuery(
             $sql,
             ['productIdentifiers' => $productIdentifiers],
@@ -105,7 +110,7 @@ SQL;
             foreach ($valuesByChannel as $channelCode => $valuesByLocale) {
                 foreach ($valuesByLocale as $localeCode => $value) {
                     $masks[] = $this->maskItemGenerator->generate(
-                        $attributeCode,
+                        (string) $attributeCode,
                         $attributeType,
                         $channelCode,
                         $localeCode,
