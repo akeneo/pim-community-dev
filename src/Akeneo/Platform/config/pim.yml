@@ -83,3 +83,8 @@ framework:
 twig:
     globals:
         akeneo_pim_url: '%env(AKENEO_PIM_URL)%'
+
+# To remove when upgrading to Symfony 4 as it will be the default
+sensio_framework_extra:
+    router:
+        annotations: false
