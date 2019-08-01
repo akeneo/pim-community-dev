@@ -108,6 +108,10 @@ abstract class AbstractCompletenessTestCase extends TestCase
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($code, $family->getCode());
         $this->get('pim_catalog.updater.product')->update($product, $standardValues);
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
+        if (0 !== $errors->count()) {
+            throw new \Exception(sprintf('Impossible to setup test in %s: %s', static::class, $errors->get(0)->getMessage()));
+        }
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
