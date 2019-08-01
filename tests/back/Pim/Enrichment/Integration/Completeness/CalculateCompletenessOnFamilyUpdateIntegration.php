@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
@@ -103,18 +104,18 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
      * @param string           $channelCode
      * @param string           $localeCode
      *
-     * @return null|CompletenessInterface
+     * @return null|ProductCompleteness
      */
     private function getCompletenesses(
         ProductInterface $product,
         string $channelCode,
         string $localeCode
-    ): ?CompletenessInterface {
-        $completenesses = $product->getCompletenesses();
+    ): ?ProductCompleteness {
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
 
         foreach ($completenesses as $completeness) {
-            if ($channelCode === $completeness->getChannel()->getCode() &&
-                $localeCode === $completeness->getLocale()->getCode()) {
+            if ($channelCode === $completeness->channelCode() &&
+                $localeCode === $completeness->localeCode()) {
                 return $completeness;
             }
         }
@@ -136,7 +137,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         $completeness = $this->getCompletenesses($product, $channelCode, $localeCode);
 
         $this->assertNotNull($completeness);
-        $this->assertEquals($ratio, $completeness->getRatio());
+        $this->assertEquals($ratio, $completeness->ratio());
     }
 
     /**
