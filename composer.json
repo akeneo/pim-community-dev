@@ -109,7 +109,8 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "matthiasnoback/behat-remote-code-coverage-extension": "^0.3.0",
         "matthiasnoback/behat-local-code-coverage-extension": "^0.3.0",
-        "phpunit/phpcov": "^6.0"
+        "phpunit/phpcov": "^6.0",
+        "drupol/phpspec-code-coverage": "^5.0"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

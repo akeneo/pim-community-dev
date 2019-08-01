@@ -272,12 +272,14 @@ jobs:
       - run:
             name: Non critical Behat
             command: |
-                TESTFILES=$(docker-compose exec -T fpm sh -c "vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE"  | head 40 | circleci tests split --split-by=timings)
+                TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
+                echo $TESTSUITE
+                echo $TESTFILES
                 .circleci/run_behat.sh $TESTSUITE $TESTFILES
-#      - run:
-#            name: Critical Behat
-#            command: |
-#                TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
+      - run:
+            name: Critical Behat
+            command: |
+                TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
 #                .circleci/run_behat.sh critical $TESTFILES
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
@@ -375,9 +377,6 @@ workflows:
           - back_static_and_acceptance:
                 requires:
                     - setup
-#          - front_static_acceptance_and_integration:
-#                requires:
-#                    - setup
           - back_phpunit_integration:
                 requires:
                     - back_static_and_acceptance
@@ -401,6 +400,9 @@ workflows:
       jobs:
           - setup
           - back_static_and_acceptance:
+                requires:
+                    - setup
+          - front_static_acceptance_and_integration:
                 requires:
                     - setup
           - back_phpunit_integration:
