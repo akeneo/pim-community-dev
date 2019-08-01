@@ -6,27 +6,6 @@ imports:
 framework:
     test: ~
 
-doctrine:
-    orm:
-        entity_managers:
-            default:
-                metadata_cache_driver: array
-                query_cache_driver:    array
-
-monolog:
-    handlers:
-        main:
-            type:         fingers_crossed
-            action_level: error
-            handler:      nested
-        nested:
-            type:  stream
-            path:  '%kernel.logs_dir%/%kernel.environment%.log'
-            level: debug
-
-swiftmailer:
-    disable_delivery: true
-
 pim_import_export:
     record_mails: true
 
@@ -44,10 +23,3 @@ akeneo_pim_structure:
 
 parameters:
     installer_data:       PimEnterpriseInstallerBundle:minimal
-    upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'
-    archive_dir:          '%kernel.root_dir%/../var/cache/archive'
-    catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
-    asset_storage_dir:    '%kernel.root_dir%/../var/cache/file_storage/asset'
-    tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
-    upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
-    pimee_mass_edit_asset_batch_size: 5
