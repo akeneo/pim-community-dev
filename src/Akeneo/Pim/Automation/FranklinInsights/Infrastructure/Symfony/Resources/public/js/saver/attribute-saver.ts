@@ -76,7 +76,11 @@ export class AttributeSaver {
     }
   }
 
-  private static async notifySuccess(familyCode: string, attributeToCreateCount = 1, attributeCreatedCount = 1): Promise<void> {
+  private static async notifySuccess(
+    familyCode: string,
+    attributeToCreateCount = 1,
+    attributeCreatedCount = 1
+  ): Promise<void> {
     const family: Family = await FetcherRegistry.getFetcher('family').fetch(familyCode);
 
     const familyLabel = I18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
