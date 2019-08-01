@@ -14,10 +14,7 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/"
-        },
-        "classmap": [
-            "app/AppKernel.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-0": {
