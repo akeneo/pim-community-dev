@@ -348,9 +348,6 @@ workflows:
           - back_static_and_acceptance:
                 requires:
                     - build_dev
-#          - front_static_acceptance_and_integration:
-#                requires:
-#                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
@@ -376,6 +373,9 @@ workflows:
       jobs:
           - build_dev
           - back_static_and_acceptance:
+                requires:
+                    - setup
+          - front_static_acceptance_and_integration:
                 requires:
                     - build_dev
           - front_static_acceptance_and_integration:
