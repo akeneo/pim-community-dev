@@ -129,7 +129,7 @@ FROM pim_catalog_attribute AS att
 INNER JOIN pim_catalog_attribute_group AS g ON att.group_id = g.id
 LEFT JOIN pim_catalog_attribute_translation AS att_trans ON att.id = att_trans.foreign_key AND att_trans.locale = :locale
 WHERE att.useable_as_grid_filter = 1 AND att.code NOT IN (:attributesToExclude) $sqlSearch
-ORDER BY g.sort_order ASC, att.sort_order ASC
+ORDER BY g.sort_order ASC, att.sort_order ASC, label ASC
 LIMIT $limit OFFSET $offset
 SQL;
 
