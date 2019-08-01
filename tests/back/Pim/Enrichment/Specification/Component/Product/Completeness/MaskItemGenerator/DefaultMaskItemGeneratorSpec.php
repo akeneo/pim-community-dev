@@ -24,10 +24,4 @@ class DefaultMaskItemGeneratorSpec extends ObjectBehavior
         $this->forRawValue('attributeCode', 'channelCode', 'localeCode', 'value')
             ->shouldReturn(['attributeCode-channelCode-localeCode']);
     }
-
-    public function it_returns_nothing_when_null_value()
-    {
-        $this->forRawValue('attributeCode', 'channelCode', 'localeCode', null)
-            ->shouldReturn([]);
-    }
 }

@@ -23,30 +23,19 @@ class PriceCollectionMaskItemGeneratorSpec extends ObjectBehavior
     {
         $value = [
             ['amount' => 200, 'currency' => 'USD'],
-            ['amount' => 100, 'currency' => 'EUR']
+            ['amount' => 100, 'currency' => 'EUR'],
+            ['amount' => 50, 'currency' => 'GPB'],
         ];
         $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
-            ->shouldReturn(['attributeCode-EUR-USD-channelCode-localeCode']);
-    }
-
-    public function it_does_not_add_non_existing_currency()
-    {
-        $value = [
-            ['amount' => 200],
-            ['amount' => 100, 'currency' => 'EUR']
-        ];
-        $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
-            ->shouldReturn(['attributeCode-EUR-channelCode-localeCode']);
-    }
-
-    public function it_does_not_add_null_currency()
-    {
-        $value = [
-            ['amount' => 200, 'currency' => null],
-            ['amount' => 100, 'currency' => 'EUR']
-        ];
-        $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
-            ->shouldReturn(['attributeCode-EUR-channelCode-localeCode']);
+            ->shouldReturn([
+                'attributeCode-EUR-channelCode-localeCode',
+                'attributeCode-GPB-channelCode-localeCode',
+                'attributeCode-EUR-GPB-channelCode-localeCode',
+                'attributeCode-USD-channelCode-localeCode',
+                'attributeCode-EUR-USD-channelCode-localeCode',
+                'attributeCode-GPB-USD-channelCode-localeCode',
+                'attributeCode-EUR-GPB-USD-channelCode-localeCode',
+            ]);
     }
 
     public function it_does_not_add_null_amount()
@@ -56,6 +45,8 @@ class PriceCollectionMaskItemGeneratorSpec extends ObjectBehavior
             ['amount' => 100, 'currency' => 'EUR']
         ];
         $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
-            ->shouldReturn(['attributeCode-EUR-channelCode-localeCode']);
+            ->shouldReturn([
+                'attributeCode-EUR-channelCode-localeCode',
+            ]);
     }
 }

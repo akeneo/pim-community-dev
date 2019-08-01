@@ -109,6 +109,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct($code, $family->getCode());
         $this->get('pim_catalog.updater.product')->update($product, $standardValues);
         $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.validator.unique_value_set')->reset();
 
         return $product;
     }
