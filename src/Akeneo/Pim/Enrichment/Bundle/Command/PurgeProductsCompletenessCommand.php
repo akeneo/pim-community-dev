@@ -2,8 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,15 +18,31 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PurgeProductsCompletenessCommand extends ContainerAwareCommand
+class PurgeProductsCompletenessCommand extends Command
 {
+    protected static $defaultName = 'pim:completeness:purge-products';
+
+    /** @var CompletenessRemoverInterface */
+    private $completenessRemover;
+
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $queryBuilderFactory;
+
+    public function __construct(
+        CompletenessRemoverInterface $completenessRemover,
+        ProductQueryBuilderFactoryInterface $queryBuilderFactory
+    ) {
+        parent::__construct();
+        $this->completenessRemover = $completenessRemover;
+        $this->queryBuilderFactory = $queryBuilderFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:completeness:purge-products')
             ->addArgument(
                 'identifiers',
                 InputArgument::REQUIRED,
@@ -38,18 +57,14 @@ class PurgeProductsCompletenessCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $completenessRemover = $this->getContainer()
-            ->get('pim_catalog.remover.completeness');
-        $pqbFactory = $this->getContainer()
-            ->get('pim_catalog.query.product_query_builder_factory');
         $identifiers = $input->getArgument('identifiers');
 
-        $pqb = $pqbFactory->create();
+        $pqb = $this->queryBuilderFactory->create();
         $pqb->addFilter('id', Operators::IN_LIST, explode(',', $identifiers));
         $products = $pqb->execute();
 
         foreach ($products as $product) {
-            $completenessRemover->removeForProduct($product);
+            $this->completenessRemover->removeForProduct($product);
         }
     }
 }

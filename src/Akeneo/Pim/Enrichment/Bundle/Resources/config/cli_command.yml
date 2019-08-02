@@ -1,0 +1,20 @@
+services:
+    akeneo.pim.enrichment.command.purge_product_completeness:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\PurgeProductsCompletenessCommand'
+        arguments:
+            - '@pim_catalog.remover.completeness'
+            - '@pim_catalog.query.product_query_builder_factory'
+        tags:
+            - { name: 'console.command' }
+
+    akeneo.pim.enrichment.command.calculate_product_completeness:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.saver.product'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '%pim_job_product_batch_size%'
+        tags:
+            - { name: 'console.command' }
+
