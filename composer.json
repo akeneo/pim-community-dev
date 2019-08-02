@@ -18,9 +18,6 @@
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back"
         },
-        "classmap": [
-            "app/AppKernel.php"
-        ],
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/app/AppKernel.php",
             "vendor/akeneo/pim-community-dev/app/AppCache.php"
