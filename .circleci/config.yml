@@ -141,12 +141,12 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: docker-compose up -d
+                command: |
+                    docker-compose up -d
+                    vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
           - run:
                 name: Install database
-                command: |
-                    sleep 25 # wait mysql to be up
-                    docker-compose exec fpm bin/console --env=behat pim:install:db
+                command: docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
                 name: PHPunit Integration
                 command: |
@@ -177,12 +177,12 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: docker-compose up -d
+                command: |
+                    docker-compose up -d
+                    vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
           - run:
                 name: Install database
-                command: |
-                    sleep 25 # wait mysql to be up
-                    docker-compose exec fpm bin/console --env=behat pim:install:db
+                command: docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
                 name: PHPunit End to end
                 command: |
@@ -226,12 +226,12 @@ jobs:
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
-          command: docker-compose up -d
+          command: |
+            docker-compose up -d
+            vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
       - run:
           name: Install database
-          command: |
-            sleep 25 # wait mysql to be up
-            docker-compose exec fpm bin/console --env=behat pim:install:db
+          command: docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
           name: Non critical Behat
           command: |
@@ -294,11 +294,10 @@ jobs:
           command: |
             export ES_JAVA_OPTS='-Xms2g -Xmx2g'
             docker-compose up -d
+            vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
       - run:
           name: Run performance tests
-          command: |
-            sleep 25
-            .circleci/run_performance_tests.sh
+          command: .circleci/run_performance_tests.sh
       - store_test_results:
           path: var/tests/phpunit
       - store_artifacts:
