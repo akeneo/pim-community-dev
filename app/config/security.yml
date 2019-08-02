@@ -1,10 +1,4 @@
 security:
-    acl:
-        connection: default
-        cache:
-            id: security.acl.cache.doctrine
-            prefix: sf2_acl_
-
     providers:
         chain_provider:
             chain:
@@ -103,3 +97,9 @@ security:
         - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+
+acl:
+    connection: default
+    cache:
+        id: security.acl.cache.doctrine
+        prefix: sf2_acl_
