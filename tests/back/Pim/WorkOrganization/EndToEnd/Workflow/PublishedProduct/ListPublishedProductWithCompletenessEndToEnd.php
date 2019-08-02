@@ -70,7 +70,6 @@ class ListPublishedProductWithCompletenessEndToEnd extends AbstractPublishedProd
     {
         $client = $this->createAuthenticatedClient();
 
-        $encryptedId = rawurlencode($this->getEncryptedId('product_complete_en_locale'));
         $search = '{"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}';
         $client->request('GET', 'api/rest/v1/published-products?scope=ecommerce&locales=en_US&limit=2&search=' . $search);
         $searchEncoded = rawurlencode($search);

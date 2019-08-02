@@ -67,3 +67,24 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectProductModelIdsByUserAndDraftStatusQuery
         arguments:
             - '@database_connection'
+
+    pimee_workflow.query.select_category_codes_by_product_grid_filters:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Query\SelectCategoryCodesByProductGridFiltersQuery
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    pimee_workflow.query.is_user_owner_on_all_categories:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\IsUserOwnerOnAllCategoriesQuery
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.get_published_product_completenesses:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlGetPublishedProductCompletenesses'
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.save_published_product_completenesses:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlSavePublishedProductCompletenesses'
+        arguments:
+            - '@database_connection'

@@ -22,18 +22,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class PublishedProductNormalizer implements NormalizerInterface
 {
+    const FIELD_ASSOCIATIONS = 'associations';
+
     /** @var NormalizerInterface */
-    protected $productNormalizer;
+    private $propertiesNormalizer;
 
-    /** @var string[] */
-    protected $supportedFormat = ['standard'];
+    /** @var NormalizerInterface */
+    private $associationsNormalizer;
 
-    /**
-     * @param NormalizerInterface $productNormalizer
-     */
-    public function __construct(NormalizerInterface $productNormalizer)
-    {
-        $this->productNormalizer = $productNormalizer;
+    public function __construct(
+        NormalizerInterface $propertiesNormalizer,
+        NormalizerInterface $associationsNormalizer
+    ) {
+        $this->propertiesNormalizer = $propertiesNormalizer;
+        $this->associationsNormalizer = $associationsNormalizer;
     }
 
     /**
@@ -41,14 +43,16 @@ class PublishedProductNormalizer implements NormalizerInterface
      */
     public function normalize($publishedProduct, $format = null, array $context = [])
     {
-        $normalizedProduct = $this->productNormalizer->normalize($publishedProduct, $format, $context);
+        $data = $this->propertiesNormalizer->normalize($publishedProduct, $format, $context);
+        $data[self::FIELD_ASSOCIATIONS] = $this->associationsNormalizer->normalize($publishedProduct, $format, $context);
+
         $originalProduct = $publishedProduct->getOriginalProduct();
 
         if ($originalProduct->isVariant()) {
-            $normalizedProduct['parent'] = $originalProduct->getParent()->getCode();
+            $data['parent'] = $originalProduct->getParent()->getCode();
         }
 
-        return $normalizedProduct;
+        return $data;
     }
 
     /**
@@ -56,6 +60,6 @@ class PublishedProductNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof PublishedProductInterface && in_array($format, $this->supportedFormat);
+        return $data instanceof PublishedProductInterface && 'standard' === $format;
     }
 }

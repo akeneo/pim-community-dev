@@ -14,7 +14,6 @@ services:
         class: '%pim_catalog.saver.product.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pimee_workflow.manager.completeness'
             - '@event_dispatcher'
             - '@pimee_workflow.synchronizer.published_product_unique_data'
 

@@ -124,6 +124,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
@@ -131,6 +133,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
@@ -146,7 +149,6 @@ $rules = [
         'Oro\Bundle\FilterBundle',
         'Oro\Bundle\PimDataGridBundle',
         'Oro\Bundle\PimFilterBundle',
-
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
         'Doctrine\Common',
@@ -161,6 +163,9 @@ $rules = [
 
         // TIP-983: Workflow should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+
+        // TODO: Workflow should not be linked to channel
+        'Akeneo\Channel\Component\Model\ChannelInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
@@ -220,6 +225,7 @@ $rules = [
 
         // TIP-1032: Workflow should not depend on PIM/Enrichment normalizers
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer',
 
@@ -230,6 +236,22 @@ $rules = [
         // Notification
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
+        // Normalization of published product
+        'Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer',
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface',
+        'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer',
+        'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
+        'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
+        'Akeneo\UserManagement\Bundle\Context\UserContext',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Component'),
 ];
 
