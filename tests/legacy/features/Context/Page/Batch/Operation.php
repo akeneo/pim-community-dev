@@ -41,6 +41,7 @@ class Operation extends Wizard
         $choice = $this->spin(function () use ($operation) {
             $choices = $this->findAll('css', '.operation');
             foreach ($choices as $choice) {
+                var_dump(trim($choice->getText()));
                 if (trim($choice->getText()) === $operation) {
                     return $choice;
                 }
