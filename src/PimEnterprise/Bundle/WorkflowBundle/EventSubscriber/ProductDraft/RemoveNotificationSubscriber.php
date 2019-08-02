@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
+use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -67,7 +68,7 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
         $notification
             ->setType('error')
             ->setMessage($message)
-            ->setRoute('pim_enrich_product_edit')
+            ->setRoute($productDraft instanceof ProductModelDraft ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit')
             ->setRouteParams(['id' => $productDraft->getEntityWithValue()->getId()]);
 
         $options = [
