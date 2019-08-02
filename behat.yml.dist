@@ -157,7 +157,7 @@ legacy:
                 path: src/Kernel.php
                 class: Kernel
                 env: behat
-                debug: false
+                debug: true
         SensioLabs\Behat\PageObjectExtension:
             namespaces:
                 page: [Context\Page]
@@ -230,7 +230,7 @@ acceptance:
                 path: src/Kernel.php
                 class: Kernel
                 environment: test_fake
-                debug: false
+                debug: true
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 
