@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 
@@ -40,15 +41,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     public function applyMassActionParameters($queryBuilder, $inset, array $values)
     {
         if (!empty($values)) {
-            $condition = $inset ? Operators::IN_LIST : Operators::NOT_IN_LIST;
-            $queryBuilder->addFilter('id', $condition, $values);
-
-            $productModelIds = array_values(array_filter($values, function ($id) {
-                return 0 === strpos($id, 'product_model_');
-            }));
-            if (false === $inset && !empty($productModelIds)) {
-                $queryBuilder->addFilter('ancestor.id', Operators::NOT_IN_LIST, $productModelIds);
-            }
+            $inset ? $this->includeProducts($queryBuilder, $values) : $this->excludeProducts($queryBuilder, $values);
         }
     }
 
@@ -67,5 +60,30 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
             ->where($qb->expr()->in('p.id', $identifiers));
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Apply filters to include the products selected for the mass action
+     */
+    private function includeProducts(ProductQueryBuilderInterface $queryBuilder, array $productIds): void
+    {
+        $queryBuilder->addFilter('id', Operators::IN_LIST, $productIds);
+    }
+
+    /**
+     * Apply filters to exclude the products unselected for the mass action.
+     * For the product models, their variants must be excluded too.
+     */
+    private function excludeProducts(ProductQueryBuilderInterface $queryBuilder, array $productIds): void
+    {
+        $queryBuilder->addFilter('id', Operators::NOT_IN_LIST, $productIds);
+
+        $productModelIds = array_values(array_filter($productIds, function ($id) {
+            return 0 === strpos($id, 'product_model_');
+        }));
+
+        if (!empty($productModelIds)) {
+            $queryBuilder->addFilter('ancestor.id', Operators::NOT_IN_LIST, $productModelIds);
+        }
     }
 }
