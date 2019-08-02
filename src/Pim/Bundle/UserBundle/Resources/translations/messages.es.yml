@@ -104,7 +104,7 @@ role:
   create: Crear rol
 btn.create.role: Crear rol
 rights:
-  action: Permisiones
+  action: Permisos
 oro_security:
   acl_group:
     user: Usuarios

@@ -2,7 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Allgemein
-      additional.title: Ergänzend
+      additional.title: Weitere Informationen
       group_and_role.title: Gruppen und Rollen
       password.title: Passwort
       business_unit.title: Geschäftsbereich
@@ -43,7 +43,7 @@ Users Management: Benutzerverwaltung
 Create user: Benutzer anlegen
 btn.create.user: Benutzer anlegen
 New user: Neuer Benutzer
-Additional: Ergänzend
+Additional: Weitere Informationen
 Groups and Roles: Gruppen und Rollen
 Username: Benutzername
 Password: Passwort
@@ -89,7 +89,7 @@ user:
   default_product_grid_view:
     label: Standardansicht Produktliste
   default_grid_view:
-    none: Keine
+    none: keine
   timezone: Zeitzone
 Role: Rolle
 Owner: Eigentümer
@@ -142,7 +142,7 @@ oro:
       DEEP: Division
       GLOBAL: Unternehmen
       SYSTEM: System
-      NONE: Keine
+      NONE: keine
 Create group: Gruppe anlegen
 btn.create.user-group: Gruppe anlegen
 Has group: hat Gruppe
@@ -155,5 +155,5 @@ Username or Email: Benutzername oder E-Mail
 Forgot Password: Passwort vergessen
 Request: Anfrage
 Check Email: Posteingang überprüfen
-password_reset_email_sent: Eine E-Mail wurde an den Benutzer gesendet. Sie enthält einen Link für das Zurücksetzen des Passworts.
+password_reset_email_sent: Eine eMail wurde an den Benutzer geschickt. Diese enthält einen Link zum Zurücksetzen des Passworts.
 Go to homepage: Zurück zur Hauptseite

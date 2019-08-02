@@ -8,7 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Selecció de les categories
-          cancel: Cancelar
+          cancel: Cancel·lar
           confirm: Confirmar
         label: "{0} Tots els productes |{1} Una categoria seleccionada |] 1, Inf [{{ count }} categories seleccionades"
         edit: Editar
