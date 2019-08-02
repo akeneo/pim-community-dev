@@ -38,6 +38,8 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('comparators.yml');
         $loader->load('completeness.yml');
         $loader->load('completeness_checkers.yml');
+        $loader->load('completeness_queries.yml');
+        $loader->load('completeness_mask_generators.yml');
         $loader->load('console.yml');
         $loader->load('context.yml');
         $loader->load('converters.yml');

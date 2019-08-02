@@ -1,0 +1,17 @@
+services:
+    akeneo.pim.enrichment.completeness.mask_item_generator.generator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGenerator'
+        arguments:
+            - !tagged akeneo.pim.enrichment.completeness.mask_item_generator
+
+    akeneo.pim.enrichment.completeness.mask_item_generator.default:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\DefaultMaskItemGenerator'
+        tags: [{ name: akeneo.pim.enrichment.completeness.mask_item_generator }]
+
+    akeneo.pim.enrichment.completeness.mask_item_generator.price_collection:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\PriceCollectionMaskItemGenerator'
+        tags: [{ name: akeneo.pim.enrichment.completeness.mask_item_generator }]
+
+    akeneo.pim.enrichment.completeness.mask_item_generator.metric:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MetricMaskItemGenerator'
+        tags: [{ name: akeneo.pim.enrichment.completeness.mask_item_generator }]

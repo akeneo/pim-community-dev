@@ -20,7 +20,7 @@ final class EmptyValuesCleaner
             foreach ($rawValues as $attributeCode => $channelValues) {
                 foreach ($channelValues as $channel => $localeValues) {
                     foreach ($localeValues as $locale => $data) {
-                        if (!(null === $data || (is_string($data) && trim($data) === '') || (is_array($data) && empty($data)))) {
+                        if ($this->isFilled($data)) {
                             $results[$identifier][$attributeCode][$channel][$locale] = $data;
                         }
                     }
@@ -29,5 +29,28 @@ final class EmptyValuesCleaner
         }
 
         return $results;
+    }
+
+    private function isFilled($data): bool
+    {
+        if (null === $data) {
+            return false;
+        }
+
+        if ('' === $data) {
+            return false;
+        }
+
+        if (is_array($data)) {
+            foreach ($data as $subValue) {
+                if ($this->isFilled($subValue)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }
