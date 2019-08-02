@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-8594: Fix two many spaces in the reference entities sub menu navigation
+
 # 3.2.2 (2019-08-01)
 
 # 3.2.1 (2019-07-31)

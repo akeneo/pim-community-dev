@@ -388,7 +388,6 @@ class RecordLabel extends React.Component<RecordLabelProps> {
     return (
       <React.Fragment>
         {__('pim_reference_entity.reference_entity.tab.records')}
-        <span>&nbsp;</span>
         <span className="AknColumn-span">({grid.totalCount})</span>
       </React.Fragment>
     );
