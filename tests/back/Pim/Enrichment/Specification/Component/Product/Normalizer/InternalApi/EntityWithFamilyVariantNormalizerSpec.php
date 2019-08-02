@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Inter
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
@@ -39,7 +40,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         CatalogContext $catalogContext,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         AxisValueLabelsNormalizer $simpleSelectOptionNormalizer,
-        AxisValueLabelsNormalizer $metricNormalizer
+        AxisValueLabelsNormalizer $metricNormalizer,
+        AxisValueLabelsNormalizer $booleanNormalizer
     ) {
         $this->beConstructedWith(
             $imageNormalizer,
@@ -52,7 +54,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $catalogContext,
             $attributeOptionRepository,
             $simpleSelectOptionNormalizer,
-            $metricNormalizer
+            $metricNormalizer,
+            $booleanNormalizer
         );
     }
 
@@ -84,7 +87,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         Collection $productCompletenesses,
         $attributeOptionRepository,
         $simpleSelectOptionNormalizer,
-        $metricNormalizer
+        $metricNormalizer,
+        $booleanNormalizer
     ) {
         $context = [
             'locale' => 'en_US'
@@ -143,14 +147,16 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             ->willReturn(['NORMALIZED_COMPLETENESS']);
 
         $simpleSelectOptionNormalizer->supports(Argument::any())->willReturn(false);
-        $simpleSelectOptionNormalizer->supports('pim_catalog_simpleselect')->willReturn(true);
+        $simpleSelectOptionNormalizer->supports(AttributeTypes::OPTION_SIMPLE_SELECT)->willReturn(true);
         $simpleSelectOptionNormalizer->normalize($colorValue, 'fr_FR')->willReturn('Blanc');
         $simpleSelectOptionNormalizer->normalize($colorValue, 'en_US')->willReturn('White');
 
         $metricNormalizer->supports(Argument::any())->willReturn(false);
-        $metricNormalizer->supports('pim_catalog_metric')->willReturn(true);
+        $metricNormalizer->supports(AttributeTypes::METRIC)->willReturn(true);
         $metricNormalizer->normalize($weightValue, 'fr_FR')->willReturn('10 KILOGRAM');
         $metricNormalizer->normalize($weightValue, 'en_US')->willReturn('10 KILOGRAM');
+
+        $booleanNormalizer->supports(Argument::any())->willReturn(false);
 
         $this->normalize($variantProduct, 'internal_api', $context)->shouldReturn([
             'id'                 => 42,
@@ -213,7 +219,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
         $completeVariantProducts->values()->willReturn(['NORMALIZED COMPLETENESS']);
 
-        $simpleSelectOptionNormalizer->supports('pim_catalog_simpleselect')->willReturn(true);
+        $simpleSelectOptionNormalizer->supports(AttributeTypes::OPTION_SIMPLE_SELECT)->willReturn(true);
         $simpleSelectOptionNormalizer->normalize($colorValue, 'fr_FR')->willReturn('Blanc');
         $simpleSelectOptionNormalizer->normalize($colorValue, 'en_US')->willReturn('White');
 
@@ -233,5 +239,63 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             'model_type'         => 'product_model',
             'completeness'       => ['NORMALIZED COMPLETENESS']
         ]);
+    }
+
+    function it_normalizes_an_entity_with_family_variant_with_a_boolean_attribute_as_axis(
+        $localeRepository,
+        $attributesProvider,
+        $variantProductRatioQuery,
+        ProductModelInterface $productModel,
+        AttributeInterface $booleanAttribute,
+        ValueInterface $boolValue,
+        CompleteVariantProducts $completeVariantProducts,
+        AxisValueLabelsNormalizer $simpleSelectOptionNormalizer,
+        AxisValueLabelsNormalizer $metricNormalizer,
+        AxisValueLabelsNormalizer $booleanNormalizer
+    ) {
+        $context = [
+            'locale' => 'en_US'
+        ];
+
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
+        $productModel->getLabel('fr_FR', null)->willReturn('Tshirt Non');
+        $productModel->getLabel('en_US', null)->willReturn('Tshirt No');
+        $productModel->getId()->willReturn(5);
+        $productModel->getCode()->willReturn('tshirt_no');
+        $attributesProvider->getAxes($productModel)->willReturn([$booleanAttribute]);
+        $booleanAttribute->getCode()->willReturn('a_yes_no');
+        $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
+        $productModel->getValue('a_yes_no')->willReturn($boolValue);
+        $boolValue->__toString()->willReturn(false);
+        $boolValue->getData()->willReturn(false);
+
+        $simpleSelectOptionNormalizer->supports(Argument::any())->willReturn(false);
+
+        $metricNormalizer->supports(Argument::any())->willReturn(false);
+
+        $booleanNormalizer->supports(AttributeTypes::BOOLEAN)->willReturn(true);
+        $booleanNormalizer->normalize($boolValue, 'fr_FR')->willReturn('0');
+        $booleanNormalizer->normalize($boolValue, 'en_US')->willReturn('0');
+
+        $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
+        $completeVariantProducts->values()->willReturn(['NORMALIZED COMPLETENESS']);
+        $this->normalize($productModel, 'internal_api', $context)->shouldReturn(
+            [
+                'id' => 5,
+                'identifier' => 'tshirt_no',
+                'axes_values_labels' => [
+                    'fr_FR' => '0',
+                    'en_US' => '0',
+                ],
+                'labels' => [
+                    'fr_FR' => 'Tshirt Non',
+                    'en_US' => 'Tshirt No',
+                ],
+                'order' => ['0'],
+                'image' => null,
+                'model_type' => 'product_model',
+                'completeness' => ['NORMALIZED COMPLETENESS'],
+            ]
+        );
     }
 }

@@ -68,6 +68,8 @@ extensions:
         module: pim/job/common/edit/upload
         parent: pim-job-instance-xlsx-product-model-import-show-upload-switcher-item
         position: 50
+        config:
+            type: xlsx
 
     pim-job-instance-xlsx-product-model-import-show-upload-button:
         module: pim/job/common/edit/upload-launch

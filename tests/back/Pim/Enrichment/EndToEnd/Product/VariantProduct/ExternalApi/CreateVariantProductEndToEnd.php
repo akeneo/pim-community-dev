@@ -834,7 +834,7 @@ JSON;
             "a_yes_no": [{
                 "locale": null,
                 "scope": null,
-                "data": false
+                "data": true
             }],
             "a_localizable_scopable_image": [{
                 "locale": "en_US",
@@ -912,7 +912,7 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
                 'a_yes_no'                           => [
-                    ['locale' => null, 'scope' => null, 'data' => false],
+                    ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'a_text_area'                           => [
                     ['locale' => null, 'scope' => null, 'data' => 'this is a very very very very very long  text'],
@@ -1045,7 +1045,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope' => null,
-                        'data' => false,
+                        'data' => true,
                     ],
                 ],
             ],

@@ -2,21 +2,72 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\EntityWithFamilyVariant\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings as GetValuesOfSiblingsInterface;
+use Doctrine\DBAL\Connection;
 
 /**
+ * @author    Mathias METAYER <mathias.metayer@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface GetValuesOfSiblings
+final class GetValuesOfSiblings implements GetValuesOfSiblingsInterface
 {
-    /**
-     * Returns the values of the siblings of an EntityWithVariantInterface, indexed by identifier
-     *
-     * @return ValueCollectionInterface[]
-     */
-    public function for(EntityWithFamilyVariantInterface $entity): array;
+    /** @var Connection  */
+    private $connection;
+
+    /** @var ValueCollectionFactoryInterface */
+    private $valueCollectionFactory;
+
+    public function __construct(Connection $connection, ValueCollectionFactoryInterface $valueCollectionFactory)
+    {
+        $this->connection = $connection;
+        $this->valueCollectionFactory = $valueCollectionFactory;
+    }
+
+    public function for(EntityWithFamilyVariantInterface $entity): array
+    {
+        if (null === $entity->getParent()) {
+            return [];
+        }
+
+        if ($entity instanceof ProductModelInterface) {
+            $identifier = $entity->getCode();
+            $sql = <<<SQL
+SELECT code as identifier, raw_values
+FROM pim_catalog_product_model
+WHERE parent_id = :parentId
+AND code != :identifier;
+SQL;
+        } elseif ($entity instanceof ProductInterface) {
+            $identifier = $entity->getIdentifier();
+            $sql = <<<SQL
+SELECT identifier, raw_values
+FROM pim_catalog_product
+WHERE product_model_id = :parentId
+AND identifier != :identifier;
+SQL;
+        }
+
+        $valuesOfSiblings = [];
+        $rows = $this->connection->executeQuery(
+            $sql,
+            [
+                'parentId' => $entity->getParent()->getId(),
+                'identifier' => $identifier
+            ]
+        );
+        foreach ($rows as $row) {
+            $valuesOfSiblings[$row['identifier']] = $this->valueCollectionFactory->createFromStorageFormat(
+                json_decode($row['raw_values'], true)
+            );
+        }
+
+        return $valuesOfSiblings;
+    }
 }

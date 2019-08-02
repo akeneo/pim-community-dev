@@ -9,18 +9,10 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
- * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ * @author Elodie Raposo <elodie.raposo@akeneo.com>
  */
-class SimpleSelectOptionNormalizer implements AxisValueLabelsNormalizer
+class BooleanNormalizer implements AxisValueLabelsNormalizer
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeOptionRepository;
-
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeOptionRepository)
-    {
-        $this->attributeOptionRepository = $attributeOptionRepository;
-    }
-
     /**
      * @param ValueInterface $value
      * @param string         $locale
@@ -29,16 +21,11 @@ class SimpleSelectOptionNormalizer implements AxisValueLabelsNormalizer
      */
     public function normalize(ValueInterface $value, string $locale): string
     {
-        $optionCode = $value->getData();
-        $option = $this->attributeOptionRepository->findOneByIdentifier($value->getAttributeCode().'.'.$optionCode);
-        $option->setLocale($locale);
-        $label = $option->getTranslation()->getLabel();
-
-        return empty($label) ? '[' . $option->getCode() . ']' : $label;
+        return (true === $value->getData() ? '1' : '0');
     }
 
     public function supports(string $attributeType): bool
     {
-        return AttributeTypes::OPTION_SIMPLE_SELECT === $attributeType;
+        return AttributeTypes::BOOLEAN === $attributeType;
     }
 }

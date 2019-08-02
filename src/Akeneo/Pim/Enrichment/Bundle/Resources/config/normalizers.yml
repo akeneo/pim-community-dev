@@ -70,6 +70,9 @@ services:
             - '@pim_catalog.normalizer.standard.product.metric'
             - '@pim_catalog.localization.localizer.metric'
 
+    pim_enrich.normalizer.entity_with_family_variant.boolean.label.normalizer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\BooleanNormalizer'
+
     pim_enrich.normalizer.completeness:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessNormalizer'
         tags:

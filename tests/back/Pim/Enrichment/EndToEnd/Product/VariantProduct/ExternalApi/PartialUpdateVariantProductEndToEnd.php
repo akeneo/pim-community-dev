@@ -94,7 +94,7 @@ class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
             {
               "locale": null,
               "scope": null,
-              "data": false
+              "data": true
             }
           ]
         }
@@ -144,7 +144,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => false,
+                        "data"   => true,
                     ],
                 ],
             ],
