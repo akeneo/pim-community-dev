@@ -72,7 +72,7 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Query\SelectCategoryCodesByProductGridFiltersQuery
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
 
     pimee_workflow.query.is_user_owner_on_all_categories:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\IsUserOwnerOnAllCategoriesQuery
