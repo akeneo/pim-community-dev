@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Query;
+namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -218,6 +218,6 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
 
     private function getValuesOfSiblings(EntityWithFamilyVariantInterface $entity): array
     {
-        return $this->get('pim_catalog.query.get_values_of_siblings')->for($entity);
+        return $this->get('akeneo.pim.enrichment.product_model.query.get_values_of_siblings')->for($entity);
     }
 }

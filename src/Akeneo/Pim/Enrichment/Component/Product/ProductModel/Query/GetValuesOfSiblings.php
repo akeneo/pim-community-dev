@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\EntityWithFamilyVariant\Query;
+namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings;
 use Doctrine\DBAL\Connection;
-use Pim\Component\Catalog\EntityWithFamilyVariant\Query\GetValuesOfSiblings;
-use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
