@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
+use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * This class ensures two things:
@@ -33,60 +32,39 @@ class ProductModelDescendantsSaver implements SaverInterface
     /** @var BulkIndexerInterface */
     private $bulkProductModelIndexer;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $pqbFactory;
+
     /** @var BulkIndexerInterface */
     private $bulkProductIndexer;
-
-    /** @var ObjectManager */
-    private $objectManager;
-
-    /** @var CompletenessManager */
-    private $completenessManager;
 
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $pqbFactory;
-
     /** @var IndexerInterface */
     private $productModelIndexer;
 
-    /** @var BulkObjectDetacherInterface */
-    private $bulkObjectDetacher;
+    /** @var ComputeAndPersistProductCompletenesses */
+    private $computeAndPersistProductCompletenesses;
 
     /** @var integer */
     private $batchSize;
 
-    /**
-     * @param ObjectManager                       $entityManager
-     * @param ProductModelRepositoryInterface     $productModelRepository
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param CompletenessManager                 $completenessManager
-     * @param BulkIndexerInterface                $bulkProductIndexer
-     * @param BulkIndexerInterface                $bulkProductModelIndexer
-     * @param IndexerInterface                    $productModelIndexer
-     * @param BulkObjectDetacherInterface         $bulkObjectDetacher
-     * @param integer                             $batchSize
-     */
     public function __construct(
-        ObjectManager $entityManager,
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        CompletenessManager $completenessManager,
         BulkIndexerInterface $bulkProductIndexer,
         BulkIndexerInterface $bulkProductModelIndexer,
         IndexerInterface $productModelIndexer,
-        BulkObjectDetacherInterface $bulkObjectDetacher,
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         int $batchSize
     ) {
-        $this->objectManager = $entityManager;
         $this->productModelRepository = $productModelRepository;
-        $this->completenessManager = $completenessManager;
+        $this->pqbFactory = $pqbFactory;
         $this->bulkProductIndexer = $bulkProductIndexer;
         $this->bulkProductModelIndexer = $bulkProductModelIndexer;
-        $this->pqbFactory = $pqbFactory;
         $this->productModelIndexer = $productModelIndexer;
-        $this->bulkObjectDetacher = $bulkObjectDetacher;
+        $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
         $this->batchSize = $batchSize;
     }
 
@@ -118,18 +96,23 @@ class ProductModelDescendantsSaver implements SaverInterface
             $productsBatch[] = $product;
 
             if (++$count % $this->batchSize === 0) {
-                $this->computeCompletenesses($productsBatch);
+                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers(
+                    array_map(function (ProductInterface $product) {
+                        return $product->getIdentifier();
+                    }, $productsBatch)
+                );
                 $this->indexProducts($productsBatch);
-
-                $this->bulkObjectDetacher->detachAll($productsBatch);
                 $productsBatch = [];
             }
         }
 
         if (!empty($productsBatch)) {
-            $this->computeCompletenesses($productsBatch);
+            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers(
+                array_map(function (ProductInterface $product) {
+                    return $product->getIdentifier();
+                }, $productsBatch)
+            );
             $this->indexProducts($productsBatch);
-            $this->bulkObjectDetacher->detachAll($productsBatch);
         }
     }
 
@@ -172,24 +155,9 @@ class ProductModelDescendantsSaver implements SaverInterface
     }
 
     /**
-     * Computes the completeness of the given products
-     *
-     * @param array $products
-     */
-    private function computeCompletenesses(array $products): void
-    {
-        foreach ($products as $product) {
-            $this->completenessManager->generateMissingForProduct($product);
-            $this->objectManager->persist($product);
-        }
-
-        $this->objectManager->flush();
-    }
-
-    /**
      * Indexes a list of products by bulk of 100.
      *
-     * @param array $products
+     * @param ProductInterface[] $products
      */
     private function indexProducts(array $products): void
     {

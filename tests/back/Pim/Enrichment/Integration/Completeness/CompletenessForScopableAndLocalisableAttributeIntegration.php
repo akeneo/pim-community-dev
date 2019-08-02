@@ -26,51 +26,38 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
             ['values' => $this->getSandalStandardValues()]
         );
 
-        $completenesses = $sandals->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
+        $completenesses = $this->getProductCompletenesses()->fromProductId($sandals->getId());
         $this->assertCount(4, $completenesses);
 
-        $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'mobile', 'en_US');
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('mobile', $completeness->getChannel()->getCode());
-        $this->assertEquals(40, $completeness->getRatio());
-        $this->assertEquals(5, $completeness->getRequiredCount());
-        $this->assertEquals(3, $completeness->getMissingCount());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'en_US');
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals('mobile', $completeness->channelCode());
+        $this->assertEquals(40, $completeness->ratio());
+        $this->assertEquals(5, $completeness->requiredCount());
         $this->assertMissingAttributeCodes($completeness, ['name', 'price', 'size']);
 
-        $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'en_US');
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('tablet', $completeness->getChannel()->getCode());
-        $this->assertEquals(25, $completeness->getRatio());
-        $this->assertEquals(8, $completeness->getRequiredCount());
-        $this->assertEquals(6, $completeness->getMissingCount());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale('tablet', 'en_US');
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals('tablet', $completeness->channelCode());
+        $this->assertEquals(25, $completeness->ratio());
+        $this->assertEquals(8, $completeness->requiredCount());
         $this->assertMissingAttributeCodes(
             $completeness,
             ['name', 'price', 'size', 'description', 'rating', 'side_view']
         );
 
-        $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'mobile', 'fr_FR');
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('fr_FR', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('mobile', $completeness->getChannel()->getCode());
-        $this->assertEquals(60, $completeness->getRatio());
-        $this->assertEquals(5, $completeness->getRequiredCount());
-        $this->assertEquals(2, $completeness->getMissingCount());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'fr_FR');
+        $this->assertEquals('fr_FR', $completeness->localeCode());
+        $this->assertEquals('mobile', $completeness->channelCode());
+        $this->assertEquals(60, $completeness->ratio());
+        $this->assertEquals(5, $completeness->requiredCount());
         $this->assertMissingAttributeCodes($completeness, ['price', 'size']);
 
-        $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'fr_FR');
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('fr_FR', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('tablet', $completeness->getChannel()->getCode());
-        $this->assertEquals(50, $completeness->getRatio());
-        $this->assertEquals(8, $completeness->getRequiredCount());
-        $this->assertEquals(4, $completeness->getMissingCount());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale('tablet', 'fr_FR');
+        $this->assertEquals('fr_FR', $completeness->localeCode());
+        $this->assertEquals('tablet', $completeness->channelCode());
+        $this->assertEquals(50, $completeness->ratio());
+        $this->assertEquals(8, $completeness->requiredCount());
         $this->assertMissingAttributeCodes($completeness, ['price', 'size', 'rating', 'side_view']);
     }
 
@@ -84,48 +71,35 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
             ['values' => $this->getSneakerStandardValues()]
         );
 
-        $completenesses = $sandals->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
+        $completenesses = $this->getProductCompletenesses()->fromProductId($sandals->getId());
         $this->assertCount(4, $completenesses);
 
-        $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'mobile', 'en_US');
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('mobile', $completeness->getChannel()->getCode());
-        $this->assertEquals(100, $completeness->getRatio());
-        $this->assertEquals(5, $completeness->getRequiredCount());
-        $this->assertEquals(0, $completeness->getMissingCount());
-        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'en_US');
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals('mobile', $completeness->channelCode());
+        $this->assertEquals(100, $completeness->ratio());
+        $this->assertEquals(5, $completeness->requiredCount());
+        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
 
-        $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'en_US');
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('tablet', $completeness->getChannel()->getCode());
-        $this->assertEquals(88, $completeness->getRatio());
-        $this->assertEquals(9, $completeness->getRequiredCount());
-        $this->assertEquals(1, $completeness->getMissingCount());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale('tablet', 'en_US');
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals('tablet', $completeness->channelCode());
+        $this->assertEquals(88, $completeness->ratio());
+        $this->assertEquals(9, $completeness->requiredCount());
         $this->assertMissingAttributeCodes($completeness, ['side_view']);
 
-        $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'mobile', 'fr_FR');
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('fr_FR', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('mobile', $completeness->getChannel()->getCode());
-        $this->assertEquals(100, $completeness->getRatio());
-        $this->assertEquals(5, $completeness->getRequiredCount());
-        $this->assertEquals(0, $completeness->getMissingCount());
-        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'fr_FR');
+        $this->assertEquals('fr_FR', $completeness->localeCode());
+        $this->assertEquals('mobile', $completeness->channelCode());
+        $this->assertEquals(100, $completeness->ratio());
+        $this->assertEquals(5, $completeness->requiredCount());
+        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
 
-        $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'fr_FR');
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('fr_FR', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('tablet', $completeness->getChannel()->getCode());
-        $this->assertEquals(77, $completeness->getRatio());
-        $this->assertEquals(9, $completeness->getRequiredCount());
-        $this->assertEquals(2, $completeness->getMissingCount());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale('tablet', 'fr_FR');
+        $this->assertEquals('fr_FR', $completeness->localeCode());
+        $this->assertEquals('tablet', $completeness->channelCode());
+        $this->assertEquals(77, $completeness->ratio());
+        $this->assertEquals(9, $completeness->requiredCount());
         $this->assertMissingAttributeCodes($completeness, ['description', 'side_view']);
     }
 
@@ -150,32 +124,6 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
     protected function getConfiguration()
     {
         return $this->catalog->useFunctionalCatalog('footwear');
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param string           $channelCode
-     * @param string           $localeCode
-     *
-     * @throws \Exception
-     * @return CompletenessInterface
-     */
-    private function getCompletenessByChannelAndLocaleCodes(ProductInterface $product, $channelCode, $localeCode)
-    {
-        $completenesses = $product->getCompletenesses()->toArray();
-
-        foreach ($completenesses as $completeness) {
-            if ($localeCode === $completeness->getLocale()->getCode() &&
-                $channelCode === $completeness->getChannel()->getCode()) {
-                return $completeness;
-            }
-        }
-
-        throw new \Exception(sprintf(
-            'No completeness for the channel "%s" and locale "%s"',
-            $channelCode,
-            $localeCode
-        ));
     }
 
     /**

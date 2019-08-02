@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness\AttributeType;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
@@ -66,18 +68,17 @@ class IdentifierAttributeTypeCompletenessIntegration extends AbstractCompletenes
      */
     protected function assertComplete(ProductInterface $product)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+
         $this->assertCount(1, $completenesses);
 
-        $completeness = current($completenesses);
+        /** @var ProductCompleteness $completeness */
+        $completeness = $completenesses->getIterator()->current();
 
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals('ecommerce', $completeness->getChannel()->getCode());
-        $this->assertEquals(100, $completeness->getRatio());
-        $this->assertEquals(1, $completeness->getRequiredCount());
-        $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals('ecommerce', $completeness->channelCode());
+        $this->assertEquals(100, $completeness->ratio());
+        $this->assertEquals(1, $completeness->requiredCount());
+        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
     }
 }

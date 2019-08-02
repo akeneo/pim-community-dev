@@ -131,6 +131,16 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.get_product_completenesses:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetProductCompletenesses'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.save_product_completenesses:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlSaveProductCompletenesses'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers'
         arguments:
@@ -216,5 +226,15 @@ services:
 
     akeneo.pim.enrichment.product_model.query.count_variant_products:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\CountVariantProducts
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.channel.query.get_labels:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetChannelLabels
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.attribute.query.get_labels:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetAttributeLabels
         arguments:
             - '@database_connection'

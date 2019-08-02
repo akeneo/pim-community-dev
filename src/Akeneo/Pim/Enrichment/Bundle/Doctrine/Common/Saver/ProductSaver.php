@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -24,29 +23,18 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /** @var ProductUniqueDataSynchronizer */
     protected $uniqueDataSynchronizer;
 
-    /**
-     * @param ObjectManager                 $objectManager
-     * @param CompletenessManager           $completenessManager
-     * @param EventDispatcherInterface      $eventDispatcher
-     * @param ProductUniqueDataSynchronizer $uniqueDataSynchronizer
-     */
     public function __construct(
         ObjectManager $objectManager,
-        CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer
     ) {
         $this->objectManager = $objectManager;
-        $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->uniqueDataSynchronizer = $uniqueDataSynchronizer;
     }
@@ -62,7 +50,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
-        $this->completenessManager->generateMissingForProduct($product);
         $this->uniqueDataSynchronizer->synchronize($product);
 
         $this->objectManager->persist($product);
@@ -92,7 +79,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
-            $this->completenessManager->generateMissingForProduct($product);
             $this->uniqueDataSynchronizer->synchronize($product);
 
             $this->objectManager->persist($product);

@@ -36,7 +36,8 @@ class IndexProductModelCompleteDataSubscriber implements EventSubscriberInterfac
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'computeNumberOfCompleteVariantProduct'
+            StorageEvents::POST_SAVE => ['computeNumberOfCompleteVariantProduct', 300],
+            StorageEvents::POST_SAVE_ALL => ['computeNumberOfCompleteVariantProducts', 300]
         ];
     }
 
@@ -49,16 +50,26 @@ class IndexProductModelCompleteDataSubscriber implements EventSubscriberInterfac
      */
     public function computeNumberOfCompleteVariantProduct(GenericEvent $event): void
     {
-        $product = $event->getSubject();
-        if (!$product instanceof ProductInterface || !$product->isVariant()) {
+        $isUnitary = $event->getArguments()['unitary'] ?? true;
+
+        if (!$isUnitary) {
             return;
         }
 
-        if (null === $productModel = $product->getParent()) {
-            return;
-        }
+        $this->computeNumberOfCompleteVariantProducts(new GenericEvent([$event->getSubject()], $event->getArguments()));
+    }
 
-        $this->indexProductModel($productModel);
+    public function computeNumberOfCompleteVariantProducts(GenericEvent $event): void
+    {
+        $products = $event->getSubject();
+
+        $products = array_filter($products, function ($product): bool {
+            return $product instanceof ProductInterface && $product->isVariant();
+        });
+
+        foreach ($products as $product) {
+            $this->indexProductModel($product->getParent());
+        }
     }
 
     /**

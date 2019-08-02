@@ -3,8 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness\AttributeType;
 
 use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\Completeness\AbstractCompletenessTestCase;
 
@@ -309,14 +309,11 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
 
         $completeness = $this->getCompletenessByChannel($product, $channelCode);
 
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals($channelCode, $completeness->getChannel()->getCode());
-        $this->assertEquals(100, $completeness->getRatio());
-        $this->assertEquals(2, $completeness->getRequiredCount());
-        $this->assertEquals(0, $completeness->getMissingCount());
-        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals($channelCode, $completeness->channelCode());
+        $this->assertEquals(100, $completeness->ratio());
+        $this->assertEquals(2, $completeness->requiredCount());
+        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
     }
 
     /**
@@ -333,14 +330,12 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
 
         $completeness = $this->getCompletenessByChannel($product, $channelCode);
 
-        $this->assertNotNull($completeness->getLocale());
-        $this->assertEquals('en_US', $completeness->getLocale()->getCode());
-        $this->assertNotNull($completeness->getChannel());
-        $this->assertEquals($channelCode, $completeness->getChannel()->getCode());
-        $this->assertEquals(50, $completeness->getRatio());
-        $this->assertEquals(2, $completeness->getRequiredCount());
-        $this->assertEquals(1, $completeness->getMissingCount());
-        $this->assertMissingAttributeCodes($completeness, $expectedAttributeCodes);
+        $this->assertEquals('en_US', $completeness->localeCode());
+        $this->assertEquals($channelCode, $completeness->channelCode());
+        $this->assertEquals(50, $completeness->ratio());
+        $this->assertEquals(2, $completeness->requiredCount());
+        $this->assertEquals(1, count($completeness->missingAttributeCodes()));
+        $this->assertMissingAttributeCodes($completeness, $completeness->missingAttributeCodes());
     }
 
     /**
@@ -348,16 +343,14 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
      * @param string           $channelCode
      *
      * @throws \Exception
-     * @return CompletenessInterface
+     * @return ProductCompleteness
      */
     private function getCompletenessByChannel(ProductInterface $product, $channelCode)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-
-        foreach ($completenesses as $completeness) {
-            if ($channelCode === $completeness->getChannel()->getCode()) {
-                return $completeness;
-            }
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale($channelCode, 'en_US');
+        if (null !== $completeness) {
+            return $completeness;
         }
 
         throw new \Exception(

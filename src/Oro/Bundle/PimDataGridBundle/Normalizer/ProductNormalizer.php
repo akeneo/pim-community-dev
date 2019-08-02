@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -29,16 +30,21 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /** @var ImageNormalizer */
     protected $imageNormalizer;
 
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     /**
      * @param CollectionFilterInterface $filter
      * @param ImageNormalizer           $imageNormalizer
      */
     public function __construct(
         CollectionFilterInterface $filter,
-        ImageNormalizer $imageNormalizer
+        ImageNormalizer $imageNormalizer,
+        GetProductCompletenesses $getProductCompletenesses
     ) {
         $this->filter = $filter;
         $this->imageNormalizer = $imageNormalizer;
+        $this->getProductCompletenesses = $getProductCompletenesses;
     }
 
     /**
@@ -64,7 +70,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data['updated'] = $this->normalizer->normalize($product->getUpdated(), $format, $context);
         $data['label'] = $product->getLabel($locale, $scope);
         $data['image'] = $this->normalizeImage($product->getImage(), $context);
-        $data['completeness'] = $this->getCompleteness($product, $context);
+        $data['completeness'] = $this->getCompletenessRatio($product, $context);
         $data['document_type'] = IdEncoder::PRODUCT_TYPE;
         $data['technical_id'] = $product->getId();
         $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
@@ -126,20 +132,14 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return int|null
      */
-    protected function getCompleteness(ProductInterface $product, array $context)
+    protected function getCompletenessRatio(ProductInterface $product, array $context): ?int
     {
-        $completenesses = null;
-        $locale = current($context['locales']);
+        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
         $channel = current($context['channels']);
+        $locale = current($context['locales']);
+        $completeness = $completenesses->getCompletenessForChannelAndLocale($channel, $locale);
 
-        foreach ($product->getCompletenesses() as $completeness) {
-            if ($completeness->getChannel()->getCode() === $channel &&
-                $completeness->getLocale()->getCode() === $locale) {
-                $completenesses = $completeness->getRatio();
-            }
-        }
-
-        return $completenesses;
+        return $completeness ? $completeness->ratio() : null;
     }
 
     /**
