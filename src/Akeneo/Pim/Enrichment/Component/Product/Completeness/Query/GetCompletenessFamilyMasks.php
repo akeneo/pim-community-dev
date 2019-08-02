@@ -17,6 +17,8 @@ interface GetCompletenessFamilyMasks
      * @param string[] $familyCodes
      *
      * @return CompletenessFamilyMask[]
+     *
+     * @throws NonExistingFamiliesException
      */
     public function fromFamilyCodes(array $familyCodes): array;
 }

@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\NonExistingFamiliesException;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -19,53 +20,37 @@ final class SqlGetCompletenessFamilyMasks implements GetCompletenessFamilyMasks
     /** @var Connection */
     private $connection;
 
-    /** @var array */
-    private $cache;
-
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->cache = [];
     }
 
     /**
-     * @param string[] $familyCodes
-     *
-     * @return CompletenessFamilyMask[]
+     * {@inheritdoc}
      */
     public function fromFamilyCodes(array $familyCodes): array
     {
-        $result = [];
-        $nonFetchedFamilyCodes = [];
-        foreach ($familyCodes as $familyCode) {
-            if (isset($this->cache[$familyCode])) {
-                $result[$familyCode] = $this->cache[$familyCode];
-            } else {
-                $nonFetchedFamilyCodes[] = $familyCode;
-            }
-        }
-
-        $fetched = $this->fetch($nonFetchedFamilyCodes);
-        foreach ($fetched as $familyCode => $masks) {
-            $this->cache[$familyCode] = $masks;
-            $result[$familyCode] = $masks;
-        }
-
-        return $result;
-    }
-
-    private function fetch(array $familyCodes): array
-    {
         $sql = <<<SQL
-SELECT 
+SELECT
     family.code AS family_code,
     channel_code,
     locale_code,
     JSON_ARRAYAGG(
         CONCAT(
             IF(
-                attribute.attribute_type = 'pim_catalog_price_collection', 
-                CONCAT(attribute.code, '-', currency_codes.currency_codes),
+                attribute.attribute_type = 'pim_catalog_price_collection',
+                CONCAT(
+                    attribute.code,
+                    '-',
+                    (
+                        SELECT GROUP_CONCAT(currency.code ORDER BY currency.code SEPARATOR '-')
+                        FROM pim_catalog_channel channel
+                        JOIN pim_catalog_channel_currency pccc ON channel.id = pccc.channel_id
+                        JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
+                        WHERE channel.code  = channel_code
+                        GROUP BY channel.id
+                    )
+                ),
                 attribute.code
             ),
             '-',
@@ -75,33 +60,24 @@ SELECT
         )
     ) AS mask
 FROM pim_catalog_family family
-    JOIN pim_catalog_attribute_requirement pcar ON family.id = pcar.family_id
-    JOIN (
-        SELECT 
-            channel.id AS channel_id,
-            channel.code AS channel_code,
-            locale.id AS locale_id,
-            locale.code AS locale_code
-        FROM pim_catalog_channel channel
-            JOIN pim_catalog_channel_locale pccl ON channel.id = pccl.channel_id
-            JOIN pim_catalog_locale locale ON pccl.locale_id = locale.id
-    ) AS channel_locale ON channel_locale.channel_id = pcar.channel_id
-    JOIN pim_catalog_attribute attribute ON pcar.attribute_id = attribute.id
-    LEFT JOIN pim_catalog_attribute_locale pcal ON attribute.id = pcal.attribute_id
-    LEFT JOIN (
-        SELECT
-            channel.id AS channel_id,
-            GROUP_CONCAT(currency.code ORDER BY currency.code SEPARATOR '-') AS currency_codes
-        FROM pim_catalog_channel channel
-            JOIN pim_catalog_channel_currency pccc ON channel.id = pccc.channel_id
-            JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
-        GROUP BY channel.id
-    ) AS currency_codes on currency_codes.channel_id = channel_locale.channel_id
+JOIN pim_catalog_attribute_requirement pcar ON family.id = pcar.family_id
+JOIN (
+    SELECT
+        channel.id AS channel_id,
+        channel.code AS channel_code,
+        locale.id AS locale_id,
+        locale.code AS locale_code
+    FROM pim_catalog_channel channel
+    JOIN pim_catalog_channel_locale pccl ON channel.id = pccl.channel_id
+    JOIN pim_catalog_locale locale ON pccl.locale_id = locale.id
+) AS channel_locale ON channel_locale.channel_id = pcar.channel_id
+JOIN pim_catalog_attribute attribute ON pcar.attribute_id = attribute.id
+LEFT JOIN pim_catalog_attribute_locale pcal ON attribute.id = pcal.attribute_id
 WHERE
     pcar.required is true
-    AND (pcal.locale_id IS NULL or pcal.locale_id = channel_locale.locale_id)
+    AND (pcal.locale_id IS NULL OR pcal.locale_id = channel_locale.locale_id)
     AND family.code IN (:familyCodes)
-GROUP BY family.code, channel_code, locale_code, currency_codes.currency_codes
+GROUP BY family.code, channel_code, locale_code
 SQL;
 
         $rows = $this->connection->executeQuery(
@@ -109,6 +85,15 @@ SQL;
             ['familyCodes' => $familyCodes],
             ['familyCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
+
+        $families = array_map(function (array $row): string {
+            return $row['family_code'];
+        }, $rows);
+
+        $nonExistingFamilyCodes = array_diff($familyCodes, $families);
+        if (count($nonExistingFamilyCodes) > 0) {
+            throw new NonExistingFamiliesException($nonExistingFamilyCodes);
+        }
 
         $masksPerFamily = [];
         foreach ($rows as $masksPerChannelAndLocale) {
@@ -121,10 +106,7 @@ SQL;
 
         $result = [];
         foreach ($masksPerFamily as $familyCode => $masksPerChannelAndLocale) {
-            $result[$familyCode] = new CompletenessFamilyMask(
-                $familyCode,
-                $masksPerChannelAndLocale
-            );
+            $result[$familyCode] = new CompletenessFamilyMask($familyCode, $masksPerChannelAndLocale);
         }
 
         return $result;
