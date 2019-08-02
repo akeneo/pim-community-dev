@@ -42,6 +42,13 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         if (!empty($values)) {
             $condition = $inset ? Operators::IN_LIST : Operators::NOT_IN_LIST;
             $queryBuilder->addFilter('id', $condition, $values);
+
+            $productModelIds = array_values(array_filter($values, function ($id) {
+                return 0 === strpos($id, 'product_model_');
+            }));
+            if (false === $inset && !empty($productModelIds)) {
+                $queryBuilder->addFilter('ancestor.id', Operators::NOT_IN_LIST, $productModelIds);
+            }
         }
     }
 
