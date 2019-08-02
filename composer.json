@@ -57,7 +57,7 @@
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
-        "behat/behat": "3.4.3",
+        "behat/behat": "3.5.0",
         "behat/gherkin": "4.5.1",
         "behat/mink": "1.7.1",
         "behat/mink-browserkit-driver": "1.3.3",
