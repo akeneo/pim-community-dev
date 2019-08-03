@@ -179,3 +179,13 @@ suites:
         psr4_prefix: Oro\Bundle\PimFilterBundle
         spec_path: src/Oro/Bundle/PimFilterBundle
         src_path: src/Oro/Bundle/PimFilterBundle
+
+extensions:
+    LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+        format:
+            - php
+        output:
+            php: var/coverage/spec.cov
+        blacklist:
+            - vendor
+            - src/Behat

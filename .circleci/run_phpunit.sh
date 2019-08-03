@@ -10,7 +10,8 @@ TESTFILES=$@
 fail=0
 for TESTFILE in $TESTFILES; do
     echo $TESTFILE
-    docker-compose exec -T fpm ./vendor/bin/phpunit -c $CONFIGDIR --log-junit var/tests/phpunit/phpunit_$(uuidgen).xml --filter $TESTFILE
+    uuid=$(uuidgen)
+    docker-compose exec -T fpm ./vendor/bin/phpunit -c $CONFIGDIR --coverage-php var/coverage/${uuid}_phpunit.cov --log-junit var/tests/phpunit/phpunit_${uuid}.xml --filter $TESTFILE
     fail=$(($fail + $?))
 done
 

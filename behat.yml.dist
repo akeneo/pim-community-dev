@@ -116,6 +116,8 @@ legacy:
                 - tests/legacy/features
             filters:
                 tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
+            remote_coverage_enabled: true
+            mink_session: selenium2
         chipmunk:
             contexts: *context
             paths:
@@ -164,6 +166,9 @@ legacy:
                     base_url: 'http://127.0.0.1/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
+        BehatRemoteCodeCoverage\RemoteCodeCoverageExtension:
+            target_directory: '%paths.base%/var/coverage'
+            split_by: scenario
 
     formatters:
         pretty: true
@@ -181,6 +186,7 @@ acceptance:
                 - test.enrichment.enrichment_follow_up_context
             filters:
                 tags: '@acceptance-back'
+            local_coverage_enabled: true
         channel:
             paths:
                 - '%paths.base%/tests/features/channel'
@@ -189,6 +195,7 @@ acceptance:
                 - test.channel.context
             filters:
                 tags: '@acceptance-back'
+            local_coverage_enabled: true
         platform:
             paths:
                 - '%paths.base%/tests/features/platform'
@@ -221,6 +228,7 @@ acceptance:
                 - test.catalog_volume_limits.category_level_context
             filters:
                 tags: '@acceptance-back'
+            local_coverage_enabled: true
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: app/bootstrap.php
@@ -228,4 +236,6 @@ acceptance:
                 environment: test_fake
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
-
+        BehatLocalCodeCoverage\LocalCodeCoverageExtension:
+            target_directory: '%paths.base%/var/coverage'
+            phpunit_xml_path: '%paths.base%/app/phpunit.xml.dist'
