@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -28,7 +28,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var ProductQueryBuilderFactory */
+    /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;
 
     /** @var BulkSaverInterface */
@@ -42,7 +42,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
 
     public function __construct(
         Client $productAndProductModelClient,
-        ProductQueryBuilderFactory $productQueryBuilderFactory,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkSaverInterface $productSaver,
         EntityManagerClearerInterface $cacheClearer,
         int $batchSize
