@@ -6,18 +6,18 @@ pim_catalog_volume:
       hint: 'Wussten Sie, dass die Gesamtanzahl Ihrer Produktinformationen direkt mit folgenden Achsen verbunden sind? <br/> Für mehr Details, empfehlen wir Ihnen folgenden <a href="{{link}}" target="_blank">Artikel </a>.'
       title: Achsen, die die Anzahl der Produktwerte nutzen
     catalog_structure:
-      hint: Sie wissen sicherlich, dass eine gute Katalogstruktur sehr wichtig ist und eine Voraussetzung für effizientes anreichern von Produkten. Im Folgenden sehen Sie die verschiedene Achsen, um Ihre Katalogstruktur zu überwachen.
+      hint: Sie wissen sicherlich, dass eine gute Katalogstruktur sehr wichtig ist und eine Voraussetzung für effizienten anreichern. Im folgenden sehen Sie die verschiedene Achsen, um Ihre Katalogstruktur zu überwachen.
       title: Achsen, verbunden mit der Katalogstruktur
     variant_modelling:
-      hint: Falls Sie Variantenmodellierung nutzen, können diese Achsen Ihnen bei der Überwachung des Umfangs helfen.
-      title: Achsen für die Variante "Modellierung"
+      hint: Falls du Variantenmodellierung nutzt, können diese Achsen dir beim beobachten helfen.
+      title: Achsen für die Variante Modellierung
   axis:
     count_products: Produkte
     average_max_attributes_per_family: Attribute pro Produktfamilie
     count_channels: Ausgabekanäle
-    count_locales: Gebietsschemen (aktiviert)
-    count_scopable_attributes: Ausgabekanalspezifisches Attribute
-    count_localizable_and_scopable_attributes: Lokalisierbare und ausgabekanalspezifische Attribute
+    count_locales: Ländereinstellungen (aktiviert)
+    count_scopable_attributes: Scopable Attribute
+    count_localizable_and_scopable_attributes: Lokalisierbar und scopable Attribute
     count_localizable_attributes: Lokalisierbare Attribute
     count_families: Produktfamilien
     count_attributes: Attribute
@@ -26,4 +26,6 @@ pim_catalog_volume:
     count_category_trees: Kategorie-Strukturbäume
     count_variant_products: Produktvarianten
     count_product_models: Produktmodelle
-    warning: Wow! Sie haben mit dieser Achse das Limit erreicht! Zögern Sie nicht uns zu kontaktieren, falls Sie Hilfe benötigen.
+    warning: Wow! Sie scheinen Akeneo voll im Einsatz zu haben! Sollten Sie auf Probleme im Umgang mit dieser Achse stoßen, zögern Sie bitte nicht uns zu kontaktieren!
+  mean: 'Mittelwert:'
+  max: 'Max:'

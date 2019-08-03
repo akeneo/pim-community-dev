@@ -22,7 +22,7 @@ pim_catalog_volume:
     count_families: Familias
     count_attributes: Atributos
     average_max_options_per_attribute: Opciones por atributo
-    count_categories: Ctegorías
+    count_categories: Categorías
     count_category_trees: Árbol de categoría
     count_variant_products: Productos variantes
     count_product_models: Modelos de producto
