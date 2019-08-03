@@ -36,7 +36,8 @@ batch_jobs:
     label: Importar canales en XLSX
     import.label: Importar canales
 pim_enrich.entity.channel:
-  uppercase_label: canal
+  label: canal
+  uppercase_label: Canal
   flash:
     update:
       success: Canal actualizado correctamente.
@@ -59,6 +60,7 @@ pim_enrich.entity.channel:
     delete:
       confirm: '¿Está seguro que desea eliminar este canal?'
 pim_enrich.entity.locale:
+  label: local
   uppercase_label: Local
   plural_label: Locales
   page_title:
