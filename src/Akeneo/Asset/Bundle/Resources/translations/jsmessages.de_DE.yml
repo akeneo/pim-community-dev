@@ -24,7 +24,7 @@ pimee_product_asset:
       unique: Code muss eindeutig sein. Wir generieren einen neuen für Sie.
   enrich_asset:
     grid:
-      edit: Eigenschaften des Assets bearbeiten
+      edit: Asseteigenschaften bearbeiten
   enrich_variation:
     popin:
       reset:
@@ -49,7 +49,7 @@ pimee_product_asset:
       import: Beim Import ist ein Fehler aufgetreten
       filename: Ungültiger Dateiname für Asset
       code: Ungültiges Code-Format für Asset
-      locale: Ein Asset existiert, ist aber nicht lokalisierbar
+      locale: Es existiert ein Asset, ist aber nicht lokalisierbar
       invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
       exists: Eine Datei mit dem gleichen Namen wurde bereits importiert
       conflicts: Konflikt der Dateinamen
@@ -60,6 +60,7 @@ pimee_product_asset:
       error: Fehler
       success: Abgeschlossen
     drag_and_drop: Drag & Drop Ihrer Assetss oder hier klicken
+    tabsection_title: Assets hochgeladen
   datagrid:
     mass_action:
       delete:
@@ -73,11 +74,12 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Sammlung von Assets
-pim_dashboard:
+pim_import_export:
   widget:
     last_operations:
       job_type:
         mass_upload: Massenupload
+        compute_completeness_of_products_linked_to_assets: Vollständigkeit der Produkte, die mit Assets verknüpft sind
 pim_title:
   pimee_product_asset_mass_upload: Assets hochladen
   pimee_product_asset_index: Assets
@@ -136,15 +138,21 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Assetkategorie-Export in XLSX-Datei
     export.label: Assetkategorie-Export in XLSX-Datei
+  xlsx_asset_variation_export:
+    label: Asset-Variationen als XLSX Export
+    export.label: Asset-Variationen als XLSX Export
   classify_assets:
     perform.label: Assets in Kategorien verschieben
   add_tags_to_assets:
     perform.label: Stichworte zu Assets hinzufügen
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: Vollständigkeit der Produkte, die mit Assets verknüpft sind
 jstree:
   asset:
     all: Alle Daten
     unclassified: Unklassifizierte Daten
 asset_grid:
+  title: "] -Inf, 1] {{ count }} Produktasset|] 1, Inf [{{ count }} Produktassets"
   selected: Ausgewählte Assets
   label: Produktassets
 create_asset:
@@ -187,11 +195,13 @@ pimee_enrich.entity.channel:
           height: '%value%px Höhe'
 pimee_enrich.mass_edit.asset:
   title: Massenbearbeitung Assets
+  confirm: "{1}Sie sind dabei, ein Asset mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie dies.|] 1, Inf [Sie sind dabei, {{ itemsCount }} Assets mit den folgenden Informationen zu aktualisieren, Bitte bestätigen Sie dies."
   step:
     select:
       label: Asset auswählen
     choose:
       title: Massenbearbeitung Assets
+      label_count: "]0, Inf[Wählen Sie Ihre Aktion aus"
     configure:
       label: Konfigurieren
     confirm:
@@ -200,15 +210,18 @@ pimee_enrich.mass_edit.asset:
     add_tag:
       label: Stichworte zu Assets hinzufügen
       description: Tags werden den Assets hinzugefügt.
+      label_count: "{1}Hinzufügen von Tags <span class=\"AknFullPage-title--highlight\">1 Asset</span>|] 1, Inf [Hinzufügen von Tags <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Assets</span>"
       field: Stichworte
       empty_selection: Bitte Tags auswählen
     add_to_category:
       label: Zuordnung von Assets in Kategorien
       description: Die Assets werden in folgende Kategorien eingeteilt, die bestehende Zuordnung geht verloren.
+      label_count: "{1}Klassifizierung von <span class=\"AknFullPage-title--highlight\">1 Asset</span> nach Kategorien|] 1, Inf [Klassifizierung von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Assets</span> nach Kategorien"
 pim_catalog_volume:
   section:
     assets:
       title: Achsen auf Assets
+      hint: Sie können das Volumen der Assets hier verfolgen.
   axis:
     count_assets: Assets
     count_asset_categories: Assetkategorien

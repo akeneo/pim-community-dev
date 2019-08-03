@@ -27,7 +27,7 @@ teamwork_assistant:
     saved: Le projet a été enregistré, vous serez notifié quand le calcul sera terminé.
     title: Projet
   widget:
-    no_project: Vous n'avez aucun projet en cours
+    no_project: Vous n'avez aucun projet courant
     no_project_create: Créer un nouveau projet
     description: Description
     due_date: Date d’échéance

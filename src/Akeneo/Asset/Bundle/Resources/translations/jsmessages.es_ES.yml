@@ -78,12 +78,13 @@ pim_import_export:
   widget:
     last_operations:
       job_type:
+        mass_upload: Carga masiva
         compute_completeness_of_products_linked_to_assets: Ingrese la totalidad de los productos enlazados a los activos
 pim_title:
   pimee_product_asset_mass_upload: Cargar recursos
   pimee_product_asset_index: Recursos
   pimee_product_asset_edit: Recurso {{ asset.label }} | Editar
-  pimee_asset_categorytree_index: Ctegorías
+  pimee_asset_categorytree_index: Categorías
   pimee_asset_categorytree_edit: Categoría {{ category.label }} | Editar
 batch_jobs:
   apply_assets_mass_upload:

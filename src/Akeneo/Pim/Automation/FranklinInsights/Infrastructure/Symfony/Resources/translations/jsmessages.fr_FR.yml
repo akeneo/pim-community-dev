@@ -3,6 +3,14 @@ pim_menu:
     franklin: Franklin Insights
 akeneo_franklin_insights:
   entity:
+    franklin_attribute:
+      type:
+        boolean: Booléen
+        metric: Métrique
+        multiselect: 'Attribut à choix multiples'
+        number: Nombre
+        select: Attribut à choix unique
+        text: Texte
     data_provider:
       ask_franklin_down: "Un problème est survenu. Réessayez plus tard."
       authentication_error: "Désolé, impossible de s'autentifier à Franklin Insights, car votre token est invalid. Veuillez renseigner un token valide ou contactez-nous."
@@ -37,13 +45,26 @@ akeneo_franklin_insights:
         locale_specific_not_allowed: "Les attributs spécifiques à une locale ne sont pas autorisés en tant qu'identifiants"
     attributes_mapping:
       label: Mapping des attributs
+      flash:
+        do_not_map_attribute_success: 'Attribut mis à jour avec succès.'
+        create_attribute_error: 'Désolé, une erreur s''est produite lors de la création ou de l''ajout de l''attribut à la famille.'
+        suggest_attribute_mapping_error: 'L''attribut du catalogue "[{{ catalogAttributeCode }}]" est déjà mappé à l''attribut "{{ franklinAttributeLabel }}" de Franklin.'
+        add_attribute_to_family_error: 'Désolé, une erreur s''est produite lors de l''ajout de l''attribut à la famille.'
       fields:
         franklin_attribute: 'Attribut Franklin'
+        franklin_attribute_type: '{{ type }} attribut'
+        franklin_value_sample: 'Exemple de valeur :'
         franklin_insights:
           label: Statut de l'attribut Franklin
           pending: En attente
           active: Actif
           inactive: Inactif
+        create_attribute:
+          btn: Créer un attribut
+        add_attribute_to_family:
+          btn: Ajouter à la famille
+        secondary_actions:
+          deactivate_franklin_attribute: "Ne pas mapper"
       module:
         subscribe:
           subscribe: 'Abonner la famille à Franklin'
@@ -58,7 +79,13 @@ akeneo_franklin_insights:
           types_mismatch_warning: 'Avertissement: les types d''attributs ne correspondent pas.'
           family_progress:
             title: 'Nombre d’attributs mappés'
+            description: "Suivez d'un seul coup d'oeil où vous en êtes dans votre travail grâce à cette barre de progression."
             mapped_attribute_count: '{{ count }} attributs mappés'
+      modal:
+        deactivate_franklin_attribute:
+          title: "Êtes-vous sûr de ne pas vouloir mapper cet attribut ?"
+          subtitle: 'Franklin Insights'
+          ok: "Ne pas mapper"
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
         missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
@@ -160,6 +187,17 @@ akeneo_franklin_insights:
           constraint:
             franklin_activation: "Vous devez <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activer</a> Franklin Insights avant d'abonner des produits."
             invalid_mapping: "Veuillez d'abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d'abonner des produits."
+  key_figures:
+    menu: Chiffres clés de Franklin
+    section_title:
+      credits: Crédits Franklin
+      key_figures: Chiffres clés de Franklin
+    axis:
+      franklin_attribute_created: Nombre d'attributs créés par Franklin
+      franklin_attribute_added_to_family: Nombre d'attributs ajoutés à une famille par Franklin
+      credits_total: Total des crédits
+      credits_consumed: Crédits consommés
+      credits_left: Crédits restants
 batch_jobs:
   default_steps:
     fetch_products: Récupérer les données de produit
@@ -190,6 +228,7 @@ pim_title:
   akeneo_franklin_insights_mapping_index: Mapping de Franklin Insights
   akeneo_franklin_insights_identifiers_mapping_edit: Édition du mapping des identifiants de Franklin Insights
   akeneo_franklin_insights_attributes_mapping_edit: Édition du mapping des attributs de Franklin Insights
+  akeneo_franklin_insights_key_figure_index: Chiffres clés de Franklin Insights
 pim_notification:
   types:
     franklin_insights: Franklin Insights

@@ -1,0 +1,92 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
+        should_be_unique: 'Eine Asset-Familie existiert bereits mit Code "%asset_family_identifier%"'
+        limit_reached: 'Sie können die Asset-Familie "%asset_family_label%" nicht erstellen, da Sie das Limit von %limit% Asset-Familien erreicht haben'
+      assets:
+        should_have_no_asset: 'Sie können diese Entität nicht löschen, da die Assets für diese Entität existieren'
+      asset_family_attributes:
+        should_not_be_linked: 'Sie können diese Entität nicht löschen, da die Attribute der Asset-Familie mit dieser Entität verknüpft sind'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Mindestens eine Benutzergruppe sollte die Bearbeitungsberechtigung für diese Entität haben'
+      product_attributes:
+        should_not_be_linked: 'Sie können diese Entität nicht löschen, da Produktattribute mit dieser Entität verknüpft sind'
+      should_exist: 'Die Asset-Familie "%asset_family_code%" wurde nicht gefunden.'
+  asset:
+    validation:
+      code:
+        pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
+        should_be_unique: 'Ein Asset existiert bereits mit Code "%code%"'
+        should_exist: 'Die Entität wurde nicht gefunden'
+      text:
+        incompatible_with_regular_expression: 'Der Text ist mit dem regulären Ausdruck "%regular_expression%" nicht kompatibel'
+      file:
+        extension_not_allowed: '"%file_extension%" Dateien sind für dieses Attribut nicht erlaubt. Erlaubte Erweiterungen sind: %allowed_file_extensions%'
+        file_size_exceeded: 'Die Datei überschreitet die maximale Dateigröße für das Attribut.'
+        should_exist: 'Die Datei "%file_path%" wurde nicht gefunden.'
+      option:
+        code_does_not_exist: 'Die Option mit Code "%option_code%" existiert nicht für dieses Attribut'
+      option_collection:
+        codes_dont_exist: "Die folgenden Optionscodes existieren nicht für dieses Attribut : \"%option_codes%\""
+      asset:
+        should_exist: 'Das Asset "%asset_code%" wurde nicht gefunden.'
+      asset_collection:
+        should_exist: 'Die Assets "%asset_codes%" wurden nicht gefunden.'
+      limit_reached: 'Sie können das Asset "%asset_label%" nicht erstellen, da Sie das Limit von %limit% Assets für diese Asset-Familie erreicht haben'
+      channel:
+        is_expected: 'Ein Kanal wird für Attribut "%attribute_code%" erwartet, da er einen Wert pro Kanal hat.'
+        is_not_expected: 'Ein Kanal wird für Attribut "%attribute_code%" nicht erwartet, da er keinen Wert pro Kanal hat.'
+        should_exist: 'Der Kanal "%channel_identifier%" existiert nicht.'
+      locale:
+        is_expected: 'Für Attribut "%attribute_code%" wird eine Locale erwartet, da sie einen Wert pro Gebietsschema hat.'
+        is_not_expected: 'Für Attribut "%attribute_code%" wird keine Locale erwartet, da sie keinen Wert pro Gebietsschema hat.'
+        is_not_activated: 'Das Gebietsschema "%locale_identifier%" ist nicht aktiviert.'
+        is_not_activated_for_channel: 'Das Gebietsschema "%locale_identifier%" ist nicht für den Kanal "%channel_identifier% " aktiviert.'
+      number:
+        should_be_string: 'Dieses Feld sollte eine Zeichenfolge sein'
+        should_be_integer: 'Dieses Feld sollte eine Ganzzahl sein'
+        integer_too_long: 'Diese Ganzzahl ist zu groß'
+        should_be_numeric: 'Dieses Feld sollte ein numerischer Wert mit dem richtigen Dezimaltrennzeichen sein'
+  attribute:
+    validation:
+      options:
+        should_exist: 'Die Option wurde nicht gefunden.'
+        duplicated: 'Die Option "%option_code%" existiert bereits'
+        too_many: 'Sie haben das Limit von {{ limit }} Attributoptionen pro Attribut erreicht.'
+        code:
+          pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
+          should_not_be_blank: 'Der Code der Option sollte nicht leer sein'
+      max_length:
+        should_be_an_integer: 'Dieses Feld sollte eine Ganzzahl sein.'
+      max_file_size:
+        should_be_a_number: 'Dieser Wert sollte eine gültige Zahl sein.'
+      min_value:
+        should_be_a_number: 'Dieser Wert sollte eine Zahl mit dem richtigen Dezimaltrennzeichen sein.'
+        cannot_be_greater_than_max: 'Das min darf nicht größer sein als das max'
+      max_value:
+        should_be_a_number: 'Dieser Wert sollte eine Zahl mit dem richtigen Dezimaltrennzeichen sein.'
+        cannot_be_lower_than_min: 'Die max darf nicht niedriger als das min sein'
+      code:
+        pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
+        reserved_codes: 'Der Code kann nicht zu diesen Werten gehören: "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'Das Attribut existiert bereits für die Asset-Familie "{{ asset_family_identifier }}" und den Attributcode "{{ code }}"'
+        should_exist: 'Die Entität wurde nicht gefunden'
+      regular_expression:
+        invalid_regular_expression: 'Dieser reguläre Ausdruck ist nicht gültig. Hier ist ein Beispiel für einen gültigen regulären Ausdruck: "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'Der reguläre Ausdruck darf nicht leer sein.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'Ein einfaches Textattribut kann keinen Rich-Text-Editor haben'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Ein Textbereich-Attribut kann keine Validierungsregel haben'
+      cannot_set_a_non_empty_regular_expression: 'Das Attribut darf keinen regulären Ausdruck haben'
+      cannot_update_the_regular_expression: 'Ein regulärer Ausdruck kann nicht auf das Textattribut gesetzt werden'
+      limit_reached: 'Sie können das Attribut "%attribute_label%" nicht erstellen, da Sie das Limit von %limit% Attributen für diese Asset-Familie erreicht haben'
+      asset_type:
+        is_required: 'Sie müssen den Typ der Asset-Familie angeben, um ein Attribut für Asset-Family-Link zu erstellen'
+        asset_family_should_exist: 'Die Asset-Familie "%asset_family_code%" wurde nicht gefunden.'
+      prefix:
+        should_not_be_empty: 'Das Präfix darf keine leere Zeichenfolge sein.'
+      suffix:
+        should_not_be_empty: 'Das Suffix darf keine leere Zeichenfolge sein.'
+      media_type:
+        not_expected: 'Der angegebene Medientyp entspricht nicht den erwarteten (%supported_media_types%).'

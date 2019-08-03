@@ -21,6 +21,7 @@ pim_reference_entity:
         limit_reached: 'You cannot create the reference entity "{{ %reference_entity_label% }}" because you have reached the limit of {{ %limit% }} reference entities'
     button:
       save: Save
+      save_permission: Save
       create: Create
     title: Entities
     img: The main image of the reference entity named "{{ label }}"
@@ -28,6 +29,7 @@ pim_reference_entity:
       records: Records
       attribute: Attributes
       properties: Properties
+      permission: Permissions
     properties:
       title: Entity properties
       identifier: Code
@@ -86,6 +88,8 @@ pim_reference_entity:
       delete: Delete
       delete_all: Delete all records
       back: Back to list
+    product:
+      title: Products
     enrich:
       title: Record attributes
       code: Code
@@ -105,16 +109,28 @@ pim_reference_entity:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
     grid:
       search: Search on label, code and text attributes
+      filter:
+        completeness:
+          label: Complete
+          all: All
+          'yes': 'Yes'
+          'no': 'No'
+        option:
+          all: All
+          operator:
+            in: In list
       column:
         code: Code
         image: Image
         label: Label
+        complete: Complete
         action: Actions
       more_result:
         title: That's not it!
         description: You just scrolled through the first 500 results out of {{ total }} records. To see more, try with more specific search criteria.
     tab:
       enrich: Enrich
+      product: Products
     notification:
       save:
         success: Record successfully updated.
@@ -129,6 +145,8 @@ pim_reference_entity:
       delete_all:
         success: All "{{ entityIdentifier }}" records successfully deleted.
         fail: An error occured during the deletion of all this reference entity's records
+    completeness:
+      label: Complete
   attribute:
     validation:
       limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this reference entity'
@@ -197,6 +215,9 @@ pim_reference_entity:
       delete:
         success: Attribute successfully deleted.
         fail: An error occured during the deletion of the attribute
+    options:
+      helper:
+        title: Label translations
   modal:
     delete:
       subtitle: Confirm deletion
@@ -213,3 +234,6 @@ pim_enrich:
           type_specific: Type specific parameters
         reference_entity:
           default_label: Please select a reference entity
+pim_catalog_volume:
+  axis:
+    count_reference_entity: Reference entities

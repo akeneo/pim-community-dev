@@ -14,7 +14,7 @@ pimee_workflow:
       in_progress: In corso
       ready: In attesa di approvazione
       can_be_partially_reviewed: Può essere parzialmente rivisto
-      can_not_be_approved: Non può essere rivisto
+      can_not_be_approved: Non può essere revisionato
       can_not_be_deleted: Non può essere eliminato
     status_message:
       can_be_partially_reviewed: È possibile revisionare questa proposta solo parzialmente perché alcune modifiche sono state fatte su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
@@ -72,7 +72,7 @@ pimee_workflow:
       page_title: Prodotti pubblicati
       page_subtitle: Modifica di massa (1 prodotto pubblicato) | Modifica di massa (%count% prodotti pubblicati)
       title: Scegli operazione
-      subtitle: Scegli l'operazione che si desidera eseguire sul prodooto pubblicato selezionato|Scegli l'operazione che si desidera eseguire sui %count% prodotti pubblicati selezionati
+      subtitle: Scegli l'operazione che si desidera eseguire sul prodotto pubblicato selezionato|Scegli l'operazione che si desidera eseguire sui %count% prodotti pubblicati selezionati
       confirm: Stai per aggiornare un prodotto pubblicato con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% prodotti pubblicati con le seguenti informazioni, si prega di confermare.
       steps:
         first: Scegli i prodotti pubblicati
@@ -81,15 +81,12 @@ pimee_workflow:
         fourth: Conferma
 btn:
   publish: Pubblica
-  unpublish: Ritira
-  save working copy: Salvare la copia di lavoro
-  save draft: Salva bozza
+  unpublish: Annulla la pubblicazione
+  save working copy: Salva la copia di lavoro
   save working copy and next: Salva la copia di lavoro e vai avanti
-  save draft and next: Salva la bozza e vai avanti
   save working copy and finish: Salva la copia di lavoro e termina
-  save draft and finish: Salva la bozza e termina
   send for approval: Invia per approvazione
-  sent for approval: Inviato per approvazione
+  sent for approval: Inviata per approvazione
   editworkingcopy: Modifica la copia di lavoro
 flash:
   product:
@@ -112,11 +109,11 @@ pim_menu:
 confirmation:
   product:
     publish: Sei sicuro di voler pubblicare questo prodotto?
-    unpublish: Sei sicuro di voler ritirare questo prodotto?
+    unpublish: Sei sicuro di voler annullare la pubblicazione di questo prodotto?
 Attributes.title: Atributi
 Completeness.title: Completamento
 publish_product.steps.publish_product_tasklet.title: Pubblica prodotto
-unpublish_product.steps.unpublish_product_tasklet.title: Annullare la pubblicazione del prodotto
+unpublish_product.steps.unpublish_product_tasklet.title: Annulla la pubblicazione del prodotto
 approve_product_draft.steps.approve.title: Approva la proposta
 approve_product_draft.steps.refuse.title: Rifiuta la proposta
 job_execution.summary:
@@ -140,7 +137,7 @@ pimee_dashboard:
       title: Proposte da rivedere
       date: Data
       author: Autore
-      product: Prodotto
+      product: Articolo
       review: Da rivedere
       empty: Nessuna bozza da revisionare
 pim_enrich:
@@ -153,8 +150,8 @@ pim_enrich:
       message:
         info: I %nbProducts% prodotti selezionati saranno pubblicati.
     unpublish:
-      label: Ritira
-      description: 'Annulla la pubblicazione dei prodotti selezionati: i dati pubblicati correnti verranno cancellati.'
+      label: Annulla la pubblicazione
+      description: 'Annulla la pubblicazione dei prodotti selezionati: gli attuali dati pubblicati verranno cancellati.'
       success_flash: I prodotti selezionati sono stati ritirati con successo.
       launched_flash: Il job di annullamento della pubblicazione del(i) prodotto(i) è attualmente in esecuzione.
       message:
