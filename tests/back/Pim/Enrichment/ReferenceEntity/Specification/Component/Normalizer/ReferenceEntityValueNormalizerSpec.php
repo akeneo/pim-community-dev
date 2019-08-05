@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityValueNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
@@ -54,7 +54,7 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
         $designerValue->getData()->willReturn(null);
 
         $this->normalize($designerValue,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'designer-reference_data_option' => [
                     '<all_channels>' => [
@@ -87,7 +87,7 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
         $designerValue->getData()->willReturn($dysonCode);
 
         $this->normalize($designerValue,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'designer-reference_data_option' => [
                     '<all_channels>' => [

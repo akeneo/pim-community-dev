@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
@@ -19,6 +18,8 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
     const FIELD_COMPLETENESS = 'completeness';
     const FIELD_IN_GROUP = 'in_group';
     const FIELD_ID = 'id';
+
+    public const INDEXING_FORMAT_PRODUCT_INDEX = 'indexing_product_and_product_model';
 
     private const FIELD_ANCESTORS = 'ancestors';
 
@@ -68,14 +69,14 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
         $completenesses = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
         $data[self::FIELD_COMPLETENESS] = $this->normalizer->normalize(
             $completenesses,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+            self::INDEXING_FORMAT_PRODUCT_INDEX,
             $context
         );
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$publishedProduct->getValues()->isEmpty()
             ? $this->normalizer->normalize(
                 $publishedProduct->getValues(),
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+                self::INDEXING_FORMAT_PRODUCT_INDEX,
                 $context
             ) : [];
 
@@ -116,6 +117,6 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof PublishedProductInterface && ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format;
+        return $data instanceof PublishedProductInterface && self::INDEXING_FORMAT_PRODUCT_INDEX === $format;
     }
 }

@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\Family;
@@ -37,9 +36,9 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
 
     function it_only_normalizes_a_published_product_for_indexing_format()
     {
-        $this->supportsNormalization(new PublishedProduct(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $this->supportsNormalization(new PublishedProduct(), PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
              ->shouldReturn(true);
-        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $this->supportsNormalization(new \stdClass(), PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
              ->shouldReturn(false);
         $this->supportsNormalization(new PublishedProduct(), 'another_format')
              ->shouldReturn(false);
@@ -55,14 +54,14 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
         $dateTime = new \DateTime('2019-07-16');
         $publishedProduct->getCreated()->willReturn($dateTime);
         $publishedProduct->getUpdated()->willReturn($dateTime);
-        $normalizer->normalize($dateTime, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn(
+        $normalizer->normalize($dateTime, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn(
             '2019-07-16T14:25:04+00:00'
         );
         $family = new Family();
         $attributeAsLabel = new Attribute();
         $attributeAsLabel->setCode('name');
         $family->setAttributeAsLabel($attributeAsLabel);
-        $normalizer->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn(
+        $normalizer->normalize($family, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn(
             [
                 'code' => 'clothing',
                 'labels' => [
@@ -84,7 +83,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
             ]
         );
         $getPublishedProductCompletenesses->fromPublishedProductId(42)->willReturn($completenessCollection);
-        $normalizer->normalize($completenessCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])
+        $normalizer->normalize($completenessCollection, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])
                    ->willReturn(
                        [
                            'ecommerce' => [
@@ -101,7 +100,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
             ]
         );
         $publishedProduct->getValues()->willReturn($values);
-        $normalizer->normalize($values, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
+        $normalizer->normalize($values, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
             [
                 'name-text' => [
                     '<all_channels>' => [
@@ -112,7 +111,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $this->normalize($publishedProduct, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->shouldReturn(
+        $this->normalize($publishedProduct, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->shouldReturn(
             [
                 'id' => '42',
                 'identifier' => 'my_identifier',

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposal;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposalNormalizer;
@@ -53,18 +53,18 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = (string) $productModelProposal->getId();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $productModelProposal->getCreatedAt(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         );
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = null !== $productModel->getFamily() ? $this->serializer->normalize(
             $productModel->getFamily(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         ) : null;
         $data[self::FIELD_AUTHOR] = (string) $productModelProposal->getAuthor();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productModelProposal->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $productModelProposal->getValues(),
-                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX
+                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             ) : [];
 
         $attributeAsLabel = $productModel->getFamily() ? $productModel->getFamily()->getAttributeAsLabel() : null;

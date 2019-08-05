@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\PublishedProductNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
@@ -51,7 +51,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $publishedProductClient,
         \stdClass $aWrongPublishedProduct
     ) {
-        $normalizer->normalize($aWrongPublishedProduct, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn([]);
+        $normalizer->normalize($aWrongPublishedProduct, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn([]);
         $publishedProductClient->index(Argument::cetera())->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('index', [$aWrongPublishedProduct]);
@@ -63,9 +63,9 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         PublishedProductInterface $publishedProduct,
         \stdClass $aWrongPublishedProduct
     ) {
-        $normalizer->normalize($publishedProduct, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($publishedProduct, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'baz']);
-        $normalizer->normalize($aWrongPublishedProduct, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($aWrongPublishedProduct, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn([]);
 
         $publishedProductClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
@@ -78,7 +78,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $publishedProductClient,
         PublishedProductInterface $publishedProduct
     ) {
-        $normalizer->normalize($publishedProduct, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($publishedProduct, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'foobar', 'a key' => 'a value']);
         $publishedProductClient->index('published_product', 'foobar', ['id' => 'foobar', 'a key' => 'a value'])
             ->shouldBeCalled();
@@ -92,9 +92,9 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         PublishedProductInterface $publishedProduct1,
         PublishedProductInterface $publishedProduct2
     ) {
-        $normalizer->normalize($publishedProduct1, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($publishedProduct1, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'foo', 'a key' => 'a value']);
-        $normalizer->normalize($publishedProduct2, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($publishedProduct2, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'bar', 'a key' => 'another value']);
 
         $publishedProductClient->bulkIndexes('published_product', [
@@ -133,9 +133,9 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $normalizer,
         $publishedProductClient
     ) {
-        $normalizer->normalize($publishedProduct1, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($publishedProduct1, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'foo', 'a key' => 'a value']);
-        $normalizer->normalize($publishedProduct2, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($publishedProduct2, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'bar', 'a key' => 'another value']);
 
         $publishedProductClient->bulkIndexes('published_product', [
@@ -152,9 +152,9 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $normalizer,
         $publishedProductClient
     ) {
-        $normalizer->normalize($publishedProduct1, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($publishedProduct1, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'foo', 'a key' => 'a value']);
-        $normalizer->normalize($publishedProduct2, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $normalizer->normalize($publishedProduct2, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'bar', 'a key' => 'another value']);
 
         $publishedProductClient->bulkIndexes('published_product', [

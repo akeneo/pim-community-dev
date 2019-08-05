@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\PublishedProductNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
@@ -48,7 +48,7 @@ class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface,
      */
     public function index($object, array $options = []) : void
     {
-        $normalizedObject = $this->normalizer->normalize($object, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
+        $normalizedObject = $this->normalizer->normalize($object, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
         $this->validateObjectNormalization($normalizedObject);
         $this->publishedProductClient->index($this->indexType, $normalizedObject['id'], $normalizedObject);
     }
@@ -71,7 +71,7 @@ class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface,
         foreach ($objects as $object) {
             $normalizedProduct = $this->normalizer->normalize(
                 $object,
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+                PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
             );
             $this->validateObjectNormalization($normalizedProduct);
             $normalizedPublishedProducts[] = $normalizedProduct;

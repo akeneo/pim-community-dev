@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -47,7 +46,6 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         return $data instanceof PublishedProductCompletenessCollection && in_array(
                 $format,
                 [
-                    ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
                     ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 ]
             );

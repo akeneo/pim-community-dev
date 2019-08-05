@@ -81,7 +81,7 @@ $rules = [
         // TIP-987: Published should be less coupled to Product
         // TIP-988: Split Published vs Draft/Proposal
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -224,10 +224,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
 
         // TIP-1032: Workflow should not depend on PIM/Enrichment normalizers
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer',
 
         // TIP-990: Move classes to component
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper',
