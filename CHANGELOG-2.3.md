@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7583: Allow user to import custom locales without '_'
+
 # 2.3.57 (2019-07-31)
 
 ## Bug fixes
