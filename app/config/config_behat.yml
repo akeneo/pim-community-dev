@@ -1,9 +1,14 @@
 
+services:
+    monolog.formatter.deprecation:
+        class: 'Akeneo\DeprecationFormatter'
+
 monolog:
     handlers:
         deprecation:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.deprecations.log'
+            formatter: '@monolog.formatter.deprecation'
         deprecation_filter:
             type: filter
             handler: deprecation
