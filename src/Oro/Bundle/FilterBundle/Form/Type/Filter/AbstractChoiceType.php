@@ -30,6 +30,10 @@ abstract class AbstractChoiceType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
+        if (!array_key_exists('strict', $options)) {
+            $options['strict'] = true;
+        }
+
         if (!empty($view->children['value'])) {
             /** @var FormView $valueFormView */
             $valueFormView = $view->children['value'];
