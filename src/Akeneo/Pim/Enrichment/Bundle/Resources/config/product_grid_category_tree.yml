@@ -1,6 +1,7 @@
 services:
     akeneo.pim.enrichment.controller.product_grid_category_tree:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductGridCategoryTreeController'
+        public: true
         arguments:
             - '@akeneo.pim.enrichment.category.category_tree.list_root_categories_with_count_handler'
             - '@akeneo.pim.enrichment.category.category_tree.list_children_categories_with_count_handler'
@@ -11,6 +12,7 @@ services:
 
     akeneo.pim.enrichment.controller.product_grid_filter:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductGridFilterController'
+        public: true
         arguments:
             - '@oro_datagrid.datagrid.manager'
             - '@security.token_storage'
