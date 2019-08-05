@@ -77,7 +77,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('additional_hidden_fields')
                             ->defaultValue([])
-                            ->cannotBeEmpty()
+                            ->requiresAtLeastOneElement()
                             ->useAttributeAsKey('name')
                             ->prototype('array')
                                 ->children()

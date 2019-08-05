@@ -3,7 +3,7 @@
 define('EXIT_WRONG_USAGE', 127);
 define('EXIT_SERVICES_NON_INSTANTIABLE', 1);
 
-if (!file_exists('app/AppKernel.php')) {
+if (!file_exists('src/Kernel.php')) {
     die("Please run this command from your Symfony application root.");
 }
 
@@ -41,7 +41,7 @@ try {
 $verbosity = $input->getOption('verbose') ? ConsoleOutput::VERBOSITY_VERBOSE : ConsoleOutput::VERBOSITY_NORMAL;
 $output->setVerbosity($verbosity);
 
-$kernel = new AppKernel('dev', false);
+$kernel = new Kernel('dev', false);
 $kernel->boot();
 
 $exitStatus = checkServicesInstantiability($kernel->getContainer(), $output, $ignoreServiceIds);
