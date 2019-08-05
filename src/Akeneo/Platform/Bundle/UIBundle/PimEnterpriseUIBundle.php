@@ -6,8 +6,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class PimEnterpriseUIBundle extends Bundle
 {
-    public function getParent()
-    {
-        return 'PimUIBundle';
-    }
 }
