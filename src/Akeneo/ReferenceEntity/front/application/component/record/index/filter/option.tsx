@@ -97,6 +97,19 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
                   configuration={{
                     allowClear: true,
                     placeholder: __('pim_reference_entity.record.grid.filter.option.no_value'),
+                    formatSelection: (data: any, _container: any, escapeMarkup: any) => {
+                      const result = data ? escapeMarkup(data.text) : undefined;
+                      if (result !== undefined) {
+                        return '<div title="' + result + '">' + result + '</div>';
+                      }
+
+                      return result;
+                    },
+                    formatResult: (result: any, container: any, _query: any, _escapeMarkup: any) => {
+                      const formerResult = '<span class="select2-match"></span>' + result.text;
+                      container.attr('title', result.text);
+                      return formerResult;
+                    }
                   }}
                   onChange={(optionCodes: string[]) => {
                     onFilterUpdated({
