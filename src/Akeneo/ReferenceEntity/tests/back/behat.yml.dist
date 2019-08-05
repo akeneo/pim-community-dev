@@ -47,5 +47,7 @@ default:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: app/bootstrap.php
             kernel:
+                path: src/Kernel.php
+                class: Kernel
                 environment: test_fake
                 debug: false

@@ -18,9 +18,6 @@
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back"
         },
-        "classmap": [
-            "app/AppKernel.php"
-        ],
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/app/AppKernel.php",
             "vendor/akeneo/pim-community-dev/app/AppCache.php"
@@ -60,13 +57,13 @@
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
-        "behat/behat": "3.4.3",
+        "behat/behat": "3.5.0",
         "behat/gherkin": "4.5.1",
         "behat/mink": "1.7.1",
         "behat/mink-browserkit-driver": "1.3.3",
         "behat/mink-extension": "2.3.1",
         "behat/mink-selenium2-driver": "1.3.x-dev",
-        "behat/symfony2-extension": "2.1.4",
+        "behat/symfony2-extension": "2.1.5",
         "behat/transliterator": "1.2.0",
         "league/flysystem-memory": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",

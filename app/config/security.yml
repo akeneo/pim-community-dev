@@ -1,10 +1,4 @@
 security:
-    acl:
-        connection: default
-        cache:
-            id: security.acl.cache.doctrine
-            prefix: sf2_acl_
-
     providers:
         chain_provider:
             chain:
@@ -36,11 +30,13 @@ security:
             pattern:                        ^/user/(login|reset-request|send-email|check-email)$
             provider:                       chain_provider
             anonymous:                      true
+            logout_on_user_change:          true
 
         reset_password:
             pattern:                        ^/user/reset/*
             provider:                       chain_provider
             anonymous:                      true
+            logout_on_user_change:          true
 
         oauth_token:
             pattern:                        ^/api/oauth/v1/token
@@ -89,6 +85,7 @@ security:
                 name:                       BAPRM
                 lifetime:                   1209600   # stay logged for two weeks
             anonymous:                      false
+            logout_on_user_change:          true
 
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
@@ -103,3 +100,9 @@ security:
         - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+
+acl:
+    connection: default
+    cache:
+        id: security.acl.cache.doctrine
+        prefix: sf2_acl_

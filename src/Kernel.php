@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
- * PIM AppKernel
+ * PIM Kernel
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class AppKernel extends Kernel
+class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 

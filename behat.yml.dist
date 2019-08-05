@@ -826,6 +826,8 @@ legacy:
         Behat\Symfony2Extension:
             kernel:
                 bootstrap: app/bootstrap.php
+                path: src/Kernel.php
+                class: Kernel
                 env: behat
                 debug: false
         SensioLabs\Behat\PageObjectExtension:
@@ -927,6 +929,9 @@ acceptance:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: app/bootstrap.php
             kernel:
+                path: src/Kernel.php
+                class: Kernel
                 environment: test_fake
+                debug: false
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~

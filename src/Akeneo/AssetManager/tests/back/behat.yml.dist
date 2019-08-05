@@ -48,5 +48,7 @@ default:
     extensions:
         FriendsOfBehat\SymfonyExtension:
             kernel:
+                path: src/Kernel.php
+                class: Kernel
                 environment: test_fake
                 debug: false
