@@ -7,7 +7,6 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
@@ -43,21 +42,14 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('my_referencedata_attribute')->willReturn($referenceData);
         $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
 
-        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
         $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
         $this->supportsNormalization($referenceDataCollectionProductValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization(
-            $referenceDataCollectionProductValue,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
-        )->shouldReturn(true);
         $this->supportsNormalization(
             $referenceDataCollectionProductValue,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
@@ -81,7 +73,7 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
         $referenceDataCollectionProductValue->getReferenceDataCodes()->willReturn([]);
 
         $this->normalize($referenceDataCollectionProductValue,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-reference_data_options' => [
                     '<all_channels>' => [
@@ -109,7 +101,7 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
         $referenceDataCollectionProductValue->getReferenceDataCodes()->willReturn(['fabricA', 'fabricB']);
 
         $this->normalize($referenceDataCollectionProductValue,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-reference_data_options' => [
                     '<all_channels>' => [
@@ -140,7 +132,7 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
         $referenceDataCollectionProductValue->getReferenceDataCodes()->willReturn(['fabricA', 'fabricB']);
 
         $this->normalize($referenceDataCollectionProductValue,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-reference_data_options' => [
                     '<all_channels>' => [
@@ -171,7 +163,7 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
         $referenceDataCollectionProductValue->getReferenceDataCodes()->willReturn(['fabricA', 'fabricB']);
 
         $this->normalize($referenceDataCollectionProductValue,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-reference_data_options' => [
                     'ecommerce' => [
@@ -202,7 +194,7 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
         $referenceDataCollectionProductValue->getReferenceDataCodes()->willReturn(['fabricA', 'fabricB']);
 
         $this->normalize($referenceDataCollectionProductValue,
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-reference_data_options' => [
                     'ecommerce' => [

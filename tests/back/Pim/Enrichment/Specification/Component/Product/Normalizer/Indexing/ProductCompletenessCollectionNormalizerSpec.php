@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductCompletenessCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -22,8 +21,6 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
     function it_only_supports_indexing_formats_for_completenesses()
     {
         $this->supportsNormalization(Argument::any(), 'foo')->shouldReturn(false);
-        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-             ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
              ->shouldReturn(false);
     }
@@ -31,8 +28,6 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
     function it_supports_completenesses_for_indexing_formats()
     {
         $completenesses = new ProductCompletenessCollection(42, []);
-        $this->supportsNormalization($completenesses, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-             ->shouldReturn(true);
         $this->supportsNormalization($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
              ->shouldReturn(true);
     }

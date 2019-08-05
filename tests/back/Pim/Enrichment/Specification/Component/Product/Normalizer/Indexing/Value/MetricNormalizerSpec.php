@@ -7,7 +7,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MetricNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
@@ -44,14 +43,9 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $textAttribute->getBackendType()->willReturn('text');
 
-        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
         $this->supportsNormalization($metricValue, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(true);
 
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
@@ -75,7 +69,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metricAttribute->getBackendType()->willReturn('metric');
         $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
 
-        $this->normalize($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'weight-metric' => [
                 '<all_channels>' => [
                     '<all_locales>' => null,
@@ -104,7 +98,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metricAttribute->getBackendType()->willReturn('metric');
         $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
 
-        $this->normalize($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'weight-metric' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
@@ -138,7 +132,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metricAttribute->getBackendType()->willReturn('metric');
         $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
 
-        $this->normalize($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'weight-metric' => [
                 '<all_channels>' => [
                     'en_US' => [
@@ -173,7 +167,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metricAttribute->getBackendType()->willReturn('metric');
         $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
 
-        $this->normalize($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'weight-metric' => [
                 'ecommerce' => [
                     'fr_FR' => [

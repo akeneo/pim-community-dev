@@ -1,6 +1,4 @@
 parameters:
-    pim_catalog.normalizer.indexing_product.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer
-    pim_catalog.normalizer.indexing_product.product.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\PropertiesNormalizer
     pim_catalog.normalizer.indexing_product.datetime.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\DateTimeNormalizer
     pim_catalog.normalizer.indexing_product.product.product_value_collection.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer
     pim_catalog.normalizer.indexing_product.product.number.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\NumberNormalizer
@@ -15,29 +13,12 @@ parameters:
     pim_catalog.normalizer.indexing_product.product.media.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MediaNormalizer
     pim_catalog.normalizer.indexing_product.product.boolean.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\BooleanNormalizer
 
-    pim_catalog.normalizer.indexing_product_model.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer
-    pim_catalog.normalizer.indexing_product_model.product_model.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer
-
     pim_catalog.normalizer.indexing_product_and_product_model.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer
     pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer
     pim_catalog.normalizer.indexing_product_and_product_model.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer
     pim_catalog.normalizer.indexing_product_and_product_model.product_model.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelPropertiesNormalizer
 
 services:
-    pim_catalog.normalizer.indexing_product.product:
-        class: '%pim_catalog.normalizer.indexing_product.product.class%'
-        arguments:
-            - '@pim_catalog.normalizer.indexing_product.product.properties'
-        tags:
-            - { name: pim_indexing_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.indexing_product.product.properties:
-        class: '%pim_catalog.normalizer.indexing_product.product.properties.class%'
-        arguments:
-            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
-        tags:
-            - { name: pim_indexing_serializer.normalizer, priority: 40 }
-
     pim_catalog.normalizer.indexing_product.datetime:
         class: '%pim_catalog.normalizer.indexing_product.datetime.class%'
         arguments:
@@ -131,20 +112,6 @@ services:
             - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.indexing_product_model.product_model:
-        class: '%pim_catalog.normalizer.indexing_product_model.product_model.class%'
-        arguments:
-            - '@pim_catalog.normalizer.indexing_product_model.product_model.properties'
-        tags:
-            - { name: pim_indexing_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.indexing_product_model.product_model.properties:
-        class: '%pim_catalog.normalizer.indexing_product_model.product_model.properties.class%'
-        arguments:
-            - '@pim_catalog.doctrine.query.complete_filter'
-        tags:
-            - { name: pim_indexing_serializer.normalizer, priority: 40 }
 
     pim_catalog.normalizer.indexing_product_and_product_model.product_model:
         class: '%pim_catalog.normalizer.indexing_product_and_product_model.product_model.class%'

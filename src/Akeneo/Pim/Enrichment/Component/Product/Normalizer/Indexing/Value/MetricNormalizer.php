@@ -3,9 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -24,8 +22,6 @@ class MetricNormalizer extends AbstractProductValueNormalizer implements Normali
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof MetricValueInterface && (
-                $format === ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX ||
-                $format === ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX ||
                 $format === ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
     }

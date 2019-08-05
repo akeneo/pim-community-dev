@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\NumberNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -44,14 +43,9 @@ class NumberNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('my_number_attribute')->willReturn($numberAttribute);
         $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
 
-        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
         $this->supportsNormalization($numberValue, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($numberValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
-            ->shouldReturn(true);
 
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
@@ -77,7 +71,7 @@ class NumberNormalizerSpec extends ObjectBehavior
         $integerAttribute->getBackendType()->willReturn('decimal');
         $attributeRepository->findOneByIdentifier('my_integer_attribute')->willReturn($integerAttribute);
 
-        $this->normalize($integerValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($integerValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'box_quantity-decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => null
@@ -101,7 +95,7 @@ class NumberNormalizerSpec extends ObjectBehavior
         $integerAttribute->getBackendType()->willReturn('decimal');
         $attributeRepository->findOneByIdentifier('my_integer_attribute')->willReturn($integerAttribute);
 
-        $this->normalize($integerValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($integerValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'box_quantity-decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => '12'
@@ -125,7 +119,7 @@ class NumberNormalizerSpec extends ObjectBehavior
         $decimalAttribute->getBackendType()->willReturn('decimal');
         $attributeRepository->findOneByIdentifier('my_decimal_attribute')->willReturn($decimalAttribute);
 
-        $this->normalize($decimalValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($decimalValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'size-decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => '12.4999'
@@ -149,7 +143,7 @@ class NumberNormalizerSpec extends ObjectBehavior
         $decimalAttribute->getBackendType()->willReturn('decimal');
         $attributeRepository->findOneByIdentifier('my_decimal_attribute')->willReturn($decimalAttribute);
 
-        $this->normalize($decimalValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($decimalValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'size-decimal' => [
                 '<all_channels>' => [
                     'en_US' => '12.4999'
@@ -173,7 +167,7 @@ class NumberNormalizerSpec extends ObjectBehavior
         $decimalAttribute->getBackendType()->willReturn('decimal');
         $attributeRepository->findOneByIdentifier('my_decimal_attribute')->willReturn($decimalAttribute);
 
-        $this->normalize($decimalValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($decimalValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'size-decimal' => [
                 'ecommerce' => [
                     '<all_locales>' => '12'
@@ -197,7 +191,7 @@ class NumberNormalizerSpec extends ObjectBehavior
         $decimalAttribute->getBackendType()->willReturn('decimal');
         $attributeRepository->findOneByIdentifier('my_decimal_attribute')->willReturn($decimalAttribute);
 
-        $this->normalize($decimalValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $this->normalize($decimalValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'size-decimal' => [
                 'ecommerce' => [
                     'fr_FR' => '12'
