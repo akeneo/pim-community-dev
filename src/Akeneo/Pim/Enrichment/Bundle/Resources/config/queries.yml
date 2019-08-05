@@ -140,3 +140,9 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountVariantProducts
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_values_of_siblings:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetValuesOfSiblings
+        arguments:
+            - '@database_connection'
+            - '@pim_catalog.factory.value_collection'
