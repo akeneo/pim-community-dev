@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8461: Do not display 'Compare/translate' if user has no permission to edit product attributes
+
 # 2.3.57 (2019-07-31)
 
 ## Bug fixes
