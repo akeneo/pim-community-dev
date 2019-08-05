@@ -18,7 +18,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             unique: true
             nullable: false
         rawValues:
-            type: native_json
+            type: json
             column: raw_values
         created:
             type: datetime
