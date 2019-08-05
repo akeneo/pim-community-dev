@@ -18,7 +18,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception;
  */
 final class DataProviderException extends \Exception
 {
-    private const CONSTRAINT_KEY = 'akeneo_franklin_insights.entity.data_provider.constraint.%s';
+    private const CONSTRAINT_KEY = 'akeneo_franklin_insights.entity.data_provider.%s';
 
     /** @var array */
     private $messageParams;
