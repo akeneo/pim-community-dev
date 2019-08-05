@@ -26,9 +26,6 @@ akeneo_pim_structure:
         color:
             class: AcmeEnterprise\Bundle\AppBundle\Entity\Color
             type: simple
-        assets:
-            class: Akeneo\Asset\Component\Model\Asset
-            type: multi
 
 parameters:
     installer_data:       PimEnterpriseInstallerBundle:minimal
