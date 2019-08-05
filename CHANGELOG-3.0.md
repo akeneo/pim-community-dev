@@ -6,6 +6,7 @@
 - PIM-8589: Fix add attribute to attribute group when no permission on group "Other"
 - PIM-8445: Fix variant axes settings CSS style
 - PIM-8614: Fix empty variant axes validation
+- PIM-8387: Fix product export builder on simple/multi select attribute filters
 
 # 3.0.34 (2019-07-24)
 
