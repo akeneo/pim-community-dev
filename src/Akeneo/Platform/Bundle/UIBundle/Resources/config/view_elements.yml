@@ -10,9 +10,6 @@ services:
     pim_enrich.view_element.registry:
         class: '%pim_enrich.view_element.registry.class%'
 
-    pim_enrich.view_element.base:
-        class: '%pim_enrich.view_element.base.class%'
-
     pim_enrich.view_element.visibility_checker.acl:
         class: '%pim_enrich.view_element.visibility_checker.acl.class%'
         arguments:

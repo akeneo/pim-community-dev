@@ -36,7 +36,6 @@ parameters:
     pim_catalog.validator.constraint.not_empty_family.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamilyValidator
     pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValuesValidator
     pim_catalog.validator.constraint.invalid_variant_product_parent.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParentValidator
-    pim_catalog.validator.constraint.unique_product.class:                 Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueEntityValidator
 
     pim_catalog.validator.extension_to_mimetype_mapping:
         mp3:  ['audio/mpeg']
@@ -318,13 +317,6 @@ services:
         class: '%pim_catalog.validator.constraint.not_empty_family.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_not_empty }
-
-    pim_catalog.validator.constraint.unique_product:
-        class: '%pim_catalog.validator.constraint.unique_product.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_unique_product_validator }
 
     pim_catalog.validator.constraint.unique_product_entity:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntityValidator'

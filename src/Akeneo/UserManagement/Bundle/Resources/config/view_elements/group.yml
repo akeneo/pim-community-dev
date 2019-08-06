@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_user.view_element.group.tab.general:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_user.group.tab.general'
             - '%pim_user.view_element.group.tab.general.template%'
@@ -12,7 +12,7 @@ services:
             - { name: pim_enrich.view_element, type: pim_user_group_form.form_tab, position: 90 }
 
     pim_user.view_element.group.tab.users:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_user.group.tab.users'
             - '%pim_user.view_element.group.tab.users.template%'

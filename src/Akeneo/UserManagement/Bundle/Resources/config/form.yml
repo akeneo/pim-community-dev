@@ -10,11 +10,6 @@ parameters:
     pim_user.form.handler.acl_role.class:       Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler
 
 services:
-    pim_user.form.user.api:
-        class:                        Symfony\Component\Form\Form
-        factory:                      'form.factory:createNamed'
-        arguments:                    ["user", "user", null]
-
     pim_user.form.role:
         class:                        Symfony\Component\Form\Form
         factory:                      'form.factory:createNamed'
