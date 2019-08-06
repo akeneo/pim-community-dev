@@ -2,7 +2,7 @@ import {
   recordEditionLabelUpdated,
   recordEditionReceived,
   recordEditionImageUpdated,
-  recordEditionErrorOccured,
+  recordEditionErrorOccurred,
   recordEditionSucceeded,
   recordEditionValueUpdated,
   recordEditionUpdated,
@@ -31,7 +31,7 @@ export const saveRecord = () => async (dispatch: any, getState: () => EditState)
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(recordEditionErrorOccured(validationErrors));
+      dispatch(recordEditionErrorOccurred(validationErrors));
       dispatch(notifyRecordSaveValidationError());
 
       return;

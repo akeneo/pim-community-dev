@@ -26,6 +26,6 @@ export const referenceEntityCreationSucceeded = () => {
   return {type: 'REFERENCE_ENTITY_CREATION_SUCCEEDED'};
 };
 
-export const referenceEntityCreationErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'REFERENCE_ENTITY_CREATION_ERROR_OCCURED', errors};
+export const referenceEntityCreationErrorOccurred = (errors: ValidationError[]) => {
+  return {type: 'REFERENCE_ENTITY_CREATION_ERROR_OCCURRED', errors};
 };

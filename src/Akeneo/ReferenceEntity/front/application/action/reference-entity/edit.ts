@@ -3,7 +3,7 @@ import {
   referenceEntityEditionReceived,
   referenceEntityEditionUpdated,
   referenceEntityEditionImageUpdated,
-  referenceEntityEditionErrorOccured,
+  referenceEntityEditionErrorOccurred,
   referenceEntityEditionSucceeded,
   referenceEntityRecordCountUpdated,
 } from 'akeneoreferenceentity/domain/event/reference-entity/edit';
@@ -30,7 +30,7 @@ export const saveReferenceEntity = () => async (dispatch: any, getState: () => E
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(referenceEntityEditionErrorOccured(validationErrors));
+      dispatch(referenceEntityEditionErrorOccurred(validationErrors));
       dispatch(notifyReferenceEntitySaveFailed());
 
       return;

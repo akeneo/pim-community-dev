@@ -141,7 +141,7 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
         numberOfLockedOptions: state.options.length,
       };
 
-    case 'OPTIONS_EDITION_ERROR_OCCURED':
+    case 'OPTIONS_EDITION_ERROR_OCCURRED':
       return {...state, isSaving: false, errors};
 
     case 'OPTIONS_EDITION_DELETE':

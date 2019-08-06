@@ -55,7 +55,7 @@ const errorsReducer = (state: ValidationError[] = [], action: {type: string; err
     case 'REFERENCE_ENTITY_EDITION_SUBMISSION':
       state = [];
       break;
-    case 'REFERENCE_ENTITY_EDITION_ERROR_OCCURED':
+    case 'REFERENCE_ENTITY_EDITION_ERROR_OCCURRED':
       state = action.errors;
       break;
     default:
