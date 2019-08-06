@@ -1,0 +1,16 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      column:
+        impacted_product_count:
+          no_yet_calculated: Not calculated yet
+  condition:
+    operators:
+      "=": equals
+      ">=": equals to or greater than
+      "<=": equals to or less than
+  acl:
+    rule:
+      execute_permissions: Vykonať pravidlá
+btn:
+  Execute rules: Vykonať pravidlá

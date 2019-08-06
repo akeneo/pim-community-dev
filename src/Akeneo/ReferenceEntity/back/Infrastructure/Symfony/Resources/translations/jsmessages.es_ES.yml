@@ -8,9 +8,9 @@ pim_reference_entity:
       wide:
         remove: Eliminar la imagen
         download: Descargar la imagen
-        upload: Arrastrar y soltar para cargar o haga clic aquí
+        upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
       small:
-        remove: Quitar
+        remove: Eliminar
         download: Descargar
         upload: Arrastrar y soltar para subir
   reference_entity:
@@ -108,11 +108,11 @@ pim_reference_entity:
     button:
       save: Guardar
       create: Añadir nuevo
-      delete: Eliminar
+      delete: Borrar
       delete_all: Eliminar todos los registros
       back: Volver a la lista
     enrich:
-      title: Atributos del registro
+      title: Registro de atributos
       code: Código
       label: Etiqueta
     title: Registros
@@ -134,9 +134,12 @@ pim_reference_entity:
     grid:
       search: Buscar en la etiqueta, el código y el texto de los atributos
       filter:
+        counter: '{{ matchesCount }} resultados|{{ matchesCount }} resultados'
         completeness:
           label: Completo
           all: TODOS
+          'yes': 'SÍ'
+          'no': 'NO'
       column:
         code: Código
         image: Imagen
@@ -179,6 +182,8 @@ pim_reference_entity:
     type:
       text: Texto
       image: Imagen
+      record: Enlace simple de entidad de referencia
+      record_collection: Enlace múltiple con información de referencia
       option: Opción única
       option_collection: Opciones múltiples
     is_required: necesarios para la integridad
@@ -233,8 +238,8 @@ pim_reference_entity:
               placeholder: Escriba su nueva etiqueta para opciones aqui
         options:
           validation_rule:
-            none: Ninguno
-            email: Correo electrónico
+            none: Ninguna
+            email: E-mail
             regular_expression: Expresión regular
             url: URL
     delete:
@@ -264,13 +269,16 @@ pim_reference_entity:
       subtitle: Confirmar la eliminación
       button:
         cancel: Cancelar
-        confirm: Eliminar
+        confirm: Borrar
 pim_enrich:
   confirmation:
     discard_changes: 'Perderá los cambios realizados sobre "{{ entity }}" la entidad si abandona esta página.'
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Enlace múltiple con información de referencia
+          akeneo_reference_entity: Enlace simple de entidad de referencia
         section:
           type_specific: Escriba los parámetros específicos
         reference_entity:
@@ -279,5 +287,11 @@ pim_enrich:
 permission:
   mass_action: Aplicar {{ rightLevel }} derechos en todos los grupos
 pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Ejes en entidades de referencia
+      hint: Si está utilizando las entidades de referencia, aquí están los ejes para ayudar a controlar su volumen.
   axis:
     count_reference_entity: Entidades de referencia
+    average_max_records_per_reference_entity: Registros por entidad de referencia
+    average_max_attributes_per_reference_entity: Atributos por entidad de referencia

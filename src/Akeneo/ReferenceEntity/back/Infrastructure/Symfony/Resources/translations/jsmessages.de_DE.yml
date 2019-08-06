@@ -107,6 +107,7 @@ pim_reference_entity:
       value: Upsala, es scheint, dass das Rendern des Feldes "{{{ fieldName }}}" fehlgeschlagen ist. Weitere Informationen finden Sie in der Entwicklerkonsole.
     button:
       save: Speichern
+      create: Hinzufügen
       delete: Löschen
       delete_all: Alle Einträge löschen
       back: Zurück zur Liste
@@ -133,6 +134,7 @@ pim_reference_entity:
     grid:
       search: Suche nach Label-, Code- und Textattributen
       filter:
+        counter: '{{ matchesCount }} Ergebnis|{{ matchesCount }} Ergebnisse'
         completeness:
           label: Vollständig
           all: ALLE
@@ -236,7 +238,7 @@ pim_reference_entity:
               placeholder: Schreiben Sie sich hier eine neue Optionsbezeichnung.
         options:
           validation_rule:
-            none: Keine
+            none: keine
             email: E-Mail
             regular_expression: Regulärer Ausdruck
             url: URL

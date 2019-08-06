@@ -8,12 +8,12 @@ pimee_product_asset:
         manage_asset:
           title: Gestionar recursos
           cancel: Cancelar
-          confirm: Confirmar
+          confirm: Confirmación
         title: Gestionar recursos
         description: Elija los recursos que desea adjuntar a su producto
         preview_title: Vista previa de la colección de recursos
         download: Descargar
-        remove: Quitar
+        remove: Eliminar
         upload: Cargar
         yes: true
         no: false
@@ -24,17 +24,17 @@ pimee_product_asset:
       unique: El código debe ser único. Hemos generado uno nuevo para usted.
   enrich_asset:
     grid:
-      edit: Editar prodpiedades del recurso
+      edit: Editar las propiedades de el recurso
   enrich_variation:
     popin:
       reset:
-        title: Reinicializar variaciones
+        title: Reajuste de variaciones
         message: '¿Está seguro que desea reiniciar todas las variaciones?'
   mass_upload:
     menu: Cargar recursos
     btn:
       remove_all_files: Eliminar todos los archivos
-      import: Importar
+      import: Importación
       upload: Cargar recursos
     success:
       new: Un nuevo recurso ha sido creado
@@ -49,7 +49,7 @@ pimee_product_asset:
       import: Se ha producido un error durante la importación
       filename: Nombre de fichero inválido para el recurso
       code: Formato de código no válido para los recursos
-      locale: Un recurso existe pero no se puede traducir
+      locale: Existe un recurso pero no es localizable
       invalid_locale: El local está inhabilitado o es inválido
       exists: Un fichero con el mismo nombre ya está importado
       conflicts: Conflicto de nombre de ficheros
@@ -79,6 +79,7 @@ pim_dashboard:
     last_operations:
       job_type:
         mass_upload: Carga masiva
+        compute_completeness_of_products_linked_to_assets: Ingrese la totalidad de los productos enlazados a los activos
 pim_title:
   pimee_product_asset_mass_upload: Cargar recursos
   pimee_product_asset_index: Recursos
@@ -107,8 +108,8 @@ batch_jobs:
     label: Exportar recursos en CSV
     export.label: Exportar recursos en CSV
   csv_asset_variation_export:
-    label: Exportar variantes de recursos en CSV
-    export.label: Exportar variantes de recursos en CSV
+    label: Exportar variaciones de recursos en CSV
+    export.label: Exportar variaciones de recursos en CSV
   csv_tag_import:
     label: Importar etiquetas en CSV
     import.label: Importar etiquetas en CSV
@@ -144,6 +145,8 @@ batch_jobs:
     perform.label: Mover recursos a categorías
   add_tags_to_assets:
     perform.label: Añadir etiquetas a los recursos
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: Ingrese la totalidad de los productos enlazados a los activos
 jstree:
   asset:
     all: Todos los recursos
@@ -172,7 +175,7 @@ pimee_enrich.entity.channel:
       resize:
         title: Redimensionar
         options:
-          width: 'Px ancho %value%'
+          width: 'Ancho px %value%'
           height: 'Alto px %value%'
       resolution:
         title: Resolución
@@ -182,13 +185,13 @@ pimee_enrich.entity.channel:
       scale:
         title: Escala
         options:
-          width: 'Px ancho %value%'
+          width: 'Ancho px %value%'
           height: 'Alto px %value%'
           ratio: 'Ratio %value%%'
       thumbnail:
         title: Miniatura
         options:
-          width: 'Px ancho %value%'
+          width: 'Ancho px %value%'
           height: 'Alto px %value%'
 pimee_enrich.mass_edit.asset:
   title: Acción en masa de recursos
@@ -198,11 +201,11 @@ pimee_enrich.mass_edit.asset:
       label: Elegir recurso
     choose:
       title: Acciones en masa de recursos
-      label_count: "]0, Inf[Seleccione su acción"
+      label_count: "]0, Inf[Selecciona tu acción"
     configure:
-      label: Configurar
+      label: Configuración
     confirm:
-      label: Confirmar
+      label: Confirmación
   operation:
     add_tag:
       label: Añadir etiquetas a los recursos
@@ -218,6 +221,7 @@ pim_catalog_volume:
   section:
     assets:
       title: Ejes en los recursos
+      hint: Puede seguir el volumen respecto a los recursos aquí.
   axis:
     count_assets: Recursos
     count_asset_categories: Categorías de recursos

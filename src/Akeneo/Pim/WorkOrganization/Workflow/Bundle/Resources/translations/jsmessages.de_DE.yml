@@ -1,4 +1,4 @@
-View the product: Produkt ansehen
+View the product: Produkt anzeigen
 Unpublish the product: Die Veröffentlichung des Produktes entziehen
 Approve: Genehmigen
 Refuse: Ablehen
@@ -7,8 +7,10 @@ Refuse selected: Ausgewählte ablehnen
 pim_datagrid:
   no_entities:
     proposal: Es gibt keinen Vorschlag zu prüfen.
+    product_draft: Es gibt keinen Produktentwurf zu überprüfen.
   no_results:
     proposal: Es gibt keinen Vorschlag zu prüfen. Versuchen Sie, Ihre Suchkriterien zu ändern.
+    product_draft: Es gibt keinen Produktentwurf zum überprüfen. Versuchen Sie, Ihre Suchkriterien zu ändern.
 pimee_datagrid:
   cells:
     expand:
@@ -22,10 +24,11 @@ pimee_workflow:
     proposal:
       modal.title: Kommentar hinterlassen (optional - max. 255 Zeichen)
   proposal:
+    overview: "] -Inf, 1] {{ count }} Vorschlag|] 1, Inf [{{ count }} Vorschläge"
     selected: Vorschläge ausgewählt
     mass_action_group:
       review:
-        label: Stapelverarbeitung
+        label: Massenbearbeitung
     partial_accept:
       modal.title: Teilinformationen genehmigen
       modal.label: Kommentar hinterlassen (optional)
@@ -99,13 +102,16 @@ pimee_enrich.entity.product:
     history:
       published: Veröffentlicht
       revert: Wiederherstellen
+    attribute:
+      can_be_updated_by_a_rule: "Dieses Attribut kann durch eine Regel aktualisiert werden: {{ rule }}"
+      value_updated: Dieser Wert wird durch den aktuellen Entwurf aktualisiert.
     meta:
       published_version: Veröffentlichte Version
       owner_groups: Eigentümer-Gruppen
       draft_status: Entwurfsstatus
       draft:
-        in_progress: In Arbeit
-        sent_for_approval: Auf Genehmigung warten
+        in_progress: In Bearbeitung
+        sent_for_approval: Auf Genehmigung wartend
         working_copy: Arbeitskopie
     revert:
       title: Wiederherstellen der Bestätigung
@@ -121,7 +127,7 @@ pimee_enrich.entity.product:
       draft: Mein Entwurf
       draft_of: "Entwurf von {{ author }}"
     approval:
-      send: Zur Freigabe senden
+      send: Zur Genehmigung senden
       sent: Zur Freigabe gesendet
 pimee_enrich.entity.published_product:
   flash:
@@ -133,6 +139,8 @@ pimee_enrich.entity.published_product:
       fail: Fehler beim Entziehen der Veröffentlichung für dieses Produkt
     revert:
       success: Produkt erfolgreich wiederhergestellt
+  page_title:
+    index: "] -Inf, 1] {{ count }} veröffentlichtes Produkt|] 1, Inf [{{ count }} veröffentlichte Produkte"
   module:
     publish:
       label: Veröffentlichen
@@ -155,8 +163,6 @@ pimee_enrich.entity.product_draft:
       success: Produktentwurf zur Freigabe gesendet
       fail: Sie können diesen Produktentwurf nicht zur Freigabe senden
   module:
-    create:
-      label: Entwurf speichern
     proposal:
       accept: Vorschlag akzeptieren
       accept_selected: Ausgewählte Vorschläge akzeptieren
@@ -173,10 +179,12 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Veröffentlichen
+      label_count: "{1}Veröffentlichen <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf[Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
       description: Die Produkte werden veröffentlicht
       warning: '{{ itemsCount }} gewählte Produkte werden veröffentlicht.'
     unpublish:
       label: Veröffentlichung entziehen
+      label_count: "{1}1 Produkt <span class=\"AknFullPage-title--highlight\">nicht Veröffentlichen</span>|] 1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
       description: Die Veröffentlichung der Produkte wird entzogen
       warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
 pim_menu:
@@ -188,3 +196,4 @@ pim_menu:
 pim_title:
   pimee_workflow_proposal_index: Vorschläge
   pimee_workflow_published_product_index: Veröffentlichte Produkte
+  pimee_workflow_published_product_view: Veröffentlichtes Produkt {{ product.label }} | Anzeigen

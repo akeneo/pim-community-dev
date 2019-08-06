@@ -1,5 +1,6 @@
 teamwork_assistant:
   project:
+    required: Dieser Wert sollte nicht leer sein.
     label_maxlength: Dieser Wert ist zu lang. Er sollte {{ max }} oder weniger Zeichen haben.
     project_identifier: Das Projekt {{ project }} existiert nicht.
     project_locale: Das Gebietsschema {{ locale }} des Projektes muss aktiviert sein.
@@ -17,12 +18,12 @@ teamwork_assistant:
       show: Anzeigen
     due_date:
       contributor: Sie haben %percent%% der Produkte in %project_label% vollständig. Vergessen Sie nicht, die fehlenden Produkte bis zum %due_date% zu vervollständigen.
-      owner: '%project_label% für den %due_date% ist fertiggestellt.'''
+      owner: '%project_label% für den %due_date% ist nicht vollständig.'
       start: Start
   datagrid:
     project_completeness: Projektfortschritt
     contributor_todo: ToDo
-    contributor_in_progress: In Arbeit
+    contributor_in_progress: In Bearbeitung
     contributor_done: Fertig
     owner_todo: Todo (Projektübersicht)
     owner_in_progress: In Bearbeitung (Projektübersicht)
@@ -37,3 +38,4 @@ pim_datagrid:
   cells:
     type:
       project_calculation: Projekt-Kalkulation
+      refresh_project_completeness_calculation: Aktualisierung der Vollständigkeitsberechnung des Projekts

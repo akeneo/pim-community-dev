@@ -128,7 +128,7 @@ pimee_enrich.entity.product:
       draft_of: "Brouillon de {{ author }}"
     approval:
       send: Envoyer pour approbation
-      sent: Envoyé pour validation
+      sent: Envoyé pour approbation
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -160,8 +160,8 @@ pimee_enrich.entity.product_draft:
       success: Le brouillon a bien été enregistré
       fail: Le brouillon du produit n'a pas pu être mis à jour
     create:
-      success: Le brouillon a été envoyé pour validation
-      fail: Vous ne pouvez pas envoyer ce brouillon pour validation
+      success: Le brouillon a été envoyé pour approbation
+      fail: Vous ne pouvez pas envoyer ce brouillon pour approbation
   module:
     proposal:
       accept: Accepter la proposition
@@ -173,7 +173,7 @@ pimee_enrich.entity.product_draft:
       comment_chars: caractères.
       confirm: Envoyer
     edit:
-      discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications ?
+      discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour approbation sans ces modifications ?
       discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon ?
 pimee_enrich.mass_edit.product:
   operation:

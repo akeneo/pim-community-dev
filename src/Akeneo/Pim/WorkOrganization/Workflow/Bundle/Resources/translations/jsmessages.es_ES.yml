@@ -31,37 +31,37 @@ pimee_workflow:
         label: Acción en masa
     partial_accept:
       modal.title: Aprobar información parcial
-      modal.label: Hacer un comentario (opcional)
-      modal.error: Ha ocurrido un error, la propuesta no sido aprobada parcialmente
+      modal.label: Dejar un comentario (opcional)
+      modal.error: Ha ocurrido un error, la propuesta no ha sido aprobada parcialmente
       modal.success: La propuesta ha sido validada parcialmente con éxito
     partial_approve:
       modal:
         title: Aprobar los cambios parciales
-        label: Hacer un comentario (opcional)
-        error: Ha ocurrido un error, la propuesta no sido aprobada parcialmente
+        label: Dejar un comentario (opcional)
+        error: Ha ocurrido un error, la propuesta no ha sido aprobada parcialmente
         success: Los cambios han sido aprobados con éxito
     partial_reject:
       modal:
         title: Cambios rechazados parcialmente
-        label: Hacer un comentario (opcional)
+        label: Dejar un comentario (opcional)
         error: Ha ocurrido un error, la propuesta no ha sido rechazada parcialmente
         success: Los cambios han sido rechazados con éxito
 batch_jobs:
   csv_published_product_export:
     label: Exportar productos publicados en CSV
-    export.label: Exportación de productos publicados
+    export.label: Exportar productos publicados
   csv_product_proposal_import:
     label: Importación de propuesta de producto en CSV
     import.label: Importación de propuesta de producto
   approve_product_draft:
-    label: Aprobar la propuesta
-    perform.label: Aprobar la propuesta
+    label: Aprobar la proposición
+    perform.label: Aprobar la proposición
   refuse_product_draft:
-    label: Rechazar propuesta
-    perform.label: Rechazar propuesta
+    label: Rechazar propuestas
+    perform.label: Rechazar propuestas
   xlsx_published_product_export:
     label: Exportar productos publicados en XLSX
-    export.label: Exportación de productos publicados
+    export.label: Exportar productos publicados
   xlsx_product_proposal_import:
     label: Importar propuestas de productos en XLSX
     import.label: Importar propuestas de productos en XLSX
@@ -69,11 +69,11 @@ batch_jobs:
     export.label: Exportación rápida en CSV de los productos publicados
     perform.label: Exportación rápida en CSV de los productos publicados
   csv_published_product_grid_context_quick_export:
-    export.label: Exportación rápida de la tabla de productos publicados en CSV
-    perform.label: Exportación rápida de la tabla de productos publicados en CSV
+    export.label: Exportación rápida de la grilla de productos publicados en CSV
+    perform.label: Exportación rápida de la grilla de productos publicados en CSV
   xlsx_published_product_quick_export:
-    export.label: Exportación rápida en XLSX de los productos publicados
-    perform.label: Exportación rápida en XLSX de los productos publicados
+    export.label: Exportación rápida en XSLX de los productos publicados
+    perform.label: Exportación rápida en XSLX de los productos publicados
   xlsx_published_product_grid_context_quick_export:
     export.label: Exportación rápida de la cuadrícula de productos publicados en Xlsx
     perform.label: Exportación rápida de la cuadrícula de productos publicados en Xlsx
@@ -95,7 +95,7 @@ pimee_dashboard:
       date: Fecha
       author: Autor
       product: Producto
-      review: Revisar 	
+      review: Revisión
       empty: Ninguna propuesta a revisar
 pimee_enrich.entity.product:
   module:
@@ -107,12 +107,12 @@ pimee_enrich.entity.product:
       value_updated: Este valor se actualizará para el proyecto actual
     meta:
       published_version: Versión publicada
-      owner_groups: Grupos de propietario
+      owner_groups: Grupos de propietarios
       draft_status: Estado borrador
       draft:
         in_progress: En progreso
-        sent_for_approval: Esperando aprobacion
-        working_copy: Copia de trabajo
+        sent_for_approval: Aguardando aprobación
+        working_copy: Versión de trabajo
     revert:
       title: Confirmar la restauración
       content: '¿Está usted seguro que desea restaurar el producto a esta versión?'
@@ -123,7 +123,7 @@ pimee_enrich.entity.product:
       title: Romover la publicación de este producto
       content: '¿Está seguro que desea remover la publicación de este producto?'
     copy:
-      working_copy: Copia de trabajo
+      working_copy: Versión de trabajo
       draft: Mi borrador
       draft_of: "Borrador de {{ author }}"
     approval:
@@ -146,11 +146,11 @@ pimee_enrich.entity.published_product:
       label: Publicar
       publish_this_version: Publicar esta versión
     unpublish:
-      label: Despublicar
+      label: Remover publicación
 pimee_enrich.entity.product_draft:
   flash:
     approve:
-      success: La propuesta ha sido aplicada exitosamente.
+      success: La propuesta ha sido aplicada con éxito.
       fail: "La propuesta no puede ser aplicada debido al siguiente error: {{ error }}"
     reject:
       success: La propuesta ha sido rechazada.
@@ -163,8 +163,6 @@ pimee_enrich.entity.product_draft:
       success: El borrador del producto ha sido enviado a aprobación
       fail: No puede enviar este borrador para aprobación
   module:
-    create:
-      label: Guardar borrador
     proposal:
       accept: Aceptar propuesta
       accept_selected: Aceptar propuesta(s) seleccionada(s)
@@ -185,7 +183,7 @@ pimee_enrich.mass_edit.product:
       description: Los productos se publicarán
       warning: Los {{ itemsCount }} seleccionados serán publicados.
     unpublish:
-      label: Despublicar
+      label: Remover publicación
       label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Los productos serán despublicados
       warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.

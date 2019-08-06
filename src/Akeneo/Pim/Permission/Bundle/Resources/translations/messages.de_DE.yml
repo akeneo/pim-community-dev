@@ -8,6 +8,8 @@ edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_pr
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Produktwert mit Berechtigung hinzufügen
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung aktualisieren
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung entfernen
+edit_common_attributes_with_permission: Gemeinsame Attribute mit Berechtigung bearbeiten
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Gemeinsame Attribute mit Berechtigung bearbeiten
 pim_analytics:
   info_type:
     nb_custom_locale_accesses: Anzahl der benutzerdefinierten Zugriffe auf das Gebietsschema
@@ -32,9 +34,13 @@ category.permissions:
   own.label: Berechtigt Produkte zu besitzen
   own.help: Berechtigt Produkte in dieser Kategorie zu überprüfen, klassifizieren, zuzuordnen, veröffentlichen oder die Veröffentlichung zu entziehen (beinhaltet die Berechtigung zu bearbeiten)
   no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
-  apply_on_children.label: Änderung auf die Kindelemente anwenden
-  apply_on_children.help: Die Änderungen an den Berechtigungen auf alle Kindelemente kopieren. Bestehende Berechtigungen bei Kindelementen werden beibehalten.
+  apply_on_children.label: Übernehme Änderungen auf Kindelemente
+  apply_on_children.help: Übertragen der Berechtigungen auf alle Kindelemente, bereits bestehende Berechtigungen werden beibehalten
 locale.permissions:
+  view.label: Berechtigt Informationen anzuzeigen
+  view.help: Erlauben, die Produkteinformationen in diesem Gebietsschema anzusehen
+  edit.label: Berechtigt Produktinformationen zu bearbeiten
+  edit.help: Erlauben, die Produkteinformationen in diesem Gebietsschema zu bearbeiten (beinhaltet die Berechtigung anzuzeigen)
   no_access_to_products: Sie haben keinen Zugriff auf Produktinformationen in ausgewählten Gebietsschemata . Bitte kontaktieren Sie Ihren Administrator.
 flash.locale.updated: Das Gebietsschema und die Berechtigungen wurden erfolgreich aktualisiert
 pim_enrich:
@@ -45,7 +51,7 @@ pim_enrich:
       page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
       title: Aktion auswählen
       subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
-      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
+      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
       steps:
         first: Produkte auswählen
         second: Aktion auswählen
@@ -86,7 +92,7 @@ pimee_enrich:
 add_product_value_with_permission_and_rules:
   steps.perform: Produktwert hinzufügen
 update_product_value_with_permission_and_rules:
-  steps.perform: Wert des Produkts aktualisieren
+  steps.perform: Produktwert aktualisieren
 edit_common_attributes_with_permission_and_rules:
   steps.perform: Attribute bearbeiten
   steps.edit_common_attributes_processor.title: Attribute bearbeiten
