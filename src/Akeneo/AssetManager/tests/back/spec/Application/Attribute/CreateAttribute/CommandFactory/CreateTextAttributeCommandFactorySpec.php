@@ -74,9 +74,6 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command = $this->create([
             'asset_family_identifier' => 'designer',
             'code' => 'name',
-            'labels' => ['fr_FR' => 'Nom'],
-            'value_per_channel' => false,
-            'value_per_locale' => false,
         ]);
 
         $command->shouldBeAnInstanceOf(CreateTextAttributeCommand::class);
@@ -86,5 +83,8 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->isRichTextEditor->shouldBeEqualTo(false);
         $command->validationRule->shouldBeEqualTo('none');
         $command->regularExpression->shouldBeEqualTo(null);
+        $command->labels->shouldBeEqualTo([]);
+        $command->valuePerChannel->shouldBeEqualTo(false);
+        $command->valuePerLocale->shouldBeEqualTo(false);
     }
 }

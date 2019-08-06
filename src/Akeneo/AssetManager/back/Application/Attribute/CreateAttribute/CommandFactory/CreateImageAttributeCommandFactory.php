@@ -44,8 +44,8 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
-            $normalizedCommand['value_per_channel'],
-            $normalizedCommand['value_per_locale'],
+            $normalizedCommand['value_per_channel'] ?? false,
+            $normalizedCommand['value_per_locale'] ?? false,
             $maxFileSize,
             $allowedExtensions
         );

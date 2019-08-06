@@ -59,8 +59,6 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
             'asset_family_identifier' => 'designer',
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
-            'value_per_channel' => false,
-            'value_per_locale' => false,
         ]);
 
         $command->shouldBeAnInstanceOf(CreateNumberAttributeCommand::class);
@@ -68,5 +66,7 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
         $command->decimalsAllowed->shouldBeEqualTo(false);
         $command->minValue->shouldBe(null);
         $command->maxValue->shouldBe(null);
+        $command->valuePerChannel->shouldBeEqualTo(false);
+        $command->valuePerLocale->shouldBeEqualTo(false);
     }
 }

@@ -21,7 +21,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
         $this->supports(['type' => 'image'])->shouldReturn(false);
     }
 
-    function it_creates_a_command_to_create_a_asset_attribute()
+    function it_creates_a_command_to_create_an_asset_attribute()
     {
         $command = $this->create([
             'asset_family_identifier' => 'designer',
@@ -47,9 +47,9 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
     {
         $command = [
             'asset_family_identifier' => 'designer',
-            'code' => 'mentor',
+//            'code' => 'mentor', // For the test purpose, this one is missing
             'is_required' => false,
-            //'value_per_channel' => false, // For the test purpose, this one is missing
+            'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'designer',
         ];
@@ -72,5 +72,25 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
 
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('create', [$command]);
+    }
+    
+    public function it_builds_the_command_with_some_default_values()
+    {
+        $command = $this->create([
+            'asset_family_identifier' => 'designer',
+            'code' => 'mentor',
+            'asset_type' => 'designer',
+        ]);
+
+        $command->shouldBeAnInstanceOf(CreateAssetAttributeCommand::class);
+        $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
+        $command->code->shouldBeEqualTo('mentor');
+        $command->assetType->shouldBeEqualTo('designer');
+
+        // default values:
+        $command->labels->shouldBeEqualTo([]);
+        $command->isRequired->shouldBeEqualTo(false);
+        $command->valuePerChannel->shouldBeEqualTo(false);
+        $command->valuePerLocale->shouldBeEqualTo(false);
     }
 }

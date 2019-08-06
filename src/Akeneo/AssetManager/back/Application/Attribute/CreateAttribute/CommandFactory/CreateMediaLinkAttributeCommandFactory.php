@@ -40,8 +40,8 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
-            $normalizedCommand['value_per_channel'],
-            $normalizedCommand['value_per_locale'],
+            $normalizedCommand['value_per_channel'] ?? false,
+            $normalizedCommand['value_per_locale'] ?? false,
             $normalizedCommand['media_type'],
             $this->stringOrNull($normalizedCommand, 'prefix'),
             $this->stringOrNull($normalizedCommand, 'suffix')

@@ -74,4 +74,24 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('create', [$command]);
     }
+
+    public function it_builds_the_command_with_some_default_values()
+    {
+        $command = $this->create([
+            'asset_family_identifier' => 'designer',
+            'code' => 'brands',
+            'asset_type' => 'brand',
+        ]);
+
+        $command->shouldBeAnInstanceOf(CreateAssetCollectionAttributeCommand::class);
+        $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
+        $command->code->shouldBeEqualTo('brands');
+        $command->assetType->shouldBeEqualTo('brand');
+
+        // default values:
+        $command->labels->shouldBeEqualTo([]);
+        $command->isRequired->shouldBeEqualTo(false);
+        $command->valuePerChannel->shouldBeEqualTo(false);
+        $command->valuePerLocale->shouldBeEqualTo(false);
+    }
 }

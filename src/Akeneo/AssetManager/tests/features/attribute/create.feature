@@ -180,6 +180,15 @@ Feature: Create an attribute linked to an asset family
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | video        | null   | null   |
     Then there should be a validation error with message 'The media type given is not corresponding to the expected ones (image, other).'
 
+  @acceptance-back
+  Scenario: If no locale nor channel is set, their default value is set to false
+    When the user creates a text attribute "name" linked to the asset family "designer" with:
+      | code | labels                                    | is_required | order | max_length |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | 44         |
+    Then there is a text attribute "name" in the asset family "designer" with:
+      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | false             | false            | 44         | text | false       | false               | none            |                    |
+
   @acceptance-front
   Scenario: Create a simple valid text attribute
     Given the user has the following rights:

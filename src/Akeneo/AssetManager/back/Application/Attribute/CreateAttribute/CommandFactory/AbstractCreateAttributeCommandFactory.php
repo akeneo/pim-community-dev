@@ -29,9 +29,7 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
     {
         $keysToCheck = [
             'code',
-            'asset_family_identifier',
-            'value_per_channel',
-            'value_per_locale',
+            'asset_family_identifier'
         ];
 
         foreach ($keysToCheck as $keyToCheck) {
