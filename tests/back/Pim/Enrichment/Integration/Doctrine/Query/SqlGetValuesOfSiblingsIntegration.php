@@ -75,7 +75,7 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
     //         - apollon_optiona_true
     //         - apollon_optiona_false
     //     - sub_sweat_option_b
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->createProductModel(
