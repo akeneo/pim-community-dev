@@ -19,8 +19,7 @@
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back"
         },
         "exclude-from-classmap": [
-            "vendor/akeneo/pim-community-dev/app/AppKernel.php",
-            "vendor/akeneo/pim-community-dev/app/AppCache.php"
+            "vendor/akeneo/pim-community-dev/src/Kernel.php"
         ]
     },
     "autoload-dev": {

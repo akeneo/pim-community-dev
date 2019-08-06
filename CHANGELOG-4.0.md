@@ -28,6 +28,8 @@
  
 ### Services
 
+- Remove `pimee_workflow.query.select_category_codes_by_product_grid_filters`
+- Remove `pimee_workflow.query.is_user_owner_on_all_categories`
 - Remove `akeneo_elasticsearch.client.published_product_and_product_model`.
 - Update `akeneo.pim.enrichment.category.category_tree.query.list_root_categories_with_count_including_sub_categories` to use `akeneo_elasticsearch.client.product_and_product_model`.
 - Update `akeneo.pim.enrichment.category.category_tree.query.list_root_categories_with_count_not_including_sub_categorie` to use `akeneo_elasticsearch.client.product_and_product_model`.

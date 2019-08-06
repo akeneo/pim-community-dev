@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_product_asset.view_element.category.tab.property:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_enrich.category.tab.property'
             - '%pim_enrich.view_element.category.tab.property.template%'
@@ -11,7 +11,7 @@ services:
             - { name: pim_enrich.view_element, type: pimee_asset_category.form_tab, position: 90 }
 
     pimee_product_asset.view_element.category.tab.category_permission:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pimee_enrich.category.tab.permission'
             - '%pimee_product_asset.view_element.tab.category_permission.template%'
@@ -23,7 +23,7 @@ services:
             - { name: pim_enrich.view_element, type: pimee_asset_category.form_tab, position: 100 }
 
     pimee_product_asset.view_element.category.tab.history:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_enrich.category.tab.history'
             - '%pim_enrich.view_element.category.tab.history.template%'
