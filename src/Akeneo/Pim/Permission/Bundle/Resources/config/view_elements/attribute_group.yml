@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_enrich.view_element.tab.attributegroup_permission:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pimee_enrich.attribute_group.tab.permission'
             - '%pimee_enrich.view_element.tab.attributegroup_permission.template%'
