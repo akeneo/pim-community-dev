@@ -23,14 +23,17 @@ $client = $builder->setHosts($hosts)->build()->indices();
 
 function deleteAliasAndIndex($client, $aliasName) {
     if ($client->existsAlias(['name' => $aliasName ])) {
-        echo 'Deleting alias '.$aliasName.' and index.';
+        echo sprintf("Deleting alias \"%s\" and index.\n", $aliasName);
         $alias = $client->getAlias(['name' => $aliasName ]);
         $index = array_keys($alias)[0];
         $client->deleteAlias([ 'index' => $index, 'name' => $aliasName ]);
         return $client->delete(['index' => $index]);
     }
 
-    echo 'The alias "'.$aliasName.'"" does not exist. This could be because it\'s part of the Enterprise Edition.';
+    echo sprintf(
+        "The alias \"%s\" does not exist. This could be because it's part of the Enterprise Edition.\n",
+        $aliasName
+    );
 }
 
 deleteAliasAndIndex($client, 'akeneo_pim_product');
