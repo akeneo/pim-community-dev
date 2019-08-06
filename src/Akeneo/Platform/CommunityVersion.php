@@ -12,7 +12,7 @@ namespace Akeneo\Platform;
 class CommunityVersion
 {
     /** @staticvar string */
-    const VERSION = '3.1.17';
+    const VERSION = '3.1.18';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Slick Hare';
