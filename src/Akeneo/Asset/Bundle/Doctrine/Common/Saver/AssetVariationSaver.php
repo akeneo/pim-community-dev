@@ -12,7 +12,6 @@
 namespace Akeneo\Asset\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Asset\Component\Model\VariationInterface;
-use Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -34,22 +33,12 @@ class AssetVariationSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var CompletenessRemoverInterface */
-    protected $completenessRemover;
-
-    /**
-     * @param ObjectManager                  $objectManager
-     * @param EventDispatcherInterface       $eventDispatcher
-     * @param CompletenessRemoverInterface $completenessRemover
-     */
     public function __construct(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        CompletenessRemoverInterface $completenessRemover
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->completenessRemover = $completenessRemover;
     }
 
     /**
@@ -64,7 +53,6 @@ class AssetVariationSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($variation, $options));
 
         $this->objectManager->persist($variation);
-        $this->completenessRemover->removeForAsset($variation->getAsset());
         $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($variation, $options));
