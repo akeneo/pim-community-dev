@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8321: Do not display navigation blocks when there is no links inside
+
 # 3.0.35 (2019-08-05)
 
 ## Bug fixes
