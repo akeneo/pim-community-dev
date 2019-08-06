@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8623: Fix wysiwyg edit link modal on Firefox
+
 # 3.0.35 (2019-08-05)
 
 ## Bug fixes
