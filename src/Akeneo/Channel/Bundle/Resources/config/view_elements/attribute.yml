@@ -15,7 +15,7 @@ parameters:
 
 services:
     pim_enrich.view_element.attribute.tab.history:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_enrich.attribute.tab.history'
             - '%pim_enrich.view_element.attribute.tab.history.template%'

@@ -7,7 +7,8 @@ if (!file_exists('src/Kernel.php')) {
     die("Please run this command from your Symfony application root.");
 }
 
-require 'app/autoload.php';
+require 'app/bootstrap.php';
+require 'vendor/autoload.php';
 
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\ArgvInput;

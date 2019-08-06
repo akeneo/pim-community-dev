@@ -7,7 +7,7 @@ parameters:
 
 services:
     pim_user.view_element.user.tab.general:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_user.user.tabs.general'
             - '%pim_user.view_element.user.tab.general.template%'
@@ -15,7 +15,7 @@ services:
             - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 90 }
 
     pim_user.view_element.user.tab.additional:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_user.user.tabs.additional'
             - '%pim_user.view_element.user.tab.additional.template%'
@@ -23,7 +23,7 @@ services:
             - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 100 }
 
     pim_user.view_element.user.tab.group_and_role:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_user.user.tabs.group_and_role'
             - '%pim_user.view_element.user.tab.group_and_role.template%'
@@ -33,7 +33,7 @@ services:
             - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 110 }
 
     pim_user.view_element.user.tab.password:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_user.user.tabs.password'
             - '%pim_user.view_element.user.tab.password.template%'
@@ -43,7 +43,7 @@ services:
             - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 120 }
 
     pim_user.view_element.user.tab.interfaces:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_user.user.tabs.interfaces'
             - '%pim_user.view_element.user.tab.interfaces.template%'

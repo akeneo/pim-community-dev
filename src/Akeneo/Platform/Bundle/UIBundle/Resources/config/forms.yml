@@ -86,16 +86,6 @@ services:
         arguments:
             - 'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\IdentifiableModelTransformer'
 
-    pim_enrich.form.type.product_grid_filter_choice:
-        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType'
-        arguments:
-            - '@pim_enrich.repository.attribute'
-            - '@oro_datagrid.datagrid.manager'
-            - 'product-grid'
-            - ['scope', 'locale']
-        tags:
-            - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
-
     pim_enrich.form.type.localized_collection:
         class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LocalizedCollectionType'
         tags:

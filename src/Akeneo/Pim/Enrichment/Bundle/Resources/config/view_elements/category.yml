@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_enrich.view_element.category.tab.property:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_enrich.category.tab.property'
             - '%pim_enrich.view_element.category.tab.property.template%'
@@ -12,7 +12,7 @@ services:
             - { name: pim_enrich.view_element, type: pim_category.form_tab, position: 90 }
 
     pim_enrich.view_element.category.tab.history:
-        parent: pim_enrich.view_element.base
+        class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pim_enrich.category.tab.history'
             - '%pim_enrich.view_element.category.tab.history.template%'
