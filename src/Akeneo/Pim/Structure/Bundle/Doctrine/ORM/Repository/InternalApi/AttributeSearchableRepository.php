@@ -178,9 +178,13 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         }
 
         if (null !== $options['excluded_family']) {
-            $qb->leftJoin('a.families', 'xf');
-            $qb->andWhere('xf.code IS NULL OR xf.code <> :excluded_family');
+            $subQuery = $this->entityManager->createQueryBuilder()
+                ->select('attribute.code')
+                ->from($this->entityName, 'attribute');
+            $subQuery->innerJoin('attribute.families', 'xf');
+            $subQuery->where('xf.code = :excluded_family');
             $qb->setParameter('excluded_family', $options['excluded_family']);
+            $qb->andWhere(sprintf('a.code NOT IN (%s)', $subQuery->getDQL()));
         }
 
         $qb->leftJoin('a.group', 'ag');

@@ -155,6 +155,10 @@ class AttributeController
             $options['identifiers'] = array_unique(explode(',', $request->get('identifiers')));
         }
 
+        if ($request->get('excluded_family', null) !== null) {
+            $options['excluded_family'] = $request->get('excluded_family');
+        }
+
         if (count($options['identifiers']) > 0) {
             $options['limit'] = count($options['identifiers']);
         }
