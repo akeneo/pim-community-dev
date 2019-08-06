@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8321: Do not display navigation blocks when there is no links inside
+- PIM-8623: Fix wysiwyg edit link modal on Firefox
 
 # 3.0.35 (2019-08-05)
 
