@@ -25,6 +25,7 @@ teamwork_assistant:
     title: Projekt bearbeiten
   create_project_modal:
     saved: Das Projekt wurde gespeichert. Sie werden benachrichtigt, sobald die Berechnung abgeschlossen ist.
+    title: Projekt
   widget:
     no_project: Sie haben aktuell kein Projekt
     no_project_create: ein neues Projekt erstellen
@@ -34,6 +35,7 @@ teamwork_assistant:
     in_progress: In Bearbeitung
     done: Fertig
     all_contributors: Alle Mitwirkenden
+    you: Du
     display_products: Produkte anzeigen
     placeholder:
       contributor_selector: Suche Mitwirkende
@@ -63,3 +65,4 @@ pim_notification:
   types:
     project_created: Ein neues Projekt für Sie
     project_finished: Projekt abgeschlossen
+    project_calculation: Projekt-Kalkulation

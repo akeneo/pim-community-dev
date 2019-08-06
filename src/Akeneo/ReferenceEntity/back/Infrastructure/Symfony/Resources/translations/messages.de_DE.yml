@@ -12,6 +12,7 @@ akeneo_referenceentity:
       edit: Datensatz bearbeiten
       delete: "Datensatz löschen\n"
       delete_all: Alle Entitätsdatensätze löschen
+      list_product: Liste der zu erfassenden verknüpften Produkte
     attribute:
       create: Hinzufügen eines Attributs zu einer Referenzentität
       edit: Bearbeiten eines Attributs einer Referenzentität

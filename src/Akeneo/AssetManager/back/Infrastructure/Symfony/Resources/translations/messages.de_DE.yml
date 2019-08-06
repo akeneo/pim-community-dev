@@ -6,27 +6,28 @@ akeneo_assetmanager:
       create: Entität erstellen
       edit: Bearbeiten der Entitätseigenschaften
       delete: Entität löschen
-      manage_permission: Verwaltung der Zugriffsrechte von Referenzentitäten
+      manage_permission: Assetkategorieberechtigungen verwalten
     asset:
-      create: Einen Datensatz erstellen
-      edit: Datensatz bearbeiten
-      delete: "Datensatz löschen\n"
+      create: Asset erstellen
+      edit: Asset bearbeiten
+      delete: Asset löschen
       delete_all: Alle Entitätsdatensätze löschen
+      list_product: Liste der zu erfassenden verknüpften Produkte
     attribute:
-      create: Hinzufügen eines Attributs zu einer Referenzentität
-      edit: Bearbeiten eines Attributs einer Referenzentität
-      delete: Löschen eines Attributs einer Referenzentität
+      create: Attribut einer Asset-Familie hinzufügen
+      edit: Ein Attribut einer Asset-Familie bearbeiten
+      delete: Ein Attribut einer Asset-Familie löschen
     option:
       edit: Bearbeitungsoptionen
       delete: Entfernen einer Option
 pim_analytics:
   info_type:
-    nb_asset_families: Anzahl der Referenzobjekte
-    max_number_of_assets_per_asset_family: Maximale Anzahl von Datensätzen pro Referenzobjekt
-    average_number_of_values_per_assets: Durchschnittliche Anzahl der Werte pro Datensatz auf allen Referenzobjekten
-    average_number_of_assets_per_asset_family: Durchschnittliche Anzahl der Datensätze pro Referenzobjekt
-    max_number_of_attributes_per_asset_family: Maximale Anzahl von Datensätzen pro Referenzobjekt
-    average_number_of_attributes_per_asset_family: Durchschnittliche Anzahl der Attribute pro Referenz-Entität
-    average_percentage_localizable_only_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen Attribute pro Referenzentität
-    average_percentage_scopable_only_attributes: Durchschnittlicher Prozentsatz der kanalspezifischen Attribute pro Referenzentität
-    average_percentage_scopable_and_localizable_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen und kanalspezifischen Attribute pro Referenzentität
+    nb_asset_families: Anzahl der Familien
+    max_number_of_assets_per_asset_family: Maximale Anzahl an Assets pro Asset-Familie
+    average_number_of_values_per_assets: Durchschnittliche Anzahl von Werten pro Asset für alle Asset Familien
+    average_number_of_assets_per_asset_family: Durchschnittliche Anzahl der Attribute pro Familie
+    max_number_of_attributes_per_asset_family: Durchschnittliche Anzahl der Attribute pro Familie
+    average_number_of_attributes_per_asset_family: Durchschnittliche Anzahl der Attribute pro Familie
+    average_percentage_localizable_only_attributes: Durchschnittlicher Prozentsatz der lokalisierbaren und skalierbaren Attribute pro Asset-Familie
+    average_percentage_scopable_only_attributes: Durchschnittlicher Prozentsatz der kanalspezifischen Attribute pro Asset-Familie
+    average_percentage_scopable_and_localizable_attributes: Durchschnittlicher Prozentsatz der lokalisierbaren und skalierbaren Attribute pro Familie
