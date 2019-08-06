@@ -26,8 +26,6 @@ class Value
 
     private function __construct(string $value)
     {
-        Assert::stringNotEmpty($value, 'Value of condition should not be empty');
-
         $this->value = $value;
     }
 
