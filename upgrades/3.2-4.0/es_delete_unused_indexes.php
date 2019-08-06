@@ -38,5 +38,6 @@ function deleteAliasAndIndex($client, $aliasName) {
 
 deleteAliasAndIndex($client, 'akeneo_pim_product');
 deleteAliasAndIndex($client, 'akeneo_pim_product_model');
+deleteAliasAndIndex($client, 'akeneo_pim_published_product_and_product_model');
 
 echo "Done.\n";
