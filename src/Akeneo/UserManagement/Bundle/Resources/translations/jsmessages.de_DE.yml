@@ -3,8 +3,16 @@ pim_title:
   pim_user_role_index: Rollen
   pim_user_group_index: Benutzergruppen
   oro_config_configuration_system: Konfiguration
+  pim_user_edit: 'Benutzer {{ username }} | Bearbeiten'
+  pim_user_create: 'Benutzer | Erstellen'
+  pim_user_role_update: 'Rolle {{ role }} | Bearbeiten'
+  pim_user_role_create: 'Rolle | Erstellen'
   pim_user_security_login: Anmelden
+  pim_user_reset_reset: Passwort zurücksetzen
   pim_user_reset_request: Passwort vergessen
+  pim_user_reset_check_email: Passwort zurücksetzen | E-Mail überprüfen
+  pim_user_group_create: 'Gruppen | Anlegen'
+  pim_user_group_update: 'Gruppe {{ group }} | Bearbeiten'
 confirmation:
   remove:
     user: Möchten Sie diesen Benutzer wirklich löschen?
@@ -12,12 +20,26 @@ confirmation:
 pim_enrich:
   entity:
     user:
+      flash:
+        delete:
+          fail: Der Benutzer kann nicht gelöscht werden.
+          success: Der Benutzer wurde gelöscht.
       module:
         delete:
           confirm: Möchten Sie diesen Benutzer wirklich löschen?
 pim_user_management:
   entity:
     user:
+      label: benutzer
+      flash:
+        update:
+          success: Benutzer erfolgreich aktualisiert.
+          fail: Der Benutzer konnte nicht aktualisiert werden.
+          fields_not_ready: "Der Benutzer kann zur Zeit nicht gespeichert werden. Die folgenden Felder sind nicht vollständig ausgefüllt: {{ fields }}"
+        create:
+          success: Benutzer erfolgreich angelegt.
+      page_title:
+        index: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
       properties:
         username: Benutzername
         name_prefix: Namenspräfix
@@ -37,6 +59,7 @@ pim_user_management:
         new_password: Neues Passwort
         new_password_repeat: Neues Passwort (Wiederholung)
         password: Passwort
+        password_repeat: Passwort (Wiederholung)
         ui_locale: UI-Gebietsschema
         timezone: Zeitzone
         default_product_grid_view: Standardansicht Produktliste
@@ -49,12 +72,15 @@ pim_user_management:
         delete:
           confirm: Möchten Sie diesen Benutzer wirklich löschen?
         update:
-          additional: Ergänzend
+          additional: Weitere Informationen
+          groups_and_roles: Gruppen und Rollen
           password: Passwort
           interfaces: Benutzeroberfläche
           notifications: Benachrichtigungen
     role:
       plural_label: Rollen
+      page_title:
+        index: "] -Inf, 1] {{ count }} Rolle|] 1, Inf [{{ count }} Rollen"
       module:
         create:
           button: Rolle anlegen
@@ -62,6 +88,8 @@ pim_user_management:
           confirm: Möchten Sie diese Rolle wirklich löschen?
     group:
       plural_label: Benutzergruppen
+      page_title:
+        index: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"
       module:
         create:
           button: Gruppe anlegen
