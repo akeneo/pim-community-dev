@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
+ * @deprecated
  * Calculates the completenesses for a provided product.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -132,7 +133,7 @@ class LegacyCompletenessCalculator implements CompletenessCalculatorInterface
 
     public function fromProductIdentifiers($productIdentifiers): array
     {
-        throw new \Exception('Nope');
+        throw new \Exception('This one is not implemented on Legacy');
     }
 
     /**
@@ -142,6 +143,6 @@ class LegacyCompletenessCalculator implements CompletenessCalculatorInterface
      */
     public function fromProductIdentifier($productIdentifier): ProductCompletenessCollection
     {
-        // TODO: Implement fromProductIdentifier() method.
+        throw new \Exception('This one is not implemented on Legacy');
     }
 }

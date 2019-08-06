@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamil
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
@@ -20,17 +20,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness
  */
 class CompletenessCalculator implements CompletenessCalculatorInterface
 {
-    /** @var GetProducts */
-    private $getProducts;
+    /** @var GetCompletenessProductMasks */
+    private $getCompletenessProductMasks;
 
     /** @var GetCompletenessFamilyMasks */
     private $getCompletenessFamilyMasks;
 
     public function __construct(
-        GetProducts $getProducts,
+        GetCompletenessProductMasks $getCompletenessProductMasks,
         GetCompletenessFamilyMasks $getCompletenessFamilyMasks
     ) {
-        $this->getProducts = $getProducts;
+        $this->getCompletenessProductMasks = $getCompletenessProductMasks;
         $this->getCompletenessFamilyMasks = $getCompletenessFamilyMasks;
     }
 
@@ -41,7 +41,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
 
     public function fromProductIdentifiers($productIdentifiers): array
     {
-        $productMasks = $this->getProductMasks($productIdentifiers);
+        $productMasks = $this->getCompletenessProductMasks->fromProductIdentifiers($productIdentifiers);
 
         $familyCodes = array_map(function (CompletenessProductMask $product) {
             return $product->familyCode();
@@ -61,16 +61,6 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     public function fromProductIdentifier($productIdentifier): ProductCompletenessCollection
     {
         return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier];
-    }
-
-    /**
-     * @param string[] $productIdentifiers
-     *
-     * @return CompletenessProductMask[]
-     */
-    private function getProductMasks(array $productIdentifiers): array
-    {
-        return $this->getProducts->fromProductIdentifiers($productIdentifiers);
     }
 
     /**
