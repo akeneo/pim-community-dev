@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8623: Fix wysiwyg edit link modal on Firefox
+- PIM-8624: Fix default product grid view selector in user profile when there is more than 20 views
 
 # 3.0.35 (2019-08-05)
 

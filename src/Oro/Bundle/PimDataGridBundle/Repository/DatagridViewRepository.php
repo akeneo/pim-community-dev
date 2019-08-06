@@ -51,6 +51,11 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
         $options += ['limit' => 20, 'page' => 1];
         $offset = (int) $options['limit'] * ((int) $options['page'] - 1);
 
+        $identifiers = null;
+        if (isset($options['identifiers'])) {
+            $identifiers = $options['identifiers'];
+        }
+
         $qb = $this->createQueryBuilder('v')
             ->where('v.type = :type')
                 ->setParameter('type', DatagridView::TYPE_PUBLIC)
@@ -60,6 +65,11 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
                 ->setParameter('term', sprintf('%%%s%%', $term))
             ->setMaxResults((int) $options['limit'])
             ->setFirstResult($offset);
+
+        if (null !== $identifiers) {
+            $qb->andWhere('v.id IN (:ids)');
+            $qb->setParameter('ids', $identifiers);
+        }
 
         return $qb->getQuery()->execute();
     }
