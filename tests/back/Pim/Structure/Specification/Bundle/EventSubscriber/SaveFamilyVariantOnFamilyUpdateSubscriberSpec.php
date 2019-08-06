@@ -124,7 +124,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($family);
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(true);
-        $errorMessage = 'One or more errors occured while updating the following family variants:\n' .
+        $errorMessage = 'One or more errors occurred while updating the following family variants:\n' .
             'family_variant_1:\n- Error 1 with family variant\n- Error 2 with family variant\n' .
             'family_variant_2:\n- Error 1 with family variant\n';
         $this->shouldThrow(new \LogicException($errorMessage))->during('onUnitarySave', [$event]);
@@ -214,7 +214,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($family);
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(false);
-        $errorMessage = 'One or more errors occured while updating the following family variants:\n' .
+        $errorMessage = 'One or more errors occurred while updating the following family variants:\n' .
             'family_variant_1:\n- Error 1 with family variant\n- Error 2 with family variant\n' .
             'family_variant_2:\n- Error 1 with family variant\n';
         $this->shouldThrow(new \LogicException($errorMessage))->during('onBulkSave', [$event]);

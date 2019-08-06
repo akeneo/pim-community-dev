@@ -147,7 +147,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
      */
     private function getErrorMessage(array $allViolations): string
     {
-        $errorMessage = 'One or more errors occured while updating the following family variants:\n';
+        $errorMessage = 'One or more errors occurred while updating the following family variants:\n';
         foreach ($allViolations as $familyVariantCode => $constraintViolationList) {
             $errorMessage .= sprintf('%s:\n', $familyVariantCode);
             foreach ($constraintViolationList as $violation) {

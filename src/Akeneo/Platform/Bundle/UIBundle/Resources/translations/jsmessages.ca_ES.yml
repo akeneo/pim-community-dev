@@ -2,7 +2,7 @@
 "Yes, do it": "Sí, fes-ho"
 "Ok, got it.": "D'acord, ho entenc."
 "Edit": "Editar"
-"Unexpected error occured. Please contact system administrator.": "Error inesperat. Contacti amb el seu administrador de sistemes."
+"Unexpected error occurred. Please contact system administrator.": "Error inesperat. Contacti amb el seu administrador de sistemes."
 "Yes, revoke": "Sí, revocar"
 "Revoke Confirmation": "Revocar confirmació"
 Prev: Anterior
@@ -183,7 +183,7 @@ error:
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
 alert:
   attribute_option:
-    error_occured_during_submission: S'ha produït un error durant l'enviament del formulari al servidor
+    error_occurred_during_submission: S'ha produït un error durant l'enviament del formulari al servidor
     save_before_edit_other: Si us plau registri les seves modificacions a les altres files abans d'editar aquesta
   session_storage:
     not_available: El navegador web no sembla compatible amb sessionStorage. Contacteu amb l'administrador

@@ -194,7 +194,7 @@ flash:
     created: Grupptyp skapades
   user:
     removed: Användaren har tagits bort
-  error ocurred: Åtgärden misslyckades. Försök igen.
+  error occurred: Åtgärden misslyckades. Försök igen.
 info:
   updated: Det finns ändringar som inte sparats.
   category:

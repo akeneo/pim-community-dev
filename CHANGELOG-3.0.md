@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8604: Fix typos in the word 'occurred'
+
 # 3.0.35 (2019-08-05)
 
 ## Bug fixes

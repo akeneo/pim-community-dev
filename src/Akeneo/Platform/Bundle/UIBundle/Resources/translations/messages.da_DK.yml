@@ -211,7 +211,7 @@ flash:
     created: Gruppetypen oprettet
   user:
     removed: Brugeren blev fjernet
-  error ocurred: Handlingen fejlede. Prøv venligst igen.
+  error occurred: Handlingen fejlede. Prøv venligst igen.
 info:
   updated: Der er ikke-gemte ændringer.
   category:
