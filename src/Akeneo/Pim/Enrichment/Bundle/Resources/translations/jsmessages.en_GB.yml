@@ -1,0 +1,421 @@
+pim_notification:
+  types:
+    settings: Settings
+flash:
+  comment:
+    create:
+      success: Your comment has been created successfully.
+      error: An error occurred during the creation of your comment.
+    delete:
+      success: Your comment has been deleted successfully.
+      error: An error occurred during the deletion of your comment.
+    reply:
+      success: Your reply has been created successfully.
+      error: An error occurred during the creation of your reply.
+pim_enrich.entity.product:
+  label: product
+  uppercase_label: Product
+  plural_label: Products
+  flash:
+    update:
+      success: Product successfully updated.
+      fail: The product could not be updated.
+      fields_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
+      already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
+      file_upload: An error occurred during the file upload
+    delete:
+      success: Product successfully deleted.
+      fail: The product could not be deleted.
+    create:
+      success: Product successfully created
+      fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
+  page_title:
+    index: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
+  module:
+    create:
+      subtitle: Create product
+      title: Select your action
+      choose_family: Choose a family
+      choose_family_variant: Choose a family variant
+    variant_navigation:
+      common: Common
+    status:
+      enabled: Enabled
+      disabled: Disabled
+    download_pdf:
+      label: PDF
+    copy:
+      label: Compare / Translate
+      select: Select
+      all_visible: All visible
+      copy: Copy
+    history:
+      version: Version
+      author: Author
+      logged_at: Logged at
+      from: From
+      modified: Modified
+      old_value: Old value
+      new_value: New value
+    meta:
+      updated: Last update
+      groups: Groups
+    show_group:
+      title: Group {{ group }}
+      view_group: View group
+      more_products: '{{ count }} more products...'
+    attribute:
+      remove_optional: Remove this attribute
+      locale_specific_unavailable: This locale specific field is not available in this locale
+      locale_unavailable: This localisable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
+      to_fill_count: "{1}1 missing required attribute|]1, Inf[{{ count }} missing required attributes"
+      add_attribute_option: Add attribute option
+      add_option: Add an option
+    completeness:
+      title: Completeness
+      complete: Complete
+      no_family: No family defined. Please define a family to calculate the completeness of this product.
+      no_completeness: You changed the family of the product. Please first save it to calculate the completeness for the new family.
+      missing_values: "{1}1 missing value|]1, Inf[{{ count }} missing values"
+    sequential_edit:
+      item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
+      empty: Your selection is empty, please change your search criteria
+      save_and_next: Save and next
+      save_and_finish: Save and finish
+    associations:
+      title: Associations
+      none_exist: No association types exist.
+      show_products: Display products
+      show_groups: Display groups
+      number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
+      association_type_selector: Association type
+      target: Target
+      manage: Add {{ associationType }} associations
+      manage_description: Select the products you want to associate with the current product
+      add_associations: Add associations
+    attribute_filter:
+      display: Display
+      all: All attributes
+      missing_required: All missing required attributes
+      at_this_level: All level-specific attributes
+    change_family:
+      title: Change the product family
+      merge_attributes: Current attributes will be merged with the ones in the new family.
+      keep_attributes: No attributes will be removed.
+      change_family_to: Change the family to
+      empty_selection: Choose a family
+    basket:
+      title: Basket
+      empty_basket: Basket is empty
+    delete:
+      confirm: Are you sure you want to delete this product?
+    comment:
+      post: Add a new comment
+      reply: Reply
+      title: Comments
+      empty: No comment for now
+      header_comment: '{{ user }} comments the product'
+      header_reply: '{{ user }} replies to the comment'
+      delete_confirm: Voulez-vous vraiment supprimer ce commentaire ?
+      removed_author: Removed user
+pim_enrich.entity.product_model:
+  label: product model
+  uppercase_label: Product model
+  plural_label: Product models
+  flash:
+    create:
+      success: Product model successfully created
+      product_model_added: Product model successfully added to the product model
+      variant_product_added: Variant product successfully added to the product model
+    update:
+      success: Product model successfully updated. The completeness of its variant products will be recalculated.
+      fail: The product model could not be updated.
+      fields_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
+    delete:
+      success: Product model successfully deleted.
+      fail: Cannot delete this product model
+  choose: Choose a product model
+  property:
+    family_variant: Variant
+  module:
+    create:
+      title: Create a product model
+      content: A product model gathers variant products and eases the enrichment of their common properties.
+    attribute:
+      read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
+      read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
+    variant_axis:
+      label: 'variant axis'
+      create: Add new
+      create_label: "Add a new {{ axes }}"
+      required_label: '(variant axis)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
+    delete:
+      confirm: Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
+      confirm_for_products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
+pim_enrich.entity.group:
+  label: Group
+  flash:
+    update:
+      success: Group successfully updated.
+      fail: The group could not be updated.
+      fields_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
+    create:
+      success: Group successfully created
+    delete:
+      success: Group successfully removed
+      fail: Cannot delete this group
+  page_title:
+    index: "]-Inf, 1]{{ count }} group|]1, Inf[{{ count }} groups"
+  module:
+    create:
+      button: Create group
+    delete:
+      confirm: Are you sure you want to delete this group?
+pim_enrich.entity.category:
+  label: category
+  uppercase_label: Category
+  plural_label: Categories
+pim_enrich.export.product:
+  data:
+    title: Filter the products
+  structure:
+    title: Filter the data
+  filter:
+    channel:
+      help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
+    locales:
+      help: "The locales defines the localised product values to export. Ex: only product information in French."
+    attributes:
+      label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
+      help: "Select the product information to export. Ex: only the technical attributes."
+      empty: All attributes will be exported
+      modal:
+        title: Attribute selection
+    attributes_selector:
+      attributes: "Search in {{ itemsCount }} attributes"
+      selected: "Selected attributes"
+      clear: Clear
+      all_group: All groups
+      empty_selection: All attributes will be exported
+      description: Select the product information to export
+    family:
+      title: Family
+      help: "Select the products to export by their family. Ex: Export only the shoes and dresses."
+      operators:
+        IN: In list
+        "NOT IN": Not in list
+        EMPTY: Products that don't have a family
+        "NOT EMPTY": Products that have a family
+      empty_selection: No condition on families
+    updated:
+      title: Time condition
+      operators:
+        ALL: No date condition
+        "SINCE LAST N DAYS": Updated products over the last n days (e.g. 6)
+        ">": Updated products since this date
+        "SINCE LAST JOB": Updated products since last export
+    enabled:
+      title: Status
+      help: "Select the products to export by their status. Ex: Export products whatsoever their status."
+      value:
+        enabled: Enabled
+        disabled: Disabled
+    completeness:
+      title: Completeness
+      help: Select the products to export by their completeness.
+      operators:
+        ALL: No condition on completeness
+        ">=": Complete on at least one selected locale
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Complete on at least one selected locale
+        LOWER THAN ON ALL LOCALES: Not complete on all selected locales
+        AT LEAST COMPLETE: At least one child product complete on one selected locale
+        ALL COMPLETE: All children products complete on all selected locales
+      empty_selection: Select a family
+    category:
+      title: Category
+      help: Use the product categories in the tree (defined by the channel above) to select the products to export
+    identifier:
+      title: Identifier
+      help: Use the product identifiers to export separated by commas, spaces or line breaks
+    string:
+      operators:
+        ALL: All
+    select:
+      operators:
+        IN: In list
+    date:
+      operators:
+        BETWEEN: Between
+        NOT BETWEEN: Not between
+  global_settings:
+    title: Global settings
+pim_enrich.mass_edit.product:
+  title: Products bulk action
+  confirm: "{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
+  step:
+    select:
+      label: Choose products
+    choose:
+      title: Products bulk actions
+      label_count: "]0, Inf[Select your action"
+    configure:
+      label: Configure
+    confirm:
+      label: Confirm
+    launch_error:
+      label: An error occurred during the launching of the mass edit operation
+    launched:
+      label: The bulk action "{{ operation }}" has been launched. You will be notified when it is completed.
+  operation:
+    common:
+      select_attributes: Select attributes
+    change_status:
+      label: Change status
+      label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: The selected products will be enabled or disabled.
+      field: To enable
+    edit_common:
+      label: Edit attributes values
+      label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
+      no_update: Please select at least one field to update
+    add_attribute_value:
+      label: Add attributes values
+      label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
+    change_family:
+      label: Change family
+      label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: The family of the selected products will be changed to the chosen family
+    add_to_group:
+      label: Add to groups
+      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
+      description: Select the groups in which you want to add the selected products
+      field: Groups
+      no_update: Please select a group before continuing
+    add_to_category:
+      label: Add to categories
+      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
+      description: The products will be classified into following categories, the existing classification is kept.
+    move_to_category:
+      label: Move between categories
+      label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
+      description: The products will be classified into following categories, the existing classification is lost.
+    remove_from_category:
+      label: Remove from categories
+      label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
+      description: The products will be removed from the following categories.
+      no_update: There is no category checked to remove the selected products from.
+    add_to_existing_product_model:
+      label: Add to an existing product model
+      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
+      description: The product model selected will gather the products and allows the enrichment of their common properties.
+      no_update: Please select a product model before to continue
+    associate_to_product_and_product_model:
+      label: Associate
+      label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
+      description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
+      validate: Please add association before going to the next step
+    change_parent_product_model:
+      label: Change the parent product model
+      label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Bulk Actions
+    quick_export:
+      label: Quick Export
+  mass_action:
+    delete:
+      confirm_content: Are you sure you want to delete the selected products?
+      success: Selected products successfully deleted.
+      error: Error occurred when trying to delete selected products, please try again.
+    quick_export:
+      csv_all: CSV (All attributes)
+      csv_grid_context: CSV (Grid context)
+      xlsx_all: Excel (All attributes)
+      xlsx_grid_context: Excel (Grid context)
+    mass_edit: Bulk actions
+    sequential_edit: Sequential edit
+    mass_delete: Mass delete
+    selected:
+      family: selected families
+      product: selected results
+  view_selector:
+    view: Views
+  actions:
+    edit_product_attributes: Edit attributes of the product
+    classify_product: Classify the product
+    delete_product: Delete the product
+    change_status: Change status
+    toggle_status: Toggle status
+    other: Other actions
+  empty_results:
+    associated_product:
+      hint: There are no associated products
+      subHint: 'Click on the button "Add associations" to associate this product'
+  filters:
+    label: Filters
+    system: System
+batch_jobs:
+  add_association:
+    label: Associate
+    perform.label: Associate
+  add_attribute_value:
+    label: Add attributes value
+    perform.label: Add attributes value
+  add_product_value:
+    label: Add product value
+    perform.label: Add product value
+  add_to_category:
+    label: Add to category
+    perform.label: Add to category
+  add_to_existing_product_model:
+    label: Add to an existing product model
+    perform.label: Add to an existing product model
+  csv_product_grid_context_quick_export:
+    quick_export.label: Csv product grid context quick export
+    quick_export_product_model.label: CSV product model grid context quick export
+    perform.label: Csv product grid context quick export
+  csv_product_quick_export:
+    quick_export.label: Csv product quick export
+    quick_export_product_model.label: CSV product model quick export
+    perform.label: Csv product quick export
+  delete_products_and_product_models:
+    label: Mass delete products
+    perform.label: Mass delete products
+  change_parent_product:
+    label: Change parent product model
+    perform.label: Change parent product model
+  edit_common_attributes:
+    label: Edit attributes
+    perform.label: Edit attributes
+    clean.label: Clean files for attributes
+    cleaner.label: Clean files for attributes
+  compute_completeness_of_products_family:
+    label: Compute completeness
+    perform.label: Compute completeness
+  move_to_category:
+    label: Move to category
+    perform.label: Move to category
+  update_product_value:
+    label: Update product value
+    perform.label: Update product value
+  remove_from_category:
+    label: Remove from category
+    perform.label: Remove from category
+  set_attribute_requirements:
+    label: Set attributes requirements
+    perform.label: Set attributes requirements
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX product grid context quick export
+    quick_export_product_model.label: XLSX product model grid context quick export
+    perform.label: XLSX product grid context quick export
+  xlsx_product_quick_export:
+    quick_export.label: XLSX product quick export
+    quick_export_product_model.label: XLSX product model quick export
+    perform.label: XLSX product quick export
