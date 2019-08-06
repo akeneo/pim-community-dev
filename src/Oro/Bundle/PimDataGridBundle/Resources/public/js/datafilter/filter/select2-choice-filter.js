@@ -76,18 +76,25 @@ define(
                 e.preventDefault();
             },
 
-            /**
-             * Highlights the current operator
-             *
-             * @param operator
-             */
-
-
             _getSelect2Config: function() {
                 var config = {
                     multiple: true,
                     width: '290px',
-                    minimumInputLength: 0
+                    minimumInputLength: 0,
+                    formatSelection: function (data, container, escapeMarkup) {
+                        const result = $.fn.select2.defaults.formatSelection(data, container, escapeMarkup);
+                        if (result !== undefined) {
+                            return '<div title="' + result + '">' + result + '</div>';
+                        }
+
+                        return result;
+                    }.bind(this),
+                    formatResult: function(result, container, query, escapeMarkup) {
+                        const formerResult = $.fn.select2.defaults.formatResult(result, container, query, escapeMarkup);
+                        container.attr('title', result.text);
+
+                        return formerResult;
+                    }.bind(this)
                 };
 
                 if (this.choiceUrl) {

@@ -6,6 +6,7 @@
 
 - PIM-8603: Sort attribute columns by label if no order is defined
 - PIM-8600: Fix import filepath tooltip
+- PIM-8576: Fix attribute options in case of very long strings
 
 # 3.1.17 (2019-07-30)
 
