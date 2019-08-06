@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8461: Do not display 'Compare/translate' if user has no permission to edit product attributes
 - PIM-7583: Allow user to import custom locales without '_'
 
 # 2.3.57 (2019-07-31)
