@@ -17,8 +17,8 @@ pim_api:
       edit: Erstellen und Aktualisieren von Produktfamilien
       list: Produktfamilien auflisten
     family_variant:
-      edit: Varianten der Produktfamilien anlegen und aktualisieren
-      list: Varianten der Produktfamilien auflisten
+      edit: Variantenfamilien anlegen und aktualisieren
+      list: Variantenfamilien auflisten
     channel:
       edit: Erstellen und aktualisieren von Kanälen
       list: Ausgabekanäle auflisten
@@ -34,9 +34,9 @@ pim_api:
     attribute_group: Attributgruppen
     category: Kategorien
     family: Produktfamilien
-    family_variant: Varianten der Produktfamilien
+    family_variant: Variantenfamilien
     channel: Ausgabekanäle
     locale: Gebietsschemata
     currency: Währungen
     association_type: Verbindungstypen
-rights.api: Web-API Berechtigungen
+rights.api: Berechtigungen Web-API

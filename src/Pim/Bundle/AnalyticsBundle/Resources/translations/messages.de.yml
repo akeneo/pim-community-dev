@@ -26,7 +26,10 @@ pim_analytics:
     nb_scopable_attributes: Anzahl der Attribute mit Gültigkeitsbereichen
     nb_localizable_attributes: Anzahl der lokalisierbaren Attribute
     nb_scopable_localizable_attributes: Anzahl der lokalisierbaren Attribute mit Gültigkeitsbereichen
+    nb_useable_as_grid_filter_attributes: Anzahl der als Netzfilter fungierenden Attribute
     avg_percentage_scopable_attributes_per_family: Durchschnittlicher Prozentsatz von skalierbaren Attribute pro Produktfamilie
+    avg_percentage_localizable_attributes_per_family: Durchschnittlicher Prozentsatz der lokalisierbaren Attribute pro Produktfamilie
+    avg_percentage_scopable_localizable_attributes_per_family: Durchschnittlicher Prozentsatz der lokalisierbaren und skalierbaren Attribute pro Familie
     avg_number_attributes_per_family: Durchschnittliche Anzahl der Attribute pro Familie
     nb_locales: Anzahl der Gebietsschemas
     nb_families: Anzahl der Familien
@@ -37,6 +40,8 @@ pim_analytics:
     max_category_levels: Maximalanzahl der Kategorieebenen
     nb_product_values: Anzahl der Produktwerte
     avg_product_values_by_product: Durchschnittliche Anzahl der Produktwerte nach Produkt
+    avg_product_values_by_family: Durchschnittliche Anzahl von potenziellen Produktwerten nach Produktfamilie
+    max_product_values_by_family: Durchschnittliche Anzahl von potenziellen Produktwerten nach Produktfamilie
     pim_storage_version: Speicherversion
     os_version: OS-Version
     php_version: PHP-Version

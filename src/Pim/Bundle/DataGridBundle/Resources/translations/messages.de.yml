@@ -11,7 +11,7 @@ oro.grid.mass_action.error_content: Massenaktion kann nicht durchgeführt werden
 oro.grid.mass_action.delete.label: Löschen
 oro.grid.mass_action.delete.confirm_title: Bestätigung zur Massenlöschung
 oro.grid.mass_action.delete.confirm_content: Sind Sie sicher, dass Sie die gewählten Elemente entfernen möchten?
-oro.grid.mass_action.delete.item_limit: Sie können nicht mehr als %limit% Produkte gleichzeitig löschen (%count% ausgewählt)
+oro.grid.mass_action.delete.item_limit: Sie können nicht mehr als %limit% Produkte massenhaft löschen (%count% ausgewählt)
 oro.grid.datagrid.page_size.all: Alle
 oro.grid.mass_action.delete.success_message: "{0} Keine Entität wurde entfernt|{1} Eine Entität wurde entfernt|]1,Inf[ %count% Entitäten wurden entfernt"
 datagrid_view:
@@ -24,7 +24,7 @@ grid.view_selector.flash:
   created: Tabellenansicht erfolgreich erstellt
   removed: Tabellenansicht erfolgreich entfernt
   not_removable: Sie haben nicht die Rechte um diese Ansicht zu entfernen
-quick_export: Schnell-Export
+quick_export: Schnellexport
 import: Import
 export: Export
 mass_edit: Massenbearbeitung

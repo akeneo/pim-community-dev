@@ -40,11 +40,12 @@ oro.datagrid.nocolumns: Es sind keine Spalten für diese Tabelle konfiguriert
 oro.datagrid.pagination.label: "Seite"
 oro.datagrid.pagination.totalPages: "von {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} Datensätze"
+oro.datagrid.pagination.limit_warning: "Das Raster kann nicht mehr als {{ limit }} Ergebnisse zeigen, versuchen, auf zusätzliche Suchkriterien zu filtern."
 oro.datagrid.action.reset: "Zurücksetzen"
 oro.datagrid.action.refresh: "Aktualisieren"
 oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle sichtbaren"
-oro_datagrid.select.none: "Keine"
+oro_datagrid.select.none: "keine"
 oro_datagrid.select.select: "Auswählen"
 pim.grid.ajax_choice_filter.label_empty: ist leer
 pim.grid.ajax_choice_filter.label_not_empty: ist nicht leer
@@ -84,7 +85,7 @@ pim_datagrid:
       confirm_title: Löschen bestätigen
       confirm_ok: OK
       empty_selection: Kein Produkt ausgewählt
-pim.grid.mass_action.quick_export.title: Schnell-Export
+pim.grid.mass_action.quick_export.title: Schnellexport
 pim.grid.mass_action.quick_export.launched: Der Schnellexport wurde gestartet
 pim.grid.action.launch.title: Starten
 pim.grid.action.show.title: Anzeigen

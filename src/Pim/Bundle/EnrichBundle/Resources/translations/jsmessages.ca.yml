@@ -236,7 +236,7 @@ pim_enrich:
           family: Trieu una família
           family_variant: Triar una variant familiar
           save: Desar
-          cancel: Cancelar
+          cancel: Cancel·lar
       message:
         created: Producte creat correctament
       completeness: Complet
@@ -260,7 +260,7 @@ pim_enrich:
       title: models de producte
       add_child:
         create: Afegir nou
-        cancel: Cancelar
+        cancel: Cancel·lar
         confirm: Confirmar
         create_label: "Afegir un nou {{ axes }}"
         fields:
@@ -356,7 +356,7 @@ pim_enrich:
         update_description: Arrossegar i deixar anar els atributs al nivell de variant seleccionat per gestionar-los des del nivell de variant.
         update_translation: Traduir etiqueta de variant de família
         create: Crear
-        cancel: Cancelar
+        cancel: Cancel·lar
         code: Codi
         label: Etiqueta
         levels: Nivells de variants
@@ -835,7 +835,7 @@ pim_enrich:
           empty: S'exportaran tots els atributs
           modal:
             apply: Aplicar
-            cancel: Cancelar
+            cancel: Cancel·lar
             title: Selecció de l'atribut
         attributes_selector:
           attribute_group: Grups d'atribut
