@@ -20,9 +20,9 @@ pimee_catalog_rule:
   actions:
     type:
       "copy": Dann wird %from_field% in %to_field% kopiert.
-      "copy_value": Dann wird %from_field% in %to_field% kopiert.
+      "copy_value": Dann wird %from_field% in %to_field% kopiert
       "set": Dann wird %value% in %field% gesetzt.
-      "set_value": Dann wird %value% in %field% gesetzt.
+      "set_value": Dann wird %value% in %field% gesetzt
       "add": Dann wird %value% in %field% hinzugefügt
       "remove": Dann wird %value% von %field% entfernt
     options:
@@ -34,7 +34,7 @@ pimee_catalog_rule:
       "ENDS WITH": endet mit
       "CONTAINS": enthält
       "DOES NOT CONTAIN": enthält nicht
-      "EMPTY": ist leer
+      "EMPTY": Ist leer
       "NOT EMPTY": ist nicht leer
       "IN": in
       "NOT IN": nicht in
@@ -48,7 +48,7 @@ pimee_catalog_rule:
       "!=": ungleich
       ">": größer als
       ">=": gleich oder größer als
-      "<": weniger als
+      "<": kleiner als
       "<=": gleich oder kleiner als
   acl_group:
     rule: Regeln

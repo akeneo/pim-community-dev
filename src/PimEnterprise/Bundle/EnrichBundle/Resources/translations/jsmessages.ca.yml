@@ -126,7 +126,7 @@ pimee_enrich:
         reject_selected_proposal: Rebutjar la proposta seleccionada|Rebutjar les propostes seleccionades
         remove_proposal: Eliminar proposta
         send_for_approval: Enviar per a la seva aprovació
-        cancel: Cancelar
+        cancel: Cancel·lar
         confirm: Enviar
         title: Comenteu la seva proposta (opcional - 255 caràcters màx.)
         characters: caràcters
@@ -166,7 +166,7 @@ pimee_enrich:
   mass_edit:
     next: Següent
     previous: Tornar
-    cancel: Cancelar
+    cancel: Cancel·lar
     confirm: Confirmar
     product:
       operation:

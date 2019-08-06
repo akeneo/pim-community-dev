@@ -114,11 +114,11 @@ pimee_enrich:
         update_failed: Le brouillon du produit n'a pas pu être mis à jour
         value_modified: Cette valeur est modifiée par le brouillon actuel
       flash:
-        sent_for_approval: Le brouillon a été envoyé pour validation
-        draft_not_sendable: Vous ne pouvez pas envoyer ce brouillon pour validation
+        sent_for_approval: Le brouillon a été envoyé pour approbation
+        draft_not_sendable: Vous ne pouvez pas envoyer ce brouillon pour approbation
       btn:
-        send_for_approval: Soumettre pour validation
-        sent_for_approval: Soumis à la validation
+        send_for_approval: Soumettre pour approbation
+        sent_for_approval: Soumis à l'approbation
       modal:
         accept_proposal: Accepter la proposition
         accept_selected_proposal: Accepter le(s) proposition(s) sélectionnée(s)
@@ -131,7 +131,7 @@ pimee_enrich:
         title: Commenter votre proposition (facultatif - 255 caractères max.)
         characters: caractères.
       confirmation:
-        discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications ?
+        discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour approbation sans ces modifications ?
         discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon ?
   asset_transformation:
     not_found: Aucune transformation trouvée

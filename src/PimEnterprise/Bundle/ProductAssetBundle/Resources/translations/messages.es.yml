@@ -107,7 +107,7 @@ pimee_product_asset:
   tabs:
     properties.title: Propiedades
     variations.title: Variaciones
-    categories.title: Ctegorías
+    categories.title: Categorías
   validation:
     code:
       not_empty: Código requerido. No puede estar vacío.

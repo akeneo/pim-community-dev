@@ -1,4 +1,6 @@
 user:
+  email:
+    notifications: Benachrichtigung bei Ablauf von Assets
   proposals:
     notifications:
       to_review: Wenn ein neuer Vorschlag zu überprüfen ist

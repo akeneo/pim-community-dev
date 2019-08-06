@@ -6,7 +6,7 @@ pimee_product_asset:
         upload: Carregar
         manage_asset:
           title: Gestió de recursos
-          cancel: Cancelar
+          cancel: Cancel·lar
           confirm: Confirmar
         title: Gestió de recursos
         description: Escull els recursos que voleu adjuntar al seu producte

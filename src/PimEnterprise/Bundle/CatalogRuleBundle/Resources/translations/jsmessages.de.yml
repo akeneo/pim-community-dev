@@ -22,8 +22,8 @@ pimee_catalog_rule:
       then.label: dann
       set_value.label: ist gesetzt in
       copy_value.label: ist kopiert in
-      set.label: ist gesetzt in
-      copy.label: ist kopiert in
+      set.label: wird gesetzt in
+      copy.label: wird kopiert nach
       add.label: wird hinzugefügt zu
       remove.label: wurde entfernt von
   datagrid:
@@ -82,8 +82,8 @@ batch_jobs:
     label: Produktimport in CSV mit Regeln
     execute_rules.label: Regel-Ausführung
     validation.label: Dateivalidierung
-    import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
+    import.label: Produkt-Import
+    import_associations.label: Verbindungen-Import
   csv_product_model_import_with_rules:
     label: Produktmodell-Import in CSV mit Regeln
     execute_rules.label: Regel-Ausführung
@@ -94,8 +94,8 @@ batch_jobs:
     label: Produktimport in XLSX mit Regeln
     execute_rules.label: Regel-Ausführung
     validation.label: Dateivalidierung
-    import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
+    import.label: Produkt-Import
+    import_associations.label: Verbindungen-Import
   xlsx_product_model_import_with_rules:
     label: Produktmodell-Import in XLSX mit Regeln
     execute_rules.label: Regel-Ausführung

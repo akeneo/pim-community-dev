@@ -26,11 +26,14 @@ teamwork_assistant:
   datagrid:
     project_completeness: Projektfortschritt
     contributor_todo: ToDo
-    contributor_in_progress: In Arbeit
+    contributor_in_progress: In Bearbeitung
     contributor_done: Fertig
     owner_todo: Todo (Projektübersicht)
     owner_in_progress: In Bearbeitung (Projektübersicht)
     owner_done: Erledigt (Projektübersicht)
+  user:
+    deletion:
+      user_linked_to_project: Dieser Benutzer ist noch mit einem oder mehrere(n) Projekte(n) verknüpft. Bitte entfernen Sie die Gruppen, mit denen er in seinem Benutzerkonto verknüpft ist
 batch_jobs:
   project_calculation:
     project_calculation:
