@@ -1,0 +1,154 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Manage assets
+        upload: Upload
+        manage_asset:
+          title: Manage assets
+          cancel: Cancel
+          confirm: Confirm
+        title: Manage assets
+        description: Choose the assets you want to link to your product
+        preview_title: Asset collection preview
+        download: Download
+        remove: Remove
+        yes: true
+        no: false
+        assetRemoveConfirmationLabel: Are you sure you want to remove this asset?
+    asset:
+      not_empty: Code cannot be empty.
+      alpha_numeric_plus_underscore: The code can only contain alphanumeric or underscore characters.
+      unique: The code must be unique. We generated a new one for you.
+  enrich_asset:
+    grid:
+      edit: Edit properties of the asset
+  enrich_variation:
+    popin:
+      delete:
+        title: Confirm deletion
+        message: Are you sure you want to delete this item?
+      reset:
+        title: Reset variations
+        message: Are you sure you want to reset all the variations?
+  mass_upload:
+    menu: Upload assets
+    btn:
+      remove_all_files: Remove all files
+      delete: Delete
+      import: Import
+      upload: Upload assets
+    success:
+      new: A new asset will be created
+      imported: Files imported for asset processing
+      need_refresh: <b>Asset import has been launched.</b><br> To see the imported asset(s) in the asset collection attribute, please refresh the product page once you receive the upload notification.
+      canceled: Upload cancelled
+      deleted: Uploaded file successfully deleted
+    error:
+      list: Cannot read already uploaded files
+      upload: An error occurred while uploading
+      delete: Cannot delete file from server
+      import: An error occurred during import
+      filename: Invalid file name for asset
+      code: Invalid code format for asset
+      locale: An asset exists but is not localisable
+      invalid_locale: The locale is disabled or invalid
+      exists: A file with the same name already exists
+      conflicts: File names conflict
+    grid:
+      medias: medias
+      filename: filename
+      filetype: filetype
+      status: status
+      progress: progress
+      actions: actions
+    action:
+      cancel: Cancel
+      remove: Remove
+    status:
+      added: Added
+      queued: Queued
+      uploading: Uploading
+      error: Error
+      success: Success
+    drag_and_drop: Drag and drop your assets or click here
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Are you sure you want to delete the selected assets?
+        success: Selected assets successfully deleted.
+        error: An error occurred when trying to delete selected assets, please try again.
+        empty_selection: No asset selected
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Mass upload
+page_title:
+  pimee_product_asset_mass_upload: Upload assets
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Assets mass upload
+    perform.label: Mass upload
+  apply_assets_mass_upload_into_asset_collection:
+    label: Assets mass upload and add to product
+    perform.label: Mass upload assets and add to product
+  yml_asset_channel_configuration_import:
+    label: Asset channel configuration import in Yaml
+    validation.label: File validation
+    import_asset.label: Asset channel configuration import in Yaml
+  yml_asset_channel_configuration_export:
+    label: Asset channel configuration export in Yaml
+    export.label: Asset channel configuration export in Yaml
+  csv_asset_import:
+    label: Asset import in CSV
+    validation.label: File validation
+    import_tags.label: Tag import in CSV
+    import_asset.label: Asset import in CSV
+  csv_asset_export:
+    label: Asset export in CSV
+    export.label: Asset export in CSV
+  csv_asset_variation_export:
+    label: Asset variations export in CSV
+    export.label: Asset variations export in CSV
+  csv_tag_import:
+    label: Tag import in CSV
+    validation.label: File validation
+    import.label: Tag import in CSV
+  csv_asset_category_import:
+    label: Asset category import in CSV
+    validation.label: File validation
+    import_asset_category.label: Asset category import in CSV
+  csv_asset_configuration_import:
+    label: Asset channel configuration import in CSV
+    validation.label: File validation
+    import_asset.label: Asset channel configuration import in CSV
+  csv_asset_category_export:
+    label: Asset category export in CSV
+    export.label: Asset category export in CSV
+  xlsx_tag_import:
+    label: Tag import in XLSX
+    validation.label: File validation
+    import.label: Tag import in XLSX
+  xlsx_asset_import:
+    label: Asset import in XLSX
+    validation.label: File validation
+    import_tags.label: Tag import in XLSX
+    import_asset.label: Asset import in XLSX
+  xlsx_asset_category_import:
+    label: Asset category import in XLSX
+    validation.label: File validation
+    import_asset_category.label: Asset category import in XLSX
+  xlsx_asset_export:
+    label: Asset export in XLSX
+    export.label: Asset export in XLSX
+  xlsx_asset_category_export:
+    label: Asset category export in XLSX
+    export.label: Asset category export in XLSX
+  xlsx_asset_variation_export:
+    label: Asset variation export in XLSX
+    export.label: Asset variation export in XLSX
+  classify_assets:
+    perform.label: Move assets to categories
+  add_tags_to_assets:
+    perform.label: Add tags to assets

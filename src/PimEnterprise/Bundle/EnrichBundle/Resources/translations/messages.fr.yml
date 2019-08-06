@@ -32,7 +32,7 @@ btn:
   save working copy and finish: Enregistrer la copie de travail et terminer
   save draft and finish: Enregistrer le brouillon et terminer
   send for approval: Envoyer pour approbation
-  sent for approval: Envoyé pour validation
+  sent for approval: Envoyé pour approbation
 pim_enrich:
   mass_edit_action:
     product:

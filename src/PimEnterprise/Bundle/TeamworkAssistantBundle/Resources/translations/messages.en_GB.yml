@@ -1,0 +1,54 @@
+project_calculation: Project calculation
+project_created: A new project for you
+project_finished: Project finished
+teamwork_assistant:
+  project:
+    required: This value cannot be empty.
+    label_maxlength: This value is too long. It should have {{ max }} characters.
+    project_identifier: The project {{ project }} does not exist.
+    project_locale: The project's locale {{ locale }} must be enabled.
+    project_due_date: You cannot select a date in the past.
+  notification:
+    project_calculation:
+      error: Project's calculation for <strong>%project_label%</strong> failed
+      warning: Project's calculation for <strong>%project_label%</strong> ended with some warnings
+      success: The project <strong>%project_label%</strong> is ready and the contributors are notified. Let's start!
+      start: Start
+    message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
+    project_finished:
+      contributor: Congrats! You're 100% of products done with %project_label%.
+      owner: '%project_label% for the %due_date% is finished.'
+      show: Show
+    due_date:
+      contributor: You are %percent%% of products done with %project_label%. Do not forget to fill in the last products for %due_date%.
+      owner: '%project_label% for the %due_date% is not 100% done.'
+      start: Start
+  datagrid:
+    project_completeness: Project progress
+    contributor_todo: Todo
+    contributor_in_progress: In progress
+    contributor_done: Done
+    owner_todo: Todo (project overview)
+    owner_in_progress: In progress (project overview)
+    owner_done: Done (project overview)
+  user:
+    deletion:
+      user_linked_to_project: This user cannot be deleted because he/she is still linked to one or more project(s). Please remove the groups he/she is linked to in his/her user account
+batch_jobs:
+  project_calculation:
+    project_calculation:
+      label: Project calculation
+    prepare_project_calculation:
+      label: Prepare the project calculation
+    clean_contributor_group:
+      label: Check users permission on project's locale
+  refresh_project_completeness_calculation:
+    label: Refresh project completeness
+    refresh_project_completeness_calculation:
+      label: Refresh project completeness
+job_execution:
+  summary:
+    processed_products: Processed products
+pim_analytics:
+  info_type:
+    nb_projects: Number of projects

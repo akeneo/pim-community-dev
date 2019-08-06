@@ -125,7 +125,7 @@ pimee_enrich:
         reject_proposal: Vorschlag ablehnen
         reject_selected_proposal: Ausgewählte Vorschläge ablehnen
         remove_proposal: Vorschlag entfernen
-        send_for_approval: Zur Freigabe senden
+        send_for_approval: Zur Genehmigung senden
         cancel: Abbrechen
         confirm: Senden
         title: Kommentar zu Ihrem Vorschlag (optional - max. 255 Zeichen)
@@ -177,17 +177,18 @@ pimee_enrich:
           warning: '{{ itemsCount }} gewählte Produkte werden veröffentlicht.'
         unpublish:
           label: Veröffentlichung entziehen
-          label_count: "{1}Veröffentlichung rückgängig machen für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Veröffentlichung rückgängig machen für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
+          label_count: "{1}1 Produkt <span class=\"AknFullPage-title--highlight\">nicht Veröffentlichen</span>|] 1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Die Veröffentlichung der Produkte wird entzogen
           warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
     asset:
       title: Massenbearbeitung Assets
+      confirm: "{1}Sie sind dabei, ein Asset mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie dies.|] 1, Inf [Sie sind dabei, {{ itemsCount }} Assets mit den folgenden Informationen zu aktualisieren, Bitte bestätigen Sie dies."
       step:
         select:
           label: Asset auswählen
         choose:
           title: Massenbearbeitung Assets
-          label_count: "] 0, Inf [Wählen Sie eine Aktion aus"
+          label_count: "] 0, Inf [Wählen Sie die gewünschte Funktion"
         configure:
           label: Konfigurieren
         confirm:
@@ -196,11 +197,13 @@ pimee_enrich:
         add_tag:
           label: Stichworte zu Assets hinzufügen
           description: Tags werden den Assets hinzugefügt.
+          label_count: "{1}Hinzufügen von Tags <span class=\"AknFullPage-title--highlight\">1 Asset</span>|] 1, Inf [Hinzufügen von Tags <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Assets</span>"
           field: Stichworte
           empty_selection: Bitte Tags auswählen
         add_to_category:
           label: Zuordnung von Assets in Kategorien
           description: Die Assets werden in folgende Kategorien eingeteilt, die bestehende Zuordnung geht verloren.
+          label_count: "{1}Klassifizierung von <span class=\"AknFullPage-title--highlight\">1 Asset</span> to categories|] 1, Inf [Klassifizierung von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Assets</span> nach Kategorien"
           field: Kategorien
 pim_menu:
   tab:
@@ -214,6 +217,7 @@ pim_menu:
 page_title:
   pimee_workflow_proposal_index: Vorschläge
   pimee_workflow_published_product_index: Veröffentlichte Produkte
+  pimee_workflow_published_product_view: Veröffentlichtes Produkt {{ product.label }} | Anzeigen
   pimee_product_asset_index: Assets
   pimee_product_asset_edit: Asset {{ asset.label }} | Bearbeiten
   pimee_asset_categorytree_index: Kategorien
@@ -229,13 +233,14 @@ batch_jobs:
     execute_rules.label: Regel-Ausführung
   update_product_value_with_permission_and_rules:
     label: Aktualisieren von Produktwerten mit Rechteprüfung und Regeln
-    perform.label: Wert des Produkts aktualisieren
+    perform.label: Produktwert aktualisieren
     execute_rules.label: Regel-Ausführung
   remove_product_value_with_permission_and_rules:
     label: Entfernen von Produktwerten mit Rechteprüfung und Regeln
     perform.label: Produktwert entfernen
     execute_rules.label: Regel-Ausführung
   edit_common_attributes_with_permission_and_rules:
+    label: Bearbeiten von Attributen mit Berechtigungsprüfung & Regeln
     perform.label: Attribute bearbeiten
     execute_rules.label: Regel-Ausführung
     cleaner.label: Lösche temporäre Dateien

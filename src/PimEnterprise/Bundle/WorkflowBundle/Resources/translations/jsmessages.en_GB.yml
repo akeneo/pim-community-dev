@@ -1,0 +1,61 @@
+View the product: View the product
+Unpublish the product: Unpublish the product
+Approve: Approve
+Refuse: Reject
+Approve selected: Approve selected
+Refuse selected: Reject selected
+oro:
+  datagrid:
+    noentities:
+      proposal: There is no proposals to review.
+    noresults:
+      proposal: There is no proposals to review. Try to change your search criteria.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Edit working copy
+    proposal:
+      modal.title: Leave a comment (optional - 255 characters max.)
+  proposal:
+    overview: "] -Inf, 1] {{ count }} proposal|] 1, Inf [{{ count }} proposals"
+    selected: proposals selected
+    mass_action_group:
+      review:
+        label: Bulk Action
+    partial_accept:
+      modal.title: Approve partial information
+      modal.label: Leave a comment (optional)
+      modal.error: An error occurred, the proposal could not be partially approved
+      modal.success: The proposal has been successfully partially validated
+    partial_approve:
+      modal:
+        title: Partially approve changes
+        label: Leave a comment (optional)
+        error: The proposal could not be partially approved
+        success: The changes have been successfully approved
+    partial_reject:
+      modal:
+        title: Partially reject changes
+        label: Leave a comment (optional)
+        error: The proposal could not be partially rejected
+        success: The changes have been successfully rejected
+batch_jobs:
+  csv_published_product_export:
+    label: Published product export in CSV
+    export.label: Published product export
+  csv_product_proposal_import:
+    label: Product proposal import in CSV
+    import.label: Product proposal import
+  approve_product_draft:
+    label: Approve proposal
+    perform.label: Approve proposal
+  refuse_product_draft:
+    label: Refuse proposals
+    perform.label: Refuse proposals
+  xlsx_published_product_export:
+    label: Published product export in XLSX
+    export.label: Published product export
+  xlsx_product_proposal_import:
+    label: Product proposal import in XLSX
+    import.label: Product proposal import in XLSX

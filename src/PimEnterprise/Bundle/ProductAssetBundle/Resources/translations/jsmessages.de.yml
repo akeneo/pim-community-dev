@@ -19,7 +19,7 @@ pimee_product_asset:
     asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.
       alpha_numeric_plus_underscore: Der Code sollte nur alphanumerisch oder unterstreichen sein.
-      unique: Code muss einzigartig sein. Wir generieren einen neuen für Sie.
+      unique: Code muss eindeutig sein. Wir generieren einen neuen für Sie.
   enrich_asset:
     grid:
       edit: Eigenschaften des Assets bearbeiten
@@ -146,8 +146,8 @@ batch_jobs:
     label: Assetkategorie-Export in XLSX-Datei
     export.label: Assetkategorie-Export in XLSX-Datei
   xlsx_asset_variation_export:
-    label: Assetvariation-Export in XLSX-Datei
-    export.label: Assetvariation-Export in XLSX-Datei
+    label: Asset Variation Export in XLSX
+    export.label: Asset-Variationen als XLSX Export
   classify_assets:
     perform.label: Assets in Kategorien verschieben
   add_tags_to_assets:

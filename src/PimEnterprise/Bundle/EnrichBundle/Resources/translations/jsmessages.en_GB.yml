@@ -1,0 +1,275 @@
+View the product: View the product
+pimee_enrich.product_history.action.revert: Revert to this version
+permission-changes:
+  category:
+    grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> in this category
+    revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> in this category
+  locale:
+    grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> in this locale
+    revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> in this locale
+  attribute group:
+    grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> of this attribute group
+    revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> of this attribute group
+  job profile:
+    grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong>
+    revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong>
+pim_enrich:
+  entity:
+    attribute_label:
+      pim_assets_collection: Assets collection
+    attribute:
+      type:
+        pim_assets_collection: Assets collection
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: Read only
+pim:
+  grid:
+    mass_action:
+      asset_edit: Mass edit assets
+pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Permissions
+          added: The group {{ group }} will be allowed to {{ permission }} job profile
+          execute.label: Allowed to execute job profile
+          edit.label: Allowed to edit job profile
+          removed: The group {{ group }} will not be allowed to {{ permission }} job profile
+    channel:
+      tab:
+        asset-transformation:
+          title: Asset transformations
+    attribute_group:
+      tab:
+        permission:
+          title: Permissions
+          view.label: Allowed to view attributes
+          edit.label: Allowed to edit attributes
+          removed: The group {{ group }} will not be allowed to {{ permission }} attribute group
+          added: The group {{ group }} will be allowed to {{ permission }} attribute group
+  entity:
+    product:
+      index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
+      navigation: Published products
+      history:
+        published: Published
+        revert: Restore
+      smart_attribute:
+        come_from: "This attribute can be updated by a rule:"
+      btn:
+        publish: Publish
+        publish_this_version: Publish this version
+        unpublish: Unpublish
+        save_draft: Save draft
+      flash:
+        product_unpublished: Product successfully unpublished
+        product_published: Product successfully published
+        product_not_published: Failed to publish this product
+        product_not_unpublished: Failed to unpublish this product
+        product_reverted: Product successfully restored
+      meta:
+        published: Published version
+        owner_groups: Owner groups
+        draft_status: Draft status
+        draft:
+          in_progress: In progress
+          sent_for_approval: Waiting for approval
+          working_copy: Working copy
+      tab:
+        proposals:
+          title: Proposals
+          messages:
+            approve:
+              success: The proposal has been applied.
+              error: "The proposal could not be applied due to the following error: {{ error }}"
+            reject:
+              success: The proposal has been rejected.
+            remove:
+              success: The proposal has been removed.
+      confirmation:
+        revert:
+          title: Restore confirmation
+          content: Are you sure you want to restore the product to this version?
+        publish:
+          title: Publish this product
+          content: Are you sure you want to publish this product?
+        unpublish:
+          title: Unpublish this product
+          content: Are you sure you want to unpublish this product?
+      info:
+        update_successful: Product working copy has been updated
+      copy:
+        source:
+          working_copy: Working copy
+          draft: My draft
+          draft_of: "{{ author }}'s draft"
+    product_draft:
+      info:
+        update_successful: Product draft has been successfully saved
+        update_failed: Product draft could not be updated
+        value_modified: This value is modified by the current draft
+      flash:
+        sent_for_approval: Product draft sent for approval
+        draft_not_sendable: You cannot send this draft for approval
+      btn:
+        send_for_approval: Send for approval
+        sent_for_approval: Sent for approval
+      modal:
+        accept_proposal: Accept proposal
+        accept_selected_proposal: Accept selected proposal(s)
+        reject_proposal: Reject proposal
+        reject_selected_proposal: Reject selected proposal(s)
+        remove_proposal: Remove proposal
+        send_for_approval: Send for approval
+        cancel: Cancel
+        confirm: Send
+        title: Comment your proposal (optional - 255 characters max.)
+        characters: chars.
+      confirmation:
+        discard_changes: Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes?
+        discard_changes_title: Are you sure you want to send this draft?
+  asset_transformation:
+    not_found: No transformation found
+    title:
+      transformation: Transformation
+      options: Options
+    colorspace:
+      title: Colourspace
+      options:
+        colorspace: '%value% colourspace'
+    resize:
+      title: Resize
+      options:
+        width: '%value%px width'
+        height: '%value%px height'
+    resolution:
+      title: Resolution
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Scale
+      options:
+        width: '%value%px width'
+        height: '%value%px height'
+        ratio: '%value%% ratio'
+    thumbnail:
+      title: Thumbnail
+      options:
+        width: '%value%px width'
+        height: '%value%px height'
+  mass_edit:
+    next: Next
+    previous: Back
+    cancel: Cancel
+    confirm: Confirm
+    product:
+      operation:
+        publish:
+          label: Publish
+          label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: The products will be published
+          warning: The {{ itemsCount }} selected products will be published.
+        unpublish:
+          label: Unpublish
+          label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: The products will be unpublished
+          warning: The {{ itemsCount }} selected products will be unpublished.
+    asset:
+      title: Assets bulk action
+      confirm: "{1}You are about to update an asset with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} assets with the following information, please confirm."
+      step:
+        select:
+          label: Choose assets
+        choose:
+          title: Assets bulk actions
+          label_count: "] 0, Inf [Select your action"
+        configure:
+          label: Configure
+        confirm:
+          label: Confirm
+      operation:
+        add_tag:
+          label: Add tags to assets
+          description: Tags will be added to the assets.
+          label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|] 1, Inf [Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
+          field: Tags
+          empty_selection: Please choose tags
+        add_to_category:
+          label: Classify assets in categories
+          description: The assets will be added to the following categories, the existing placement will be lost.
+          label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|] 1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
+          field: Categories
+pim_menu:
+  tab:
+    asset: Assets
+  item:
+    asset_category: Asset categories
+    proposal: Proposals
+    published_product: Published products
+    rule: Rules
+    upload_asset: Upload Assets
+page_title:
+  pimee_workflow_proposal_index: Proposals
+  pimee_workflow_published_product_index: Published products
+  pimee_workflow_published_product_view: Published product {{ product.label }} | View
+  pimee_product_asset_index: Assets
+  pimee_product_asset_edit: Asset {{ asset.label }} | Edit
+  pimee_asset_categorytree_index: Categories
+  pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
+  pimee_catalog_rule_rule_index: Rules
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Asset channel configuration import
+  add_product_value_with_permission_and_rules:
+    label: Add product value with permission check & rules application
+    perform.label: Add product value
+    execute_rules.label: Rules execution
+  update_product_value_with_permission_and_rules:
+    label: Update product value with permission check & rules application
+    perform.label: Update product value
+    execute_rules.label: Rules execution
+  remove_product_value_with_permission_and_rules:
+    label: Remove product value with permission check & rules application
+    perform.label: Remove product value
+    execute_rules.label: Rules execution
+  edit_common_attributes_with_permission_and_rules:
+    label: Edit attributes with permission check & rules application
+    perform.label: Edit attributes
+    execute_rules.label: Rules execution
+    cleaner.label: Clean temporary files
+  csv_published_product_quick_export:
+    export.label: Csv published products quick export
+    perform:
+      label: Csv published products quick export
+  csv_published_product_grid_context_quick_export:
+    export.label: Csv published products grid context quick export
+    perform:
+      label: Csv published products grid context quick export
+  xlsx_published_product_quick_export:
+    export.label: Xlsx published products quick export
+    perform:
+      label: Xlsx published products quick export
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Xlsx published products grid context quick export
+    perform:
+      label: Xlsx published products grid context quick export
+  add_attribute_value:
+    execute_rules.label: Rules execution
+  publish_product:
+    perform.label: Publish products
+catalog_volume:
+  section:
+    assets:
+      title: Axes on assets
+      hint: You can follow the volume regarding the assets right here
+  axis:
+    count_assets: Assets
+    count_asset_categories: Asset categories
+    count_asset_category_trees: Asset category trees

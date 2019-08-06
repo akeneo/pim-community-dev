@@ -204,7 +204,7 @@ pimee_enrich:
           label: Clasificar los activos en categorías
           description: Los recursos serán posicionados en las siguientes categorías, las posiciones actuales serán perdidas.
           label_count: "{1}Clasifica <span class=\"AknFullPage-title--highlight\">1 recurso</span> a categorías|] 1, Inf [Clasifica <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos </span> a categorías"
-          field: Ctegorías
+          field: Categorías
 pim_menu:
   tab:
     asset: Recursos
@@ -220,7 +220,7 @@ page_title:
   pimee_workflow_published_product_view: Producto publicado {{ product.label }} | Ver
   pimee_product_asset_index: Recursos
   pimee_product_asset_edit: Recurso {{ asset.label }} | Editar
-  pimee_asset_categorytree_index: Ctegorías
+  pimee_asset_categorytree_index: Categorías
   pimee_asset_categorytree_edit: Categoría {{ category.label }} | Editar
   pimee_catalog_rule_rule_index: Reglas
 batch_jobs:
