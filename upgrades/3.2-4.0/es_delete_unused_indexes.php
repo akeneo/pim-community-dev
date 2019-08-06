@@ -21,20 +21,19 @@ $hosts = [$container->getParameter('index_hosts')];
 
 $client = $builder->setHosts($hosts)->build()->indices();
 
-echo 'Deleting alias akeneo_pim_product and index.';
-if ($client->existsAlias(['name' => 'akeneo_pim_product' ])) {
-    $productAlias = $client->getAlias(['name' => 'akeneo_pim_product' ]);
-    $productIndex = array_keys($productAlias)[0];
-    $client->deleteAlias([ 'index' => $productIndex, 'name' => 'akeneo_pim_product' ]);
-    return $client->delete(['index' => $productIndex]);
+function deleteAliasAndIndex($client, $aliasName) {
+    if ($client->existsAlias(['name' => $aliasName ])) {
+        echo 'Deleting alias '.$aliasName.' and index.';
+        $alias = $client->getAlias(['name' => $aliasName ]);
+        $index = array_keys($alias)[0];
+        $client->deleteAlias([ 'index' => $index, 'name' => $aliasName ]);
+        return $client->delete(['index' => $index]);
+    }
+
+    echo 'The alias "'.$aliasName.'"" does not exist. This could be because it\'s part of the Enterprise Edition.';
 }
 
-echo 'Deleting alias akeneo_pim_product_model and index.';
-if ($client->existsAlias(['name' => 'akeneo_pim_product_model' ])) {
-    $productModelAlias = $client->getAlias(['name' => 'akeneo_pim_product_model' ]);
-    $productModelIndex = array_keys($productModelAlias)[0];
-    $client->deleteAlias([ 'index' => $productModelIndex, 'name' => 'akeneo_pim_product_model' ]);
-    return $client->delete(['index' => $productModelIndex]);
-}
+deleteAliasAndIndex($client, 'akeneo_pim_product');
+deleteAliasAndIndex($client, 'akeneo_pim_product_model');
 
 echo "Done.\n";
