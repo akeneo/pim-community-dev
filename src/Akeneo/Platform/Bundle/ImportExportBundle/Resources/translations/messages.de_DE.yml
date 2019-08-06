@@ -36,9 +36,13 @@ pim_import_export:
       history.title: Historie
       job_content.title: Inhalt
 pim_title.export_profile.index: Verwaltung der Export-Profile
+pim_title.export_profile.edit: Export-Profile %job.label% | Bearbeiten
+pim_title.export_profile.show: Export-Profile %job.label% | Anzeigen
 pim_title.export_execution.index: Historie der ausgeführten Exporte
 pim_title.export_execution.show: Ausgeführte Exporte | Details
 pim_title.import_profile.index: Verwaltung der Import-Profile
+pim_title.import_profile.edit: Import-Profile %job.label% | Bearbeiten
+pim_title.import_profile.show: Import-Profile %job.label% | Anzeigen
 pim_title.import_execution.index: Historie der ausgeführten Importe
 pim_title.import_execution.show: Ausgeführte Importe | Details
 export profile:
@@ -121,16 +125,16 @@ Download log: Log herunterladen
 Show profile: Profil anzeigen
 execution details: Ausführungsdetails
 job_execution.summary:
-  read: Lesen
+  read: gelesen
   write: geschrieben
   skip: übersprungen
   create: erstellt
   update: aktualisiert
-  update_products: Aktualisierte Produkte
-  skip_products: Übersprungene Produkte
+  update_products: aktualisierte Produkte
+  skip_products: übersprungene Produkte
   displayed: Die ersten Warnungen angezeigt
   charset_validator:
-    title: 'Datei Zeichenkodierung:'
+    title: 'Zeichenkodierung der Datei:'
     skipped: übersprungen, Erweiterung in der Whitelist
 Step: Schritt
 Status: Status

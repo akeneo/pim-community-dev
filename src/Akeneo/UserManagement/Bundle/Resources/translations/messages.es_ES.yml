@@ -40,6 +40,13 @@ pim_user:
       has_group: Tiene grupo
       active: Activo
       inactive: Inactivo
+    fields_errors:
+      new_password:
+        minimum_length: La contraseña de tener al menos 2 caracteres
+      new_password_repeat:
+        not_match: La contraseña no coincide
+      current_password:
+        wrong: Contraseña incorrecta
     tabs:
       general:
         title: General

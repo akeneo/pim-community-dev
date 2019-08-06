@@ -90,3 +90,6 @@ pim_user_management:
       plural_label: Grupos de Usuario
       page_title:
         index: "]-Inf, 1] {{ count }} grupo|]1, Inf [{{ count }} grupos"
+      module:
+        create:
+          button: Crear grupo
