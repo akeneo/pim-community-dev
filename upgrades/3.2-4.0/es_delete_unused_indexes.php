@@ -1,18 +1,14 @@
 <?php
 
-if (!file_exists(__DIR__ . '/../../app/AppKernel.php')) {
+if (!file_exists(__DIR__ . '/../../src/Kernel.php')) {
     die("Please run this command from your Symfony application root.");
 }
 
 require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../app/AppKernel.php';
+require __DIR__ . '/../../src/Kernel.php';
+require __DIR__ . '/../../app/bootstrap.php';
 
-$envFile = __DIR__ . '/../.env';
-if (file_exists($envFile)) {
-    (new Symfony\Component\Dotenv\Dotenv())->load($envFile);
-}
-
-$kernel = new AppKernel('prod', false);
+$kernel = new Kernel('prod', false);
 $kernel->boot();
 $container = $kernel->getContainer();
 
