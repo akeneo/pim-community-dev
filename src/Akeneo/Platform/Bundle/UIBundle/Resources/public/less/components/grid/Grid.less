@@ -118,7 +118,6 @@
       color: @AknLightPurple;
       font-style: italic;
       font-size: @AknFontSizeBig;
-      white-space: nowrap;
       max-width: 15vw;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -565,5 +564,24 @@
     overflow: hidden;
     margin: 0 10px 0 0;
     max-width: 250px;
+  }
+}
+
+.AknGridHistory {
+
+  &-bodyCell {
+    &--highlight {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknFontSizeBig;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &--changes {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      min-width: 250px;
+    }
   }
 }

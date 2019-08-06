@@ -93,6 +93,26 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
         $this->validate($entity, $constraint);
     }
 
+    function it_raises_no_violation_if_the_entity_has_zero_as_value_for_its_axis(
+        $axesProvider,
+        $context,
+        EntityWithFamilyVariantInterface $entity,
+        FamilyVariantInterface $familyVariant,
+        NotEmptyVariantAxes $constraint,
+        AttributeInterface $size,
+        ValueInterface $zero
+    ) {
+        $entity->getFamilyVariant()->willReturn($familyVariant);
+        $axesProvider->getAxes($entity)->willReturn([$size]);
+        $size->getCode()->willReturn('size');
+        $entity->getValue('size')->willReturn($zero);
+        $zero->getData()->willReturn('0');
+
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($entity, $constraint);
+    }
+
     function it_raises_a_violation_if_the_entity_has_no_value_for_an_axis(
         $axesProvider,
         $context,
