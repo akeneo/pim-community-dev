@@ -1,0 +1,173 @@
+pim_enrich.entity.family:
+  label: family
+  uppercase_label: Family
+  plural_label: Families
+  flash:
+    update:
+      success: Family successfully updated.
+      fail: An error occurred during the family update.
+      cant_remove_attribute_as_label: Cannot remove attribute used as label
+      cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
+      cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
+      fields_not_ready: "The family cannot be saved right now. The following fields are not ready: {{ fields }}"
+    create:
+      success: Family successfully created
+    delete:
+      success: Family successfully removed
+      fail: Cannot delete this family
+  property:
+    attribute_as_label: Attribute used as label
+    attribute_as_image: Attribute used as the main picture
+    empty_attribute_as_image: Not selected
+  page_title:
+    index: "]-Inf, 1]{{ count }} family|]1, Inf[{{ count }} families"
+  module:
+    attributes:
+      not_required_label: Not required
+      required_label: Required
+    create:
+      button: Create family
+    delete:
+      confirm: Are you sure you want to delete this family?
+pim_enrich.entity.family_variant:
+  label: family variant
+  short_plural_label: Variants
+  short_label: Variant
+  flash:
+    update:
+      success: Family variant successfully updated. The products with variants will be updated with your changes.
+      fail: The family variant could not be updated.
+    create:
+      success: Family variant successfully created
+  module:
+    edit:
+      common_attributes: Common attributes
+      no_common_attributes: There are no common attributes
+      variant_axis_label: Variant axis
+      variant_attributes: Variant attributes
+      level_1: Variant attributes level one
+      level_2: Variant attributes level two
+      description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
+      attribute_remove: Remove attribute
+      attribute_group_remove: Remove attribute group
+      confirm_attribute_removal_title: Confirm remove of attributes
+      confirm_attribute_removal_message: By removing these attributes you will put them back in the common attributes of the family variant and remove the values from the variant products
+    create:
+      label: Add variant
+      title: Create a new family variant
+      description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
+      variant_levels: Variant levels
+      axis_level: "Variant axis level {{ level }}"
+    update_translations:
+      title: Update translations
+    delete:
+      confirm: Are you sure you want to delete this family variant?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Options
+  flash:
+    create:
+      success: Attribute option successfully created
+      fail: An error occurred when trying to create the attribute option
+    update:
+      fail: Cannot save attribute option
+    delete:
+      fail: An error occurred during deletion of the attribute option
+  module:
+    edit:
+      cancel_title: Cancel modification
+      cancel_description: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option?
+pim_enrich.entity.association_type:
+  label: association type
+  flash:
+    update:
+      success: Association type successfully updated.
+      fail: The association type could not be updated.
+      fields_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
+    create:
+      success: Association type successfully created
+    delete:
+      success: Association type successfully removed
+      fail: Cannot delete this association type
+  module:
+    create:
+      button: Create association type
+    delete:
+      confirm: Are you sure you want to delete this association type?
+pim_enrich.entity.group_type:
+  label: group type
+  flash:
+    update:
+      success: Group type successfully updated.
+      fail: The group type could not be updated.
+      fields_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
+    create:
+      success: Group type successfully created
+    delete:
+      success: Group type successfully removed
+      fail: Cannot delete this group type
+  page_title:
+    index: "]-Inf, 1]{{ count }} group type|]1, Inf[{{ count }} group types"
+  module:
+    create:
+      button: Create group type
+    delete:
+      confirm: Are you sure you want to delete this group type?
+pim_enrich.entity.attribute:
+  label: attribute
+  plural_label: Attributes
+  flash:
+    update:
+      success: Attribute successfully updated.
+      fail: The attribute could not be updated.
+      fields_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
+    delete:
+      success: Attribute successfully removed
+      fail: Cannot delete this attribute
+  property:
+    allowed_extensions: Allowed extensions
+    available_locales: Available locales
+    date_max: Max date
+    date_min: Min date
+    decimals_allowed: Decimal values allowed
+    default_metric_unit:
+      label: Default metric unit
+      choose: Choose a unit
+    group:
+      label: Attribute group
+      choose: Choose the attribute group
+    is_locale_specific: Locale specific
+    localizable: Value per locale
+    max_characters: Max characters
+    max_file_size: Max file size (MB)
+    metric_family:
+      label: Metric family
+      choose: Choose a family
+    name: Name
+    negative_allowed: Negative values allowed
+    number_max: Max number
+    number_min: Min number
+    reference_data_name:
+      label: Reference data type
+      choose: Choose the reference data type
+    scopable: Value per channel
+    type:
+      choose: Choose the attribute type
+      pim_catalog_identifier: Identifier
+      pim_catalog_text: Text
+      pim_catalog_textarea: Text Area
+      pim_catalog_number: Number
+      pim_catalog_price_collection: Price
+      pim_catalog_multiselect: Multi-select
+      pim_catalog_simpleselect: Simple select
+      pim_catalog_file: File
+      pim_catalog_image: Image
+      pim_catalog_boolean: "Yes/No"
+      pim_catalog_date: Date
+      pim_catalog_metric: Metric
+      pim_reference_data_simpleselect: Reference data simple select
+      pim_reference_data_multiselect: Reference data multi-select
+  module:
+    add_attribute:
+      no_available_attributes: There are no more attributes to add
+    delete:
+      confirm: Are you sure you want to delete this attribute?
