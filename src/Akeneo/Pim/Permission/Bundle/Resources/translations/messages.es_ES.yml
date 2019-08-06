@@ -3,7 +3,7 @@ pimee_enrich.acl.category.edit_permissions: Administrar permisos de categoría
 pimee_enrich.acl.attribute_group.edit_permissions: Administrar permisos de atributos de grupo
 pimee_importexport.acl.export_profile.edit_permissions: Administrar permisos de perfiles de exportación
 pimee_importexport.acl.import_profile.edit_permissions: Administrar permisos de perfil de importación
-pimee_enrich.groups.label: Grupos de propietario
+pimee_enrich.groups.label: Grupos de propietarios
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributos
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Agregar valores de producto con permisiones
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizar el valor de producto con permisiones
@@ -34,8 +34,8 @@ category.permissions:
   own.label: Autorizado a administrar productos
   own.help: Autorizado a revisar, publicar, quitar publicación, clasificar y asociar productos en esta categoría (permiso de edición implícito)
   no_access_to_products: Usted no tiene acceso a productos en ningún árbol. Por favor contacte a su administrador
-  apply_on_children.label: Aplicar cambios a la sub-categoría
-  apply_on_children.help: Copiar los cambios de permisos en todas las sub-categorías, los permisos existentes en sub-categorías son mantenidos
+  apply_on_children.label: Aplicar cambios en sub categorías
+  apply_on_children.help: Copiar los cambios de permisos en todas las sub categorías, los permisos existentes en las sub categorías son conservados
 locale.permissions:
   view.label: Autorizado a ver la información
   view.help: Autorizar a ver la información del producto en este local
@@ -49,14 +49,14 @@ pim_enrich:
       not_editable: Usted no tiene el permiso para editar los productos "%identifiers%".
       page_title: Productos
       page_subtitle: Edición masiva (1 producto) |Edición masiva (%count% productos)
-      title: Elegir operación
-      subtitle: Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados
-      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
+      title: Seleccione una operación
+      subtitle: Seleccione la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados
+      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
       steps:
-        first: Elegir productos
-        second: Elegir operación
-        third: Configurar
-        fourth: Confirmar
+        first: Seleccione los productos
+        second: Seleccione una operación
+        third: Configuración
+        fourth: Confirmación
     publish:
       message:
         error: Usted no es el dueño de este producto, no puede publicarlo.
@@ -78,14 +78,14 @@ pim_enrich:
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: Permisos
+      permission.title: Permisiones
   acl.product_ownership.title: Propietario
   attributes:
     empty: ninguno
   category:
     tab:
       permission:
-        title: Permisos
+        title: Permisiones
   groups:
     label: grupo de propietarios
     empty: ninguno

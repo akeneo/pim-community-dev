@@ -1,0 +1,40 @@
+pim_menu.item.sso: Iniciar sesión única con SAML
+pim_title:
+  authentication_sso_configuration_edit: Configuración de inicio de sesión única basada con SAML
+authentication:
+  sso:
+    configuration:
+      download_logs_button: Descargar registros
+      info:
+        update_successful: Se ha guardado la configuración
+        update_failed: La configuración no se ha podido guardar
+        fields_not_ready: "La configuración no puede ser guardada ahora. No están listos los siguientes campos: {{ fields }}"
+      section:
+        activation:
+          title: Activación de SSO
+        identity_provider:
+          title: Proveedor de identidad (PdI)
+          info:
+            description: Puede configurar aquí todos los parámetros necesarios para comunicarse con su IdP. Esta información debe ser proporcionada por su IdP. Por favor, contacte con su administrador de SSO para obtenerlos.
+        service_provider:
+          title: Proveedor de servicios (PS)
+      field:
+        activation:
+          label: SSO activado
+        entity_id:
+          label: Entidad ID
+        sign_on_url:
+          label: URL de inicio de sesión
+        logout_url:
+          label: URL de Desconexión
+        certificate:
+          label: Certificar
+          expiration_warning: Este certificado expira el {{date}}.
+        private_key:
+          label: Clave privada
+        metadata_url:
+          label: URL de los metadatos
+          tooltip_label: Copiar URL
+        acs_url:
+          label: URL ACS
+          tooltip_label: Copiar URL
