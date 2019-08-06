@@ -305,6 +305,7 @@ pim_enrich:
       message:
         created: Tipo de grupo creado correctamente
     channel:
+      title: canal
       info:
         deletion_successful: Canal eliminado correctamente.
         deletion_failed: No se ha podido eliminar el canal.
@@ -321,6 +322,7 @@ pim_enrich:
       btn:
         save: Guardar
     family:
+      title: familia
       selected: familias seleccionadas
       info:
         update_successful: Familia actualizada con éxito.
@@ -423,6 +425,7 @@ pim_enrich:
       validation_rule:
         email: E-mail
         regexp: Expresión regular
+        url: URL
       title: atributo
     attribute_group:
       info:
@@ -901,6 +904,7 @@ pim_enrich:
             "=": Es igual que
             STARTS WITH: Comienza por
             ENDS WITH: Termina por
+            EMPTY: Está vacío
             NOT EMPTY: No está vacío
         price-collection:
           operators:
@@ -910,10 +914,12 @@ pim_enrich:
             ">": Mayor que
             "<=": Menor o igual que
             "<": Menor que
+            EMPTY: Está vacío
             NOT EMPTY: No está vacío
         multi_select:
           operators:
             IN: En la lista
+            EMPTY: Está vacío
             NOT EMPTY: No está vacío
         media:
           operators:
@@ -922,6 +928,7 @@ pim_enrich:
             "=": Es igual que
             STARTS WITH: Comienza por
             ENDS WITH: Termina con
+            EMPTY: Está vacío
             NOT EMPTY: No está vacío
         date:
           operators:
@@ -931,6 +938,7 @@ pim_enrich:
             "!=": No es igual que
             BETWEEN: Entre
             NOT BETWEEN: No entre
+            EMPTY: Está vacío
             NOT EMPTY: No está vacío
         number:
           operators:
@@ -940,6 +948,7 @@ pim_enrich:
             ">": Mayor que
             "<=": Menor o igual que
             "<": Menor que
+            EMPTY: Está vacío
             NOT EMPTY: No está vacío
       properties:
         title: Propiedades
@@ -964,6 +973,7 @@ pim_enrich:
       title: Reportes de importación
     group:
       title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
+      create_btn: Crear grupo
     export_profiles:
       title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} perfiles de exportación"
       create_btn: Crear perfil de exportación
@@ -991,6 +1001,7 @@ pim_enrich:
       create_btn: Crear rol
     user_group:
       title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
+      create_btn: Crear grupo
     process_tracker:
       title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operaciones"
     channel:

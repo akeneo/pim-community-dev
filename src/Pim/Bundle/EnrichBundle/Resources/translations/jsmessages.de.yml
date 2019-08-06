@@ -41,7 +41,7 @@ flash:
   item:
     removed: Element erfolgreich entfernt
   association_type:
-    removed: Verbindungstyp erfolgreich gelöscht
+    removed: Verbindungstyp erfolgreich entfernt
   attribute:
     removed: Attribut erfolgreich entfernt
   attribute_group:
@@ -60,9 +60,9 @@ flash:
     removed: Gruppe erfolgreich entfernt
   group_type:
     removed: Gruppentyp erfolgreich gelöscht
-  import profile:
+  import_profile:
     removed: Importprofil erfolgreich entfernt
-  export profile:
+  export_profile:
     removed: Exportprofil erfolgreich entfernt
   user:
     removed: Benutzer erfolgreich gelöscht
@@ -71,7 +71,7 @@ flash:
   job_instance:
     removed: Auftrag erfolgreich gelöscht
   api_connection:
-    removed: API-Connection erfolgreich widerrufen
+    removed: API-Verbindung erfolgreich widerrufen
 error:
   common: Es ist ein Fehler aufgetreten
   creating:
@@ -166,7 +166,7 @@ pim_enrich:
       subTitle: Produkt anlegen
       modalTitle: Wählen Sie eine Aktion aus
       filters: Filter
-      selected: Ausgewählte Ergebnisse
+      selected: ausgewählte Ergebnisse
       common: Allgemein
       btn:
         enabled: Aktiviert
@@ -196,7 +196,7 @@ pim_enrich:
       meta:
         created: Erstellt
         created_by: durch
-        updated_by: durch
+        updated_by: Von
         updated: Letzte Aktualisierung
         family:
           title: Produktfamilie
@@ -219,7 +219,7 @@ pim_enrich:
         select: Auswählen
         all: Alle
         all_visible: Alle sichtbaren
-        none: Keine
+        none: keine
         copy: Kopieren
       optional_attribute:
         remove: Dieses Attribut löschen
@@ -257,7 +257,7 @@ pim_enrich:
       read_only_parent_attribute_from_common: Dieses Attribut kann in den gemeinsamen Attributen bearbeitet werden.
       read_only_parent_attribute_from_model: "Dieses Attribut muss als Attribut von {{ axes }} bearbeitet werden"
       variant_axis: Variantenachse(n)
-      title: Produktmodelle
+      title: produktmodelle
       add_child:
         create: Hinzufügen
         cancel: Abbrechen
@@ -323,7 +323,7 @@ pim_enrich:
         save: Speichern
     family:
       title: Produktfamilie
-      selected: ausgewählte Produktfamilien
+      selected: ausgewählte Familien
       info:
         update_successful: Produktfamilie erfolgreich aktualisiert.
         create_successful: Ausgabekanal erfolgreich angelegt.
@@ -352,19 +352,19 @@ pim_enrich:
         level_2.label: Varianten-Attribute zweites Level
         add_variant: Variante hinzufügen
         create_label: Neue Variante der Produktfamilie erstellen
-        create_description: In der Variante einer Produktfamilie können Sie die Struktur für  Variantenprodukte definieren. Wählen Sie die Anzahl der zu verwaltenden Variantenebenen, die Attribute, die als Variantenachse für die jeweilige Ebene genutzt werden und definieren Sie dann die Aufteilung der Attribute auf die Variantenebenen.
-        update_description: Verschieben Sie Attribute in die Variantenebenen, um sie dort zu pflegen.
+        create_description: In einer Familienvariante können Sie eine Struktur für Produkte mit Varianten definieren. Wählen Sie die Anzahl oder zu verwaltenden Variantenebenen, die Attribute die als Variantenachse für jedes Level genutzt werden und definieren Sie dann wie die Attribute verteilt werden sollen.
+        update_description: Legen Sie Attribute in den ausgewählten Variantenlevel ab, um diese auf den Variantenlevel zu verwalten.
         update_translation: Übersetzen Sie die Variante der Produktfamilie
         create: Anlegen
         cancel: Abbrechen
         code: Code
         label: Bezeichnung
-        levels: Variantenebenen
-        axis_level: Variantenachsenebene
+        levels: Varianten level
+        axis_level: Variantenachsenlevel
         required: erforderlich
         confirm_attribute_removal:
-          title: Bestätigen Sie das Entfernen der Attribute
-          message: Mit dem Entfernen dieser Attribute werden diese zurück auf die erste Ebene der Variante der Produktfamilie gesetzt und die Werte der Produktvarianten werden entfernt
+          title: Entfernen von Attributen bestätigen
+          message: Mit dem entfernen dieser Attribute werden diese zurück in die allgemeinen Attribute der Familienvariante gesetzt und die Werte der Produktvarianten entfernt
     family_variant:
       info:
         update_successful: Die Variante der Produktfamilie wurde erfolgreich aktualisiert. Die Variantenprodukte werden entsprechend aktualisiert.
@@ -405,7 +405,7 @@ pim_enrich:
         update_failed: Das Attribut konnte nicht aktualisiert werden.
         create_successful: Attribut erfolgreich erstellt.
         create_failed: Das Attribut konnte nicht erstellt werden.
-        field_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch unvollständig {{ fields }}"
+        field_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch nicht bereit {{ fields }}"
       scopable: Wert je Ausgabekanal
       type:
         pim_catalog_identifier: Kennung
@@ -435,7 +435,7 @@ pim_enrich:
       create_popin:
         title: Anlegen
       message:
-        created: API-Connection erfolgreich hergestellt
+        created: API-Verbindung erfolgreich hergestellt
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
@@ -465,7 +465,7 @@ pim_enrich:
       family_variant: Variante
       product_model: Produktmodell
       flash:
-        product_model_added: Produktmodell erfolgreich zum Produktmodell hinzugefügt
+        product_model_added: Produktmodell erfolgreich dem Produktmodell hinzugefügt
         variant_product_added: Produktvariante erfolgreich zum Produktmodell hinzugefügt
     product:
       tab:
@@ -590,7 +590,7 @@ pim_enrich:
         variant:
           title: Varianten
           flash:
-            family_variant_created: Variante der Produktfamilie erfolgreich erstellt
+            family_variant_created: Produktfamilie erfolgreich erstellt
         history:
           title: Historie
     family_variant:
@@ -646,7 +646,7 @@ pim_enrich:
             add_attributes: Attribute hinzufügen
           info:
             search_attributes: Suche...
-            no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+            no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
     job_execution:
       loading: Lädt...
       title.details: Ausführungsdetails
@@ -783,7 +783,7 @@ pim_enrich:
             scopable: Wert je Ausgabekanal
             type: Typ
             unique: Eindeutiger Wert
-            useable_as_grid_filter: Verwendbar in der Tabellenansicht
+            useable_as_grid_filter: Anwendbar in der Listenansicht
             validation_regexp: Regulärer Ausdruck
             validation_rule: Validierungsregel
             wysiwyg_enabled: Rich-Text-Editor aktiviert
@@ -913,7 +913,7 @@ pim_enrich:
             ">=": Größer als oder gleich
             ">": Größer als
             "<=": Weniger als oder gleich
-            "<": Früher als
+            "<": Weniger als
             EMPTY: Ist leer
             NOT EMPTY: Ist nicht leer
         multi_select:
@@ -933,7 +933,7 @@ pim_enrich:
         date:
           operators:
             ">": Größer als
-            "<": Früher als
+            "<": Weniger als
             "=": Ist gleich
             "!=": Ist nicht gleich
             BETWEEN: Zwischen
@@ -947,7 +947,7 @@ pim_enrich:
             ">=": Größer als oder gleich
             ">": Größer als
             "<=": Weniger als oder gleich
-            "<": Früher als
+            "<": Weniger als
             EMPTY: Ist leer
             NOT EMPTY: Ist nicht leer
       properties:
@@ -956,10 +956,10 @@ pim_enrich:
         title: Globale Einstellungen
   mass_edit_action:
     edit_common_attributes:
-      description: Nur die Attribute, die zur Familie der ausgewählten Produkte gehören, werden in dem Gebietsschema <span class="highlight">{{ locale }}</span> und dem Kanal <span class="highlight">{{ channel }}</span> mit den folgenden Daten bearbeitet.
+      description: Nur die Attribute, die zur Familie der ausgewählten Produkte gehören werden bearbeitet mit den folgenden Daten der <span class="highlight">{{ locale }}</span> Lokalisierung und den <span class="highlight">{{ channel }}</span> Kanälen.
   index:
     association_type:
-      title: "] -Inf, 1] {{ count }} Verbindungstyp|] 1, Inf [{{ count }} Verbindungstypen"
+      title: "] -Inf, 1] {{ count }} Assoziationstyp|] 1, Inf [{{ count }} Assoziationstypen"
       create_btn: Verbindungstyp anlegen
     import_profiles:
       title: "] -Inf, 1] {{ count }} Importprofil|] 1, Inf [{{ count }} Importprofile"
@@ -975,7 +975,7 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"
       create_btn: Gruppe anlegen
     export_profiles:
-      title: "] -Inf, 1] {{ count }} Exportprofil|] 1, Inf [{{ count }} Exportprofile"
+      title: "] -Inf, 1] {{ count }} exportprofil|] 1, Inf [{{ count }} exportprofile"
       create_btn: Exportprofil anlegen
       create_popin:
         title: Anlegen
@@ -984,7 +984,7 @@ pim_enrich:
     export_history:
       title: Exportberichte
     family:
-      title: "] -Inf, 1] {{ count }} Produktfamilie|] 1, Inf [{{ count }} Produktfamilien"
+      title: "] -Inf, 1] {{ count }} Familie|] 1, Inf [{{ count }} Familien"
       create_btn: Produktfamilie anlegen
     grouptype:
       title: "] -Inf, 1] {{ count }} Gruppentyp|] 1, Inf [{{ count }} Gruppentypen"
@@ -992,7 +992,7 @@ pim_enrich:
     currency:
       title: "] -Inf, 1] {{ count }} Währung|] 1, Inf [{{ count }} Währungen"
     locale:
-      title: "] -Inf, 1] {{ count }} Gebietsschema|] 1, Inf [{{ count }} Gebietsschemata"
+      title: "] -Inf, 1] {{ count }} lokalisierung|] 1, Inf [{{ count }} lokalisierungen"
     user:
       title: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
       create_btn: Benutzer anlegen
@@ -1005,17 +1005,17 @@ pim_enrich:
     process_tracker:
       title: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
     channel:
-      title: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} Regeln"
+      title: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} regeln"
       create_btn: Ausgabekanal anlegen
     attribute:
-      title: "] -Inf, 1] {{ count }} Attribut|] 1, Inf [{{ count }} Attribute"
+      title: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} regeln"
       create_btn: Attribut anlegen
       modal_title: Wählen Sie den Attributtyp aus
     attribute_group:
       title: Attributgruppen
       create_btn: Anlegen
     api_connection:
-      title: "] -Inf, 1] {{ count }} API-Connection|] 1, Inf [{{ count }} API-Connections"
+      title: "] -Inf, 1] {{ count }} API Verbindungen|] 1, Inf [{{ count }} API Verbindungen"
       create_btn: Anlegen
   mass_edit:
     next: Vor
@@ -1044,23 +1044,23 @@ pim_enrich:
           label: Status ändern
           label_count: "{1}Ändere den Status für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere den Status für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
           description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
-          field: Zu aktivieren
+          field: Aktivieren
         edit_common:
           label: Attributwerte bearbeiten
           label_count: "{1}Bearbeite die Werte von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Bearbeite die Werte von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
-          description: Nur die Attribute, die zu den Produktfamilien der ausgewählten Produkten gehören, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und dem {{ scope }} Ausgabekanal bearbeitet.
+          description: Nur die Attribute, die zu den Produktfamilien der ausgewählten Produkte gehören, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und dem {{ scope }} Ausgabekanal bearbeitet.
         add_attribute_value:
           label: Attributwerte hinzufügen
           label_count: "{1}Hinzufügen von Attributwerten für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Hinzufügen von Attributwerten für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
           description: Nur die Mehrfachauswahl-Attribute, die zu den Produktfamilien des Produkts gehören, werden mit den folgenden Daten des {{ locale }} Gebietsschemas und dem {{ scope }} Ausgabekanal bearbeitet. Die Attributwerte werden hinzugefügt, die vorherigen Werte bleiben erhalten.
         change_family:
-          label: Produktfamilie ändern
-          label_count: "{1}Ändere die Produktfamilie von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere die Produktfamilie von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
+          label: Familie wechseln
+          label_count: "{1}Ändere die Familie von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere die Familie von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
           description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
           field: Produktfamilie
         add_to_group:
           label: Zu Gruppen hinzufügen
-          label_count: "{1}Hinzufügen von <span class=\"AknFullPage-title--highlight\">1 Produkt</span> to groups|] 1, Inf [Hinzufügen von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span> zu Gruppen"
+          label_count: "{1}Hinzufügen <span class=\"AknFullPage-title--highlight\">1 Produkt </span> to groups|] 1, Inf [Hinzufügen<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu Gruppen"
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
         add_to_category:
@@ -1156,9 +1156,9 @@ batch_jobs:
     perform:
       label: Produktwert hinzufügen
   update_product_value:
-    label: Wert des Produkts aktualisieren
+    label: Produktwert aktualisieren
     perform:
-      label: Wert des Produkts aktualisieren
+      label: Produktwert aktualisieren
   add_to_group:
     label: Zur Gruppe hinzufügen
     perform:
@@ -1168,7 +1168,7 @@ batch_jobs:
     perform:
       label: Attribute bearbeiten
     cleaner:
-      label: Dateien für gemeinsame Attribute bereinigen
+      label: Dateien für Attribute bereinigen
   add_to_category:
     label: Zu Kategorie hinzufügen
     perform:
@@ -1186,9 +1186,9 @@ batch_jobs:
     perform:
       label: Verbinden
   add_to_existing_product_model:
-    label: Zu bestehendem Produktmodell hinzufügen
+    label: Zu einem bestehenden Produktmodell hinzufügen
     perform:
-      label: Zu bestehendem Produktmodell hinzufügen
+      label: Bestehendem Produktmodell hinzufügen
   set_attribute_requirements:
     label: Benötigte Attribute auswählen
     perform:
@@ -1200,7 +1200,7 @@ batch_jobs:
       label: CSV Produkt-Schnellexport
   csv_product_grid_context_quick_export:
     quick_export.label: CSV Produkt-Schnellexport kontextabhängig
-    quick_export_product_model.label: CSV Produktmodell-Schnellexport kontextabhängig
+    quick_export_product_model.label: CSV Produktmodell Rasterkontext Schnell-Export
     perform:
       label: CSV Produkt-Schnellexport kontextabhängig
   xlsx_product_quick_export:
@@ -1215,35 +1215,36 @@ batch_jobs:
       label: XLSX Produkt-Schnellexport kontextabhängig
   csv_product_export:
     label: Produkt-Export als CSV-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   csv_product_model_export:
     label: Produktmodell-Export als CSV-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   csv_category_export:
     label: Kategorie-Export als CSV-Datei
-    export.label: Kategorie export
+    export.label: Kategorie-Export
   csv_attribute_export:
     label: Attribut-Export als CSV-Datei
-    export.label: Attribut export
+    export.label: Attribut-Export
   csv_attribute_option_export:
-    label: Attribut-Option in CSV-Datei exportieren
-    export.label: Attribut-Option export
+    label: Attributoptionen-Export als CSV-Datei
+    export.label: Attributoptionen-Export
   csv_association_type_export:
-    label: Verbindungstyp-Export als CSV-Datei
-    export.label: Verbindungstyp-Export
+    label: Beziehungstyp-Export als CSV-Datei
+    export.label: Beziehungstyp-Export
   csv_group_export:
-    label: Gruppen-Export in CSV-Datei
+    label: Gruppen-Export als CSV-Datei
     export.label: Gruppen-Export
   csv_family_export:
     label: Produktfamilien-Export als CSV-Datei
     export.label: Produktfamilien-Export
   csv_family_variant_export:
-    label: Export der Varianten der Produktfamilien aus CSV-Datei
-    export.label: Export der Varianten der Produktfamilien
+    label: Produktfamilien-Varianten Export als CSV
+    export.label: Produktfamilien-Varianten Export
   csv_product_import:
+    label: Produkt-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
+    import.label: Produkt-Import
+    import_associations.label: Verbindungen-Import
   csv_product_model_import:
     label: Produktmodell-Import aus CSV-Datei
   csv_category_import:
@@ -1253,15 +1254,15 @@ batch_jobs:
   csv_attribute_import:
     label: Attribut-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Import
+    import.label: Attribute-Import
   csv_attribute_option_import:
-    label: Attribut-Optionen aus CSV-Datei importieren
+    label: Attributoptionen-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Option import
+    import.label: Attributoption-Import
   csv_association_type_import:
-    label: Verbindungstyp-Import als CSV-Datei
+    label: Verbindungstyp-Import aus CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Verbindungstyp-Import
+    import.label: Beziehungstyp-Import
   csv_family_import:
     label: Produktfamilien-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -1271,9 +1272,9 @@ batch_jobs:
     compute_data_related_to_family_sub_product_models.label: Untergeordnete Produktmodell-Daten berechnen
     compute_data_related_to_family_products.label: Produktdaten berechnen
   csv_family_variant_import:
-    label: Import der Varianten der Produktfamilien aus CSV-Datei
+    label: Produktfamilien-Varianten Import als CSV-Datei
     validation.label: Dateivalidierung
-    import.label: Import der Varianten der Produktfamilien
+    import.label: Produktfamilien-Varianten Import
   csv_group_import:
     label: Gruppen-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -1320,15 +1321,15 @@ batch_jobs:
   xlsx_association_type_import:
     label: Verbindungstyp-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Verbindungstyp-Import
+    import.label: Beziehungstyp-Import
   xlsx_attribute_import:
     label: Attribut-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Import
+    import.label: Attribute-Import
   xlsx_attribute_option_import:
     label: Attributoptionen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Attribut-Option import
+    import.label: Attributoption-Import
   xlsx_family_import:
     label: Produktfamilien-Import aus XLSX-Datei
     validation.label: Dateivalidierung
@@ -1338,20 +1339,20 @@ batch_jobs:
     compute_data_related_to_family_sub_product_models.label: Untergeordnete Produktmodell-Daten berechnen
     compute_data_related_to_family_products.label: Produktdaten berechnen
   xlsx_family_variant_import:
-    label: Import der Varianten der Produktfamilien aus XLSX-Datei
+    label: Produktfamilienvarianten-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Import der Varianten der Produktfamilien
+    import.label: Produktfamilienvarianten-Import
   xlsx_product_export:
     label: Produkt-Export als XLSX-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   xlsx_product_model_export:
     label: Produktmodell-Export als XLSX-Datei
     export.label: Produktmodell-Export
   xlsx_product_import:
     label: Produkt-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
+    import.label: Produkt-Import
+    import_associations.label: Verbindungen-Import
   xlsx_product_model_import:
     label: Produktmodell-Import aus XLSX-Datei
   xlsx_group_export:
@@ -1365,11 +1366,11 @@ batch_jobs:
     label: Produktfamilien-Eport als XLSX-Datei
     export.label: Produktfamilien-Export
   xlsx_family_variant_export:
-    label: Export der Varianten der Produktfamilien als XLSX-Datei
-    export.label: Export der Varianten der Produktfamilien
+    label: Produktfamilienvarianten-Export als XLSX-Datei
+    export.label: Produktfamilienvarianten-Export
   xlsx_category_export:
     label: Kategorie-Export als XLSX-Datei
-    export.label: Kategorie export
+    export.label: Kategorie-Export
   xlsx_attribute_export:
     label: Attribut-Export als XLSX-Datei
     export.label: Attribut-Export als XLSX-Datei
@@ -1431,7 +1432,7 @@ pim_menu:
     system: System
     help:
       title: Hilfe
-      helper: Akeneo Help-Center
+      helper: Akeneo Hilfe-Center
   item:
     association_type: Verbindungstypen
     attribute: Attribute
@@ -1501,3 +1502,5 @@ catalog_volume:
     count_variant_products: Produktvarianten
     count_product_models: Produktmodelle
     warning: Wow! Sie haben mit dieser Achse das Limit erreicht! Zögern Sie nicht uns zu kontaktieren, falls Sie Hilfe benötigen.
+  mean: 'Mittelwert:'
+  max: 'Max:'

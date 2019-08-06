@@ -20,7 +20,7 @@ pim_enrich:
       history.title: Historie
   family:
     info:
-      cant_remove_attribute_used_as_axis: Sie können dieses Attribut nicht entfernen, da es als Achse in der Variante der Produktfamilie verwendet wird
+      cant_remove_attribute_used_as_axis: Dieses Attribut, das als Variantenachse in einer Familienvariante verwendet wird, kann nicht entfernt werden
     tab:
       property.title: Eigenschaften
       attribute.title: Attribute
@@ -112,7 +112,7 @@ pim_enrich:
       success_flash: Produkt(e) wurden aus den ausgewählten Kategorien entfernt
       launched_flash: Die Massenbearbeitung "aus Kategorien entfernen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     change-family:
-      label: Produktfamilie ändern
+      label: Familie wechseln
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
       success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
       launched_flash: Die Massenbearbeitung "Produktfamilie ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -160,7 +160,7 @@ pim_enrich:
     product_model:
       create: Produktmodell erstellen
       edit_attributes: Attribute eines Produktmodells bearbeiten
-      categories_view: Die Kategorien eines Produktmodells anzeigen
+      categories_view: Die Kategorien eines Produktmodells ansehen
       history: Produkthistorie ansehen
       remove: Produktmodell löschen
     category:
@@ -183,6 +183,7 @@ pim_enrich:
       create: Eine Produktfamilie anlegen
       edit_properties: Die Eigenschaften einer Produktfamilie bearbeiten
       edit_attributes: Die Attribute einer Produktfamilie bearbeiten
+      edit_variants: Eine Variante bearbeiten
       remove: Eine Produktfamilie löschen
       history: Produktfamilien-Historie ansehen
     family_variant:
@@ -246,8 +247,8 @@ pim_enrich:
   notification:
     settings:
       remove_completeness_for_channel_and_locale:
-        start: Das Gebietsschema wurde vom Ausgabekanal entfernt. Die damit verknüpfte Vollständigkeit wird nun bereinigt.
-        done: Löschen vom Gebietsschema bei einem Kanal beendet.
+        start: Das Gebietsschema wurde aus dem Kanal entfernt. Die damit verbundene Vollständigkeit wird derzeit aktualisiert.
+        done: Das Gebietschema ist nun aus dem Kanal entfernt.
 attribute:
   title: Attribut
   edit: Attribut bearbeiten
@@ -267,8 +268,10 @@ category:
   edit: Kategorie bearbeiten
   suggest selection: Bitte wählen Sie eine Kategorie auf der linken Seite
   or: oder
+  create new: Neuen Kategoriebaum erstellen
 tree:
   title: Struktur
+  create: Kategoriebaum erstellen
   edit: Strukturbaum bearbeiten
 channel:
   title: Ausgabekanal
@@ -307,6 +310,7 @@ btn:
     attribute: Attribut anlegen
     attribute group: Attributgruppe anlegen
     category: Kategorie anlegen
+    tree: Kategoriebaum erstellen
     channel: Ausgabekanal anlegen
     currency: Währung anlegen
     family: Produktfamilie anlegen
@@ -406,23 +410,23 @@ flash:
   group type:
     created: Gruppentyp erfolgreich erstellt
     updated: Gruppentyp erfolgreich aktualisiert
-    removed: Gruppentyp erfolgreich gelöscht
+    removed: Gruppentyp erfolgreich entfernt
     cant remove used: Der Gruppentyp wird von anderen Gruppen verwendet und kann nicht gelöscht werden
   association type:
     created: Verbindungstyp erfolgreich erstellt
     updated: Verbindungstyp erfolgreich aktualisiert
     removed: Verbindungstyp erfolgreich gelöscht
   user:
-    removed: Benutzer erfolgreich gelöscht
+    removed: Benutzer erfolgreich entfernt
   error ocurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
 info:
-  updated: Es gibt ungesicherte Änderungen.
+  updated: Es gibt ungespeicherte Änderungen.
   category:
     remove children: Alle Unterkategorien werden gelöscht.
     keep products: Produkte in diesen Kategorien werden nicht gelöscht.
     products limit exceeded: Diese Kategorie enthält mehr Produkte (maximal %limit%) als für diese Operation zugelassen sind
   product:
-    no available attributes: Es können keine weiteren Attribute hinzugefügt werden
+    no available attributes: Es gibt keine weiteren Attribute zum Hinzufügen
     no family defined: Keine Produktfamilie definiert
     change family: Produktfamilie ändern
     change family to: Produktfamilie ändern zu
@@ -455,7 +459,7 @@ Updated at: Aktualisiert am
 Created: Erstellt
 Updated: Aktualisiert
 Last update: Letzte Aktualisierung
-by: durch
+by: Von
 N/A: N/A
 Manage products: Produkte verwalten
 Manage groups: Gruppen verwalten
@@ -548,7 +552,7 @@ Metric family: Metrische Gruppe
 Default metric unit: Standardmaßeinheit
 Max file size: Maximale Dateigröße (MB)
 Allowed extensions: Zulässige Dateiendungen
-None: Keine
+None: keine
 E-mail: E-Mail
 URL: URL
 Regular expression: Regulärer Ausdruck
@@ -628,7 +632,7 @@ pim_enrich.mass_edit_action:
     page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
     title: Aktion auswählen
     subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
-    confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
+    confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
     steps:
       first: Produkte auswählen
       second: Aktion auswählen
@@ -639,7 +643,7 @@ pim_enrich.mass_edit_action:
     page_subtitle: Massenbearbeitung (1 Produktfamilie)|Massenbearbeitung (%count% Produktfamilien)
     title: Aktion auswählen
     subtitle: Wählen Sie die Aktion aus, die Sie auf die ausgewählte Produktfamilie anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produktfamilien anwenden wollen
-    confirm: Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
+    confirm: Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
     steps:
       first: Produktfamilien auswählen
       second: Aktion auswählen
@@ -658,7 +662,7 @@ pim_enrich.mass_edit_action:
     no_attribute.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
   classify:
     label: Zu Kategorien hinzufügen
-    description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
+    description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
     success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
   change-family:
     label: Produktfamilie ändern
@@ -671,13 +675,13 @@ pim_enrich.mass_edit_action:
     success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
   set-attribute-requirements:
     label: Benötigte Attribute auswählen
-    description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
-    success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
+    description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
+    success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
 To enable: Zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
-Remove this attribute: Dieses Attribut löschen
-Copy: Kopieren
+Remove this attribute: Dieses Attribut entfernen
+Copy: Kopie
 Current tab: Aktueller Reiter
 Group: Gruppe
 View group: Gruppe ansehen
@@ -718,7 +722,7 @@ Entity name: Entitätsname
 Entity id: Entitäts-ID
 Data: Daten
 Author: Autor
-Logged at: Angemeldet am
+Logged at: Aufgezeichnet am
 Deleted: Gelöscht
 Old values: Alte Werte
 New values: Neue Werte
@@ -781,18 +785,18 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Attribute b
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
 remove_product_value.steps.update_product_value_processor.title: Produktwert entfernen
 edit_common_attributes: Attribute bearbeiten
-edit_common_attributes_clean: Dateien für gemeinsame Attribute bereinigen
+edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
 perform.steps.duplicated.title: Doppelte Achse
-perform.steps.excluded.title: Ausgeschlossene Produkte
+perform.steps.excluded.title: Produkt ausschließen
 batch_jobs:
   add_product_value:
     label: Produktwert hinzufügen
     perform:
       label: Produktwert hinzufügen
   update_product_value:
-    label: Wert des Produkts aktualisieren
+    label: Produktwert aktualisieren
     perform:
-      label: Wert des Produkts aktualisieren
+      label: Produktwert aktualisieren
   add_attribute_value:
     label: Attributwert hinzufügen
     perform:
@@ -802,11 +806,11 @@ batch_jobs:
     perform:
       label: Attribute bearbeiten
     clean:
-      label: Dateien für gemeinsame Attribute bereinigen
+      label: Bereinige Dateien für gemeinsame Attribute
     cleaner:
-      label: Dateien für gemeinsame Attribute bereinigen
+      label: Bereinige Dateien für gemeinsame Attribute
   compute_completeness_of_products_family:
-    compute_completeness_of_products_family.label: Berechne Vollständigkeit
+    compute_completeness_of_products_family.label: Vollständigkeit berechnen
   add_to_category:
     label: Zu Kategorie hinzufügen
     perform:
