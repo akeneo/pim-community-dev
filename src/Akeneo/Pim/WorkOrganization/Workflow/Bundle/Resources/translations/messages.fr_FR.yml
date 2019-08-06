@@ -37,6 +37,7 @@ pimee_workflow:
       approve: '%owner% a accepté votre proposition pour le produit %product%'
       refuse: '%owner% a rejeté votre proposition pour le produit %product%'
       remove: '%owner% a supprimé votre proposition pour le produit %product%'
+      mass_edit_sent_for_approval: 'Modification en masse <strong>%jobLabel%</strong> terminée : %sentForApprovalCount% propositions générées sur %readProductsCount% produits'
     mass_review_action:
       approve: Tout approuver
       refuse: Tout refuser
@@ -86,7 +87,7 @@ btn:
   save working copy and next: Enregistrer la copie de travail et poursuivre
   save working copy and finish: Enregistrer la copie de travail et terminer
   send for approval: Envoyer pour approbation
-  sent for approval: Envoyé pour validation
+  sent for approval: Envoyé pour approbation
   editworkingcopy: Modifier la copie de travail
 flash:
   product:

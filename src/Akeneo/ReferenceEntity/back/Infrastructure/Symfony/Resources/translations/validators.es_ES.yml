@@ -3,16 +3,62 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        should_be_unique: 'Una entidad de referencia ya existe con código "%reference_entity_identifier%"'
+        limit_reached: 'No puede crear la entidad de referencia "%reference_entity_label%" porque ha llegado al límite de %limit% entidades de referencia'
+      records:
+        should_have_no_record: 'No puede eliminar esta entidad debido a que existen registros para esta entidad'
+      reference_entity_attributes:
+        should_not_be_linked: 'No puede eliminar esta entidad debido a que ciertos atributos de entidad de referencia están relacionados a esta entidad'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad'
+      product_attributes:
+        should_not_be_linked: 'No puede eliminar esta entidad debido a que ciertos atributos de productos están relacionados a esta entidad'
+      should_exist: 'No se encontró la entidad de referencia "%reference_entity_code%".'
   record:
     validation:
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        should_be_unique: 'El código de registro ya existe para la entidad de referencia "%reference_entity_identifier%" y el código de registro "%code%"'
+        should_exist: 'No se encontró el registro'
+      text:
+        incompatible_with_regular_expression: 'El texto es incompatible con la expresión regular "%regular_expression%"'
+      file:
+        extension_not_allowed: 'Los archivos "%file_extension%" no están permitidos para este atributo. Las extensiones permitidas son: %allowed_file_extensions%'
+        file_size_exceeded: 'El archivo excede el tamaño máximo del archivo establecido para el atributo.'
+        should_exist: 'El archivo "%file_path%" no se encontró.'
+      option:
+        code_does_not_exist: 'La opción con código "%option_code%" no existe para este atributo'
+      option_collection:
+        codes_dont_exist: "Los siguientes códigos de opción no existen para este atributo : \"%option_codes%\""
+      record:
+        should_exist: 'No se encontró el registro "%record_code%".'
+      record_collection:
+        should_exist: 'No se encontraron los registros "%record_codes%".'
+      limit_reached: 'No puedes crear el registro "%record_label%" porque has alcanzado el límite de %limit% registros para esta entidad de referencia'
+      channel:
+        should_exist: 'El canal "%channel_identifier%" no existe.'
+      number:
+        should_be_integer: 'Este campo debe ser un entero'
+        integer_too_long: 'Este entero es demasiado grande'
+        should_be_numeric: 'Este campo debe ser un valor numérico con el separador decimal correcto'
   attribute:
     validation:
       options:
+        should_exist: 'La opción no se encontró.'
+        duplicated: 'La opción "%option_code%" ya existe'
         code:
           pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+      max_file_size:
+        should_be_a_number: 'Este valor debe ser un número.'
+      min_value:
+        should_be_a_number: 'Este valor debe ser un número con el separador decimal correcto.'
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        should_not_exist: 'El atributo ya existe para la entidad de referencia "{{ reference_entity_identifier }}" y el código de atributo "{{ code }}"'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Un atributo de área de texto no puede tener una regla de validación'
+      cannot_set_a_non_empty_regular_expression: 'El atributo no debe tener una expresión regular'
+      cannot_update_the_regular_expression: 'No se puede establecer una expresión regular en el atributo de texto'
+      limit_reached: 'No puede crear el atributo "%attribute_label%" porque ha alcanzado el límite de atributos de %limit% para esta entidad de referencia'
+      record_type:
+        is_required: 'Necesita especificar el tipo de entidad de referencia para crear un atributo de enlace de Entidad de Referencia'
+        reference_entity_should_exist: 'No se encontró la entidad de referencia "%reference_entity_code%".'

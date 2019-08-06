@@ -38,6 +38,9 @@ pim_reference_entity:
       locale:
         is_not_activated: 'La localització "%locale_identifier%" no està activada.'
         is_not_activated_for_channel: 'La localització "%locale_identifier%" no està activada pel canal "%channel_identifier%".'
+      number:
+        should_be_integer: 'Aquest camp té que ser un enter'
+        integer_too_long: 'Aquest enter és massa gran'
   attribute:
     validation:
       options:

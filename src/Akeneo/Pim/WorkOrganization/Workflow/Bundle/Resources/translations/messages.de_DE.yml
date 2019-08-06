@@ -11,8 +11,8 @@ pimee_workflow:
     status:
       label: Status
       working_copy: Arbeitskopie
-      in_progress: In Arbeit
-      ready: Auf Genehmigung warten
+      in_progress: In Bearbeitung
+      ready: Auf Genehmigung wartend
       can_be_partially_reviewed: Kann teilweise überprüft werden
       can_not_be_approved: Kann nicht überprüft werden
       can_not_be_deleted: Kann nicht gelöscht werden
@@ -37,6 +37,7 @@ pimee_workflow:
       approve: '%owner% hat Ihren Vorschlag für das Produkt %product% akzeptiert'
       refuse: '%owner% hat Ihren Vorschlag für das Produkt %product% abgelehnt'
       remove: '%owner% hat Ihren Vorschlag für das Produkt %product% gelöscht'
+      mass_edit_sent_for_approval: 'Massenbearbeitung <strong>%jobLabel%</strong> fertig: %sentForApprovalCount% Vorschläge aus %readProductsCount% Produkten generiert'
     mass_review_action:
       approve: Alle ausgewählten genehmigen
       refuse: Alle ausgewählten ablehnen
@@ -83,12 +84,9 @@ btn:
   publish: Veröffentlichen
   unpublish: Veröffentlichung entziehen
   save working copy: Arbeitskopie speichern
-  save draft: Entwurf speichern
   save working copy and next: Arbeitskopie speichern und weiter
-  save draft and next: Entwurf speichern und weiter
   save working copy and finish: Arbeitskopie speichern und fertigstellen
-  save draft and finish: Entwurf speichern und fertigstellen
-  send for approval: Zur Freigabe senden
+  send for approval: Zur Genehmigung senden
   sent for approval: Zur Freigabe gesendet
   editworkingcopy: Arbeitskopie bearbeiten
 flash:
@@ -123,7 +121,7 @@ job_execution.summary:
   approved: Freigegeben
   refused: Abgelehnt
   mass_published: Produkt veröffentlicht
-  mass_unpublished: Produktveröffentlichung entzogen
+  mass_unpublished: Produktveröffentlichung zurückgezogen
   proposal: Vorschlag erstellt
   proposal_deleted: Vorschlag gelöscht
   proposal_updated: Vorschlag aktualisiert

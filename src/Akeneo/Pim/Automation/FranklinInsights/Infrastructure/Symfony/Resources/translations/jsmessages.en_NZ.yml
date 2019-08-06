@@ -20,9 +20,13 @@ akeneo_franklin_insights:
             upc: UPC
         catalog_attribute: Catalog attribute
         franklin_insights: Franklin identifier status
+        status:
+          active: Active
+          inactive: Inactive
       constraint:
         duplicate_attribute_code: "One mapping allowed per catalog attribute"
         missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
+        mandatory_identifier_mapping: "Brand & MPN mapping required"
         attribute_type: "The type of this attribute can not be set as identifier"
     attributes_mapping:
       label: Attributes mapping
@@ -31,6 +35,8 @@ akeneo_franklin_insights:
         franklin_insights:
           label: Franklin attribute status
           pending: Pending
+          active: Active
+          inactive: Inactive
       module:
         subscribe:
           subscribe: 'Subscribe family to Franklin'
@@ -90,10 +96,14 @@ akeneo_franklin_insights:
         label: 'Franklin Connector'
         activation_code: 'Activation code'
         paste_activation_code: 'Paste Activation Code'
+        activated: 'Activated'
         activate: 'Activate'
   settings:
     page_title: 'Franklin Insights Settings'
+    attributes_mapping_title: 'Attributes mapping'
     module:
+      title:
+        sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
       inactive_connection:
         title: 'Sorry, nothing to show here yet'
         sub_title: 'Please activate your account on System > Franklin connection and come back.'
@@ -119,8 +129,17 @@ batch_jobs:
     subscribe_products.label: Subscribe products
   franklin_insights_unsubscribe_products:
     label: Franklin Insights bulk unsubscription
+    validate_configuration.label: Validate Franklin Insights configuration
     unsubscribe_products.label: Unsubscribe products
   franklin_insights_fetch_products:
     label: Fetch product data from Franklin Insights
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights_fetch_products: Franklin Insights
 pim_title:
   akeneo_franklin_insights_connection_edit: Franklin Insights Connection
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights

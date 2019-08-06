@@ -44,6 +44,11 @@ pim_reference_entity:
         is_not_expected: 'Une locale n''est pas nécessaire pour l''attribut "%attribute_code%" car il n''a pas de valeur par locale.'
         is_not_activated: 'La locale "%locale_identifier%" n''est pas activée.'
         is_not_activated_for_channel: 'La locale "%locale_identifier%" n''est pas activée pour le canal "%channel_identifier%".'
+      number:
+        should_be_string: 'Ce champ devrait contenir une chaîne de caractères'
+        should_be_integer: 'Ce champ devrait contenir un entier'
+        integer_too_long: 'Cet entier est trop grand'
+        should_be_numeric: 'Ce champ doit être une valeur numérique avec le bon séparateur de décimales'
   attribute:
     validation:
       options:
@@ -57,6 +62,12 @@ pim_reference_entity:
         should_be_an_integer: 'Cette valeur doit être un entier.'
       max_file_size:
         should_be_a_number: 'Cette valeur doit être un nombre.'
+      min_value:
+        should_be_a_number: 'Cette valeur doit être une valeur numérique avec le bon séparateur de décimales.'
+        cannot_be_greater_than_max: 'Le min ne peut pas être supérieur au max'
+      max_value:
+        should_be_a_number: 'Cette valeur doit être une valeur numérique avec le bon séparateur de décimales.'
+        cannot_be_lower_than_min: 'Le max ne peut pas être supérieur au min'
       code:
         pattern: 'Ce champ ne peut être composé que de lettres, chiffres et underscores.'
         reserved_codes: 'Le code ne peut pas appartenir à ces valeurs : "{{ comma_separated_reserved_keywords }}"'
@@ -73,3 +84,9 @@ pim_reference_entity:
       record_type:
         is_required: 'Vous devez spécifier le type d''entité référentielle pour créer un lien vers un attribut d''entité référentielle'
         reference_entity_should_exist: 'L''entité référentielle "%reference_entity_code%" n''a pas été trouvée.'
+      prefix:
+        should_not_be_empty: 'Le préfixe ne peut pas être une chaîne vide.'
+      suffix:
+        should_not_be_empty: 'Le suffixe ne peut pas être une chaîne vide.'
+      media_type:
+        not_expected: 'Le type de média donné ne correspond pas aux types attendus (%supported_media_types%).'

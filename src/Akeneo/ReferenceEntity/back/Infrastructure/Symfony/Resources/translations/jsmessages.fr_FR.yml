@@ -95,7 +95,7 @@ pim_reference_entity:
     validation:
       limit_reached: 'Vous ne pouvez pas créer l''enregistrement « {{ %record_label% }} » parce que vous avez atteint la limite de {{ %limit% }} enregistrements pour cette entité référentielle'
       code:
-        pattern: 'Ce champ ne peut être composé que de lettres, chiffres et underscores.'
+        pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
         should_be_unique: 'Ce code existe déjà pour cette entité.'
     no_data:
       title: Il n'y a aucun enregistrement pour {{ entityLabel }}
@@ -124,6 +124,7 @@ pim_reference_entity:
         subtitle: "Pour commencer à lier les produits à cette entité de référence, vous pouvez en créer un nouveau : "
         link: Créer un nouvel attribut de produit
       not_enough_items:
+        title: Il y a un peu trop de monde ici, nous ne vous montrons que {{ productCount }}/{{ totalCount }} produits.
         subtitle:
           usable_in_grid: Pour découvrir tous les produits liés, cliquez ci-dessous !
         button: Voir tous les produits
