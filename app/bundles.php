@@ -29,7 +29,6 @@ return [
     Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle::class => ['all' => true],
-    Akeneo\Tool\Bundle\BufferBundle\AkeneoBufferBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle::class => ['all' => true],
