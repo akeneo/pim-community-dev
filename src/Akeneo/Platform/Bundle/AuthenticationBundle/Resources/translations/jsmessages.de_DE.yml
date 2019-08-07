@@ -1,11 +1,44 @@
+pim_menu.item.sso: SAML-basiertes Single Sign-On
+pim_title:
+  authentication_sso_configuration_edit: SAML-basierte Single Sign-On-Konfiguration
 authentication:
   sso:
     configuration:
+      download_logs_button: Protokolle herunterladen
       info:
         update_successful: Die Konfiguration wurde gespeichert
         update_failed: Die Konfiguration konnte nicht gespeichert werden
+        fields_not_ready: "Die Konfiguration kann zur Zeit nicht gespeichert werden. Die folgenden Felder sind noch nicht ausgefüllt: Felder }}}}"
+      section:
+        activation:
+          title: SSO-Aktivierung
+          info:
+            description: Wenn Sie die SSO-Authentifizierung aktivieren, ist Ihre aktuelle Sitzung ungültig. Sie werden abgemeldet und nach dem Speichern der Konfiguration an Ihren Identity Provider weitergeleitet.
+        identity_provider:
+          title: Identity-Provider (IdP)
+          info:
+            description: Hier können Sie alle Parameter einstellen, die für die Kommunikation mit Ihrem IdP erforderlich sind. Diese Informationen müssen von Ihrem IdP zur Verfügung gestellt werden. Um sie zu erhalten, wenden Sie sich bitte an Ihren SSO-Administrator.
+        service_provider:
+          title: Service Provider (SP)
+          info:
+            description: Nachfolgend finden Sie die Informationen zum Service Provider (Dienstleister). Es sind automatisch generierte Werte, die aber bei Bedarf bearbeitet werden können. Die Informationen müssen Ihrem SSO-Administrator zur Verfügung gestellt werden, um das IdP zu konfigurieren.
       field:
+        activation:
+          label: SSO-fähig
+        entity_id:
+          label: Entitäts-ID
+        sign_on_url:
+          label: Anmelde-URL
+        logout_url:
+          label: Abmelde-URL
         certificate:
           label: Zertifikat
+          expiration_warning: Dieses Zertifikat läuft ab am {{date}}.
         private_key:
           label: Privater Schlüssel
+        metadata_url:
+          label: Metadaten-URL
+          tooltip_label: URL kopieren
+        acs_url:
+          label: ACS URL
+          tooltip_label: URL kopieren

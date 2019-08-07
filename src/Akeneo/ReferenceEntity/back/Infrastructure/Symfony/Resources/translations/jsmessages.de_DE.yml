@@ -37,6 +37,7 @@ pim_reference_entity:
       subtitle: Wiederholen Sie Ihre Suche mit anderen Suchkriterien.
     button:
       save: Speichern
+      create: Hinzufügen
       delete: Löschen
       delete_all: Alle Einträge löschen
       back: Zurück zur Liste
@@ -52,6 +53,7 @@ pim_reference_entity:
       confirm: Speichern
     grid:
       filter:
+        counter: '{{ matchesCount }} Ergebnis|{{ matchesCount }} Ergebnisse'
         completeness:
           label: Vollständig
           all: Alle
@@ -109,7 +111,7 @@ pim_reference_entity:
             label: Optionen verwalten
         options:
           validation_rule:
-            none: Keine
+            none: keine
             email: E-Mail
             regular_expression: Regulärer Ausdruck
             url: URL

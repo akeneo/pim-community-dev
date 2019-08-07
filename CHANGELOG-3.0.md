@@ -1,5 +1,11 @@
 # 3.0.x
 
+# 3.0.35 (2019-08-05)
+
+## Bug fixes
+
+- PIM-8592: Fix incorrect count on sequential edit
+
 # 3.0.34 (2019-07-24)
 
 # 3.0.33 (2019-07-24)

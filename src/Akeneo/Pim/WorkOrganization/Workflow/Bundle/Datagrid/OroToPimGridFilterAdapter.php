@@ -48,7 +48,7 @@ class OroToPimGridFilterAdapter extends BaseAdapter
                 $filters = array_merge(
                     $filters,
                     $this->getCompletenessForProjectFilter(
-                        $parameters['filters']['project_completeness']['value'],
+                        (int) $parameters['filters']['project_completeness']['value'],
                         $parameters['dataLocale'],
                         $parameters['dataScope']['value']
                     )
@@ -61,6 +61,8 @@ class OroToPimGridFilterAdapter extends BaseAdapter
         if ($parameters['gridName'] === self::APPROVE_GRID_NAME) {
             return ['values' => $this->massActionDispatcher->dispatch($parameters)];
         }
+
+        return $this->adaptDefaultGrid($parameters);
     }
 
     private function getCompletenessForProjectFilter(int $projectCompleteness, string $locale, string $channel): array

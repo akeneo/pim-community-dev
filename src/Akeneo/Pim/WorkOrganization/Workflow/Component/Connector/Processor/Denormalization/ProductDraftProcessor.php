@@ -104,6 +104,10 @@ class ProductDraftProcessor extends AbstractProcessor implements
             }
         }
 
+        if (!$product->isVariant() && isset($item['parent']) && '' === trim($item['parent'])) {
+            unset($item['parent']);
+        }
+
         try {
             $this->updater->update($product, $item);
         } catch (\Exception $exception) {

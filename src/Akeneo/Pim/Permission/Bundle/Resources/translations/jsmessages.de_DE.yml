@@ -38,10 +38,13 @@ batch_jobs:
     perform.label: Produktwert hinzufügen
   update_product_value_with_permission_and_rules:
     label: Aktualisieren von Produktwerten mit Rechteprüfung und Regeln
-    perform.label: Wert des Produkts aktualisieren
+    perform.label: Produktwert aktualisieren
   remove_product_value_with_permission_and_rules:
     label: Entfernen von Produktwerten mit Rechteprüfung und Regeln
     perform.label: Produktwert entfernen
   edit_common_attributes_with_permission_and_rules:
+    label: Attribute mit Berechtigungsprüfung und Regelanwendung bearbeiten
     perform.label: Attribute bearbeiten
     cleaner.label: Lösche temporäre Dateien
+pim_title:
+  pimee_enrich_locale_edit: Gebietsschema | Bearbeiten
