@@ -515,6 +515,10 @@ class ProductAssetController extends Controller
             return $this->edit($request, $id);
         }
 
+        if ($this->isGranted(Attributes::VIEW, $productAsset)) {
+            return $this->view($id);
+        }
+
         throw new AccessDeniedException();
     }
 
@@ -759,6 +763,37 @@ class ProductAssetController extends Controller
             'metadata'      => $this->getAssetMetadata($productAsset),
             'currentLocale' => $locale,
             'trees'         => $trees,
+        ]);
+    }
+
+    /**
+     * View an asset
+     *
+     * @param int|string $id
+     *
+     * @throws AccessDeniedException()
+     *
+     * @return array|Response
+     */
+    protected function view($id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+
+        $isViewAssetGranted = $this->isGranted(Attributes::VIEW, $productAsset);
+        if (!$isViewAssetGranted) {
+            throw new AccessDeniedException();
+        }
+
+        $references = $productAsset->getReferences();
+        $attachments = [];
+        foreach ($references as $refKey => $reference) {
+            $attachments[$refKey]['reference'] = $reference;
+        }
+
+        return $this->render('AkeneoAssetBundle:ProductAsset:view.html.twig', [
+            'asset'       => $productAsset,
+            'attachments' => $attachments,
+            'metadata'    => $this->getAssetMetadata($productAsset)
         ]);
     }
 

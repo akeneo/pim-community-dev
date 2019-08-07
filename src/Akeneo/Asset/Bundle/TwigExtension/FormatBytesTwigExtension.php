@@ -20,17 +20,6 @@ use Akeneo\Tool\Component\FileStorage\Formater\BytesFormater;
  */
 class FormatBytesTwigExtension extends \Twig_Extension
 {
-    /** @var BytesFormater */
-    protected $bytesFormater;
-
-    /**
-     * @param BytesFormater $bytesFormater
-     */
-    public function __construct(BytesFormater $bytesFormater)
-    {
-        $this->bytesFormater = $bytesFormater;
-    }
-
     /**
      * Return functions registered as twig extensions
      *
@@ -54,6 +43,36 @@ class FormatBytesTwigExtension extends \Twig_Extension
      */
     public function formatBytes($bytes, $decimals = 2, $intlSystem = false)
     {
-        return $this->bytesFormater->formatBytes($bytes, $decimals, $intlSystem);
+        $factor = $intlSystem ? 1000 : 1024;
+        $kilobyte = $factor;
+        $megabyte = $kilobyte * $factor;
+        $gigabyte = $megabyte * $factor;
+        $terabyte = $gigabyte * $factor;
+
+        $value = $bytes;
+        $unit = '';
+
+        if ($bytes >= $kilobyte) {
+            $value = $bytes / $kilobyte;
+            $unit = 'K';
+        }
+        if ($bytes >= $megabyte) {
+            $value = $bytes / $megabyte;
+            $unit = 'M';
+        }
+        if ($bytes >= $gigabyte) {
+            $value = $bytes / $gigabyte;
+            $unit = 'G';
+        }
+        if ($bytes >= $terabyte) {
+            $value = $bytes / $terabyte;
+            $unit = 'T';
+        }
+
+        if (!$intlSystem || $bytes < $kilobyte) {
+            $unit .= 'B';
+        }
+
+        return sprintf('%s %s', round($value, $decimals), $unit);
     }
 }
