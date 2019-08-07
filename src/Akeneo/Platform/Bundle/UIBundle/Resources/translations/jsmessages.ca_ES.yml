@@ -121,7 +121,7 @@ pim_common:
   apply: Aplicar
   before: Abans
   by: per
-  cancel: Cancelar
+  cancel: Cancel·lar
   code: Codi
   confirm: Confirmar
   confirm_deletion: Confirmar l'eliminació

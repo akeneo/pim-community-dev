@@ -32,7 +32,7 @@ pim_api:
     attribute: Atributos
     attribute_option: Opciones de atributo
     attribute_group: Grupos de atributos
-    category: Ctegorías
+    category: Categorías
     family: Familias
     family_variant: Variantes de familia
     channel: Canales

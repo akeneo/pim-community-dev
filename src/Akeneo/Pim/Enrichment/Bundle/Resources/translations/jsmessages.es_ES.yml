@@ -169,12 +169,14 @@ pim_enrich.entity.group:
   page_title:
     index: "]-Inf, 1]{{ count }} grupo|]1, Inf[{{ count }} grupos"
   module:
+    create:
+      button: Crear grupo
     delete:
       confirm: '¿Está seguro que desea eliminar este grupo?'
 pim_enrich.entity.category:
   label: categoría
   uppercase_label: Categoría
-  plural_label: Ctegorías
+  plural_label: Categorías
 pim_enrich.export.product:
   data:
     title: Filtrar los productos
@@ -306,6 +308,7 @@ pim_enrich.mass_edit.product:
       label: Eliminar de las categorías
       label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
       description: Se eliminarán los productos de las siguientes categorías.
+      no_update: No hay una categoría seleccionada de la cual remover los productos.
     add_to_existing_product_model:
       label: Agregar a un modelo de producto existente
       label_count: "{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a un modelo de producto existente|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a un modelo de producto existente"

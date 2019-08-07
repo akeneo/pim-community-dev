@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Le profil d'import a bien été créé
+        upload:
+          error: Impossible de télécharger le fichier. Sa taille dépasse peut-être la taille maximale de téléchargement définie sur votre configuration PHP ou serveur HTTP
       page_title:
         index: "]-Inf, 1]{{ count }} profil d'import|]1, Inf[{{ count }} profils d'import"
       module:
