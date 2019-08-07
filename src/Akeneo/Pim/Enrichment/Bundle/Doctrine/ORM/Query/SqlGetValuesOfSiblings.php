@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -21,10 +21,10 @@ final class SqlGetValuesOfSiblings implements GetValuesOfSiblings
     /** @var Connection  */
     private $connection;
 
-    /** @var ValueCollectionFactoryInterface */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
-    public function __construct(Connection $connection, ValueCollectionFactoryInterface $valueCollectionFactory)
+    public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
     {
         $this->connection = $connection;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -52,6 +52,8 @@ FROM pim_catalog_product
 WHERE product_model_id = :parentId
 AND identifier != :identifier;
 SQL;
+        } else {
+            return [];
         }
 
         $valuesOfSiblings = [];

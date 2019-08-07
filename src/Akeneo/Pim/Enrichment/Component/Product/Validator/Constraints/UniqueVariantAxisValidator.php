@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFa
 use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
@@ -171,12 +171,12 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *       This implies to remove "Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider"
      *       and merge its code in the product, published product and product model.
      *
-     * @param ValueCollectionInterface $values
+     * @param WriteValueCollection $values
      * @param AttributeInterface[] $axes
      *
      * @return string
      */
-    private function getCombinationOfAxisValues(ValueCollectionInterface $values, array $axes): string
+    private function getCombinationOfAxisValues(WriteValueCollection $values, array $axes): string
     {
         $combination = [];
 
