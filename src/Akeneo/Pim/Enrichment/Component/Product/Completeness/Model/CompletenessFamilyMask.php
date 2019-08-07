@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+
 /**
  * This mask is done to gather all the masks for a given family
  * e.g:
@@ -40,6 +43,19 @@ class CompletenessFamilyMask
     {
         return $this->masks;
     }
+
+    public function completenessCollectionForProduct(CompletenessProductMask $completenessProductMask): ProductCompletenessCollection
+    {
+        $productCompletenesses = array_map(
+            function (CompletenessFamilyMaskPerChannelAndLocale $completenessFamilyMaskPerChannelAndLocale) use ($completenessProductMask): ProductCompleteness {
+                return $completenessFamilyMaskPerChannelAndLocale->productCompleteness($completenessProductMask);
+            },
+            $this->masks
+        );
+
+        return new ProductCompletenessCollection($completenessProductMask->id(), $productCompletenesses);
+    }
+
 
     public function familyMaskForChannelAndLocale(string $channelCode, string $localeCode): CompletenessFamilyMaskPerChannelAndLocale
     {
