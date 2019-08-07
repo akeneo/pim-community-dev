@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8623: Fix wysiwyg edit link modal on Firefox
+- PIM-8628: Display label translations on configuration screens even you don't have "Allowed to view information" permission on a locale
 
 # 3.0.35 (2019-08-05)
 
