@@ -1,7 +1,6 @@
-import * as $ from 'jquery';
-const __ = require('oro/translator');
-const BaseSelect = require('pim/form/common/fields/select');
-const FetcherRegistry = require('pim/fetcher-registry');
+import * as _ from 'underscore';
+const BaseSelect = require('pim/form/common/fields/simple-select-async');
+const Routing = require('routing');
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -30,39 +29,40 @@ class DefaultProductGridView extends BaseSelect {
    */
   configure() {
     return $.when(
-      BaseSelect.prototype.configure.apply(this, arguments),
-      FetcherRegistry.getFetcher('datagrid-view').fetchAll({ alias: this.config.datagridAlias })
-        .then((datagridViews: InterfaceNormalizedDatagridView[]) => {
-          this.config.choices = datagridViews;
-        })
-    );
+      BaseSelect.prototype.configure.apply(this, arguments)
+    ).then(() => {
+      this.setChoiceUrl(Routing.generate(this.config.choiceUrl, {alias: this.config.datagridAlias}));
+      this.allowClear = true;
+    });
   }
 
   /**
    * {@inheritdoc}
    */
-  formatChoices(datagridViews: InterfaceNormalizedDatagridView[]): { [key:string] : string } {
-    return datagridViews.reduce((result: { [key:string] : string }, datagridView: InterfaceNormalizedDatagridView) => {
-      result[datagridView.id] = datagridView.label;
-
-      return result;
-    }, {});
+  convertBackendItem(item: InterfaceNormalizedDatagridView) {
+    return {
+      id: parseInt(item.id),
+      text: item.label,
+    };
   }
 
   /**
    * {@inheritdoc}
    */
-  getModelValue(): string {
-    const value = BaseSelect.prototype.getModelValue.apply(this, arguments);
-
-    return value !== undefined ? value + '' : value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  getDefaultLabel(): string {
-    return __('pim_datagrid.view_selector.default_view');
+  select2InitSelection(element: any, callback: any) {
+    const id: string = <string> $(element).val();
+    if ('' !== id) {
+      $.ajax({
+        url: this.choiceUrl,
+        data: {options: {identifiers: [id]}},
+        type: this.choiceVerb,
+      }).then(response => {
+        const selected: InterfaceNormalizedDatagridView|undefined = _.findWhere(response, {id: parseInt(id)});
+        if (undefined !== selected) {
+          callback(this.convertBackendItem(selected));
+        }
+      });
+    }
   }
 }
 
