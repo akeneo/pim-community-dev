@@ -3,6 +3,8 @@
 ## Bug fixes
 
 - PIM-8387: Fix product export builder on simple/multi select attribute filters
+- PIM-8321: Do not display navigation blocks when there is no links inside
+- PIM-8623: Fix wysiwyg edit link modal on Firefox
 
 # 3.0.35 (2019-08-05)
 
