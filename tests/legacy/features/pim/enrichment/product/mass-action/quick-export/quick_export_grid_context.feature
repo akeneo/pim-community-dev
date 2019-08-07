@@ -40,7 +40,7 @@ Feature: Quick export products according to the product grid context
   Scenario: Successfully quick export only current working locale from grid context as a CSV file
     Given I add the "french" locale to the "tablet" channel
     And I add the "french" locale to the "mobile" channel
-    And I am on the products page
+    And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | blue-suede-shoes |
@@ -54,7 +54,7 @@ Feature: Quick export products according to the product grid context
       | [description] | Chaussures en suedine bleues |
     And I press the "Save" button
     And I should not see the text "There are unsaved changes."
-    And I am on the products page
+    And I am on the products grid
     And I switch the locale to "fr_FR"
     And I display the columns [sku], [description]
     And I select row blue-suede-shoes

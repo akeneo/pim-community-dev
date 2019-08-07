@@ -51,7 +51,7 @@ Feature: Apply a add to products to existing product model
     And I fill in the following information:
       | Size | S |
     And I save the product
-    And I am on the products page
+    And I am on the products grid
     And I select rows 1111111171
     And I press the "Bulk actions" button
     And I choose the "Add to an existing product model" operation

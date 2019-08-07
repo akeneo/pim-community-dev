@@ -7,7 +7,7 @@ Feature: Export products and product models
   Background:
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully export products to multiple channels
     When I type "color" in the manage filter input
