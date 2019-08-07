@@ -9,7 +9,7 @@ Feature: Apply a add to products to existing product model
     And I am logged in as "Julia"
 
   Scenario: It automatically selects family variant when there is only one
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows 1111111171
     And I press the "Bulk actions" button
     And I choose the "Add to an existing product model" operation
@@ -18,7 +18,7 @@ Feature: Apply a add to products to existing product model
     Then I should see the text "Accessories by size"
 
   Scenario: Successfully display leaf product models
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows 1111111171
     And I press the "Bulk actions" button
     And I choose the "Add to an existing product model" operation
@@ -31,7 +31,7 @@ Feature: Apply a add to products to existing product model
     And the fields Family should be disabled
 
   Scenario: Successfully show validation error on family issues
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows 1111111171
     And I press the "Bulk actions" button
     And I choose the "Add to an existing product model" operation
@@ -65,7 +65,7 @@ Feature: Apply a add to products to existing product model
     And the parent of the product "1111111171" should be "model-braided-hat"
 
   Scenario: Fail to adds products to product model with null metric axis
-    Given I am on the products page
+    Given I am on the products grid
     And the following attributes:
       | code                  | label-en_US           | type                     | unique | group     | decimals_allowed | negative_allowed | metric_family | default_metric_unit | useable_as_grid_filter |
       | display_diagonal      | Display diagonal      | pim_catalog_metric       | 0      | other     | 0                | 0                | Length        | INCH                | 1                      |

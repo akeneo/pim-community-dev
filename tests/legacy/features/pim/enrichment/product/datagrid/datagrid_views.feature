@@ -252,11 +252,11 @@ Feature: Datagrid views
 
   @ce
   Scenario: Don't display view type switcher if there is only one view type
-    Given I am on the products page
+    Given I am on the products grid
     Then I should not see the text "Views"
 
   Scenario: Successfully display filter values when refreshing a saved view
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "is empty" and value ""
     And I create the view:
       | new-view-label | Empty family |
