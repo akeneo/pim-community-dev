@@ -1,7 +1,7 @@
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
   attributeEditionSucceeded,
-  attributeEditionErrorOccured,
+  attributeEditionErrorOccurred,
   attributeEditionStart as attributeEditionStartEvent,
   attributeEditionSubmission,
   attributeEditionCancel,
@@ -19,7 +19,7 @@ import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer
 import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {
   optionEditionSubmission,
-  optionEditionErrorOccured,
+  optionEditionErrorOccurred,
   optionEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/option';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
@@ -43,13 +43,13 @@ export const saveAttribute = (dismiss: boolean = true) => async (
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(attributeEditionErrorOccured(validationErrors));
+      dispatch(attributeEditionErrorOccurred(validationErrors));
       dispatch(notifyAttributeSaveValidationError());
 
       return;
     }
   } catch (error) {
-    dispatch(attributeEditionErrorOccured([]));
+    dispatch(attributeEditionErrorOccurred([]));
     dispatch(notifyAttributeSaveFailed());
 
     return;
@@ -86,12 +86,12 @@ export const saveOptions = () => async (dispatch: any, getState: () => EditState
           return filteredErrors;
         }, {})
       ).map((error: ValidationError) => createValidationError(error));
-      dispatch(optionEditionErrorOccured(validationErrors));
+      dispatch(optionEditionErrorOccurred(validationErrors));
 
       return;
     }
   } catch (error) {
-    dispatch(optionEditionErrorOccured([]));
+    dispatch(optionEditionErrorOccurred([]));
 
     return;
   }

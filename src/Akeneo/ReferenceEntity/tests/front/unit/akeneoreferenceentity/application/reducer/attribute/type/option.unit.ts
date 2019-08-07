@@ -460,7 +460,7 @@ describe('akeneo > reference entity > application > reducer > attribute > type >
         {
           messageTemplate: 'message_template',
           parameters: {},
-          message: 'An error occured for the option "red"',
+          message: 'An error occurred for the option "red"',
           propertyPath: 'option.red.code',
           invalidValue: 're-d',
         },
@@ -496,7 +496,7 @@ describe('akeneo > reference entity > application > reducer > attribute > type >
     });
   });
 
-  test('An error occured', () => {
+  test('An error occurred', () => {
     const errors = [
       {
         messageTemplate: 'an error',
@@ -516,7 +516,7 @@ describe('akeneo > reference entity > application > reducer > attribute > type >
       currentOptionId: 0,
     };
     const newState = editOptionsReducer(state, {
-      type: 'OPTIONS_EDITION_ERROR_OCCURED',
+      type: 'OPTIONS_EDITION_ERROR_OCCURRED',
       errors: errors,
     });
     expect(newState).toEqual({

@@ -15,6 +15,6 @@ export const permissionEditionSucceeded = () => {
   return {type: 'PERMISSION_EDITION_SUCCEEDED'};
 };
 
-export const permissionEditionErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'PERMISSION_EDITION_ERROR_OCCURED', errors};
+export const permissionEditionErrorOccurred = (errors: ValidationError[]) => {
+  return {type: 'PERMISSION_EDITION_ERROR_OCCURRED', errors};
 };

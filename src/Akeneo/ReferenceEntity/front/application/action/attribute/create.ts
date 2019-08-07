@@ -1,7 +1,7 @@
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
   attributeCreationSucceeded,
-  attributeCreationErrorOccured,
+  attributeCreationErrorOccurred,
 } from 'akeneoreferenceentity/domain/event/attribute/create';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
@@ -31,7 +31,7 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(attributeCreationErrorOccured(validationErrors));
+      dispatch(attributeCreationErrorOccurred(validationErrors));
       dispatch(notifyAttributeCreateValidationError());
 
       return;
