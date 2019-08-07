@@ -40,6 +40,7 @@ class CheckPullUp
 class ForbiddenDirectory
 {
     private const PATH_START_PIM = 'src/Pim'; // for src/Pim in CE and src/PimEntreprise in EE
+    private const PATH_START_AKENEO = 'src/Akeneo'; // for old Tools
     private const PATH_START_SPEC = 'spec/'; // for spec/ in EE
 
     /** @var string */
@@ -50,8 +51,8 @@ class ForbiddenDirectory
 
     public function __construct(string $path, Reason $reason)
     {
-        if (0 !== strpos($path, self::PATH_START_PIM) && 0 !== strpos($path, self::PATH_START_SPEC)) {
-            throw new \LogicException(sprintf('The path "%s" should start by "%s" or "%s".', $path, self::PATH_START_PIM, self::PATH_START_SPEC));
+        if (0 !== strpos($path, self::PATH_START_PIM) && 0 !== strpos($path, self::PATH_START_SPEC) && 0 !== strpos($path, self::PATH_START_AKENEO)) {
+            throw new \LogicException(sprintf('The path "%s" should start by "%s", "%s" or "%s".', $path, self::PATH_START_PIM, self::PATH_START_SPEC, self::PATH_START_AKENEO));
         }
 
         $this->path = $path;
@@ -153,6 +154,7 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/Pim/Bundle/InstallerBundle', new Moved('src/Akeneo/Platform')),
         new ForbiddenDirectory('src/Pim/Bundle/LocalizationBundle', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Platform/Bundle/UIBundle'])),
         new ForbiddenDirectory('src/Pim/Bundle/EnrichBundle', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Pim/Structure', 'src/Akeneo/Platform/Bundle/UIBundle'])),
+        new ForbiddenDirectory('src/Akeneo/Bundle', new Dispatched(['src/Akeneo/Platform', 'src/Akeneo/Tool'])),
 
         // Community Components
         new ForbiddenDirectory('src/Pim/Component/Enrich', new Dispatched(['src/Akeneo/Pim/Structure', 'src/Akeneo/Pim/Enrichment'])),
@@ -161,6 +163,7 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/Pim/Component/Connector', Dispatched::mainCommunityBusinessTopics()),
         new ForbiddenDirectory('src/Pim/Component/User', new Moved('src/Akeneo/UserManagement')),
         new ForbiddenDirectory('src/Pim/Component/ReferenceData', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Pim/Structure'])),
+        new ForbiddenDirectory('src/Akeneo/Component', new Dispatched(['src/Akeneo/Platform', 'src/Akeneo/Tool'])),
 
         // Enterprise Bundles
         new ForbiddenDirectory('src/PimEnterprise/Bundle/ApiBundle', Dispatched::mainEnterpriseBusinessTopics()),
