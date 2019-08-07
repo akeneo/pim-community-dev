@@ -43,7 +43,7 @@ class InstallDatabase implements EventSubscriberInterface
         $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS pim_aggregated_volume (
   volume_name VARCHAR(255) NOT NULL,
-  volume json NOT NULL COMMENT '(DC2Type:native_json)',
+  volume json NOT NULL,
   aggregated_at DATETIME NOT NULL COMMENT '(DC2Type:datetime)',
   PRIMARY KEY(volume_name)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB

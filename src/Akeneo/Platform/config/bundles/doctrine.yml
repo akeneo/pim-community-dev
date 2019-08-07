@@ -32,9 +32,6 @@ doctrine:
                         row_format: DYNAMIC
         types:
             datetime: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
-            native_json:
-                class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\JsonType
-                commented: true
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true

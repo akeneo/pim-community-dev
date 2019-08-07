@@ -14,6 +14,7 @@ services:
 
     akeneo_measure.controller.rest.measures:
         class: 'Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController'
+        public: true
         arguments:
             - '%akeneo_measure.measures_config%'
 
