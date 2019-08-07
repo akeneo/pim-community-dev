@@ -41,7 +41,7 @@ class NumberAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'min_value', 'max_value'],
+            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],

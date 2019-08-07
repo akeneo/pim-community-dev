@@ -41,7 +41,7 @@ class NumberAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'min_value', 'max_value'],
+            'required' => ['code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -72,6 +72,9 @@ class NumberAttributeValidator implements AttributeValidatorInterface
                 ],
                 'max_value' => [
                     'type' => [ 'string', 'integer', 'null'],
+                ],
+                '_links' => [
+                    'type' => 'object'
                 ],
             ],
             'additionalProperties' => false,
