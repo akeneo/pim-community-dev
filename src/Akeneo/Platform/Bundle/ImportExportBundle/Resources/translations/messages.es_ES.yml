@@ -129,6 +129,7 @@ job_execution.summary:
   write: escrito
   skip: omitido
   create: creado
+  update: actualizada
   update_products: productos actualizados
   skip_products: productos omitidos
   displayed: primeras advertencias mostradas

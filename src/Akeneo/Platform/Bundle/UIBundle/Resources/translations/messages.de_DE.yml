@@ -37,9 +37,11 @@ Most Viewed: Am meisten angesehen
 "Yes": "Ja"
 "No": "Nein"
 required: (erforderlich)
+The element could not be deleted: Das Element konnte nicht gelöscht werden
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Nachrichten laden aktivieren
+    loading_message_enabled.tooltip: Zeige benutzerfreundliche Nachrichten während eine Seite geladen wird
     loading_messages.label: Nachrichten laden aktivieren
     loading_messages.tooltip: Alle verfügbaren Nachrichten durch Zeilenschaltungen trennen
   group:
@@ -84,8 +86,9 @@ pim_enrich:
       download: Produkt als PDF herunterladen
       history: Produkthistorie ansehen
     product_model:
+      create: Produktmodell erstellen
       edit_attributes: Attribute eines Produktmodells bearbeiten
-      categories_view: Die Kategorien eines Produktmodells ansehen
+      categories_view: Die Kategorien eines Produktmodells anzeigen
       history: Produkthistorie ansehen
       remove: Produktmodell löschen
     category:
@@ -108,6 +111,7 @@ pim_enrich:
       create: Eine Produktfamilie anlegen
       edit_properties: Die Eigenschaften einer Produktfamilie bearbeiten
       edit_attributes: Die Attribute einer Produktfamilie bearbeiten
+      edit_variants: Eine Variante bearbeiten
       remove: Eine Produktfamilie löschen
       history: Produktfamilien-Historie ansehen
     family_variant:
@@ -164,6 +168,11 @@ pim_enrich:
     locale: Gebietsschemata
     product: Produkte
     product_model: Produktmodelle
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Das Gebietsschema wurde aus dem Kanal entfernt. Die damit verbundene Vollständigkeit wird derzeit aktualisiert.
+        done: Das Gebietschema ist nun aus dem Kanal entfernt.
   create:
     attribute: Attribut anlegen
     attribute group: Attributgruppe anlegen
@@ -204,16 +213,16 @@ flash:
   group type:
     created: Gruppentyp erfolgreich erstellt
   user:
-    removed: Benutzer erfolgreich gelöscht
+    removed: Benutzer erfolgreich entfernt
   error ocurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
 info:
-  updated: Es gibt ungesicherte Änderungen.
+  updated: Es gibt ungespeicherte Änderungen.
   category:
     remove children: Alle Unterkategorien werden gelöscht.
     keep products: Produkte in diesen Kategorien werden nicht gelöscht.
     products limit exceeded: Diese Kategorie enthält mehr Produkte (maximal %limit%) als für diese Operation zugelassen sind
   product:
-    no available attributes: Es können keine weiteren Attribute hinzugefügt werden
+    no available attributes: Es gibt keine weiteren Attribute zum Hinzufügen
     no family defined: Keine Produktfamilie definiert
     change family: Produktfamilie ändern
     change family to: Produktfamilie ändern zu
@@ -243,7 +252,7 @@ info:
 Created: Erstellt
 Updated: Aktualisiert
 Last update: Letzte Aktualisierung
-by: durch
+by: Von
 N/A: N/A
 Manage products: Produkte verwalten
 Manage groups: Gruppen verwalten
@@ -261,7 +270,6 @@ Unique value: Eindeutiger Wert
 Attribute group: Attributgruppe
 Other: Andere
 Variants behavior when edited: Das Verhalten von Varianten beim Bearbeiten
-Edit: Bearbeiten
 Remove: Entfernen
 Parameters: Parameter
 System: System
@@ -276,8 +284,8 @@ Attribute type: Attributtyp
 Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
-Useable as grid column: Verwendbar als Spalte in der Übersicht
-Useable as grid filter: Verwendbar in der Tabellenansicht
+Useable as grid column: Verwendbar als Spalte in der Listenansicht
+Useable as grid filter: Anwendbar in der Listenansicht
 Family: Produktfamilie
 Image: Abbildung
 Variant products: Produktvarianten
@@ -286,7 +294,6 @@ Locale specific: Gebietsschemaspezifisch
 default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
-Translate from: Übersetzen von
 switch_on: "Ja"
 switch_off: "Nein"
 Close: Schließen
@@ -334,7 +341,7 @@ Metric family: Metrische Gruppe
 Default metric unit: Standardmaßeinheit
 Max file size: Maximale Dateigröße (MB)
 Allowed extensions: Zulässige Dateiendungen
-None: Keine
+None: keine
 E-mail: E-Mail
 URL: URL
 Regular expression: Regulärer Ausdruck
@@ -357,12 +364,14 @@ pim_catalog_metric: Maßeinheit
 pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
 pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
 Activated: Aktiviert
+Edit: Bearbeiten
 Disable: Deaktivieren
-To enable: Zu aktivieren
+To enable: Aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
-Remove this attribute: Dieses Attribut löschen
-Copy: Kopieren
+Remove this attribute: Dieses Attribut entfernen
+Copy: Kopie
+Translate from: Übersetzen von
 Current tab: Aktueller Reiter
 Group: Gruppe
 View group: Gruppe ansehen
@@ -403,7 +412,7 @@ Entity name: Entitätsname
 Entity id: Entitäts-ID
 Data: Daten
 Author: Autor
-Logged at: Angemeldet am
+Logged at: Aufgezeichnet am
 Deleted: Gelöscht
 Old values: Alte Werte
 New values: Neue Werte
@@ -460,13 +469,14 @@ job_execution.summary:
   skipped_families: Übersprungene Produktfamilien
   deleted_products: Gelöschte Produkte
   deleted_product_models: Gelöschte Produktmodelle
-pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
+pim_mass_edit_execution_show: Ausgeführte Exporte | Details
 edit_common_attributes.steps.edit_common_attributes_processor.title: Attribute bearbeiten
-update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
+update_product_value.steps.update_product_value_processor.title: Produktwert aktualisieren
 remove_product_value.steps.update_product_value_processor.title: Produktwert entfernen
 edit_common_attributes: Attribute bearbeiten
+edit_common_attributes_clean: Dateien für gemeinsame Attribute bereinigen
 perform.steps.duplicated.title: Doppelte Achse
-perform.steps.excluded.title: Ausgeschlossene Produkte
+perform.steps.excluded.title: Produkt ausschließen
 mass_edit report:
   overview: Massenbearbeitung Reports
 job_tracker:
@@ -474,5 +484,3 @@ job_tracker:
     title: Prozess-Tracker
   filter:
     started_at: Gestartet am
-
-
