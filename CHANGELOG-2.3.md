@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8302: Fix missing action to remove a product model draft
+- PIM-7959: Fix association screen when associated products contain asset_collection
 
 # 2.3.57 (2019-07-31)
 
