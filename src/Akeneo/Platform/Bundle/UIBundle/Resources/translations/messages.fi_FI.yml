@@ -213,7 +213,7 @@ flash:
     created: Ryhmätyyppi lisätty onnistuneesti
   user:
     removed: Käyttäjä poistettu onnistuneesti
-  error ocurred: Toiminto epäonnistui. Yritä uudelleen.
+  error occurred: Toiminto epäonnistui. Yritä uudelleen.
 info:
   updated: Tallentamattomia muutoksia löytyy.
   category:

@@ -2,7 +2,7 @@
 "Yes, do it": "Sim, faça"
 "Ok, got it.": "Ok. Eu entendi."
 "Edit": "Editar"
-"Unexpected error occured. Please contact system administrator.": "Ocorreu um erro inesperado. Por favor, contate o administrador do sistema."
+"Unexpected error occurred. Please contact system administrator.": "Ocorreu um erro inesperado. Por favor, contate o administrador do sistema."
 "Yes, revoke": "Sim, Revogar"
 "Revoke Confirmation": "Confirmação de revogação"
 Prev: Anterior
@@ -182,7 +182,7 @@ error:
   forbidden: Proibido. Você não tem permissão para acessar esta página
 alert:
   attribute_option:
-    error_occured_during_submission: Ocorreu um erro ao tentar submeter o formulário ao servidor
+    error_occurred_during_submission: Ocorreu um erro ao tentar submeter o formulário ao servidor
     save_before_edit_other: Por favor, registre suas modificações em outra linha antes de editar essa
   session_storage:
     not_available: Seu browser parece não ser compatível com sessionStorage. Por favor, contate seu administrador

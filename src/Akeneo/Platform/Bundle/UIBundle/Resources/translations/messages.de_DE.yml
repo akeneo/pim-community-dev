@@ -214,7 +214,7 @@ flash:
     created: Gruppentyp erfolgreich erstellt
   user:
     removed: Benutzer erfolgreich entfernt
-  error ocurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
+  error occurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
 info:
   updated: Es gibt ungespeicherte Änderungen.
   category:

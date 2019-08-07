@@ -71,7 +71,7 @@ class CurrencyController
             $request
                 ->getSession()
                 ->getFlashBag()
-                ->add('error', new Message('flash.error ocurred'));
+                ->add('error', new Message('flash.error occurred'));
         }
 
         return new JsonResponse(['route' => 'pim_enrich_currency_index']);

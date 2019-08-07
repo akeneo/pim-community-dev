@@ -2,7 +2,7 @@
 "Yes, do it": "Kyllä, tee se"
 "Ok, got it.": "OK."
 "Edit": "Muokkaa"
-"Unexpected error occured. Please contact system administrator.": "Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan."
+"Unexpected error occurred. Please contact system administrator.": "Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan."
 "Yes, revoke": "Kyllä, poista"
 "Revoke Confirmation": "Poiston vahvistus"
 Prev: Edellinen
@@ -182,7 +182,7 @@ error:
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua
 alert:
   attribute_option:
-    error_occured_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
+    error_occurred_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
     save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
   session_storage:
     not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.

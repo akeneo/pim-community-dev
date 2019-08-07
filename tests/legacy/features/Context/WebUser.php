@@ -155,7 +155,7 @@ class WebUser extends PimContext
             );
 
             $loadedCorrectly = (bool) $this->getSession()->evaluateScript('return $(\'img[alt="Akeneo"]\').length;');
-            Assert::assertTrue($loadedCorrectly, sprintf('Javascript error ocurred on page "%s"', $data['page']));
+            Assert::assertTrue($loadedCorrectly, sprintf('Javascript error occurred on page "%s"', $data['page']));
         }
     }
 

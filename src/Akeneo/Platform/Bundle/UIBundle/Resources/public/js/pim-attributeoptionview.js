@@ -177,7 +177,7 @@ define(
                         .tooltip('show');
                 } else {
                     Dialog.alert(
-                        __('alert.attribute_option.error_occured_during_submission'),
+                        __('alert.attribute_option.error_occurred_during_submission'),
                         __('pim_enrich.entity.attribute_option.flash.update.fail')
                     );
                 }
