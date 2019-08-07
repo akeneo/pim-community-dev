@@ -64,7 +64,7 @@ define(
                 this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
 
                 return FetcherRegistry.getFetcher('attribute')
-                    .search({attribute_groups: 'other'})
+                    .search({attribute_groups: 'other', rights: 0})
                     .then(function (attributes) {
                         this.otherAttributes = _.pluck(attributes, 'code');
                     }.bind(this)).then(function () {

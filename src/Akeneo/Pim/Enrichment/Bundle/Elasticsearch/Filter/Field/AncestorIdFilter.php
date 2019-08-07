@@ -86,13 +86,7 @@ class AncestorIdFilter extends AbstractFieldFilter
                         self::ANCESTOR_ID_ES_FIELD => $values,
                     ],
                 ];
-                $filterClause = [
-                    'exists' => [
-                        'field' => self::ANCESTOR_ID_ES_FIELD,
-                    ],
-                ];
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
-                $this->searchQueryBuilder->addFilter($filterClause);
                 break;
         }
     }

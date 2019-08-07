@@ -11,6 +11,8 @@
  * $('select.select2--bigDrop').select2();
  */
 
+@recordOptionSelectorWidth: 200px;
+
 .select2-default {
   color: @AknDefaultFontColor !important; // To override the other !important of the original select2
 }
@@ -107,9 +109,12 @@
     height: @AknSelectLineHeight;
     padding: 0 6px;
     min-height: 0;
-    display: flex;
     align-items: center;
     flex: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-top: 16px;
 
     .select2-result-label-main {
       flex: 1;
@@ -561,6 +566,21 @@
   .select2-choices {
     overflow: auto;
     max-height: 500px;
+
+    div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: ~"calc(290px - 44px)";
+    }
+  }
+
+  .record-option-selector {
+    .select2-choices {
+      div {
+        max-width: @recordOptionSelectorWidth - 44px;
+      }
+    }
   }
 }
 
@@ -892,7 +912,7 @@
 }
 
 .record-option-selector {
-  width: 200px;
+  width: @recordOptionSelectorWidth;
 
   .select2-choices .select2-search-field .select2-input {
     background: white !important;

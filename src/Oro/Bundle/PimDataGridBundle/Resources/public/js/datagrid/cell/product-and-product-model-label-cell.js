@@ -13,7 +13,7 @@ define(['oro/datagrid/string-cell'],
              * {@inheritdoc}
              */
             className() {
-                let className = 'AknGrid-bodyCell AknGrid-bodyCell--highlight';
+                let className = 'AknGrid-bodyCell AknGrid-bodyCell--noWrap AknGrid-bodyCell--highlight';
 
                 if (this.model.get('document_type') === 'product_model') {
                     className += ' AknGrid-bodyCell--highlightAlternative';
