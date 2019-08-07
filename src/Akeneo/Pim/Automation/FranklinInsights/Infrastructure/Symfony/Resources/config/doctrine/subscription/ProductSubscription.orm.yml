@@ -16,7 +16,7 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscrip
             generator:
                 strategy: AUTO
         rawSuggestedData:
-            type: native_json
+            type: json
             column: raw_suggested_data
             nullable: true
         isMappingMissing:
