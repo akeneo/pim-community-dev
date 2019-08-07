@@ -51,11 +51,15 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.empty().append(this.template({
-                    title: __(this.config.title)
-                }));
+                this.$el.empty();
 
                 BaseForm.prototype.render.apply(this, arguments);
+
+                if (this.$el.html().trim() !== '') {
+                    this.$el.prepend(this.template({
+                        title: __(this.config.title)
+                    }));
+                }
             }
         })
     });
