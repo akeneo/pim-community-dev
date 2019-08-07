@@ -5,6 +5,7 @@
 - PIM-8387: Fix product export builder on simple/multi select attribute filters
 - PIM-8321: Do not display navigation blocks when there is no links inside
 - PIM-8623: Fix wysiwyg edit link modal on Firefox
+- PIM-8628: Display label translations on configuration screens even you don't have "Allowed to view information" permission on a locale
 - PIM-8624: Fix default product grid view selector in user profile when there is more than 20 views
 
 # 3.0.35 (2019-08-05)
