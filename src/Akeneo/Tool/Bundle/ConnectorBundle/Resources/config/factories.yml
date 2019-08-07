@@ -8,6 +8,6 @@ services:
             - '%akeneo_batch.entity.job_instance.class%'
 
     pim_connector.factory.flat_item_buffer:
-        class: '%akeneo_buffer.factory.buffer.class%'
+        class: 'Akeneo\Tool\Component\Buffer\BufferFactory'
         arguments:
             - '%pim_connector.factory.flat_item_buffer.class%'

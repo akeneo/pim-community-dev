@@ -2,17 +2,17 @@
 
 namespace spec\Akeneo\Tool\Component\Buffer;
 
-use Akeneo\Tool\Component\Buffer\ArrayBuffer;
 use Akeneo\Tool\Component\Buffer\Exception\InvalidClassNameException;
+use Akeneo\Tool\Component\Buffer\JSONFileBuffer;
 use PhpSpec\ObjectBehavior;
 
 class BufferFactorySpec extends ObjectBehavior
 {
-    const ARRAY_BUFFER_CLASS = ArrayBuffer::class;
+    const JSON_BUFFER_CLASS = JSONFileBuffer::class;
 
     function let()
     {
-        $this->beConstructedWith(self::ARRAY_BUFFER_CLASS);
+        $this->beConstructedWith(self::JSON_BUFFER_CLASS);
     }
 
     function it_throws_an_exception_if_configured_with_a_wrong_classname()
@@ -24,6 +24,6 @@ class BufferFactorySpec extends ObjectBehavior
 
     function it_creates_a_buffer()
     {
-        $this->create()->shouldReturnAnInstanceOf(self::ARRAY_BUFFER_CLASS);
+        $this->create()->shouldReturnAnInstanceOf(self::JSON_BUFFER_CLASS);
     }
 }
